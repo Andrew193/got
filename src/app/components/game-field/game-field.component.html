@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  dfsdf
+  <div *ngFor="let row of gameConfig" class="flex-row">
+    <div *ngFor="let tile of row" class="col tile data-i-{{tile.x}} data-j-{{tile.y}}" [attr.data-x]="tile.x"
+         [attr.data-y]="tile.y" [attr.data-active]="tile.active">
+      {{tile.x}}-{{tile.y}}
+    </div>
+  </div>
+</div>
+<button class="btn btn-success" (click)="example()">click</button>

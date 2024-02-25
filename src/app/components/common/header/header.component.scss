@@ -1,0 +1,49 @@
+nav {
+  padding: 10px;
+  color: white;
+  margin-bottom: unset;
+  background-size: cover;
+  background: url("../../../../assets/resourses/imgs/small-forest.jpeg") no-repeat top;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75) inset;
+  span {
+    height: fit-content;
+    width: min-content;
+    font-weight: bold;
+  }
+}
+
+.copper {
+  color: #ffb47e;
+}
+
+.silver {
+  color: silver;
+}
+
+.gold {
+  color: gold;
+}
+
+.currency-bar {
+  img {
+    height: 40px;
+    width: 40px;
+  }
+  > div {
+    margin: 5px;
+  }
+}
+
+.user-header-avatar {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  border: 1px solid;
+  background-color: #bbb;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    opacity: 0.7;
+  }
+}

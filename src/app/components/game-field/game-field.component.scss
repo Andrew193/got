@@ -1,0 +1,13 @@
+.tile {
+  min-height: 100px;
+  flex-basis: 100px;
+  margin: 0 5px;
+  border: 1px solid #ffffff;
+  box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    opacity: 0.7;
+    background: #e8e7e7;
+  }
+}

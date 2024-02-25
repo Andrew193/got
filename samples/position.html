@@ -1,0 +1,345 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+
+
+      <ul
+        [class.horizontal]="layout.dndHorizontal"
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event, draggableListLeft)"
+        class="dndList gap-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="copyMove">
+        <li
+          class="dndPlaceholder border rounded-1 bg-opacity-25"
+          dndPlaceholderRef>
+        </li>
+
+        <li
+          *ngFor="let item of draggableListLeft"
+          [dndDisableIf]="item.disable"
+          [dndDraggable]="item"
+          [dndEffectAllowed]="item.effectAllowed"
+          (dndCanceled)="onDragged(item, draggableListLeft, 'none')"
+          (dndCopied)="onDragged(item, draggableListLeft, 'copy')"
+          (dndEnd)="onDragEnd($event)"
+          (dndLinked)="onDragged(item, draggableListLeft, 'link')"
+          (dndMoved)="onDragged(item, draggableListLeft, 'move')"
+          (dndStart)="onDragStart($event)"
+          class="border rounded-1 bg-white">
+          <div
+            *ngIf="item.handle"
+            class="drag-handle align-self-center mx-3 my-0"
+            dndHandle>
+          </div>
+          <span >{{ item.content }}</span>
+
+        </li>
+      </ul>
+    </div>
+
+    <div class="col d-flex flex-column">
+      <pre>trash (dndEffectAllowed="move")</pre>
+
+      <ul
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event)"
+        class="dndList gap-1 flex-grow-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="move">
+      </ul>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="col-20 d-flex ">
+      <ul
+        [class.horizontal]="layout.dndHorizontal"
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event, draggableList1)"
+        class="dndList gap-1 flex-grow-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="copyMove">
+        <li
+          class="dndPlaceholder border rounded-1 bg-white bg-opacity-25"
+          dndPlaceholderRef>
+        </li>
+        <li
+          *ngFor="let item of draggableList1"
+          [dndDisableIf]="item.disable"
+          [dndDraggable]="item"
+          [dndEffectAllowed]="item.effectAllowed"
+          (dndCanceled)="onDragged(item, draggableList1, 'none')"
+          (dndCopied)="onDragged(item, draggableList1, 'copy')"
+          (dndEnd)="onDragEnd($event)"
+          (dndLinked)="onDragged(item, draggableList1, 'link')"
+          (dndMoved)="onDragged(item, draggableList1, 'move')"
+          (dndStart)="onDragStart($event)"
+          class="border rounded-1 bg-white">
+          <div
+            *ngIf="item.handle"
+            class="drag-handle align-self-center mx-3 my-0"
+            dndHandle>
+          </div>
+          <span>{{ item.content }}</span>
+
+        </li>
+      </ul>
+    </div>
+    <div class="col-20 d-flex ">
+
+
+      <ul
+        [class.horizontal]="layout.dndHorizontal"
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event, draggableList2)"
+        class="dndList gap-1 flex-grow-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="copyMove">
+        <li
+          class="dndPlaceholder border rounded-1 bg-white bg-opacity-25"
+          dndPlaceholderRef>
+        </li>
+        <li
+          *ngFor="let item of draggableList2"
+          [dndDisableIf]="item.disable"
+          [dndDraggable]="item"
+          [dndEffectAllowed]="item.effectAllowed"
+          (dndCanceled)="onDragged(item, draggableList2, 'none')"
+          (dndCopied)="onDragged(item, draggableList2, 'copy')"
+          (dndEnd)="onDragEnd($event)"
+          (dndLinked)="onDragged(item, draggableList2, 'link')"
+          (dndMoved)="onDragged(item, draggableList2, 'move')"
+          (dndStart)="onDragStart($event)"
+          class="border rounded-1 bg-white">
+          <div
+            *ngIf="item.handle"
+            class="drag-handle align-self-center mx-3 my-0"
+            dndHandle>
+          </div>
+          <span>{{ item.content }}</span>
+
+        </li>
+      </ul>
+    </div>
+    <div class="col-20 d-flex ">
+
+
+      <ul
+        [class.horizontal]="layout.dndHorizontal"
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event, draggableList3)"
+        class="dndList gap-1 flex-grow-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="copyMove">
+        <li
+          class="dndPlaceholder border rounded-1 bg-white bg-opacity-25"
+          dndPlaceholderRef>
+        </li>
+        <li
+          *ngFor="let item of draggableList3"
+          [dndDisableIf]="item.disable"
+          [dndDraggable]="item"
+          [dndEffectAllowed]="item.effectAllowed"
+          (dndCanceled)="onDragged(item, draggableList3, 'none')"
+          (dndCopied)="onDragged(item, draggableList3, 'copy')"
+          (dndEnd)="onDragEnd($event)"
+          (dndLinked)="onDragged(item, draggableList3, 'link')"
+          (dndMoved)="onDragged(item, draggableList3, 'move')"
+          (dndStart)="onDragStart($event)"
+          class="border rounded-1 bg-white">
+          <div
+            *ngIf="item.handle"
+            class="drag-handle align-self-center mx-3 my-0"
+            dndHandle>
+          </div>
+          <span>{{ item.content }}</span>
+
+        </li>
+      </ul>
+    </div>
+    <div class="col-20 d-flex ">
+
+
+      <ul
+        [class.horizontal]="layout.dndHorizontal"
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event, draggableList4)"
+        class="dndList gap-1 flex-grow-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="copyMove">
+        <li
+          class="dndPlaceholder border rounded-1 bg-white bg-opacity-25"
+          dndPlaceholderRef>
+        </li>
+        <li
+          *ngFor="let item of draggableList4"
+          [dndDisableIf]="item.disable"
+          [dndDraggable]="item"
+          [dndEffectAllowed]="item.effectAllowed"
+          (dndCanceled)="onDragged(item, draggableList4, 'none')"
+          (dndCopied)="onDragged(item, draggableList4, 'copy')"
+          (dndEnd)="onDragEnd($event)"
+          (dndLinked)="onDragged(item, draggableList4, 'link')"
+          (dndMoved)="onDragged(item, draggableList4, 'move')"
+          (dndStart)="onDragStart($event)"
+          class="border rounded-1 bg-white">
+          <div
+            *ngIf="item.handle"
+            class="drag-handle align-self-center mx-3 my-0"
+            dndHandle>
+          </div>
+          <span>{{ item.content }}</span>
+
+        </li>
+      </ul>
+    </div>
+    <div class="col-20 d-flex ">
+
+
+      <ul
+        [class.horizontal]="layout.dndHorizontal"
+        [dndHorizontal]="layout.dndHorizontal"
+        (dndDrop)="onDrop($event, draggableList5)"
+        class="dndList gap-1 flex-grow-1 d-flex flex-column bg-light rounded-1 shadow-sm"
+        dndDropzone
+        dndEffectAllowed="copyMove">
+        <li
+          class="dndPlaceholder border rounded-1 bg-white bg-opacity-25"
+          dndPlaceholderRef>
+        </li>
+        <li
+          *ngFor="let item of draggableList5"
+          [dndDisableIf]="item.disable"
+          [dndDraggable]="item"
+          [dndEffectAllowed]="item.effectAllowed"
+          (dndCanceled)="onDragged(item, draggableList5, 'none')"
+          (dndCopied)="onDragged(item, draggableList5, 'copy')"
+          (dndEnd)="onDragEnd($event)"
+          (dndLinked)="onDragged(item, draggableList5, 'link')"
+          (dndMoved)="onDragged(item, draggableList5, 'move')"
+          (dndStart)="onDragStart($event)"
+          class="border rounded-1 bg-white">
+          <div
+            *ngIf="item.handle"
+            class="drag-handle align-self-center mx-3 my-0"
+            dndHandle>
+          </div>
+          <span>{{ item.content }}</span>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+draggableListLeft: DraggableItem[] = [
+{
+content: 'first',
+effectAllowed: 'move',
+disable: false,
+handle: false,
+  },
+{
+content: 'second',
+effectAllowed: 'move',
+disable: false,
+handle: false,
+  },
+{
+content: 'third',
+effectAllowed: 'copyMove',
+disable: false,
+handle: false,
+  },
+{
+content: '4th',
+effectAllowed: 'move',
+disable: false,
+handle: true,
+  },
+{
+content: '5th',
+effectAllowed: 'move',
+disable: false,
+handle: false,
+  },
+{
+content: '7th',
+effectAllowed: 'move',
+disable: false,
+handle: false,
+  },
+{
+content: '8th',
+effectAllowed: 'copyMove',
+disable: false,
+handle: false,
+  },
+{
+content: '9th',
+effectAllowed: 'move',
+disable: false,
+handle: true,
+  },
+];
+
+draggableList1: DraggableItem[] = [];
+draggableList2: DraggableItem[] = [];
+draggableList3: DraggableItem[] = [];
+draggableList4: DraggableItem[] = [];
+draggableList5: DraggableItem[] = [];
+
+horizontalLayoutActive: boolean = false;
+private currentDraggableEvent?: DragEvent;
+private currentDragEffectMsg?: string;
+private readonly verticalLayout: DropzoneLayout = {
+container: 'row',
+list: 'column',
+dndHorizontal: false,
+  };
+layout: DropzoneLayout = this.verticalLayout;
+
+constructor() {}
+
+onDragStart(event: DragEvent) {
+this.currentDragEffectMsg = '';
+this.currentDraggableEvent = event;
+}
+
+onDragged(item: any, list: any[], effect: DropEffect) {
+if (effect === 'move') {
+const index = list.indexOf(item);
+list.splice(index, 1);
+}
+  }
+
+onDragEnd(event: DragEvent) {
+this.currentDraggableEvent = event;
+}
+
+onDrop(event: DndDropEvent, list?: any[]) {
+if (list && (event.dropEffect === 'copy' || event.dropEffect === 'move')) {
+let index = event.index;
+
+if (typeof index === 'undefined') {
+index = list.length;
+}
+
+list.splice(index, 0, event.data);
+}
+  }
+
+interface DraggableItem {
+content: string;
+effectAllowed: EffectAllowed;
+disable: boolean;
+handle: boolean;
+}
+
+interface DropzoneLayout {
+container: string;
+list: string;
+dndHorizontal: boolean;
+}

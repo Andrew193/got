@@ -1,1 +1,87 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+
+.red-b {
+  background: red;
+}
+
+html, body {
+  height: 100%;
+  color: white;
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+  flex-direction: row !important;
+
+  .pr-lg {
+    padding-right: 15px;
+  }
+}
+
+$columns: 100;
+
+@for $i from 1 through $columns {
+  .w-#{$i} {
+    width: (1% * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  .pr-#{$i} {
+    padding-right: (1px * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  .w-#{$i}-i {
+    width: (1% * $i) !important;
+  }
+}
+
+@for $i from 1 through $columns {
+  #w-#{$i} {
+    width: (1% * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  #w-#{$i}-i {
+    width: (1% * $i) !important;
+  }
+}
+
+@for $i from 1 through $columns {
+  .h-#{$i} {
+    height: (1% * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  .h-#{$i}-i {
+    height: (1% * $i) !important;
+  }
+}
+
+.form-inline {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+
+  label {
+    font-weight: 700;
+    line-height: 15px;
+    margin-bottom: 0;
+    margin-right: 15px;
+    flex: 1 1 100px;
+    max-width: 145px;
+    white-space: inherit;
+  }
+}

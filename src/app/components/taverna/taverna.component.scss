@@ -1,0 +1,32 @@
+@import "../../../assets/resourses/styles/vars";
+@import "../../../assets/resourses/styles/mixins";
+
+.taverna-container {
+  background: url("../../../assets/resourses/imgs/background/taverna-3.jpg") no-repeat;
+  background-size: cover;
+  min-height: 100%;
+  box-shadow: $box-shadow;
+  position: relative;
+  padding-top: 1px;
+
+  .card {
+    cursor: pointer;
+    text-align: center;
+    background: $background-color-main;
+    box-shadow: $box-shadow;
+    color: white;
+    transition: background-color ease 0.5s;
+
+    img {
+      width: 300px;
+    }
+
+    &:hover {
+      background: $background-color-main-hover;
+
+    }
+  }
+  .card-title {
+    @include grad-color;
+  }
+}

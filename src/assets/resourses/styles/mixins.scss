@@ -1,0 +1,11 @@
+@import "./vars";
+
+@mixin grad-color {
+  display:inline-block;
+  background-image: $gradient-color;
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+}
