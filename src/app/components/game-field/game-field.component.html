@@ -1,10 +1,23 @@
 <div class="container-fluid">
-  dfsdf
+  <h4 class="text-center">
+    <span class="user-bar">Ходит {{turnUser ? 'игрок' : 'AI'}}</span>
+  </h4>
   <div *ngFor="let row of gameConfig" class="flex-row">
-    <div *ngFor="let tile of row" class="col tile data-i-{{tile.x}} data-j-{{tile.y}}" [attr.data-x]="tile.x"
+    <div *ngFor="let tile of row"
+         (click)="moveEntity(tile)"
+         class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center
+         {{tile.highlightedClass}} {{tile.entity?'entity-b':''}}"
+         [attr.data-x]="tile.x"
          [attr.data-y]="tile.y" [attr.data-active]="tile.active">
-      {{tile.x}}-{{tile.y}}
+      <span class="tile-label">{{tile.x}}-{{tile.y}}</span>
+      <ng-container *ngIf="tile.entity">
+        <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img" (click)="highlightMakeMove(tile.entity)"
+        />
+      </ng-container>
     </div>
+  </div>
+  <div *ngIf="showAttackBar">
+    <button class="btn btn-success" (click)="attack()">attack</button>
   </div>
 </div>
 <button class="btn btn-success" (click)="example()">click</button>

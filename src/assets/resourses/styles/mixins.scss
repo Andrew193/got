@@ -9,3 +9,11 @@
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
 }
+
+@mixin avatar {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  border: 1px solid;
+  background-color: #bbb;
+}

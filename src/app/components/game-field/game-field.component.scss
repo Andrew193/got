@@ -1,3 +1,9 @@
+@import "../../../assets/resourses/styles/mixins";
+
+.user-bar {
+  @include grad-color;
+}
+
 .tile {
   min-height: 100px;
   flex-basis: 100px;
@@ -6,8 +12,26 @@
   box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
   cursor: pointer;
   transition: 0.5s;
+  position: relative;
+
   &:hover {
-    opacity: 0.7;
-    background: #e8e7e7;
+    background: #e8e7e782;
   }
+}
+
+.game-field-img {
+  @include avatar;
+  box-shadow: $box-shadow;
+}
+
+.tile-label {
+  position: absolute;
+  top: 0;
+  right: 3px;
+  @include grad-color;
+}
+
+.entity-b.green-b {
+  border-color: #ff6c6c;
+  box-shadow: 3px 3px 10px 3px rgba(255, 94, 94, 0.75) inset;
 }
