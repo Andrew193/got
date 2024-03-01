@@ -15,7 +15,8 @@ export interface Unit {
   imgSrc: string,
   canMove: boolean
   canCross: number,
-  canAttack: boolean
+  canAttack: boolean,
+  attackRange: number
 }
 
 @Injectable({

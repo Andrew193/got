@@ -14,7 +14,7 @@ import {PopoverModule} from "ngx-bootstrap/popover";
 export class GameFieldComponent {
   userSample: Unit = {
     x: 3, y: 6, user: true, imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
-    canMove: true, canCross: 2, canAttack: true,
+    canMove: true, canCross: 2, canAttack: true, attackRange: 1
   }
   gameConfig;
   turnUser = true;
@@ -31,7 +31,8 @@ export class GameFieldComponent {
     imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
     canMove: true,
     canCross: 2,
-    canAttack: true
+    canAttack: true,
+    attackRange: 1
   }]
   possibleMoves: { i: number, j: number }[] = [];
 
@@ -59,7 +60,19 @@ export class GameFieldComponent {
     event?.stopPropagation();
     debugger
     if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack)) {
+      let possibleTargetsInAttackRadius;
+      if (this.selectedEntity) {
+        possibleTargetsInAttackRadius = this.showPossibleMoves({
+          i: this.selectedEntity.x,
+          j: this.selectedEntity.y
+        }, this.selectedEntity.attackRange, true)
+      }
+
       this.clickedEnemy = this.checkAndShowAttackBar(entity);
+      if (possibleTargetsInAttackRadius) {
+        const canAttackThisTargetFromRange = possibleTargetsInAttackRadius.find((possibleTarget) => possibleTarget.i === this.clickedEnemy?.x && possibleTarget.j === this.clickedEnemy?.y)
+        this.clickedEnemy = canAttackThisTargetFromRange ? this.clickedEnemy : null;
+      }
       this.showAttackBar = !!this.clickedEnemy;
 
       if (!this.showAttackBar) {
@@ -110,7 +123,7 @@ export class GameFieldComponent {
     console.log("1")
     debugger
     this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
-    if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove) {
+    if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove && !!this.possibleMoves.find((move) => move.i === tile.x && move.j === tile.y)) {
       this.userUnits[0] = {...this.selectedEntity, x: tile.x, y: tile.y, canMove: false};
       const possibleMoves = this.getPossibleMoves(this.userUnits[0])
       const enemyWhenCannotMove = possibleMoves.find((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
