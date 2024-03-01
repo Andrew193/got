@@ -33,6 +33,7 @@
       <ng-container *ngIf="tile.entity">
         <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
              (click)="highlightMakeMove(tile.entity, $event)"/>
+        <span>{{tile.entity.health}}</span>
       </ng-container>
     </div>
   </div>

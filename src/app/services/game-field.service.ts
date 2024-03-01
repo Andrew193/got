@@ -16,7 +16,8 @@ export interface Unit {
   canMove: boolean
   canCross: number,
   canAttack: boolean,
-  attackRange: number
+  attackRange: number,
+  health: number
 }
 
 @Injectable({

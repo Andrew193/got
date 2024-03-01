@@ -4,6 +4,11 @@ import {CommonModule} from "@angular/common";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {PopoverModule} from "ngx-bootstrap/popover";
 
+
+function createDeepCopy(object: { [key: string]: any }) {
+  return JSON.parse(JSON.stringify(object))
+}
+
 @Component({
   selector: 'game-field',
   standalone: true,
@@ -14,7 +19,7 @@ import {PopoverModule} from "ngx-bootstrap/popover";
 export class GameFieldComponent {
   userSample: Unit = {
     x: 3, y: 6, user: true, imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
-    canMove: true, canCross: 2, canAttack: true, attackRange: 1
+    canMove: true, canCross: 2, canAttack: true, attackRange: 1, health: 10000
   }
   gameConfig;
   turnUser = true;
@@ -23,7 +28,7 @@ export class GameFieldComponent {
   ignoreMove = false;
   clickedEnemy: Unit | null = null;
   selectedEntity: Unit | null = null;
-  userUnits: Unit[] = [this.userSample]
+  userUnits: Unit[] = [this.userSample, {...this.userSample, y:0}]
   aiUnits: Unit[] = [{
     x: 3,
     y: 8,
@@ -32,7 +37,8 @@ export class GameFieldComponent {
     canMove: true,
     canCross: 2,
     canAttack: true,
-    attackRange: 1
+    attackRange: 1,
+    health: 10000
   }]
   possibleMoves: { i: number, j: number }[] = [];
 
@@ -40,8 +46,26 @@ export class GameFieldComponent {
     this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
   }
 
+  findUnitIndex(units: Unit[], unit: Unit | null) {
+    return units.findIndex((enemy) => enemy.x === unit?.x && enemy.y === unit?.y)
+  }
+
   attack() {
+    const enemyIndex = this.findUnitIndex(this.aiUnits, this.clickedEnemy);
+    const userIndex = this.findUnitIndex(this.userUnits, this.selectedEntity);
+    const newHealth = this.aiUnits[enemyIndex].health - 3000;
+    this.aiUnits[enemyIndex] = {...this.aiUnits[enemyIndex], health: newHealth >= 0 ? newHealth : 0};
+    this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false};
+
+    this.updateGridUnits(this.aiUnits);
+    this.updateGridUnits(this.userUnits);
     this.dropEnemy();
+  }
+
+  updateGridUnits(unitsArray: Unit[]) {
+    unitsArray.forEach((unit) => {
+      this.gameConfig[unit.x][unit.y] = {...this.gameConfig[unit.x][unit.y], entity: unit}
+    })
   }
 
   dropEnemy() {
@@ -50,15 +74,14 @@ export class GameFieldComponent {
     this.ignoreMove = false;
     this.selectedEntity = null;
     this.showAttackBar = false;
+    this.turnCount++;
   }
 
   highlightMakeMove(entity: Unit, event?: MouseEvent) {
     if (this.showAttackBar) {
       this.dropEnemy();
     }
-    console.log("2")
     event?.stopPropagation();
-    debugger
     if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack)) {
       let possibleTargetsInAttackRadius;
       if (this.selectedEntity) {
@@ -85,11 +108,9 @@ export class GameFieldComponent {
             this.possibleMoves = [enemyWhenCannotMove]
           } else {
             this.possibleMoves = [];
-            this.userUnits[0] = {...this.selectedEntity, x: entity.x, y: entity.y, canMove: false, canAttack: false};
-            this.gameConfig[entity.x][entity.y] = {
-              ...this.gameConfig[entity.x][entity.y],
-              entity: this.userUnits[0]
-            }
+            const userIndex =  this.findUnitIndex(this.userUnits, this.selectedEntity);
+            this.userUnits[userIndex] = {...this.selectedEntity, x: entity.x, y: entity.y, canMove: false, canAttack: false};
+            this.updateGridUnits(this.userUnits);
           }
         }
 
@@ -98,10 +119,6 @@ export class GameFieldComponent {
     } else {
       this.ignoreMove = true;
     }
-  }
-
-  findEnemy() {
-
   }
 
   getPossibleMoves(entity: Unit) {
@@ -120,19 +137,18 @@ export class GameFieldComponent {
   }
 
   moveEntity(tile: Tile) {
-    console.log("1")
-    debugger
     this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
     if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove && !!this.possibleMoves.find((move) => move.i === tile.x && move.j === tile.y)) {
-      this.userUnits[0] = {...this.selectedEntity, x: tile.x, y: tile.y, canMove: false};
-      const possibleMoves = this.getPossibleMoves(this.userUnits[0])
+      const userIndex = this.findUnitIndex(this.userUnits, this.selectedEntity);
+      this.userUnits[userIndex] = {...this.selectedEntity, x: tile.x, y: tile.y, canMove: false};
+      const possibleMoves = this.getPossibleMoves(this.userUnits[userIndex])
       const enemyWhenCannotMove = possibleMoves.find((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
       if (!enemyWhenCannotMove) {
-        this.userUnits[0] = {...this.userUnits[0], canAttack: false}
+        this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false}
       }
       this.gameConfig[tile.x][tile.y] = {
         ...this.gameConfig[tile.x][tile.y],
-        entity: this.userUnits[0],
+        entity: createDeepCopy(this.userUnits[userIndex]),
         active: false
       }
       this.gameConfig[this.selectedEntity?.x][this.selectedEntity?.y] = {
@@ -170,6 +186,17 @@ export class GameFieldComponent {
 
   checkAiMoves() {
     const userFinishedTurn = this.userUnits.every((userHero) => !userHero.canMove && !userHero.canAttack);
+    if(userFinishedTurn) {
+      this.dropEnemy();
+    }
     console.log(userFinishedTurn)
+  }
+
+  orderUnitsByDistance(start: { x: number, y: number }, positions: { x: number, y: number }[]) {
+    return positions.sort((a, b) => {
+      const distanceA = Math.abs(a.x - start.x) + Math.abs(a.y - start.y);
+      const distanceB = Math.abs(b.x - start.x) + Math.abs(b.y - start.y);
+      return distanceA - distanceB;
+    });
   }
 }
