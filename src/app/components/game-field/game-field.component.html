@@ -2,17 +2,37 @@
   <h4 class="text-center">
     <span class="user-bar">Ходит {{turnUser ? 'игрок' : 'AI'}}</span>
   </h4>
+  <div class="heroes-bar flex-row">
+    <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
+      <img *ngFor="let hero of userUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"/>
+    </div>
+    <div class="turns-counter col-2 d-flex justify-content-center">
+      <div class="col-9">
+        <div>
+          <span>{{turnCount}}/20</span>
+        </div>
+      </div>
+    </div>
+    <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
+      <img *ngFor="let hero of aiUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"/>
+    </div>
+  </div>
   <div *ngFor="let row of gameConfig" class="flex-row">
     <div *ngFor="let tile of row"
          (click)="moveEntity(tile)"
          class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center
-         {{tile.highlightedClass}} {{tile.entity?'entity-b':''}}"
+         {{tile.highlightedClass}}"
          [attr.data-x]="tile.x"
+         [ngClass]="{
+         'ai-heroes': !tile?.entity?.user,
+         'user-heroes': tile?.entity?.user,
+         'entity-b': tile.entity
+         }"
          [attr.data-y]="tile.y" [attr.data-active]="tile.active">
       <span class="tile-label">{{tile.x}}-{{tile.y}}</span>
       <ng-container *ngIf="tile.entity">
-        <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img" (click)="highlightMakeMove(tile.entity)"
-        />
+        <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
+             (click)="highlightMakeMove(tile.entity, $event)"/>
       </ng-container>
     </div>
   </div>
@@ -20,4 +40,3 @@
     <button class="btn btn-success" (click)="attack()">attack</button>
   </div>
 </div>
-<button class="btn btn-success" (click)="example()">click</button>

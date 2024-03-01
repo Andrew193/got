@@ -12,7 +12,10 @@ export interface Unit {
   x: number,
   y: number,
   user: boolean,
-  imgSrc: string
+  imgSrc: string,
+  canMove: boolean
+  canCross: number,
+  canAttack: boolean
 }
 
 @Injectable({
@@ -41,23 +44,23 @@ export class GameFieldService {
   getGameField(userUnits: Unit[], aiUnits: Unit[], gameField: Tile[][]) {
     const field = JSON.parse(JSON.stringify(gameField))
 
-    userUnits.forEach((user)=>{
+    userUnits.forEach((user) => {
       field[user.x][user.y] = {...field[user.x][user.y], active: false, entity: user}
     })
 
-    aiUnits.forEach((ai)=>{
+    aiUnits.forEach((ai) => {
       field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: ai}
     })
 
     return field;
   }
 
-  getFieldsInRadius(grid: Tile[][], location: {i: number, j: number}, radius: number, diagonalCheck?: boolean) {
+  getFieldsInRadius(grid: Tile[][], location: { i: number, j: number }, radius: number, diagonalCheck?: boolean) {
     const fields = [];
     const rows = grid.length;
     const cols = grid[0].length;
 
-    if(diagonalCheck) {
+    if (diagonalCheck) {
       const {i: centerI, j: centerJ} = location;
 
       for (let i = centerI - radius; i <= centerI + radius; i++) {

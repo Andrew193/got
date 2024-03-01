@@ -2,23 +2,37 @@ import {Component} from '@angular/core';
 import {GameFieldService, Tile, Unit} from "../../services/game-field.service";
 import {CommonModule} from "@angular/common";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
+import {PopoverModule} from "ngx-bootstrap/popover";
 
 @Component({
   selector: 'game-field',
   standalone: true,
-  imports: [CommonModule, OutsideClickDirective],
+  imports: [CommonModule, OutsideClickDirective, PopoverModule],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss'
 })
 export class GameFieldComponent {
+  userSample: Unit = {
+    x: 3, y: 6, user: true, imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
+    canMove: true, canCross: 2, canAttack: true,
+  }
   gameConfig;
   turnUser = true;
+  turnCount = 1;
   showAttackBar = false;
   ignoreMove = false;
   clickedEnemy: Unit | null = null;
   selectedEntity: Unit | null = null;
-  userUnits: Unit[] = [{x: 3, y: 5, user: true, imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png"}]
-  aiUnits: Unit[] = [{x: 3, y: 8, user: false, imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png"}]
+  userUnits: Unit[] = [this.userSample]
+  aiUnits: Unit[] = [{
+    x: 3,
+    y: 8,
+    user: false,
+    imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
+    canMove: true,
+    canCross: 2,
+    canAttack: true
+  }]
   possibleMoves: { i: number, j: number }[] = [];
 
   constructor(private fieldService: GameFieldService) {
@@ -26,21 +40,46 @@ export class GameFieldComponent {
   }
 
   attack() {
+    this.dropEnemy();
+  }
+
+  dropEnemy() {
     this.unhighlightCells();
     this.clickedEnemy = null;
     this.ignoreMove = false;
     this.selectedEntity = null;
+    this.showAttackBar = false;
   }
 
-  highlightMakeMove(entity: Unit) {
-    if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y)) {
+  highlightMakeMove(entity: Unit, event?: MouseEvent) {
+    if (this.showAttackBar) {
+      this.dropEnemy();
+    }
+    console.log("2")
+    event?.stopPropagation();
+    debugger
+    if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack)) {
       this.clickedEnemy = this.checkAndShowAttackBar(entity);
       this.showAttackBar = !!this.clickedEnemy;
 
       if (!this.showAttackBar) {
         this.ignoreMove = false;
         this.selectedEntity = entity;
-        this.possibleMoves = this.showPossibleMoves({i: entity.x, j: entity.y}, 2)
+        this.possibleMoves = this.getPossibleMoves(entity);
+        if (entity?.canMove === false) {
+          const enemyWhenCannotMove = this.possibleMoves.find((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
+          if (enemyWhenCannotMove) {
+            this.possibleMoves = [enemyWhenCannotMove]
+          } else {
+            this.possibleMoves = [];
+            this.userUnits[0] = {...this.selectedEntity, x: entity.x, y: entity.y, canMove: false, canAttack: false};
+            this.gameConfig[entity.x][entity.y] = {
+              ...this.gameConfig[entity.x][entity.y],
+              entity: this.userUnits[0]
+            }
+          }
+        }
+
         this.highlightCells(this.possibleMoves, entity.user ? "green-b" : "red-b")
       }
     } else {
@@ -48,28 +87,51 @@ export class GameFieldComponent {
     }
   }
 
+  findEnemy() {
+
+  }
+
+  getPossibleMoves(entity: Unit) {
+    return this.showPossibleMoves({
+      i: entity.x,
+      j: entity.y
+    }, entity?.canMove ? entity.canCross : 1, !entity?.canMove);
+  }
+
   checkAndShowAttackBar(clickedTile: Unit) {
-    const enemyClicked = this.possibleMoves.find((possibleTile) => {
-      return possibleTile.i === clickedTile.x && possibleTile.j === clickedTile.y
-    })
+    if (clickedTile.user) {
+      return null;
+    }
+    const enemyClicked = this.possibleMoves.find((possibleTile) => possibleTile.i === clickedTile.x && possibleTile.j === clickedTile.y)
     return enemyClicked ? clickedTile : null;
   }
 
   moveEntity(tile: Tile) {
-    this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar;
+    console.log("1")
+    debugger
+    this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
     if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove) {
-      debugger
+      this.userUnits[0] = {...this.selectedEntity, x: tile.x, y: tile.y, canMove: false};
+      const possibleMoves = this.getPossibleMoves(this.userUnits[0])
+      const enemyWhenCannotMove = possibleMoves.find((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
+      if (!enemyWhenCannotMove) {
+        this.userUnits[0] = {...this.userUnits[0], canAttack: false}
+      }
       this.gameConfig[tile.x][tile.y] = {
         ...this.gameConfig[tile.x][tile.y],
-        entity: {...this.selectedEntity, x: tile.x, y: tile.y}
+        entity: this.userUnits[0],
+        active: false
       }
       this.gameConfig[this.selectedEntity?.x][this.selectedEntity?.y] = {
         ...this.gameConfig[this.selectedEntity.x][this.selectedEntity.y],
-        entity: null
+        entity: undefined,
+        active: true
       }
       this.unhighlightCells();
       this.selectedEntity = null;
+      this.checkAiMoves()
     }
+
   }
 
   highlightCells(path: { i: number, j: number }[], className: string) {
@@ -78,7 +140,6 @@ export class GameFieldComponent {
       this.gameConfig[point.i][point.j] = {...this.gameConfig[point.i][point.j], highlightedClass: className}
     })
     this.possibleMoves = path;
-    debugger
   }
 
   unhighlightCells() {
@@ -90,27 +151,12 @@ export class GameFieldComponent {
     this.possibleMoves = [];
   }
 
-  showPossibleMoves(location: { i: number, j: number }, radius: number) {
-    return this.fieldService.getFieldsInRadius(this.gameConfig, location, radius)
+  showPossibleMoves(location: { i: number, j: number }, radius: number, diagCheck: boolean = false) {
+    return this.fieldService.getFieldsInRadius(this.gameConfig, location, radius, diagCheck)
   }
 
-  example() {
-    const grid = this.fieldService.getGridFromField(this.gameConfig)
-
-    const start = {i: 0, j: 0};
-    const end = {i: 7, j: 6};
-
-    const path = this.fieldService.shortestPath(grid, start, end, true);
-    console.log('Shortest path with diagonals:', path);
-    path.forEach((point: { i: number, j: number }) => {
-      debugger
-      const element = document.body.querySelector(`.data-i-${point.i}.data-j-${point.j}`)
-      console.log(element, point)
-
-      if (element) {
-        element.classList.add('red-b')
-        element.innerHTML = "fffffffffffffff"
-      }
-    })
+  checkAiMoves() {
+    const userFinishedTurn = this.userUnits.every((userHero) => !userHero.canMove && !userHero.canAttack);
+    console.log(userFinishedTurn)
   }
 }
