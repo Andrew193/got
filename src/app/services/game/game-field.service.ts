@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Position} from "../../interface";
 
 export interface Tile {
   x: number,
@@ -20,6 +21,14 @@ export interface Unit {
   health: number
 }
 
+export interface initUnit {
+  x: number,
+  y: number,
+  user: boolean,
+  canMove: boolean
+  canAttack: boolean,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +38,13 @@ export class GameFieldService {
   constructor() {
     this.gameField = [];
 
+  }
+
+  getPositionFromUnit(unit: Unit) {
+    return {
+      i: unit.x,
+      j: unit.y
+    }
   }
 
   getDefaultGameField() {
@@ -57,7 +73,7 @@ export class GameFieldService {
     return field;
   }
 
-  getFieldsInRadius(grid: Tile[][], location: { i: number, j: number }, radius: number, diagonalCheck?: boolean) {
+  getFieldsInRadius(grid: Tile[][], location: Position, radius: number, diagonalCheck?: boolean) {
     const fields = [];
     const rows = grid.length;
     const cols = grid[0].length;
@@ -101,10 +117,18 @@ export class GameFieldService {
     return grid;
   }
 
-  shortestPath(grid: string | any[], start: { i: number; j: number; }, end: {
-    i: any;
-    j: any;
-  }, checkDiagonals = false): { i: number, j: number }[] {
+  getShortestPathCover(grid: string | any[], start: Position, end: Position, removeStart = false, removeEnd = false, checkDiagonals = false) {
+    const path = this.shortestPath(grid, start, end, checkDiagonals);
+    if (removeStart) {
+      return  path.filter((position) => position.j !== start.j || position.i !== start.i)
+    }
+    if (removeEnd) {
+      return path.filter((position) => position.i !== end.i || position.j !== end.j)
+    }
+    return path;
+  }
+
+  shortestPath(grid: string | any[], start: Position, end: Position, checkDiagonals = false): Position[] {
     const rows = grid.length;
     const cols = grid[0].length;
     const queue = [{position: start, path: [start]}];

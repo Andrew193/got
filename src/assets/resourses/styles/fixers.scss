@@ -1,0 +1,9 @@
+.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: gray !important;
+
+  img {
+    background-color: gray !important;
+  }
+}

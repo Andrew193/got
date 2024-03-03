@@ -1,4 +1,5 @@
 @import "assets/resourses/styles/vars";
+@import "assets/resourses/styles/fixers";
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -15,7 +16,7 @@
 }
 
 .entity-b {
-  background: rgba(191, 249, 255, 0.66) !important;
+  background: rgba(191, 249, 255, 0.66);
 }
 
 html, body {

@@ -4,9 +4,16 @@
   @include grad-color;
 }
 
+.meta-aside, .game-board {
+  box-shadow: $box-shadow;
+  background-color: $background-color-main;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 .tile {
   min-height: 100px;
-  flex-basis: 100px;
+  flex-basis: 110px;
   margin: 0 5px;
   border: 1px solid #ffffff;
   box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);

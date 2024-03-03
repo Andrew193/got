@@ -4,7 +4,8 @@
   </h4>
   <div class="heroes-bar flex-row">
     <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
-      <img *ngFor="let hero of userUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"/>
+      <img *ngFor="let hero of userUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"
+           [ngClass]="{'disabled': !hero.health}"/>
     </div>
     <div class="turns-counter col-2 d-flex justify-content-center">
       <div class="col-9">
@@ -14,30 +15,43 @@
       </div>
     </div>
     <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
-      <img *ngFor="let hero of aiUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"/>
+      <img *ngFor="let hero of aiUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"
+           [ngClass]="{'disabled': !hero.health}"/>
     </div>
   </div>
-  <div *ngFor="let row of gameConfig" class="flex-row">
-    <div *ngFor="let tile of row"
-         (click)="moveEntity(tile)"
-         class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center
+  <main class="flex-row justify-content-between">
+    <div class="col-8 game-board">
+    <div *ngFor="let row of gameConfig" class="flex-row">
+      <div *ngFor="let tile of row"
+           (click)="moveEntity(tile)"
+           class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center
          {{tile.highlightedClass}}"
-         [attr.data-x]="tile.x"
-         [ngClass]="{
+           [attr.data-x]="tile.x"
+           [ngClass]="{
          'ai-heroes': !tile?.entity?.user,
          'user-heroes': tile?.entity?.user,
-         'entity-b': tile.entity
+         'entity-b': tile?.entity,
+         'disabled': tile?.entity?.health === 0
          }"
-         [attr.data-y]="tile.y" [attr.data-active]="tile.active">
-      <span class="tile-label">{{tile.x}}-{{tile.y}}</span>
-      <ng-container *ngIf="tile.entity">
-        <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
-             (click)="highlightMakeMove(tile.entity, $event)"/>
-        <span>{{tile.entity.health}}</span>
-      </ng-container>
+           [attr.data-y]="tile.y" [attr.data-active]="tile.active">
+        <span class="tile-label">{{tile.x}}-{{tile.y}}</span>
+        <ng-container *ngIf="tile.entity">
+          <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
+               (click)="highlightMakeMove(tile.entity, $event)"/>
+        </ng-container>
+      </div>
     </div>
-  </div>
+    </div>
+    <aside class="col-3 meta-aside">
+        <tabset>
+          <tab heading="Мои герои" id="tab1">Basic content</tab>
+          <tab heading="Враги">Basic content 1</tab>
+          <tab heading="История боя">Basic content 2</tab>
+        </tabset>
+    </aside>
+  </main>
   <div *ngIf="showAttackBar">
     <button class="btn btn-success" (click)="attack()">attack</button>
   </div>
+
 </div>
