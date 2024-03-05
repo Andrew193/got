@@ -1,1 +1,96 @@
-<div class="lobby-container"></div>
+<div class="lobby-container">
+  <main class="d-flex mt-4 ms-4 me-4">
+    <aside class="col-4">
+      <ul class="nav flex-column list-group">
+        <li class="nav-item list-group-item">
+          <span (click)="openTaverna()">Таверна</span>
+        </li>
+        <li class="nav-item list-group-item">
+          <span>Казармы</span>
+        </li>
+        <li class="nav-item list-group-item">
+          <span>Тренировочный Лагерь</span>
+        </li>
+        <li class="nav-item list-group-item">
+          <span>Банкетный Зал</span>
+        </li>
+        <li class="nav-item list-group-item">
+          <span>Веливое Древо</span>
+        </li>
+        <li class="nav-item list-group-item">
+          <span>Сторожка</span>
+        </li>
+        <li class="nav-item list-group-item">
+          <span>За Стену</span>
+        </li>
+      </ul>
+    </aside>
+    <div class="col-8 d-flex justify-content-end">
+      <div class="stores col-9 h-100">
+        <p class="col-12 text-center mt-2" style="height: 30px">Магазины и Награды</p>
+        <nav class="flex-row justify-content-between">
+          <div class="flex-row store-row col-12">
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/icons/food.png" alt="Card image cap">
+                <span class="card-title">Поставки из Дара</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/icons/towers.png" alt="Card image cap">
+                <span class="card-title">Обмен с Кpастером</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/icons/tree.png" alt="Card image cap">
+                <span class="card-title">Награды Древа</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/icons/raven.png" alt="Card image cap">
+                <span class="card-title">Магазин Сторожки</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/icons/arena-icon.png" alt="Card image cap">
+                <span class="card-title">Магазин Арены</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/icons/maps.png" alt="Card image cap">
+                <span class="card-title">Награды за Стеной</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-row store-row col-12">
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/UI_Avatar_Unit_Alvar.png" alt="Card image cap">
+                <span class="card-title">Награды Входа</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/gold.png" alt="Card image cap">
+                <span class="card-title">Железный Банк</span>
+              </div>
+            </div>
+            <div class="col-2 justify-content-center">
+              <div class="card col-10 d-flex align-items-center">
+                <img class="card-img-top" src="./assets/resourses/imgs/silver.png" alt="Card image cap">
+                <span class="card-title">Ремесленики</span>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </main>
+</div>
+<daily-reward></daily-reward>

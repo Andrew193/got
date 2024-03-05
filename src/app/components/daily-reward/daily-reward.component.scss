@@ -1,0 +1,44 @@
+@import "../../../assets/resourses/styles/mixins";
+
+.caption {
+  @include grad-color;
+  width: 100%;
+}
+
+.hero {
+  background: url("../../../assets/resourses/imgs/heroes/rpd/ProtectoroftheRealm_DaenarysTargaryen.png") no-repeat;
+  background-size: cover;
+  background-position: bottom;
+}
+
+.c-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.27);
+
+  .inner-container {
+    margin: 15px 0px;
+    box-shadow: $box-shadow;
+    border-radius: 15px;
+    background: url("../../../assets/resourses/imgs/background/show_with_two_men.jpeg") no-repeat;
+    background-size: cover;
+  }
+}
+
+.reward {
+  min-height: 120px;
+  background-color: rgb(255, 241, 241);
+  border: 1px solid #f8b163;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: $box-shadow;
+
+
+  img {
+    height: 30px;
+    width: 30px;
+  }
+}

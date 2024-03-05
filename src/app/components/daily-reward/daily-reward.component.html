@@ -1,0 +1,30 @@
+<div class="c-container d-flex align-items-center justify-content-center">
+  <div class="col-11 inner-container flex-row">
+    <div class="col-3 position-relative">
+<!--      <img src="assets/resourses/imgs/heroes/rpd/ProtectoroftheRealm_DaenarysTargaryen.png"-->
+<!--           alt="Protector of the Realm Daenarys Targaryen" class="hero-in-frame">-->
+      <div class="glow-box">
+        <div class="hero-in-frame hero"></div>
+      </div>
+    </div>
+    <aside class="col-9 p-3">
+      <h4 class="text-center caption">Забирай награды каждый день и они будут только расти!!!</h4>
+
+      <div class="flex-row">
+        <ng-container *ngFor="let reward of monthReward; let i = index">
+          <div class="p-3" style="width: 14.28%">
+          <div class="reward d-flex flex-column p-2">
+            <span class="text-center mb-1 fw-bold">День {{i+1}}</span>
+            <span class="copper fw-bold"><img src="assets/resourses/imgs/copper.png" alt="copperCoin" />{{reward.copperCoin}}</span>
+            <span class="silver fw-bold" *ngIf="reward.silverCoin"><img src="assets/resourses/imgs/silver.png" alt="silverCoin" />{{reward.silverCoin}}</span>
+            <span class="gold fw-bold" *ngIf="reward.goldCoin"><img src="assets/resourses/imgs/gold.png" alt="goldCoin" />{{reward.goldCoin}}</span>
+            <span class="fw-bold" *ngIf="reward.summonScroll"><img src="assets/resourses/imgs/icons/card_scroll.png" alt="summonScroll" />{{reward.summonScroll}}</span>
+            <span class="fw-bold" *ngIf="reward.summonCard"><img src="assets/resourses/imgs/icons/hero_shard.png" alt="summonCard" />{{reward.summonCard}}</span>
+            <span class="fw-bold" *ngIf="reward.heroShard"><img src="assets/resourses/imgs/icons/hero_puzzle.png" alt="heroShard" />{{reward.heroShard}}</span>
+          </div>
+          </div>
+        </ng-container>
+      </div>
+    </aside>
+  </div>
+</div>
