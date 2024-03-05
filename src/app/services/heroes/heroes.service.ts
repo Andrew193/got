@@ -15,7 +15,11 @@ export class HeroesService {
       attackRange: 1,
       canCross: 2,
       health: 9837,
-      imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png"
+      attack: 1529,
+      defence: 1185,
+      maxHealth: 9837,
+      imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
+      name: "Дейнерис Таргариен ( Леди Драконьего Камня )"
     }
   }
 

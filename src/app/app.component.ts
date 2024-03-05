@@ -5,6 +5,7 @@ import {CommonModule} from "@angular/common";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
 import {TavernaComponent} from "./components/taverna/taverna.component";
 import {HeaderComponent} from "./components/common/header/header.component";
+import {ModalModule} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import {HeaderComponent} from "./components/common/header/header.component";
     SiteComponent,
     LobbyComponent,
     TavernaComponent,
-    HeaderComponent,
+    HeaderComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

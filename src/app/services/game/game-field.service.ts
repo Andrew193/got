@@ -18,15 +18,11 @@ export interface Unit {
   canCross: number,
   canAttack: boolean,
   attackRange: number,
-  health: number
-}
-
-export interface initUnit {
-  x: number,
-  y: number,
-  user: boolean,
-  canMove: boolean
-  canAttack: boolean,
+  health: number,
+  maxHealth: number,
+  name: string,
+  attack: number,
+  defence: number
 }
 
 @Injectable({
@@ -38,6 +34,33 @@ export class GameFieldService {
   constructor() {
     this.gameField = [];
 
+  }
+
+  getDamage(attack: number, defence: number) {
+    const blockedDamage = defence * 0.4;
+    if (blockedDamage - 200 > attack) {
+      return 100 + this.getRandomInt(10, 70);
+    } else {
+      return (attack - blockedDamage) + this.getRandomInt(30, 100);
+    }
+  }
+
+  getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  findUnitIndex(units: Unit[], unit: { x: number, y: number, [key: string]: any } | null) {
+    return units.findIndex((enemy) => enemy.x === unit?.x && enemy.y === unit?.y)
+  }
+
+  orderUnitsByDistance(start: { x: number, y: number }, positions: { x: number, y: number }[]) {
+    return positions.sort((a, b) => {
+      const distanceA = Math.abs(a.x - start.x) + Math.abs(a.y - start.y);
+      const distanceB = Math.abs(b.x - start.x) + Math.abs(b.y - start.y);
+      return distanceA - distanceB;
+    });
   }
 
   getPositionFromUnit(unit: Unit) {
@@ -120,7 +143,7 @@ export class GameFieldService {
   getShortestPathCover(grid: string | any[], start: Position, end: Position, removeStart = false, removeEnd = false, checkDiagonals = false) {
     const path = this.shortestPath(grid, start, end, checkDiagonals);
     if (removeStart) {
-      return  path.filter((position) => position.j !== start.j || position.i !== start.i)
+      return path.filter((position) => position.j !== start.j || position.i !== start.i)
     }
     if (removeEnd) {
       return path.filter((position) => position.i !== end.i || position.j !== end.j)

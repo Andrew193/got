@@ -5,53 +5,134 @@
   <div class="heroes-bar flex-row">
     <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
       <img *ngFor="let hero of userUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"
-           [ngClass]="{'disabled': !hero.health}"/>
+           [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
     </div>
-    <div class="turns-counter col-2 d-flex justify-content-center">
+    <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
       <div class="col-9">
-        <div>
+        <div tooltip="Закончить ход">
           <span>{{turnCount}}/20</span>
         </div>
       </div>
     </div>
     <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
       <img *ngFor="let hero of aiUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"
-           [ngClass]="{'disabled': !hero.health}"/>
+           [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
     </div>
   </div>
   <main class="flex-row justify-content-between">
     <div class="col-8 game-board">
-    <div *ngFor="let row of gameConfig" class="flex-row">
-      <div *ngFor="let tile of row"
-           (click)="moveEntity(tile)"
-           class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center
+      <div *ngFor="let row of gameConfig" class="flex-row">
+        <div *ngFor="let tile of row"
+             (click)="moveEntity(tile)"
+             class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center
          {{tile.highlightedClass}}"
-           [attr.data-x]="tile.x"
-           [ngClass]="{
+             [attr.data-x]="tile.x"
+             [ngClass]="{
          'ai-heroes': !tile?.entity?.user,
          'user-heroes': tile?.entity?.user,
          'entity-b': tile?.entity,
          'disabled': tile?.entity?.health === 0
          }"
-           [attr.data-y]="tile.y" [attr.data-active]="tile.active">
-        <span class="tile-label">{{tile.x}}-{{tile.y}}</span>
-        <ng-container *ngIf="tile.entity">
-          <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
-               (click)="highlightMakeMove(tile.entity, $event)"/>
-        </ng-container>
+             [attr.data-y]="tile.y" [attr.data-active]="tile.active">
+          <span class="tile-label">{{tile.x + 1}}-{{tile.y + 1}}</span>
+          <div *ngIf="tile.entity" class="position-relative">
+            <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
+                 (click)="highlightMakeMove(tile.entity, $event)"/>
+            <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="tile.entity.canMove"
+                 class="action-icon position-absolute can-move-icon"/>
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="tile.entity.canAttack"
+                 class="action-icon position-absolute can-attack-icon"/>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
     <aside class="col-3 meta-aside">
-        <tabset>
-          <tab heading="Мои герои" id="tab1">Basic content</tab>
-          <tab heading="Враги">Basic content 1</tab>
-          <tab heading="История боя">Basic content 2</tab>
-        </tabset>
+      <tabset>
+        <tab heading="Мои герои" id="tab1">
+          <div class="heroes user-heroes m-3">
+            <ng-container *ngFor="let hero of userUnits">
+              <ng-container [ngTemplateOutlet]="asideUnits"
+                            [ngTemplateOutletContext]="{ hero:hero, progressbarClass: 'success' }"></ng-container>
+            </ng-container>
+          </div>
+        </tab>
+        <tab heading="Враги">
+          <div class="heroes ai-heroes m-3">
+            <ng-container *ngFor="let hero of aiUnits">
+              <ng-container [ngTemplateOutlet]="asideUnits"
+                            [ngTemplateOutletContext]="{ hero:hero, progressbarClass: 'danger' }"></ng-container>
+            </ng-container>
+          </div>
+        </tab>
+        <tab heading="История боя">
+          <div class="m-3">
+            <p *ngFor="let logRecord of log" class="log-record">
+              <span>{{logRecord}}</span>
+            </p>
+          </div>
+        </tab>
+      </tabset>
     </aside>
   </main>
   <div *ngIf="showAttackBar">
     <button class="btn btn-success" (click)="attack()">attack</button>
   </div>
-
 </div>
+
+
+<ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
+  <accordion class="mb-2">
+    <accordion-group>
+      <div
+        class="btn btn-link btn-block justify-content-between d-flex w-100  shadow-none" accordion-heading>
+        <div class="position-relative">
+          <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img col-3"
+               [ngClass]="{'disabled': !hero.health}"/>
+          <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="hero.canMove"
+               class="action-icon position-absolute can-move-icon"/>
+          <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="hero.canAttack"
+               class="action-icon position-absolute can-attack-icon"/>
+        </div>
+        <div class="col-9">
+          <div class="col-12 aside-hero-tab-header">
+            <h6>{{hero.name}}</h6>
+            <progressbar [max]="hero.maxHealth" [value]="hero.health" [type]="progressbarClass" [striped]="true"
+                         [animate]="true">
+            </progressbar>
+          </div>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="col-3 stats">
+          <p>
+            <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon"/>
+            <span class="d-block">{{hero.maxHealth}}</span>
+          </p>
+          <p>
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack icon"/>
+            <span class="d-block">{{hero.attack}}</span>
+          </p>
+          <p>
+            <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence icon"/>
+            <span class="d-block">{{hero.defence}}</span>
+          </p>
+        </div>
+        <div class="col-9 d-flex">
+          <div class="col-11 stats h-100" style="margin: 0 auto">
+            <p>Здоровье героя: {{hero.health}} </p>
+          </div>
+        </div>
+      </div>
+    </accordion-group>
+  </accordion>
+</ng-template>
+
+<ng-template #template>
+  <div class="modal-header {{gameResult.headerClass}}">
+    <h4 class="modal-title pull-left">{{gameResult.headerMessage}}</h4>
+  </div>
+  <div class="modal-body">
+    This is a modal.
+    <button class="btn btn-success" (click)="modalRef?.hide()">{{gameResult.closeBtnLabel}}</button>
+  </div>
+</ng-template>

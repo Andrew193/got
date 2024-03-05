@@ -4,6 +4,60 @@
   @include grad-color;
 }
 
+.action-icon {
+  height: 20px;
+  width: 20px;
+  background-color: transparent !important;
+  bottom: 0;
+}
+
+.can-move-icon {
+  left: 0;
+}
+
+.can-attack-icon {
+  right: 0;
+}
+
+.log-record {
+  padding: 5px;
+  box-shadow: $box-shadow;
+  border-radius: 5px;
+  width: 100% !important;
+  opacity: 1 !important;
+  background-color: #e6e6e6;
+  span {
+    @include grad-color;
+  }
+}
+
+.stats {
+  box-shadow: $box-shadow;
+  background-color: $background-color-main;
+  border-radius: 5px;
+
+  img {
+    height: 30px;
+    width: 30px;
+    background-color: transparent !important;
+  }
+  p {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+  }
+  span {
+    height: fit-content;
+  }
+}
+
+.aside-hero-tab-header {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .meta-aside, .game-board {
   box-shadow: $box-shadow;
   background-color: $background-color-main;
@@ -41,7 +95,7 @@
   @include grad-color;
 }
 
-.entity-b.ai-heroes.green-b {
+.entity-b.ai-heroes.green-b:not(.disabled) {
   border-color: #ff6c6c;
   box-shadow: $red-box-shadow;
 }
@@ -66,6 +120,15 @@
 }
 
 .turns-counter {
+  div:hover {
+     div {
+        background-color: #750000;
+        span {
+          color: white;
+        }
+      }
+  }
+
   > div {
     box-shadow: $box-shadow-out;
     border-bottom-left-radius: 50px;
