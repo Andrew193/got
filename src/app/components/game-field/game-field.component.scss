@@ -31,26 +31,6 @@
   }
 }
 
-.stats {
-  box-shadow: $box-shadow;
-  background-color: $background-color-main;
-  border-radius: 5px;
-
-  img {
-    height: 30px;
-    width: 30px;
-    background-color: transparent !important;
-  }
-  p {
-    display: flex;
-    align-items: center;
-    margin: 5px;
-  }
-  span {
-    height: fit-content;
-  }
-}
-
 .aside-hero-tab-header {
   height: 100%;
   display: flex;

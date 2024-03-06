@@ -6,9 +6,9 @@
 }
 
 .hero {
-  background: url("../../../assets/resourses/imgs/heroes/rpd/ProtectoroftheRealm_DaenarysTargaryen.png") no-repeat;
-  background-size: cover;
-  background-position: bottom;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: bottom !important;
 }
 
 .c-container {
@@ -16,7 +16,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 10000;
+  z-index: 1000;
   background: rgba(0, 0, 0, 0.27);
 
   .inner-container {
@@ -35,7 +35,11 @@
   cursor: pointer;
   border-radius: 5px;
   box-shadow: $box-shadow;
+  transition: all ease 0.4s;
 
+  &:hover {
+    background-color: rgba(255, 241, 241, 0.64);
+  }
 
   img {
     height: 30px;

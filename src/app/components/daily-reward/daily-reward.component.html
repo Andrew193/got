@@ -1,10 +1,10 @@
 <div class="c-container d-flex align-items-center justify-content-center">
-  <div class="col-11 inner-container flex-row">
+  <div class="col-11 inner-container flex-row position-relative">
+    <p class="day-count-container">X <span class="day-count">{{daysInRow}}</span> награды</p>
+
     <div class="col-3 position-relative">
-<!--      <img src="assets/resourses/imgs/heroes/rpd/ProtectoroftheRealm_DaenarysTargaryen.png"-->
-<!--           alt="Protector of the Realm Daenarys Targaryen" class="hero-in-frame">-->
-      <div class="glow-box">
-        <div class="hero-in-frame hero"></div>
+      <div class="glow-box" (click)="lgModal.show()">
+        <div class="hero-in-frame hero" #heroInFrame></div>
       </div>
     </div>
     <aside class="col-9 p-3">
@@ -13,18 +13,69 @@
       <div class="flex-row">
         <ng-container *ngFor="let reward of monthReward; let i = index">
           <div class="p-3" style="width: 14.28%">
-          <div class="reward d-flex flex-column p-2">
-            <span class="text-center mb-1 fw-bold">День {{i+1}}</span>
-            <span class="copper fw-bold"><img src="assets/resourses/imgs/copper.png" alt="copperCoin" />{{reward.copperCoin}}</span>
-            <span class="silver fw-bold" *ngIf="reward.silverCoin"><img src="assets/resourses/imgs/silver.png" alt="silverCoin" />{{reward.silverCoin}}</span>
-            <span class="gold fw-bold" *ngIf="reward.goldCoin"><img src="assets/resourses/imgs/gold.png" alt="goldCoin" />{{reward.goldCoin}}</span>
-            <span class="fw-bold" *ngIf="reward.summonScroll"><img src="assets/resourses/imgs/icons/card_scroll.png" alt="summonScroll" />{{reward.summonScroll}}</span>
-            <span class="fw-bold" *ngIf="reward.summonCard"><img src="assets/resourses/imgs/icons/hero_shard.png" alt="summonCard" />{{reward.summonCard}}</span>
-            <span class="fw-bold" *ngIf="reward.heroShard"><img src="assets/resourses/imgs/icons/hero_puzzle.png" alt="heroShard" />{{reward.heroShard}}</span>
-          </div>
+            <div class="reward d-flex flex-column p-2">
+              <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
+              <span class="copper fw-bold"><img src="assets/resourses/imgs/copper.png"
+                                                alt="copperCoin"/>{{reward.copperCoin}}</span>
+              <span class="silver fw-bold" *ngIf="reward.silverCoin"><img src="assets/resourses/imgs/silver.png"
+                                                                          alt="silverCoin"/>{{reward.silverCoin}}</span>
+              <span class="gold fw-bold" *ngIf="reward.goldCoin"><img src="assets/resourses/imgs/gold.png"
+                                                                      alt="goldCoin"/>{{reward.goldCoin}}</span>
+              <span class="fw-bold summon-scroll" *ngIf="reward.summonScroll"><img
+                src="assets/resourses/imgs/icons/card_scroll.png" alt="summonScroll"/>{{reward.summonScroll}}</span>
+              <span class="fw-bold summon-card" *ngIf="reward.summonCard"><img
+                src="assets/resourses/imgs/icons/hero_shard.png" alt="summonCard"/>{{reward.summonCard}}</span>
+              <span class="fw-bold hero-shard" *ngIf="reward.heroShard"><img
+                src="assets/resourses/imgs/icons/hero_puzzle.png" alt="heroShard"/>{{reward.heroShard}}</span>
+            </div>
           </div>
         </ng-container>
       </div>
     </aside>
+  </div>
+</div>
+
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name" class="modal-title text-center w-100">{{rewardHero?.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="flex-row">
+          <div class="col-3">
+            <img src="{{rewardHero?.imgSrc}}" alt="Reward Hero" />
+          </div>
+          <div class="col-9 d-flex align-items-center justify-content-center">
+            <div class="col-11 stats h-100 flex-row">
+              <div class="col-5">
+              <p class="text-center w-100 d-block">Базовые параметры</p>
+              <p>
+                <img src="assets/resourses/imgs/icons/attack_icon.png">
+                <span>{{rewardHero?.attack}}</span>
+              </p>
+              <p>
+                <img src="assets/resourses/imgs/icons/def_icon.png">
+                <span>{{rewardHero?.defence}}</span>
+              </p>
+              <p>
+                <img src="assets/resourses/imgs/icons/health_icon.png">
+                <span>{{rewardHero?.health}}</span>
+              </p>
+              <p>
+                <img src="assets/resourses/imgs/icons/move_icon.png">
+                <span>{{rewardHero?.canCross}}</span>
+              </p>
+              </div>
+              <div class="col-7">
+                <p class="text-center w-100 d-block">Навыки героя</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

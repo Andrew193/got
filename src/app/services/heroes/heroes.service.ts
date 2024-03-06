@@ -19,6 +19,7 @@ export class HeroesService {
       defence: 1185,
       maxHealth: 9837,
       imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/LadyOfDragonstone_DaenarysTargaryen.png",
       name: "Дейнерис Таргариен ( Леди Драконьего Камня )"
     }
   }

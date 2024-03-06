@@ -22,7 +22,8 @@ export interface Unit {
   maxHealth: number,
   name: string,
   attack: number,
-  defence: number
+  defence: number,
+  fullImgSrc?: string,
 }
 
 @Injectable({
