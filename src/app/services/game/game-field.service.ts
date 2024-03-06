@@ -9,6 +9,20 @@ export interface Tile {
   highlightedClass?: string
 }
 
+export interface Debuff {
+  imgSrc: string,
+  type: string
+}
+
+export interface Skill {
+  imgSrc: string,
+  dmgM: number,
+  debuffs: Debuff[],
+  cooldown: number,
+  remainingCooldown: number,
+  name: string
+}
+
 export interface Unit {
   x: number,
   y: number,
@@ -24,6 +38,7 @@ export interface Unit {
   attack: number,
   defence: number,
   fullImgSrc?: string,
+  skills: Skill[]
 }
 
 @Injectable({
@@ -54,6 +69,10 @@ export class GameFieldService {
 
   findUnitIndex(units: Unit[], unit: { x: number, y: number, [key: string]: any } | null) {
     return units.findIndex((enemy) => enemy.x === unit?.x && enemy.y === unit?.y)
+  }
+
+  findSkillIndex(skills: Skill[], selectedSkill: Skill) {
+    return skills.findIndex((skill) => skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name)
   }
 
   orderUnitsByDistance(start: { x: number, y: number }, positions: { x: number, y: number }[]) {

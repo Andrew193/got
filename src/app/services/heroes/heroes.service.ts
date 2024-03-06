@@ -20,7 +20,25 @@ export class HeroesService {
       maxHealth: 9837,
       imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/LadyOfDragonstone_DaenarysTargaryen.png",
-      name: "Дейнерис Таргариен ( Леди Драконьего Камня )"
+      name: "Дейнерис Таргариен ( Леди Драконьего Камня )",
+      skills: [
+        {
+          name: "Дракарис",
+          imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_ActiveAbility_Dracarys.jpeg",
+          dmgM: 2,
+          cooldown: 3,
+          remainingCooldown: 0,
+          debuffs: []
+        },
+        {
+          name: "Сожжение",
+          imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_PassiveAbility_FerventDevotion.jpeg",
+          dmgM: 0.7,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: []
+        }
+      ]
     }
   }
 

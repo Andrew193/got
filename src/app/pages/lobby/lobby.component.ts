@@ -20,4 +20,8 @@ export class LobbyComponent {
   openTaverna() {
     this.router.navigate(["taverna"])
   }
+
+  openBattle() {
+    this.router.navigate(["test-b"])
+  }
 }

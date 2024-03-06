@@ -1,5 +1,5 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {GameFieldService, Tile, Unit} from "../../services/game/game-field.service";
+import {GameFieldService, Skill, Tile, Unit} from "../../services/game/game-field.service";
 import {CommonModule} from "@angular/common";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {PopoverModule} from "ngx-bootstrap/popover";
@@ -28,6 +28,8 @@ export class GameFieldComponent {
   turnUser = true;
   turnCount = 1;
   showAttackBar = false;
+  skillsInAttackBar: Skill[] = [];
+
   ignoreMove = false;
   clickedEnemy: Unit | null = null;
   selectedEntity: Unit | null = null;
@@ -46,6 +48,22 @@ export class GameFieldComponent {
     name: "test",
     attack: 1529,
     defence: 1185,
+    skills: [{
+      name: "Дракарис",
+      imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_ActiveAbility_Dracarys.jpeg",
+      dmgM: 2,
+      cooldown: 3,
+      remainingCooldown: 0,
+      debuffs: []
+    },
+      {
+        name: "Сожжение",
+        imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_PassiveAbility_FerventDevotion.jpeg",
+        dmgM: 0.7,
+        cooldown: 0,
+        remainingCooldown: 0,
+        debuffs: []
+      }]
   }]
   possibleMoves: Position[] = [];
   gameResult = {
@@ -81,21 +99,17 @@ export class GameFieldComponent {
 
   }
 
-  attack() {
+  attack(skill: Skill) {
+    this.selectSkillsAndRecountCooldown(this.userUnits, this.selectedEntity as Unit)
+
     const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.clickedEnemy);
     const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.selectedEntity);
-    //ATTACK HERE
-    this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack, this.aiUnits[enemyIndex].defence, this.aiUnits, true)
+    const skillIndex = this.fieldService.findSkillIndex(this.userUnits[userIndex].skills, skill);
 
-    // const damage = this.fieldService.getDamage(this.userUnits[userIndex].attack, this.aiUnits[enemyIndex].defence);
-    // let newHealth = this.aiUnits[enemyIndex].health - damage;
-    // this.log.push(`Бот ${this.aiUnits[enemyIndex].name} (${this.aiUnits[enemyIndex].x})(${this.aiUnits[enemyIndex].y}) получил ${damage} ед. урона!`)
-    // newHealth = newHealth >= 0 ? newHealth : 0;
-    // this.aiUnits[enemyIndex] = {...this.aiUnits[enemyIndex], health: newHealth >= 0 ? newHealth : 0};
-    // if(!newHealth) {
-    //   this.log.push(`Бот ${this.aiUnits[enemyIndex].name} (${this.aiUnits[enemyIndex].x})(${this.aiUnits[enemyIndex].y}) отправился к семерым!`)
-    // }
-    this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false};
+    this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true)
+    const skills = createDeepCopy(this.userUnits[userIndex].skills);
+    skills[skillIndex] = {...skills[skillIndex], remainingCooldown: skills[skillIndex].cooldown}
+    this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
 
     this.updateGridUnits(this.aiUnits);
     this.updateGridUnits(this.userUnits);
@@ -114,6 +128,7 @@ export class GameFieldComponent {
     this.clickedEnemy = null;
     this.ignoreMove = false;
     this.selectedEntity = null;
+    this.skillsInAttackBar = [];
     this.showAttackBar = false;
   }
 
@@ -169,6 +184,10 @@ export class GameFieldComponent {
         }
 
         this.highlightCells.bind(this)(this.possibleMoves, entity.user ? "green-b" : "red-b")
+      }
+
+      if (this.showAttackBar) {
+        this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
       }
     } else {
       this.ignoreMove = true;
@@ -271,16 +290,16 @@ export class GameFieldComponent {
                 x: enemyWhenCannotMove.i,
                 y: enemyWhenCannotMove.j
               });
-              this.makeAttackMove(userIndex, aiUnit.attack, this.userUnits[userIndex].defence, this.userUnits, false)
-              // const damage = this.fieldService.getDamage(aiUnit.attack, this.userUnits[userIndex].defence);
-              // let newHealth = this.userUnits[userIndex].health - damage;
-              // this.log.push(`Игрок ${this.userUnits[userIndex].name} (${this.userUnits[userIndex].x})(${this.userUnits[userIndex].y}) получил ${damage} ед. урона!`)
-              // newHealth = newHealth >= 0 ? newHealth : 0;
-              // this.userUnits[userIndex] = {...this.userUnits[userIndex], health: newHealth};
-              // if(!newHealth) {
-              //   this.log.push(`Игрок ${this.userUnits[userIndex].name} (${this.userUnits[userIndex].x})(${this.userUnits[userIndex].y}) отправился к семерым!`)
-              // }
-              this.aiUnits[index] = {...this.aiUnits[index], canAttack: false};
+
+              const aiSkill = this.chooseAiSkill(aiUnit.skills);
+              const aiSkillIndex = this.fieldService.findSkillIndex(aiUnit.skills, aiSkill);
+
+              this.makeAttackMove(userIndex, aiUnit.attack * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false)
+
+              const skills = createDeepCopy(this.aiUnits[index].skills);
+              skills[aiSkillIndex] = {...skills[aiSkillIndex], remainingCooldown: skills[aiSkillIndex].cooldown}
+
+              this.aiUnits[index] = {...this.aiUnits[index], canAttack: false, skills: skills};
               this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
               return;
             } else {
@@ -306,10 +325,18 @@ export class GameFieldComponent {
         this.turnUser = true;
       } else {
         const aiUnit = this.aiUnits[index];
+        this.selectSkillsAndRecountCooldown(this.aiUnits, aiUnit)
         makeAiMove(aiUnit, index)
+        this.showAttackBar = false;
+        this.skillsInAttackBar = [];
         index++;
       }
     }, 500)
+  }
+
+  chooseAiSkill(skills: Skill[]): Skill {
+    const possibleActiveSkill = skills.find((skill) => skill.cooldown && !skill.remainingCooldown)
+    return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);
   }
 
   highlightCells(path: Position[], className: string) {
@@ -332,11 +359,31 @@ export class GameFieldComponent {
   makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean) {
     const damage = this.fieldService.getDamage(attack, defence);
     let newHealth = dmgTaker[enemyIndex].health - damage;
-    this.log.push(`${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x})(${dmgTaker[enemyIndex].y}) получил ${damage} ед. урона!`)
+    this.log.push(`${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) получил ${damage} ед. урона!`)
     newHealth = newHealth >= 0 ? newHealth : 0;
     dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth >= 0 ? newHealth : 0};
     if (!newHealth) {
-      this.log.push(`${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x})(${dmgTaker[enemyIndex].y}) отправился к семерым!`)
+      this.log.push(`${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) отправился к семерым!`)
     }
+  }
+
+  selectSkillsAndRecountCooldown(units: Unit[], selectedUnit: Unit, recountCooldown = true) {
+    const unitIndex = this.fieldService.findUnitIndex(units, selectedUnit);
+    let skills: Skill[] = createDeepCopy(selectedUnit?.skills as Skill[]);
+    if (recountCooldown) {
+      skills = this.recountSkillsCooldown(skills);
+    }
+    units[unitIndex] = {...units[unitIndex], skills: skills};
+    this.skillsInAttackBar = skills;
+  }
+
+  recountSkillsCooldown(skills: Skill[]) {
+    return skills.map((skill) => {
+        return {
+          ...skill,
+          remainingCooldown: skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0
+        }
+      }
+    )
   }
 }
