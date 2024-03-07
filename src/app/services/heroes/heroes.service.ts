@@ -23,7 +23,7 @@ export class HeroesService {
     }
 
     getRestoredHealth(health: number, m: number) {
-        return health * m;
+        return +(health * m).toFixed(0);
     }
 
     getHealthRestore(turns = 1): Effect {
@@ -60,6 +60,7 @@ export class HeroesService {
             ...this.getBasicUserConfig(),
             attackRange: 1,
             ignoredDebuffs: [this.getBurning().type],
+            reducedDmgFromDebuffs: [],
             dmgReducedBy: 0.1,
             canCross: 2,
             health: 9837,

@@ -338,7 +338,7 @@ export class GameFieldComponent {
     unit.effects.forEach((debuff: Effect, i, array) => {
       if (debuff.duration > 0) {
         array[i] = {...debuff, duration: debuff.duration - 1}
-        const additionalDmg = this.fieldService.getReducedDmg(unit, this.heroService.getDebuffDmg(debuff.type, unit.health, debuff.m));
+        const additionalDmg = this.fieldService.getReducedDmg(unit, this.heroService.getDebuffDmg(debuff.type, unit.health, debuff.m), debuff);
           additionalDmg && this.log.push({
           isUser: !unit.user, imgSrc: debuff.imgSrc,
           message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${debuff.type}`

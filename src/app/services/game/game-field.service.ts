@@ -36,6 +36,7 @@ export interface Unit {
     y: number,
     dmgReducedBy: number,
     ignoredDebuffs: string[],
+    reducedDmgFromDebuffs: string[]
     user: boolean,
     imgSrc: string,
     canMove: boolean
@@ -81,15 +82,20 @@ export class GameFieldService {
     getDamage(attack: number, defence: number, unit: Unit) {
         const blockedDamage = defence * 0.4;
         if (blockedDamage - 200 > attack) {
-            return 100 + this.getRandomInt(10, 70);
+            return +(100 + this.getRandomInt(10, 70)).toFixed(0);
         } else {
             const fixedDmg = !!unit.dmgReducedBy ? (attack - blockedDamage) - ((attack - blockedDamage) * unit.dmgReducedBy) : attack - blockedDamage
-            return fixedDmg + this.getRandomInt(30, 100);
+            return +(fixedDmg + this.getRandomInt(30, 100)).toFixed(0);
         }
     }
 
-    getReducedDmg(unit: Unit, dmg: number) {
-        return !!unit.dmgReducedBy ? dmg - dmg * unit.dmgReducedBy : dmg;
+    getReducedDmg(unit: Unit, dmg: number, debuff?: Effect) {
+        let isDmgReduced = false;
+        if (debuff) {
+            isDmgReduced = unit.reducedDmgFromDebuffs.includes(debuff.type);
+        }
+        const dmgAfterReductionByPassiveSkills = !!unit.dmgReducedBy ? dmg - dmg * unit.dmgReducedBy : dmg;
+        return +(isDmgReduced ? dmgAfterReductionByPassiveSkills - dmgAfterReductionByPassiveSkills * 0.25 : dmgAfterReductionByPassiveSkills).toFixed(0);
     }
 
     getRandomInt(min: number, max: number) {
