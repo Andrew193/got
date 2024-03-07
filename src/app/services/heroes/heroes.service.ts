@@ -65,7 +65,7 @@ export class HeroesService {
       skills: [
         {
           name: "Сожжение",
-          imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_PassiveAbility_FerventDevotion.jpeg",
+          imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_HeroicAbility_BloodOfTheDragon.jpeg",
           dmgM: 0.7,
           cooldown: 0,
           remainingCooldown: 0,
@@ -81,7 +81,7 @@ export class HeroesService {
         },
         {
           name: "Таргариен",
-          imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_HeroicAbility_BloodOfTheDragon.jpeg",
+          imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_PassiveAbility_FerventDevotion.jpeg",
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,

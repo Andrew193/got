@@ -115,6 +115,13 @@ export class GameFieldService {
     }
   }
 
+  getCoordinateFromPosition(position: Position) {
+    return {
+      x: position?.i,
+      y: position?.j
+    }
+  }
+
   getDefaultGameField() {
     for (let i = 0; i < 7; i++) {
       this.gameField[i] = [];

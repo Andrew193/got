@@ -83,8 +83,13 @@
           </tab>
           <tab heading="История боя" class="history-tab">
             <div class="m-3">
-              <p *ngFor="let logRecord of log" class="log-record">
-                <span>{{logRecord}}</span>
+              <p *ngFor="let logRecord of log" class="log-record" [ngClass]="{
+              'green-b': logRecord.isUser,
+              'red-b': !logRecord.isUser,
+              'entity-b': logRecord.info
+              }">
+                <img src="{{logRecord.imgSrc}}" alt="dmg" />
+                <span>{{logRecord.message}}</span>
               </p>
             </div>
           </tab>

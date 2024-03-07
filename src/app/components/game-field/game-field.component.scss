@@ -37,10 +37,6 @@
   border-radius: 5px;
   width: 100% !important;
   opacity: 1 !important;
-  background-color: #e6e6e6;
-  span {
-    @include grad-color;
-  }
 }
 
 .aside-hero-tab-header {
@@ -60,6 +56,10 @@
 .history-tab {
   overflow: auto;
   max-height: 400px;
+  img {
+    width: 40px;
+    margin: 10px;
+  }
 }
 
 .game-board {

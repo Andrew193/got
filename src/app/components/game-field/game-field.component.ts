@@ -3,7 +3,7 @@ import {Effect, GameFieldService, Skill, Tile, Unit} from "../../services/game/g
 import {CommonModule} from "@angular/common";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {PopoverModule} from "ngx-bootstrap/popover";
-import {Position} from "../../interface";
+import {LogRecord, Position} from "../../interface";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {ProgressbarModule} from "ngx-bootstrap/progressbar";
@@ -23,7 +23,7 @@ import {BehaviorSubject} from "rxjs";
 })
 export class GameFieldComponent {
   modalRef?: BsModalRef;
-  log: string[] = [];
+  log: LogRecord[] = [];
   userSample: Unit;
   gameConfig;
   turnUser = true;
@@ -50,9 +50,11 @@ export class GameFieldComponent {
               private modalService: BsModalService) {
     this.userSample = this.heroService.getLadyOfDragonStone()
     this.userUnits = [this.userSample];
-    this.aiUnits = [{...this.userSample,     x: 3,
+    this.aiUnits = [{
+      ...this.userSample, x: 3,
       y: 8,
-      user: false}]
+      user: false
+    }]
     this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
     this._turnCount.subscribe((newTurn) => {
       this.turnCount = newTurn;
@@ -84,7 +86,7 @@ export class GameFieldComponent {
     const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.selectedEntity);
     const skillIndex = this.fieldService.findSkillIndex(this.userUnits[userIndex].skills, skill);
 
-    this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true)
+    this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill)
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
 
@@ -147,7 +149,7 @@ export class GameFieldComponent {
             const enemyIndexList = [];
             for (let i = 0; i < enemyWhenCannotMove.length; i++) {
               const enemy = enemyWhenCannotMove[i]
-              const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, {x: enemy?.i, y: enemy?.j});
+              const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.fieldService.getCoordinateFromPosition(enemy));
               enemyIndexList.push(enemyIndex);
             }
 
@@ -205,10 +207,7 @@ export class GameFieldComponent {
       const possibleMoves = this.getPossibleMoves(this.userUnits[userIndex])
       let enemyWhenCannotMove = possibleMoves.find((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
       if (enemyWhenCannotMove) {
-        const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, {
-          x: enemyWhenCannotMove?.i,
-          y: enemyWhenCannotMove?.j
-        });
+        const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.fieldService.getCoordinateFromPosition(enemyWhenCannotMove));
         enemyWhenCannotMove = this.aiUnits[enemyIndex].health ? enemyWhenCannotMove : undefined;
       }
       if (!enemyWhenCannotMove) {
@@ -271,15 +270,11 @@ export class GameFieldComponent {
             const possibleMoves = this.getPossibleMoves(this.aiUnits[index])
             const enemyWhenCannotMove = possibleMoves.find((move) => this.userUnits.some((userUnit) => userUnit.x === move.i && userUnit.y === move.j));
             if (enemyWhenCannotMove) {
-              const userIndex = this.fieldService.findUnitIndex(this.userUnits, {
-                x: enemyWhenCannotMove.i,
-                y: enemyWhenCannotMove.j
-              });
-
+              const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.fieldService.getCoordinateFromPosition(enemyWhenCannotMove));
               const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
               const aiSkillIndex = this.fieldService.findSkillIndex(aiUnit.skills, aiSkill);
 
-              this.makeAttackMove(userIndex, aiUnit.attack * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false)
+              this.makeAttackMove(userIndex, aiUnit.attack * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false, aiSkill)
               const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill)
               this.aiUnits[index] = {...this.aiUnits[index], canAttack: false, skills: skills};
               this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
@@ -324,7 +319,10 @@ export class GameFieldComponent {
       if (debuff.duration > 0) {
         array[i] = {...debuff, duration: debuff.duration - 1}
         const additionalDmg = this.heroService.getDebuffDmg(debuff.type, unit.health, debuff.m);
-        this.log.push(`${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${debuff.type}`)
+        this.log.push({
+          isUser: !unit.user, imgSrc: debuff.imgSrc,
+          message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${debuff.type}`
+        })
         unit.health = this.heroService.getHealthAfterDmg(unit.health, additionalDmg)
         units[index] = unit;
       }
@@ -334,13 +332,16 @@ export class GameFieldComponent {
   checkRestorePassiveSkills(units: Unit[]) {
     for (let index = 0; index < units.length; index++) {
       const unit = units[index];
-      if(unit.health) {
+      if (unit.health) {
         unit.skills.forEach((skill) => {
           if (skill.passive && skill.restoreSkill) {
             const buffs = skill.buffs || [];
             for (let i = 0; i < buffs.length; i++) {
               const restoredHealth = this.heroService.getRestoredHealth(unit.maxHealth, buffs[i].m);
-              this.log.push(`${unit.user ? 'Игрок' : 'Бот'} ${unit.name} восстановил ${restoredHealth} ед. !`)
+              this.log.push({
+                info: true, imgSrc: skill.imgSrc,
+                message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} восстановил ${restoredHealth} ед. !`
+              })
               unit.health = this.heroService.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth)
               units[index] = unit;
             }
@@ -359,16 +360,22 @@ export class GameFieldComponent {
     this.possibleMoves = path;
   }
 
-  makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean) {
+  makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean, skill: Skill) {
     const damage = this.fieldService.getDamage(attack, defence);
     let newHealth = dmgTaker[enemyIndex].health - damage;
-    if(damage) {
-      this.log.push(`${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) получил ${damage} ед. урона!`)
+    if (damage) {
+      this.log.push({
+        isUser: isUser, imgSrc: skill.imgSrc,
+        message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) получил ${damage} ед. урона!`
+      })
     }
     newHealth = newHealth >= 0 ? newHealth : 0;
     dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth >= 0 ? newHealth : 0};
     if (!newHealth) {
-      this.log.push(`${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) отправился к семерым!`)
+      this.log.push({
+        isUser: isUser, imgSrc: skill.imgSrc,
+        message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) отправился к семерым!`
+      })
     }
   }
 
