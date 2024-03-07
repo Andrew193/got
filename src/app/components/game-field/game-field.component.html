@@ -9,7 +9,7 @@
     </div>
     <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
       <div class="col-9">
-        <div tooltip="Закончить ход">
+        <div tooltip="Закончить ход" (click)="finishTurn()">
           <span>{{turnCount}}/20</span>
         </div>
       </div>
@@ -37,9 +37,11 @@
           <div *ngIf="tile.entity" class="position-relative">
             <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
                  (click)="highlightMakeMove(tile.entity, $event)"/>
-            <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="tile.entity.canMove && !!tile.entity.health"
+            <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move"
+                 *ngIf="tile.entity.canMove && !!tile.entity.health"
                  class="action-icon position-absolute can-move-icon"/>
-            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="tile.entity.canAttack && !!tile.entity.health"
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack"
+                 *ngIf="tile.entity.canAttack && !!tile.entity.health"
                  class="action-icon position-absolute can-attack-icon"/>
           </div>
         </div>
@@ -88,7 +90,7 @@
               'red-b': !logRecord.isUser,
               'entity-b': logRecord.info
               }">
-                <img src="{{logRecord.imgSrc}}" alt="dmg" />
+                <img src="{{logRecord.imgSrc}}" alt="dmg"/>
                 <span>{{logRecord.message}}</span>
               </p>
             </div>
@@ -103,22 +105,29 @@
 <ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
   <accordion class="mb-2">
     <accordion-group>
-      <div
-        class="btn btn-link btn-block justify-content-between d-flex w-100  shadow-none" accordion-heading>
-        <div class="position-relative">
-          <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img col-3"
-               [ngClass]="{'disabled': !hero.health}"/>
-          <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="hero.canMove"
-               class="action-icon position-absolute can-move-icon"/>
-          <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="hero.canAttack"
-               class="action-icon position-absolute can-attack-icon"/>
+      <div class="btn btn-link btn-block flex-column d-flex w-100  shadow-none" accordion-heading>
+        <div class="justify-content-between d-flex">
+          <div style="width: fit-content" class="position-relative">
+            <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img col-3"
+                 [ngClass]="{'disabled': !hero.health}"/>
+            <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="hero.canMove"
+                 class="action-icon position-absolute can-move-icon"/>
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="hero.canAttack"
+                 class="action-icon position-absolute can-attack-icon"/>
+          </div>
+          <div class="col-9">
+            <div class="col-12 aside-hero-tab-header">
+              <h6>{{hero.name}}</h6>
+              <progressbar [max]="hero.maxHealth" [value]="hero.health" [type]="progressbarClass" [striped]="true"
+                           [animate]="true">
+              </progressbar>
+            </div>
+          </div>
         </div>
-        <div class="col-9">
-          <div class="col-12 aside-hero-tab-header">
-            <h6>{{hero.name}}</h6>
-            <progressbar [max]="hero.maxHealth" [value]="hero.health" [type]="progressbarClass" [striped]="true"
-                         [animate]="true">
-            </progressbar>
+        <div class="effects-container mt-1">
+          <div *ngFor="let effect of hero.effects" class="position-relative">
+            <img  src="{{effect.imgSrc}}" tooltip="{{effect.type}}"/>
+            <span>{{effect.duration}}</span>
           </div>
         </div>
       </div>

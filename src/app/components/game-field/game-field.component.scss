@@ -4,6 +4,28 @@
   @include grad-color;
 }
 
+.effects-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  img {
+    background: transparent !important;
+    height: 45px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  span {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    font-weight: bold;
+    color: aliceblue;
+    font-size: 13px;
+  }
+}
+
 .skills-container {
   margin: 15px;
   > div {

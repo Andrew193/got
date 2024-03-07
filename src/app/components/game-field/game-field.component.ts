@@ -52,7 +52,7 @@ export class GameFieldComponent {
     this.userUnits = [this.userSample];
     this.aiUnits = [{
       ...this.userSample, x: 3,
-      y: 8,
+      y: 9,
       user: false
     }]
     this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
@@ -79,7 +79,6 @@ export class GameFieldComponent {
   }
 
   attack(skill: Skill) {
-    debugger
     this.selectSkillsAndRecountCooldown(this.userUnits, this.selectedEntity as Unit)
 
     const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.clickedEnemy);
@@ -87,6 +86,19 @@ export class GameFieldComponent {
     const skillIndex = this.fieldService.findSkillIndex(this.userUnits[userIndex].skills, skill);
 
     this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
+    if (skill.attackInRange) {
+      const tilesInRange = this.fieldService.getFieldsInRadius(this.gameConfig, this.fieldService.getPositionFromUnit(this.clickedEnemy as Unit), skill.attackRange as number, true)
+      const enemiesInRange: Unit[] = tilesInRange.map((tile) => {
+        return this.aiUnits.find((unit) => unit.x === tile.i && unit.y === tile.j && !unit.user)
+      }).filter((e) => !!e) as Unit[];
+
+      for (let i = 0; i < enemiesInRange.length; i++) {
+        const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, enemiesInRange[i]);
+        this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * (skill.attackInRangeM || 0), this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
+        this.addEffectToUnit(this.aiUnits, enemyIndex, skill);
+      }
+      console.log(enemiesInRange, "enemiesInRange")
+    }
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill)
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
 
@@ -96,14 +108,21 @@ export class GameFieldComponent {
     this.checkAiMoves();
   }
 
-  updateSkillsCooldown(originalSkills: Skill[], units: Unit[], unitIndex: number, skillIndex: number, skill: Skill) {
+  updateSkillsCooldown(originalSkills: Skill[], units: Unit[], unitIndex: number, skillIndex: number, skill: Skill, addTurn = false) {
     const skills = createDeepCopy(originalSkills);
+    this.addEffectToUnit(units, unitIndex, skill);
+    skills[skillIndex] = {
+      ...skills[skillIndex],
+      remainingCooldown: skills[skillIndex].cooldown ? addTurn ? skills[skillIndex].cooldown + 1 : skills[skillIndex].cooldown : 0
+    }
+    return skills;
+  }
+
+  addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill) {
     units[unitIndex] = {
       ...units[unitIndex],
       effects: [...units[unitIndex].effects, ...(skill.debuffs || [])]
     }
-    skills[skillIndex] = {...skills[skillIndex], remainingCooldown: skills[skillIndex].cooldown}
-    return skills;
   }
 
   updateGridUnits(unitsArray: Unit[]) {
@@ -275,7 +294,7 @@ export class GameFieldComponent {
               const aiSkillIndex = this.fieldService.findSkillIndex(aiUnit.skills, aiSkill);
 
               this.makeAttackMove(userIndex, aiUnit.attack * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false, aiSkill)
-              const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill)
+              const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill, true)
               this.aiUnits[index] = {...this.aiUnits[index], canAttack: false, skills: skills};
               this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
               return;
@@ -302,9 +321,10 @@ export class GameFieldComponent {
         this.checkRestorePassiveSkills(this.userUnits)
         this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
         this.turnUser = true;
+        this.checkCloseFight();
       } else {
+        this.selectSkillsAndRecountCooldown(this.aiUnits, this.aiUnits[index]);
         const aiUnit = this.aiUnits[index];
-        this.selectSkillsAndRecountCooldown(this.aiUnits, aiUnit);
         this.checkDebuffs(aiUnit, this.aiUnits, index);
         makeAiMove(aiUnit, index);
         this.showAttackBar = false;
@@ -327,6 +347,7 @@ export class GameFieldComponent {
         units[index] = unit;
       }
     })
+    unit.effects = unit.effects.filter((debuff) => !!debuff.duration);
   }
 
   checkRestorePassiveSkills(units: Unit[]) {
@@ -387,5 +408,11 @@ export class GameFieldComponent {
     }
     units[unitIndex] = {...units[unitIndex], skills: skills};
     this.skillsInAttackBar = skills;
+  }
+
+  finishTurn() {
+    this.userUnits = this.userUnits.map((user) => ({...user, canMove: false, canAttack: false}))
+    this.updateGridUnits(this.userUnits);
+    this.checkAiMoves();
   }
 }

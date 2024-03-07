@@ -25,7 +25,10 @@ export interface Skill {
   remainingCooldown: number,
   name: string,
   passive?: boolean,
-  restoreSkill?: boolean
+  restoreSkill?: boolean,
+  attackInRange?: boolean,
+  attackRange?: number,
+  attackInRangeM?: number
 }
 
 export interface Unit {

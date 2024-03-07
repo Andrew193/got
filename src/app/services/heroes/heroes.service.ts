@@ -10,11 +10,11 @@ export class HeroesService {
   }
 
   getHealthAfterDmg(health: number, dmg: number) {
-    return (health - dmg) > 0 ? health - dmg : 0;
+    return +((health - dmg) > 0 ? health - dmg : 0).toFixed(0);
   }
 
   getHealthAfterRestore(health: number, maxHealth: number) {
-    return health > maxHealth ? maxHealth : health;
+    return +(health > maxHealth ? maxHealth : health).toFixed(0);
   }
 
   getRestoredHealth(health: number, m: number) {
@@ -47,7 +47,7 @@ export class HeroesService {
   }
 
   getBurningDmg(health: number, m: number) {
-    return +(health * m).toPrecision(1)
+    return +(health * m).toFixed(0)
   }
 
   getLadyOfDragonStone(): Unit {
@@ -77,6 +77,9 @@ export class HeroesService {
           dmgM: 2,
           cooldown: 3,
           remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 2,
+          attackInRangeM: 0.9,
           debuffs: [this.getBurning(2), this.getBurning(2)]
         },
         {
