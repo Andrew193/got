@@ -9,18 +9,23 @@ export interface Tile {
   highlightedClass?: string
 }
 
-export interface Debuff {
+export interface Effect {
   imgSrc: string,
-  type: string
+  type: string,
+  duration: number,
+  m: number
 }
 
 export interface Skill {
   imgSrc: string,
   dmgM: number,
-  debuffs: Debuff[],
+  debuffs?: Effect[],
+  buffs?: Effect[],
   cooldown: number,
   remainingCooldown: number,
-  name: string
+  name: string,
+  passive?: boolean,
+  restoreSkill?: boolean
 }
 
 export interface Unit {
@@ -38,7 +43,8 @@ export interface Unit {
   attack: number,
   defence: number,
   fullImgSrc?: string,
-  skills: Skill[]
+  skills: Skill[],
+  effects: Effect[]
 }
 
 @Injectable({
@@ -46,10 +52,25 @@ export interface Unit {
 })
 export class GameFieldService {
   gameField: Tile[][];
+  gameConfig: any[][] = [];
+  possibleMoves: Position[] = [];
 
   constructor() {
     this.gameField = [];
+  }
 
+  unhighlightCells() {
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < 10; j++) {
+        this.gameConfig[i][j] = {...this.gameConfig[i][j], highlightedClass: ""}
+      }
+    }
+    this.possibleMoves = [];
+  }
+
+  chooseAiSkill(skills: Skill[]): Skill {
+    const possibleActiveSkill = skills.find((skill) => skill.cooldown && !skill.remainingCooldown)
+    return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);
   }
 
   getDamage(attack: number, defence: number) {
@@ -81,6 +102,10 @@ export class GameFieldService {
       const distanceB = Math.abs(b.x - start.x) + Math.abs(b.y - start.y);
       return distanceA - distanceB;
     });
+  }
+
+  resetMoveAndAttack(unitArray: Unit[], ) {
+    unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: true, canAttack: true})
   }
 
   getPositionFromUnit(unit: Unit) {
@@ -170,6 +195,11 @@ export class GameFieldService {
     }
     return path;
   }
+
+  recountSkillsCooldown = (skills: Skill[]) => skills.map((skill) => ({
+    ...skill,
+    remainingCooldown: skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0
+  }))
 
   shortestPath(grid: string | any[], start: Position, end: Position, checkDiagonals = false): Position[] {
     const rows = grid.length;
