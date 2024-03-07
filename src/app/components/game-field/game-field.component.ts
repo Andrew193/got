@@ -97,7 +97,6 @@ export class GameFieldComponent {
         this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * (skill.attackInRangeM || 0), this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
         this.addEffectToUnit(this.aiUnits, enemyIndex, skill);
       }
-      console.log(enemiesInRange, "enemiesInRange")
     }
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill)
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
@@ -121,7 +120,7 @@ export class GameFieldComponent {
   addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill) {
     units[unitIndex] = {
       ...units[unitIndex],
-      effects: [...units[unitIndex].effects, ...(skill.debuffs || [])]
+      effects: this.heroService.getEffectsWithIgnoreFilter(units[unitIndex], skill)
     }
   }
 
@@ -323,12 +322,13 @@ export class GameFieldComponent {
         this.turnUser = true;
         this.checkCloseFight();
       } else {
-        this.selectSkillsAndRecountCooldown(this.aiUnits, this.aiUnits[index]);
         const aiUnit = this.aiUnits[index];
         this.checkDebuffs(aiUnit, this.aiUnits, index);
         makeAiMove(aiUnit, index);
         this.showAttackBar = false;
+        this.selectSkillsAndRecountCooldown(this.aiUnits, this.aiUnits[index]);
         this.skillsInAttackBar = [];
+
         index++;
       }
     }, 500)
@@ -338,8 +338,8 @@ export class GameFieldComponent {
     unit.effects.forEach((debuff: Effect, i, array) => {
       if (debuff.duration > 0) {
         array[i] = {...debuff, duration: debuff.duration - 1}
-        const additionalDmg = this.heroService.getDebuffDmg(debuff.type, unit.health, debuff.m);
-        this.log.push({
+        const additionalDmg = this.fieldService.getReducedDmg(unit, this.heroService.getDebuffDmg(debuff.type, unit.health, debuff.m));
+          additionalDmg && this.log.push({
           isUser: !unit.user, imgSrc: debuff.imgSrc,
           message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${debuff.type}`
         })
@@ -382,16 +382,15 @@ export class GameFieldComponent {
   }
 
   makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean, skill: Skill) {
-    const damage = this.fieldService.getDamage(attack, defence);
-    let newHealth = dmgTaker[enemyIndex].health - damage;
+    const damage = this.fieldService.getDamage(attack, defence, dmgTaker[enemyIndex]);
+    let newHealth = this.heroService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
     if (damage) {
       this.log.push({
         isUser: isUser, imgSrc: skill.imgSrc,
         message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) получил ${damage} ед. урона!`
       })
     }
-    newHealth = newHealth >= 0 ? newHealth : 0;
-    dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth >= 0 ? newHealth : 0};
+    dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth};
     if (!newHealth) {
       this.log.push({
         isUser: isUser, imgSrc: skill.imgSrc,
