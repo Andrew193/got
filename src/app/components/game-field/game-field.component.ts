@@ -43,7 +43,8 @@ export class GameFieldComponent {
         this.userSample = this.heroService.getLadyOfDragonStone()
         this.userUnits = [this.userSample];
         this.aiUnits = [{
-            ...this.userSample, x: 3,
+            ...this.heroService.getWhiteWolf(),
+            x: 3,
             y: 9,
             user: false
         }]
@@ -142,7 +143,7 @@ export class GameFieldComponent {
                         const enemyIndexList = [];
                         for (let i = 0; i < enemyWhenCannotMove.length; i++) {
                             const enemy = enemyWhenCannotMove[i]
-                            const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.fieldService.getCoordinateFromPosition(enemy));
+                            const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.fieldService.getUnitFromPosition(enemy));
                             enemyIndexList.push(enemyIndex);
                         }
 
@@ -206,7 +207,7 @@ export class GameFieldComponent {
             //Look for targets to attack
             let enemyWhenCannotMove = this.getEnemyWhenCannotMove(this.userUnits[userIndex], this.aiUnits)
             if (enemyWhenCannotMove) {
-                const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.fieldService.getCoordinateFromPosition(enemyWhenCannotMove));
+                const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.fieldService.getUnitFromPosition(enemyWhenCannotMove));
                 enemyWhenCannotMove = this.aiUnits[enemyIndex].health ? enemyWhenCannotMove : undefined;
             }
             if (!enemyWhenCannotMove) {
@@ -244,6 +245,7 @@ export class GameFieldComponent {
     }
 
     attackUser() {
+        debugger
         this._turnCount.next(this.turnCount + 1);
         this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
 
@@ -272,7 +274,7 @@ export class GameFieldComponent {
                         let enemyWhenCannotMove = this.getEnemyWhenCannotMove(this.aiUnits[index], this.userUnits)
                         if (enemyWhenCannotMove) {
                             //Choose skill and target to attack
-                            const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.fieldService.getCoordinateFromPosition(enemyWhenCannotMove));
+                            const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.fieldService.getUnitFromPosition(enemyWhenCannotMove));
                             const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
                             const aiSkillIndex = this.fieldService.findSkillIndex(aiUnit.skills, aiSkill);
                             //Attack user's unit
@@ -314,8 +316,9 @@ export class GameFieldComponent {
                 this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
             } else {
                 //Get AI unit and look for debuffs ( deal dmg before making a move )
-                const aiUnit = this.aiUnits[index];
-                this.checkDebuffs(aiUnit, this.aiUnits, index);
+                let aiUnit = this.aiUnits[index];
+                this.aiUnits[index] = this.checkDebuffs(createDeepCopy(aiUnit), createDeepCopy(this.aiUnits), index);
+                aiUnit = this.aiUnits[index];
                 //AI makes a move
                 makeAiMove(aiUnit, index);
                 //Update skills cooldowns
@@ -326,20 +329,27 @@ export class GameFieldComponent {
     }
 
     //Check debuffs like: poison, burning
-    checkDebuffs(unit: Unit, units: Unit[], index: number) {
-        unit.effects.forEach((debuff: Effect, i, array) => {
-            if (debuff.duration > 0) {
-                array[i] = {...debuff, duration: debuff.duration - 1}
-                const additionalDmg = this.fieldService.getReducedDmgForEffects(unit, this.heroService.getDebuffDmg(debuff.type, unit.health, debuff.m), debuff);
-                additionalDmg && this.log.push({
-                    isUser: !unit.user, imgSrc: debuff.imgSrc,
-                    message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${debuff.type}`
-                })
-                unit.health = this.heroService.getHealthAfterDmg(unit.health, additionalDmg)
-                units[index] = unit;
+    checkDebuffs(unit: Unit, units: Unit[], index: number, decreaseRestoreCooldown = true) {
+        unit.effects.forEach((effect: Effect, i, array) => {
+            if (effect.duration > 0) {
+                if (effect.restore) {
+                    array[i] = {...effect, duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration}
+                    this.gameActionService.checkEffectsForHealthRestore(unit, this.log);
+                } else {
+                    array[i] = {...effect, duration: effect.duration - 1}
+                    if(!effect.passive) {
+                        const additionalDmg = this.gameActionService.getReducedDmgForEffects(unit, this.heroService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
+                        additionalDmg && this.log.push({
+                            isUser: !unit.user, imgSrc: effect.imgSrc,
+                            message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${effect.type}`
+                        })
+                        unit.health = this.heroService.getHealthAfterDmg(unit.health, additionalDmg)
+                    }
+                }
             }
         })
         unit.effects = unit.effects.filter((debuff) => !!debuff.duration);
+        return unit;
     }
 
     highlightCells(path: Position[], className: string) {
@@ -352,7 +362,8 @@ export class GameFieldComponent {
     }
 
     makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean, skill: Skill) {
-        const damage = this.fieldService.getDamage(attack, defence, dmgTaker[enemyIndex]);
+        const fixedDefence = this.gameActionService.getFixedDefence(defence, dmgTaker[enemyIndex])
+        const damage = this.fieldService.getDamage(attack, fixedDefence, dmgTaker[enemyIndex]);
         let newHealth = this.heroService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
         if (damage) {
             this.log.push({

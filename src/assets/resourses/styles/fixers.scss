@@ -1,3 +1,5 @@
+@import "./vars";
+
 .disabled {
   cursor: not-allowed;
   pointer-events: none;
@@ -10,4 +12,11 @@
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.skill-preview-icon {
+  height: 70px !important;
+  width: 70px !important;
+  border-radius: 5px;
+  box-shadow: $box-shadow-out;
 }

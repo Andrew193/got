@@ -13,7 +13,9 @@ export interface Effect {
     imgSrc: string,
     type: string,
     duration: number,
-    m: number
+    m: number,
+    restore?: boolean
+    passive?: boolean
 }
 
 export interface Skill {
@@ -28,7 +30,8 @@ export interface Skill {
     restoreSkill?: boolean,
     attackInRange?: boolean,
     attackRange?: number,
-    attackInRangeM?: number
+    attackInRangeM?: number,
+    description?: string
 }
 
 export interface Unit {
@@ -80,7 +83,6 @@ export class GameFieldService {
     }
 
     getDamage(attack: number, defence: number, unit: Unit) {
-        debugger
         const blockedDamage = defence * 0.4;
         if (blockedDamage - 200 > attack) {
             return +(100 + this.getRandomInt(10, 70)).toFixed(0);
@@ -88,15 +90,6 @@ export class GameFieldService {
             const fixedDmg = !!unit.dmgReducedBy ? (attack - blockedDamage) - ((attack - blockedDamage) * unit.dmgReducedBy) : attack - blockedDamage
             return +(fixedDmg + this.getRandomInt(30, 100)).toFixed(0);
         }
-    }
-
-    getReducedDmgForEffects(unit: Unit, dmg: number, debuff?: Effect) {
-        let isDmgReduced = false;
-        if (debuff) {
-            isDmgReduced = unit.reducedDmgFromDebuffs.includes(debuff.type);
-        }
-        const dmgAfterReductionByPassiveSkills = !!unit.dmgReducedBy ? dmg - dmg * unit.dmgReducedBy : dmg;
-        return +(isDmgReduced ? dmgAfterReductionByPassiveSkills - dmgAfterReductionByPassiveSkills * 0.25 : dmgAfterReductionByPassiveSkills).toFixed(0);
     }
 
     getRandomInt(min: number, max: number) {
@@ -132,7 +125,7 @@ export class GameFieldService {
         }
     }
 
-    getCoordinateFromPosition(position: Position) {
+    getUnitFromPosition(position: Position) {
         return {
             x: position?.i,
             y: position?.j

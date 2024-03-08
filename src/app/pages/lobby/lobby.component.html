@@ -69,7 +69,7 @@
           </div>
 
           <div class="flex-row store-row col-12">
-            <div class="col-2 justify-content-center">
+            <div class="col-2 justify-content-center" (click)="showDailyReward()">
               <div class="card col-10 d-flex align-items-center">
                 <img class="card-img-top" src="./assets/resourses/imgs/UI_Avatar_Unit_Alvar.png" alt="Card image cap">
                 <span class="card-title">Награды Входа</span>
@@ -93,3 +93,4 @@
     </div>
   </main>
 </div>
+<daily-reward *ngIf="isShowDailyReward" [closePopup]="closePopup"></daily-reward>

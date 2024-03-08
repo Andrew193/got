@@ -37,6 +37,7 @@
 
 .glow-box {
   transition: all ease 0.5s;
+  min-height: 600px;
 
   &:hover {
     box-shadow:
@@ -93,15 +94,15 @@
   }
 }
 
-.summon-scroll {
+.summon-scroll, .health-color {
   color: #70FF70FF;
 }
 
-.summon-card {
+.summon-card, .defence-color {
   color: #6ee9f6;
 }
 
-.hero-shard {
+.hero-shard, .attack-color {
   color: #FF9393FF;
 }
 

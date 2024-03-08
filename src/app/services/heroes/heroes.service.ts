@@ -5,8 +5,19 @@ import {Effect, Skill, Unit} from "../game-field/game-field.service";
     providedIn: 'root'
 })
 export class HeroesService {
+    effects = {
+        burning: "Горение",
+        healthRestore: "Восстановление",
+        defBreak: "Разлом брони"
+    }
 
     constructor() {
+    }
+
+    getMultForEffect(effect: Effect) {
+        return {
+            [this.effects.defBreak]: this.getDefBreak().m
+        }[effect.type]
     }
 
     getEffectsWithIgnoreFilter(unit: Unit, skill: Skill) {
@@ -29,25 +40,36 @@ export class HeroesService {
     getHealthRestore(turns = 1): Effect {
         return {
             imgSrc: "../../../assets/resourses/imgs/icons/health_restore_buff.png",
-            type: "Восстановление",
+            type: this.effects.healthRestore,
             duration: turns,
-            m: 0.05
+            m: 0.05,
+            restore: true
         }
     }
 
     getBurning(turns = 2): Effect {
         return {
             imgSrc: "../../../assets/resourses/imgs/icons/burning.png",
-            type: "Горение",
+            type: this.effects.burning,
             duration: turns,
             m: 0.05
         }
     }
 
+    getDefBreak(turns = 2): Effect {
+        return {
+            imgSrc: "../../../assets/resourses/imgs/icons/def_break.png",
+            type: this.effects.defBreak,
+            duration: turns,
+            passive: true,
+            m: 0.5
+        }
+    }
+
     getDebuffDmg(name: string, health: number, m: number): number {
         return {
-            "Горение": this.getBurningDmg(health, m),
-            "Восстановление": this.getRestoredHealth(health, m)
+            [this.effects.burning]: this.getBurningDmg(health, m),
+            [this.effects.healthRestore]: this.getRestoredHealth(health, m)
         }[name] as number
     }
 
@@ -59,7 +81,7 @@ export class HeroesService {
         return {
             ...this.getBasicUserConfig(),
             attackRange: 1,
-            ignoredDebuffs: [this.getBurning().type],
+            ignoredDebuffs: [this.effects.burning],
             reducedDmgFromDebuffs: [],
             dmgReducedBy: 0.1,
             canCross: 2,
@@ -77,7 +99,9 @@ export class HeroesService {
                     dmgM: 0.7,
                     cooldown: 0,
                     remainingCooldown: 0,
-                    debuffs: [this.getBurning(1)]
+                    debuffs: [this.getBurning(1)],
+                    description: "Наносит противнику урон в размере 70% от показателя атаки и накладывает на него штраф "
+                        + this.effects.burning + " на 1 ход."
                 },
                 {
                     name: "Дракарис",
@@ -88,7 +112,9 @@ export class HeroesService {
                     attackInRange: true,
                     attackRange: 2,
                     attackInRangeM: 0.9,
-                    debuffs: [this.getBurning(2), this.getBurning(2)]
+                    debuffs: [this.getBurning(2), this.getBurning(2)],
+                    description: "Наносит целевому врагу урон в размере 200% от показателя атаки и 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+                        + this.effects.burning + " на 2 хода."
                 },
                 {
                     name: "Таргариен",
@@ -99,12 +125,55 @@ export class HeroesService {
                     debuffs: [],
                     buffs: [this.getHealthRestore()],
                     passive: true,
-                    restoreSkill: true
+                    restoreSkill: true,
+                    description: "Перед началом хода восстанавливает 5% от максимального здоровья. Получает на 10% меньше урона от атак противников. На этого героя невозможно наложить штраф "
+                        + this.effects.burning + ". В начале игры получает бонус " + this.effects.healthRestore + " на 2 раунда."
+                }
+            ],
+            effects: [this.getHealthRestore(2)]
+        }
+    }
+
+    getWhiteWolf(): Unit {
+        return {
+            ...this.getBasicUserConfig(),
+            attackRange: 1,
+            ignoredDebuffs: [],
+            reducedDmgFromDebuffs: [],
+            dmgReducedBy: 0,
+            canCross: 2,
+            health: 5837,
+            attack: 1029,
+            defence: 785,
+            maxHealth: 5837,
+            imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png",
+            fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png",
+            name: "Белый Волк",
+            skills: [
+                {
+                    name: "Укус зверя",
+                    imgSrc: "../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png",
+                    dmgM: 1,
+                    cooldown: 0,
+                    remainingCooldown: 0,
+                    debuffs: [],
+                    description: "Наносит противнику урон в размере 100% от показателя атаки."
+                },
+                {
+                    name: "Рваная рана",
+                    imgSrc: "../../../assets/resourses/imgs/heroes/wolf/skills/wolf_def_attack.png",
+                    dmgM: 1.2,
+                    cooldown: 3,
+                    remainingCooldown: 0,
+                    debuffs: [this.getDefBreak()],
+                    description: "Наносит врагу урон в размере 120% от показателя атаки, накладывает на врага штраф "
+                        + this.effects.defBreak + " на 2 хода."
                 }
             ],
             effects: []
         }
     }
+
 
     getBasicUserConfig() {
         return {
