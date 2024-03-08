@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
-import {Unit} from "../../services/game/game-field.service";
+import {Unit} from "../../services/game-field/game-field.service";
 import {HeroesService} from "../../services/heroes/heroes.service";
 
 interface DayReward {

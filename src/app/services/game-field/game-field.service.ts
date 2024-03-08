@@ -80,6 +80,7 @@ export class GameFieldService {
     }
 
     getDamage(attack: number, defence: number, unit: Unit) {
+        debugger
         const blockedDamage = defence * 0.4;
         if (blockedDamage - 200 > attack) {
             return +(100 + this.getRandomInt(10, 70)).toFixed(0);
@@ -89,7 +90,7 @@ export class GameFieldService {
         }
     }
 
-    getReducedDmg(unit: Unit, dmg: number, debuff?: Effect) {
+    getReducedDmgForEffects(unit: Unit, dmg: number, debuff?: Effect) {
         let isDmgReduced = false;
         if (debuff) {
             isDmgReduced = unit.reducedDmgFromDebuffs.includes(debuff.type);

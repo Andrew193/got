@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Effect, Skill, Unit} from "../game/game-field.service";
+import {Effect, Skill, Unit} from "../game-field/game-field.service";
 
 @Injectable({
     providedIn: 'root'

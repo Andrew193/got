@@ -1,0 +1,9 @@
+<ng-template #template>
+    <div class="modal-header {{modalConfig.headerClass}}">
+        <h4 class="modal-title pull-left">{{modalConfig.headerMessage}}</h4>
+    </div>
+    <div class="modal-body">
+        This is a modal.
+        <button class="btn btn-success" (click)="modalRef?.hide()">{{modalConfig.closeBtnLabel}}</button>
+    </div>
+</ng-template>
