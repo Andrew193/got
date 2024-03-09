@@ -42,10 +42,15 @@ export class GameFieldComponent {
                 private heroService: HeroesService,
                 private gameActionService: GameService) {
         this.userSample = this.heroService.getLadyOfDragonStone()
-        this.userUnits = [this.userSample];
+        this.userUnits = [this.userSample, {...this.userSample, x: 3, y: 7}];
         this.aiUnits = [{
-            ...this.heroService.getBrownWolf(),
+            ...this.heroService.getFreeTrapper(),
             x: 3,
+            y: 9,
+            user: false
+        }, {
+            ...this.heroService.getFreeTrapper(),
+            x: 4,
             y: 9,
             user: false
         }]
@@ -61,19 +66,9 @@ export class GameFieldComponent {
         const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, this.clickedEnemy);
         const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.selectedEntity);
         const skillIndex = this.fieldService.findSkillIndex(this.userUnits[userIndex].skills, skill);
-
-        this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
-        if (skill.attackInRange) {
-            const tilesInRange = this.fieldService.getFieldsInRadius(this.gameConfig, this.fieldService.getPositionFromUnit(this.clickedEnemy as Unit), skill.attackRange as number, true)
-            const enemiesInRange: Unit[] = tilesInRange.map((tile) => {
-                return this.aiUnits.find((unit) => unit.x === tile.i && unit.y === tile.j && !unit.user)
-            }).filter((e) => !!e) as Unit[];
-
-            for (let i = 0; i < enemiesInRange.length; i++) {
-                const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, enemiesInRange[i]);
-                this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * (skill.attackInRangeM || 0), this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
-            }
-        }
+        this.addBuffToUnit(this.userUnits, userIndex, skill)
+        this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(this.userUnits[userIndex].attack, this.userUnits[userIndex].effects) * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
+        this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, true, this.userUnits[userIndex])
         const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill);
         this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
 
@@ -81,6 +76,21 @@ export class GameFieldComponent {
         this.updateGridUnits(this.userUnits);
         this.dropEnemy();
         this.checkAiMoves();
+    }
+
+    universalRangeAttack(skill: Skill, clickedEnemy: Unit, enemiesArray: Unit[], userCheck: boolean, isUser: boolean, attacker: Unit) {
+        debugger
+        if (skill.attackInRange) {
+            const tilesInRange = this.fieldService.getFieldsInRadius(this.gameConfig, this.fieldService.getPositionFromUnit(clickedEnemy as Unit), skill.attackRange as number, true)
+            const enemiesInRange: Unit[] = tilesInRange.map((tile) => {
+                return enemiesArray.find((unit) => unit.x === tile.i && unit.y === tile.j && unit.user === userCheck)
+            }).filter((e) => !!e) as Unit[];
+            for (let i = 0; i < enemiesInRange.length; i++) {
+                const enemyIndex = this.fieldService.findUnitIndex(enemiesArray, enemiesInRange[i]);
+                this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(attacker.attack, attacker.effects) * (skill.attackInRangeM || 0), enemiesArray[enemyIndex].defence, enemiesArray, isUser, skill)
+                this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs)
+            }
+        }
     }
 
     updateSkillsCooldown(originalSkills: Skill[], units: Unit[], unitIndex: number, skillIndex: number, skill: Skill, addTurn = false, ignoreEffect = false) {
@@ -95,10 +105,19 @@ export class GameFieldComponent {
         return skills;
     }
 
-    addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill) {
+    addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill, addRangeEffects = false) {
         units[unitIndex] = {
             ...units[unitIndex],
-            effects: this.heroService.getEffectsWithIgnoreFilter(units[unitIndex], skill)
+            effects: this.heroService.getEffectsWithIgnoreFilter(units[unitIndex], skill, addRangeEffects)
+        }
+    }
+
+    addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill) {
+        if (skill.buffs?.length) {
+            units[unitIndex] = {
+                ...units[unitIndex],
+                effects: [...units[unitIndex].effects, ...(skill.buffs || [])]
+            }
         }
     }
 
@@ -118,7 +137,6 @@ export class GameFieldComponent {
     }
 
     highlightMakeMove(entity: Unit, event?: MouseEvent) {
-        debugger
         if (this.showAttackBar) {
             this.dropEnemy();
         }
@@ -140,7 +158,7 @@ export class GameFieldComponent {
                 this.ignoreMove = false;
                 this.selectedEntity = entity;
                 this.possibleMoves = this.getPossibleMoves(entity);
-                if(entity.attackRange >= entity.canCross) {
+                if (entity.attackRange >= entity.canCross) {
                     this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
                 }
                 if (entity?.canMove === false) {
@@ -171,12 +189,7 @@ export class GameFieldComponent {
                         this.updateGridUnits(this.userUnits);
                     }
                 }
-
-                // this.possibleAttackMoves = this.possibleAttackMoves.filter((possibleAttackMove) => {
-                //     return this.possibleMoves.findIndex((move) => move.i === possibleAttackMove.i && move.j === possibleAttackMove.j) === -1
-                // })
                 this.highlightCells.bind(this)(this.possibleMoves, entity.user ? "green-b" : "red-b")
-              //  this.highlightCellsInnerFunction(this.possibleAttackMoves, 'red-b')
             }
 
             if (this.showAttackBar) {
@@ -257,7 +270,7 @@ export class GameFieldComponent {
     attackUser() {
         debugger
         this._turnCount.next(this.turnCount + 1);
-        const usedAiSkills: { skill: Skill, unitIndex: number }[] = [];
+        const usedAiSkills: { skill: Skill, unit: Unit }[] = [];
         this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
 
         const makeAiMove = (aiUnit: Unit, index: number) => {
@@ -289,10 +302,13 @@ export class GameFieldComponent {
                             const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
                             const aiSkillIndex = this.fieldService.findSkillIndex(aiUnit.skills, aiSkill);
                             //Attack user's unit
-                            this.makeAttackMove(userIndex, aiUnit.attack * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false, aiSkill)
+                            this.addBuffToUnit(this.aiUnits, index, aiSkill)
+                            aiUnit = this.aiUnits[index];
+                            this.makeAttackMove(userIndex, this.heroService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false, aiSkill)
+                            this.universalRangeAttack(aiSkill, this.userUnits[userIndex] as Unit, this.userUnits, true, false, aiUnit)
                             //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
                             const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill, true, true)
-                            usedAiSkills.push({skill: aiSkill, unitIndex: userIndex});
+                            usedAiSkills.push({skill: aiSkill, unit: this.userUnits[userIndex]});
                             //Update AI units and game config
                             this.aiUnits[index] = {...this.aiUnits[index], canAttack: false, skills: skills};
                             this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
@@ -320,7 +336,10 @@ export class GameFieldComponent {
                 for (let i = 0; i < this.userUnits.length; i++) {
                     this.checkDebuffs(this.userUnits[i], this.userUnits, i);
                 }
-                usedAiSkills.forEach((config) => this.addEffectToUnit(this.userUnits, config.unitIndex, config.skill))
+                usedAiSkills.forEach((config) => {
+                    const unitIndex = this.userUnits.findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
+                    this.addEffectToUnit(this.userUnits, unitIndex, config.skill)
+                })
                 //User's units restore health from their passive skills
                 this.gameActionService.checkRestorePassiveSkills(this.userUnits, this.log)
                 //Update grid config
@@ -381,19 +400,22 @@ export class GameFieldComponent {
     makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean, skill: Skill) {
         const fixedDefence = this.gameActionService.getFixedDefence(defence, dmgTaker[enemyIndex])
         const damage = this.fieldService.getDamage(attack, fixedDefence, dmgTaker[enemyIndex]);
-        let newHealth = this.heroService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
-        if (damage) {
-            this.log.push({
-                isUser: isUser, imgSrc: skill.imgSrc,
-                message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) получил ${damage} ед. урона!`
-            })
-        }
-        dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth};
-        if (!newHealth) {
-            this.log.push({
-                isUser: isUser, imgSrc: skill.imgSrc,
-                message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) отправился к семерым!`
-            })
+
+        if (dmgTaker[enemyIndex].health) {
+            let newHealth = this.heroService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
+            if (damage) {
+                this.log.push({
+                    isUser: isUser, imgSrc: skill.imgSrc,
+                    message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) получил ${damage} ед. урона!`
+                })
+            }
+            dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth};
+            if (!newHealth) {
+                this.log.push({
+                    isUser: isUser, imgSrc: skill.imgSrc,
+                    message: `${!isUser ? 'Игрок' : 'Бот'} ${dmgTaker[enemyIndex].name} (${dmgTaker[enemyIndex].x + 1})(${dmgTaker[enemyIndex].y + 1}) отправился к семерым!`
+                })
+            }
         }
     }
 

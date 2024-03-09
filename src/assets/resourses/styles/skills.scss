@@ -17,3 +17,24 @@
     font-weight: bold;
   }
 }
+
+
+.highlight-effect {
+  color: #b00202;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    color: #d20303;
+  }
+
+  &:before {
+    position: relative;
+    content: '[';
+  }
+
+  &:after {
+    position: relative;
+    content: ']';
+  }
+}

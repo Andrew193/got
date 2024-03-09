@@ -22,6 +22,7 @@ export interface Skill {
     imgSrc: string,
     dmgM: number,
     debuffs?: Effect[],
+    inRangeDebuffs?: Effect[],
     buffs?: Effect[],
     cooldown: number,
     remainingCooldown: number,

@@ -29,7 +29,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
     isHeroPreview: boolean = false;
     rewardHero: Unit | null = null;
 
-    constructor(private heroService: HeroesService,
+    constructor(public heroService: HeroesService,
                 private render2: Renderer2) {
     }
 

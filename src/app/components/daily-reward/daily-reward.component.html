@@ -62,7 +62,12 @@
                 </div>
                 <div style="padding: 0px 20px" class="col-11">
                   <span class="defence-color">{{skill.name}}</span>
-                  <p>{{skill.description}}</p>
+                  <p class="flex-wrap">
+                    <ng-container *ngFor="let word of skill.description!.split(' '); let i = index">
+                      <span [ngClass]="{'highlight-effect': heroService.effectsToHighlight.includes(word)}">{{ word }}</span>
+                      <span *ngIf="i !== skill.description!.split(' ').length - 1">&nbsp;</span>
+                    </ng-container>
+                  </p>
                 </div>
               </div>
             </div>
