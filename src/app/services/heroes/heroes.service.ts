@@ -8,7 +8,8 @@ export class HeroesService {
     effects = {
         burning: "Горение",
         healthRestore: "Восстановление",
-        defBreak: "Разлом брони"
+        defBreak: "Разлом брони",
+        bleeding: "Кровотечение"
     }
 
     constructor() {
@@ -33,8 +34,8 @@ export class HeroesService {
         return +(health > maxHealth ? maxHealth : health).toFixed(0);
     }
 
-    getRestoredHealth(health: number, m: number) {
-        return +(health * m).toFixed(0);
+    getNumberForCommonEffects(health: number, m: number) {
+        return +(health * m).toFixed(0)
     }
 
     getHealthRestore(turns = 1): Effect {
@@ -52,6 +53,15 @@ export class HeroesService {
             imgSrc: "../../../assets/resourses/imgs/icons/burning.png",
             type: this.effects.burning,
             duration: turns,
+            m: 0.1
+        }
+    }
+
+    getBleeding(turns = 2): Effect {
+        return {
+            imgSrc: "../../../assets/resourses/imgs/icons/bleeding.png",
+            type: this.effects.bleeding,
+            duration: turns,
             m: 0.05
         }
     }
@@ -68,13 +78,10 @@ export class HeroesService {
 
     getDebuffDmg(name: string, health: number, m: number): number {
         return {
-            [this.effects.burning]: this.getBurningDmg(health, m),
-            [this.effects.healthRestore]: this.getRestoredHealth(health, m)
+            [this.effects.burning]: this.getNumberForCommonEffects(health, m),
+            [this.effects.bleeding]: this.getNumberForCommonEffects(health, m),
+            [this.effects.healthRestore]: this.getNumberForCommonEffects(health, m)
         }[name] as number
-    }
-
-    getBurningDmg(health: number, m: number) {
-        return +(health * m).toFixed(0)
     }
 
     getLadyOfDragonStone(): Unit {
@@ -141,7 +148,7 @@ export class HeroesService {
             ignoredDebuffs: [],
             reducedDmgFromDebuffs: [],
             dmgReducedBy: 0,
-            canCross: 2,
+            canCross: 3,
             health: 5837,
             attack: 1029,
             defence: 785,
@@ -156,8 +163,9 @@ export class HeroesService {
                     dmgM: 1,
                     cooldown: 0,
                     remainingCooldown: 0,
-                    debuffs: [],
-                    description: "Наносит противнику урон в размере 100% от показателя атаки."
+                    debuffs: [this.getBleeding(1)],
+                    description: "Наносит противнику урон в размере 100% от показателя атаки, накладывает на врага штраф "
+                        + this.effects.bleeding + " на 1 ход."
                 },
                 {
                     name: "Рваная рана",
@@ -174,6 +182,35 @@ export class HeroesService {
         }
     }
 
+    getBrownWolf(): Unit {
+        return {
+            ...this.getBasicUserConfig(),
+            attackRange: 1,
+            ignoredDebuffs: [],
+            reducedDmgFromDebuffs: [],
+            dmgReducedBy: 0,
+            canCross: 2,
+            health: 4837,
+            attack: 899,
+            defence: 685,
+            maxHealth: 4837,
+            imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png",
+            fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png",
+            name: "Бурый Волк",
+            skills: [
+                {
+                    name: "Укус",
+                    imgSrc: "../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png",
+                    dmgM: 1,
+                    cooldown: 0,
+                    remainingCooldown: 0,
+                    debuffs: [],
+                    description: "Наносит противнику урон в размере 100% от показателя атаки."
+                }
+            ],
+            effects: []
+        }
+    }
 
     getBasicUserConfig() {
         return {

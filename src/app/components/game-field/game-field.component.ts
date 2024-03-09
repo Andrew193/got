@@ -43,7 +43,7 @@ export class GameFieldComponent {
         this.userSample = this.heroService.getLadyOfDragonStone()
         this.userUnits = [this.userSample];
         this.aiUnits = [{
-            ...this.heroService.getWhiteWolf(),
+            ...this.heroService.getBrownWolf(),
             x: 3,
             y: 9,
             user: false
@@ -71,10 +71,9 @@ export class GameFieldComponent {
             for (let i = 0; i < enemiesInRange.length; i++) {
                 const enemyIndex = this.fieldService.findUnitIndex(this.aiUnits, enemiesInRange[i]);
                 this.makeAttackMove(enemyIndex, this.userUnits[userIndex].attack * (skill.attackInRangeM || 0), this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
-                this.addEffectToUnit(this.aiUnits, enemyIndex, skill);
             }
         }
-        const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill)
+        const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill);
         this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
 
         this.updateGridUnits(this.aiUnits);
@@ -83,9 +82,11 @@ export class GameFieldComponent {
         this.checkAiMoves();
     }
 
-    updateSkillsCooldown(originalSkills: Skill[], units: Unit[], unitIndex: number, skillIndex: number, skill: Skill, addTurn = false) {
+    updateSkillsCooldown(originalSkills: Skill[], units: Unit[], unitIndex: number, skillIndex: number, skill: Skill, addTurn = false, ignoreEffect = false) {
         const skills = createDeepCopy(originalSkills);
-        this.addEffectToUnit(units, unitIndex, skill);
+        if (!ignoreEffect) {
+            this.addEffectToUnit(units, unitIndex, skill);
+        }
         skills[skillIndex] = {
             ...skills[skillIndex],
             remainingCooldown: skills[skillIndex].cooldown ? addTurn ? skills[skillIndex].cooldown + 1 : skills[skillIndex].cooldown : 0
@@ -193,8 +194,7 @@ export class GameFieldComponent {
     }
 
     getEnemyWhenCannotMove(unit: Unit, arrayOfTargets: Unit[]) {
-        const possibleMoves = this.getPossibleMoves(unit)
-        return possibleMoves.find((move) => arrayOfTargets.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
+        return this.getPossibleMoves(unit).find((move) => arrayOfTargets.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
     }
 
     moveEntity(tile: Tile) {
@@ -247,6 +247,7 @@ export class GameFieldComponent {
     attackUser() {
         debugger
         this._turnCount.next(this.turnCount + 1);
+        const usedAiSkills: { skill: Skill, unitIndex: number }[] = [];
         this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
 
         const makeAiMove = (aiUnit: Unit, index: number) => {
@@ -280,7 +281,8 @@ export class GameFieldComponent {
                             //Attack user's unit
                             this.makeAttackMove(userIndex, aiUnit.attack * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false, aiSkill)
                             //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
-                            const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill, true)
+                            const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill, true, true)
+                            usedAiSkills.push({skill: aiSkill, unitIndex: userIndex});
                             //Update AI units and game config
                             this.aiUnits[index] = {...this.aiUnits[index], canAttack: false, skills: skills};
                             this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
@@ -308,6 +310,7 @@ export class GameFieldComponent {
                 for (let i = 0; i < this.userUnits.length; i++) {
                     this.checkDebuffs(this.userUnits[i], this.userUnits, i);
                 }
+                usedAiSkills.forEach((config) => this.addEffectToUnit(this.userUnits, config.unitIndex, config.skill))
                 //User's units restore health from their passive skills
                 this.gameActionService.checkRestorePassiveSkills(this.userUnits, this.log)
                 //Update grid config
@@ -337,7 +340,7 @@ export class GameFieldComponent {
                     this.gameActionService.checkEffectsForHealthRestore(unit, this.log);
                 } else {
                     array[i] = {...effect, duration: effect.duration - 1}
-                    if(!effect.passive) {
+                    if (!effect.passive) {
                         const additionalDmg = this.gameActionService.getReducedDmgForEffects(unit, this.heroService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
                         additionalDmg && this.log.push({
                             isUser: !unit.user, imgSrc: effect.imgSrc,

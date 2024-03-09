@@ -110,9 +110,9 @@
           <div style="width: fit-content" class="position-relative">
             <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img col-3"
                  [ngClass]="{'disabled': !hero.health}"/>
-            <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="hero.canMove"
+            <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move" *ngIf="hero.canMove && hero.health"
                  class="action-icon position-absolute can-move-icon"/>
-            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="hero.canAttack"
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack" *ngIf="hero.canAttack && hero.health"
                  class="action-icon position-absolute can-attack-icon"/>
           </div>
           <div class="col-9">

@@ -43,7 +43,7 @@ export class GameService {
     }
 
     restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: Skill) {
-        const restoredHealth = this.heroService.getRestoredHealth(unit.maxHealth, buff.m);
+        const restoredHealth = this.heroService.getNumberForCommonEffects(unit.maxHealth, buff.m);
         this.logRestoreHealth(logs, skill, unit, restoredHealth);
         unit.health = this.heroService.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth)
         return unit;
