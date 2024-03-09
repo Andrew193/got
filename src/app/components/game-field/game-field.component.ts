@@ -36,6 +36,7 @@ export class GameFieldComponent {
     userUnits: Unit[] = [];
     aiUnits: Unit[] = [];
     possibleMoves: Position[] = [];
+    possibleAttackMoves: Position[] = [];
 
     constructor(private fieldService: GameFieldService,
                 private heroService: HeroesService,
@@ -117,6 +118,7 @@ export class GameFieldComponent {
     }
 
     highlightMakeMove(entity: Unit, event?: MouseEvent) {
+        debugger
         if (this.showAttackBar) {
             this.dropEnemy();
         }
@@ -138,6 +140,9 @@ export class GameFieldComponent {
                 this.ignoreMove = false;
                 this.selectedEntity = entity;
                 this.possibleMoves = this.getPossibleMoves(entity);
+                if(entity.attackRange >= entity.canCross) {
+                    this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
+                }
                 if (entity?.canMove === false) {
                     let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
                     if (enemyWhenCannotMove.length) {
@@ -167,7 +172,11 @@ export class GameFieldComponent {
                     }
                 }
 
+                // this.possibleAttackMoves = this.possibleAttackMoves.filter((possibleAttackMove) => {
+                //     return this.possibleMoves.findIndex((move) => move.i === possibleAttackMove.i && move.j === possibleAttackMove.j) === -1
+                // })
                 this.highlightCells.bind(this)(this.possibleMoves, entity.user ? "green-b" : "red-b")
+              //  this.highlightCellsInnerFunction(this.possibleAttackMoves, 'red-b')
             }
 
             if (this.showAttackBar) {
@@ -182,7 +191,7 @@ export class GameFieldComponent {
     }
 
     getPossibleMoves(entity: Unit) {
-        return this.showPossibleMoves(this.fieldService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross : 1, !entity?.canMove);
+        return this.showPossibleMoves(this.fieldService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross : entity.attackRange, !entity?.canMove);
     }
 
     checkAndShowAttackBar(clickedTile: Unit) {
@@ -198,6 +207,7 @@ export class GameFieldComponent {
     }
 
     moveEntity(tile: Tile) {
+        debugger
         //Can not move AI units and dead units
         this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
         if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove && !!this.possibleMoves.find((move) => move.i === tile.x && move.j === tile.y)) {
@@ -357,11 +367,15 @@ export class GameFieldComponent {
 
     highlightCells(path: Position[], className: string) {
         this.fieldService.unhighlightCells.bind(this)();
+        this.highlightCellsInnerFunction(path, className);
+        this.possibleMoves = path;
+    }
+
+    highlightCellsInnerFunction(path: Position[], className: string) {
         path.forEach((point) => this.gameConfig[point.i][point.j] = {
             ...this.gameConfig[point.i][point.j],
             highlightedClass: className
         })
-        this.possibleMoves = path;
     }
 
     makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], isUser: boolean, skill: Skill) {
