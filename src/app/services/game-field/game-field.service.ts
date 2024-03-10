@@ -32,7 +32,7 @@ export interface Skill {
     attackInRange?: boolean,
     attackRange?: number,
     attackInRangeM?: number,
-    description?: string
+    description: string
 }
 
 export interface Unit {
@@ -52,6 +52,8 @@ export interface Unit {
     name: string,
     attack: number,
     defence: number,
+    rage: number,
+    willpower: number,
     fullImgSrc?: string,
     skills: Skill[],
     effects: Effect[]

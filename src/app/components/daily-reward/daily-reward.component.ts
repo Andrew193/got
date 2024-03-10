@@ -4,6 +4,8 @@ import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
 import {Unit} from "../../services/game-field/game-field.service";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
+import {TooltipModule} from "ngx-bootstrap/tooltip";
+import {DomSanitizer} from "@angular/platform-browser";
 
 interface DayReward {
     copperCoin: number,
@@ -17,7 +19,7 @@ interface DayReward {
 @Component({
     selector: 'daily-reward',
     standalone: true,
-    imports: [CommonModule, ModalModule, OutsideClickDirective],
+    imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule],
     templateUrl: './daily-reward.component.html',
     styleUrl: './daily-reward.component.scss'
 })
@@ -27,12 +29,22 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
     @ViewChild('heroInFrame') heroInFrame: any;
     daysInRow: number = 1;
     isHeroPreview: boolean = false;
-    rewardHero: Unit | null = null;
+    rewardHero: Unit;
 
     constructor(public heroService: HeroesService,
+                private sanitizer:DomSanitizer,
                 private render2: Renderer2) {
+        this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
     }
 
+    highlightPhrase(text: string) {
+        for (let i = 0; i < this.heroService.effectsToHighlight.length; i++) {
+            const effect = this.heroService.effectsToHighlight[i];
+            text = text.replaceAll(effect, `<span${effect}</span`)
+        }
+
+        return this.sanitizer.bypassSecurityTrustHtml(text.replaceAll("<span", "<span class='highlight-effect'>").replaceAll("</span", "</span>"))
+    }
 
     showHeroPreview() {
         this.isHeroPreview = !this.isHeroPreview;

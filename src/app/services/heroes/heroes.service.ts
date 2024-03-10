@@ -12,6 +12,7 @@ export class HeroesService {
         bleeding: "Кровотечение",
         poison: "Отравление",
         attackBuff: "Бонус атаки",
+        defBuff: "Бонус защиты",
     }
 
     get effectsToHighlight() {
@@ -35,6 +36,11 @@ export class HeroesService {
     getBoostedAttack(attack: number, effects: Effect[]) {
         const shouldBoostAttack = effects.findIndex((effect) => effect.type === this.effects.attackBuff);
         return shouldBoostAttack !== -1 ? attack * 1.5 : attack;
+    }
+
+    getBoostedDefence(defence: number, effects: Effect[]) {
+        const shouldBoostAttack = effects.findIndex((effect) => effect.type === this.effects.defBuff);
+        return shouldBoostAttack !== -1 ? defence * 1.5 : defence;
     }
 
     getHealthAfterDmg(health: number, dmg: number) {
@@ -106,6 +112,16 @@ export class HeroesService {
         }
     }
 
+    getDefBuff(turns = 2): Effect {
+        return {
+            imgSrc: "../../../assets/resourses/imgs/icons/def_buff.png",
+            type: this.effects.defBuff,
+            duration: turns,
+            passive: true,
+            m: 1.5
+        }
+    }
+
     getDebuffDmg(name: string, health: number, m: number): number {
         return {
             [this.effects.burning]: this.getNumberForCommonEffects(health, m),
@@ -120,13 +136,15 @@ export class HeroesService {
             ...this.getBasicUserConfig(),
             attackRange: 1,
             ignoredDebuffs: [this.effects.burning],
-            reducedDmgFromDebuffs: [],
+            reducedDmgFromDebuffs: [this.effects.bleeding],
             dmgReducedBy: 0.1,
             canCross: 2,
             health: 9837,
             attack: 1529,
-            defence: 1185,
+            defence: 1385,
             maxHealth: 9837,
+            rage: 25,
+            willpower: 25,
             imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/LadyOfDragonstone_DaenarysTargaryen.png",
             name: "Дейнерис Таргариен ( Леди Драконьего Камня )",
@@ -141,9 +159,10 @@ export class HeroesService {
                     attackRange: 1,
                     attackInRangeM: 0.5,
                     debuffs: [this.getBurning(1)],
-                    inRangeDebuffs: [],
+                    inRangeDebuffs: [this.getDefBreak(1)],
                     description: "Наносит противнику урон в размере 100% от показателя атаки и накладывает на него штраф "
-                        + this.effects.burning + " на 1 ход. Также атакует врагов в радиусе 1 клетки на 50% от показателя атаки."
+                        + this.effects.burning + " на 1 ход. Также атакует врагов в радиусе 1 клетки на 50% от показателя атаки,"
+                        + " накладывает на них штраф " + this.effects.defBreak + " на 1 ход."
                 },
                 {
                     name: "Дракарис",
@@ -154,12 +173,12 @@ export class HeroesService {
                     attackInRange: true,
                     attackRange: 2,
                     attackInRangeM: 0.9,
-                    buffs: [this.getAttackBuff()],
+                    buffs: [this.getAttackBuff(), this.getDefBuff()],
                     debuffs: [this.getBurning(2), this.getBurning(2), this.getDefBreak()],
                     inRangeDebuffs: [this.getBleeding(2)],
                     description: "Наносит целевому врагу урон в размере 200% от показателя атаки, накладывает на него 2 штрафа "
                         + this.effects.burning + " и " + this.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывае на них штраф "
-                        + this.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effects.attackBuff + " на 2 хода."
+                        + this.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effects.attackBuff + " и " + this.effects.defBuff + " на 2 хода."
                 },
                 {
                     name: "Таргариен",
@@ -171,8 +190,9 @@ export class HeroesService {
                     buffs: [this.getHealthRestore()],
                     passive: true,
                     restoreSkill: true,
-                    description: "Перед началом хода восстанавливает 5% от максимального здоровья. Получает на 10% меньше урона от атак противников. На этого героя невозможно наложить штраф "
-                        + this.effects.burning + ". В начале игры получает бонус " + this.effects.healthRestore + " на 2 раунда."
+                    description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effects.bleeding + ". На этого героя невозможно наложить штраф "
+                        + this.effects.burning + ". В начале игры получает бонус " + this.effects.healthRestore + " на 2 раунда. Имеет шанс воскреснуть после смертельного удара. "
+                        + "Перед началом каждого хода получает бонус " + this.effects.healthRestore + " на 1 ход и мгновенно активирует его."
                 }
             ],
             effects: [this.getHealthRestore(2)]
@@ -191,6 +211,8 @@ export class HeroesService {
             attack: 1029,
             defence: 785,
             maxHealth: 5837,
+            rage: 15,
+            willpower: 0,
             imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png",
             name: "Белый Волк",
@@ -232,6 +254,8 @@ export class HeroesService {
             attack: 899,
             defence: 685,
             maxHealth: 4837,
+            rage: 0,
+            willpower: 0,
             imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png",
             name: "Бурый Волк",
@@ -262,12 +286,14 @@ export class HeroesService {
             attack: 1299,
             defence: 995,
             maxHealth: 8169,
+            rage: 2,
+            willpower: 2,
             imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png",
             name: "Лучник Вольного Народа",
             skills: [
                 {
-                    name: "Выстрел",
+                    name: "Токсичный выстрел",
                     imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_c_skill.png",
                     dmgM: 1.5,
                     cooldown: 0,
@@ -285,7 +311,7 @@ export class HeroesService {
                     attackRange: 2,
                     attackInRangeM: 0.5,
                     debuffs: [this.getBleeding(), this.getDefBreak()],
-                    buffs: [this.getAttackBuff()],
+                    buffs: [],
                     inRangeDebuffs: [],
                     description: "Наносит противнику урон в размере 200% от показателя атаки, накладывает на врага штрафы: "
                         + this.effects.bleeding + " и " + this.effects.defBreak + " на 2 хода. Также атакует противников в радиусе 1 клетки на 50% от атаки."

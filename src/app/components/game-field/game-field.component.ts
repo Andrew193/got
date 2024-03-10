@@ -67,9 +67,9 @@ export class GameFieldComponent {
         const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.selectedEntity);
         const skillIndex = this.fieldService.findSkillIndex(this.userUnits[userIndex].skills, skill);
         this.addBuffToUnit(this.userUnits, userIndex, skill)
-        this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(this.userUnits[userIndex].attack, this.userUnits[userIndex].effects) * skill.dmgM, this.aiUnits[enemyIndex].defence, this.aiUnits, true, skill)
+        this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(this.userUnits[userIndex].attack, this.userUnits[userIndex].effects) * skill.dmgM, this.heroService.getBoostedDefence(this.aiUnits[enemyIndex].defence, this.aiUnits[enemyIndex].effects), this.aiUnits, true, skill)
         this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, true, this.userUnits[userIndex])
-        const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill);
+        const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(this.userUnits[userIndex].rage > this.aiUnits[enemyIndex].willpower));
         this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
 
         this.updateGridUnits(this.aiUnits);
@@ -79,7 +79,6 @@ export class GameFieldComponent {
     }
 
     universalRangeAttack(skill: Skill, clickedEnemy: Unit, enemiesArray: Unit[], userCheck: boolean, isUser: boolean, attacker: Unit) {
-        debugger
         if (skill.attackInRange) {
             const tilesInRange = this.fieldService.getFieldsInRadius(this.gameConfig, this.fieldService.getPositionFromUnit(clickedEnemy as Unit), skill.attackRange as number, true)
             const enemiesInRange: Unit[] = tilesInRange.map((tile) => {
@@ -87,8 +86,10 @@ export class GameFieldComponent {
             }).filter((e) => !!e) as Unit[];
             for (let i = 0; i < enemiesInRange.length; i++) {
                 const enemyIndex = this.fieldService.findUnitIndex(enemiesArray, enemiesInRange[i]);
-                this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(attacker.attack, attacker.effects) * (skill.attackInRangeM || 0), enemiesArray[enemyIndex].defence, enemiesArray, isUser, skill)
-                this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs)
+                this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(attacker.attack, attacker.effects) * (skill.attackInRangeM || 0), this.heroService.getBoostedDefence(enemiesArray[enemyIndex].defence, enemiesArray[enemyIndex].effects), enemiesArray, isUser, skill)
+               if(attacker.rage > enemiesArray[enemyIndex].willpower) {
+                   this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs)
+               }
             }
         }
     }
@@ -220,7 +221,6 @@ export class GameFieldComponent {
     }
 
     moveEntity(tile: Tile) {
-        debugger
         //Can not move AI units and dead units
         this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
         if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove && !!this.possibleMoves.find((move) => move.i === tile.x && move.j === tile.y)) {
@@ -268,9 +268,8 @@ export class GameFieldComponent {
     }
 
     attackUser() {
-        debugger
         this._turnCount.next(this.turnCount + 1);
-        const usedAiSkills: { skill: Skill, unit: Unit }[] = [];
+        const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
         this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
 
         const makeAiMove = (aiUnit: Unit, index: number) => {
@@ -304,11 +303,11 @@ export class GameFieldComponent {
                             //Attack user's unit
                             this.addBuffToUnit(this.aiUnits, index, aiSkill)
                             aiUnit = this.aiUnits[index];
-                            this.makeAttackMove(userIndex, this.heroService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.userUnits[userIndex].defence, this.userUnits, false, aiSkill)
+                            this.makeAttackMove(userIndex, this.heroService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.heroService.getBoostedDefence(this.userUnits[userIndex].defence, this.userUnits[userIndex].effects), this.userUnits, false, aiSkill)
                             this.universalRangeAttack(aiSkill, this.userUnits[userIndex] as Unit, this.userUnits, true, false, aiUnit)
                             //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
                             const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill, true, true)
-                            usedAiSkills.push({skill: aiSkill, unit: this.userUnits[userIndex]});
+                            usedAiSkills.push({skill: aiSkill, unit: this.userUnits[userIndex], AI: aiUnit});
                             //Update AI units and game config
                             this.aiUnits[index] = {...this.aiUnits[index], canAttack: false, skills: skills};
                             this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
@@ -338,7 +337,9 @@ export class GameFieldComponent {
                 }
                 usedAiSkills.forEach((config) => {
                     const unitIndex = this.userUnits.findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
-                    this.addEffectToUnit(this.userUnits, unitIndex, config.skill)
+                    if(config.AI.rage > this.userUnits[unitIndex].willpower) {
+                        this.addEffectToUnit(this.userUnits, unitIndex, config.skill)
+                    }
                 })
                 //User's units restore health from their passive skills
                 this.gameActionService.checkRestorePassiveSkills(this.userUnits, this.log)
