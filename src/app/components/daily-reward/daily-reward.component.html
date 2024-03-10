@@ -17,24 +17,29 @@
                         <div class="reward d-flex flex-column p-2">
                             <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
                             <span class="copper fw-bold">
-                <img src="assets/resourses/imgs/copper.png" alt="copperCoin"/>{{reward.copperCoin}}</span>
+                                <img src="assets/resourses/imgs/copper.png"
+                                     alt="copperCoin"/>{{reward.copperCoin}}</span>
                             <span class="silver fw-bold" *ngIf="reward.silverCoin">
-                <img src="assets/resourses/imgs/silver.png" alt="silverCoin"/>{{reward.silverCoin}}</span>
+                                <img src="assets/resourses/imgs/silver.png"
+                                     alt="silverCoin"/>{{reward.silverCoin}}</span>
                             <span class="gold fw-bold" *ngIf="reward.goldCoin">
-                <img src="assets/resourses/imgs/gold.png" alt="goldCoin"/>{{reward.goldCoin}}</span>
+                                <img src="assets/resourses/imgs/gold.png" alt="goldCoin"/>{{reward.goldCoin}}</span>
                             <span class="fw-bold summon-scroll" *ngIf="reward.summonScroll">
-                <img src="assets/resourses/imgs/icons/card_scroll.png"
-                     alt="summonScroll"/>{{reward.summonScroll}}</span>
+                                <img src="assets/resourses/imgs/icons/card_scroll.png"
+                                     alt="summonScroll"/>{{reward.summonScroll}}</span>
                             <span class="fw-bold summon-card" *ngIf="reward.summonCard">
-                <img src="assets/resourses/imgs/icons/hero_shard.png" alt="summonCard"/>{{reward.summonCard}}</span>
+                                <img src="assets/resourses/imgs/icons/hero_shard.png"
+                                     alt="summonCard"/>{{reward.summonCard}}</span>
                             <span class="fw-bold hero-shard" *ngIf="reward.heroShard">
-                <img src="assets/resourses/imgs/icons/hero_puzzle.png" alt="heroShard"/>{{reward.heroShard}}</span>
+                                <img src="assets/resourses/imgs/icons/hero_puzzle.png"
+                                     alt="heroShard"/>{{reward.heroShard}}</span>
                         </div>
                     </div>
                 </ng-container>
             </div>
             <div *ngIf="isHeroPreview">
                 <h4 id="dialog-sizes-name" class="modal-title text-center w-100 caption mb-2">{{rewardHero.name}}</h4>
+                <p style="font-weight: bold; color: white">{{rewardHero.description}}</p>
                 <div class="col-11 stats h-100 flex-row">
                     <div class="col-12 m-3">
                         <p class="text-center w-100 d-block" style="font-weight: bold">Базовые параметры</p>
@@ -97,7 +102,9 @@
                                 </div>
                                 <div class="col-11">
                                     <span class="defence-color">{{skill.name}} {{skill.passive ? '( P )' : ''}}</span>
-                                    <p class="d-inline-block" [innerHTML]="highlightPhrase(skill.description)"></p>
+                                    <div>
+                                        <p class="d-inline-block" [innerHTML]="highlightPhrase(skill.description)"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

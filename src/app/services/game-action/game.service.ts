@@ -25,6 +25,11 @@ export class GameService {
         return !!defReducedEffect ? defence * this.heroService.getMultForEffect(defReducedEffect): defence
     }
 
+    getFixedAttack(attack: number, unit: Unit) {
+        const attackReducedEffect = unit.effects.find((effect)=>effect.type === this.heroService.effects.attackBreak)
+        return !!attackReducedEffect ? attack * this.heroService.getMultForEffect(attackReducedEffect): attack
+    }
+
     //Check buffs ( health restore )
     checkRestorePassiveSkills(units: Unit[], logs: LogRecord[]) {
         for (let index = 0; index < units.length; index++) {

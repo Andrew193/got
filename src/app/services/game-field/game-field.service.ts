@@ -47,6 +47,7 @@ export interface Unit {
     canCross: number,
     canAttack: boolean,
     attackRange: number,
+    description: string,
     health: number,
     maxHealth: number,
     name: string,

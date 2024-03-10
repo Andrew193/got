@@ -13,6 +13,7 @@ export class HeroesService {
         poison: "Отравление",
         attackBuff: "Бонус атаки",
         defBuff: "Бонус защиты",
+        attackBreak: "Заржавелый Меч"
     }
 
     get effectsToHighlight() {
@@ -24,7 +25,8 @@ export class HeroesService {
 
     getMultForEffect(effect: Effect) {
         return {
-            [this.effects.defBreak]: this.getDefBreak().m
+            [this.effects.defBreak]: this.getDefBreak().m,
+            [this.effects.attackBreak]: this.getAttackBreak().m
         }[effect.type]
     }
 
@@ -102,6 +104,16 @@ export class HeroesService {
         }
     }
 
+    getAttackBreak(turns = 2): Effect {
+        return {
+            imgSrc: "../../../assets/resourses/imgs/icons/attack_break.png",
+            type: this.effects.attackBreak,
+            duration: turns,
+            passive: true,
+            m: 0.5
+        }
+    }
+
     getAttackBuff(turns = 2): Effect {
         return {
             imgSrc: "../../../assets/resourses/imgs/icons/attack_buff.png",
@@ -148,6 +160,7 @@ export class HeroesService {
             imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/LadyOfDragonstone_DaenarysTargaryen.png",
             name: "Дейнерис Таргариен ( Леди Драконьего Камня )",
+            description: "По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет ее совершать великие военные подвиги.",
             skills: [
                 {
                     name: "Сожжение",
@@ -177,7 +190,7 @@ export class HeroesService {
                     debuffs: [this.getBurning(2), this.getBurning(2), this.getDefBreak()],
                     inRangeDebuffs: [this.getBleeding(2)],
                     description: "Наносит целевому врагу урон в размере 200% от показателя атаки, накладывает на него 2 штрафа "
-                        + this.effects.burning + " и " + this.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывае на них штраф "
+                        + this.effects.burning + " и " + this.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
                         + this.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effects.attackBuff + " и " + this.effects.defBuff + " на 2 хода."
                 },
                 {
@@ -193,6 +206,72 @@ export class HeroesService {
                     description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effects.bleeding + ". На этого героя невозможно наложить штраф "
                         + this.effects.burning + ". В начале игры получает бонус " + this.effects.healthRestore + " на 2 раунда. Имеет шанс воскреснуть после смертельного удара. "
                         + "Перед началом каждого хода получает бонус " + this.effects.healthRestore + " на 1 ход и мгновенно активирует его."
+                }
+            ],
+            effects: [this.getHealthRestore(2)]
+        }
+    }
+
+    getTargaryenKnight(): Unit {
+        return {
+            ...this.getBasicUserConfig(),
+            attackRange: 1,
+            ignoredDebuffs: [this.effects.burning],
+            reducedDmgFromDebuffs: [this.effects.bleeding, this.effects.poison],
+            dmgReducedBy: 0.25,
+            canCross: 2,
+            health: 15837,
+            attack: 829,
+            defence: 2385,
+            maxHealth: 15837,
+            rage: 25,
+            willpower: 50,
+            imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/UI_Avatar_Unit_21.png",
+            fullImgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png",
+            name: "Рыцарь Таргариенов",
+            description: "Всесторонний воин Таргариенов из Королевских земель, этот рыцарь превосходен как в нападении, так и в защите.",
+            skills: [
+                {
+                    name: "Ярость дракона",
+                    imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_ActiveAbility_Intimidate.webp",
+                    dmgM: 0.9,
+                    cooldown: 0,
+                    remainingCooldown: 0,
+                    attackInRange: true,
+                    attackRange: 1,
+                    attackInRangeM: 0.9,
+                    debuffs: [this.getAttackBreak()],
+                    inRangeDebuffs: [this.getAttackBreak()],
+                    description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 90% от показателя атаки и накладывает на них штраф"
+                    + this.effects.attackBreak + "на 2 хода."
+                },
+                {
+                    name: "За Короля",
+                    imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_HeroicAbility_ShieldMastery.webp",
+                    dmgM: 1.5,
+                    cooldown: 3,
+                    remainingCooldown: 0,
+                    attackInRange: true,
+                    attackRange: 2,
+                    attackInRangeM: 0.9,
+                    buffs: [this.getDefBuff()],
+                    debuffs: [],
+                    inRangeDebuffs: [this.getDefBreak()],
+                    description: "Наносит целевому врагу урон в размере 150% от показателя атаки. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+                        + this.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effects.defBuff + " на 2 хода."
+                },
+                {
+                    name: "Щит короны",
+                    imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_PassiveAbility_ScaledArmor.webp",
+                    dmgM: 0,
+                    cooldown: 0,
+                    remainingCooldown: 0,
+                    debuffs: [],
+                    buffs: [],
+                    passive: true,
+                    restoreSkill: true,
+                    description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effects.bleeding + " и " + this.effects.poison +
+                        ". На этого героя невозможно наложить штраф " + this.effects.burning + "."
                 }
             ],
             effects: [this.getHealthRestore(2)]
@@ -216,6 +295,7 @@ export class HeroesService {
             imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png",
             name: "Белый Волк",
+            description: "Альфа стаи за стеной. Вселяет ужас в сердца людей и наносит ужасные раны в гневе.",
             skills: [
                 {
                     name: "Укус зверя",
@@ -259,6 +339,7 @@ export class HeroesService {
             imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png",
             name: "Бурый Волк",
+            description: "Волк стаи за стеной.",
             skills: [
                 {
                     name: "Укус",
@@ -286,11 +367,12 @@ export class HeroesService {
             attack: 1299,
             defence: 995,
             maxHealth: 8169,
-            rage: 2,
-            willpower: 2,
+            rage: 20,
+            willpower: 20,
             imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png",
             fullImgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png",
             name: "Лучник Вольного Народа",
+            description: "Лучник вольного народа изучал мастерство убийства с рождения. Он мастерски владеет природными ядами и умеет ставить капканы на животных и людей.",
             skills: [
                 {
                     name: "Токсичный выстрел",

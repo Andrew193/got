@@ -51,7 +51,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.rewardHero = this.heroService.getLadyOfDragonStone();
+        this.rewardHero = this.heroService.getTargaryenKnight();
     }
 
     ngAfterViewInit(): void {
