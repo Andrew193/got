@@ -15,7 +15,8 @@ export interface Effect {
     duration: number,
     m: number,
     restore?: boolean
-    passive?: boolean
+    passive?: boolean,
+    defBreak?: number
 }
 
 export interface Skill {

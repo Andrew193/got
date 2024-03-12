@@ -44,7 +44,7 @@ export class GameFieldComponent {
         this.userSample = this.heroService.getLadyOfDragonStone()
         this.userUnits = [this.heroService.getTargaryenKnight(), {...this.userSample, x: 3, y: 7}];
         this.aiUnits = [{
-            ...this.heroService.getGiant(),
+            ...this.heroService.getIceRiverHunter(),
             x: 3,
             y: 9,
             user: false
@@ -376,7 +376,13 @@ export class GameFieldComponent {
                             isUser: !unit.user, imgSrc: effect.imgSrc,
                             message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${effect.type}`
                         })
-                        unit.health = this.heroService.getHealthAfterDmg(unit.health, additionalDmg)
+                      debugger
+                        unit.health = this.heroService.getHealthAfterDmg(unit.health, additionalDmg);
+                        const recountedUnit = this.heroService.recountStatsBasedOnEffect(effect, unit);
+                        unit = recountedUnit.unit;
+                        if(recountedUnit.message) {
+                          this.log.push({isUser: !unit.user, imgSrc: effect.imgSrc, message: recountedUnit.message})
+                        }
                     }
                 }
             }
