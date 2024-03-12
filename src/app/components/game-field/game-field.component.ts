@@ -44,7 +44,7 @@ export class GameFieldComponent {
         this.userSample = this.heroService.getLadyOfDragonStone()
         this.userUnits = [this.heroService.getTargaryenKnight(), {...this.userSample, x: 3, y: 7}];
         this.aiUnits = [{
-            ...this.heroService.getFreeTrapper(),
+            ...this.heroService.getGiant(),
             x: 3,
             y: 9,
             user: false
@@ -217,7 +217,7 @@ export class GameFieldComponent {
     }
 
     getEnemyWhenCannotMove(unit: Unit, arrayOfTargets: Unit[]) {
-        return this.getPossibleMoves(unit).find((move) => arrayOfTargets.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
+        return this.getPossibleMoves(unit).find((move) => arrayOfTargets.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j && aiUnit.health > 0));
     }
 
     moveEntity(tile: Tile) {
@@ -388,13 +388,17 @@ export class GameFieldComponent {
     highlightCells(path: Position[], className: string) {
         this.fieldService.unhighlightCells.bind(this)();
         this.highlightCellsInnerFunction(path, className);
-        this.possibleMoves = path;
+        this.possibleMoves = path.filter((move)=>!!move);
     }
 
     highlightCellsInnerFunction(path: Position[], className: string) {
-        path.forEach((point) => this.gameConfig[point.i][point.j] = {
-            ...this.gameConfig[point.i][point.j],
-            highlightedClass: className
+        path.forEach((point) => {
+          if(point) {
+            this.gameConfig[point.i][point.j] = {
+              ...this.gameConfig[point.i][point.j],
+              highlightedClass: className
+            }
+          }
         })
     }
 

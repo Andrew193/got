@@ -414,6 +414,53 @@ export class HeroesService {
         }
     }
 
+     getGiant(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      attackRange: 1,
+      ignoredDebuffs: [],
+      reducedDmgFromDebuffs: [],
+      dmgReducedBy: 0.5,
+      canCross: 1,
+      health: 93837,
+      attack: 3529,
+      defence: 7385,
+      maxHealth: 93837,
+      rage: 10,
+      willpower: 15,
+      imgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_ChallengeBossBGAndIcon_Giant_FullBody.png",
+      name: "Гигант",
+      description: "Невероятно сильный враг. Мифическое существо из сказаний. Его шкуру почти невозможно пробить оружием, но он уязвим к ослаблениям.",
+      skills: [
+        {
+          name: "Могучий удар",
+          imgSrc: "../../../assets/resourses/imgs/heroes/giant/skills/giant_c_skill.png",
+          dmgM: 3,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [this.getAttackBreak()],
+          inRangeDebuffs: [],
+          description: "Наносит противнику урон в размере 300% от показателя атаки и накладывает на него штраф "
+            + this.effects.attackBreak + " на 2 хода."
+        },
+        {
+          name: "Крошитель",
+          imgSrc: "../../../assets/resourses/imgs/heroes/giant/skills/giant_active_skill.png",
+          dmgM: 5,
+          cooldown: 6,
+          remainingCooldown: 0,
+          buffs: [this.getAttackBuff()],
+          debuffs: [this.getDefBreak()],
+          inRangeDebuffs: [],
+          description: "Наносит врагу урон в размере 500% от показателя атаки, накладывает на него штраф "
+            + this.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effects.attackBuff + " на 2 хода."
+        }
+      ],
+      effects: []
+    }
+  }
+
     getBasicUserConfig() {
         return {
             x: 3, y: 6, user: true, canMove: true, canAttack: true
