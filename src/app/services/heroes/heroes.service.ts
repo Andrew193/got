@@ -29,9 +29,19 @@ export class HeroesService {
     let message = "";
     if (effect.type === this.effects.freezing && effect.defBreak) {
       unit.defence += effect.defBreak;
-      message = `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}.`;
+      unit.canCross = 1;
+      message = unit.health ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}. Герой заморожен и может пройти только 1 клетку за ход.` : '';
     }
-    return {unit, message: message };
+    return {unit, message: message};
+  }
+
+  restoreStatsAfterEffect(effect: Effect, unit: Unit) {
+    let message = "";
+    if (effect.type === this.effects.freezing) {
+      unit.canCross = unit.maxCanCross;
+      message = unit.health ? `Герой ${unit.name} разморожен!` : '';
+    }
+    return {unit, message: message};
   }
 
   getMultForEffect(effect: Effect) {
@@ -173,6 +183,7 @@ export class HeroesService {
       reducedDmgFromDebuffs: [this.effects.bleeding],
       dmgReducedBy: 0.1,
       canCross: 2,
+      maxCanCross: 2,
       health: 9837,
       attack: 1529,
       defence: 1385,
@@ -242,6 +253,7 @@ export class HeroesService {
       reducedDmgFromDebuffs: [this.effects.bleeding, this.effects.poison],
       dmgReducedBy: 0.25,
       canCross: 2,
+      maxCanCross: 2,
       health: 15837,
       attack: 829,
       defence: 2385,
@@ -308,6 +320,7 @@ export class HeroesService {
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 3,
+      maxCanCross: 3,
       health: 5837,
       attack: 1029,
       defence: 785,
@@ -352,6 +365,7 @@ export class HeroesService {
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 2,
+      maxCanCross: 1,
       health: 4837,
       attack: 899,
       defence: 685,
@@ -385,12 +399,13 @@ export class HeroesService {
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 2,
+      maxCanCross: 2,
       health: 8370,
       attack: 1199,
       defence: 985,
       maxHealth: 8370,
-      rage: 150,
-      willpower: 200,
+      rage: 15,
+      willpower: 20,
       imgSrc: "../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Avatar_Unit_IceRiverHunters.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Icon_Avatar_FullBody_Wildling_02_IceRiverHunters.png",
       name: "Охотник ледяной реки",
@@ -419,6 +434,7 @@ export class HeroesService {
       reducedDmgFromDebuffs: [this.effects.poison],
       dmgReducedBy: 0,
       canCross: 2,
+      maxCanCross: 2,
       health: 8169,
       attack: 1299,
       defence: 995,
@@ -478,6 +494,7 @@ export class HeroesService {
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0.5,
       canCross: 1,
+      maxCanCross: 1,
       health: 93837,
       attack: 3529,
       defence: 7385,

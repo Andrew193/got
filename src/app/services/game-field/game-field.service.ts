@@ -46,6 +46,7 @@ export interface Unit {
     imgSrc: string,
     canMove: boolean
     canCross: number,
+    maxCanCross: number,
     canAttack: boolean,
     attackRange: number,
     description: string,
