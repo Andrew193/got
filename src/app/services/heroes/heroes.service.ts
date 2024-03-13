@@ -1,186 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Effect, Skill, Unit} from "../game-field/game-field.service";
+import {EffectsService} from "../effects/effects.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroesService {
-  effects = {
-    burning: "Горение",
-    freezing: "Заморозка",
-    healthRestore: "Восстановление",
-    defBreak: "Разлом брони",
-    bleeding: "Кровотечение",
-    poison: "Отравление",
-    attackBuff: "Бонус атаки",
-    defBuff: "Бонус защиты",
-    attackBreak: "Заржавелый Меч"
-  }
 
-  get effectsToHighlight() {
-    return Object.values(this.effects)
-  }
-
-  constructor() {
-  }
-
-
-  recountStatsBasedOnEffect(effect: Effect, unit: Unit) {
-    let message = "";
-    if (effect.type === this.effects.freezing && effect.defBreak) {
-      unit.defence += effect.defBreak;
-      unit.canCross = 1;
-      message = unit.health ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}. Герой заморожен и может пройти только 1 клетку за ход.` : '';
-    }
-    return {unit, message: message};
-  }
-
-  restoreStatsAfterEffect(effect: Effect, unit: Unit) {
-    let message = "";
-    if (effect.type === this.effects.freezing) {
-      unit.canCross = unit.maxCanCross;
-      message = unit.health ? `Герой ${unit.name} разморожен!` : '';
-    }
-    return {unit, message: message};
-  }
-
-  getMultForEffect(effect: Effect) {
-    return {
-      [this.effects.defBreak]: this.getDefBreak().m,
-      [this.effects.attackBreak]: this.getAttackBreak().m
-    }[effect.type]
-  }
-
-  getEffectsWithIgnoreFilter(unit: Unit, skill: Skill, addRangeEffects = false) {
-    const debuffsToSet = (addRangeEffects ? skill.inRangeDebuffs : skill.debuffs)?.filter((debuff) => !unit.ignoredDebuffs.includes(debuff.type))
-    return [...unit.effects, ...(debuffsToSet || [])]
-  }
-
-  getBoostedAttack(attack: number, effects: Effect[]) {
-    const shouldBoostAttack = effects.findIndex((effect) => effect.type === this.effects.attackBuff);
-    return shouldBoostAttack !== -1 ? attack * 1.5 : attack;
-  }
-
-  getBoostedDefence(defence: number, effects: Effect[]) {
-    const shouldBoostAttack = effects.findIndex((effect) => effect.type === this.effects.defBuff);
-    return shouldBoostAttack !== -1 ? defence * 1.5 : defence;
-  }
-
-  getHealthAfterDmg(health: number, dmg: number) {
-    return +((health - dmg) > 0 ? health - dmg : 0).toFixed(0);
-  }
-
-  getHealthAfterRestore(health: number, maxHealth: number) {
-    return +(health > maxHealth ? maxHealth : health).toFixed(0);
-  }
-
-  getNumberForCommonEffects(health: number, m: number) {
-    return +(health * m).toFixed(0)
-  }
-
-  getHealthRestore(turns = 1): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/health_restore_buff.png",
-      type: this.effects.healthRestore,
-      duration: turns,
-      m: 0.05,
-      restore: true
-    }
-  }
-
-  getBurning(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/burning.png",
-      type: this.effects.burning,
-      duration: turns,
-      m: 0.1
-    }
-  }
-
-  getFreezing(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/freezing_debuff.png",
-      type: this.effects.freezing,
-      duration: turns,
-      m: 0.05,
-      defBreak: -50
-    }
-  }
-
-  getPoison(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/poison.png",
-      type: this.effects.poison,
-      duration: turns,
-      m: 0.075
-    }
-  }
-
-  getBleeding(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/bleeding.png",
-      type: this.effects.bleeding,
-      duration: turns,
-      m: 0.05
-    }
-  }
-
-  getDefBreak(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/def_break.png",
-      type: this.effects.defBreak,
-      duration: turns,
-      passive: true,
-      m: 0.5
-    }
-  }
-
-  getAttackBreak(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/attack_break.png",
-      type: this.effects.attackBreak,
-      duration: turns,
-      passive: true,
-      m: 0.5
-    }
-  }
-
-  getAttackBuff(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/attack_buff.png",
-      type: this.effects.attackBuff,
-      duration: turns,
-      passive: true,
-      m: 1.5
-    }
-  }
-
-  getDefBuff(turns = 2): Effect {
-    return {
-      imgSrc: "../../../assets/resourses/imgs/icons/def_buff.png",
-      type: this.effects.defBuff,
-      duration: turns,
-      passive: true,
-      m: 1.5
-    }
-  }
-
-  getDebuffDmg(name: string, health: number, m: number): number {
-    return {
-      [this.effects.burning]: this.getNumberForCommonEffects(health, m),
-      [this.effects.freezing]: this.getNumberForCommonEffects(health, m),
-      [this.effects.bleeding]: this.getNumberForCommonEffects(health, m),
-      [this.effects.poison]: this.getNumberForCommonEffects(health, m),
-      [this.effects.healthRestore]: this.getNumberForCommonEffects(health, m)
-    }[name] as number
+  constructor(private effectsService: EffectsService) {
   }
 
   getLadyOfDragonStone(): Unit {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
-      ignoredDebuffs: [this.effects.burning],
-      reducedDmgFromDebuffs: [this.effects.bleeding],
+      ignoredDebuffs: [this.effectsService.effects.burning],
+      reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
       dmgReducedBy: 0.1,
       canCross: 2,
       maxCanCross: 2,
@@ -204,11 +39,11 @@ export class HeroesService {
           attackInRange: true,
           attackRange: 1,
           attackInRangeM: 0.5,
-          debuffs: [this.getBurning(1)],
-          inRangeDebuffs: [this.getDefBreak(1)],
+          debuffs: [this.effectsService.getBurning(1)],
+          inRangeDebuffs: [this.effectsService.getDefBreak(1)],
           description: "Наносит противнику урон в размере 100% от показателя атаки и накладывает на него штраф "
-            + this.effects.burning + " на 1 ход. Также атакует врагов в радиусе 1 клетки на 50% от показателя атаки,"
-            + " накладывает на них штраф " + this.effects.defBreak + " на 1 ход."
+            + this.effectsService.effects.burning + " на 1 ход. Также атакует врагов в радиусе 1 клетки на 50% от показателя атаки,"
+            + " накладывает на них штраф " + this.effectsService.effects.defBreak + " на 1 ход."
         },
         {
           name: "Дракарис",
@@ -219,12 +54,12 @@ export class HeroesService {
           attackInRange: true,
           attackRange: 2,
           attackInRangeM: 0.9,
-          buffs: [this.getAttackBuff(), this.getDefBuff()],
-          debuffs: [this.getBurning(2), this.getBurning(2), this.getDefBreak()],
-          inRangeDebuffs: [this.getBleeding(2)],
+          buffs: [this.effectsService.getAttackBuff(), this.effectsService.getDefBuff()],
+          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getDefBreak()],
+          inRangeDebuffs: [this.effectsService.getBleeding(2)],
           description: "Наносит целевому врагу урон в размере 200% от показателя атаки, накладывает на него 2 штрафа "
-            + this.effects.burning + " и " + this.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
-            + this.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effects.attackBuff + " и " + this.effects.defBuff + " на 2 хода."
+            + this.effectsService.effects.burning + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+            + this.effectsService.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " и " + this.effectsService.effects.defBuff + " на 2 хода."
         },
         {
           name: "Таргариен",
@@ -233,15 +68,15 @@ export class HeroesService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
-          buffs: [this.getHealthRestore()],
+          buffs: [this.effectsService.getHealthRestore()],
           passive: true,
           restoreSkill: true,
-          description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effects.bleeding + ". На этого героя невозможно наложить штраф "
-            + this.effects.burning + ". В начале игры получает бонус " + this.effects.healthRestore + " на 2 раунда. Имеет шанс воскреснуть после смертельного удара. "
-            + "Перед началом каждого хода получает бонус " + this.effects.healthRestore + " на 1 ход и мгновенно активирует его."
+          description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штраф "
+            + this.effectsService.effects.burning + ". В начале игры получает бонус " + this.effectsService.effects.healthRestore + " на 2 раунда. Имеет шанс воскреснуть после смертельного удара. "
+            + "Перед началом каждого хода получает бонус " + this.effectsService.effects.healthRestore + " на 1 ход и мгновенно активирует его."
         }
       ],
-      effects: [this.getHealthRestore(2)]
+      effects: [this.effectsService.getHealthRestore(2)]
     }
   }
 
@@ -249,8 +84,8 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
-      ignoredDebuffs: [this.effects.burning],
-      reducedDmgFromDebuffs: [this.effects.bleeding, this.effects.poison],
+      ignoredDebuffs: [this.effectsService.effects.burning],
+      reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
       dmgReducedBy: 0.25,
       canCross: 2,
       maxCanCross: 2,
@@ -274,10 +109,10 @@ export class HeroesService {
           attackInRange: true,
           attackRange: 1,
           attackInRangeM: 0.9,
-          debuffs: [this.getAttackBreak()],
-          inRangeDebuffs: [this.getAttackBreak()],
+          debuffs: [this.effectsService.getAttackBreak()],
+          inRangeDebuffs: [this.effectsService.getAttackBreak()],
           description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 90% от показателя атаки и накладывает на них штраф"
-            + this.effects.attackBreak + "на 2 хода."
+            + this.effectsService.effects.attackBreak + "на 2 хода."
         },
         {
           name: "За Короля",
@@ -288,11 +123,11 @@ export class HeroesService {
           attackInRange: true,
           attackRange: 2,
           attackInRangeM: 0.9,
-          buffs: [this.getDefBuff()],
+          buffs: [this.effectsService.getDefBuff()],
           debuffs: [],
-          inRangeDebuffs: [this.getDefBreak()],
+          inRangeDebuffs: [this.effectsService.getDefBreak()],
           description: "Наносит целевому врагу урон в размере 150% от показателя атаки. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
-            + this.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effects.defBuff + " на 2 хода."
+            + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.defBuff + " на 2 хода."
         },
         {
           name: "Щит короны",
@@ -304,11 +139,11 @@ export class HeroesService {
           buffs: [],
           passive: true,
           restoreSkill: true,
-          description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effects.bleeding + " и " + this.effects.poison +
-            ". На этого героя невозможно наложить штраф " + this.effects.burning + "."
+          description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison +
+            ". На этого героя невозможно наложить штраф " + this.effectsService.effects.burning + "."
         }
       ],
-      effects: [this.getHealthRestore(2)]
+      effects: [this.effectsService.getHealthRestore(2)]
     }
   }
 
@@ -326,7 +161,7 @@ export class HeroesService {
       defence: 785,
       maxHealth: 5837,
       rage: 15,
-      willpower: 0,
+      willpower: 10,
       imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png",
       name: "Белый Волк",
@@ -338,9 +173,9 @@ export class HeroesService {
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [this.getBleeding(1)],
+          debuffs: [this.effectsService.getBleeding(1)],
           description: "Наносит противнику урон в размере 100% от показателя атаки, накладывает на врага штраф "
-            + this.effects.bleeding + " на 1 ход."
+            + this.effectsService.effects.bleeding + " на 1 ход."
         },
         {
           name: "Рваная рана",
@@ -348,9 +183,9 @@ export class HeroesService {
           dmgM: 1.2,
           cooldown: 3,
           remainingCooldown: 0,
-          debuffs: [this.getDefBreak()],
+          debuffs: [this.effectsService.getDefBreak()],
           description: "Наносит врагу урон в размере 120% от показателя атаки, накладывает на врага штраф "
-            + this.effects.defBreak + " на 2 хода."
+            + this.effectsService.effects.defBreak + " на 2 хода."
         }
       ],
       effects: []
@@ -417,9 +252,9 @@ export class HeroesService {
           dmgM: 2.1,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [this.getFreezing()],
+          debuffs: [this.effectsService.getFreezing()],
           description: "Наносит противнику урон в размере 210% от показателя атаки, накладывает на врага штраф "
-            + this.effects.freezing + " на 2 хода."
+            + this.effectsService.effects.freezing + " на 2 хода."
         }
       ],
       effects: []
@@ -431,7 +266,7 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       attackRange: 2,
       ignoredDebuffs: [],
-      reducedDmgFromDebuffs: [this.effects.poison],
+      reducedDmgFromDebuffs: [this.effectsService.effects.poison],
       dmgReducedBy: 0,
       canCross: 2,
       maxCanCross: 2,
@@ -452,8 +287,8 @@ export class HeroesService {
           dmgM: 1.5,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [this.getPoison(1)],
-          description: "Наносит противнику урон в размере 150% от показателя атаки, накладывает штраф " + this.effects.poison + " на 1 ход."
+          debuffs: [this.effectsService.getPoison(1)],
+          description: "Наносит противнику урон в размере 150% от показателя атаки, накладывает штраф " + this.effectsService.effects.poison + " на 1 ход."
         },
         {
           name: "Ловушка",
@@ -464,11 +299,11 @@ export class HeroesService {
           attackInRange: true,
           attackRange: 2,
           attackInRangeM: 0.5,
-          debuffs: [this.getBleeding(), this.getDefBreak()],
+          debuffs: [this.effectsService.getBleeding(), this.effectsService.getDefBreak()],
           buffs: [],
           inRangeDebuffs: [],
           description: "Наносит противнику урон в размере 200% от показателя атаки, накладывает на врага штрафы: "
-            + this.effects.bleeding + " и " + this.effects.defBreak + " на 2 хода. Также атакует противников в радиусе 1 клетки на 50% от атаки."
+            + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.defBreak + " на 2 хода. Также атакует противников в радиусе 1 клетки на 50% от атаки."
         },
         {
           name: "Вольный человек",
@@ -479,7 +314,7 @@ export class HeroesService {
           debuffs: [],
           buffs: [],
           passive: true,
-          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effects.poison + "."
+          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.poison + "."
         }
       ],
       effects: []
@@ -512,10 +347,10 @@ export class HeroesService {
           dmgM: 3,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [this.getAttackBreak()],
+          debuffs: [this.effectsService.getAttackBreak()],
           inRangeDebuffs: [],
           description: "Наносит противнику урон в размере 300% от показателя атаки и накладывает на него штраф "
-            + this.effects.attackBreak + " на 2 хода."
+            + this.effectsService.effects.attackBreak + " на 2 хода."
         },
         {
           name: "Крошитель",
@@ -523,11 +358,79 @@ export class HeroesService {
           dmgM: 5,
           cooldown: 6,
           remainingCooldown: 0,
-          buffs: [this.getAttackBuff()],
-          debuffs: [this.getDefBreak()],
+          buffs: [this.effectsService.getAttackBuff()],
+          debuffs: [this.effectsService.getDefBreak()],
           inRangeDebuffs: [],
           description: "Наносит врагу урон в размере 500% от показателя атаки, накладывает на него штраф "
-            + this.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effects.attackBuff + " на 2 хода."
+            + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " на 2 хода."
+        }
+      ],
+      effects: []
+    }
+  }
+
+  getNightKing(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      attackRange: 2,
+      ignoredDebuffs: [this.effectsService.effects.freezing],
+      reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
+      dmgReducedBy: 0.5,
+      canCross: 4,
+      maxCanCross: 4,
+      health: 19937,
+      attack: 2329,
+      defence: 2085,
+      maxHealth: 19937,
+      rage: 35,
+      willpower: 50,
+      imgSrc: "../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png",
+      name: "Король Ночи",
+      description: "Ужасный враг. Сильнейший из белых ходоков и король Края Вечной Зимы. Создан для защиты живых, сейчас пытается погрузить мир во тьму и вечную ночь.",
+      skills: [
+        {
+          name: "Ветер Севера",
+          imgSrc: "../../../assets/resourses/imgs/heroes/night_king/skills/night_king_c_s.png",
+          dmgM: 2.4,
+          cooldown: 0,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 20,
+          attackInRangeM: 1.5,
+          debuffs: [this.effectsService.getFreezing()],
+          inRangeDebuffs: [this.effectsService.getFreezing()],
+          description: "Наносит противнику урон в размере 240% от показателя атаки и накладывает на него штраф "
+            + this.effectsService.effects.freezing + " на 2 хода. Также атакует всех врагов на поле на 150% от показателя атаки,"
+            + " накладывает на них штраф " + this.effectsService.effects.freezing + " на 2 ходa."
+        },
+        {
+          name: "Сковывающий холод",
+          imgSrc: "../../../assets/resourses/imgs/heroes/night_king/skills/night_king_a_s.png",
+          dmgM: 2,
+          cooldown: 3,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 2,
+          attackInRangeM: 0.9,
+          buffs: [this.effectsService.getAttackBuff()],
+          debuffs: [this.effectsService.getDefenceDestroy(), this.effectsService.getDefBreak()],
+          inRangeDebuffs: [this.effectsService.getDefenceDestroy()],
+          description: "Наносит целевому врагу урон в размере 200% от показателя атаки, накладывает на него штраф "
+            + this.effectsService.effects.defDestroy + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+            + this.effectsService.effects.defDestroy + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " и " + this.effectsService.effects.defBuff + " на 2 хода."
+        },
+        {
+          name: "Король Ночи",
+          imgSrc: "../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [],
+          passive: true,
+          description: "Получает на 50% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison + ". На этого героя невозможно наложить штраф "
+            + this.effectsService.effects.freezing + "."
         }
       ],
       effects: []

@@ -6,6 +6,7 @@ import {HeroesService} from "../../services/heroes/heroes.service";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {DomSanitizer} from "@angular/platform-browser";
+import {EffectsService} from "../../services/effects/effects.service";
 
 interface DayReward {
     copperCoin: number,
@@ -33,13 +34,14 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
 
     constructor(public heroService: HeroesService,
                 private sanitizer:DomSanitizer,
+                private effectsService: EffectsService,
                 private render2: Renderer2) {
         this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
     }
 
     highlightPhrase(text: string) {
-        for (let i = 0; i < this.heroService.effectsToHighlight.length; i++) {
-            const effect = this.heroService.effectsToHighlight[i];
+        for (let i = 0; i < this.effectsService.effectsToHighlight.length; i++) {
+            const effect = this.effectsService.effectsToHighlight[i];
             text = text.replaceAll(effect, `<span${effect}</span`)
         }
 

@@ -12,6 +12,7 @@ import {createDeepCopy} from "../../helpers";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {BehaviorSubject} from "rxjs";
 import {GameService} from "../../services/game-action/game.service";
+import {EffectsService} from "../../services/effects/effects.service";
 
 @Component({
   selector: 'game-field',
@@ -40,11 +41,12 @@ export class GameFieldComponent {
 
   constructor(private fieldService: GameFieldService,
               private heroService: HeroesService,
+              private effectsService: EffectsService,
               private gameActionService: GameService) {
     this.userSample = this.heroService.getLadyOfDragonStone()
     this.userUnits = [this.heroService.getTargaryenKnight(), {...this.userSample, x: 3, y: 7}];
     this.aiUnits = [{
-      ...this.heroService.getIceRiverHunter(),
+      ...this.heroService.getNightKing(),
       x: 3,
       y: 9,
       user: false
@@ -62,7 +64,7 @@ export class GameFieldComponent {
     const userIndex = this.fieldService.findUnitIndex(this.userUnits, this.selectedEntity);
     const skillIndex = this.fieldService.findSkillIndex(this.userUnits[userIndex].skills, skill);
     this.addBuffToUnit(this.userUnits, userIndex, skill)
-    this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(this.userUnits[userIndex].attack, this.userUnits[userIndex].effects) * skill.dmgM, this.heroService.getBoostedDefence(this.aiUnits[enemyIndex].defence, this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], true, skill)
+    this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(this.userUnits[userIndex].attack, this.userUnits[userIndex].effects) * skill.dmgM, this.effectsService.getBoostedDefence(this.aiUnits[enemyIndex].defence, this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], true, skill)
     this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, true, this.userUnits[userIndex])
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(this.userUnits[userIndex].rage > this.aiUnits[enemyIndex].willpower));
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
@@ -81,7 +83,7 @@ export class GameFieldComponent {
       }).filter((e) => !!e) as Unit[];
       for (let i = 0; i < enemiesInRange.length; i++) {
         const enemyIndex = this.fieldService.findUnitIndex(enemiesArray, enemiesInRange[i]);
-        this.makeAttackMove(enemyIndex, this.heroService.getBoostedAttack(attacker.attack, attacker.effects) * (skill.attackInRangeM || 0), this.heroService.getBoostedDefence(enemiesArray[enemyIndex].defence, enemiesArray[enemyIndex].effects), enemiesArray, attacker, isUser, skill)
+        this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(attacker.attack, attacker.effects) * (skill.attackInRangeM || 0), this.effectsService.getBoostedDefence(enemiesArray[enemyIndex].defence, enemiesArray[enemyIndex].effects), enemiesArray, attacker, isUser, skill)
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
           this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs)
         }
@@ -104,7 +106,7 @@ export class GameFieldComponent {
   addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill, addRangeEffects = false) {
     units[unitIndex] = {
       ...units[unitIndex],
-      effects: this.heroService.getEffectsWithIgnoreFilter(units[unitIndex], skill, addRangeEffects)
+      effects: this.effectsService.getEffectsWithIgnoreFilter(units[unitIndex], skill, addRangeEffects)
     }
   }
 
@@ -301,7 +303,7 @@ export class GameFieldComponent {
               //Attack user's unit
               this.addBuffToUnit(this.aiUnits, index, aiSkill)
               aiUnit = this.aiUnits[index];
-              this.makeAttackMove(userIndex, this.heroService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.heroService.getBoostedDefence(this.userUnits[userIndex].defence, this.userUnits[userIndex].effects), this.userUnits, aiUnit, false, aiSkill)
+              this.makeAttackMove(userIndex, this.effectsService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedDefence(this.userUnits[userIndex].defence, this.userUnits[userIndex].effects), this.userUnits, aiUnit, false, aiSkill)
               this.universalRangeAttack(aiSkill, this.userUnits[userIndex] as Unit, this.userUnits, true, false, aiUnit)
               //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
               const skills = this.updateSkillsCooldown(createDeepCopy(this.aiUnits[index].skills), this.userUnits, userIndex, aiSkillIndex, aiSkill, true, true)
@@ -370,12 +372,12 @@ export class GameFieldComponent {
         } else {
           array[i] = {...effect, duration: effect.duration - 1}
           if (!effect.passive) {
-            const additionalDmg = this.gameActionService.getReducedDmgForEffects(unit, this.heroService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
+            const additionalDmg = this.gameActionService.getReducedDmgForEffects(unit, this.effectsService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
             additionalDmg && this.log.push({
               isUser: !unit.user, imgSrc: effect.imgSrc,
               message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} получил ${additionalDmg} ед. ! дополнительного урона от штрафа ${effect.type}`
             })
-            unit.health = this.heroService.getHealthAfterDmg(unit.health, additionalDmg);
+            unit.health = this.effectsService.getHealthAfterDmg(unit.health, additionalDmg);
           }
         }
       }
@@ -383,11 +385,12 @@ export class GameFieldComponent {
 
     //Active effects from buffs/debuffs
     unit.effects.forEach((effect) => {
-        const recountedUnit = !effect.duration ? this.heroService.restoreStatsAfterEffect(effect, unit) : this.heroService.recountStatsBasedOnEffect(effect, unit)
-        unit = recountedUnit.unit;
-        if (recountedUnit.message) {
-          this.log.push({isUser: !unit.user, imgSrc: effect.imgSrc, message: recountedUnit.message})
-        }
+      let recountedUnit = this.effectsService.recountStatsBasedOnEffect(effect, unit);
+      recountedUnit = !effect.duration ? this.effectsService.restoreStatsAfterEffect(effect, recountedUnit) : recountedUnit;
+      unit = recountedUnit.unit;
+      if (recountedUnit.message) {
+        this.log.push({isUser: !unit.user, imgSrc: effect.imgSrc, message: recountedUnit.message})
+      }
     })
     unit.effects = unit.effects.filter((debuff) => !!debuff.duration);
     return unit;
@@ -417,7 +420,7 @@ export class GameFieldComponent {
     const damage = this.fieldService.getDamage(fixedAttack, fixedDefence, dmgTaker[enemyIndex]);
 
     if (dmgTaker[enemyIndex].health) {
-      let newHealth = this.heroService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
+      let newHealth = this.effectsService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
       if (damage) {
         this.log.push({
           isUser: isUser, imgSrc: skill.imgSrc,

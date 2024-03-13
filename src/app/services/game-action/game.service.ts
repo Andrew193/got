@@ -4,6 +4,7 @@ import {HeroesService} from "../heroes/heroes.service";
 import {LogRecord} from "../../interface";
 import {createDeepCopy} from "../../helpers";
 import {ModalWindowService} from "../modal/modal-window.service";
+import {EffectsService} from "../effects/effects.service";
 
 @Injectable({
     providedIn: 'root',
@@ -16,18 +17,19 @@ export class GameService {
     }
 
     constructor(private heroService: HeroesService,
+                private effectsService: EffectsService,
                 private modalWindowService: ModalWindowService,
                 private fieldService: GameFieldService) {
     }
 
     getFixedDefence(defence: number, unit: Unit) {
-        const defReducedEffect = unit.effects.find((effect)=>effect.type === this.heroService.effects.defBreak)
-        return !!defReducedEffect ? defence * this.heroService.getMultForEffect(defReducedEffect): defence
+        const defReducedEffect = unit.effects.find((effect)=>effect.type === this.effectsService.effects.defBreak)
+        return !!defReducedEffect ? defence * this.effectsService.getMultForEffect(defReducedEffect): defence
     }
 
     getFixedAttack(attack: number, unit: Unit) {
-        const attackReducedEffect = unit.effects.find((effect)=>effect.type === this.heroService.effects.attackBreak)
-        return !!attackReducedEffect ? attack * this.heroService.getMultForEffect(attackReducedEffect): attack
+        const attackReducedEffect = unit.effects.find((effect)=>effect.type === this.effectsService.effects.attackBreak)
+        return !!attackReducedEffect ? attack * this.effectsService.getMultForEffect(attackReducedEffect): attack
     }
 
     //Check buffs ( health restore )
@@ -48,9 +50,9 @@ export class GameService {
     }
 
     restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: Skill) {
-        const restoredHealth = this.heroService.getNumberForCommonEffects(unit.maxHealth, buff.m);
+        const restoredHealth = this.effectsService.getNumberForCommonEffects(unit.maxHealth, buff.m);
         this.logRestoreHealth(logs, skill, unit, restoredHealth);
-        unit.health = this.heroService.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth)
+        unit.health = this.effectsService.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth)
         return unit;
     }
 
@@ -63,7 +65,7 @@ export class GameService {
 
     checkEffectsForHealthRestore(unit: Unit, logs: LogRecord[]) {
         unit.effects.forEach((effect) => {
-            if (effect.type === this.heroService.effects.healthRestore) {
+            if (effect.type === this.effectsService.effects.healthRestore) {
                 unit = this.restoreHealthForUnit(unit, effect, logs, {imgSrc: effect.imgSrc} as Skill)
             }
         })
