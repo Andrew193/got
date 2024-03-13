@@ -33,7 +33,7 @@ export class GameService {
     }
 
     //Check buffs ( health restore )
-    checkRestorePassiveSkills(units: Unit[], logs: LogRecord[]) {
+  checkPassiveSkills(units: Unit[], logs: LogRecord[]) {
         for (let index = 0; index < units.length; index++) {
             const unit = units[index];
             if (unit.health) {
@@ -43,6 +43,10 @@ export class GameService {
                         for (let i = 0; i < buffs.length; i++) {
                             units[index] = this.restoreHealthForUnit(unit, buffs[i], logs, skill);
                         }
+                    } else if(skill.passive && skill.buffs) {
+                      skill.buffs.forEach((buff)=>{
+                        units[index].effects = [...units[index].effects, buff]
+                      })
                     }
                 })
             }

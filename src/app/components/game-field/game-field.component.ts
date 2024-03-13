@@ -322,7 +322,7 @@ export class GameFieldComponent {
     }
 
     let index = 0;
-    this.gameActionService.checkRestorePassiveSkills(this.aiUnits, this.log);
+    this.gameActionService.checkPassiveSkills(this.aiUnits, this.log);
 
     //Each AI unit makes a move
     const interval = setInterval(() => {
@@ -342,7 +342,7 @@ export class GameFieldComponent {
           }
         })
         //User's units restore health from their passive skills
-        this.gameActionService.checkRestorePassiveSkills(this.userUnits, this.log)
+        this.gameActionService.checkPassiveSkills(this.userUnits, this.log)
         //Update grid config
         this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
         this.turnUser = true;

@@ -382,8 +382,8 @@ export class HeroesService {
       attack: 2329,
       defence: 2085,
       maxHealth: 19937,
-      rage: 35,
-      willpower: 50,
+      rage: 125,
+      willpower: 150,
       imgSrc: "../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png",
       name: "Король Ночи",
@@ -407,17 +407,17 @@ export class HeroesService {
         {
           name: "Сковывающий холод",
           imgSrc: "../../../assets/resourses/imgs/heroes/night_king/skills/night_king_a_s.png",
-          dmgM: 2,
+          dmgM: 4.2,
           cooldown: 3,
           remainingCooldown: 0,
           attackInRange: true,
-          attackRange: 2,
-          attackInRangeM: 0.9,
+          attackRange: 20,
+          attackInRangeM: 3.3,
           buffs: [this.effectsService.getAttackBuff()],
           debuffs: [this.effectsService.getDefenceDestroy(), this.effectsService.getDefBreak()],
           inRangeDebuffs: [this.effectsService.getDefenceDestroy()],
-          description: "Наносит целевому врагу урон в размере 200% от показателя атаки, накладывает на него штраф "
-            + this.effectsService.effects.defDestroy + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+          description: "Наносит целевому врагу урон в размере 420% от показателя атаки, накладывает на него штраф "
+            + this.effectsService.effects.defDestroy + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 330% от атаки всем врагам на поле боя и накладывает на них штраф "
             + this.effectsService.effects.defDestroy + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " и " + this.effectsService.effects.defBuff + " на 2 хода."
         },
         {
@@ -427,15 +427,83 @@ export class HeroesService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
-          buffs: [],
+          buffs: [this.effectsService.getAttackBuff(1)],
           passive: true,
           description: "Получает на 50% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison + ". На этого героя невозможно наложить штраф "
-            + this.effectsService.effects.freezing + "."
+            + this.effectsService.effects.freezing + ". В начал хода получает бонус " + this.effectsService.effects.attackBuff + " на 1 ход."
         }
       ],
       effects: []
     }
   }
+
+  getJonKing(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      attackRange: 1,
+      ignoredDebuffs: [this.effectsService.effects.freezing, this.effectsService.effects.attackBreak],
+      reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
+      dmgReducedBy: 0.1,
+      canCross: 2,
+      maxCanCross: 2,
+      health: 12837,
+      attack: 1729,
+      defence: 1285,
+      maxHealth: 12837,
+      rage: 25,
+      willpower: 25,
+      imgSrc: "../../../assets/resourses/imgs/heroes/jon_king/UI_Avatar_Unit_JonKingNorth.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png",
+      name: "Джон Сноу ( Король Севера )",
+      description: "Сильный, настоящий лидер, бесчисленные победы Джона Сноу на поле боя заставили его сверстников признать его королем Севера.",
+      skills: [
+        {
+          name: "Решающий удар",
+          imgSrc: "../../../assets/resourses/imgs/heroes/jon_king/skills/UI_HeroicAbility_PathfindersBlade.webp",
+          dmgM: 2,
+          cooldown: 0,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 1.1,
+          attackInRangeM: 1,
+          debuffs: [],
+          inRangeDebuffs: [],
+          description: "Наносит противнику урон в размере 200% от показателя атаки и 110% от атаки врагам в радиусе 1 клетки."
+        },
+        {
+          name: "Клинок Первопроходца",
+          imgSrc: "../../../assets/resourses/imgs/heroes/jon_king/skills/UI_ActiveAbility_DecisiveStrike.webp",
+          dmgM: 3.1,
+          cooldown: 3,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 1,
+          attackInRangeM: 2.5,
+          buffs: [],
+          debuffs: [this.effectsService.getDefBreak(3), this.effectsService.getBleeding(3), this.effectsService.getAttackBreak(3)],
+          inRangeDebuffs: [this.effectsService.getBleeding()],
+          description: "Наносит целевому врагу урон в размере 310% от показателя атаки, накладывает на него 3 штрафа: "
+            + this.effectsService.effects.defBreak + ", " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.attackBreak +
+            " на 3 хода. Наносит 250% от атаки врагам в радиусе 1 клетки и накладывает на них штраф " + this.effectsService.effects.bleeding + " на 2 хода."
+        },
+        {
+          name: "Правосудие",
+          imgSrc: "../../../assets/resourses/imgs/heroes/jon_king/skills/UI_PassiveAbility_PassTheSentenceSwingTheSword.webp",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [this.effectsService.getAttackBuff(1)],
+          passive: true,
+          description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штрафы "
+            + this.effectsService.effects.freezing + " и " + this.effectsService.effects.attackBreak + ". В начале игры получает " + this.effectsService.effects.defBuff + " на 2 ходa."
+          + ". Перед началом хода накладывает на себя " + this.effectsService.effects.attackBuff + " на 1 ход."
+        }
+      ],
+      effects: [this.effectsService.getDefBuff()]
+    }
+  }
+
 
   getBasicUserConfig() {
     return {
