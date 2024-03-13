@@ -46,7 +46,7 @@ export class GameFieldComponent {
     this.userSample = this.heroService.getLadyOfDragonStone()
     this.userUnits = [this.heroService.getTargaryenKnight(), {...this.userSample, x: 3, y: 7}];
     this.aiUnits = [{
-      ...this.heroService.getNightKing(),
+      ...this.heroService.getWhiteWalkerGeneral(),
       x: 3,
       y: 9,
       user: false
