@@ -422,7 +422,7 @@ export class HeroesService {
         },
         {
           name: "Король Ночи",
-          imgSrc: "../../../assets/resourses/imgs/heroes/night_king/skills/walker_p_s.png",
+          imgSrc: "../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png",
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
@@ -443,13 +443,13 @@ export class HeroesService {
       attackRange: 1,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
-      dmgReducedBy: 0.25,
+      dmgReducedBy: 0.3,
       canCross: 3,
       maxCanCross: 3,
-      health: 14937,
+      health: 15937,
       attack: 2129,
-      defence: 1885,
-      maxHealth: 14937,
+      defence: 1985,
+      maxHealth: 15937,
       rage: 105,
       willpower: 120,
       imgSrc: "../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker1.png",
@@ -460,16 +460,16 @@ export class HeroesService {
         {
           name: "Морозный Ветер",
           imgSrc: "../../../assets/resourses/imgs/heroes/white_walker/skills/walker_c_s.jpg",
-          dmgM: 2,
+          dmgM: 2.7,
           cooldown: 0,
           remainingCooldown: 0,
           attackInRange: true,
           attackRange: 20,
-          attackInRangeM: 0.9,
+          attackInRangeM: 1.4,
           debuffs: [this.effectsService.getDefBreak(1)],
           inRangeDebuffs: [],
-          description: "Наносит противнику урон в размере 200% от показателя атаки и накладывает на него штраф "
-            + this.effectsService.effects.defBreak + " на 1 ход. Также атакует всех врагов на поле на 90% от показателя атаки."
+          description: "Наносит противнику урон в размере 270% от показателя атаки и накладывает на него штраф "
+            + this.effectsService.effects.defBreak + " на 1 ход. Также атакует всех врагов на поле на 140% от показателя атаки."
         },
         {
           name: "Белый Ходок",
@@ -478,16 +478,62 @@ export class HeroesService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
-          buffs: [],
+          buffs: [this.effectsService.getDefBuff(1)],
           passive: true,
-          description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison + ". На этого героя невозможно наложить штраф "
-            + this.effectsService.effects.freezing + "."
+          description: "Получает на 30% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison + ". На этого героя невозможно наложить штраф "
+            + this.effectsService.effects.freezing + ". Перед началом хода получает " + this.effectsService.effects.defBuff + " на 1 ход. Получает этот бонус в начале игры на 2 хода."
+        }
+      ],
+      effects: [this.effectsService.getDefBuff()]
+    }
+  }
+
+  getWhiteWalkerCapitan(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      attackRange: 1,
+      ignoredDebuffs: [this.effectsService.effects.freezing],
+      reducedDmgFromDebuffs: [],
+      dmgReducedBy: 0.15,
+      canCross: 2,
+      maxCanCross: 2,
+      health: 11937,
+      attack: 1829,
+      defence: 1655,
+      maxHealth: 11937,
+      rage: 75,
+      willpower: 95,
+      imgSrc: "../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker2.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker3.png",
+      name: "Капитан Ходок",
+      description: "Ужасный враг. Слабейший белый ходок и капитан армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.",
+      skills: [
+        {
+          name: "Морозный удар",
+          imgSrc: "../../../assets/resourses/imgs/heroes/white_walker/skills/white_walker_c_s.jpg",
+          dmgM: 1.9,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          inRangeDebuffs: [],
+          description: "Наносит противнику урон в размере 190% от показателя атаки."
+        },
+        {
+          name: "Белый Ходок",
+          imgSrc: "../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [this.effectsService.getDefBuff(), this.effectsService.getAttackBuff()],
+          passive: true,
+          description: "Получает на 15% меньше урона от атак противников. На этого героя невозможно наложить штраф " + this.effectsService.effects.freezing + ". "
+          + "Каждый ход получает " + this.effectsService.effects.defBuff + " и " + this.effectsService.effects.attackBuff + " на 2 хода."
         }
       ],
       effects: []
     }
   }
-
 
   getJonKing(): Unit {
     return {
