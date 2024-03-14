@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Effect, Skill, Unit} from "../game-field/game-field.service";
+import {Unit} from "../game-field/game-field.service";
 import {EffectsService} from "../effects/effects.service";
 
 @Injectable({
@@ -14,19 +14,25 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      rankBoost: 1.3,
+      level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
       dmgReducedBy: 0.1,
       canCross: 2,
       maxCanCross: 2,
       health: 9837,
+      healthIncrement: 194,
       attack: 1529,
+      attackIncrement: 21,
       defence: 1385,
+      defenceIncrement: 12,
       maxHealth: 9837,
       rage: 25,
       willpower: 25,
       imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
-      fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/LadyOfDragonstone_DaenarysTargaryen.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png",
       name: "Дейнерис Таргариен ( Леди Драконьего Камня )",
       description: "По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет ее совершать великие военные подвиги.",
       skills: [
@@ -84,14 +90,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      rankBoost: 1.2,
+      level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
       dmgReducedBy: 0.25,
       canCross: 2,
       maxCanCross: 2,
       health: 15837,
+      healthIncrement: 284,
       attack: 829,
+      attackIncrement: 11,
       defence: 2385,
+      defenceIncrement: 26,
       maxHealth: 15837,
       rage: 25,
       willpower: 50,
@@ -151,14 +163,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 3,
       maxCanCross: 3,
       health: 5837,
+      healthIncrement: 98,
       attack: 1029,
+      attackIncrement: 13,
       defence: 785,
+      defenceIncrement: 6,
       maxHealth: 5837,
       rage: 15,
       willpower: 10,
@@ -196,14 +214,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      rankBoost: 1.05,
+      level: 1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 2,
       maxCanCross: 1,
       health: 4837,
+      healthIncrement: 47,
       attack: 899,
+      attackIncrement: 9,
       defence: 685,
+      defenceIncrement: 3,
       maxHealth: 4837,
       rage: 0,
       willpower: 0,
@@ -230,14 +254,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      rankBoost: 1.1,
+      level: 1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 2,
       maxCanCross: 2,
       health: 8370,
+      healthIncrement: 100,
       attack: 1199,
+      attackIncrement: 14,
       defence: 985,
+      defenceIncrement: 12,
       maxHealth: 8370,
       rage: 15,
       willpower: 20,
@@ -265,14 +295,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 2,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [this.effectsService.effects.poison],
       dmgReducedBy: 0,
       canCross: 2,
       maxCanCross: 2,
       health: 8169,
+      healthIncrement: 89,
       attack: 1299,
+      attackIncrement: 12,
       defence: 995,
+      defenceIncrement: 10,
       maxHealth: 8169,
       rage: 20,
       willpower: 20,
@@ -325,19 +361,25 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.05,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0.5,
       canCross: 1,
       maxCanCross: 1,
       health: 93837,
+      healthIncrement: 590,
       attack: 3529,
+      attackIncrement: 19,
       defence: 7385,
+      defenceIncrement: 29,
       maxHealth: 93837,
       rage: 10,
       willpower: 15,
       imgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png",
-      fullImgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_ChallengeBossBGAndIcon_Giant_FullBody.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png",
       name: "Гигант",
       description: "Невероятно сильный враг. Мифическое существо из сказаний. Его шкуру почти невозможно пробить оружием, но он уязвим к ослаблениям.",
       skills: [
@@ -373,14 +415,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 2,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
       dmgReducedBy: 0.5,
       canCross: 4,
       maxCanCross: 4,
       health: 19937,
+      healthIncrement: 312,
       attack: 2329,
+      attackIncrement: 25,
       defence: 2085,
+      defenceIncrement: 19,
       maxHealth: 19937,
       rage: 125,
       willpower: 150,
@@ -441,14 +489,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.2,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
       dmgReducedBy: 0.3,
       canCross: 3,
       maxCanCross: 3,
       health: 15937,
+      healthIncrement: 219,
       attack: 2129,
+      attackIncrement: 16,
       defence: 1985,
+      defenceIncrement: 15,
       maxHealth: 15937,
       rage: 105,
       willpower: 120,
@@ -492,14 +546,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.1,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0.15,
       canCross: 2,
       maxCanCross: 2,
       health: 11937,
+      healthIncrement: 145,
       attack: 1829,
+      attackIncrement: 15,
       defence: 1655,
+      defenceIncrement: 12,
       maxHealth: 11937,
       rage: 75,
       willpower: 95,
@@ -528,7 +588,7 @@ export class HeroesService {
           buffs: [this.effectsService.getDefBuff(), this.effectsService.getAttackBuff()],
           passive: true,
           description: "Получает на 15% меньше урона от атак противников. На этого героя невозможно наложить штраф " + this.effectsService.effects.freezing + ". "
-          + "Каждый ход получает " + this.effectsService.effects.defBuff + " и " + this.effectsService.effects.attackBuff + " на 2 хода."
+            + "Каждый ход получает " + this.effectsService.effects.defBuff + " и " + this.effectsService.effects.attackBuff + " на 2 хода."
         }
       ],
       effects: []
@@ -539,14 +599,20 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rank: 1,
+      level: 1,
+      rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing, this.effectsService.effects.attackBreak],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
       dmgReducedBy: 0.1,
       canCross: 2,
       maxCanCross: 2,
       health: 12837,
+      healthIncrement: 219,
       attack: 1729,
+      attackIncrement: 18,
       defence: 1285,
+      defenceIncrement: 14,
       maxHealth: 12837,
       rage: 25,
       willpower: 25,
@@ -595,13 +661,38 @@ export class HeroesService {
           passive: true,
           description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штрафы "
             + this.effectsService.effects.freezing + " и " + this.effectsService.effects.attackBreak + ". В начале игры получает " + this.effectsService.effects.defBuff + " на 2 ходa."
-          + ". Перед началом хода накладывает на себя " + this.effectsService.effects.attackBuff + " на 1 ход."
+            + ". Перед началом хода накладывает на себя " + this.effectsService.effects.attackBuff + " на 1 ход."
         }
       ],
       effects: [this.effectsService.getDefBuff()]
     }
   }
 
+  getEquipmentForUnit(unit: Unit): Unit {
+    const leveledUnit = {
+      ...unit,
+      attack: +(unit.attack + unit.attackIncrement * unit.level).toFixed(0),
+      defence: +(unit.defence + unit.defenceIncrement * unit.level).toFixed(0),
+      health: +(unit.health + unit.healthIncrement * unit.level).toFixed(0)
+    }
+
+    let usedRank = 0;
+
+    while (usedRank !== unit.rank) {
+      usedRank++;
+      leveledUnit.attack = +(leveledUnit.attack * unit.rankBoost).toFixed(0);
+      leveledUnit.defence = +(leveledUnit.defence * unit.rankBoost).toFixed(0);
+      leveledUnit.health = +(leveledUnit.health * unit.rankBoost).toFixed(0);
+    }
+
+    return leveledUnit;
+  }
+
+  getAllHeroes() {
+    const units = [this.getIceRiverHunter(), this.getJonKing(), this.getWhiteWalkerCapitan(), this.getWhiteWalkerGeneral(), this.getNightKing(),
+      this.getGiant(), this.getFreeTrapper(), this.getBrownWolf(), this.getWhiteWolf(), this.getTargaryenKnight(), this.getLadyOfDragonStone()]
+    return units.map((unit) => this.getEquipmentForUnit(unit));
+  }
 
   getBasicUserConfig() {
     return {

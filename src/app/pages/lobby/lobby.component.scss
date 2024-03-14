@@ -16,6 +16,10 @@
   box-shadow: $box-shadow;
   border-radius: 5px;
 
+  .store-title {
+    @include grad-color;
+  }
+
   .store-row > div {
     cursor: pointer;
     display: flex;

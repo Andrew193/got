@@ -1,0 +1,32 @@
+<main class="ms-4 me-4">
+  <div class="flex-row">
+    <div class="col-9 flex-row justify-content-between">
+      <div class="col-2 d-flex justify-content-center m-2" *ngFor="let hero of returnedArray">
+        <div class="card d-flex align-items-center col-12">
+          <img class="card-img-top mt-2" src="{{hero.fullImgSrc}}" alt="{{hero.name}}">
+          <div class="level">
+            <div class="position-relative">
+              {{hero.attack}}
+              {{hero.defence}}
+              {{hero.health}}
+              <img src="assets/resourses/imgs/rank/{{getRank(hero.level)}}_r.png" alt="rank level" class="level_rank" [style]="{height: hero.level === 60 ? '60px' : ''}">
+              <span [style]="{left: hero.level > 10 ? '16px' : ''}">{{hero.level}}</span>
+            </div>
+          </div>
+          <rating [(ngModel)]="hero.rank" [max]="6" [readonly]="true"></rating>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <aside class="m-2">
+        <div class="text-center">
+          <h4>Фильтры</h4>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <pagination [totalItems]="totalElements" (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage"
+              [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+  ></pagination>
+
+</main>
