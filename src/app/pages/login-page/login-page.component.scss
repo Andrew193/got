@@ -1,0 +1,26 @@
+@import "../../../assets/resourses/styles/vars";
+@import "../../../assets/resourses/styles/mixins";
+
+.login-container {
+  background: url("../../../assets/resourses/imgs/background/summon_tree.jpg") no-repeat;
+  background-size: cover;
+  height: 100%;
+  box-shadow: $box-shadow;
+  position: relative;
+  padding-top: 1px;
+
+  main {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    form {
+      border-radius: 15px;
+      box-shadow: $box-shadow;
+      min-height: 400px;
+      width: 100%;
+      background: $background-color-main;
+    }
+  }
+}

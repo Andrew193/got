@@ -1,5 +1,12 @@
 @import "../../../../assets/resourses/styles/mixins";
 
+.header-avatar-popper {
+  min-width: 210px;
+  li:hover {
+    background: #bbbbbb;
+  }
+}
+
 nav {
   padding: 10px;
   color: white;

@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {GameFieldComponent} from "../../components/game-field/game-field.component";
 import {DailyRewardComponent} from "../../components/daily-reward/daily-reward.component";
 import {CommonModule} from "@angular/common";
+import {frontRoutes} from "../../app.routes";
 
 @Component({
   selector: 'app-lobby',
@@ -10,7 +11,7 @@ import {CommonModule} from "@angular/common";
   imports: [
     GameFieldComponent,
     DailyRewardComponent,
-      CommonModule
+    CommonModule
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss'
@@ -21,11 +22,11 @@ export class LobbyComponent {
   constructor(private router: Router) {
   }
   openTaverna() {
-    this.router.navigate(["taverna"])
+    this.router.navigate([frontRoutes.taverna])
   }
 
   openBattle() {
-    this.router.navigate(["test-b"])
+    this.router.navigate([frontRoutes.battleField])
   }
 
   showDailyReward() {

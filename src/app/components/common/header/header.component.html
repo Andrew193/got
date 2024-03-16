@@ -1,5 +1,6 @@
 <nav class="d-flex flex-row align-content-center justify-content-between">
-  <img class="user-header-avatar navbar-brand" src="../../../../assets/resourses/imgs/UI_Avatar_Unit_Alvar.png" alt="avatar"/>
+  <img class="user-header-avatar navbar-brand" src="../../../../assets/resourses/imgs/UI_Avatar_Unit_Alvar.png"
+       alt="avatar" [popover]="popTemplate" [outsideClick]="true" [placement]="'bottom'"/>
   <div class="d-flex currency-bar align-items-center">
     <div class="d-flex align-items-center">
       <img src="../../../../assets/resourses/imgs/copper.png" alt="coin copper"/><span class="copper">500</span></div>
@@ -9,3 +10,9 @@
       <img src="../../../../assets/resourses/imgs/gold.png" alt="coin gold"/><span class="gold">300</span></div>
   </div>
 </nav>
+
+<ng-template #popTemplate>
+    <ul class="list-group header-avatar-popper">
+      <li class="list-group-item cursor-pointer" (click)="logOut()">Log out</li>
+    </ul>
+</ng-template>
