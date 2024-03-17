@@ -1,13 +1,41 @@
 import {Injectable} from '@angular/core';
 import {Unit} from "../game-field/game-field.service";
 import {EffectsService} from "../effects/effects.service";
+import {DomSanitizer} from "@angular/platform-browser";
+
+interface UnitConfig {
+  level: number,
+  rank: number,
+  eq1Level: number,
+  eq2Level: number,
+  eq3Level: number,
+  eq4Level: number,
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroesService {
 
-  constructor(private effectsService: EffectsService) {
+  constructor(private effectsService: EffectsService,
+              private sanitizer: DomSanitizer) {
+  }
+
+  highlightEffects(text: string) {
+    for (let i = 0; i < this.effectsService.effectsToHighlight.length; i++) {
+      const effect = this.effectsService.effectsToHighlight[i];
+      text = text.replaceAll(effect, `<span${effect}</span`)
+    }
+
+    return this.sanitizer.bypassSecurityTrustHtml(text.replaceAll("<span", "<span class='highlight-effect'>").replaceAll("</span", "</span>"))
+  }
+
+  getRank(level: number) {
+    return level <= 10 ? 1 :
+      level <= 20 ? 2 :
+        level <= 30 ? 3 :
+          level <= 40 ? 4 :
+            level <= 50 ? 5 : 6
   }
 
   getLadyOfDragonStone(): Unit {
@@ -17,6 +45,10 @@ export class HeroesService {
       rank: 1,
       rankBoost: 1.3,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
       dmgReducedBy: 0.1,
@@ -93,6 +125,10 @@ export class HeroesService {
       rank: 1,
       rankBoost: 1.2,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
       dmgReducedBy: 0.25,
@@ -165,6 +201,10 @@ export class HeroesService {
       attackRange: 1,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -215,6 +255,10 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       attackRange: 1,
       rank: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.05,
       level: 1,
       ignoredDebuffs: [],
@@ -256,6 +300,10 @@ export class HeroesService {
       attackRange: 1,
       rank: 1,
       rankBoost: 1.1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       level: 1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -297,6 +345,10 @@ export class HeroesService {
       attackRange: 2,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [this.effectsService.effects.poison],
@@ -363,6 +415,10 @@ export class HeroesService {
       attackRange: 1,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.05,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -417,6 +473,10 @@ export class HeroesService {
       attackRange: 2,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
@@ -491,6 +551,10 @@ export class HeroesService {
       attackRange: 1,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.2,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
@@ -548,6 +612,10 @@ export class HeroesService {
       attackRange: 1,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.1,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [],
@@ -601,6 +669,10 @@ export class HeroesService {
       attackRange: 1,
       rank: 1,
       level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing, this.effectsService.effects.attackBreak],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
@@ -669,6 +741,7 @@ export class HeroesService {
   }
 
   getEquipmentForUnit(unit: Unit): Unit {
+    //Level
     const leveledUnit = {
       ...unit,
       attack: +(unit.attack + unit.attackIncrement * unit.level).toFixed(0),
@@ -676,6 +749,7 @@ export class HeroesService {
       health: +(unit.health + unit.healthIncrement * unit.level).toFixed(0)
     }
 
+    //Rank
     let usedRank = 0;
 
     while (usedRank !== unit.rank) {
@@ -685,6 +759,23 @@ export class HeroesService {
       leveledUnit.health = +(leveledUnit.health * unit.rankBoost).toFixed(0);
     }
 
+    //Eq 1
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq1Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq1Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq1Level).toFixed(0);
+    //Eq 2
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq2Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq2Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq2Level).toFixed(0);
+    //Eq 3
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq3Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq3Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq3Level).toFixed(0);
+    //Eq 4
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq4Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq4Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq4Level).toFixed(0);
+
     return leveledUnit;
   }
 
@@ -692,6 +783,12 @@ export class HeroesService {
     const units = [this.getIceRiverHunter(), this.getJonKing(), this.getWhiteWalkerCapitan(), this.getWhiteWalkerGeneral(), this.getNightKing(),
       this.getGiant(), this.getFreeTrapper(), this.getBrownWolf(), this.getWhiteWolf(), this.getTargaryenKnight(), this.getLadyOfDragonStone()]
     return units.map((unit) => this.getEquipmentForUnit(unit));
+  }
+
+  getUnitByName(name: string, config: UnitConfig) {
+    const allUnits = this.getAllHeroes();
+    const userUnit = allUnits.filter((unit) => unit.name === name)[0]
+    return this.getEquipmentForUnit({...userUnit, ...config});
   }
 
   getBasicUserConfig() {

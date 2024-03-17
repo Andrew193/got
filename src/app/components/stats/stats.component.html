@@ -1,0 +1,52 @@
+<div class="col-12 stats p-1">
+  <p class="text-center w-100 d-block" style="font-weight: bold">Basic parameters</p>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/attack_icon.png">
+      <span>{{selectedHero.attack}}</span>
+    </p>
+    <span class="col-10">The attack affects the damage dealt by this hero.</span>
+  </div>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/def_icon.png">
+      <span>{{selectedHero.defence}}</span>
+    </p>
+    <span class="col-10">Defense affects the amount of damage absorbed.</span>
+  </div>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/health_icon.png">
+      <span>{{selectedHero.health}}</span>
+    </p>
+    <span class="col-10">Health affects the survivability of this hero in battle.</span>
+  </div>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/f_power.png">
+      <span>{{selectedHero.rage}}</span>
+    </p>
+    <span class="col-10">Rage affects the ability to impose a penalty on the enemy.</span>
+  </div>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/anti_f_power.png">
+      <span>{{selectedHero.willpower}}</span>
+    </p>
+    <span class="col-10">Willpower affects the ability to resist penalties.</span>
+  </div>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/dmg_red.png">
+      <span>{{selectedHero.dmgReducedBy * 100}}%</span>
+    </p>
+    <span class="col-10">Absorption affects the amount of pure damage absorbed (stacks with defense).</span>
+  </div>
+  <div style="font-weight: bold" class="flex-row">
+    <p class="d-inline col-2 m-0">
+      <img src="assets/resourses/imgs/icons/move_icon.png">
+      <span>{{selectedHero.canCross}}</span>
+    </p>
+    <span class="col-10">Mobility affects the number of cells a hero can move in a turn.</span>
+  </div>
+</div>

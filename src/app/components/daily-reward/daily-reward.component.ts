@@ -1,12 +1,11 @@
-import {AfterViewInit, Component, Input, OnInit, Renderer2, TemplateRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
+import {ModalModule} from "ngx-bootstrap/modal";
 import {Unit} from "../../services/game-field/game-field.service";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
-import {DomSanitizer} from "@angular/platform-browser";
-import {EffectsService} from "../../services/effects/effects.service";
+import {StatsComponent} from "../stats/stats.component";
 
 interface DayReward {
     copperCoin: number,
@@ -20,7 +19,7 @@ interface DayReward {
 @Component({
     selector: 'daily-reward',
     standalone: true,
-    imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule],
+  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent],
     templateUrl: './daily-reward.component.html',
     styleUrl: './daily-reward.component.scss'
 })
@@ -33,19 +32,8 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
     rewardHero: Unit;
 
     constructor(public heroService: HeroesService,
-                private sanitizer:DomSanitizer,
-                private effectsService: EffectsService,
                 private render2: Renderer2) {
         this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
-    }
-
-    highlightPhrase(text: string) {
-        for (let i = 0; i < this.effectsService.effectsToHighlight.length; i++) {
-            const effect = this.effectsService.effectsToHighlight[i];
-            text = text.replaceAll(effect, `<span${effect}</span`)
-        }
-
-        return this.sanitizer.bypassSecurityTrustHtml(text.replaceAll("<span", "<span class='highlight-effect'>").replaceAll("</span", "</span>"))
     }
 
     showHeroPreview() {

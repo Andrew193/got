@@ -7,39 +7,7 @@ main {
     box-shadow: $box-shadow;
   }
   .card {
-    cursor: pointer;
-    text-align: center;
     background: $background-color-main;
-    box-shadow: $box-shadow;
-    color: white;
-    transition: background-color ease 0.5s;
-    position: relative;
-
-    .level {
-      position: absolute;
-      left: 0px;
-      .level_rank {
-        height: 50px;
-        width: 50px;
-      }
-      span {
-        position: absolute;
-        top: 15px;
-        left: 20px;
-      }
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      &:not(.level_rank) {
-        border-bottom: 1px solid;
-      }
-    }
-
-    &:hover {
-      background: $background-color-main-hover;
-    }
   }
   .card-title, h4 {
     @include grad-color;

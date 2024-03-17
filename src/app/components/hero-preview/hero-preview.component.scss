@@ -1,0 +1,66 @@
+@import "../../../assets/resourses/styles/vars";
+@import "../../../assets/resourses/styles/mixins";
+
+
+.eq-container {
+  .eq-stats > div > div {
+    background: $background-color-main;
+    box-shadow: $box-shadow;
+    height: 100%;
+  }
+  .eq-stats {
+    img {
+      width: 30px;
+    }
+    span {
+      text-align: center;
+      line-height: 30px;
+      font-weight: bold;
+      padding-left: 5px;
+    }
+  }
+}
+
+.preview-container {
+  background: url("../../../assets/resourses/imgs/background/taverna-2.jpg") no-repeat;
+  background-size: cover;
+  min-height: 100%;
+  box-shadow: $box-shadow;
+  position: relative;
+  padding-top: 1px;
+  max-height: 100%;
+  overflow: auto;
+
+  .main-content {
+    > div, aside {
+    }
+    aside > div {
+      overflow: auto;
+    }
+  }
+
+  .stats-bar > div, .skills-container {
+      background: $background-color-main;
+      box-shadow: $box-shadow-out;
+      border-radius: 15px;
+  }
+
+  .skills-container {
+    box-shadow: $box-shadow !important;
+    img {
+      width: 100px;
+      height: 100px;
+      margin-right: 10px;
+    }
+  }
+
+  .card {
+    background: $background-color-main;
+    max-width: 350px;
+    height: 100%;
+  }
+
+  h3 {
+    @include grad-color;
+  }
+}

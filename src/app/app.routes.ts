@@ -5,10 +5,13 @@ import {TavernaComponent} from "./components/taverna/taverna.component";
 import {GameBoardComponent} from "./components/game-board/game-board.component";
 import {TavernaHeroesBarComponent} from "./components/taverna-heroes-bar/taverna-heroes-bar.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
+import {HeroPreviewComponent} from "./components/hero-preview/hero-preview.component";
+import {TavernaInnerContainerComponent} from "./components/taverna-inner-container/taverna-inner-container.component";
 
 export const frontRoutes = {
   base: "",
   taverna: "taverna",
+  preview: "preview",
   battleField: "test-b",
   login: "login"
 }
@@ -19,7 +22,8 @@ export const routes: Routes = [
       {component: LobbyComponent, path: frontRoutes.base},
       {
         component: TavernaComponent, path: frontRoutes.taverna, children: [
-          {component: TavernaHeroesBarComponent, path: frontRoutes.base},
+          {component: TavernaInnerContainerComponent, path: frontRoutes.base},
+          {component: HeroPreviewComponent, path: frontRoutes.preview}
         ]
       },
       {component: GameBoardComponent, path: frontRoutes.battleField}

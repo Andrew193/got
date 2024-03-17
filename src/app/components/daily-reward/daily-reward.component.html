@@ -1,116 +1,67 @@
 <div class="c-container d-flex align-items-center justify-content-center">
-    <div (appOutsideClick)="closePopup()" class="col-11 inner-container flex-row position-relative">
-        <p class="day-count-container">X <span class="day-count">{{daysInRow}}</span> награды</p>
+  <div (appOutsideClick)="closePopup()" class="col-11 inner-container flex-row position-relative">
+    <p class="day-count-container">X <span class="day-count">{{daysInRow}}</span> награды</p>
 
-        <div class="col-3 position-relative">
-            <div class="glow-box" (click)="showHeroPreview()">
-                <div class="hero-in-frame hero" #heroInFrame></div>
-            </div>
-        </div>
-        <aside class="col-9 p-3">
-            <h4 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только
-                расти!!!</h4>
+    <div class="col-3 position-relative">
+      <div class="glow-box" (click)="showHeroPreview()">
+        <div class="hero-in-frame hero" #heroInFrame></div>
+      </div>
+    </div>
+    <aside class="col-9 p-3">
+      <h4 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только
+        расти!!!</h4>
 
-            <div *ngIf="!isHeroPreview" class="flex-row">
-                <ng-container *ngFor="let reward of monthReward; let i = index">
-                    <div class="p-3" style="width: 14.28%">
-                        <div class="reward d-flex flex-column p-2">
-                            <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
-                            <span class="copper fw-bold">
+      <div *ngIf="!isHeroPreview" class="flex-row">
+        <ng-container *ngFor="let reward of monthReward; let i = index">
+          <div class="p-3" style="width: 14.28%">
+            <div class="reward d-flex flex-column p-2">
+              <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
+              <span class="copper fw-bold">
                                 <img src="assets/resourses/imgs/copper.png"
                                      alt="copperCoin"/>{{reward.copperCoin}}</span>
-                            <span class="silver fw-bold" *ngIf="reward.silverCoin">
+              <span class="silver fw-bold" *ngIf="reward.silverCoin">
                                 <img src="assets/resourses/imgs/silver.png"
                                      alt="silverCoin"/>{{reward.silverCoin}}</span>
-                            <span class="gold fw-bold" *ngIf="reward.goldCoin">
+              <span class="gold fw-bold" *ngIf="reward.goldCoin">
                                 <img src="assets/resourses/imgs/gold.png" alt="goldCoin"/>{{reward.goldCoin}}</span>
-                            <span class="fw-bold summon-scroll" *ngIf="reward.summonScroll">
+              <span class="fw-bold summon-scroll" *ngIf="reward.summonScroll">
                                 <img src="assets/resourses/imgs/icons/card_scroll.png"
                                      alt="summonScroll"/>{{reward.summonScroll}}</span>
-                            <span class="fw-bold summon-card" *ngIf="reward.summonCard">
+              <span class="fw-bold summon-card" *ngIf="reward.summonCard">
                                 <img src="assets/resourses/imgs/icons/hero_shard.png"
                                      alt="summonCard"/>{{reward.summonCard}}</span>
-                            <span class="fw-bold hero-shard" *ngIf="reward.heroShard">
+              <span class="fw-bold hero-shard" *ngIf="reward.heroShard">
                                 <img src="assets/resourses/imgs/icons/hero_puzzle.png"
                                      alt="heroShard"/>{{reward.heroShard}}</span>
-                        </div>
-                    </div>
-                </ng-container>
             </div>
-            <div *ngIf="isHeroPreview">
-                <h4 id="dialog-sizes-name" class="modal-title text-center w-100 caption mb-2">{{rewardHero.name}}</h4>
-                <p style="font-weight: bold; color: white">{{rewardHero.description}}</p>
-                <div class="col-11 stats h-100 flex-row">
-                    <div class="col-12 m-3">
-                        <p class="text-center w-100 d-block" style="font-weight: bold">Базовые параметры</p>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/attack_icon.png">
-                                <span>{{rewardHero.attack}}</span>
-                            </p>
-                            <span class="col-11">Атака влияет на наносимый урон этого героя.</span>
-                        </div>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/def_icon.png">
-                                <span>{{rewardHero.defence}}</span>
-                            </p>
-                            <span class="col-11">Защита влияет на количество поглощаемого урона.</span>
-                        </div>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/health_icon.png">
-                                <span>{{rewardHero.health}}</span>
-                            </p>
-                            <span class="col-11">Здоровье влияет на выживаемость этого героя в бою.</span>
-                        </div>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/f_power.png">
-                                <span>{{rewardHero.rage}}</span>
-                            </p>
-                            <span class="col-11">Ярость влияет на возможность наложить штраф на противника.</span>
-                        </div>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/anti_f_power.png">
-                                <span>{{rewardHero.willpower}}</span>
-                            </p>
-                            <span class="col-11">Сила воли влияет на возможность сопротивляться штрафам.</span>
-                        </div>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/dmg_red.png">
-                                <span>{{rewardHero.dmgReducedBy * 100}}%</span>
-                            </p>
-                            <span class="col-11">Поглощение влияет на количество поглощаемого чистого урона ( складывается с защитой ).</span>
-                        </div>
-                        <div style="font-weight: bold" class="flex-row">
-                            <p class="d-inline col-1 m-0">
-                                <img src="assets/resourses/imgs/icons/move_icon.png">
-                                <span>{{rewardHero.canCross}}</span>
-                            </p>
-                            <span class="col-11">Мобильность влияет на количество клеток которое может пройти героя за ход.</span>
-                        </div>
-                    </div>
-                    <div class="col-12" style="font-weight: bold">
-                        <p class="text-center w-100 d-block">Навыки героя</p>
-                        <div class="m-3">
-                            <div *ngFor="let skill of rewardHero.skills" class="flex-row">
-                                <div class="col-1">
-                                    <img src="{{skill.imgSrc}}" alt="{{skill.name}}" class="skill-preview-icon"/>
-                                </div>
-                                <div class="col-11">
-                                    <span class="defence-color">{{skill.name}} {{skill.passive ? '( P )' : ''}}</span>
-                                    <div>
-                                        <p class="d-inline-block" [innerHTML]="highlightPhrase(skill.description)"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          </div>
+        </ng-container>
+      </div>
+      <div *ngIf="isHeroPreview">
+        <h4 id="dialog-sizes-name" class="modal-title text-center w-100 caption mb-2">{{rewardHero.name}}</h4>
+        <p style="font-weight: bold; color: white">{{rewardHero.description}}</p>
+        <div class="col-11 stats h-100 flex-row">
+          <div class="flex-row w-100 mt-2 justify-content-center align-items-center">
+            <stats [selectedHero]="rewardHero"></stats>
+          </div>
+          <div class="col-12" style="font-weight: bold">
+            <p class="text-center w-100 d-block">Навыки героя</p>
+            <div class="m-3">
+              <div *ngFor="let skill of rewardHero.skills" class="flex-row">
+                <div class="col-1">
+                  <img src="{{skill.imgSrc}}" alt="{{skill.name}}" class="skill-preview-icon"/>
                 </div>
+                <div class="col-11">
+                  <span class="defence-color">{{skill.name}} {{skill.passive ? '( P )' : ''}}</span>
+                  <div>
+                    <p class="d-inline-block" [innerHTML]="heroService.highlightEffects(skill.description)"></p>
+                  </div>
+                </div>
+              </div>
             </div>
-        </aside>
-    </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
 </div>

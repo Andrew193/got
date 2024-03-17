@@ -5,6 +5,8 @@ import {CommonModule} from "@angular/common";
 import {PageChangedEvent, PaginationModule} from "ngx-bootstrap/pagination";
 import {RatingModule} from "ngx-bootstrap/rating";
 import {FormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
+import {frontRoutes} from "../../app.routes";
 
 @Component({
   selector: 'taverna-heroes-bar',
@@ -19,7 +21,8 @@ export class TavernaHeroesBarComponent implements OnInit {
   contentArray: Unit[] = [];
   itemsPerPage = 5;
 
-  constructor(private heroesService: HeroesService) {
+  constructor(public heroesService: HeroesService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -39,11 +42,11 @@ export class TavernaHeroesBarComponent implements OnInit {
     this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 
-  getRank(level: number) {
-    return level <= 10 ? 1 :
-      level <= 20 ? 2 :
-        level <= 30 ? 3 :
-          level <= 40 ? 4 :
-            level <= 50 ? 5 : 6
+  openPreview(name: string) {
+    this.router.navigate([[frontRoutes.taverna, frontRoutes.preview].join("/")], {
+      queryParams: {
+        name
+      }
+    })
   }
 }
