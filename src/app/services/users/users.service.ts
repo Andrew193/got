@@ -6,8 +6,9 @@ import {Router} from "@angular/router";
 import {frontRoutes} from "../../app.routes";
 
 export interface User {
-  login: any,
-  password: any
+  id: string,
+  login: string,
+  password: string
 }
 
 @Injectable({

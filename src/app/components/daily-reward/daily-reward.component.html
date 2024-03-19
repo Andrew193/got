@@ -1,6 +1,6 @@
 <div class="c-container d-flex align-items-center justify-content-center">
   <div (appOutsideClick)="closePopup()" class="col-11 inner-container flex-row position-relative">
-    <p class="day-count-container">X <span class="day-count">{{daysInRow}}</span> награды</p>
+    <p class="day-count-container">X <span class="day-count">{{dailyRewardConfig.totalDays}}</span> награды</p>
 
     <div class="col-3 position-relative">
       <div class="glow-box" (click)="showHeroPreview()">
@@ -10,11 +10,10 @@
     <aside class="col-9 p-3">
       <h4 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только
         расти!!!</h4>
-
       <div *ngIf="!isHeroPreview" class="flex-row">
-        <ng-container *ngFor="let reward of monthReward; let i = index">
+        <ng-container *ngFor="let reward of month; let i = index">
           <div class="p-3" style="width: 14.28%">
-            <div class="reward d-flex flex-column p-2">
+            <div class="reward d-flex flex-column p-2" [ngClass]="{'today': +dailyRewardConfig.day === i+1}" (click)="claimReward()">
               <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
               <span class="copper fw-bold">
                                 <img src="assets/resourses/imgs/copper.png"

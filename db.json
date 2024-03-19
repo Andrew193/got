@@ -10,5 +10,14 @@
       "login": "test",
       "password": "test"
     }
+  ],
+  "dailyReward": [
+    {
+      "id": "6fe2",
+      "userId": "2ac5",
+      "day": 3,
+      "totalDays": 3,
+      "lastLogin": "03/19/2024"
+    }
   ]
 }

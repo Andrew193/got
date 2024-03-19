@@ -38,13 +38,20 @@
   border-radius: 5px;
   box-shadow: $box-shadow;
   transition: all ease 0.4s;
-
-  &:hover {
-    background-color: rgba(255, 241, 241, 0.64);
-  }
+  pointer-events: none;
 
   img {
     height: 30px;
     width: 30px;
   }
+
+  &.today {
+    background-color: #855a5a;
+    pointer-events: auto;
+    &:hover {
+      background-color: rgba(255, 241, 241, 0.64);
+    }
+  }
 }
+
+
