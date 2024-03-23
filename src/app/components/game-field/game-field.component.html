@@ -54,7 +54,7 @@
             <div>
               <p class="text-center">{{skill.name}}</p>
               <div class="text-center">
-                <div class="position-relative" style="margin: 0 auto; width: fit-content">
+                <div class="position-relative" style="margin: 0 auto; width: fit-content" tooltip="{{skill.description}}">
                   <img alt="{{skill.name}}" src="{{skill.imgSrc}}" class="cursor-pointer" (click)="attack(skill)"/>
                   <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
                     <i aria-hidden="true">{{skill.passive ? 'P' : skill.remainingCooldown}}</i>
@@ -100,6 +100,8 @@
     </aside>
   </main>
 </div>
+
+<button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
 
 
 <ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
@@ -150,7 +152,7 @@
           <div class="col-11 stats h-100" style="margin: 0 auto">
             <p>Здоровье героя: {{hero.health}}</p>
             <div class="flex-row skills-container justify-content-evenly">
-              <div class="col-4 position-relative" *ngFor="let skill of hero.skills">
+              <div class="col-4 position-relative" *ngFor="let skill of hero.skills" tooltip="{{skill.description}}">
                 <img alt="skill" src="{{skill.imgSrc}}" class="w-100"/>
                 <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
                   <i aria-hidden="true">{{skill.passive ? 'P' : skill.remainingCooldown}}</i>

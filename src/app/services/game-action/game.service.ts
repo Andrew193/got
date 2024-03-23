@@ -14,7 +14,8 @@ export class GameService {
         headerMessage: "",
         headerClass: "",
         closeBtnLabel: "",
-        callback: () => {}
+        callback: () => {
+        }
     }
 
     constructor(private heroService: HeroesService,
@@ -24,17 +25,17 @@ export class GameService {
     }
 
     getFixedDefence(defence: number, unit: Unit) {
-        const defReducedEffect = unit.effects.find((effect)=>effect.type === this.effectsService.effects.defBreak)
-        return !!defReducedEffect ? defence * this.effectsService.getMultForEffect(defReducedEffect): defence
+        const defReducedEffect = unit.effects.find((effect) => effect.type === this.effectsService.effects.defBreak)
+        return !!defReducedEffect ? defence * this.effectsService.getMultForEffect(defReducedEffect) : defence
     }
 
     getFixedAttack(attack: number, unit: Unit) {
-        const attackReducedEffect = unit.effects.find((effect)=>effect.type === this.effectsService.effects.attackBreak)
-        return !!attackReducedEffect ? attack * this.effectsService.getMultForEffect(attackReducedEffect): attack
+        const attackReducedEffect = unit.effects.find((effect) => effect.type === this.effectsService.effects.attackBreak)
+        return !!attackReducedEffect ? attack * this.effectsService.getMultForEffect(attackReducedEffect) : attack
     }
 
     //Check buffs ( health restore )
-  checkPassiveSkills(units: Unit[], logs: LogRecord[]) {
+    checkPassiveSkills(units: Unit[], logs: LogRecord[]) {
         for (let index = 0; index < units.length; index++) {
             const unit = units[index];
             if (unit.health) {
@@ -44,10 +45,10 @@ export class GameService {
                         for (let i = 0; i < buffs.length; i++) {
                             units[index] = this.restoreHealthForUnit(unit, buffs[i], logs, skill);
                         }
-                    } else if(skill.passive && skill.buffs) {
-                      skill.buffs.forEach((buff)=>{
-                        units[index].effects = [...units[index].effects, buff]
-                      })
+                    } else if (skill.passive && skill.buffs) {
+                        skill.buffs.forEach((buff) => {
+                            units[index].effects = [...units[index].effects, buff]
+                        })
                     }
                 })
             }
@@ -101,8 +102,11 @@ export class GameService {
     }
 
     checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: () => void) {
-        const allUserUnitsDead = userUnits.every((userUnit) => !userUnit.health);
-        const allAiUnitsDead = aiUnits.every((aiUnit) => !aiUnit.health);
+        const realUserUnits = userUnits[0].user ? userUnits : aiUnits;
+        const realAiUnits = !aiUnits[0].user ? aiUnits : userUnits;
+
+        const allUserUnitsDead = this.isDead(realUserUnits);
+        const allAiUnitsDead = this.isDead(realAiUnits);
         if (allUserUnitsDead || allAiUnitsDead) {
             this.gameResult = {
                 headerClass: allUserUnitsDead ? "red-b" : "green-b",
@@ -112,5 +116,9 @@ export class GameService {
             }
             this.modalWindowService.openModal({...this.gameResult, open: true})
         }
+    }
+
+    isDead(units: Unit[]) {
+        return units.every((userUnit) => !userUnit.health);
     }
 }

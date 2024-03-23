@@ -741,7 +741,6 @@ export class HeroesService {
   }
 
   getEquipmentForUnit(unit: Unit): Unit {
-    debugger
     //Level
     const leveledUnit = {
       ...unit,

@@ -130,8 +130,8 @@ export class GameFieldService {
     });
   }
 
-  resetMoveAndAttack(unitArray: Unit[],) {
-    unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: true, canAttack: true})
+  resetMoveAndAttack(unitArray: Unit[], setValue = true) {
+    unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: setValue, canAttack: setValue})
   }
 
   getPositionFromUnit(unit: Unit) {

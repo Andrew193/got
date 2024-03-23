@@ -42,11 +42,13 @@ export class TrainingComponent {
   }
 
   openFight() {
-    debugger
     this.userUnits = this.userUnits.map((unit, index) => ({...unit, x: 2 + index, y: 1}))
     this.aiUnits = this.aiUnits.map((unit, index) => ({...unit, x: 2 + index, y: 8, user: false}))
-    console.log(this.userUnits)
     this.fightStarted = true;
+  }
+
+  goToMainPage() {
+    this.route.navigate([frontRoutes.base]);
   }
 
   public victoryRedirect = () => {

@@ -29,11 +29,12 @@ export class ModalWindowComponent implements OnInit{
 
   ngOnInit(): void {
     this.modalWindowService.modalConfig$.subscribe((newConfig)=> {
-      if(newConfig.open && !this.modalConfig.open) {
+      if(newConfig.open) {
         this.modalConfig = newConfig;
         this.openModal(this.modalTemplate);
       } else {
         this.modalConfig = this.initConfig;
+        this.modalService.hide(this.modalRef?.id)
       }
     })
   }
