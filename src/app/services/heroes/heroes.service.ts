@@ -56,9 +56,9 @@ export class HeroesService {
       maxCanCross: 2,
       health: 9837,
       healthIncrement: 194,
-      attack: 1529,
+      attack: 1629,
       attackIncrement: 21,
-      defence: 1385,
+      defence: 1585,
       defenceIncrement: 12,
       maxHealth: 9837,
       rage: 25,
@@ -741,6 +741,7 @@ export class HeroesService {
   }
 
   getEquipmentForUnit(unit: Unit): Unit {
+    debugger
     //Level
     const leveledUnit = {
       ...unit,
@@ -775,6 +776,8 @@ export class HeroesService {
     leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq4Level).toFixed(0);
     leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq4Level).toFixed(0);
     leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq4Level).toFixed(0);
+
+    leveledUnit.maxHealth = leveledUnit.health;
 
     return leveledUnit;
   }

@@ -13,7 +13,8 @@ export class GameService {
     gameResult = {
         headerMessage: "",
         headerClass: "",
-        closeBtnLabel: ""
+        closeBtnLabel: "",
+        callback: () => {}
     }
 
     constructor(private heroService: HeroesService,
@@ -99,14 +100,15 @@ export class GameService {
         return {...unit, skills: this.fieldService.recountSkillsCooldown(createDeepCopy(unit.skills))};
     }
 
-    checkCloseFight(userUnits: Unit[], aiUnits: Unit[]) {
+    checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: () => void) {
         const allUserUnitsDead = userUnits.every((userUnit) => !userUnit.health);
         const allAiUnitsDead = aiUnits.every((aiUnit) => !aiUnit.health);
         if (allUserUnitsDead || allAiUnitsDead) {
             this.gameResult = {
                 headerClass: allUserUnitsDead ? "red-b" : "green-b",
                 headerMessage: allUserUnitsDead ? "Вы проиграли" : "Вы победили",
-                closeBtnLabel: allUserUnitsDead ? "Попробовать позже" : "Отлично"
+                closeBtnLabel: allUserUnitsDead ? "Попробовать позже" : "Отлично",
+                callback: callback
             }
             this.modalWindowService.openModal({...this.gameResult, open: true})
         }

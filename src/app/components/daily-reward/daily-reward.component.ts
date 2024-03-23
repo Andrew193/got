@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {Unit} from "../../services/game-field/game-field.service";
@@ -8,6 +8,7 @@ import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {StatsComponent} from "../stats/stats.component";
 import {DailyReward, DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
+import {config} from "rxjs";
 
 interface DayReward {
   copperCoin: number,
@@ -25,7 +26,7 @@ interface DayReward {
   templateUrl: './daily-reward.component.html',
   styleUrl: './daily-reward.component.scss'
 })
-export class DailyRewardComponent implements OnInit, AfterViewInit {
+export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() closePopup: () => void = () => {
   };
   @ViewChild('heroInFrame') heroInFrame: any;
@@ -45,6 +46,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
               private render2: Renderer2) {
     this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
     this.month = this.monthReward;
+    document.body.style.overflow = "hidden";
   }
 
   showHeroPreview() {
@@ -76,7 +78,6 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
     this.render2.setStyle(this.heroInFrame.nativeElement, 'background', `url(${this.rewardHero?.fullImgSrc})`)
   }
 
-
   getWeekReward(copperCoinM = 1, silverCoin = 1, vipPointsM = 1, summonCardM = 1, summonScrollM = 1, dayM = 1): DayReward[] {
     return [
       {copperCoin: +(15000 * copperCoinM * dayM).toPrecision(3)},
@@ -107,6 +108,10 @@ export class DailyRewardComponent implements OnInit, AfterViewInit {
       rewards.push(...this.getWeekReward(i + 1, i + 1, i + 1, i + 1, i + 1, this.dailyRewardConfig.totalDays))
     }
     return rewards;
+  }
+
+  ngOnDestroy(): void {
+    document.body.style.overflow = "auto";
   }
 
 }

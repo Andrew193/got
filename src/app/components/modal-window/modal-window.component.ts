@@ -1,11 +1,12 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {ModalConfig, ModalWindowService} from "../../services/modal/modal-window.service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'modal-window',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   providers: [BsModalService],
   templateUrl: './modal-window.component.html',
   styleUrl: './modal-window.component.scss'
@@ -13,12 +14,14 @@ import {ModalConfig, ModalWindowService} from "../../services/modal/modal-window
 export class ModalWindowComponent implements OnInit{
   modalRef?: BsModalRef;
   @ViewChild("template") modalTemplate: any;
-  modalConfig: ModalConfig = {
+  initConfig = {
     headerClass: '',
     headerMessage: '',
     closeBtnLabel: '',
-    open: false
-  }
+    open: false,
+    callback: () => {}
+  };
+  modalConfig: ModalConfig = this.initConfig
 
   constructor(private modalService: BsModalService,
               private modalWindowService: ModalWindowService) {
@@ -29,11 +32,19 @@ export class ModalWindowComponent implements OnInit{
       if(newConfig.open && !this.modalConfig.open) {
         this.modalConfig = newConfig;
         this.openModal(this.modalTemplate);
+      } else {
+        this.modalConfig = this.initConfig;
       }
     })
   }
 
   openModal(template: TemplateRef<void>) {
     this.modalRef = this.modalService.show(template, {ignoreBackdropClick: true, class: 'modal-lg'});
+  }
+
+  close() {
+    this.modalConfig.callback();
+    this.modalRef?.hide();
+    this.modalWindowService.dropModal();
   }
 }

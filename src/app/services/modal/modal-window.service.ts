@@ -5,19 +5,22 @@ export interface ModalConfig {
   headerClass: string,
   headerMessage: string,
   closeBtnLabel: string,
-  open: boolean
+  open: boolean,
+  callback: () => void
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalWindowService {
-  private _modalConfig: BehaviorSubject<ModalConfig> = new BehaviorSubject<ModalConfig>({
+  init = {
     headerMessage: '',
     headerClass: '',
     closeBtnLabel: '',
-    open: false
-  });
+    open: false,
+    callback: () => {}
+  }
+  private _modalConfig: BehaviorSubject<ModalConfig> = new BehaviorSubject<ModalConfig>(this.init);
   modalConfig$ = this._modalConfig.asObservable();
 
   constructor() {
@@ -25,5 +28,9 @@ export class ModalWindowService {
 
   openModal(modalConfig: ModalConfig) {
     this._modalConfig.next(modalConfig)
+  }
+
+  dropModal() {
+    this._modalConfig.next(this.init)
   }
 }

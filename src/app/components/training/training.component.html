@@ -1,0 +1,35 @@
+<div class="training-container">
+  <div *ngIf="!fightStarted">
+    <h3 class="text-center">Configure your training</h3>
+    <div class="flex-row units-config-container">
+      <div class="col-lg-6 col-md-12 d-flex justify-content-center">
+        <div class="col-11 units-config-inner-container">
+          <h4 class="text-center">User Units</h4>
+          <div class="flex-row justify-content-evenly">
+            <div *ngFor="let unit of allHeroes; let i = index" class="m-1" (click)="addUserUnit(unit)">
+              <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [ngClass]="{'selected': checkSelected(unit)}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 d-flex justify-content-center">
+        <div class="col-11 units-config-inner-container">
+          <h4 class="text-center">AI Units</h4>
+          <div class="flex-row justify-content-evenly">
+            <div *ngFor="let unit of allHeroes; let i = index" class="m-1" (click)="addUserUnit(unit, false)">
+              <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [ngClass]="{'selected-enemy': checkSelected(unit, false)}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-primary" *ngIf="aiUnits.length && userUnits.length" (click)="openFight()">Fight</button>
+    </div>
+  </div>
+  <game-board *ngIf="fightStarted"
+              [aiUnits]="aiUnits"
+              [gameResultsRedirect]="victoryRedirect"
+              [userUnits]="userUnits"
+  ></game-board>
+</div>

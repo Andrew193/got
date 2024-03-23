@@ -7,12 +7,14 @@ import {TavernaHeroesBarComponent} from "./components/taverna-heroes-bar/taverna
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {HeroPreviewComponent} from "./components/hero-preview/hero-preview.component";
 import {TavernaInnerContainerComponent} from "./components/taverna-inner-container/taverna-inner-container.component";
+import {TrainingComponent} from "./components/training/training.component";
 
 export const frontRoutes = {
   base: "",
   taverna: "taverna",
   preview: "preview",
   battleField: "test-b",
+  training: "training",
   login: "login"
 }
 
@@ -26,6 +28,7 @@ export const routes: Routes = [
           {component: HeroPreviewComponent, path: frontRoutes.preview}
         ]
       },
+      {component: TrainingComponent, path: frontRoutes.training},
       {component: GameBoardComponent, path: frontRoutes.battleField}
     ]
   },

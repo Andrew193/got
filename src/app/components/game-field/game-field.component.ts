@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Effect, GameFieldService, Skill, Tile, Unit} from "../../services/game-field/game-field.service";
 import {CommonModule} from "@angular/common";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
@@ -21,9 +21,12 @@ import {EffectsService} from "../../services/effects/effects.service";
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss'
 })
-export class GameFieldComponent {
+export class GameFieldComponent implements OnInit{
+  @Input() userUnits: Unit[] = [];
+  @Input() aiUnits: Unit[] = [];
+  @Input() gameResultsRedirect: () => void = ()=>{};
+
   log: LogRecord[] = [];
-  userSample: Unit;
   gameConfig;
   turnUser = true;
   _turnCount: BehaviorSubject<number> = new BehaviorSubject(1);
@@ -34,8 +37,6 @@ export class GameFieldComponent {
   ignoreMove = false;
   clickedEnemy: Unit | null = null;
   selectedEntity: Unit | null = null;
-  userUnits: Unit[] = [];
-  aiUnits: Unit[] = [];
   possibleMoves: Position[] = [];
   possibleAttackMoves: Position[] = [];
 
@@ -43,18 +44,14 @@ export class GameFieldComponent {
               private heroService: HeroesService,
               private effectsService: EffectsService,
               private gameActionService: GameService) {
-    this.userSample = this.heroService.getWhiteWalkerCapitan()
-    this.userUnits = [{...this.userSample, x: 3, y: 7}];
-    this.aiUnits = [{
-      ...this.heroService.getWhiteWalkerGeneral(),
-      x: 3,
-      y: 9,
-      user: false
-    }]
     this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
     this._turnCount.subscribe((newTurn) => {
       this.turnCount = newTurn;
     })
+  }
+
+  ngOnInit(): void {
+    this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
   }
 
   attack(skill: Skill) {
@@ -68,7 +65,7 @@ export class GameFieldComponent {
     this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, true, this.userUnits[userIndex])
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(this.userUnits[userIndex].rage > this.aiUnits[enemyIndex].willpower));
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
-
+    this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
     this.updateGridUnits(this.aiUnits);
     this.updateGridUnits(this.userUnits);
     this.dropEnemy();
@@ -270,8 +267,6 @@ export class GameFieldComponent {
   attackUser() {
     this._turnCount.next(this.turnCount + 1);
     const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
-    this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
-
     const makeAiMove = (aiUnit: Unit, index: number) => {
       //Unit makes a move only if this unit is not dead
       if (aiUnit.health && aiUnit.canMove) {
@@ -346,7 +341,7 @@ export class GameFieldComponent {
         //Update grid config
         this.gameConfig = this.fieldService.getGameField(this.userUnits, this.aiUnits, this.fieldService.getDefaultGameField());
         this.turnUser = true;
-        this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits);
+        this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
       } else {
         //Get AI unit and look for debuffs ( deal dmg before making a move )
         let aiUnit = this.aiUnits[index];

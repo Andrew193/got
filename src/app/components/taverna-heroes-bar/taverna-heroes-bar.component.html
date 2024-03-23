@@ -2,7 +2,7 @@
   <div class="flex-row">
     <div class="col-9 flex-row justify-content-between">
       <div class="col-2 d-flex justify-content-center m-2" *ngFor="let hero of returnedArray">
-        <div class="card hero-card d-flex align-items-center col-12" (click)="openPreview(hero.name)">
+        <div class="card hero-card d-flex align-items-center col-12" (click)="openHeroPreview(hero.name)">
           <img class="card-img-top mt-2" src="{{hero.fullImgSrc}}" alt="{{hero.name}}">
           <div class="level">
             <div class="position-relative">
@@ -25,5 +25,5 @@
   <pagination [totalItems]="totalElements" (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage"
               [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
   ></pagination>
-
+<button class="btn btn-primary" (click)="backToMainPage()">Back to Castle Black</button>
 </main>

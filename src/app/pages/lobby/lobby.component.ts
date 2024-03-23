@@ -25,6 +25,10 @@ export class LobbyComponent {
     this.router.navigate([frontRoutes.taverna])
   }
 
+  openTraining() {
+    this.router.navigate([frontRoutes.training])
+  }
+
   openBattle() {
     this.router.navigate([frontRoutes.battleField])
   }

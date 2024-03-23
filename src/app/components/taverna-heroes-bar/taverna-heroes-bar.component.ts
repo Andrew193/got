@@ -42,11 +42,15 @@ export class TavernaHeroesBarComponent implements OnInit {
     this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 
-  openPreview(name: string) {
+  openHeroPreview(name: string) {
     this.router.navigate([[frontRoutes.taverna, frontRoutes.preview].join("/")], {
       queryParams: {
         name
       }
     })
+  }
+
+  backToMainPage() {
+    this.router.navigate([frontRoutes.base]);
   }
 }

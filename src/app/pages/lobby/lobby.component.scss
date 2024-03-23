@@ -24,7 +24,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    height: min-content;
+    height: inherit;
     &:hover {
       span {
         @include grad-color;
@@ -36,7 +36,7 @@
       background: $background-color-main;
       box-shadow: $box-shadow;
       color: white;
-      max-height: 106px;
+      height: 100%;
     }
 
     span {
