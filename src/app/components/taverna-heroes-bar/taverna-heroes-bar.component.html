@@ -16,14 +16,31 @@
     </div>
     <div class="col-3">
       <aside class="m-2">
-        <div class="text-center">
-          <h4>Фильтры</h4>
+        <div class="text-center filters">
+          <h4>Filters</h4>
+          <form [formGroup]="formGroup" class="ps-2 pe-2">
+            <mat-slide-toggle formControlName="showAll" [color]="'primary'" class="w-100 mb-2">Show All Heroes</mat-slide-toggle>
+            <mat-form-field class="w-100">
+              <mat-label>Unit Name</mat-label>
+              <input type="text"
+                     aria-label="Unit Name"
+                     matInput
+                     formControlName="unitName"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete autoActiveFirstOption="true" #auto="matAutocomplete">
+                <mat-option *ngFor='let option of filteredOptions | async' [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
         </div>
       </aside>
     </div>
   </div>
   <pagination [totalItems]="totalElements" (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage"
               [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+              [(ngModel)]="currentPage"
   ></pagination>
 <button class="btn btn-primary" (click)="backToMainPage()">Back to Castle Black</button>
 </main>

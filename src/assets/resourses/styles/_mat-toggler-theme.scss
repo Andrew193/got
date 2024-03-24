@@ -1,0 +1,28 @@
+// _mat-toggler-theme.scss
+
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  .mat-mdc-slide-toggle {
+    color: #ffb9b9;
+
+    .mdc-label {
+      color: white;
+      font-weight: bold;
+    }
+  }
+}
+
+@mixin typography($theme) {
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}

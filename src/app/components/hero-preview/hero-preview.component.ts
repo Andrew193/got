@@ -33,10 +33,10 @@ export class HeroPreviewComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params)=> {
       this.name = params['name'];
-      this.selectedHero = this.heroService.getUnitByName(this.name, {level: 60, rank: 6,   eq1Level: 200,
-        eq2Level: 200,
-        eq3Level: 200,
-        eq4Level: 200
+      this.selectedHero = this.heroService.getUnitByName(this.name, {level: 1, rank: 1,   eq1Level: 1,
+        eq2Level: 1,
+        eq3Level: 1,
+        eq4Level: 1
       })
     })
   }

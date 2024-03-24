@@ -1,3 +1,4 @@
+@import "assets/resourses/styles/_material-override-theme";
 @import "assets/resourses/styles/vars";
 @import "assets/resourses/styles/fixers";
 @import "assets/resourses/styles/skills";
@@ -207,3 +208,6 @@ $columns: 100;
     background-size: contain !important;
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

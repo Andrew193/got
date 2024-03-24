@@ -13,3 +13,9 @@ main {
     @include grad-color;
   }
 }
+
+.filters {
+  label {
+    color: white !important;
+  }
+}
