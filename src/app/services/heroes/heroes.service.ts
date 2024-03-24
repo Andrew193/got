@@ -402,7 +402,7 @@ export class HeroesService {
           debuffs: [],
           buffs: [],
           passive: true,
-          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.poison + "."
+          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.poison + ". Может атаковать с растояния в 2 клетки."
         }
       ],
       effects: []
@@ -538,7 +538,7 @@ export class HeroesService {
           buffs: [this.effectsService.getAttackBuff(1)],
           passive: true,
           description: "Получает на 50% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison + ". На этого героя невозможно наложить штраф "
-            + this.effectsService.effects.freezing + ". В начал хода получает бонус " + this.effectsService.effects.attackBuff + " на 1 ход."
+            + this.effectsService.effects.freezing + ". В начал хода получает бонус " + this.effectsService.effects.attackBuff + " на 1 ход. Может атаковать с растояния в 2 клетки."
         }
       ],
       effects: []

@@ -212,7 +212,7 @@ export class GameFieldService {
       grid[i] = [];
       for (let j = 0; j < 10; j++) {
         // @ts-ignore
-        grid[i].push(field[i][j].active ? 0 : 1)
+        grid[i].push(field[i][j].active && !field[i][j].entity ? 0 : 1)
       }
     }
     return grid;

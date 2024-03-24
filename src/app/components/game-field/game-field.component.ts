@@ -139,11 +139,11 @@ export class GameFieldComponent implements OnInit {
         event?.stopPropagation();
         if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack || entity.user === false)) {
             let possibleTargetsInAttackRadius;
-            if (this.selectedEntity) {
+            if (this.selectedEntity && this.selectedEntity.user) {
                 possibleTargetsInAttackRadius = this.showPossibleMoves(this.fieldService.getPositionFromUnit(this.selectedEntity), this.selectedEntity.attackRange, true)
             }
 
-            this.clickedEnemy = this.checkAndShowAttackBar(entity);
+            this.clickedEnemy = this.selectedEntity?.user? this.checkAndShowAttackBar(entity) : null;
             if (possibleTargetsInAttackRadius) {
                 const canAttackThisTargetFromRange = possibleTargetsInAttackRadius.find((possibleTarget) => possibleTarget.i === this.clickedEnemy?.x && possibleTarget.j === this.clickedEnemy?.y)
                 this.clickedEnemy = canAttackThisTargetFromRange ? this.clickedEnemy : null;
@@ -263,10 +263,6 @@ export class GameFieldComponent implements OnInit {
             this.turnUser = false;
             this.attackUser(intervalFight, aiMove);
         }
-    }
-
-    makeUserUnitsAutoMove() {
-
     }
 
     startAutoFight(intervalFight = true) {
