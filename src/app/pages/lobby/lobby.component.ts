@@ -29,6 +29,10 @@ export class LobbyComponent {
     this.router.navigate([frontRoutes.training])
   }
 
+  openSummonTree() {
+    this.router.navigate([frontRoutes.summonTree])
+  }
+
   openBattle() {
     this.router.navigate([frontRoutes.battleField])
   }

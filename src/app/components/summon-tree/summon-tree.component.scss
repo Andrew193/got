@@ -1,0 +1,62 @@
+@import "../../../assets/resourses/styles/vars";
+@import "../../../assets/resourses/styles/mixins";
+
+.inner-container {
+  background: url("../../../assets/resourses/imgs/background/summon-tree-component.png") no-repeat;
+  background-size: cover;
+  min-height: 100%;
+  box-shadow: $box-shadow;
+  position: relative;
+  padding-top: 1px;
+  background-position: center;
+
+  h4 {
+    @include grad-color;
+    font-size: 20px;
+  }
+}
+
+.summon-container {
+  box-shadow: $box-shadow-out;
+  margin-top: 50px;
+  padding: 10px;
+  border-radius: 5px;
+
+  img {
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.roll-container {
+  img {
+    margin-bottom: unset;
+    width: 30px;
+  }
+}
+
+.reward-container {
+  background-color: $background-color-main;
+  justify-content: space-between;
+
+  img {
+    width: 55px;
+    margin-bottom: unset;
+  }
+
+  > div {
+    background-color: $background-color-main-hover;
+    box-shadow: $box-shadow;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  }
+
+  .reward-inner-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}

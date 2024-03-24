@@ -1,1 +1,30 @@
-<p>summon-tree works!</p>
+<div class="inner-container">
+    <div class="d-flex justify-content-center flex-column align-items-center">
+        <div class="summon-container">
+            <div class="m-0-auto" style="width: fit-content">
+                <img src="assets/resourses/imgs/background/summon1.png" alt="Summon tree icon">
+            </div>
+            <div>
+                <h4>Donate coins and receive heroes or their fragments. For duplicates of heroes you will receive a
+                    large number of fragments.</h4>
+                <div class="d-flex align-items-center justify-content-evenly roll-container">
+                    <button class="btn btn-success silver" (click)="getReward()">
+                        <img alt="silver coin" src="assets/resourses/imgs/silver.png">300
+                    </button>
+                    <button class="btn btn-success silver" (click)="getReward(10)">
+                        <img alt="silver coin" src="assets/resourses/imgs/silver.png">2700
+                    </button>
+                </div>
+            </div>
+            <div class="summon-container reward-container w-100 d-flex mb-3">
+                <div *ngFor="let reward of rewards">
+                    <div class="reward-inner-container">
+                        <img src="{{reward.src}}" alt="{{reward.name}}">
+                        <span>{{reward.amount}}</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" (click)="goToMainPage()">Back to Castle Black</button>
+        </div>
+    </div>
+</div>
