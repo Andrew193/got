@@ -9,6 +9,7 @@ import {HeroPreviewComponent} from "./components/hero-preview/hero-preview.compo
 import {TavernaInnerContainerComponent} from "./components/taverna-inner-container/taverna-inner-container.component";
 import {TrainingComponent} from "./components/training/training.component";
 import {SummonTreeComponent} from "./components/summon-tree/summon-tree.component";
+import {GiftStoreComponent} from "./components/gift-store/gift-store.component";
 
 export const frontRoutes = {
   base: "",
@@ -17,7 +18,8 @@ export const frontRoutes = {
   battleField: "test-b",
   training: "training",
   login: "login",
-  summonTree: "summon-tree"
+  summonTree: "summon-tree",
+  giftStore: "gift-lands"
 }
 
 export const routes: Routes = [
@@ -32,7 +34,8 @@ export const routes: Routes = [
       },
       {component: TrainingComponent, path: frontRoutes.training},
       {component: SummonTreeComponent, path: frontRoutes.summonTree},
-      {component: GameBoardComponent, path: frontRoutes.battleField}
+      {component: GameBoardComponent, path: frontRoutes.battleField},
+      {component: GiftStoreComponent, path: frontRoutes.giftStore}
     ]
   },
   {

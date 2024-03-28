@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Unit} from "../../services/game-field/game-field.service";
 import {RatingModule} from "ngx-bootstrap/rating";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {StatsComponent} from "../stats/stats.component";
 import {frontRoutes} from "../../app.routes";
+import {Unit} from "../../interface";
 
 @Component({
   selector: 'app-hero-preview',

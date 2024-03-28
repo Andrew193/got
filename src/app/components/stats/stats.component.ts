@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Unit} from "../../services/game-field/game-field.service";
+import {Unit} from "../../interface";
 
 @Component({
   selector: 'stats',

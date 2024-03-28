@@ -33,6 +33,10 @@ export class LobbyComponent {
     this.router.navigate([frontRoutes.summonTree])
   }
 
+  openGiftLand() {
+    this.router.navigate([frontRoutes.giftStore])
+  }
+
   openBattle() {
     this.router.navigate([frontRoutes.battleField])
   }

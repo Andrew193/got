@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Effect, GameFieldService, Skill, Unit} from "../game-field/game-field.service";
-import {HeroesService} from "../heroes/heroes.service";
-import {LogRecord} from "../../interface";
+import {Effect, LogRecord, Skill, Unit} from "../../interface";
 import {createDeepCopy} from "../../helpers";
 import {ModalWindowService} from "../modal/modal-window.service";
 import {EffectsService} from "../effects/effects.service";
+import {UnitService} from "../unit/unit.service";
 
 @Injectable({
     providedIn: 'root',
@@ -18,10 +17,9 @@ export class GameService {
         }
     }
 
-    constructor(private heroService: HeroesService,
+    constructor(private unitService: UnitService,
                 private effectsService: EffectsService,
-                private modalWindowService: ModalWindowService,
-                private fieldService: GameFieldService) {
+                private modalWindowService: ModalWindowService) {
     }
 
     getFixedDefence(defence: number, unit: Unit) {
@@ -88,17 +86,17 @@ export class GameService {
 
     //Shows skills in attack bar ( user units ) and decreases cooldonws by 1 for used skills
     selectSkillsAndRecountCooldown(units: Unit[], selectedUnit: Unit, recountCooldown = true) {
-        const unitIndex = this.fieldService.findUnitIndex(units, selectedUnit);
+        const unitIndex = this.unitService.findUnitIndex(units, selectedUnit);
         let skills: Skill[] = createDeepCopy(selectedUnit?.skills as Skill[]);
         if (recountCooldown) {
-            skills = this.fieldService.recountSkillsCooldown(skills);
+            skills = this.unitService.recountSkillsCooldown(skills);
         }
         units[unitIndex] = {...units[unitIndex], skills: skills};
         return skills;
     }
 
     recountCooldownForUnit(unit: Unit) {
-        return {...unit, skills: this.fieldService.recountSkillsCooldown(createDeepCopy(unit.skills))};
+        return {...unit, skills: this.unitService.recountSkillsCooldown(createDeepCopy(unit.skills))};
     }
 
     checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: () => void) {

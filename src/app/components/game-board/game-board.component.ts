@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {GameFieldComponent} from "../game-field/game-field.component";
-import {Unit} from "../../services/game-field/game-field.service";
+import {Unit} from "../../interface";
 
 @Component({
   selector: 'game-board',

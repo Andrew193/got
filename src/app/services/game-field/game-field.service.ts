@@ -1,87 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Position} from "../../interface";
-
-export interface Tile {
-  x: number,
-  y: number,
-  active: boolean,
-  entity?: Unit,
-  highlightedClass?: string
-}
-
-export interface Effect {
-  imgSrc: string,
-  type: string,
-  duration: number,
-  m: number,
-  restore?: boolean
-  passive?: boolean,
-  defBreak?: number
-}
-
-export interface Skill {
-  imgSrc: string,
-  dmgM: number,
-  debuffs?: Effect[],
-  inRangeDebuffs?: Effect[],
-  buffs?: Effect[],
-  cooldown: number,
-  remainingCooldown: number,
-  name: string,
-  passive?: boolean,
-  restoreSkill?: boolean,
-  attackInRange?: boolean,
-  attackRange?: number,
-  attackInRangeM?: number,
-  description: string
-}
-
-export interface Unit {
-  x: number,
-  y: number,
-  rank: number,
-  eq1Level: number,
-  eq2Level: number,
-  eq3Level: number,
-  eq4Level: number,
-  level: number,
-  rankBoost: number,
-  healthIncrement: number,
-  attackIncrement: number,
-  defenceIncrement: number,
-  dmgReducedBy: number,
-  ignoredDebuffs: string[],
-  reducedDmgFromDebuffs: string[]
-  user: boolean,
-  imgSrc: string,
-  canMove: boolean
-  canCross: number,
-  maxCanCross: number,
-  canAttack: boolean,
-  attackRange: number,
-  description: string,
-  health: number,
-  maxHealth: number,
-  name: string,
-  attack: number,
-  defence: number,
-  rage: number,
-  willpower: number,
-  fullImgSrc?: string,
-  skills: Skill[],
-  effects: Effect[]
-}
+import {Position, Skill, Tile, Unit} from "../../interface";
+import {AbstractFieldService} from "../abstract/field/abstract-field.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameFieldService {
-  gameField: Tile[][];
-  gameConfig: any[][] = [];
-  possibleMoves: Position[] = [];
-
+export class GameFieldService extends AbstractFieldService {
   constructor() {
-    this.gameField = [];
+    super();
   }
 
   unhighlightCells() {
@@ -108,102 +34,8 @@ export class GameFieldService {
     }
   }
 
-  getRandomInt(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  findUnitIndex(units: Unit[], unit: { x: number, y: number, [key: string]: any } | null) {
-    return units.findIndex((enemy) => enemy.x === unit?.x && enemy.y === unit?.y)
-  }
-
-  findSkillIndex(skills: Skill[], selectedSkill: Skill) {
-    return skills.findIndex((skill) => skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name)
-  }
-
-  orderUnitsByDistance(start: { x: number, y: number }, positions: { x: number, y: number }[]) {
-    return positions.sort((a, b) => {
-      const distanceA = Math.abs(a.x - start.x) + Math.abs(a.y - start.y);
-      const distanceB = Math.abs(b.x - start.x) + Math.abs(b.y - start.y);
-      return distanceA - distanceB;
-    });
-  }
-
   resetMoveAndAttack(unitArray: Unit[], setValue = true) {
     unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: setValue, canAttack: setValue})
-  }
-
-  getPositionFromUnit(unit: Unit) {
-    return {
-      i: unit.x,
-      j: unit.y
-    }
-  }
-
-  getUnitFromPosition(position: Position) {
-    return {
-      x: position?.i,
-      y: position?.j
-    }
-  }
-
-  getDefaultGameField() {
-    for (let i = 0; i < 7; i++) {
-      this.gameField[i] = [];
-      const innerArray = [];
-      for (let j = 0; j < 10; j++) {
-        innerArray.push({x: i, y: j, active: true});
-      }
-      this.gameField[i] = innerArray;
-    }
-    return this.gameField;
-  }
-
-  getGameField(userUnits: Unit[], aiUnits: Unit[], gameField: Tile[][]) {
-    const field = JSON.parse(JSON.stringify(gameField))
-
-    userUnits.forEach((user) => {
-      field[user.x][user.y] = {...field[user.x][user.y], active: false, entity: user}
-    })
-
-    aiUnits.forEach((ai) => {
-      field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: ai}
-    })
-
-    return field;
-  }
-
-  getFieldsInRadius(grid: Tile[][], location: Position, radius: number, diagonalCheck?: boolean) {
-    const fields = [];
-    const rows = grid.length;
-    const cols = grid[0].length;
-
-    if (diagonalCheck) {
-      const {i: centerI, j: centerJ} = location;
-
-      for (let i = centerI - radius; i <= centerI + radius; i++) {
-        for (let j = centerJ - radius; j <= centerJ + radius; j++) {
-          if (i >= 0 && i < rows && j >= 0 && j < cols) {
-            if (!(i === location.i && j === location.j)) {
-              fields.push({i, j});
-            }
-          }
-        }
-      }
-    } else {
-      for (let i = location.i - radius; i <= location.i + radius; i++) {
-        for (let j = location.j - radius; j <= location.j + radius; j++) {
-          if (i >= 0 && i < rows && j >= 0 && j < cols && Math.abs(i - location.i) + Math.abs(j - location.j) <= radius) {
-            if (!(i === location.i && j === location.j)) {
-              fields.push({i, j});
-            }
-          }
-        }
-      }
-    }
-
-    return fields;
   }
 
   getGridFromField(field: Tile[][]): number[][] {
@@ -228,11 +60,6 @@ export class GameFieldService {
     }
     return path;
   }
-
-  recountSkillsCooldown = (skills: Skill[]) => skills.map((skill) => ({
-    ...skill,
-    remainingCooldown: skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0
-  }))
 
   shortestPath(grid: string | any[], start: Position, end: Position, checkDiagonals = false): Position[] {
     const rows = grid.length;

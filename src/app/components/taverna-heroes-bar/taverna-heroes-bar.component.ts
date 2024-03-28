@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {HeroesService} from "../../services/heroes/heroes.service";
-import {Unit} from "../../services/game-field/game-field.service";
 import {CommonModule} from "@angular/common";
 import {PageChangedEvent, PaginationModule} from "ngx-bootstrap/pagination";
 import {RatingModule} from "ngx-bootstrap/rating";
@@ -12,6 +11,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatInputModule} from "@angular/material/input";
 import {map, Observable, startWith} from "rxjs";
+import {Unit} from "../../interface";
 
 @Component({
     selector: 'taverna-heroes-bar',

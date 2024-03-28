@@ -1,14 +1,13 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ModalModule} from "ngx-bootstrap/modal";
-import {Unit} from "../../services/game-field/game-field.service";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {StatsComponent} from "../stats/stats.component";
 import {DailyReward, DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
-import {config} from "rxjs";
+import {Unit} from "../../interface";
 
 interface DayReward {
   copperCoin: number,

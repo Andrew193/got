@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {GameBoardComponent} from "../game-board/game-board.component";
 import {CommonModule} from "@angular/common";
-import {Unit} from "../../services/game-field/game-field.service";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
 import {frontRoutes} from "../../app.routes";
+import {Unit} from "../../interface";
 
 @Component({
   selector: 'app-training',
