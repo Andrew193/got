@@ -63,9 +63,16 @@ aside {
     &:hover {
       background: rgba(0, 0, 0, 0.56);
 
-      > span {
+      a {
         @include grad-color;
       }
+    }
+
+    a {
+      background: transparent;
+      color: white;
+      border: unset;
+      padding: unset;
     }
   }
 
