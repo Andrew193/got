@@ -34,10 +34,6 @@ export class GameFieldService extends AbstractFieldService {
     }
   }
 
-  resetMoveAndAttack(unitArray: Unit[], setValue = true) {
-    unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: setValue, canAttack: setValue})
-  }
-
   getGridFromField(field: Tile[][]): number[][] {
     const grid = [];
     for (let i = 0; i < 7; i++) {

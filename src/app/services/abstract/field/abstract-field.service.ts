@@ -17,9 +17,7 @@ export class AbstractFieldService extends GameFieldVars implements Partial<GameF
     }
 
     getRandomInt(min: number, max: number) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+        return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
     }
 
     getFieldsInRadius(grid: Tile[][], location: Position, radius: number, diagonalCheck?: boolean) {
@@ -78,5 +76,9 @@ export class AbstractFieldService extends GameFieldVars implements Partial<GameF
         })
 
         return field;
+    }
+
+    resetMoveAndAttack(unitArray: Unit[], setValue = true) {
+        unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: setValue, canAttack: setValue})
     }
 }
