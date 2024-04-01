@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {SiteComponent} from "./pages/site/site.component";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
 import {TavernaComponent} from "./components/taverna/taverna.component";
-import {GameBoardComponent} from "./components/game-board/game-board.component";
+import {GameEntryPointComponent} from "./components/game-entry-point/game-entry-point.component";
 import {TavernaHeroesBarComponent} from "./components/taverna-heroes-bar/taverna-heroes-bar.component";
 import {LoginPageComponent} from "./pages/login-page/login-page.component";
 import {HeroPreviewComponent} from "./components/hero-preview/hero-preview.component";
@@ -34,7 +34,7 @@ export const routes: Routes = [
       },
       {component: TrainingComponent, path: frontRoutes.training},
       {component: SummonTreeComponent, path: frontRoutes.summonTree},
-      {component: GameBoardComponent, path: frontRoutes.battleField},
+      {component: GameEntryPointComponent, path: frontRoutes.battleField},
       {component: GiftStoreComponent, path: frontRoutes.giftStore}
     ]
   },

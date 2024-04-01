@@ -1,0 +1,72 @@
+@import "./mixins";
+@import "./vars";
+
+.tile {
+  min-height: 100px;
+  flex-basis: 110px;
+  margin: 0 5px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+  position: relative;
+
+  &:hover {
+    background: #e8e7e782;
+  }
+}
+
+.game-field-img {
+  @include avatar;
+  box-shadow: $box-shadow;
+  height: 80px;
+  width: 80px;
+  padding: 5px;
+}
+
+.tile-label {
+  position: absolute;
+  top: 0;
+  right: 3px;
+  @include grad-color;
+}
+
+.entity-b.ai-heroes.green-b:not(.disabled) {
+  border-color: #ff6c6c;
+  box-shadow: $red-box-shadow;
+}
+
+.ai-heroes {
+  img {
+    background-color: $light-red;
+  }
+}
+
+.user-heroes {
+  img {
+    background-color: $light-green;
+  }
+}
+
+.action-icon {
+  height: 20px;
+  width: 20px;
+  background-color: transparent !important;
+  bottom: 0;
+}
+
+.can-move-icon {
+  left: 0;
+}
+
+.can-attack-icon {
+  right: 0;
+}
+
+.game-board {
+  box-shadow: $box-shadow;
+  background-color: $background-color-main;
+  padding: 10px;
+  border-radius: 5px;
+}

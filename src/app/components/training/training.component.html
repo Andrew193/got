@@ -28,9 +28,9 @@
       <button class="btn btn-danger" *ngIf="aiUnits.length && userUnits.length" (click)="openFight()">Fight</button>
     </div>
   </div>
-  <game-board *ngIf="fightStarted"
+  <game-entry-point *ngIf="fightStarted"
               [aiUnits]="aiUnits"
               [gameResultsRedirect]="victoryRedirect"
               [userUnits]="userUnits"
-  ></game-board>
+  ></game-entry-point>
 </div>

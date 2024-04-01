@@ -13,17 +13,19 @@ import {GameService} from "../../services/game-action/game.service";
 import {EffectsService} from "../../services/effects/effects.service";
 import {UnitService} from "../../services/unit/unit.service";
 import {AbstractGameFieldComponent} from "../abstract/abstract-game-field/abstract-game-field.component";
+import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
 
 @Component({
     selector: 'game-field',
     standalone: true,
-    imports: [CommonModule, OutsideClickDirective, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule],
+    imports: [CommonModule, OutsideClickDirective, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent],
     templateUrl: './game-field.component.html',
     styleUrl: './game-field.component.scss'
 })
 export class GameFieldComponent extends AbstractGameFieldComponent implements OnInit {
     @Input() userUnits: Unit[] = [];
     @Input() aiUnits: Unit[] = [];
+    @Input() battleMode: boolean = true;
     @Input() gameResultsRedirect: () => void = () => {
     };
 
@@ -100,7 +102,8 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
         this.dropEnemyState();
     }
 
-    highlightMakeMove(entity: Unit, event?: MouseEvent) {
+    highlightMakeMove(e:{entity: Unit, event?: MouseEvent}) {
+        const {entity, event} = e;
         if (this.showAttackBar) {
             this.dropEnemy();
         }
@@ -265,7 +268,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
         }
         const makeAiMove = (aiUnit: Unit, index: number) => {
             //Unit makes a move only if this unit is not dead
-            if (aiUnit.health && aiUnit.canMove) {
+            if (aiUnit.health && aiUnit.canMove && aiUnit.canCross) {
                 //Start with the closets user unit
                 const closestUserUnits = this.unitService.orderUnitsByDistance(aiUnit, this[aiMove ? 'userUnits' : 'aiUnits']);
                 //Try to get to the closest user unit to attack it or if this unit is not reachable check the next one

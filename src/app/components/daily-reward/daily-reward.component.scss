@@ -1,10 +1,5 @@
 @import "../../../assets/resourses/styles/mixins";
 
-.caption {
-  @include grad-color;
-  width: 100%;
-}
-
 .hero {
   background-repeat: no-repeat !important;
   background-size: cover !important;

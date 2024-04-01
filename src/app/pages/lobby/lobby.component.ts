@@ -39,11 +39,11 @@ export class LobbyComponent {
   constructor(private router: Router) {
   }
 
-  openSummonTree() {
+  public openSummonTree = () => {
     this.router.navigate([frontRoutes.summonTree])
   }
 
-  openGiftLand() {
+  public openGiftLand = () => {
     this.router.navigate([frontRoutes.giftStore])
   }
 

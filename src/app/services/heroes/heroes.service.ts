@@ -339,6 +339,76 @@ export class HeroesService {
     }
   }
 
+  getRanger(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      attackRange: 2,
+      rank: 1,
+      level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
+      rankBoost: 1.1,
+      ignoredDebuffs: [],
+      reducedDmgFromDebuffs: [this.effectsService.effects.poison],
+      dmgReducedBy: 0,
+      canCross: 2,
+      maxCanCross: 2,
+      health: 8169,
+      healthIncrement: 89,
+      attack: 1299,
+      attackIncrement: 12,
+      defence: 995,
+      defenceIncrement: 10,
+      maxHealth: 8169,
+      rage: 20,
+      willpower: 20,
+      imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png",
+      name: "Лучник Вольного Народа",
+      description: "Лучник вольного народа изучал мастерство убийства с рождения. Он мастерски владеет природными ядами и умеет ставить капканы на животных и людей.",
+      skills: [
+        {
+          name: "Токсичный выстрел",
+          imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_c_skill.png",
+          dmgM: 1.5,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [this.effectsService.getPoison(1)],
+          description: "Наносит противнику урон в размере 150% от показателя атаки, накладывает штраф " + this.effectsService.effects.poison + " на 1 ход."
+        },
+        {
+          name: "Ловушка",
+          imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_a_skill.png",
+          dmgM: 2,
+          cooldown: 3,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 2,
+          attackInRangeM: 0.5,
+          debuffs: [this.effectsService.getBleeding(), this.effectsService.getDefBreak()],
+          buffs: [],
+          inRangeDebuffs: [],
+          description: "Наносит противнику урон в размере 200% от показателя атаки, накладывает на врага штрафы: "
+              + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.defBreak + " на 2 хода. Также атакует противников в радиусе 1 клетки на 50% от атаки."
+        },
+        {
+          name: "Вольный человек",
+          imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [],
+          passive: true,
+          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.poison + ". Может атаковать с растояния в 2 клетки."
+        }
+      ],
+      effects: []
+    }
+  }
+
   getFreeTrapper(): Unit {
     return {
       ...this.getBasicUserConfig(),

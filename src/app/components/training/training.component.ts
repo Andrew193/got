@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {GameBoardComponent} from "../game-board/game-board.component";
+import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {CommonModule} from "@angular/common";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
@@ -10,7 +10,7 @@ import {Unit} from "../../interface";
   selector: 'app-training',
   standalone: true,
   imports: [
-    GameBoardComponent,
+    GameEntryPointComponent,
     CommonModule
   ],
   templateUrl: './training.component.html',

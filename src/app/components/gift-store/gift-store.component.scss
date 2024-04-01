@@ -13,3 +13,9 @@
     @include grad-color;
   }
 }
+
+.harvest-container {
+  > div:last-of-type {
+    background-color: $background-color-main;
+  }
+}
