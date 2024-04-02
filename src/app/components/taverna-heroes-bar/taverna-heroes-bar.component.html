@@ -20,19 +20,13 @@
           <h4>Filters</h4>
           <form [formGroup]="formGroup" class="ps-2 pe-2">
             <mat-slide-toggle formControlName="showAll" [color]="'primary'" class="w-100 mb-2">Show All Heroes</mat-slide-toggle>
-            <mat-form-field class="w-100">
-              <mat-label>Unit Name</mat-label>
-              <input type="text"
-                     aria-label="Unit Name"
-                     matInput
-                     formControlName="unitName"
-                     [matAutocomplete]="auto">
-              <mat-autocomplete autoActiveFirstOption="true" #auto="matAutocomplete">
-                <mat-option *ngFor='let option of filteredOptions | async' [value]="option">
-                  {{option}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
+            <autocomplete-mat-input
+              [form]="formGroup"
+              [label]="'Unit Name'"
+              [placeholder]="'Input hero name'"
+              [filteredOptions]="filteredOptions"
+              formControlName="unitName"
+            ></autocomplete-mat-input>
           </form>
         </div>
       </aside>

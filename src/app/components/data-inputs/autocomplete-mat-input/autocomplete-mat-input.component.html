@@ -1,0 +1,16 @@
+<form [formGroup]="form">
+  <mat-form-field class="w-100">
+    <mat-label>{{label}}</mat-label>
+    <input
+      type="text"
+      [formControl]="control"
+      matInput
+      [matAutocomplete]="auto"
+      [placeholder]="placeholder">
+    <mat-autocomplete autoActiveFirstOption="true" #auto="matAutocomplete">
+      <mat-option *ngFor='let option of filteredOptions | async' [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
