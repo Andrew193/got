@@ -33,8 +33,8 @@ export class GiftStoreComponent implements OnInit {
   constructor(private npcService: NpcService,
               private giftService: GiftService,
               private router: Router) {
-    this.userUnits.push({...this.npcService.getUser(), user: true, attackRange: 1, x: 0, y: 0})
-    this.npcService.getGiftNPC().map((el) => ({...el, user: false, imgSrc: el.reward.src}))
+    this.userUnits.push({...this.npcService.getUser(), attackRange: 1, x: 0, y: 0})
+    this.npcService.getGiftNPC().map((el) => ({...el, imgSrc: el.reward.src}))
       .forEach((el) => {
         this.aiUnits.push(el)
       })

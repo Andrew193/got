@@ -52,6 +52,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
   }
 
   universalRangeAttack(skill: Skill, clickedEnemy: Unit, enemiesArray: Unit[], userCheck: boolean, isUser: boolean, attacker: Unit) {
+    debugger
     if (skill.attackInRange) {
       const tilesInRange = this.fieldService.getFieldsInRadius(this.gameConfig, this.unitService.getPositionFromUnit(clickedEnemy as Unit), skill.attackRange as number, true)
       const enemiesInRange: Unit[] = tilesInRange.map((tile) => {
@@ -203,9 +204,14 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
   checkAiMoves(intervalFight: boolean = true, aiMove: boolean = true) {
     const userFinishedTurn = this.userUnits.every((userHero) => (!userHero.canMove && !userHero.canAttack) || !userHero.health);
     if (userFinishedTurn && !this.gameActionService.isDead(this.aiUnits)) {
-      this.dropEnemy();
-      this.turnUser = false;
-      this.attackUser(intervalFight, aiMove);
+      if (this.battleMode) {
+        this.dropEnemy();
+        this.turnUser = false;
+        this.attackUser(intervalFight, aiMove);
+      } else {
+        this.turnUser = true;
+        this.finishAiTurn(1, true, [])
+      }
     }
   }
 
@@ -224,6 +230,29 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
     return this.gameActionService.isDead(this.aiUnits) || this.gameActionService.isDead(this.userUnits);
   }
 
+  finishAiTurn(interval: any, aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
+    clearInterval(interval);
+    //Update AI and user units arrays ( update on ui and grid )
+    this.fieldService.resetMoveAndAttack(this[aiMove ? 'aiUnits' : 'userUnits']);
+    this.fieldService.resetMoveAndAttack(this[aiMove ? 'userUnits' : 'aiUnits']);
+    //User's units take dmg from their debuffs
+    for (let i = 0; i < this[aiMove ? 'userUnits' : 'aiUnits'].length; i++) {
+      this.checkDebuffs(this[aiMove ? 'userUnits' : 'aiUnits'][i], this[aiMove ? 'userUnits' : 'aiUnits'], i);
+    }
+    usedAiSkills.forEach((config) => {
+      const unitIndex = this[aiMove ? 'userUnits' : 'aiUnits'].findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
+      if (config.AI.rage > this[aiMove ? 'userUnits' : 'aiUnits'][unitIndex].willpower) {
+        this.addEffectToUnit(this[aiMove ? 'userUnits' : 'aiUnits'], unitIndex, config.skill)
+      }
+    })
+    //User's units restore health from their passive skills
+    this.gameActionService.checkPassiveSkills(this[aiMove ? 'userUnits' : 'aiUnits'], this.log)
+    //Update grid config
+    this.gameConfig = this.fieldService.getGameField(this[aiMove ? 'userUnits' : 'aiUnits'], this[aiMove ? 'aiUnits' : 'userUnits'], this.fieldService.getDefaultGameField());
+    this.turnUser = true;
+    this.gameActionService.checkCloseFight(this[aiMove ? 'userUnits' : 'aiUnits'], this[aiMove ? 'aiUnits' : 'userUnits'], this.gameResultsRedirect);
+  }
+
   attackUser(intervalFight = true, aiMove = true) {
     this._turnCount.next(this.turnCount + 1);
     const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
@@ -237,28 +266,6 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
       makeAiMove(aiUnit, index);
       //Update skills cooldowns
       this.gameActionService.selectSkillsAndRecountCooldown(this[aiMove ? 'aiUnits' : 'userUnits'], this[aiMove ? 'aiUnits' : 'userUnits'][index]);
-    }
-    const finishAiTurn = (interval: any) => {
-      clearInterval(interval);
-      //Update AI and user units arrays ( update on ui and grid )
-      this.fieldService.resetMoveAndAttack(this[aiMove ? 'aiUnits' : 'userUnits']);
-      this.fieldService.resetMoveAndAttack(this[aiMove ? 'userUnits' : 'aiUnits']);
-      //User's units take dmg from their debuffs
-      for (let i = 0; i < this[aiMove ? 'userUnits' : 'aiUnits'].length; i++) {
-        this.checkDebuffs(this[aiMove ? 'userUnits' : 'aiUnits'][i], this[aiMove ? 'userUnits' : 'aiUnits'], i);
-      }
-      usedAiSkills.forEach((config) => {
-        const unitIndex = this[aiMove ? 'userUnits' : 'aiUnits'].findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
-        if (config.AI.rage > this[aiMove ? 'userUnits' : 'aiUnits'][unitIndex].willpower) {
-          this.addEffectToUnit(this[aiMove ? 'userUnits' : 'aiUnits'], unitIndex, config.skill)
-        }
-      })
-      //User's units restore health from their passive skills
-      this.gameActionService.checkPassiveSkills(this[aiMove ? 'userUnits' : 'aiUnits'], this.log)
-      //Update grid config
-      this.gameConfig = this.fieldService.getGameField(this[aiMove ? 'userUnits' : 'aiUnits'], this[aiMove ? 'aiUnits' : 'userUnits'], this.fieldService.getDefaultGameField());
-      this.turnUser = true;
-      this.gameActionService.checkCloseFight(this[aiMove ? 'userUnits' : 'aiUnits'], this[aiMove ? 'aiUnits' : 'userUnits'], this.gameResultsRedirect);
     }
     const makeAiMove = (aiUnit: Unit, index: number) => {
       //Unit makes a move only if this unit is not dead
@@ -297,7 +304,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
               this.addBuffToUnit(this[aiMove ? 'aiUnits' : 'userUnits'], index, aiSkill)
               aiUnit = this[aiMove ? 'aiUnits' : 'userUnits'][index];
               this.makeAttackMove(userIndex, this.effectsService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedDefence(this[aiMove ? 'userUnits' : 'aiUnits'][userIndex].defence, this[aiMove ? 'userUnits' : 'aiUnits'][userIndex].effects), this[aiMove ? 'userUnits' : 'aiUnits'], aiUnit, false, aiSkill)
-              this.universalRangeAttack(aiSkill, this[aiMove ? 'userUnits' : 'aiUnits'][userIndex] as Unit, this.userUnits, true, false, aiUnit)
+              this.universalRangeAttack(aiSkill, this[aiMove ? 'userUnits' : 'aiUnits'][userIndex] as Unit, this[aiMove ? 'userUnits' : 'aiUnits'], aiMove, !aiMove, aiUnit)
               //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
               const skills = this.updateSkillsCooldown(createDeepCopy(this[aiMove ? 'aiUnits' : 'userUnits'][index].skills), this[aiMove ? 'userUnits' : 'aiUnits'], userIndex, aiSkillIndex, aiSkill, true, true)
               usedAiSkills.push({skill: aiSkill, unit: this[aiMove ? 'userUnits' : 'aiUnits'][userIndex], AI: aiUnit});
@@ -328,7 +335,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
       //Each AI unit makes a move
       const interval = setInterval(() => {
         if (index === this[aiMove ? 'aiUnits' : 'userUnits'].length) {
-          finishAiTurn(interval);
+          this.finishAiTurn(interval, aiMove, usedAiSkills);
         } else {
           aiUnitAttack(index);
           index++;
@@ -338,7 +345,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
       for (let i = 0; i < this[aiMove ? 'aiUnits' : 'userUnits'].length; i++) {
         aiUnitAttack(i);
       }
-      finishAiTurn(1)
+      this.finishAiTurn(1, aiMove, usedAiSkills)
     }
   }
 
@@ -390,9 +397,9 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
 
     if (dmgTaker[enemyIndex].health) {
       let newHealth = this.effectsService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
-      this.logEvent({damage, newHealth: null}, isUser, skill, dmgTaker[enemyIndex]);
+      this.logEvent({damage, newHealth: null}, attackDealer.user, skill, dmgTaker[enemyIndex]);
       dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth};
-      this.logEvent({damage: 0, newHealth}, isUser, skill, dmgTaker[enemyIndex]);
+      this.logEvent({damage: 0, newHealth}, attackDealer.user, skill, dmgTaker[enemyIndex]);
     }
   }
 
