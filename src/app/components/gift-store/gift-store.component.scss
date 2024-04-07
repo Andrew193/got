@@ -15,7 +15,11 @@
 }
 
 .harvest-container {
-  > div:last-of-type {
-    background-color: $background-color-main;
-  }
+  padding: 15px;
+}
+
+.reward-bar {
+  min-height: 100px;
+  box-shadow: $box-shadow;
+  border-radius: 5px;
 }

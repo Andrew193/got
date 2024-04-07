@@ -27,13 +27,18 @@
 }
 
 .skills-container {
-  margin: 15px;
+  margin: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   > div {
     padding: 5px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-width: 100px;
   }
   img {
     height: 70px;
@@ -113,6 +118,17 @@
         font-size: 26px;
         font-weight: bold;
       }
+    }
+  }
+}
+
+@media (max-width: 968px) {
+  main {
+    > div {
+      order: 2;
+    }
+    > aside {
+      order: 1;
     }
   }
 }

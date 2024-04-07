@@ -1,15 +1,21 @@
 <div class="inner-container">
-    <h4 class="text-center caption mt-2">Explore the Gift and reap the harvest. Be extremely careful because sometimes
-        there are wildlings here</h4>
-    <div class="flex-row harvest-container">
-        <div class="col-lg-10">
-            <game-entry-point
-                    [aiUnits]="aiUnits"
-                    [gameResultsRedirect]="gameResultsRedirect"
-                    [userUnits]="userUnits"
-                    [battleMode]="false"
-            ></game-entry-point>
-        </div>
-        <div class="col-lg-2"></div>
+  <h4 class="text-center caption mt-2">Explore the Gift and reap the harvest. Be extremely careful because sometimes
+    there are wildlings here</h4>
+  <div class="flex-row harvest-container">
+    <div class="col-lg-12 col-md-12">
+      <game-entry-point
+        [aiUnits]="aiUnits"
+        [gameResultsRedirect]="gameResultsRedirect"
+        [userUnits]="userUnits"
+        [battleMode]="false"
+      ></game-entry-point>
     </div>
+    <div class="col-lg-12 col-md-12 mt-3" *ngIf="loot.length">
+      <display-reward [rewards]="loot"></display-reward>
+      <button class="btn btn-success" (click)="collectAndLeave()">Collect loot and leave</button>
+    </div>
+    <button class="btn btn-primary mt-2">
+      <a routerLink="/" class="fake-link">Back to Castle Black</a>
+    </button>
+  </div>
 </div>

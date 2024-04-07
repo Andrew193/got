@@ -34,29 +34,3 @@
     width: 30px;
   }
 }
-
-.reward-container {
-  background-color: $background-color-main;
-  justify-content: space-between;
-
-  img {
-    width: 55px;
-    margin-bottom: unset;
-  }
-
-  > div {
-    background-color: $background-color-main-hover;
-    box-shadow: $box-shadow;
-    padding: 5px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-  }
-
-  .reward-inner-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-}

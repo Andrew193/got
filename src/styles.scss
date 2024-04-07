@@ -13,9 +13,25 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
+html, body {
+  height: 100%;
+  background-color: black;
+  color: white;
+}
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 .caption {
   @include grad-color;
   width: 100%;
+}
+
+.loot-img {
+  box-shadow: unset;
+  border: unset;
+  background-color: unset !important;
+  max-width: 60px;
+  max-height: 60px;
 }
 
 .stats {
@@ -128,11 +144,6 @@
   background: $light-gray;
 }
 
-html, body {
-  height: 100%;
-  color: white;
-}
-
 .flex-row {
   display: flex;
   flex-wrap: wrap;
@@ -216,5 +227,7 @@ $columns: 100;
   }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+a.fake-link {
+  color: white !important;
+  text-decoration: none !important;
+}

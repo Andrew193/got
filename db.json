@@ -15,9 +15,16 @@
     {
       "id": "6fe2",
       "userId": "2ac5",
-      "day": 9,
-      "totalDays": 9,
-      "lastLogin": "04/02/2024"
+      "day": 10,
+      "totalDays": 10,
+      "lastLogin": "04/07/2024"
+    }
+  ],
+  "giftTrip": [
+    {
+      "id": "6fe2",
+      "userId": "2ac5",
+      "lastVist": "04/07/2024"
     }
   ]
 }

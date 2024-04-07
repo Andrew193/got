@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractGameFieldComponent} from "../abstract/abstract-game-field/abstract-game-field.component";
-import {GameFieldService} from "../../services/game-field/game-field.service";
-import {GameFieldVars, Skill, Tile, Unit} from "../../interface";
-import {HeroesService} from "../../services/heroes/heroes.service";
+import {Unit, UnitWithReward} from "../../interface";
 import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
-import {UnitService} from "../../services/unit/unit.service";
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {NgIf} from "@angular/common";
 import {NpcService} from "../../services/npc/npc.service";
+import {DisplayReward} from "../../services/reward/reward.service";
+import {DisplayRewardComponent} from "../display-reward/display-reward.component";
+import {Router, RouterLink} from "@angular/router";
+import {GiftConfig, GiftService} from "../../services/gift/gift.service";
+import moment from "moment/moment";
 
 @Component({
   selector: 'app-gift-store',
@@ -15,26 +16,49 @@ import {NpcService} from "../../services/npc/npc.service";
   imports: [
     BasicGameBoardComponent,
     GameEntryPointComponent,
-    NgIf
+    NgIf,
+    DisplayRewardComponent,
+    RouterLink
   ],
   templateUrl: './gift-store.component.html',
   styleUrl: './gift-store.component.scss'
 })
-export class GiftStoreComponent extends GameFieldVars implements OnInit {
-  aiUnits: Unit[] = [];
-  userUnits: Unit[] = [];
-  constructor(private heroService: HeroesService,
-              private npcService: NpcService) {
-    super();
-    this.userUnits.push({...this.heroService.getFreeTrapper(), user: true, attackRange: 1})
-    this.aiUnits.push({...this.npcService.getChest(), x:1, y: 4, user: false})
 
+export class GiftStoreComponent implements OnInit {
+  loot: DisplayReward[] = [];
+  aiUnits: UnitWithReward[] = [];
+  userUnits: Unit[] = [];
+  giftConfig!: GiftConfig;
+
+  constructor(private npcService: NpcService,
+              private giftService: GiftService,
+              private router: Router) {
+    this.userUnits.push({...this.npcService.getUser(), user: true, attackRange: 1, x: 0, y: 0})
+    this.npcService.getGiftNPC().map((el) => ({...el, user: false, imgSrc: el.reward.src}))
+      .forEach((el) => {
+        this.aiUnits.push(el)
+      })
   }
 
   ngOnInit(): void {
+    this.giftService.getGiftRewardConfig((config) => {
+      this.giftConfig = config;
+      if (this.giftConfig.lastVist === moment().format("MM/DD/YYYY")) {
+        this.collectAndLeave();
+      }
+    });
   }
 
-  gameResultsRedirect() {
+  collectAndLeave() {
+    this.giftService.claimGiftReward({
+      ...this.giftConfig,
+      lastVist: moment().format("MM/DD/YYYY")
+    }, () => {
+      this.router.navigateByUrl('/')
+    })
+  }
 
+  public gameResultsRedirect = () => {
+    this.loot = this.aiUnits.map((el) => el.reward)
   }
 }

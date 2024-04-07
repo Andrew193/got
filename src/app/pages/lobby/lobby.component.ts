@@ -44,7 +44,6 @@ export class LobbyComponent {
       }, 12000)
     });
     const observable2 = new Observable((subscriber)=> {
-      subscriber.next("second 2(1)");
       setTimeout(()=>{
         subscriber.next("second 2(2)")
       }, 10000)
@@ -57,10 +56,7 @@ export class LobbyComponent {
       withLatestFrom(
         observable1,
         observable2
-      ),
-      switchMap((r)=>{
-        return of(r)
-      })
+      )
     ).subscribe((test)=>{
       console.log(test, "test")
     });

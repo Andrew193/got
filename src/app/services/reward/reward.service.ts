@@ -26,7 +26,8 @@ export class RewardService {
         copper: "Copper",
         silver: "Silver",
         shards: "Shards",
-        gold: "Gold"
+        gold: "Gold",
+        chest: "Chest",
     }
 
     rewardLoot: RewardLoot[] = [
@@ -38,6 +39,14 @@ export class RewardService {
 
     constructor(private heroService: HeroesService) {
     }
+
+  getReward(amountOfRewards = 1, items: Reward[]) {
+    let rewards: DisplayReward[] = [];
+    for (let i = 0; i < amountOfRewards; i++) {
+      rewards = [...rewards, this.getLoot(items)];
+    }
+    return rewards;
+  }
 
     openBox(items: Reward[]): Reward {
         const rand = Math.random();
@@ -57,6 +66,10 @@ export class RewardService {
         return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
     }
 
+  getLoot(items: Reward[]) {
+      return this.getLootForReward(this.openBox(items))
+  }
+
     getLootForReward(item: Reward): DisplayReward {
         const loot = this.rewardLoot.filter((reward) => reward.name === item.name)[0];
         if (item.name === this.rewardNames.copper) {
@@ -69,6 +82,8 @@ export class RewardService {
             return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: heroes[heroIndex].imgSrc}
         } else if (item.name === this.rewardNames.gold) {
             return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: "assets/resourses/imgs/gold.png"}
+        } else if (item.name === this.rewardNames.chest) {
+          return {amount: 1, name: item.name, src: "assets/resourses/imgs/icons/chest.png"}
         }
         return {amount: 1, src: "", name: ""};
     }

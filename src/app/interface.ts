@@ -1,3 +1,5 @@
+import {DisplayReward, Reward} from "./services/reward/reward.service";
+
 export interface Position {
   i: number,
   j: number
@@ -13,6 +15,11 @@ export class GameFieldVars {
   gameField: Tile[][] = [];
   gameConfig: any[][] = [];
   possibleMoves: Position[] = [];
+}
+
+export interface RewardComponent {
+  items: Reward[];
+  rewards: DisplayReward[];
 }
 
 export interface Tile {
@@ -84,4 +91,8 @@ export interface Unit {
   fullImgSrc?: string,
   skills: Skill[],
   effects: Effect[]
+}
+
+export interface UnitWithReward extends Unit {
+  reward: DisplayReward
 }

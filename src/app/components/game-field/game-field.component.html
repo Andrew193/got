@@ -19,12 +19,12 @@
                  [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
         </div>
     </div>
-    <main class="flex-row justify-content-between">
-        <div class="col-8">
-            <basic-game-board [gameConfig]="gameConfig" (moveEntity)="moveEntity($event)"
+    <main class="flex-row justify-content-between ">
+        <div class="col-xl-8 col-lg-8 col-md-12">
+            <basic-game-board [gameConfig]="gameConfig" [battleMode]="battleMode" (moveEntity)="moveEntity($event)"
                               (highlightMakeMove)="highlightMakeMove($event)"></basic-game-board>
         </div>
-        <aside class="col-3 d-flex flex-column">
+        <aside class="col-xl-3 col-lg-3 col-md-12 d-flex flex-column mb-3">
             <div class="meta-aside mb-3 flex-row justify-content-evenly ">
                 <ng-container *ngFor="let skill of skillsInAttackBar">
                     <div class="skills-container col-3">
@@ -78,9 +78,10 @@
             </div>
         </aside>
     </main>
+  <button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
+
 </div>
 
-<button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
 
 
 <ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">

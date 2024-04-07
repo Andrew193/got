@@ -1,0 +1,8 @@
+<div class="summon-container reward-container w-100 d-flex mb-3">
+  <div *ngFor="let reward of rewards">
+    <div class="reward-inner-container">
+      <img src="{{reward.src}}" alt="{{reward.name}}">
+      <span>{{reward.amount}}</span>
+    </div>
+  </div>
+</div>
