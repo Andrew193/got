@@ -27,7 +27,6 @@
 }
 
 .skills-container {
-  margin: -10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,8 +36,9 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     max-width: 100px;
+    align-items: center;
   }
   img {
     height: 70px;

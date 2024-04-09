@@ -12,6 +12,11 @@ interface UnitConfig {
   eq4Level: number,
 }
 
+export enum heroType {
+  ATTACK,
+  DEFENCE
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,6 +46,7 @@ export class HeroesService {
   getLadyOfDragonStone(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       rankBoost: 1.3,
@@ -121,6 +127,7 @@ export class HeroesService {
   getTargaryenKnight(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.DEFENCE,
       attackRange: 1,
       rank: 1,
       rankBoost: 1.2,
@@ -134,12 +141,12 @@ export class HeroesService {
       dmgReducedBy: 0.25,
       canCross: 2,
       maxCanCross: 2,
-      health: 15837,
+      health: 18837,
       healthIncrement: 284,
       attack: 829,
       attackIncrement: 11,
-      defence: 2385,
-      defenceIncrement: 26,
+      defence: 2985,
+      defenceIncrement: 29,
       maxHealth: 15837,
       rage: 25,
       willpower: 50,
@@ -151,31 +158,32 @@ export class HeroesService {
         {
           name: "Ярость дракона",
           imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_ActiveAbility_Intimidate.webp",
-          dmgM: 0.9,
+          dmgM: 1.3,
           cooldown: 0,
           remainingCooldown: 0,
           attackInRange: true,
           attackRange: 1,
-          attackInRangeM: 0.9,
+          attackInRangeM: 1.3,
           debuffs: [this.effectsService.getAttackBreak()],
           inRangeDebuffs: [this.effectsService.getAttackBreak()],
-          description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 90% от показателя атаки и накладывает на них штраф"
+          description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 130% от показателя атаки и накладывает на них штраф"
             + this.effectsService.effects.attackBreak + "на 2 хода."
         },
         {
           name: "За Короля",
           imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_HeroicAbility_ShieldMastery.webp",
-          dmgM: 1.5,
+          dmgM: 1.8,
           cooldown: 3,
           remainingCooldown: 0,
           attackInRange: true,
           attackRange: 2,
-          attackInRangeM: 0.9,
-          buffs: [this.effectsService.getDefBuff()],
+          attackInRangeM: 1.3,
+          buffs: [this.effectsService.getDefBuff(), this.effectsService.getHealthRestore(1)],
           debuffs: [],
           inRangeDebuffs: [this.effectsService.getDefBreak()],
-          description: "Наносит целевому врагу урон в размере 150% от показателя атаки. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
-            + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.defBuff + " на 2 хода."
+          description: "Наносит целевому врагу урон в размере 180% от показателя атаки. Наносит 130% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+            + this.effectsService.effects.defBreak + " на 2 хода. После атаки накладывает на себя " + this.effectsService.effects.defBuff + " на 2 хода и " + this.effectsService.effects.healthRestore +
+            " на 1 ход."
         },
         {
           name: "Щит короны",
@@ -199,6 +207,7 @@ export class HeroesService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      heroType: heroType.ATTACK,
       rank: 1,
       level: 1,
       eq1Level: 1,
@@ -253,6 +262,7 @@ export class HeroesService {
   getBrownWolf(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       eq1Level: 1,
@@ -297,6 +307,7 @@ export class HeroesService {
   getIceRiverHunter(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       rankBoost: 1.1,
@@ -339,79 +350,10 @@ export class HeroesService {
     }
   }
 
-  getRanger(): Unit {
-    return {
-      ...this.getBasicUserConfig(),
-      attackRange: 2,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
-      rankBoost: 1.1,
-      ignoredDebuffs: [],
-      reducedDmgFromDebuffs: [this.effectsService.effects.poison],
-      dmgReducedBy: 0,
-      canCross: 2,
-      maxCanCross: 2,
-      health: 8169,
-      healthIncrement: 89,
-      attack: 1299,
-      attackIncrement: 12,
-      defence: 995,
-      defenceIncrement: 10,
-      maxHealth: 8169,
-      rage: 20,
-      willpower: 20,
-      imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png",
-      fullImgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png",
-      name: "Лучник Вольного Народа",
-      description: "Лучник вольного народа изучал мастерство убийства с рождения. Он мастерски владеет природными ядами и умеет ставить капканы на животных и людей.",
-      skills: [
-        {
-          name: "Токсичный выстрел",
-          imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_c_skill.png",
-          dmgM: 1.5,
-          cooldown: 0,
-          remainingCooldown: 0,
-          debuffs: [this.effectsService.getPoison(1)],
-          description: "Наносит противнику урон в размере 150% от показателя атаки, накладывает штраф " + this.effectsService.effects.poison + " на 1 ход."
-        },
-        {
-          name: "Ловушка",
-          imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_a_skill.png",
-          dmgM: 2,
-          cooldown: 3,
-          remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 2,
-          attackInRangeM: 0.5,
-          debuffs: [this.effectsService.getBleeding(), this.effectsService.getDefBreak()],
-          buffs: [],
-          inRangeDebuffs: [],
-          description: "Наносит противнику урон в размере 200% от показателя атаки, накладывает на врага штрафы: "
-              + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.defBreak + " на 2 хода. Также атакует противников в радиусе 1 клетки на 50% от атаки."
-        },
-        {
-          name: "Вольный человек",
-          imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png",
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
-          passive: true,
-          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.poison + ". Может атаковать с растояния в 2 клетки."
-        }
-      ],
-      effects: []
-    }
-  }
-
   getFreeTrapper(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 2,
       rank: 1,
       level: 1,
@@ -482,6 +424,7 @@ export class HeroesService {
   getGiant(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       level: 1,
@@ -540,6 +483,7 @@ export class HeroesService {
   getNightKing(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 2,
       rank: 1,
       level: 1,
@@ -618,6 +562,7 @@ export class HeroesService {
   getWhiteWalkerGeneral(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       level: 1,
@@ -679,6 +624,7 @@ export class HeroesService {
   getWhiteWalkerCapitan(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       level: 1,
@@ -736,6 +682,7 @@ export class HeroesService {
   getJonKing(): Unit {
     return {
       ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
       attackRange: 1,
       rank: 1,
       level: 1,

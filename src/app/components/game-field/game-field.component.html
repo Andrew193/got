@@ -78,7 +78,7 @@
             </div>
         </aside>
     </main>
-  <button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
+  <button *ngIf="!autoFight" class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
 
 </div>
 
@@ -137,7 +137,7 @@
                         <div class="flex-row skills-container justify-content-evenly">
                             <div class="col-4 position-relative" *ngFor="let skill of hero.skills"
                                  tooltip="{{skill.description}}">
-                                <img alt="skill" src="{{skill.imgSrc}}" class="w-100"/>
+                                <img alt="skill" src="{{skill.imgSrc}}"/>
                                 <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
                                     <i aria-hidden="true">{{skill.passive ? 'P' : skill.remainingCooldown}}</i>
                                 </div>

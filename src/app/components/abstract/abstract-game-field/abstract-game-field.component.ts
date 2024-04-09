@@ -20,6 +20,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars {
   @Input() userUnits: Unit[] = [];
   @Input() aiUnits: Unit[] = [];
   @Input() battleMode: boolean = true;
+  autoFight: boolean = false;
 
   @Input() gameResultsRedirect: () => void = () => {
   };

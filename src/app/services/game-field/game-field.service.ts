@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Position, Skill, Tile, Unit} from "../../interface";
 import {AbstractFieldService} from "../abstract/field/abstract-field.service";
+import {GameService} from "../game-action/game.service";
+import {heroType} from "../heroes/heroes.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameFieldService extends AbstractFieldService {
-  constructor() {
+  constructor(private gameActionService: GameService) {
     super();
   }
 
@@ -24,12 +26,14 @@ export class GameFieldService extends AbstractFieldService {
     return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);
   }
 
-  getDamage(attack: number, defence: number, unit: Unit) {
-    const blockedDamage = defence * 0.4;
-    if (blockedDamage - 200 > attack) {
+  getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number, defence: number }) {
+    const fixedDefence = this.gameActionService.getFixedDefence(config.defence, unitConfig.dmgTaker);
+    const fixedAttack = this.gameActionService.getFixedAttack(unitConfig.attackDealer.heroType === heroType.ATTACK ? config.attack : config.defence, unitConfig.attackDealer);
+    const blockedDamage = fixedDefence * 0.4;
+    if (blockedDamage - 200 > fixedAttack) {
       return +(100 + this.getRandomInt(10, 70)).toFixed(0);
     } else {
-      const fixedDmg = !!unit.dmgReducedBy ? (attack - blockedDamage) - ((attack - blockedDamage) * unit.dmgReducedBy) : attack - blockedDamage
+      const fixedDmg = !!unitConfig.dmgTaker.dmgReducedBy ? (fixedAttack - blockedDamage) - ((fixedAttack - blockedDamage) * unitConfig.dmgTaker.dmgReducedBy) : fixedAttack - blockedDamage
       return +(fixedDmg + this.getRandomInt(30, 100)).toFixed(0);
     }
   }

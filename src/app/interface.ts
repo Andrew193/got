@@ -61,6 +61,7 @@ export interface Unit {
   x: number,
   y: number,
   rank: number,
+  heroType: number,
   eq1Level: number,
   eq2Level: number,
   eq3Level: number,
