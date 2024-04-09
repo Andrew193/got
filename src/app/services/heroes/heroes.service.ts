@@ -57,17 +57,17 @@ export class HeroesService {
       eq4Level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
-      dmgReducedBy: 0.1,
+      dmgReducedBy: 0.15,
       canCross: 2,
       maxCanCross: 2,
-      health: 9837,
-      healthIncrement: 194,
-      attack: 1629,
-      attackIncrement: 21,
-      defence: 1585,
-      defenceIncrement: 12,
-      maxHealth: 9837,
-      rage: 25,
+      health: 10237,
+      healthIncrement: 195,
+      attack: 1829,
+      attackIncrement: 23,
+      defence: 1485,
+      defenceIncrement: 15,
+      maxHealth: 10237,
+      rage: 45,
       willpower: 25,
       imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png",
@@ -77,33 +77,33 @@ export class HeroesService {
         {
           name: "Сожжение",
           imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_HeroicAbility_BloodOfTheDragon.jpeg",
-          dmgM: 1,
+          dmgM: 1.8,
           cooldown: 0,
           remainingCooldown: 0,
           attackInRange: true,
-          attackRange: 1,
-          attackInRangeM: 0.5,
-          debuffs: [this.effectsService.getBurning(1)],
-          inRangeDebuffs: [this.effectsService.getDefBreak(1)],
-          description: "Наносит противнику урон в размере 100% от показателя атаки и накладывает на него штраф "
-            + this.effectsService.effects.burning + " на 1 ход. Также атакует врагов в радиусе 1 клетки на 50% от показателя атаки,"
-            + " накладывает на них штраф " + this.effectsService.effects.defBreak + " на 1 ход."
+          attackRange: 2,
+          attackInRangeM: 1.35,
+          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2)],
+          inRangeDebuffs: [this.effectsService.getDefBreak(5)],
+          description: "Наносит противнику урон в размере 180% от показателя атаки и накладывает на него 4 штрафa "
+            + this.effectsService.effects.burning + " на 2 ходa. Также атакует врагов в радиусе 2 клетoк на 135% от показателя атаки,"
+            + " накладывает на них штраф " + this.effectsService.effects.defBreak + " на 5 ходов."
         },
         {
           name: "Дракарис",
           imgSrc: "../../../assets/resourses/imgs/heroes/lds/skills/UI_ActiveAbility_Dracarys.jpeg",
-          dmgM: 2,
+          dmgM: 2.9,
           cooldown: 3,
           remainingCooldown: 0,
           attackInRange: true,
-          attackRange: 2,
-          attackInRangeM: 0.9,
-          buffs: [this.effectsService.getAttackBuff(), this.effectsService.getDefBuff()],
-          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getDefBreak()],
-          inRangeDebuffs: [this.effectsService.getBleeding(2)],
-          description: "Наносит целевому врагу урон в размере 200% от показателя атаки, накладывает на него 2 штрафа "
-            + this.effectsService.effects.burning + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 90% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
-            + this.effectsService.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " и " + this.effectsService.effects.defBuff + " на 2 хода."
+          attackRange: 3,
+          attackInRangeM: 1.9,
+          buffs: [this.effectsService.getAttackBuff(3), this.effectsService.getDefBuff(3)],
+          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getDefBreak()],
+          inRangeDebuffs: [this.effectsService.getBleeding(2), this.effectsService.getBleeding(2), this.effectsService.getBleeding(2)],
+          description: "Наносит целевому врагу урон в размере 290% от показателя атаки, накладывает на него 5 штрафов "
+            + this.effectsService.effects.burning + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 190% от атаки врагам в радиусе 3 клеток и накладывает на них 3 штрафa "
+            + this.effectsService.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " и " + this.effectsService.effects.defBuff + " на 3 хода."
         },
         {
           name: "Таргариен",
@@ -115,7 +115,7 @@ export class HeroesService {
           buffs: [this.effectsService.getHealthRestore()],
           passive: true,
           restoreSkill: true,
-          description: "Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штраф "
+          description: "Получает на 15% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штраф "
             + this.effectsService.effects.burning + ". В начале игры получает бонус " + this.effectsService.effects.healthRestore + " на 2 раунда. Имеет шанс воскреснуть после смертельного удара. "
             + "Перед началом каждого хода получает бонус " + this.effectsService.effects.healthRestore + " на 1 ход и мгновенно активирует его."
         }
@@ -158,21 +158,21 @@ export class HeroesService {
         {
           name: "Ярость дракона",
           imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_ActiveAbility_Intimidate.webp",
-          dmgM: 1.3,
+          dmgM: 1.1,
           cooldown: 0,
           remainingCooldown: 0,
           attackInRange: true,
           attackRange: 1,
-          attackInRangeM: 1.3,
+          attackInRangeM: 1.1,
           debuffs: [this.effectsService.getAttackBreak()],
           inRangeDebuffs: [this.effectsService.getAttackBreak()],
-          description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 130% от показателя атаки и накладывает на них штраф"
+          description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 110% от показателя атаки и накладывает на них штраф"
             + this.effectsService.effects.attackBreak + "на 2 хода."
         },
         {
           name: "За Короля",
           imgSrc: "../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_HeroicAbility_ShieldMastery.webp",
-          dmgM: 1.8,
+          dmgM: 1.3,
           cooldown: 3,
           remainingCooldown: 0,
           attackInRange: true,
@@ -181,7 +181,7 @@ export class HeroesService {
           buffs: [this.effectsService.getDefBuff(), this.effectsService.getHealthRestore(1)],
           debuffs: [],
           inRangeDebuffs: [this.effectsService.getDefBreak()],
-          description: "Наносит целевому врагу урон в размере 180% от показателя атаки. Наносит 130% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
+          description: "Наносит целевому врагу урон в размере 130% от показателя атаки. Наносит 130% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
             + this.effectsService.effects.defBreak + " на 2 хода. После атаки накладывает на себя " + this.effectsService.effects.defBuff + " на 2 хода и " + this.effectsService.effects.healthRestore +
             " на 1 ход."
         },

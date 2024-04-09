@@ -28,7 +28,7 @@ export class GameFieldService extends AbstractFieldService {
 
   getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number, defence: number }) {
     const fixedDefence = this.gameActionService.getFixedDefence(config.defence, unitConfig.dmgTaker);
-    const fixedAttack = this.gameActionService.getFixedAttack(unitConfig.attackDealer.heroType === heroType.ATTACK ? config.attack : config.defence, unitConfig.attackDealer);
+    const fixedAttack = this.gameActionService.getFixedAttack(config.attack, unitConfig.attackDealer);
     const blockedDamage = fixedDefence * 0.4;
     if (blockedDamage - 200 > fixedAttack) {
       return +(100 + this.getRandomInt(10, 70)).toFixed(0);

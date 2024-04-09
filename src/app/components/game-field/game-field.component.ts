@@ -14,6 +14,7 @@ import {EffectsService} from "../../services/effects/effects.service";
 import {UnitService} from "../../services/unit/unit.service";
 import {AbstractGameFieldComponent} from "../abstract/abstract-game-field/abstract-game-field.component";
 import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
+import {heroType} from "../../services/heroes/heroes.service";
 
 @Component({
   selector: 'game-field',
@@ -40,7 +41,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
     const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
     const skillIndex = this.unitService.findSkillIndex(this.userUnits[userIndex].skills, skill);
     this.addBuffToUnit(this.userUnits, userIndex, skill)
-    this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(this.userUnits[userIndex].attack, this.userUnits[userIndex].effects) * skill.dmgM, this.effectsService.getBoostedDefence(this.aiUnits[enemyIndex].defence, this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], skill)
+    this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(this.userUnits[userIndex].heroType === heroType.ATTACK ? this.userUnits[userIndex].attack : this.userUnits[userIndex].defence, this.userUnits[userIndex].effects) * skill.dmgM, this.effectsService.getBoostedDefence(this.aiUnits[enemyIndex].defence, this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], skill)
     this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, this.userUnits[userIndex])
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(this.userUnits[userIndex].rage > this.aiUnits[enemyIndex].willpower));
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
@@ -58,7 +59,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
         .filter((e) => !!e) as Unit[];
       for (let i = 0; i < enemiesInRange.length; i++) {
         const enemyIndex = this.unitService.findUnitIndex(enemiesArray, enemiesInRange[i]);
-        this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(attacker.attack, attacker.effects) * (skill.attackInRangeM || 0), this.effectsService.getBoostedDefence(enemiesArray[enemyIndex].defence, enemiesArray[enemyIndex].effects), enemiesArray, attacker, skill)
+        this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(attacker.heroType === heroType.ATTACK ? attacker.attack : attacker.defence, attacker.effects) * (skill.attackInRangeM || 0), this.effectsService.getBoostedDefence(enemiesArray[enemyIndex].defence, enemiesArray[enemyIndex].effects), enemiesArray, attacker, skill)
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
           this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs)
         }
@@ -246,7 +247,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
       }
     })
 
-    if(aiMove && !this.autoFight) {
+    if (aiMove && !this.autoFight) {
       //User's units restore health from their passive skills
       this.gameActionService.checkPassiveSkills(this[aiMove ? 'userUnits' : 'aiUnits'], this.log)
     }
@@ -306,7 +307,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
               //Attack user's unit
               this.addBuffToUnit(this[aiMove ? 'aiUnits' : 'userUnits'], index, aiSkill)
               aiUnit = this[aiMove ? 'aiUnits' : 'userUnits'][index];
-              this.makeAttackMove(userIndex, this.effectsService.getBoostedAttack(aiUnit.attack, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedDefence(this[aiMove ? 'userUnits' : 'aiUnits'][userIndex].defence, this[aiMove ? 'userUnits' : 'aiUnits'][userIndex].effects), this[aiMove ? 'userUnits' : 'aiUnits'], aiUnit, aiSkill)
+              this.makeAttackMove(userIndex, this.effectsService.getBoostedAttack(aiUnit.heroType === heroType.ATTACK ? aiUnit.attack : aiUnit.defence, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedDefence(this[aiMove ? 'userUnits' : 'aiUnits'][userIndex].defence, this[aiMove ? 'userUnits' : 'aiUnits'][userIndex].effects), this[aiMove ? 'userUnits' : 'aiUnits'], aiUnit, aiSkill)
               this.universalRangeAttack(aiSkill, this[aiMove ? 'userUnits' : 'aiUnits'][userIndex] as Unit, this[aiMove ? 'userUnits' : 'aiUnits'], aiMove, aiUnit)
               //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
               const skills = this.updateSkillsCooldown(createDeepCopy(this[aiMove ? 'aiUnits' : 'userUnits'][index].skills), this[aiMove ? 'userUnits' : 'aiUnits'], userIndex, aiSkillIndex, aiSkill, true, true)
@@ -393,7 +394,7 @@ export class GameFieldComponent extends AbstractGameFieldComponent implements On
   }
 
   makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], attackDealer: Unit, skill: Skill) {
-    const damage = this.fieldService.getDamage({dmgTaker:dmgTaker[enemyIndex], attackDealer}, {defence, attack});
+    const damage = this.fieldService.getDamage({dmgTaker: dmgTaker[enemyIndex], attackDealer}, {defence, attack});
 
     if (dmgTaker[enemyIndex].health) {
       let newHealth = this.effectsService.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
