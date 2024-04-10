@@ -20,11 +20,11 @@
         </div>
     </div>
     <main class="flex-row justify-content-between ">
-        <div class="col-xl-8 col-lg-8 col-md-12">
+        <div class="col-md-12 col-lg-12 col-xl-8">
             <basic-game-board [gameConfig]="gameConfig" [battleMode]="battleMode" (moveEntity)="moveEntity($event)"
                               (highlightMakeMove)="highlightMakeMove($event)"></basic-game-board>
         </div>
-        <aside class="col-xl-3 col-lg-3 col-md-12 d-flex flex-column mb-3">
+        <aside class="col-xl-3 col-lg-12 col-md-12 d-flex flex-column mb-3">
             <div class="meta-aside mb-3 flex-row justify-content-evenly ">
                 <ng-container *ngFor="let skill of skillsInAttackBar">
                     <div class="skills-container col-3">
@@ -88,8 +88,9 @@
     <accordion class="mb-2">
         <accordion-group>
             <div class="btn btn-link btn-block flex-column d-flex w-100  shadow-none" accordion-heading>
-                <div class="justify-content-between d-flex">
-                    <div style="width: fit-content" class="position-relative">
+                <div class="justify-content-between flex-row">
+                    <div class="col-12 col-md-3 col-lg-3" style="min-width: 80px">
+                      <div class="position-relative m-0-auto" style="width: fit-content">
                         <img src="{{hero.imgSrc}}" [alt]="hero.name" class="game-field-img"
                              [ngClass]="{'disabled': !hero.health}"/>
                         <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move"
@@ -98,8 +99,9 @@
                         <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack"
                              *ngIf="battleMode?hero.canAttack && hero.health: hero.user"
                              class="action-icon position-absolute can-attack-icon"/>
+                      </div>
                     </div>
-                    <div class="col-9">
+                    <div class="col-12 col-md-9 col-lg-9">
                         <div class="col-12 aside-hero-tab-header">
                             <h6>{{hero.name}}</h6>
                             <progressbar *ngIf="battleMode?battleMode:hero.user" [max]="hero.maxHealth" [value]="hero.health" [type]="progressbarClass"
@@ -116,8 +118,8 @@
                     </div>
                 </div>
             </div>
-            <div class="flex-row" *ngIf="battleMode?battleMode:hero.user; else lootDescription">
-                <div class="col-3 stats">
+            <div class="flex-row justify-content-between" *ngIf="battleMode?battleMode:hero.user; else lootDescription">
+                <div class="col-12 col-md-3 col-lg-12 col-xl-3 stats" style="min-width: 100px">
                     <p>
                         <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon"/>
                         <span class="d-block">{{hero.maxHealth}}</span>
@@ -131,10 +133,10 @@
                         <span class="d-block">{{hero.defence}}</span>
                     </p>
                 </div>
-                <div class="col-9 d-flex">
-                    <div class="col-11 stats h-100" style="margin: 0 auto">
+                <div class="col-12 col-md-8 col-lg-12 col-xl-8 flex-row" style="margin: unset">
+                    <div class="stats h-100 w-100">
                         <p>Здоровье героя: {{hero.health}}</p>
-                        <div class="flex-row skills-container justify-content-evenly">
+                        <div class="flex-row skills-container justify-content-evenly p-2">
                             <div class="col-4 position-relative" *ngFor="let skill of hero.skills"
                                  tooltip="{{skill.description}}">
                                 <img alt="skill" src="{{skill.imgSrc}}"/>
