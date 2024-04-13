@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Position, Skill, Tile, Unit} from "../../interface";
+import {Position, Tile} from "../../interface";
 import {AbstractFieldService} from "../abstract/field/abstract-field.service";
 import {GameService} from "../game-action/game.service";
-import {heroType} from "../heroes/heroes.service";
+import {Skill} from "../../models/skill.model";
+import {Unit} from "../../models/unit.model";
 
 @Injectable({
   providedIn: 'root'

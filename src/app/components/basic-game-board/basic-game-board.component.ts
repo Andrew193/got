@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {Tile, Unit} from "../../interface";
+import {Tile} from "../../interface";
+import {Unit} from "../../models/unit.model";
 
 @Component({
   selector: 'basic-game-board',

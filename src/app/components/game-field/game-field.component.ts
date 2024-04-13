@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GameFieldService} from "../../services/game-field/game-field.service";
 import {CommonModule} from "@angular/common";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {PopoverModule} from "ngx-bootstrap/popover";
-import {Effect, Position, Skill, Tile, Unit} from "../../interface";
+import {Position, Tile} from "../../interface";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {ProgressbarModule} from "ngx-bootstrap/progressbar";
 import {AccordionModule} from "ngx-bootstrap/accordion";
@@ -15,6 +15,9 @@ import {UnitService} from "../../services/unit/unit.service";
 import {AbstractGameFieldComponent} from "../abstract/abstract-game-field/abstract-game-field.component";
 import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
 import {heroType} from "../../services/heroes/heroes.service";
+import {Skill} from "../../models/skill.model";
+import {Unit} from "../../models/unit.model";
+import {Effect} from "../../models/effect.model";
 
 @Component({
   selector: 'game-field',

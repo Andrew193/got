@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {EffectsService} from "../effects/effects.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {Unit} from "../../interface";
+import {Unit} from "../../models/unit.model";
 
 interface UnitConfig {
   level: number,

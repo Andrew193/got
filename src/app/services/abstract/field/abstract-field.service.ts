@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {GameField} from "../../../components/abstract/abstract-game-field/abstract-game-field.component";
-import {GameFieldVars, Position, Tile, Unit} from "../../../interface";
+import {GameFieldVars, Position, Tile} from "../../../interface";
 import {createDeepCopy} from "../../../helpers";
+import {Unit} from "../../../models/unit.model";
 
 @Injectable({
     providedIn: 'root'

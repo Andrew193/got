@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Effect, Skill, Unit} from "../../interface";
+import {Unit} from "../../models/unit.model";
+import {Skill} from "../../models/skill.model";
+import {Effect} from "../../models/effect.model";
 
 @Injectable({
   providedIn: 'root'

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Unit, UnitWithReward} from "../../interface";
+import {UnitWithReward} from "../../interface";
 import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {NgIf} from "@angular/common";
@@ -9,6 +9,7 @@ import {DisplayRewardComponent} from "../display-reward/display-reward.component
 import {Router, RouterLink} from "@angular/router";
 import {GiftConfig, GiftService} from "../../services/gift/gift.service";
 import moment from "moment/moment";
+import {Unit} from "../../models/unit.model";
 
 @Component({
   selector: 'app-gift-store',

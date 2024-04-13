@@ -1,7 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {AbstractFieldService} from "../../../services/abstract/field/abstract-field.service";
-import {Effect, GameFieldVars, LogRecord, Position, Skill, Tile, Unit} from "../../../interface";
+import {GameFieldVars, LogRecord, Position, Tile} from "../../../interface";
 import {BehaviorSubject} from "rxjs";
+import {Unit} from "../../../models/unit.model";
+import {Skill} from "../../../models/skill.model";
+import {Effect} from "../../../models/effect.model";
 
 export interface GameField {
   gameField: Tile[][];

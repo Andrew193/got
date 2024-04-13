@@ -1,10 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Effect, LogRecord, Skill, Unit} from "../../interface";
+import {LogRecord} from "../../interface";
 import {createDeepCopy} from "../../helpers";
 import {ModalWindowService} from "../modal/modal-window.service";
 import {EffectsService} from "../effects/effects.service";
 import {UnitService} from "../unit/unit.service";
 import {heroType} from "../heroes/heroes.service";
+import {Unit} from "../../models/unit.model";
+import {Skill} from "../../models/skill.model";
+import {Effect} from "../../models/effect.model";
 
 @Injectable({
   providedIn: 'root',

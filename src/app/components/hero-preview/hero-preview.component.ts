@@ -6,7 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {StatsComponent} from "../stats/stats.component";
 import {frontRoutes} from "../../app.routes";
-import {Unit} from "../../interface";
+import {Unit} from "../../models/unit.model";
 
 @Component({
   selector: 'app-hero-preview',

@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Position, Skill, Unit} from "../../interface";
+import {Position} from "../../interface";
 import {createDeepCopy} from "../../helpers";
+import {Unit} from "../../models/unit.model";
+import {Skill} from "../../models/skill.model";
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {Unit} from "../../../interface";
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
+import {Unit} from "../../../models/unit.model";
 
 @Component({
   selector: 'app-base-pagination',

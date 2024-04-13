@@ -4,7 +4,7 @@ import {CommonModule} from "@angular/common";
 import {HeroesService} from "../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
 import {frontRoutes} from "../../app.routes";
-import {Unit} from "../../interface";
+import {Unit} from "../../models/unit.model";
 
 @Component({
   selector: 'app-training',

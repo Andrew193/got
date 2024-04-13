@@ -7,7 +7,7 @@ import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {StatsComponent} from "../stats/stats.component";
 import {DailyReward, DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
-import {Unit} from "../../interface";
+import {Unit} from "../../models/unit.model";
 
 interface DayReward {
   copperCoin: number,
