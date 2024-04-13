@@ -15,7 +15,7 @@ export interface User {
   providedIn: 'root',
 })
 export class UsersService {
-  url = "http://localhost:3000/users";
+  url = "/users";
   userToken = "user"
 
   constructor(private http: HttpClient,

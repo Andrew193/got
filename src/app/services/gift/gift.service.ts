@@ -14,7 +14,7 @@ export interface GiftConfig {
   providedIn: 'root'
 })
 export class GiftService {
-  url = "http://localhost:3000/giftTrip";
+  url = "/giftTrip";
 
   constructor(private http: HttpClient,
               private userService: UsersService,

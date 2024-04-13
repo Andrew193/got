@@ -16,7 +16,7 @@ export interface DailyReward {
   providedIn: 'root'
 })
 export class DailyRewardService {
-  url = "http://localhost:3000/dailyReward";
+  url = "/dailyReward";
 
   constructor(private http: HttpClient,
               private userService: UsersService,
