@@ -56,6 +56,8 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars {
 
   abstract attack(skill: Skill): void
 
+  abstract checkDebuffs(unit: Unit, decreaseRestoreCooldown: boolean): Unit
+
   dropEnemyState() {
     this.clickedEnemy = null;
     this.ignoreMove = false;
@@ -89,35 +91,5 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars {
     }
     const enemyClicked = this.possibleMoves.find((possibleTile) => possibleTile.i === clickedTile.x && possibleTile.j === clickedTile.y)
     return enemyClicked ? clickedTile : null;
-  }
-
-  logEvent(props: {
-    damage: number | null,
-    newHealth: number | null,
-    addDmg?: number
-  }, isUser: boolean, skill: Skill | Effect, dmgTaker: Unit, message?: string) {
-    const logMsg = (mgs: string) => {
-      if(!this.battleMode) {
-        mgs = `${!isUser ? 'Player' : 'Bot'} ${dmgTaker.name} (${dmgTaker.x + 1})(${dmgTaker.y + 1}) has been opened/collected!`;
-      }
-      this.log.push({
-        isUser: isUser, imgSrc: skill.imgSrc,
-        message: mgs
-      })
-    }
-
-    if (message) {
-      logMsg(message);
-    } else {
-      if (props.addDmg) {
-        logMsg(`${isUser ? 'Player' : 'Bot'} ${dmgTaker.name} received ${props.addDmg}. ! additional DMG from debuff ${(skill as Effect).type}`)
-      }
-      if (props.damage) {
-        logMsg(message || `${!isUser ? 'Player' : 'Bot'} ${dmgTaker.name} (${dmgTaker.x + 1})(${dmgTaker.y + 1}) received ${props.damage}. DMG!`)
-      }
-      if (props.newHealth === 0 && this.battleMode) {
-        logMsg(message || `${!isUser ? 'Player' : 'Bot'} ${dmgTaker.name} (${dmgTaker.x + 1})(${dmgTaker.y + 1}) went to the seven!`)
-      }
-    }
   }
 }

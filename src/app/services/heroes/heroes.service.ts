@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {EffectsService} from "../effects/effects.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Unit} from "../../models/unit.model";
+import {ContentService, ContentTypes} from "../abstract/content/content-service.service";
 
 interface UnitConfig {
   level: number,
@@ -20,10 +21,11 @@ export enum heroType {
 @Injectable({
   providedIn: 'root'
 })
-export class HeroesService {
+export class HeroesService extends ContentService {
 
   constructor(private effectsService: EffectsService,
               private sanitizer: DomSanitizer) {
+    super();
   }
 
   highlightEffects(text: string) {
@@ -48,13 +50,7 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
       rankBoost: 1.3,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
       dmgReducedBy: 0.15,
@@ -129,13 +125,7 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.DEFENCE,
       attackRange: 1,
-      rank: 1,
       rankBoost: 1.2,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
       dmgReducedBy: 0.25,
@@ -208,12 +198,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       attackRange: 1,
       heroType: heroType.ATTACK,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -264,13 +248,7 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.05,
-      level: 1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
@@ -309,13 +287,7 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
       rankBoost: 1.1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
-      level: 1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
@@ -355,12 +327,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 2,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [this.effectsService.effects.poison],
@@ -426,12 +392,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.05,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -485,12 +445,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 2,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
@@ -564,12 +518,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.2,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding, this.effectsService.effects.poison],
@@ -626,12 +574,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.1,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [],
@@ -684,12 +626,6 @@ export class HeroesService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing, this.effectsService.effects.attackBreak],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
@@ -812,7 +748,24 @@ export class HeroesService {
 
   getBasicUserConfig() {
     return {
-      x: 3, y: 6, user: true, canMove: true, canAttack: true
+      x: 3,
+      y: 6,
+      user: true,
+      canMove: true,
+      canAttack: true,
+      rank: 1,
+      level: 1,
+      eq1Level: 1,
+      eq2Level: 1,
+      eq3Level: 1,
+      eq4Level: 1,
     }
+  }
+
+  getContent(contentType = ContentTypes.USER_UNITS) {
+    if(contentType === ContentTypes.USER_UNITS) {
+      return this.getAllHeroes();
+    }
+    return [];
   }
 }

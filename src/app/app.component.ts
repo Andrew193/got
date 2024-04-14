@@ -3,9 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import {SiteComponent} from "./pages/site/site.component";
 import {CommonModule} from "@angular/common";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
-import {TavernaComponent} from "./components/taverna/taverna.component";
 import {HeaderComponent} from "./components/common/header/header.component";
-import {ModalModule} from "ngx-bootstrap/modal";
+import {TavernaModule} from "./modules/taverna/taverna.module";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +14,8 @@ import {ModalModule} from "ngx-bootstrap/modal";
     CommonModule,
     SiteComponent,
     LobbyComponent,
-    TavernaComponent,
-    HeaderComponent
+    HeaderComponent,
+    TavernaModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

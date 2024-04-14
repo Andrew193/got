@@ -8,6 +8,7 @@ import {heroType} from "../heroes/heroes.service";
 import {Unit} from "../../models/unit.model";
 import {Skill} from "../../models/skill.model";
 import {Effect} from "../../models/effect.model";
+import {GameLoggerService} from "../game-logger/logger.service";
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,12 @@ export class GameService {
     callback: () => {
     }
   }
+  aiUnits: Unit[] = [];
+  userUnits: Unit[] = [];
 
   constructor(private unitService: UnitService,
               private effectsService: EffectsService,
+              private gameLoggerService: GameLoggerService,
               private modalWindowService: ModalWindowService) {
   }
 
@@ -125,5 +129,93 @@ export class GameService {
 
   isDead(units: Unit[]) {
     return units.every((userUnit) => !userUnit.health);
+  }
+
+  checkDebuffs(unit: Unit, decreaseRestoreCooldown = true, battleMode: boolean) {
+    let unitCopy: Unit = createDeepCopy(unit);
+
+    const unitWithUpdatedCooldown = this.updateEffectDuration(unitCopy, decreaseRestoreCooldown, battleMode)
+    unitCopy = unitWithUpdatedCooldown.unit;
+
+    const processEffectsResult = this.processEffects(createDeepCopy(unitCopy), battleMode);
+    unitCopy = processEffectsResult.unit;
+    unitCopy.effects = unitCopy.effects.filter((debuff) => !!debuff.duration);
+
+    return {unit: unitCopy, log: [...unitWithUpdatedCooldown.log, ...processEffectsResult.log]};
+  }
+
+  private updateEffectDuration(unit: Unit, decreaseRestoreCooldown: boolean, battleMode: boolean) {
+    const log: LogRecord[] = [];
+    unit.effects.forEach((effect: Effect, i, array) => {
+      if (effect.duration > 0) {
+        if (effect.restore) {
+          array[i] = {...effect, duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration}
+          this.checkEffectsForHealthRestore(unit, log);
+        } else {
+          array[i] = {...effect, duration: effect.duration - 1}
+          if (!effect.passive) {
+            const additionalDmg = this.getReducedDmgForEffects(unit, this.effectsService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
+            if(additionalDmg) {
+              log.push(this.gameLoggerService.logEvent({
+                damage: null,
+                newHealth: null,
+                addDmg: additionalDmg,
+                battleMode: battleMode
+              }, !unit.user, effect, unit))
+            }
+            unit.health = this.effectsService.getHealthAfterDmg(unit.health, additionalDmg);
+          }
+        }
+      }
+    })
+    return {log, unit};
+  }
+
+  private processEffects(unit: Unit, battleMode: boolean) {
+    const log: LogRecord[] = [];
+
+    unit.effects.forEach((effect) => {
+      let recountedUnit = this.effectsService.recountStatsBasedOnEffect(effect, unit);
+      recountedUnit = !effect.duration ? this.effectsService.restoreStatsAfterEffect(effect, recountedUnit) : recountedUnit;
+      unit = recountedUnit.unit;
+      if (recountedUnit.message) {
+        log.push(this.gameLoggerService.logEvent({damage: null, newHealth: null, battleMode: battleMode}, !unit.user, effect, unit, recountedUnit.message))
+      }
+    })
+
+    return {log, unit}
+  }
+
+  /**
+   * Replacement for
+   *   const aiUnitAttack = (index: number) => {
+   *     //Get AI unit and look for debuffs ( deal dmg before making a move )
+   *     let aiUnit = this[aiMove ? 'aiUnits' : 'userUnits'][index];
+   *     this[aiMove ? 'aiUnits' : 'userUnits'][index] = this.checkDebuffs(createDeepCopy(aiUnit));
+   *     aiUnit = this[aiMove ? 'aiUnits' : 'userUnits'][index];
+   *     //AI makes a move
+   *     makeAiMove(aiUnit, index);
+   *     //Update skills cooldowns
+   *     this.gameActionService.selectSkillsAndRecountCooldown(this[aiMove ? 'aiUnits' : 'userUnits'], this[aiMove ? 'aiUnits' : 'userUnits'][index]);
+   *   }
+   *   This is a servant function of the attackUser function
+   */
+   aiUnitAttack(index: number, units: Unit[], battleMode: boolean, makeAiMove: (aiUnit: Unit, index: number)=>void)  {
+    let aiUnit = units[index];
+    const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode);
+    units[index] =  response.unit;
+    aiUnit = units[index];
+
+    makeAiMove(aiUnit, index);
+
+    this.selectSkillsAndRecountCooldown(units, units[index]);
+  }
+
+  getAiLeadingUnits(aiMove: boolean) {
+     return this[aiMove ? 'aiUnits' : 'userUnits']
+  }
+
+  getUserLeadingUnits(aiMove: boolean) {
+    return this[aiMove ? 'userUnits' : 'aiUnits']
   }
 }

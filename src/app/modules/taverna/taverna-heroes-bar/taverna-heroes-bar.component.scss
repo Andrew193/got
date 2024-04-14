@@ -1,0 +1,32 @@
+@import "../../../../assets/resourses/styles/vars";
+@import "../../../../assets/resourses/styles/mixins";
+
+main {
+  aside {
+    background: $background-color-main;
+    box-shadow: $box-shadow;
+  }
+  .card {
+    background: $background-color-main;
+  }
+  .card-title, h4 {
+    @include grad-color;
+  }
+}
+
+.filters {
+  label {
+    color: white !important;
+  }
+}
+
+@media (max-width: 968px) {
+  .main-content {
+    > div:first-of-type {
+      order: 2;
+    }
+    > div:last-of-type {
+      order: 1;
+    }
+  }
+}

@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {HeroesService} from "../../services/heroes/heroes.service";
+import {HeroesService} from "../../../services/heroes/heroes.service";
 import {CommonModule} from "@angular/common";
 import {PaginationModule} from "ngx-bootstrap/pagination";
 import {RatingModule} from "ngx-bootstrap/rating";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
-import {frontRoutes} from "../../app.routes";
+import {frontRoutes} from "../../../app.routes";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatInputModule} from "@angular/material/input";
 import {map, Observable, startWith} from "rxjs";
-import {AutocompleteMatInputComponent} from "../data-inputs/autocomplete-mat-input/autocomplete-mat-input.component";
-import {BasePaginationComponent} from "../abstract/base-pagination/base-pagination.component";
+import {AutocompleteMatInputComponent} from "../../../components/data-inputs/autocomplete-mat-input/autocomplete-mat-input.component";
+import {BasePaginationComponent} from "../../../components/abstract/base-pagination/base-pagination.component";
 
 @Component({
     selector: 'taverna-heroes-bar',
@@ -39,10 +39,10 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent implement
 
     constructor(public heroesService: HeroesService,
                 private router: Router) {
-      super();
+      super(heroesService);
         this.formGroup = new FormGroup({
             showAll: new FormControl(true),
-            unitName: new FormControl('Король Ночи')
+            unitName: new FormControl('')
         })
 
         this.filteredOptions = this.formGroup.get('unitName')!.valueChanges.pipe(
@@ -71,14 +71,7 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent implement
     }
 
     ngOnInit(): void {
-        this.getHeroes();
         this.options = this.heroesService.getAllHeroes().map((hero) => hero.name)
-    }
-
-    getHeroes() {
-        const elements = this.heroesService.getAllHeroes();
-        this.totalElements = elements.length;
-        this.contentArray = elements;
     }
 
     openHeroPreview(name: string) {

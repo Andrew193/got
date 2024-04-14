@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {tap} from "rxjs";
+import {map, Observable, tap} from "rxjs";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {Router} from "@angular/router";
 import {frontRoutes} from "../../app.routes";
@@ -50,6 +50,17 @@ export class UsersService {
         console.log(error)
       }
     })).subscribe();
+  }
+
+  doesUserExist(): Observable<boolean> {
+    const user = (this.localStorage.getItem(this.userToken)[0] as User | undefined);
+    return this.http.get<any>(this.url, {
+      params: {
+        login: user?.login || '',
+        password: user?.password || ''
+      },
+      observe: "response"
+    }).pipe(map((response) => response.status === 200 && (response.body[0] as User).id === user?.id))
   }
 
   isAuth() {

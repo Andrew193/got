@@ -1,6 +1,6 @@
 <main class="ms-4 me-4">
-  <div class="flex-row">
-    <div class="col-9 flex-row justify-content-between">
+  <div class="flex-row main-content">
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 flex-row justify-content-between">
       <div class="col-2 d-flex justify-content-center m-2" *ngFor="let hero of returnedArray">
         <div class="card hero-card d-flex align-items-center col-12" (click)="openHeroPreview(hero.name)">
           <img class="card-img-top mt-2" src="{{hero.fullImgSrc}}" alt="{{hero.name}}">
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
       <aside class="m-2">
         <div class="text-center filters">
           <h4>Filters</h4>

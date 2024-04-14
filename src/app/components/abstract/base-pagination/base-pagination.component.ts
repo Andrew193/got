@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
 import {Unit} from "../../../models/unit.model";
+import {ContentService} from "../../../services/abstract/content/content-service.service";
 
 @Component({
   selector: 'app-base-pagination',
@@ -16,7 +17,14 @@ export class BasePaginationComponent {
   returnedArray: Unit[] = [];
   contentArray: Unit[] = [];
 
-  constructor() {
+  constructor(private contentService: ContentService) {
+    this.getInitContent();
+  }
+
+  private getInitContent() {
+    const elements = this.contentService.getContent();
+    this.totalElements = elements.length;
+    this.contentArray = elements;
     this.returnedArray = this.contentArray.slice(0, this.itemsPerPage);
   }
 

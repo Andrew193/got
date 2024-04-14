@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {TavernaHeroesBarComponent} from "../taverna-heroes-bar/taverna-heroes-bar.component";
-import {ModalWindowComponent} from "../modal-window/modal-window.component";
+import {ModalWindowComponent} from "../../../components/modal-window/modal-window.component";
 import {RouterOutlet} from "@angular/router";
 
 @Component({
