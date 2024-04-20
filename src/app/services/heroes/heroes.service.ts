@@ -79,9 +79,9 @@ export class HeroesService extends ContentService {
           attackInRange: true,
           attackRange: 2,
           attackInRangeM: 1.35,
-          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2)],
+          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2)],
           inRangeDebuffs: [this.effectsService.getDefBreak(5)],
-          description: "Наносит противнику урон в размере 180% от показателя атаки и накладывает на него 4 штрафa "
+          description: "Наносит противнику урон в размере 180% от показателя атаки и накладывает на него 3 штрафa "
             + this.effectsService.effects.burning + " на 2 ходa. Также атакует врагов в радиусе 2 клетoк на 135% от показателя атаки,"
             + " накладывает на них штраф " + this.effectsService.effects.defBreak + " на 5 ходов."
         },
@@ -96,9 +96,9 @@ export class HeroesService extends ContentService {
           attackInRangeM: 1.9,
           buffs: [this.effectsService.getAttackBuff(3), this.effectsService.getDefBuff(3)],
           debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getDefBreak()],
-          inRangeDebuffs: [this.effectsService.getBleeding(2), this.effectsService.getBleeding(2), this.effectsService.getBleeding(2)],
+          inRangeDebuffs: [this.effectsService.getBleeding(2), this.effectsService.getBleeding(2)],
           description: "Наносит целевому врагу урон в размере 290% от показателя атаки, накладывает на него 5 штрафов "
-            + this.effectsService.effects.burning + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 190% от атаки врагам в радиусе 3 клеток и накладывает на них 3 штрафa "
+            + this.effectsService.effects.burning + " и " + this.effectsService.effects.defBreak + " на 2 хода. Наносит 190% от атаки врагам в радиусе 3 клеток и накладывает на них 2 штрафa "
             + this.effectsService.effects.bleeding + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " и " + this.effectsService.effects.defBuff + " на 3 хода."
         },
         {
@@ -436,7 +436,7 @@ export class HeroesService extends ContentService {
             + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " на 2 хода."
         }
       ],
-      effects: []
+      effects: [this.effectsService.getBleeding()]
     }
   }
 

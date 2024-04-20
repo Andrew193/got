@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {GameFieldComponent} from "../game-field/game-field.component";
-import {AbstractGameFieldComponent} from "../abstract/abstract-game-field/abstract-game-field.component";
 import {GameFieldService} from "../../services/game-field/game-field.service";
 import {JsonPipe} from "@angular/common";
-import {Unit} from "../../models/unit.model";
+import {BasicGameFieldComponent} from "../abstract/basic-game-field/basic-game-field.component";
+import {GameLoggerService} from "../../services/game-logger/logger.service";
+import {GameService} from "../../services/game-action/game.service";
+import {EffectsService} from "../../services/effects/effects.service";
+import {UnitService} from "../../services/unit/unit.service";
 
 @Component({
   selector: 'game-entry-point',
@@ -15,27 +18,19 @@ import {Unit} from "../../models/unit.model";
   templateUrl: './game-entry-point.component.html',
   styleUrl: './game-entry-point.component.scss'
 })
-export class GameEntryPointComponent extends AbstractGameFieldComponent implements OnInit{
+export class GameEntryPointComponent extends BasicGameFieldComponent implements OnInit {
 
-  constructor(private fieldService: GameFieldService) {
-    super(fieldService);
+  constructor(fieldService: GameFieldService,
+              unitService: UnitService,
+              effectsService: EffectsService,
+              gameActionService: GameService,
+              gameLoggerService: GameLoggerService) {
+    super(fieldService, unitService, effectsService, gameActionService, gameLoggerService);
   }
 
-  addBuffToUnit() {
-  }
-
-  addEffectToUnit() {
-  }
-
-  attack() {
-  }
-
-  ngOnInit(): void {
+  override ngOnInit() {
+    super.ngOnInit();
     this.aiUnits = this.aiUnits.map((unit) => ({...unit, user: false}))
     this.userUnits = this.userUnits.map((unit) => ({...unit, user: true}))
-  }
-
-  checkDebuffs(unit: Unit, decreaseRestoreCooldown: boolean): Unit {
-    return unit;
   }
 }

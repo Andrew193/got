@@ -7,7 +7,7 @@ import {Unit} from "../../../models/unit.model";
 @Injectable({
     providedIn: 'root'
 })
-export class AbstractFieldService extends GameFieldVars implements Partial<GameField> {
+export abstract class AbstractFieldService extends GameFieldVars implements Partial<GameField> {
     constructor() {
         super()
     }
@@ -16,6 +16,8 @@ export class AbstractFieldService extends GameFieldVars implements Partial<GameF
         this.gameConfig = this.getGameField(userUnits, aiUnits, this.getDefaultGameField());
         return this.gameConfig;
     }
+
+    abstract getDamage(unitConfig: {dmgTaker: Unit, attackDealer: Unit},     config: {attack: number, defence: number}): number
 
     getRandomInt(min: number, max: number) {
         return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);

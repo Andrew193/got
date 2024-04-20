@@ -5,11 +5,12 @@ import {Router} from "@angular/router";
 import {frontRoutes} from "../../app.routes";
 import {RewardComponent} from "../../interface";
 import {DisplayRewardComponent} from "../display-reward/display-reward.component";
+import {ImageComponent} from "../views/image/image.component";
 
 @Component({
   selector: 'app-summon-tree',
   standalone: true,
-  imports: [CommonModule, DisplayRewardComponent],
+  imports: [CommonModule, DisplayRewardComponent, ImageComponent],
   templateUrl: './summon-tree.component.html',
   styleUrl: './summon-tree.component.scss'
 })
