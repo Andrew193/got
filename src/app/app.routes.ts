@@ -22,7 +22,8 @@ export const frontRoutes = {
 
 export const routes: Routes = [
   {
-    component: SiteComponent, path: frontRoutes.base, canActivate: [AuthGuard], children: [
+    component: SiteComponent, path: frontRoutes.base, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    children: [
       {component: LobbyComponent, path: frontRoutes.base},
       {
         component: TavernaComponent, path: frontRoutes.taverna,

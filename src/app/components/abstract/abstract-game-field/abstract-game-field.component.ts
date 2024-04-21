@@ -77,7 +77,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
         .filter((e) => !!e) as Unit[];
       for (let i = 0; i < enemiesInRange.length; i++) {
         const enemyIndex = this.unitS.findUnitIndex(enemiesArray, enemiesInRange[i]);
-        this.makeAttackMove(enemyIndex, this.effectsS.getBoostedAttack(attacker.heroType === heroType.ATTACK ? attacker.attack : attacker.defence, attacker.effects) * (skill.attackInRangeM || 0), this.effectsS.getBoostedDefence(enemiesArray[enemyIndex].defence, enemiesArray[enemyIndex].effects), enemiesArray, attacker, skill)
+        this.makeAttackMove(enemyIndex, this.effectsS.getBoostedParameterCover(attacker, attacker.effects) * (skill.attackInRangeM || 0), this.effectsS.getBoostedParameterCover(enemiesArray[enemyIndex], enemiesArray[enemyIndex].effects), enemiesArray, attacker, skill)
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
           this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs)
         }

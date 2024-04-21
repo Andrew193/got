@@ -1,7 +1,6 @@
 .skill-disabled {
   position: absolute;
-  top: 5px;
-  left: 8px;
+  top: 0px;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.4392156863);
@@ -40,11 +39,5 @@
   &:after {
     position: relative;
     content: ']';
-  }
-}
-
-@media (max-width: 968px) {
-  .skill-disabled {
-    left: 15px;
   }
 }

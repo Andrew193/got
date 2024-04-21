@@ -322,6 +322,76 @@ export class HeroesService extends ContentService {
     }
   }
 
+  getRelinaShow(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
+      attackRange: 2,
+      rankBoost: 1.1,
+      ignoredDebuffs: [this.effectsService.effects.poison, this.effectsService.effects.freezing, this.effectsService.effects.root],
+      reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
+      dmgReducedBy: 0,
+      canCross: 2,
+      maxCanCross: 2,
+      health: 19169,
+      healthIncrement: 189,
+      attack: 1999,
+      attackIncrement: 23,
+      defence: 1795,
+      defenceIncrement: 19,
+      maxHealth: 19169,
+      rage: 35,
+      willpower: 30,
+      imgSrc: "assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png",
+      fullImgSrc: "assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png",
+      name: "Релина Сноу",
+      description: "Релина Сноу это воительница Зачарованного Леса. Умелый и хитрый боец.",
+      skills: [
+        {
+          name: "Капкан",
+          imgSrc: "../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a1.png",
+          dmgM: 1.9,
+          cooldown: 0,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackInRangeM: 0,
+          debuffs: [this.effectsService.getPoison(), this.effectsService.getRoot()],
+          inRangeDebuffs: [this.effectsService.getAttackBreak()],
+          description: "Наносит противнику урон в размере 190% от показателя атаки, накладывает штраф " + this.effectsService.effects.poison + " на 2 ходa. "
+          + "Также накладывает штраф " + this.effectsService.effects.root + " на 2 хода. Все враги на поле получают штраф " + this.effectsService.effects.attackBreak + " на 2 ходa."
+        },
+        {
+          name: "Засада",
+          imgSrc: "../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a2.png",
+          dmgM: 1.5,
+          cooldown: 2,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 3,
+          attackInRangeM: 1.15,
+          debuffs: [this.effectsService.getBleeding(), this.effectsService.getDefBreak()],
+          buffs: [],
+          inRangeDebuffs: [],
+          description: "Наносит противнику урон в размере 150% от показателя атаки, накладывает на врага штрафы: "
+            + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.defBreak + " на 2 ходa. Также атакует противников в радиусе 3 клетoк на 115% от атаки."
+        },
+        {
+          name: "Воительница",
+          imgSrc: "../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_p.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [],
+          passive: true,
+          description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.bleeding + ". Может атаковать с растояния в 2 клетки."
+          + "На этого героя невозможно наложить штрафы " + this.effectsService.effects.poison + ", " + this.effectsService.effects.freezing + ", " + this.effectsService.effects.root + "."
+        }
+      ],
+      effects: []
+    }
+  }
+
   getFreeTrapper(): Unit {
     return {
       ...this.getBasicUserConfig(),
@@ -363,7 +433,7 @@ export class HeroesService extends ContentService {
           cooldown: 3,
           remainingCooldown: 0,
           attackInRange: true,
-          attackRange: 2,
+          attackRange: 1,
           attackInRangeM: 0.5,
           debuffs: [this.effectsService.getBleeding(), this.effectsService.getDefBreak()],
           buffs: [],
@@ -436,7 +506,7 @@ export class HeroesService extends ContentService {
             + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " на 2 хода."
         }
       ],
-      effects: [this.effectsService.getBleeding()]
+      effects: []
     }
   }
 
@@ -736,7 +806,8 @@ export class HeroesService extends ContentService {
 
   getAllHeroes() {
     const units = [this.getIceRiverHunter(), this.getJonKing(), this.getWhiteWalkerCapitan(), this.getWhiteWalkerGeneral(), this.getNightKing(),
-      this.getGiant(), this.getFreeTrapper(), this.getBrownWolf(), this.getWhiteWolf(), this.getTargaryenKnight(), this.getLadyOfDragonStone()]
+      this.getGiant(), this.getFreeTrapper(), this.getBrownWolf(), this.getWhiteWolf(), this.getTargaryenKnight(), this.getLadyOfDragonStone(),
+    this.getRelinaShow()]
     return units.map((unit) => this.getEquipmentForUnit(unit));
   }
 

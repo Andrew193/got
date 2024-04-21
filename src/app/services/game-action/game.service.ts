@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {LogRecord} from "../../interface";
+import {LogRecord, Position} from "../../interface";
 import {createDeepCopy} from "../../helpers";
 import {ModalWindowService} from "../modal/modal-window.service";
 import {EffectsService} from "../effects/effects.service";
@@ -33,6 +33,34 @@ export class GameService {
   getFixedDefence(defence: number, unit: Unit) {
     const defReducedEffect = unit.effects.find((effect) => effect.type === this.effectsService.effects.defBreak)
     return !!defReducedEffect ? defence * this.effectsService.getMultForEffect(defReducedEffect) : defence
+  }
+
+  getCanCross(canCross: number) {
+    return canCross === 0?1:canCross;
+  }
+
+  getCanGetToPosition(aiUnit: Unit, shortestPathToUserUnit: Position[], userUnitPosition: Position) {
+    const canCrossLimit = this.getCanCross(aiUnit.canCross);
+    const isWithinCanCrossLimit = shortestPathToUserUnit.length > canCrossLimit - 1;
+    const isAtAttackRange = shortestPathToUserUnit.length === aiUnit.attackRange;
+    const isAttackRangeOrCannotCross = aiUnit.attackRange > shortestPathToUserUnit.length || aiUnit.canCross === 0;
+    // Simplified decision logic
+    let canGetToUnit;
+    if (isWithinCanCrossLimit && !isAtAttackRange) {
+      if (aiUnit.canCross === 0) {
+        canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+      } else {
+        canGetToUnit = shortestPathToUserUnit[canCrossLimit - 1];
+      }
+    } else if (isAttackRangeOrCannotCross) {
+      canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+    } else {
+      canGetToUnit = shortestPathToUserUnit[0];
+    }
+    if (userUnitPosition && !shortestPathToUserUnit.length) {
+      canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+    }
+    return canGetToUnit;
   }
 
   getFixedAttack(attack: number, unit: Unit) {

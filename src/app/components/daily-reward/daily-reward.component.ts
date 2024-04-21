@@ -79,25 +79,25 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getWeekReward(copperCoinM = 1, silverCoin = 1, vipPointsM = 1, summonCardM = 1, summonScrollM = 1, dayM = 1): DayReward[] {
     return [
-      {copperCoin: +(15000 * copperCoinM * dayM).toPrecision(3)},
-      {copperCoin: +(20000 * (copperCoinM + 0.4 * dayM)).toPrecision(3)},
+      {copperCoin: +(10000 * copperCoinM * dayM).toPrecision(3)},
+      {copperCoin: +(15000 * (copperCoinM + 0.4 * dayM)).toPrecision(3)},
       {
-        copperCoin: +(25000 * (copperCoinM + 0.2 * dayM)).toPrecision(3),
-        silverCoin: +(1000 * silverCoin * dayM).toPrecision(3)
+        copperCoin: +(20000 * (copperCoinM + 0.2 * dayM)).toPrecision(3),
+        silverCoin: +(150 * silverCoin * dayM).toPrecision(3)
       },
       {
-        copperCoin: +(35000 * (copperCoinM + 0.7 * dayM)).toPrecision(3),
-        goldCoin: +(250 * (silverCoin + 0.3 * dayM)).toPrecision(3)
+        copperCoin: +(25000 * (copperCoinM + 0.7 * dayM)).toPrecision(3),
+        goldCoin: +(75 * (silverCoin + 0.3 * dayM)).toPrecision(3)
       },
       {
-        copperCoin: +(45000 * (copperCoinM + 1.2 * dayM)).toPrecision(3),
+        copperCoin: +(35000 * (copperCoinM + 1.2 * dayM)).toPrecision(3),
         summonCard: +(1 * summonCardM * dayM).toPrecision(3)
       },
       {
-        copperCoin: +(55000 * (copperCoinM + 1.4 * dayM)).toPrecision(3),
+        copperCoin: +(45000 * (copperCoinM + 1.4 * dayM)).toPrecision(3),
         summonScroll: +(1 * summonScrollM * dayM).toPrecision(3)
       },
-      {copperCoin: +(75000 * (copperCoinM + 1.7 * dayM)).toPrecision(3), heroShard: 25}
+      {copperCoin: +(55000 * (copperCoinM + 1.7 * dayM)).toPrecision(3), heroShard: 25}
     ]
   }
 

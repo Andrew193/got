@@ -139,7 +139,7 @@
           <div class="stats h-100 w-100">
             <p>Здоровье героя: {{hero.health}}</p>
             <div class="flex-row skills-container justify-content-evenly p-2">
-              <div class="col-4 position-relative" *ngFor="let skill of hero.skills"
+              <div class="position-relative" *ngFor="let skill of hero.skills"
                    tooltip="{{skill.description}}">
                 <img alt="skill" src="{{skill.imgSrc}}"/>
                 <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">

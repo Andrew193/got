@@ -1,20 +1,27 @@
-import {CanActivateFn} from "@angular/router";
+import {CanActivateFn, Router, UrlTree} from "@angular/router";
 import {inject, Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {UsersService} from "../services/users/users.service";
+import {frontRoutes} from "../app.routes";
 
 @Injectable({
     providedIn: 'root'
 })
-class PermissionsService {
+class PermissionsService{
 
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UsersService,
+                private router: Router) {}
 
-    canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-        return this.usersService.doesUserExist();
+    canActivate(): Observable<boolean | UrlTree> | Promise<boolean> | boolean {
+        return this.usersService.doesUserExist().pipe(map((doesUserExist)=>{
+          if(doesUserExist) {
+            return doesUserExist;
+          }
+          return this.router.createUrlTree([frontRoutes.login]);
+        }));
     }
 }
 
-export const AuthGuard: CanActivateFn = (): Observable<boolean> | Promise<boolean> | boolean => {
+export const AuthGuard: CanActivateFn = (): Observable<boolean | UrlTree> | Promise<boolean> | boolean => {
     return inject(PermissionsService).canActivate();
 }

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Unit} from "../../models/unit.model";
 import {Skill} from "../../models/skill.model";
 import {Effect} from "../../models/effect.model";
+import {heroType} from "../heroes/heroes.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class EffectsService {
     attackBuff: "Бонус атаки",
     defBuff: "Бонус защиты",
     attackBreak: "Заржавелый Меч",
-    defDestroy: "Коррозия брони"
+    defDestroy: "Коррозия брони",
+    root: "Корень",
   }
 
   constructor() {
@@ -33,6 +35,10 @@ export class EffectsService {
       unit.canCross = 1;
       message = unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
     }
+    if (effect.type === this.effects.root) {
+      unit.canCross = 0;
+      message = unit.health ? `Герой скован корнями и не может двигаться.` : '';
+    }
     if (effect.type === this.effects.defDestroy && effect.defBreak) {
       unit.defence += effect.defBreak;
       message = unit.health ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}.` : '';
@@ -42,9 +48,10 @@ export class EffectsService {
 
   restoreStatsAfterEffect(effect: Effect, config: { unit: Unit, message: string }) {
     let message = "";
-    if (effect.type === this.effects.freezing) {
+    if (effect.type === this.effects.freezing
+      || effect.type === this.effects.root) {
       config.unit.canCross = config.unit.maxCanCross;
-      message = config.unit.health ? `Герой ${config.unit.name} разморожен!` : '';
+      message = config.unit.health ? `Герой ${config.unit.name} восстановил мобильность!` : '';
     }
     return {unit: config.unit, message: message ? message : config.message};
   }
@@ -61,14 +68,14 @@ export class EffectsService {
     return [...unit.effects, ...(debuffsToSet || [])]
   }
 
-  getBoostedAttack(attack: number, effects: Effect[]) {
-    const shouldBoostAttack = effects.findIndex((effect) => effect.type === this.effects.attackBuff);
-    return shouldBoostAttack !== -1 ? attack * 1.5 : attack;
+  getBoostedParameterCover(unit: Unit, effects: Effect[]) {
+    const isAttackHero = unit.heroType === heroType.ATTACK;
+    return this.getBoostedParameter(isAttackHero ? unit.attack : unit.defence, effects, isAttackHero ? this.effects.attackBuff : this.effects.defBuff);
   }
 
-  getBoostedDefence(defence: number, effects: Effect[]) {
-    const shouldBoostAttack = effects.findIndex((effect) => effect.type === this.effects.defBuff);
-    return shouldBoostAttack !== -1 ? defence * 1.5 : defence;
+  getBoostedParameter(parameter: number, effects: Effect[], type: string) {
+    const shouldBoostAttack = effects.findIndex((effect) => effect.type === type);
+    return shouldBoostAttack !== -1 ? parameter * 1.5 : parameter;
   }
 
   getHealthAfterDmg(health: number, dmg: number) {
@@ -85,7 +92,7 @@ export class EffectsService {
 
   getHealthRestore(turns = 1): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/health_restore_buff.png",
+      imgSrc: "../../../assets/resourses/imgs/buffs/health_restore_buff.png",
       type: this.effects.healthRestore,
       duration: turns,
       m: 0.05,
@@ -95,7 +102,7 @@ export class EffectsService {
 
   getBurning(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/burning.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/burning.png",
       type: this.effects.burning,
       duration: turns,
       m: 0.1
@@ -104,8 +111,17 @@ export class EffectsService {
 
   getFreezing(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/freezing_debuff.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/freezing_debuff.png",
       type: this.effects.freezing,
+      duration: turns,
+      m: 0,
+    }
+  }
+
+  getRoot(turns = 2): Effect {
+    return {
+      imgSrc: "../../../assets/resourses/imgs/debuffs/root.png",
+      type: this.effects.root,
       duration: turns,
       m: 0,
     }
@@ -113,7 +129,7 @@ export class EffectsService {
 
   getDefenceDestroy(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/def_destroy.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/def_destroy.png",
       type: this.effects.defDestroy,
       duration: turns,
       m: 0,
@@ -123,7 +139,7 @@ export class EffectsService {
 
   getPoison(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/poison.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/poison.png",
       type: this.effects.poison,
       duration: turns,
       m: 0.075
@@ -132,7 +148,7 @@ export class EffectsService {
 
   getBleeding(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/bleeding.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/bleeding.png",
       type: this.effects.bleeding,
       duration: turns,
       m: 0.05
@@ -141,7 +157,7 @@ export class EffectsService {
 
   getDefBreak(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/def_break.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/def_break.png",
       type: this.effects.defBreak,
       duration: turns,
       passive: true,
@@ -151,7 +167,7 @@ export class EffectsService {
 
   getAttackBreak(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/attack_break.png",
+      imgSrc: "../../../assets/resourses/imgs/debuffs/attack_break.png",
       type: this.effects.attackBreak,
       duration: turns,
       passive: true,
@@ -161,7 +177,7 @@ export class EffectsService {
 
   getAttackBuff(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/attack_buff.png",
+      imgSrc: "../../../assets/resourses/imgs/buffs/attack_buff.png",
       type: this.effects.attackBuff,
       duration: turns,
       passive: true,
@@ -171,7 +187,7 @@ export class EffectsService {
 
   getDefBuff(turns = 2): Effect {
     return {
-      imgSrc: "../../../assets/resourses/imgs/icons/def_buff.png",
+      imgSrc: "../../../assets/resourses/imgs/buffs/def_buff.png",
       type: this.effects.defBuff,
       duration: turns,
       passive: true,
@@ -183,6 +199,7 @@ export class EffectsService {
     return {
       [this.effects.burning]: this.getNumberForCommonEffects(health, m),
       [this.effects.freezing]: this.getNumberForCommonEffects(health, m),
+      [this.effects.root]: this.getNumberForCommonEffects(health, m),
       [this.effects.defDestroy]: this.getNumberForCommonEffects(health, m),
       [this.effects.bleeding]: this.getNumberForCommonEffects(health, m),
       [this.effects.poison]: this.getNumberForCommonEffects(health, m),

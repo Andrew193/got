@@ -33,7 +33,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
     const skillIndex = this.unitService.findSkillIndex(this.userUnits[userIndex].skills, skill);
     this.addBuffToUnit(this.userUnits, userIndex, skill)
-    this.makeAttackMove(enemyIndex, this.effectsService.getBoostedAttack(this.userUnits[userIndex].heroType === heroType.ATTACK ? this.userUnits[userIndex].attack : this.userUnits[userIndex].defence, this.userUnits[userIndex].effects) * skill.dmgM, this.effectsService.getBoostedDefence(this.aiUnits[enemyIndex].defence, this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], skill)
+    this.makeAttackMove(enemyIndex, this.effectsService.getBoostedParameterCover(this.userUnits[userIndex], this.userUnits[userIndex].effects) * skill.dmgM, this.effectsService.getBoostedParameterCover(this.aiUnits[enemyIndex], this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], skill)
     this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, this.userUnits[userIndex])
     const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(this.userUnits[userIndex].rage > this.aiUnits[enemyIndex].willpower));
     this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
@@ -99,7 +99,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         if (entity.attackRange >= entity.canCross) {
           this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
         }
-        if (entity?.canMove === false) {
+        if (!entity?.canMove || !entity?.canCross) {
           let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
           if (enemyWhenCannotMove.length) {
             const enemyIndexList = [];
@@ -142,7 +142,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   getPossibleMoves(entity: Unit) {
-    return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross : entity.attackRange, !entity?.canMove);
+    return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross || 1 : entity.attackRange, !entity?.canMove);
   }
 
   getEnemyWhenCannotMove(unit: Unit, arrayOfTargets: Unit[]) {
@@ -252,12 +252,13 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   attackUser(aiMove = true) {
+    debugger
     this._turnCount.next(this.turnCount + 1);
     const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
 
     const makeAiMove = (aiUnit: Unit, index: number) => {
       //Unit makes a move only if this unit is not dead
-      if (aiUnit.health && aiUnit.canMove && aiUnit.canCross) {
+      if (aiUnit.health && aiUnit.canMove) {
         //Start with the closets user unit
         const closestUserUnits = this.unitService.orderUnitsByDistance(aiUnit, this.getUserLeadingUnits(aiMove));
         //Try to get to the closest user unit to attack it or if this unit is not reachable check the next one
@@ -270,10 +271,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
             const shortestPathToUserUnit = this.fieldService.getShortestPathCover(this.fieldService.getGridFromField(this.gameConfig), aiPosition, userUnitPosition, true, false, true)
 
             //User's unit that can be attacked
-            let canGetToUnit = shortestPathToUserUnit.length > aiUnit.canCross - 1 ? shortestPathToUserUnit[aiUnit.canCross - 1] : shortestPathToUserUnit[shortestPathToUserUnit.length - 1];
-            if (userUnitPosition && !shortestPathToUserUnit.length) {
-              canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
-            }
+            const canGetToUnit = this.gameActionService.getCanGetToPosition(aiUnit, shortestPathToUserUnit, userUnitPosition)
             //Move AI unit
             this.getAiLeadingUnits(aiMove)[index] = {
               ...this.getAiLeadingUnits(aiMove)[index],
@@ -291,7 +289,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
               //Attack user's unit
               this.addBuffToUnit(this.getAiLeadingUnits(aiMove), index, aiSkill)
               aiUnit = this.getAiLeadingUnits(aiMove)[index];
-              this.makeAttackMove(userIndex, this.effectsService.getBoostedAttack(aiUnit.heroType === heroType.ATTACK ? aiUnit.attack : aiUnit.defence, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedDefence(this.getUserLeadingUnits(aiMove)[userIndex].defence, this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
+              this.makeAttackMove(userIndex, this.effectsService.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
               this.universalRangeAttack(aiSkill, this.getUserLeadingUnits(aiMove)[userIndex] as Unit, this.getUserLeadingUnits(aiMove), aiMove, aiUnit)
               //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
               const skills = this.updateSkillsCooldown(createDeepCopy(this.getAiLeadingUnits(aiMove)[index].skills), this.getUserLeadingUnits(aiMove), userIndex, aiSkillIndex, aiSkill, true, true)
@@ -324,7 +322,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   checkDebuffs(unit: Unit, decreaseRestoreCooldown = true) {
-    debugger
     const response = this.gameActionService.checkDebuffs(unit, decreaseRestoreCooldown, this.battleMode);
     unit = response.unit;
     this.log.push(...response.log);

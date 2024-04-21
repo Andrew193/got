@@ -38,10 +38,7 @@ export class UsersService {
   login(user: User, callback = (user: User) => {
   }) {
     this.http.get<User>(this.url, {
-      params: {
-        login: user.login,
-        password: user.password
-      }
+      params: {...user}
     }).pipe(tap({
       next: (user) => {
         callback(user);
@@ -52,7 +49,7 @@ export class UsersService {
     })).subscribe();
   }
 
-  doesUserExist(): Observable<boolean> {
+  doesUserExist() {
     const user = (this.localStorage.getItem(this.userToken)[0] as User | undefined);
     return this.http.get<any>(this.url, {
       params: {
