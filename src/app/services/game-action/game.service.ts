@@ -181,6 +181,7 @@ export class GameService {
           this.checkEffectsForHealthRestore(unit, log);
         } else {
           array[i] = {...effect, duration: effect.duration - 1}
+          debugger
           if (!effect.passive) {
             const additionalDmg = this.getReducedDmgForEffects(unit, this.effectsService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
             if(additionalDmg) {
@@ -228,10 +229,11 @@ export class GameService {
    *   }
    *   This is a servant function of the attackUser function
    */
-   aiUnitAttack(index: number, units: Unit[], battleMode: boolean, makeAiMove: (aiUnit: Unit, index: number)=>void)  {
+   aiUnitAttack(index: number, units: Unit[], battleMode: boolean, makeAiMove: (aiUnit: Unit, index: number)=>void, logs: LogRecord[])  {
     let aiUnit = units[index];
     const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode);
     units[index] =  response.unit;
+    logs.push(...response.log)
     aiUnit = units[index];
 
     makeAiMove(aiUnit, index);

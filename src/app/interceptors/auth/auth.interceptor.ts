@@ -4,9 +4,6 @@ import {catchError, Observable, switchMap, throwError} from "rxjs";
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const handle401Response = (next: HttpHandlerFn, modReq:  HttpRequest<any>) => {
     return new Observable((observer)=>{
-      setTimeout(()=>{
-        observer.next(true)
-      }, 10000)
     }).pipe(switchMap((newToken)=>{
       return next(modReq.clone({
         setHeaders: {

@@ -316,7 +316,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     this.gameActionService.checkPassiveSkills(this.getAiLeadingUnits(aiMove), this.log);
     for (let i = 0; i < this.getAiLeadingUnits(aiMove).length; i++) {
-      this.gameActionService.aiUnitAttack(i, this.getAiLeadingUnits(aiMove), this.battleMode, makeAiMove.bind(this))
+      this.gameActionService.aiUnitAttack(i, this.getAiLeadingUnits(aiMove), this.battleMode, makeAiMove.bind(this), this.log)
     }
     this.finishAiTurn(1, aiMove, usedAiSkills)
   }

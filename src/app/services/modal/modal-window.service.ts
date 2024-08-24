@@ -33,4 +33,15 @@ export class ModalWindowService {
   dropModal() {
     this._modalConfig.next(this.init)
   }
+
+  getModalConfig(headerClass = "", headerMessage = "", closeBtnLabel = "",
+                 callback: ()=> void) {
+    return {
+      headerClass: headerClass,
+      headerMessage: headerMessage,
+      closeBtnLabel: closeBtnLabel,
+      callback: callback,
+      open: true
+    }
+  }
 }
