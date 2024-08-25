@@ -1,7 +1,6 @@
 <div class="c-container d-flex align-items-center justify-content-center">
   <div (appOutsideClick)="closePopup()" class="col-11 inner-container flex-row position-relative">
     <p class="day-count-container">X <span class="day-count">{{dailyRewardConfig.totalDays}}</span> награды</p>
-
     <div class="position-relative h-100 col-lg-3 col-md-12 col-sm-12">
       <div class="glow-box" (click)="showHeroPreview()">
         <div class="hero-in-frame hero" id="hero-in-frame" #heroInFrame></div>
@@ -10,6 +9,7 @@
     <aside class="p-3 h-100 overflow-auto col-lg-9 col-md-12 col-sm-12">
       <h4 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только
         расти!!!</h4>
+
       <div *ngIf="!isHeroPreview" class="flex-row">
         <ng-container *ngFor="let reward of month; let i = index">
           <div class="p-3" style="width: 14.28%">
@@ -52,7 +52,7 @@
                 </div>
                 <div>
                   <span class="defence-color">{{skill.name}} {{skill.passive ? '( P )' : ''}}</span>
-                  <div>
+                  <div style="position: relative" contextMenuTriggerFor="{{skill.description}}">
                     <p class="d-inline-block" [innerHTML]="heroService.highlightEffects(skill.description)"></p>
                   </div>
                 </div>
@@ -63,4 +63,8 @@
       </div>
     </aside>
   </div>
+</div>
+
+<div class="effect-description">
+  test
 </div>

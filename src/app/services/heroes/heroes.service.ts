@@ -37,6 +37,18 @@ export class HeroesService extends ContentService {
     return this.sanitizer.bypassSecurityTrustHtml(text.replaceAll("<span", "<span class='highlight-effect'>").replaceAll("</span", "</span>"))
   }
 
+  getEffectsFromString(text: string) {
+    const result = [];
+    for (let i = 0; i < this.effectsService.effectsToHighlight.length; i++) {
+      const effect = this.effectsService.effectsToHighlight[i];
+      debugger
+      if(text.includes(effect)) {
+        result.push(`${effect} - ${this.effectsService.effectsDescriptions[effect]}`)
+      }
+    }
+    return result;
+  }
+
   getRank(level: number) {
     return level <= 10 ? 1 :
       level <= 20 ? 2 :
@@ -49,7 +61,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
-      attackRange: 1,
+      attackRange: 2,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.burning],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],

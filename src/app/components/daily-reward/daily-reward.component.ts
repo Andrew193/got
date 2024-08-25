@@ -8,6 +8,7 @@ import {StatsComponent} from "../stats/stats.component";
 import {DailyReward, DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
 import {Unit} from "../../models/unit.model";
+import {ContextMenuTriggerDirective} from "../../directives/context-menu-trigger/context-menu-trigger.directive";
 
 interface DayReward {
   copperCoin: number,
@@ -21,7 +22,7 @@ interface DayReward {
 @Component({
   selector: 'daily-reward',
   standalone: true,
-  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent],
+  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, ContextMenuTriggerDirective],
   templateUrl: './daily-reward.component.html',
   styleUrl: './daily-reward.component.scss'
 })
@@ -39,6 +40,11 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     totalDays: 0,
     lastLogin: ""
   };
+
+  someMethod(event: MouseEvent) {
+    event.preventDefault();
+    console.log("fsdfsf")
+  }
 
   constructor(public heroService: HeroesService,
               private dailyRewardService: DailyRewardService,
