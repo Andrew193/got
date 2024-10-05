@@ -214,8 +214,8 @@ export class HeroesService extends ContentService {
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
-      canCross: 3,
-      maxCanCross: 3,
+      canCross: 0,
+      maxCanCross: 0,
       health: 5837,
       healthIncrement: 98,
       attack: 1029,
@@ -255,6 +255,50 @@ export class HeroesService extends ContentService {
     }
   }
 
+  getPriest(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      heroType: heroType.DEFENCE,
+      healer: true,
+      onlyHealer: false,
+      attackRange: 1,
+      rankBoost: 1.15,
+      ignoredDebuffs: [],
+      reducedDmgFromDebuffs: [],
+      dmgReducedBy: 0.05,
+      canCross: 2,
+      maxCanCross: 2,
+      health: 4737,
+      healthIncrement: 37,
+      attack: 699,
+      attackIncrement: 4,
+      defence: 899,
+      defenceIncrement: 9,
+      maxHealth: 4737,
+      rage: 0,
+      willpower: 0,
+      imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png",
+      name: "Жрец",
+      description: "Жрец за стеной.",
+      skills: [
+        {
+          name: "Перевязка ран",
+          imgSrc: "../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png",
+          dmgM: 0.15,
+          healM: 0.1,
+          cooldown: 0,
+          remainingCooldown: 0,
+          healAll: true,
+          heal: true,
+          debuffs: [],
+          description: "Наносит противнику урон в размере 15% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 10% от своего максимального здоровья."
+        }
+      ],
+      effects: []
+    }
+  }
+
   getBrownWolf(): Unit {
     return {
       ...this.getBasicUserConfig(),
@@ -265,7 +309,7 @@ export class HeroesService extends ContentService {
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
       canCross: 2,
-      maxCanCross: 1,
+      maxCanCross: 2,
       health: 4837,
       healthIncrement: 47,
       attack: 899,
@@ -819,7 +863,7 @@ export class HeroesService extends ContentService {
   getAllHeroes() {
     const units = [this.getIceRiverHunter(), this.getJonKing(), this.getWhiteWalkerCapitan(), this.getWhiteWalkerGeneral(), this.getNightKing(),
       this.getGiant(), this.getFreeTrapper(), this.getBrownWolf(), this.getWhiteWolf(), this.getTargaryenKnight(), this.getLadyOfDragonStone(),
-    this.getRelinaShow()]
+    this.getRelinaShow(), this.getPriest()]
     return units.map((unit) => this.getEquipmentForUnit(unit));
   }
 

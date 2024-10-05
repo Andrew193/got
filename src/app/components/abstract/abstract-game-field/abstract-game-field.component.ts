@@ -96,6 +96,22 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     }
   }
 
+  makeHealerMove(targetIndex: number | null, skill: Skill, healer: Unit, units: Unit[]) {
+    const healedHealth = healer.maxHealth * (skill.healM as number);
+
+    const getNewHealth = (unit: Unit) => {
+      return unit.health + healedHealth > unit.maxHealth ? unit.maxHealth : unit.health + healedHealth
+    }
+
+    if(targetIndex) {
+      units[targetIndex].health = getNewHealth(units[targetIndex]);
+    } else {
+      units.forEach((unit) => {
+        unit.health = getNewHealth(unit);
+      })
+    }
+  }
+
   dropEnemyState() {
     this.clickedEnemy = null;
     this.ignoreMove = false;

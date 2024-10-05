@@ -1,14 +1,14 @@
 {
   "/giftTrip": {
-    "target": "http://localhost:3000",
+    "target": "http://localhost:4567",
     "secure": false
   },
   "/dailyReward": {
-    "target": "http://localhost:3000",
+    "target": "http://localhost:4567",
     "secure": false
   },
   "/users": {
-    "target": "http://localhost:3000",
+    "target": "http://localhost:4567",
     "secure": false
   }
 }

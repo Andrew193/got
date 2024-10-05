@@ -45,6 +45,7 @@ export class UsersService {
       },
       error: (error) => {
         console.log(error)
+        this.router.navigate([frontRoutes.login])
       }
     })).subscribe();
   }
@@ -57,7 +58,12 @@ export class UsersService {
         password: user?.password || ''
       },
       observe: "response"
-    }).pipe(map((response) => response.status === 200 && (response.body[0] as User).id === user?.id))
+    }).pipe(map((response) => response.status === 200 && (response.body[0] as User).id === user?.id),
+      tap({
+        error: () => {
+          this.router.navigate([frontRoutes.login])
+        }
+      }))
   }
 
   isAuth() {

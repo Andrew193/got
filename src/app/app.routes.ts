@@ -48,6 +48,6 @@ export const routes: Routes = [
     },
     {
         path: frontRoutes.login,
-        loadChildren: () => import('./test.routes').then(r => r.TestRoutes)
+        loadChildren: () => import('./login.routes').then(r => r.LoginRoutes)
     }
 ];

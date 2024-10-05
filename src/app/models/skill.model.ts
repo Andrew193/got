@@ -3,6 +3,7 @@ import {Effect} from "./effect.model";
 export interface Skill {
   imgSrc: string,
   dmgM: number,
+  healM?: number,
   debuffs?: Effect[],
   inRangeDebuffs?: Effect[],
   buffs?: Effect[],
@@ -14,5 +15,7 @@ export interface Skill {
   attackInRange?: boolean,
   attackRange?: number,
   attackInRangeM?: number,
-  description: string
+  description: string,
+  healAll?: boolean,
+  heal?: boolean,
 }

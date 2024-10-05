@@ -31,12 +31,22 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.skillsInAttackBar = this.gameActionService.selectSkillsAndRecountCooldown(this.userUnits, this.selectedEntity as Unit);
     const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.clickedEnemy);
     const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
-    const skillIndex = this.unitService.findSkillIndex(this.userUnits[userIndex].skills, skill);
+    let user = this.userUnits[userIndex];
+    const skillIndex = this.unitService.findSkillIndex(user.skills, skill);
     this.addBuffToUnit(this.userUnits, userIndex, skill)
-    this.makeAttackMove(enemyIndex, this.effectsService.getBoostedParameterCover(this.userUnits[userIndex], this.userUnits[userIndex].effects) * skill.dmgM, this.effectsService.getBoostedParameterCover(this.aiUnits[enemyIndex], this.aiUnits[enemyIndex].effects), this.aiUnits, this.userUnits[userIndex], skill)
-    this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, this.userUnits[userIndex])
-    const skills = this.updateSkillsCooldown(createDeepCopy(this.userUnits[userIndex].skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(this.userUnits[userIndex].rage > this.aiUnits[enemyIndex].willpower));
-    this.userUnits[userIndex] = {...this.userUnits[userIndex], canAttack: false, canMove: false, skills: skills};
+
+    if(user.healer && skill.healAll) {
+      this.makeHealerMove(null, skill, user, this.userUnits);
+    }
+    if(!user.healer || (user.healer && !user.onlyHealer)) {
+      this.makeAttackMove(enemyIndex, this.effectsService.getBoostedParameterCover(user, user.effects) * skill.dmgM, this.effectsService.getBoostedParameterCover(this.aiUnits[enemyIndex], this.aiUnits[enemyIndex].effects), this.aiUnits, user, skill)
+      this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, user)
+    }
+
+    user = this.userUnits[userIndex];
+
+    const skills = this.updateSkillsCooldown(createDeepCopy(user.skills), this.aiUnits, enemyIndex, skillIndex, skill, false, enemyIndex ? !(user.rage > this.aiUnits[enemyIndex].willpower) : false);
+    this.userUnits[userIndex] = {...user, canAttack: false, canMove: false, skills: skills};
     this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
     this.updateGridUnits(this.aiUnits);
     this.updateGridUnits(this.userUnits);
@@ -78,6 +88,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     if (this.showAttackBar) {
       this.dropEnemy();
     }
+
     event?.stopPropagation();
     if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack || entity.user === false)) {
       let possibleTargetsInAttackRadius;
@@ -96,9 +107,14 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         this.ignoreMove = false;
         this.selectedEntity = entity;
         this.possibleMoves = this.getPossibleMoves(entity);
-        if (entity.attackRange >= entity.canCross) {
+
+        if (entity.attackRange >= entity.canCross && !entity.healer) {
           this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
+        } else if(entity.healer && false) {
+          //Only healers (do not deal dmg)
+          this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
         }
+
         if (!entity?.canMove || !entity?.canCross) {
           let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
           if (enemyWhenCannotMove.length) {
@@ -153,7 +169,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     //Can not move AI units and dead units
     this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
     if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove && !!this.possibleMoves.find((move) => move.i === tile.x && move.j === tile.y)) {
-      //User's unit can not move ( already made a move )
+      //User's unit can not move (already made a move)
       const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
       this.userUnits[userIndex] = {...this.selectedEntity, x: tile.x, y: tile.y, canMove: false};
       //Look for targets to attack
@@ -228,7 +244,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
   finishAiTurn(interval: any, aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
     clearInterval(interval);
-    //Update AI and user units arrays ( update on ui and grid )
+    //Update AI and user units arrays (update on ui and grid)
     this.fieldService.resetMoveAndAttack(this.getAiLeadingUnits(aiMove));
     this.fieldService.resetMoveAndAttack(this.getUserLeadingUnits(aiMove));
     //User's units take dmg from their debuffs
@@ -252,16 +268,15 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   attackUser(aiMove = true) {
-    debugger
     this._turnCount.next(this.turnCount + 1);
     const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
 
     const makeAiMove = (aiUnit: Unit, index: number) => {
       //Unit makes a move only if this unit is not dead
       if (aiUnit.health && aiUnit.canMove) {
-        //Start with the closets user unit
+        //Start with the closest user unit
         const closestUserUnits = this.unitService.orderUnitsByDistance(aiUnit, this.getUserLeadingUnits(aiMove));
-        //Try to get to the closest user unit to attack it or if this unit is not reachable check the next one
+        //Try to get to the closest user unit to attack it or if this unit is not reachable, check the next one
         for (let i = 0; i < closestUserUnits.length; i++) {
           const userUnit = closestUserUnits[i] as Unit;
           if (userUnit.health) {
@@ -289,9 +304,16 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
               //Attack user's unit
               this.addBuffToUnit(this.getAiLeadingUnits(aiMove), index, aiSkill)
               aiUnit = this.getAiLeadingUnits(aiMove)[index];
-              this.makeAttackMove(userIndex, this.effectsService.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
-              this.universalRangeAttack(aiSkill, this.getUserLeadingUnits(aiMove)[userIndex] as Unit, this.getUserLeadingUnits(aiMove), aiMove, aiUnit)
-              //Recount cooldowns for Ai unit after attack ( set maximum cooldown for used skill )
+
+              if(aiUnit.healer && aiSkill.healAll) {
+                this.makeHealerMove(null, aiSkill, aiUnit, this.getAiLeadingUnits(aiMove));
+              }
+              if(!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
+                this.makeAttackMove(userIndex, this.effectsService.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
+                this.universalRangeAttack(aiSkill, this.getUserLeadingUnits(aiMove)[userIndex] as Unit, this.getUserLeadingUnits(aiMove), aiMove, aiUnit)
+              }
+
+              //Recount cooldowns for Ai unit after attack (set maximum cooldown for used skill)
               const skills = this.updateSkillsCooldown(createDeepCopy(this.getAiLeadingUnits(aiMove)[index].skills), this.getUserLeadingUnits(aiMove), userIndex, aiSkillIndex, aiSkill, true, true)
               usedAiSkills.push({skill: aiSkill, unit: this.getUserLeadingUnits(aiMove)[userIndex], AI: aiUnit});
               //Update AI units and game config
