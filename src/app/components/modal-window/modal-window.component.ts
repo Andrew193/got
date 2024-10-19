@@ -29,7 +29,6 @@ export class ModalWindowComponent implements OnInit{
 
   ngOnInit(): void {
     this.modalWindowService.modalConfig$.subscribe((newConfig)=> {
-      debugger
       if(newConfig.open) {
         this.modalConfig = newConfig;
         this.openModal(this.modalTemplate);

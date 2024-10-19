@@ -283,6 +283,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
             //Get Ai unit position and look for targets and the shortest path to them
             const aiPosition = this.unitService.getPositionFromUnit(aiUnit);
             const userUnitPosition = this.unitService.getPositionFromUnit(userUnit as Unit);
+            this.gameConfig = this.fieldService.getGameField(this.getUserLeadingUnits(aiMove), this.getAiLeadingUnits(aiMove), this.fieldService.getDefaultGameField());
             const shortestPathToUserUnit = this.fieldService.getShortestPathCover(this.fieldService.getGridFromField(this.gameConfig), aiPosition, userUnitPosition, true, false, true)
 
             //User's unit that can be attacked
@@ -301,21 +302,26 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
               const userIndex = this.unitService.findUnitIndex(this.getUserLeadingUnits(aiMove), this.unitService.getUnitFromPosition(enemyWhenCannotMove));
               const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
               const aiSkillIndex = this.unitService.findSkillIndex(aiUnit.skills, aiSkill);
-              //Attack user's unit
-              this.addBuffToUnit(this.getAiLeadingUnits(aiMove), index, aiSkill)
-              aiUnit = this.getAiLeadingUnits(aiMove)[index];
+              let skills: any[] = [];
 
-              if(aiUnit.healer && aiSkill.healAll) {
-                this.makeHealerMove(null, aiSkill, aiUnit, this.getAiLeadingUnits(aiMove));
-              }
-              if(!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
-                this.makeAttackMove(userIndex, this.effectsService.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
-                this.universalRangeAttack(aiSkill, this.getUserLeadingUnits(aiMove)[userIndex] as Unit, this.getUserLeadingUnits(aiMove), aiMove, aiUnit)
+              if(aiSkill) {
+                //Attack user's unit
+                this.addBuffToUnit(this.getAiLeadingUnits(aiMove), index, aiSkill)
+                aiUnit = this.getAiLeadingUnits(aiMove)[index];
+
+                if (aiUnit.healer && aiSkill.healAll) {
+                  this.makeHealerMove(null, aiSkill, aiUnit, this.getAiLeadingUnits(aiMove));
+                }
+                if (!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
+                  this.makeAttackMove(userIndex, this.effectsService.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
+                  this.universalRangeAttack(aiSkill, this.getUserLeadingUnits(aiMove)[userIndex] as Unit, this.getUserLeadingUnits(aiMove), aiMove, aiUnit)
+                }
+
+                //Recount cooldowns for Ai unit after attack (set maximum cooldown for used skill)
+                skills = this.updateSkillsCooldown(createDeepCopy(this.getAiLeadingUnits(aiMove)[index].skills), this.getUserLeadingUnits(aiMove), userIndex, aiSkillIndex, aiSkill, true, true)
+                usedAiSkills.push({skill: aiSkill, unit: this.getUserLeadingUnits(aiMove)[userIndex], AI: aiUnit});
               }
 
-              //Recount cooldowns for Ai unit after attack (set maximum cooldown for used skill)
-              const skills = this.updateSkillsCooldown(createDeepCopy(this.getAiLeadingUnits(aiMove)[index].skills), this.getUserLeadingUnits(aiMove), userIndex, aiSkillIndex, aiSkill, true, true)
-              usedAiSkills.push({skill: aiSkill, unit: this.getUserLeadingUnits(aiMove)[userIndex], AI: aiUnit});
               //Update AI units and game config
               this.getAiLeadingUnits(aiMove)[index] = {
                 ...this.getAiLeadingUnits(aiMove)[index],

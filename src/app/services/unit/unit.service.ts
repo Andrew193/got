@@ -58,7 +58,7 @@ export class UnitService {
 
   addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill) {
     const unitsCopy = createDeepCopy(units);
-    if (skill.buffs?.length) {
+    if (skill?.buffs?.length) {
       unitsCopy[unitIndex] = {
         ...unitsCopy[unitIndex],
         effects: [...unitsCopy[unitIndex].effects, ...(skill.buffs || [])]

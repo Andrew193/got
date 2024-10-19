@@ -35,5 +35,6 @@ export interface Tile extends Coordinate {
 }
 
 export interface UnitWithReward extends Unit {
-  reward: DisplayReward
+  reward: DisplayReward,
+  inBattle: boolean,
 }

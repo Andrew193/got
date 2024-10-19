@@ -1,22 +1,26 @@
 <div class="container-fluid">
   <h4 class="text-center" *ngIf="battleMode">
-    <span class="user-bar">Ходит {{turnUser ? 'игрок' : 'AI'}}</span>
+    <span class="user-bar">Ходит {{ turnUser ? 'игрок' : 'AI' }}</span>
   </h4>
   <div class="heroes-bar flex-row" *ngIf="battleMode">
     <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
-      <img *ngFor="let hero of userUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"
-           [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
+      <ng-container *ngFor="let hero of userUnits">
+        <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img" *ngIf="hero.inBattle"
+             [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
+      </ng-container>
     </div>
     <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
       <div class="col-9">
         <div tooltip="Закончить ход" (click)="finishTurn()">
-          <span>{{turnCount}}/20</span>
+          <span>{{ turnCount }}/20</span>
         </div>
       </div>
     </div>
     <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
-      <img *ngFor="let hero of aiUnits" src="{{hero.imgSrc}}" alt="hero" class="game-field-img"
-           [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
+      <ng-container *ngFor="let hero of aiUnits">
+        <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img" *ngIf="hero.inBattle"
+             [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
+      </ng-container>
     </div>
   </div>
   <main class="flex-row justify-content-between ">
@@ -29,14 +33,14 @@
         <ng-container *ngFor="let skill of skillsInAttackBar">
           <div class="skills-container col-3">
             <div>
-              <p class="text-center">{{skill.name}}</p>
+              <p class="text-center">{{ skill.name }}</p>
               <div class="text-center">
                 <div class="position-relative" style="margin: 0 auto; width: fit-content"
                      tooltip="{{skill.description}}">
                   <img alt="{{skill.name}}" src="{{skill.imgSrc}}" class="cursor-pointer"
                        (click)="attack(skill)"/>
                   <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
-                    <i aria-hidden="true">{{skill.passive ? 'P' : skill.remainingCooldown}}</i>
+                    <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                   </div>
                 </div>
               </div>
@@ -71,7 +75,7 @@
               'entity-b': logRecord.info
               }">
                   <img src="{{logRecord.imgSrc}}" alt="Effect img"/>
-                  <span>{{logRecord.message}}</span>
+                  <span>{{ logRecord.message }}</span>
                 </p>
               </ng-container>
             </div>
@@ -95,17 +99,17 @@
               <img src="{{hero.imgSrc}}" [alt]="hero.name" class="game-field-img"
                    [ngClass]="{'disabled': !hero.health}"/>
               <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move"
-                   *ngIf="battleMode?hero.canMove && hero.health:hero.user"
+                   *ngIf="battleMode && (hero.inBattle === true || hero.inBattle === undefined)?battleMode:hero.user?hero.canMove && hero.health:hero.user"
                    class="action-icon position-absolute can-move-icon"/>
               <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack"
-                   *ngIf="battleMode?hero.canAttack && hero.health: hero.user"
+                   *ngIf="battleMode && (hero.inBattle === true || hero.inBattle === undefined)?battleMode:hero.user?hero.canAttack && hero.health: hero.user"
                    class="action-icon position-absolute can-attack-icon"/>
             </div>
           </div>
           <div class="col-12 col-md-9 col-lg-9">
             <div class="col-12 aside-hero-tab-header">
-              <h6>{{hero.name}}</h6>
-              <progressbar *ngIf="battleMode?battleMode:hero.user" [max]="hero.maxHealth" [value]="hero.health"
+              <h6>{{ hero.name }}</h6>
+              <progressbar *ngIf="battleMode?battleMode && (hero.inBattle === true || hero.inBattle === undefined):hero.user" [max]="hero.maxHealth" [value]="hero.health"
                            [type]="progressbarClass"
                            [striped]="true"
                            [animate]="true">
@@ -116,41 +120,41 @@
         <div class="effects-container mt-1" *ngIf="battleMode?battleMode:hero.user">
           <div *ngFor="let effect of hero.effects" class="position-relative">
             <img src="{{effect.imgSrc}}" tooltip="{{effect.type}}"/>
-            <span>{{effect.duration}}</span>
+            <span>{{ effect.duration }}</span>
           </div>
         </div>
       </div>
-      <div class="flex-row justify-content-between" *ngIf="battleMode?battleMode:hero.user; else lootDescription">
+      <div class="flex-row justify-content-between" *ngIf="battleMode && (hero.inBattle === true || hero.inBattle === undefined)?battleMode:hero.user; else lootDescription">
         <div class="col-12 col-md-3 col-lg-12 col-xl-3 stats" style="min-width: 100px">
           <p>
             <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon"/>
-            <span class="d-block">{{hero.maxHealth}}</span>
+            <span class="d-block">{{ hero.maxHealth }}</span>
           </p>
           <p>
             <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack icon"/>
-            <span class="d-block">{{hero.attack}}</span>
+            <span class="d-block">{{ hero.attack }}</span>
           </p>
           <p>
             <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence icon"/>
-            <span class="d-block">{{hero.defence}}</span>
+            <span class="d-block">{{ hero.defence }}</span>
           </p>
         </div>
         <div class="col-12 col-md-8 col-lg-12 col-xl-8 flex-row" style="margin: unset">
           <div class="stats h-100 w-100">
-            <p>Здоровье героя: {{hero.health}}</p>
+            <p>Здоровье героя: {{ hero.health }}</p>
             <div class="flex-row skills-container justify-content-evenly p-2">
               <div class="position-relative" *ngFor="let skill of hero.skills"
                    tooltip="{{skill.description}}">
                 <img alt="skill" src="{{skill.imgSrc}}"/>
                 <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
-                  <i aria-hidden="true">{{skill.passive ? 'P' : skill.remainingCooldown}}</i>
+                  <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ng-template #lootDescription>{{hero.description}}</ng-template>
+      <ng-template #lootDescription>{{ hero.description }}</ng-template>
     </accordion-group>
   </accordion>
 </ng-template>

@@ -4,7 +4,7 @@ import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.comp
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {NgIf} from "@angular/common";
 import {NpcService} from "../../services/npc/npc.service";
-import {DisplayReward} from "../../services/reward/reward.service";
+import {DisplayReward, RewardService} from "../../services/reward/reward.service";
 import {DisplayRewardComponent} from "../display-reward/display-reward.component";
 import {Router, RouterLink} from "@angular/router";
 import {GiftConfig, GiftService} from "../../services/gift/gift.service";
@@ -31,13 +31,27 @@ export class GiftStoreComponent implements OnInit {
   userUnits: Unit[] = [];
   giftConfig!: GiftConfig;
 
+  items = [
+    {name: '1', probability: 0.00},
+    {name: '0', probability: 1},
+  ];
+
   constructor(private npcService: NpcService,
               private giftService: GiftService,
+              private rewardService: RewardService,
               private router: Router) {
-    this.userUnits.push({...this.npcService.getUser(), attackRange: 1, x: 0, y: 0})
-    this.npcService.getGiftNPC().map((el) => ({...el, imgSrc: el.reward.src}))
-      .forEach((el) => {
-        this.aiUnits.push(el)
+
+    this.userUnits.push({...this.npcService.getUser(), attackRange: 1, x: 0, y: 0, inBattle: true});
+    this.npcService.getGiftNPC().map((el) => ({...el, imgSrc: el.reward.src, user: false, canMove: false}))
+      .forEach((el, index, elements) => {
+        const elType = this.rewardService.getReward(1, this.items)[0];
+        this.aiUnits.push(elType.name === '0' ? {
+          ...this.npcService.getWildling(),
+          x: el.x,
+          y: el.y,
+          reward: el.reward,
+          inBattle: true
+        } : el);
       })
   }
 

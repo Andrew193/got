@@ -27,7 +27,7 @@ export class NpcService implements RewardComponent{
       if(i !== 0 && j !== 0) {
         if(npc.findIndex((npc)=>npc.x === i && npc.y === j) === -1) {
           const reward = this.rewardService.getReward(1, this.items)[0]
-          npc.push({...this.getNPC(reward.name), reward: reward, x: i, y: j})
+          npc.push({...this.getNPC(reward.name), reward: reward, x: i, y: j, inBattle: false})
         }
       }
 
@@ -36,6 +36,10 @@ export class NpcService implements RewardComponent{
       }
     }
     return npc;
+  }
+
+  getWildling() {
+    return this.heroService.getWhiteWalkerCapitan();
   }
 
   getUser(): Unit {

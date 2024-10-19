@@ -8,7 +8,8 @@
          'ai-heroes': !tile?.entity?.user,
          'user-heroes': tile?.entity?.user,
          'entity-b': tile?.entity,
-         'disabled': tile?.entity?.health === 0
+         'disabled': tile?.entity?.health === 0,
+         'block': tile.active === false && tile.entity === null
          }"
          [attr.data-y]="tile.y" [attr.data-active]="tile.active">
       <span class="tile-label">{{tile.x + 1}}-{{tile.y + 1}}</span>
@@ -17,10 +18,10 @@
              [ngClass]="{'loot-img': !battleMode && !tile.entity.user}"
              (click)="onHighlightMakeMove(tile.entity, $event)"/>
         <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move"
-             *ngIf="battleMode? tile.entity.canMove && !!tile.entity.health: tile.entity.user"
+             *ngIf="battleMode? tile.entity.canMove && !!tile.entity.health && (tile?.entity?.inBattle === true || tile?.entity?.inBattle === undefined): tile.entity.user"
              class="action-icon position-absolute can-move-icon"/>
         <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack"
-             *ngIf="battleMode? tile.entity.canAttack && !!tile.entity.health: tile.entity.user"
+             *ngIf="battleMode? tile.entity.canAttack && !!tile.entity.health && (tile?.entity?.inBattle === true || tile?.entity?.inBattle === undefined): tile.entity.user"
              class="action-icon position-absolute can-attack-icon"/>
       </div>
     </div>

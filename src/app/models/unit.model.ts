@@ -4,6 +4,7 @@ import {Effect} from "./effect.model";
 
 export interface Unit extends Coordinate {
   rank: number,
+  inBattle?: boolean,
   healer?: boolean,
   onlyHealer?: boolean,
   heroType: number,

@@ -49,6 +49,12 @@
   }
 }
 
+.block {
+  background: gray;
+  pointer-events: none;
+  cursor: none;
+}
+
 .action-icon {
   height: 20px;
   width: 20px;

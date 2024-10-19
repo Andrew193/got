@@ -42,8 +42,9 @@ export class GameService {
   getCanGetToPosition(aiUnit: Unit, shortestPathToUserUnit: Position[], userUnitPosition: Position) {
     const canCrossLimit = this.getCanCross(aiUnit.canCross);
     const isWithinCanCrossLimit = shortestPathToUserUnit.length > canCrossLimit - 1;
-    const isAtAttackRange = shortestPathToUserUnit.length === aiUnit.attackRange;
+    const isAtAttackRange = aiUnit.attackRange >= shortestPathToUserUnit.length;
     const isAttackRangeOrCannotCross = aiUnit.attackRange > shortestPathToUserUnit.length || aiUnit.canCross === 0;
+    debugger
     // Simplified decision logic
     let canGetToUnit;
     if (isWithinCanCrossLimit && !isAtAttackRange) {
@@ -53,7 +54,11 @@ export class GameService {
         canGetToUnit = shortestPathToUserUnit[canCrossLimit - 1];
       }
     } else if (isAttackRangeOrCannotCross) {
-      canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+      if(!!aiUnit.canCross && shortestPathToUserUnit.length === 1 && aiUnit.attackRange > shortestPathToUserUnit.length) {
+        canGetToUnit = isAtAttackRange ? this.unitService.getPositionFromUnit(aiUnit) : shortestPathToUserUnit[0];
+      } else {
+        canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+      }
     } else {
       canGetToUnit = shortestPathToUserUnit[0];
     }
@@ -181,7 +186,6 @@ export class GameService {
           this.checkEffectsForHealthRestore(unit, log);
         } else {
           array[i] = {...effect, duration: effect.duration - 1}
-          debugger
           if (!effect.passive) {
             const additionalDmg = this.getReducedDmgForEffects(unit, this.effectsService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
             if(additionalDmg) {

@@ -85,6 +85,6 @@ export class RewardService {
         } else if (item.name === this.rewardNames.chest) {
           return {amount: 1, name: item.name, src: "assets/resourses/imgs/icons/chest.png"}
         }
-        return {amount: 1, src: "", name: ""};
+        return {amount: 1, src: "", name: item.name};
     }
 }
