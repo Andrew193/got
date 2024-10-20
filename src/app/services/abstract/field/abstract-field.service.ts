@@ -82,7 +82,7 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     })
 
     objects.forEach((ai) => {
-      field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: null}
+      field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: {}}
     })
 
 

@@ -1,6 +1,10 @@
-<div class="col-12 stats p-1">
-  <p class="text-center w-100 d-block" style="font-weight: bold">Basic parameters</p>
-  <div style="font-weight: bold" class="flex-row">
+<div class="d-flex">
+  <div class="col-2" style="padding: 0px 5px 5px 5px;">
+    <img alt="reward avatar" class="reward-avatar" [src]="selectedHero.imgSrc" />
+  </div>
+<div class="col-10 stats p-1">
+  <p class="text-center w-100 d-block" style="font-weight: bold"><b>Basic parameters</b></p>
+  <div style="font-weight: bold; " class="flex-row">
     <p class="d-inline col-2 m-0">
       <img src="assets/resourses/imgs/icons/attack_icon.png">
       <span>{{selectedHero.attack}}</span>
@@ -49,4 +53,5 @@
     </p>
     <span class="col-10">Mobility affects the number of cells a hero can move in a turn.</span>
   </div>
+</div>
 </div>

@@ -265,26 +265,26 @@ export class HeroesService extends ContentService {
       rankBoost: 1.15,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
-      dmgReducedBy: 0.05,
+      dmgReducedBy: 0.15,
       canCross: 2,
       maxCanCross: 2,
-      health: 4737,
+      health: 9737,
       healthIncrement: 37,
       attack: 699,
       attackIncrement: 4,
-      defence: 899,
+      defence: 1499,
       defenceIncrement: 9,
-      maxHealth: 4737,
+      maxHealth: 9737,
       rage: 0,
-      willpower: 0,
-      imgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png",
-      fullImgSrc: "../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png",
+      willpower: 70,
+      imgSrc: "../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png",
+      fullImgSrc: "../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png",
       name: "Жрец",
       description: "Жрец за стеной.",
       skills: [
         {
           name: "Перевязка ран",
-          imgSrc: "../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png",
+          imgSrc: "../../../assets/resourses/imgs/heroes/healer-w/skills/health_restore_buff.png",
           dmgM: 0.15,
           healM: 0.1,
           cooldown: 0,
@@ -293,9 +293,37 @@ export class HeroesService extends ContentService {
           heal: true,
           debuffs: [],
           description: "Наносит противнику урон в размере 15% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 10% от своего максимального здоровья."
+        },
+        {
+          name: "Великое исцеление",
+          imgSrc: "../../../assets/resourses/imgs/heroes/healer-w/skills/healer_2skill.png",
+          dmgM: 1,
+          healM: 0.25,
+          cooldown: 5,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 3,
+          attackInRangeM: 0.9,
+          healAll: true,
+          heal: true,
+          debuffs: [],
+          description: "Наносит противнику урон в размере 100% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 25% от своего максимального здоровья."
+          + "Наносит 90% от атаки врагам в радиусе 3 клеток."
+        },
+        {
+          name: "Локранд",
+          imgSrc: "../../../assets/resourses/imgs/icons/aura.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [],
+          passive: true,
+          restoreSkill: true,
+          description: "Получает на 15% меньше урона от атак противников. В начале игры получает бонус " + this.effectsService.effects.healthRestore + " на 2 раунда. Имеет шанс воскреснуть после смертельного удара."
         }
       ],
-      effects: []
+      effects: [this.effectsService.getHealthRestore(2)]
     }
   }
 
@@ -531,7 +559,7 @@ export class HeroesService extends ContentService {
       defence: 7385,
       defenceIncrement: 29,
       maxHealth: 93837,
-      rage: 10,
+      rage: 60,
       willpower: 15,
       imgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png",
@@ -560,6 +588,18 @@ export class HeroesService extends ContentService {
           inRangeDebuffs: [],
           description: "Наносит врагу урон в размере 500% от показателя атаки, накладывает на него штраф "
             + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " на 2 хода."
+        },
+        {
+          name: "Гигант",
+          imgSrc: "../../../assets/resourses/imgs/icons/aura.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [],
+          passive: true,
+          restoreSkill: true,
+          description: "Получает на 50% меньше урона от атак противников, но крайне уязвим к ослаблениям и штрафам."
         }
       ],
       effects: []

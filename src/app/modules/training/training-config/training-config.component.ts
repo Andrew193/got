@@ -4,13 +4,15 @@ import {Unit} from "../../../models/unit.model";
 import {frontRoutes} from "../../../app.routes";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
+import {TooltipModule} from "ngx-bootstrap/tooltip";
 
 @Component({
     selector: 'training-config',
     standalone: true,
-    imports: [
-        CommonModule
-    ],
+  imports: [
+    CommonModule,
+    TooltipModule
+  ],
     templateUrl: './training-config.component.html',
     styleUrl: './training-config.component.scss'
 })

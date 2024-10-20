@@ -41,11 +41,6 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     lastLogin: ""
   };
 
-  someMethod(event: MouseEvent) {
-    event.preventDefault();
-    console.log("fsdfsf")
-  }
-
   constructor(public heroService: HeroesService,
               private dailyRewardService: DailyRewardService,
               private render2: Renderer2) {
@@ -59,7 +54,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.rewardHero = this.heroService.getNightKing();
+    this.rewardHero = this.heroService.getPriest();
     this.dailyRewardService.getDailyRewardConfig((config) => {
       this.dailyRewardConfig = config;
       this.month = this.monthReward;

@@ -4,10 +4,12 @@
   background-color: $background-color-main;
   justify-content: space-evenly;
   padding: 5px;
+  border-radius: 3px;
 
   img {
     width: 55px;
     margin-bottom: unset;
+    max-height: 55px;
   }
 
   > div {

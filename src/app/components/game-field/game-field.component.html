@@ -39,7 +39,7 @@
                      tooltip="{{skill.description}}">
                   <img alt="{{skill.name}}" src="{{skill.imgSrc}}" class="cursor-pointer"
                        (click)="attack(skill)"/>
-                  <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
+                  <div class="skill-disabled" style="top: 0px" *ngIf="skill.remainingCooldown || skill.passive">
                     <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                   </div>
                 </div>
