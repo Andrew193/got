@@ -6,13 +6,13 @@
         <div class="hero-in-frame hero" id="hero-in-frame" #heroInFrame></div>
       </div>
     </div>
-    <aside class="p-3 h-100 overflow-auto col-lg-9 col-md-12 col-sm-12">
+    <aside class="p-1 h-100 col-lg-9 col-md-12 col-sm-12 d-flex flex-column justify-content-evenly">
       <h4 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только
         расти!!!</h4>
 
       <div *ngIf="!isHeroPreview" class="flex-row">
         <ng-container *ngFor="let reward of month; let i = index">
-          <div class="p-3" style="width: 14.28%">
+          <div class="p-1" style="width: 14.28%">
             <div class="reward d-flex flex-column p-2" [ngClass]="{'today': +dailyRewardConfig.day === i+1}" (click)="claimReward()">
               <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
               <span class="copper fw-bold">

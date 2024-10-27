@@ -3,7 +3,7 @@
     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 flex-row justify-content-between">
       <div class="col-2 d-flex justify-content-center m-2" *ngFor="let hero of returnedArray">
         <div class="card hero-card d-flex align-items-center col-12" (click)="openHeroPreview(hero.name)">
-          <img class="card-img-top mt-2" src="{{hero.fullImgSrc}}" alt="{{hero.name}}">
+          <img class="card-img-top" src="{{hero.fullImgSrc}}" alt="{{hero.name}}">
           <div class="level">
             <div class="position-relative">
               <img src="assets/resourses/imgs/rank/{{heroesService.getRank(hero.level)}}_r.png" alt="rank level" class="level_rank" [style]="{height: hero.level === 60 ? '60px' : ''}">

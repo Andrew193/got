@@ -27,9 +27,6 @@
     width: 80%;
     height: 100%;
     object-fit: cover;
-    &:not(.level_rank) {
-      border-bottom: 1px solid;
-    }
   }
 
   &:hover {

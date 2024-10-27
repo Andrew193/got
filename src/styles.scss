@@ -256,6 +256,13 @@ a.fake-link {
     --bs-nav-tabs-border-radius: 0px;
     background: white;
   }
+  .card-title {
+    --bs-card-title-spacer-y: 2px;
+  }
+  .list-group-item {
+    --bs-list-group-item-padding-y: 4px;
+    --bs-list-group-item-padding-x: 4px;
+  }
 }
 
 .nav-item .active {
