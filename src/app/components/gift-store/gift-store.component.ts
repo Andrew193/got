@@ -26,14 +26,14 @@ import {Unit} from "../../models/unit.model";
 })
 
 export class GiftStoreComponent implements OnInit {
-  loot: DisplayReward[] = [];
+  loot: (DisplayReward | null)[] = [];
   aiUnits: UnitWithReward[] = [];
   userUnits: Unit[] = [];
   giftConfig!: GiftConfig;
 
   items = [
-    {name: '1', probability: 0.00},
-    {name: '0', probability: 1},
+    {name: '1', probability: 0.9},
+    {name: '0', probability: 0.1},
   ];
 
   constructor(private npcService: NpcService,
@@ -49,7 +49,7 @@ export class GiftStoreComponent implements OnInit {
           ...this.npcService.getWildling(),
           x: el.x,
           y: el.y,
-          reward: el.reward,
+          reward: this.npcService.getSpecialGiftReward(),
           inBattle: true
         } : el);
       })
@@ -73,7 +73,9 @@ export class GiftStoreComponent implements OnInit {
     })
   }
 
-  public gameResultsRedirect = () => {
-    this.loot = this.aiUnits.map((el) => el.reward)
+  public gameResultsRedirect = (realAiUnits: Unit[]) => {
+    this.loot = this.aiUnits.map((el, index) => {
+      return !realAiUnits[index].health ? el.reward: null
+    })
   }
 }

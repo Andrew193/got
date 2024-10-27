@@ -12,10 +12,12 @@
     </div>
     <div class="col-lg-12 col-md-12 mt-3" *ngIf="loot.length">
       <display-reward [rewards]="loot"></display-reward>
-      <button class="btn btn-success" (click)="collectAndLeave()">Collect loot and leave</button>
     </div>
-    <button class="btn btn-primary mt-2">
-      <a routerLink="/" class="fake-link">Back to Castle Black</a>
-    </button>
+    <div class="d-flex mt-1">
+      <button class="btn btn-primary">
+        <a routerLink="/" class="fake-link">Back to Castle Black</a>
+      </button>
+      <button class="btn btn-success ms-1" *ngIf="loot.length" (click)="collectAndLeave()">Collect loot and leave</button>
+    </div>
   </div>
 </div>

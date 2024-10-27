@@ -14,6 +14,10 @@
   cursor: pointer;
 }
 
+.panel-body > div {
+  margin-bottom: unset;
+}
+
 .skill-preview-icon {
   height: 70px !important;
   width: 70px !important;
@@ -37,4 +41,12 @@
 
 .m-0-auto {
   margin: 0 auto;
+}
+
+.panel-heading {
+  padding: 0 !important;
+}
+
+.panel-title .accordion-toggle {
+  padding: 0;
 }

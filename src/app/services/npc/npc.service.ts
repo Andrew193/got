@@ -13,10 +13,21 @@ export class NpcService implements RewardComponent{
     {name: this.rewardService.rewardNames.copper, probability: 0.70},
     {name: this.rewardService.rewardNames.chest, probability: 0.30},
   ];
+
+  specialGiftItems: Reward[] = [
+    {name: this.rewardService.rewardNames.gold, probability: 0.20},
+    {name: this.rewardService.rewardNames.chest, probability: 0.30},
+    {name: this.rewardService.rewardNames.silver, probability: 0.50},
+  ];
+
   rewards: DisplayReward[] = [];
 
   constructor(private heroService: HeroesService,
               public rewardService: RewardService) {
+  }
+
+  getSpecialGiftReward() {
+    return this.rewardService.getReward(1, this.specialGiftItems)[0]
   }
 
   getGiftNPC() {
@@ -39,7 +50,7 @@ export class NpcService implements RewardComponent{
   }
 
   getWildling() {
-    return this.heroService.getWhiteWalkerCapitan();
+    return this.heroService.getFreeTrapper();
   }
 
   getUser(): Unit {
@@ -59,7 +70,7 @@ export class NpcService implements RewardComponent{
       dmgReducedBy: 0,
       canCross: 2,
       maxCanCross: 2,
-      health: 8169,
+      health: 844169,
       healthIncrement: 89,
       attack: 1299,
       attackIncrement: 12,
@@ -76,11 +87,20 @@ export class NpcService implements RewardComponent{
         {
           name: "Собрать",
           imgSrc: "../../../assets/resourses/imgs/icons/open.png",
-          dmgM: 0,
+          dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
           description: "Открывает сундуки и собирает предметы."
+        },
+        {
+          name: "Ударить",
+          imgSrc: "../../../assets/resourses/imgs/icons/open.png",
+          dmgM: 2.2,
+          cooldown: 2,
+          remainingCooldown: 0,
+          debuffs: [],
+          description: "Открывает сундуки и собирает предметы, а также наносит существенный урон."
         }
       ],
       effects: []

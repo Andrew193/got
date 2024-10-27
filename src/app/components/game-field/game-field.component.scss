@@ -35,6 +35,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: unset;
+
+  p {
+    margin-bottom: 1px;
+  }
 
   > div {
     padding: 5px;
@@ -54,6 +59,7 @@
 
 .log-record {
   padding: 5px;
+  margin-bottom: 5px;
   box-shadow: $box-shadow;
   border-radius: 5px;
   width: 100% !important;
@@ -70,8 +76,7 @@
 .meta-aside {
   box-shadow: $box-shadow;
   background-color: $background-color-main;
-  padding: 10px;
-  border-radius: 5px;
+  border-radius: 0;
 }
 
 .history-tab {
@@ -108,6 +113,8 @@
     box-shadow: $box-shadow-out;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
+    height: 50px;
+
     div {
       border: 1px solid #a11313;
       background-color: #800;

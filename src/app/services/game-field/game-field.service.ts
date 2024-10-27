@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Position, Tile} from "../../interface";
+import {Position} from "../../interface";
 import {AbstractFieldService} from "../abstract/field/abstract-field.service";
 import {GameService} from "../game-action/game.service";
 import {Skill} from "../../models/skill.model";
 import {Unit} from "../../models/unit.model";
+import {getDiagonals} from "../../constants";
 
 @Injectable({
   providedIn: 'root'
@@ -39,18 +40,6 @@ export class GameFieldService extends AbstractFieldService {
     }
   }
 
-  getGridFromField(field: Tile[][]): number[][] {
-    const grid = [];
-    for (let i = 0; i < 7; i++) {
-      grid[i] = [];
-      for (let j = 0; j < 10; j++) {
-        // @ts-ignore
-        grid[i].push(field[i][j].active && !field[i][j].entity ? 0 : 1)
-      }
-    }
-    return grid;
-  }
-
   getShortestPathCover(grid: string | any[], start: Position, end: Position, removeStart = false, removeEnd = false, checkDiagonals = false) {
     const path = this.shortestPath(grid, start, end, checkDiagonals);
     if (removeStart) {
@@ -62,29 +51,52 @@ export class GameFieldService extends AbstractFieldService {
     return path;
   }
 
+  canReachPosition(grid: number[][], start: Position, target: Position) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    const queue = [start];
+    const visited = new Set();
+
+    // Convert position to a unique string for tracking visited nodes
+    const positionKey = (pos: Position | undefined) => `${pos!.i},${pos!.j}`;
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+
+      // Check if we've reached the target
+      if (current!.i === target.i && current!.j === target.j) {
+        return true;
+      }
+
+      // Mark the current position as visited
+      visited.add(positionKey(current));
+
+      // Check possible moves (up, down, left, right)
+      const directions = getDiagonals(true);
+
+      for (const { di, dj } of directions) {
+        const newI = current!.i + di;
+        const newJ = current!.j + dj;
+
+        // Ensure the new position is within bounds and not blocked or visited
+        if (newI >= 0 && newI < rows && newJ >= 0 && newJ < cols) {
+          if ((grid[newI][newJ] === 0 || (newI === target.i && newJ === target.j))&& !visited.has(positionKey({ i: newI, j: newJ }))) {
+            queue.push({ i: newI, j: newJ });
+          }
+        }
+      }
+    }
+
+    return false; // Target cannot be reached
+  }
+
   shortestPath(grid: string | any[], start: Position, end: Position, checkDiagonals = false): Position[] {
     const rows = grid.length;
     const cols = grid[0].length;
     const queue = [{position: start, path: [start]}];
     const visited = new Set();
 
-    const directions = checkDiagonals
-      ? [
-        {di: -1, dj: 0},  // Up
-        {di: 1, dj: 0},   // Down
-        {di: 0, dj: -1},  // Left
-        {di: 0, dj: 1},   // Right
-        {di: -1, dj: -1}, // Up-Left
-        {di: -1, dj: 1},  // Up-Right
-        {di: 1, dj: -1},  // Down-Left
-        {di: 1, dj: 1}    // Down-Right
-      ]
-      : [
-        {di: -1, dj: 0},
-        {di: 1, dj: 0},
-        {di: 0, dj: -1},
-        {di: 0, dj: 1}
-      ];
+    const directions = getDiagonals(checkDiagonals);
 
     let closestPosition = start;
     let minDistance = Infinity;

@@ -12,6 +12,18 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     super()
   }
 
+  getGridFromField(field: Tile[][]): number[][] {
+    const grid = [];
+    for (let i = 0; i < 7; i++) {
+      grid[i] = [];
+      for (let j = 0; j < 10; j++) {
+        // @ts-ignore
+        grid[i].push(field[i][j].active && !field[i][j].entity ? 0 : 1)
+      }
+    }
+    return grid;
+  }
+
   populateGameFieldWithUnits(userUnits: Unit[], aiUnits: Unit[]) {
     this.gameConfig = this.getGameField(userUnits, aiUnits, this.getDefaultGameField());
     return this.gameConfig;

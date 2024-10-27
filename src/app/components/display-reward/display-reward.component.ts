@@ -12,6 +12,6 @@ import {DisplayReward} from "../../services/reward/reward.service";
   styleUrl: './display-reward.component.scss'
 })
 export class DisplayRewardComponent {
-  @Input() rewards: DisplayReward[] = [];
+  @Input() rewards: (DisplayReward | null)[] = [];
 
 }

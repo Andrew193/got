@@ -35,16 +35,12 @@ export class GameService {
     return !!defReducedEffect ? defence * this.effectsService.getMultForEffect(defReducedEffect) : defence
   }
 
-  getCanCross(canCross: number) {
-    return canCross === 0?1:canCross;
-  }
-
   getCanGetToPosition(aiUnit: Unit, shortestPathToUserUnit: Position[], userUnitPosition: Position) {
-    const canCrossLimit = this.getCanCross(aiUnit.canCross);
+    const canCrossLimit = aiUnit.canCross === 0 ? 1 : aiUnit.canCross;
     const isWithinCanCrossLimit = shortestPathToUserUnit.length > canCrossLimit - 1;
     const isAtAttackRange = aiUnit.attackRange >= shortestPathToUserUnit.length;
     const isAttackRangeOrCannotCross = aiUnit.attackRange > shortestPathToUserUnit.length || aiUnit.canCross === 0;
-    debugger
+
     // Simplified decision logic
     let canGetToUnit;
     if (isWithinCanCrossLimit && !isAtAttackRange) {
@@ -54,7 +50,7 @@ export class GameService {
         canGetToUnit = shortestPathToUserUnit[canCrossLimit - 1];
       }
     } else if (isAttackRangeOrCannotCross) {
-      if(!!aiUnit.canCross && shortestPathToUserUnit.length === 1 && aiUnit.attackRange > shortestPathToUserUnit.length) {
+      if (!!aiUnit.canCross && shortestPathToUserUnit.length === 1 && aiUnit.attackRange > shortestPathToUserUnit.length) {
         canGetToUnit = isAtAttackRange ? this.unitService.getPositionFromUnit(aiUnit) : shortestPathToUserUnit[0];
       } else {
         canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
@@ -143,7 +139,7 @@ export class GameService {
     return {...unit, skills: this.unitService.recountSkillsCooldown(createDeepCopy(unit.skills))};
   }
 
-  checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: () => void) {
+  checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: (realAiUnits: any) => void) {
     const realUserUnits = userUnits[0].user ? userUnits : aiUnits;
     const realAiUnits = !aiUnits[0].user ? aiUnits : userUnits;
 
@@ -154,7 +150,9 @@ export class GameService {
         headerClass: allUserUnitsDead ? "red-b" : "green-b",
         headerMessage: allUserUnitsDead ? "Вы проиграли" : "Вы победили",
         closeBtnLabel: allUserUnitsDead ? "Попробовать позже" : "Отлично",
-        callback: callback
+        callback: () => {
+          callback(realAiUnits)
+        }
       }
       this.modalWindowService.openModal({...this.gameResult, open: true})
     }
@@ -188,7 +186,7 @@ export class GameService {
           array[i] = {...effect, duration: effect.duration - 1}
           if (!effect.passive) {
             const additionalDmg = this.getReducedDmgForEffects(unit, this.effectsService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
-            if(additionalDmg) {
+            if (additionalDmg) {
               log.push(this.gameLoggerService.logEvent({
                 damage: null,
                 newHealth: null,
@@ -204,7 +202,20 @@ export class GameService {
     return {log, unit};
   }
 
-  private processEffects(unit: Unit, battleMode: boolean) {
+  getCanCross(entity: Unit) {
+    const isFrozen = entity.effects.findIndex((effect) => effect.type === this.effectsService.effects.freezing)
+    const isRooted = entity.effects.findIndex((effect) => effect.type === this.effectsService.effects.root)
+
+    return entity?.canMove
+      ? isRooted !== -1
+        ? 0
+        : isFrozen !== -1
+          ? 1
+          : entity.canCross || 1
+      : entity.attackRange
+  }
+
+  processEffects(unit: Unit, battleMode: boolean) {
     const log: LogRecord[] = [];
 
     unit.effects.forEach((effect) => {
@@ -212,7 +223,11 @@ export class GameService {
       recountedUnit = !effect.duration ? this.effectsService.restoreStatsAfterEffect(effect, recountedUnit) : recountedUnit;
       unit = recountedUnit.unit;
       if (recountedUnit.message) {
-        log.push(this.gameLoggerService.logEvent({damage: null, newHealth: null, battleMode: battleMode}, !unit.user, effect, unit, recountedUnit.message))
+        log.push(this.gameLoggerService.logEvent({
+          damage: null,
+          newHealth: null,
+          battleMode: battleMode
+        }, !unit.user, effect, unit, recountedUnit.message))
       }
     })
 
@@ -233,10 +248,10 @@ export class GameService {
    *   }
    *   This is a servant function of the attackUser function
    */
-   aiUnitAttack(index: number, units: Unit[], battleMode: boolean, makeAiMove: (aiUnit: Unit, index: number)=>void, logs: LogRecord[])  {
+  aiUnitAttack(index: number, units: Unit[], battleMode: boolean, makeAiMove: (aiUnit: Unit, index: number) => void, logs: LogRecord[]) {
     let aiUnit = units[index];
     const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode);
-    units[index] =  response.unit;
+    units[index] = response.unit;
     logs.push(...response.log)
     aiUnit = units[index];
 
@@ -246,7 +261,7 @@ export class GameService {
   }
 
   getAiLeadingUnits(aiMove: boolean) {
-     return this[aiMove ? 'aiUnits' : 'userUnits']
+    return this[aiMove ? 'aiUnits' : 'userUnits']
   }
 
   getUserLeadingUnits(aiMove: boolean) {

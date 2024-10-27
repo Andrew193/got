@@ -33,7 +33,11 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
     let user = this.userUnits[userIndex];
     const skillIndex = this.unitService.findSkillIndex(user.skills, skill);
-    this.addBuffToUnit(this.userUnits, userIndex, skill)
+    this.addBuffToUnit(this.userUnits, userIndex, skill);
+
+    if(skill.addBuffsBeforeAttack) {
+      user = this.userUnits[userIndex];
+    }
 
     if(user.healer && skill.healAll) {
       this.makeHealerMove(null, skill, user, this.userUnits);
@@ -158,7 +162,13 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   getPossibleMoves(entity: Unit) {
-    return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross || 1 : entity.attackRange, !entity?.canMove);
+    //Original code:
+    //     return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross || 1 : entity.attackRange, !entity?.canMove);
+    const canCross = this.gameActionService.getCanCross(entity);
+    return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), canCross, true)
+      .filter((position) => {
+      return this.fieldService.canReachPosition(this.fieldService.getGridFromField(this.gameConfig), {i: this.selectedEntity?.x || 0, j: this.selectedEntity?.y || 0}, position)
+    })
   }
 
   getEnemyWhenCannotMove(unit: Unit, arrayOfTargets: Unit[]) {
@@ -207,14 +217,15 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     }
   }
 
-  startAutoFight(fastFight = false) {
+  startAutoFight(fastFight = false, oneTick = false) {
     this.autoFight = true;
     if (fastFight) {
       for (let i = 0; ; i++) {
         this.attackUser(false);
         this.fieldService.resetMoveAndAttack(this.userUnits, false);
         this.checkAiMoves();
-        if (this.checkAutoFightEnd()) {
+        if (this.checkAutoFightEnd() || oneTick) {
+          this.autoFight = false;
           break;
         }
       }
@@ -223,7 +234,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         this.attackUser(false);
         this.fieldService.resetMoveAndAttack(this.userUnits, false);
         this.checkAiMoves();
-        if (this.checkAutoFightEnd()) {
+        if (this.checkAutoFightEnd() || oneTick) {
+          this.autoFight = false;
           clearInterval(interval);
         }
       }, BATTLE_SPEED)
@@ -307,7 +319,9 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
               if(aiSkill) {
                 //Attack user's unit
                 this.addBuffToUnit(this.getAiLeadingUnits(aiMove), index, aiSkill)
-                aiUnit = this.getAiLeadingUnits(aiMove)[index];
+                if(aiSkill.addBuffsBeforeAttack) {
+                  aiUnit = this.getAiLeadingUnits(aiMove)[index];
+                }
 
                 if (aiUnit.healer && aiSkill.healAll) {
                   this.makeHealerMove(null, aiSkill, aiUnit, this.getAiLeadingUnits(aiMove));

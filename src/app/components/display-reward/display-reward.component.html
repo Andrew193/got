@@ -1,8 +1,11 @@
 <div class="summon-container reward-container w-100 d-flex mb-3" *ngIf="rewards.length">
   <div *ngFor="let reward of rewards">
-    <div class="reward-inner-container">
+    <div class="reward-inner-container" *ngIf="reward">
       <img src="{{reward.src}}" alt="{{reward.name}}">
       <span>{{reward.amount}}</span>
+    </div>
+    <div class="reward-inner-container" *ngIf="!reward">
+      <span>Не собрано</span>
     </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ export interface Skill {
   debuffs?: Effect[],
   inRangeDebuffs?: Effect[],
   buffs?: Effect[],
+  addBuffsBeforeAttack?: boolean,
   cooldown: number,
   remainingCooldown: number,
   name: string,

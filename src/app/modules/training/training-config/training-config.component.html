@@ -1,26 +1,12 @@
 <div>
   <h3 class="text-center">Configure your training</h3>
   <div class="flex-row units-config-container">
-    <div class="col-lg-6 col-md-12 d-flex justify-content-center">
-      <div class="col-11 units-config-inner-container">
-        <h4 class="text-center">User Units</h4>
-        <div class="flex-row justify-content-evenly">
-          <div *ngFor="let unit of allHeroes; let i = index" class="m-1" (click)="addUserUnit(unit)">
-            <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [ngClass]="{'selected': checkSelected(unit)}">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 col-md-12 d-flex justify-content-center">
-      <div class="col-11 units-config-inner-container">
-        <h4 class="text-center">AI Units</h4>
-        <div class="flex-row justify-content-evenly">
-          <div *ngFor="let unit of allHeroes; let i = index" class="m-1" (click)="addUserUnit(unit, false)">
-            <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [ngClass]="{'selected-enemy': checkSelected(unit, false)}">
-          </div>
-        </div>
-      </div>
-    </div>
+    <ng-container [ngTemplateOutlet]="unitsBar"
+                  [ngTemplateOutletContext]="{isUser:true, title: 'User Units'}">
+    </ng-container>
+    <ng-container [ngTemplateOutlet]="unitsBar"
+                  [ngTemplateOutletContext]="{isUser:false, title: 'AI Units'}">
+    </ng-container>
   </div>
   <div class="d-flex ms-4 me-4">
     <button class="btn btn-primary me-2" (click)="goToMainPage()">Back to Castle Black</button>
@@ -28,51 +14,54 @@
   </div>
 
   <div class="flex-row units-config-container" style="margin-top: 7px">
-    <div class="col-lg-6 col-md-12 d-flex justify-content-center">
-      <div class="col-11 units-config-inner-container">
-        <h4 class="text-center">User Units</h4>
-        <div class="flex-row justify-content-evenly preview-selected-heroes">
-          <div *ngFor="let unit of userUnits">
-            <div class="col-2 position-relative">
-              <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [tooltip]="unit.name">
-            </div>
-            <div class="col-10 description-bar">
-              <div class="d-flex justify-content-evenly">
-                <ng-container *ngFor="let skill of unit.skills">
-                  <div class="d-flex flex-column align-items-center">
-                    <h6>{{ skill.name }}</h6>
-                    <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
-                         [alt]="skill.name"/>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
-          </div>
+    <ng-container [ngTemplateOutlet]="selectedUnitsBar"
+                  [ngTemplateOutletContext]="{units:userUnits, title: 'Selected User Units'}">
+    </ng-container>
+    <ng-container [ngTemplateOutlet]="selectedUnitsBar"
+                  [ngTemplateOutletContext]="{units:aiUnits, title: 'Selected AI Units'}">
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #unitsBar let-isUser="isUser" let-title="title">
+  <div class="col-lg-6 col-md-12 d-flex justify-content-center">
+    <div class="col-11 units-config-inner-container">
+      <h4 class="text-center">{{ title }}</h4>
+      <div class="flex-row justify-content-evenly">
+        <div *ngFor="let unit of allHeroes; let i = index" class="m-1"
+             (click)="isUser ? addUserUnit(unit) : addUserUnit(unit, false)">
+          <img src="{{unit.imgSrc}}" alt="{{unit.name}}" *ngIf="isUser"
+               [class.selected]="checkSelected(unit)">
+          <img src="{{unit.imgSrc}}" alt="{{unit.name}}" *ngIf="!isUser"
+               [class.selected-enemy]="checkSelected(unit, false)">
         </div>
       </div>
     </div>
-    <div class="col-lg-6 col-md-12 d-flex justify-content-center">
-      <div class="col-11 units-config-inner-container">
-        <h4 class="text-center">AI Units</h4>
-        <div class="flex-row justify-content-evenly preview-selected-heroes">
-          <div *ngFor="let unit of aiUnits">
-            <div class="col-2 position-relative">
-              <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [tooltip]="unit.name">
-            </div>
-            <div class="col-10 description-bar">
-              <div class="d-flex justify-content-evenly">
-                <ng-container *ngFor="let skill of unit.skills">
-                  <div class="d-flex flex-column align-items-center">
-                    <h6>{{ skill.name }}</h6>
-                    <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
-                         [alt]="skill.name"/>
-                  </div>
-                </ng-container>
-              </div>
+  </div>
+</ng-template>
+
+<ng-template #selectedUnitsBar let-units="units" let-title="title">
+  <div class="col-lg-6 col-md-12 d-flex justify-content-center">
+    <div class="col-11 units-config-inner-container">
+      <h4 class="text-center">{{ title }}</h4>
+      <div class="flex-row justify-content-evenly preview-selected-heroes">
+        <div *ngFor="let unit of units">
+          <div class="col-2 position-relative">
+            <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [tooltip]="unit.name">
+          </div>
+          <div class="col-10 description-bar">
+            <div class="d-flex justify-content-evenly">
+              <ng-container *ngFor="let skill of unit.skills">
+                <div class="d-flex flex-column align-items-center">
+                  <h6>{{ skill.name }}</h6>
+                  <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
+                       [alt]="skill.name"/>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</ng-template>

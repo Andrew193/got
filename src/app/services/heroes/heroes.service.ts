@@ -41,7 +41,6 @@ export class HeroesService extends ContentService {
     const result = [];
     for (let i = 0; i < this.effectsService.effectsToHighlight.length; i++) {
       const effect = this.effectsService.effectsToHighlight[i];
-      debugger
       if(text.includes(effect)) {
         result.push(`${effect} - ${this.effectsService.effectsDescriptions[effect]}`)
       }
@@ -105,6 +104,7 @@ export class HeroesService extends ContentService {
           remainingCooldown: 0,
           attackInRange: true,
           attackRange: 3,
+          addBuffsBeforeAttack: true,
           attackInRangeM: 1.9,
           buffs: [this.effectsService.getAttackBuff(3), this.effectsService.getDefBuff(3)],
           debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getBurning(2), this.effectsService.getDefBreak()],
@@ -168,8 +168,8 @@ export class HeroesService extends ContentService {
           attackInRangeM: 1.1,
           debuffs: [this.effectsService.getAttackBreak()],
           inRangeDebuffs: [this.effectsService.getAttackBreak()],
-          description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 110% от показателя атаки и накладывает на них штраф"
-            + this.effectsService.effects.attackBreak + "на 2 хода."
+          description: "Наносит противнику и врагам в радиусе 1 клетки урон в размере 110% от показателя атаки и накладывает на них штраф "
+            + this.effectsService.effects.attackBreak + " на 2 хода."
         },
         {
           name: "За Короля",
@@ -181,6 +181,7 @@ export class HeroesService extends ContentService {
           attackRange: 2,
           attackInRangeM: 1.3,
           buffs: [this.effectsService.getDefBuff(), this.effectsService.getHealthRestore(1)],
+          addBuffsBeforeAttack: false,
           debuffs: [],
           inRangeDebuffs: [this.effectsService.getDefBreak()],
           description: "Наносит целевому врагу урон в размере 130% от показателя атаки. Наносит 130% от атаки врагам в радиусе 2 клеток и накладывает на них штраф "
@@ -198,7 +199,7 @@ export class HeroesService extends ContentService {
           passive: true,
           restoreSkill: true,
           description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафов " + this.effectsService.effects.bleeding + " и " + this.effectsService.effects.poison +
-            ". На этого героя невозможно наложить штраф " + this.effectsService.effects.burning + "."
+            ". На этого героя невозможно наложить штраф " + this.effectsService.effects.burning + "." + " В начале игры получает бонус " + this.effectsService.effects.healthRestore + " на 2 раунда."
         }
       ],
       effects: [this.effectsService.getHealthRestore(2)]
@@ -214,8 +215,8 @@ export class HeroesService extends ContentService {
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
-      canCross: 0,
-      maxCanCross: 0,
+      canCross: 2,
+      maxCanCross: 2,
       health: 5837,
       healthIncrement: 98,
       attack: 1029,
@@ -308,7 +309,7 @@ export class HeroesService extends ContentService {
           heal: true,
           debuffs: [],
           description: "Наносит противнику урон в размере 100% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 25% от своего максимального здоровья."
-          + "Наносит 90% от атаки врагам в радиусе 3 клеток."
+          + " Наносит 90% от атаки врагам в радиусе 3 клеток."
         },
         {
           name: "Локранд",
@@ -469,7 +470,7 @@ export class HeroesService extends ContentService {
           buffs: [],
           passive: true,
           description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.bleeding + ". Может атаковать с растояния в 2 клетки."
-          + "На этого героя невозможно наложить штрафы " + this.effectsService.effects.poison + ", " + this.effectsService.effects.freezing + ", " + this.effectsService.effects.root + "."
+          + " На этого героя невозможно наложить штрафы: " + this.effectsService.effects.poison + ", " + this.effectsService.effects.freezing + ", " + this.effectsService.effects.root + "."
         }
       ],
       effects: []
@@ -584,10 +585,11 @@ export class HeroesService extends ContentService {
           cooldown: 6,
           remainingCooldown: 0,
           buffs: [this.effectsService.getAttackBuff()],
+          addBuffsBeforeAttack: false,
           debuffs: [this.effectsService.getDefBreak()],
           inRangeDebuffs: [],
           description: "Наносит врагу урон в размере 500% от показателя атаки, накладывает на него штраф "
-            + this.effectsService.effects.defBreak + " на 2 хода. Перед атакой накладывает на себя " + this.effectsService.effects.attackBuff + " на 2 хода."
+            + this.effectsService.effects.defBreak + " на 2 хода. После атаки накладывает на себя " + this.effectsService.effects.attackBuff + " на 2 хода."
         },
         {
           name: "Гигант",
@@ -656,6 +658,7 @@ export class HeroesService extends ContentService {
           attackRange: 20,
           attackInRangeM: 3.3,
           buffs: [this.effectsService.getAttackBuff()],
+          addBuffsBeforeAttack: true,
           debuffs: [this.effectsService.getDefenceDestroy(), this.effectsService.getDefBreak()],
           inRangeDebuffs: [this.effectsService.getDefenceDestroy()],
           description: "Наносит целевому врагу урон в размере 420% от показателя атаки, накладывает на него штраф "

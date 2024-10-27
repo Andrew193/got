@@ -4,23 +4,17 @@
   </h4>
   <div class="heroes-bar flex-row" *ngIf="battleMode">
     <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
-      <ng-container *ngFor="let hero of userUnits">
-        <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img" *ngIf="hero.inBattle"
-             [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
-      </ng-container>
+      <ng-container [ngTemplateOutlet]="usersTopBar" [ngTemplateOutletContext]="{units: userUnits}"></ng-container>
     </div>
     <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
       <div class="col-9">
         <div tooltip="Закончить ход" (click)="finishTurn()">
-          <span>{{ turnCount }}/20</span>
+          <span>{{ turnCount }} / {{maxTurnCount}}</span>
         </div>
       </div>
     </div>
     <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
-      <ng-container *ngFor="let hero of aiUnits">
-        <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img" *ngIf="hero.inBattle"
-             [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
-      </ng-container>
+      <ng-container [ngTemplateOutlet]="usersTopBar" [ngTemplateOutletContext]="{units: aiUnits}"></ng-container>
     </div>
   </div>
   <main class="flex-row justify-content-between ">
@@ -29,7 +23,7 @@
                         (highlightMakeMove)="highlightMakeMove($event)"></basic-game-board>
     </div>
     <aside class="col-xl-3 col-lg-12 col-md-12 d-flex flex-column mb-3">
-      <div class="meta-aside mb-3 flex-row justify-content-evenly ">
+      <div class="meta-aside mb-3 flex-row justify-content-evenly" *ngIf="skillsInAttackBar.length">
         <ng-container *ngFor="let skill of skillsInAttackBar">
           <div class="skills-container col-3">
             <div>
@@ -51,7 +45,7 @@
       <div class="meta-aside">
         <tabset>
           <tab [heading]="battleMode?'Мои герои':'Разведчик'" id="tab1">
-            <div class="heroes user-heroes m-3">
+            <div class="heroes user-heroes m-1">
               <ng-container *ngFor="let hero of userUnits">
                 <ng-container [ngTemplateOutlet]="asideUnits"
                               [ngTemplateOutletContext]="{ hero:hero, progressbarClass: 'success' }"></ng-container>
@@ -59,7 +53,7 @@
             </div>
           </tab>
           <tab [heading]="battleMode?'Враги':'Лут'">
-            <div class="heroes ai-heroes m-3">
+            <div class="heroes ai-heroes m-1">
               <ng-container *ngFor="let hero of aiUnits">
                 <ng-container [ngTemplateOutlet]="asideUnits"
                               [ngTemplateOutletContext]="{ hero:hero, progressbarClass: 'danger' }"></ng-container>
@@ -67,7 +61,7 @@
             </div>
           </tab>
           <tab [heading]="battleMode?'История боя':'История'" class="history-tab">
-            <div class="m-3">
+            <div class="m-1">
               <ng-container *ngFor="let logRecord of log">
                 <p class="log-record" *ngIf="logRecord.message" [ngClass]="{
               'green-b': logRecord.isUser,
@@ -84,15 +78,17 @@
       </div>
     </aside>
   </main>
-  <button *ngIf="!autoFight" class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
-
+  <div class="d-flex">
+    <button *ngIf="!autoFight" class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
+    <button *ngIf="!autoFight" class="btn btn-success ms-1" (click)="startAutoFight(false, true)">Skip one turn</button>
+  </div>
 </div>
 
 
 <ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
   <accordion class="mb-2">
     <accordion-group>
-      <div class="btn btn-link btn-block flex-column d-flex w-100  shadow-none" accordion-heading>
+      <div class="btn btn-link btn-block flex-column d-flex w-100 p-1 shadow-none" accordion-heading>
         <div class="justify-content-between flex-row">
           <div class="col-12 col-md-3 col-lg-3" style="min-width: 80px">
             <div class="position-relative m-0-auto" style="width: fit-content">
@@ -125,7 +121,7 @@
         </div>
       </div>
       <div class="flex-row justify-content-between" *ngIf="battleMode && (hero.inBattle === true || hero.inBattle === undefined)?battleMode:hero.user; else lootDescription">
-        <div class="col-12 col-md-3 col-lg-12 col-xl-3 stats" style="min-width: 100px">
+        <div class="col-12 stats">
           <p>
             <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon"/>
             <span class="d-block">{{ hero.maxHealth }}</span>
@@ -139,10 +135,10 @@
             <span class="d-block">{{ hero.defence }}</span>
           </p>
         </div>
-        <div class="col-12 col-md-8 col-lg-12 col-xl-8 flex-row" style="margin: unset">
-          <div class="stats h-100 w-100">
-            <p>Здоровье героя: {{ hero.health }}</p>
-            <div class="flex-row skills-container justify-content-evenly p-2">
+        <div class="col-12 flex-row" style="margin: unset">
+          <div class="stats h-100 w-100 skills-bar">
+            <p>{{hero.health ? 'Здоровье героя: '+hero.health :''}}</p>
+            <div class="flex-row skills-container justify-content-evenly">
               <div class="position-relative" *ngFor="let skill of hero.skills"
                    tooltip="{{skill.description}}">
                 <img alt="skill" src="{{skill.imgSrc}}"/>
@@ -157,4 +153,11 @@
       <ng-template #lootDescription>{{ hero.description }}</ng-template>
     </accordion-group>
   </accordion>
+</ng-template>
+
+<ng-template #usersTopBar let-units="units">
+  <ng-container *ngFor="let hero of units">
+    <img src="{{hero.imgSrc}}" alt="hero" class="game-field-img" *ngIf="hero.inBattle || hero.inBattle === undefined"
+         [ngClass]="{'disabled': !hero.health}" tooltip="Жизнь: {{hero.health}}"/>
+  </ng-container>
 </ng-template>

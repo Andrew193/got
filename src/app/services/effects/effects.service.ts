@@ -43,19 +43,27 @@ export class EffectsService {
     return Object.values(this.effects)
   }
 
+  getMobilityStatsBasedOnEffect(effect: Effect, unit: Unit) {
+      let message = "";
+      if (effect.type === this.effects.freezing) {
+        unit.canCross = 1;
+        message += unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
+      }
+      if (effect.type === this.effects.root) {
+        unit.canCross = 0;
+        message += unit.health ? `Герой скован корнями и не может двигаться.` : '';
+      }
+      return {unit, message: message};
+  }
+
   recountStatsBasedOnEffect(effect: Effect, unit: Unit) {
-    let message = "";
-    if (effect.type === this.effects.freezing) {
-      unit.canCross = 1;
-      message = unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
-    }
-    if (effect.type === this.effects.root) {
-      unit.canCross = 0;
-      message = unit.health ? `Герой скован корнями и не может двигаться.` : '';
-    }
+    const result = this.getMobilityStatsBasedOnEffect(effect, unit);
+    let message = result.message;
+    unit = result.unit;
+
     if (effect.type === this.effects.defDestroy && effect.defBreak) {
       unit.defence += effect.defBreak;
-      message = unit.health ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}.` : '';
+      message += unit.health ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}.` : '';
     }
     return {unit, message: message};
   }

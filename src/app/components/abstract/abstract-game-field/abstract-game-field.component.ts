@@ -29,11 +29,12 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
   @Input() battleMode: boolean = true;
   autoFight: boolean = false;
 
-  @Input() gameResultsRedirect: () => void = () => {
+  @Input() gameResultsRedirect: (realAiUnits: Unit[]) => void = () => {
   };
   log: LogRecord[] = [];
   turnUser = true;
   turnCount: number = 0;
+  maxTurnCount: number = 20;
   _turnCount: BehaviorSubject<number> = new BehaviorSubject(1);
   showAttackBar = false;
   skillsInAttackBar: Skill[] = [];
