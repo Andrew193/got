@@ -1,0 +1,13 @@
+@import "../../../../assets/resourses/styles/vars";
+
+.training-container {
+  background: url("../../../../assets/resourses/imgs/background/04_Chap6_M2_Campfire_05_Final.png") no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: black;
+  min-height: 100%;
+  box-shadow: $box-shadow;
+  position: relative;
+  padding-top: 1px;
+  color: white;
+}

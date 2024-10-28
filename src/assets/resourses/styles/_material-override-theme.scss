@@ -72,6 +72,6 @@ density: 0
 @include mat.all-component-themes($gameOfThrones-theme);
 @include toggler.theme($gameOfThrones-theme);
 
-.card-img-top {
+.card-img-top:not(.taverna) {
   object-fit: contain !important;
 }

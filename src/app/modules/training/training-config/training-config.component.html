@@ -15,10 +15,10 @@
 
   <div class="flex-row units-config-container" style="margin-top: 7px">
     <ng-container [ngTemplateOutlet]="selectedUnitsBar"
-                  [ngTemplateOutletContext]="{units:userUnits, title: 'Selected User Units'}">
+                  [ngTemplateOutletContext]="{units:userUnits, title: 'Selected User Units', user: true}">
     </ng-container>
     <ng-container [ngTemplateOutlet]="selectedUnitsBar"
-                  [ngTemplateOutletContext]="{units:aiUnits, title: 'Selected AI Units'}">
+                  [ngTemplateOutletContext]="{units:aiUnits, title: 'Selected AI Units', user: false}">
     </ng-container>
   </div>
 </div>
@@ -40,25 +40,31 @@
   </div>
 </ng-template>
 
-<ng-template #selectedUnitsBar let-units="units" let-title="title">
+<ng-template #selectedUnitsBar let-units="units" let-title="title" let-user="user">
   <div class="col-lg-6 col-md-12 d-flex justify-content-center">
     <div class="col-11 units-config-inner-container">
       <h4 class="text-center">{{ title }}</h4>
       <div class="flex-row justify-content-evenly preview-selected-heroes">
-        <div *ngFor="let unit of units">
+        <div *ngFor="let unit of units; let i = index">
           <div class="col-2 position-relative">
-            <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [tooltip]="unit.name">
+            <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [tooltip]="unit.name"
+                 (click)="toggleDescription(user, i)"
+            >
           </div>
           <div class="col-10 description-bar">
-            <div class="d-flex justify-content-evenly">
-              <ng-container *ngFor="let skill of unit.skills">
-                <div class="d-flex flex-column align-items-center">
-                  <h6>{{ skill.name }}</h6>
-                  <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
-                       [alt]="skill.name"/>
-                </div>
-              </ng-container>
-            </div>
+            @if (getDescriptionState(user, i)) {
+              <div class="ps-3">{{ unit.description }}</div>
+            } @else {
+              <div class="d-flex justify-content-evenly">
+                <ng-container *ngFor="let skill of unit.skills">
+                  <div class="d-flex flex-column align-items-center">
+                    <h6>{{ skill.name }}</h6>
+                    <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
+                         [alt]="skill.name"/>
+                  </div>
+                </ng-container>
+              </div>
+            }
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HeroesService, heroType} from "../heroes/heroes.service";
+import {HeroesService, heroType, rarity} from "../heroes/heroes.service";
 import {RewardComponent, UnitWithReward} from "../../interface";
 import {DisplayReward, Reward, RewardService} from "../reward/reward.service";
 import {Unit} from "../../models/unit.model";
@@ -57,6 +57,7 @@ export class NpcService implements RewardComponent{
     return {
       ...this.heroService.getBasicUserConfig(),
       attackRange: 1,
+      rarity: rarity.COMMON,
       heroType: heroType.ATTACK,
       rank: 1,
       level: 1,
@@ -111,6 +112,7 @@ export class NpcService implements RewardComponent{
     return {
       ...this.heroService.getBasicUserConfig(),
       attackRange: 1,
+      rarity: rarity.COMMON,
       heroType: heroType.DEFENCE,
       rank: 1,
       eq1Level: 1,

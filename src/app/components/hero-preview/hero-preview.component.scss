@@ -39,19 +39,10 @@
     }
   }
 
-  .stats-bar > div, .skills-container {
+  .stats-bar > div {
       background: $background-color-main;
       box-shadow: $box-shadow-out;
       border-radius: 15px;
-  }
-
-  .skills-container {
-    box-shadow: $box-shadow !important;
-    img {
-      width: 100px;
-      height: 100px;
-      margin-right: 10px;
-    }
   }
 
   .card {

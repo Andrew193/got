@@ -4,7 +4,7 @@
     <div class="flex-row main-content">
       <div class="col-lg-4 col-sm-12 p-2 mb-3">
         <div class="card hero-card d-flex m-0-auto align-items-center col-12" style="max-height: 75vh">
-          <img class="card-img-top" src="{{selectedHero.fullImgSrc}}" alt="{{selectedHero.name}}">
+          <img class="card-img-top taverna" src="{{selectedHero.fullImgSrc}}" alt="{{selectedHero.name}}">
           <div class="level">
             <div class="position-relative">
               <img src="assets/resourses/imgs/rank/{{heroService.getRank(selectedHero.level)}}_r.png" alt="rank level"
@@ -18,15 +18,7 @@
       <aside class="col-lg-8 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">
         <div class="col-lg-12 col-sm-12 p-2 d-flex flex-column justify-content-evenly">
           <stats [selectedHero]="selectedHero"></stats>
-          <div class="skills-container mt-2 p-2">
-            <p class="text-center fw-bold mb-0">Skills</p>
-            <div *ngFor="let skill of selectedHero.skills">
-              <div class="flex-row flex-nowrap">
-                <img src="{{skill.imgSrc}}" alt="{{skill.name}}">
-                <p [innerHTML]="heroService.highlightEffects(skill.description)"></p>
-              </div>
-            </div>
-          </div>
+          <skills-render [selectedHero]="selectedHero"></skills-render>
         </div>
       </aside>
       <aside class="col-lg-12 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">

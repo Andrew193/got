@@ -45,6 +45,9 @@
                         <ng-container [ngTemplateOutlet]="storeTemplate"
                                       [ngTemplateOutletContext]="{name:'Ремесленики', src: 'silver'}">
                         </ng-container>
+                      <ng-container [ngTemplateOutlet]="storeTemplate"
+                                    [ngTemplateOutletContext]="{name:'Ежедневный Босс', src: 'UI_Avatar_Unit_PolarBear', click: openDailyBoss}">
+                      </ng-container>
                     </div>
                 </nav>
             </div>

@@ -1,10 +1,10 @@
-<div class="d-flex">
-  <div class="col-2" style="padding: 0px 5px 5px 5px;">
+<div class="row" style="gap: 10px">
+  <div class="col-2">
     <img alt="reward avatar" class="reward-avatar" [src]="selectedHero.imgSrc" />
   </div>
-<div class="col-10 stats p-1 flex-column">
-  <p class="text-center w-100 d-block" style="font-weight: bold"><b>Basic parameters</b></p>
-  <div style="font-weight: bold; " class="flex-row">
+<div class="col-10 stats row" style="width: calc(83.33333333% - 10px)">
+  <p class="text-center col-12 d-block" style="font-weight: bold"><b>Basic parameters</b></p>
+  <div style="font-weight: bold; " class="col-12">
     <p class="d-inline col-2 m-0">
       <img src="assets/resourses/imgs/icons/attack_icon.png">
       <span>{{selectedHero.attack}}</span>

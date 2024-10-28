@@ -40,17 +40,17 @@
         <h4 id="dialog-sizes-name" class="modal-title text-center w-100 caption mb-2">{{rewardHero.name}}</h4>
         <p style="font-weight: bold; color: white">{{rewardHero.description}}</p>
         <div class="col-lg-11 col-md-12 col-sm-12 stats h-100 flex-row">
-          <div class="flex-row w-100 mt-2 justify-content-center align-items-center">
+          <div class="row col-12 mt-2 justify-content-center align-items-center">
             <stats [selectedHero]="rewardHero"></stats>
           </div>
           <div class="col-12" style="font-weight: bold">
             <p class="text-center w-100 d-block"><b>Навыки героя</b></p>
             <div class="m-1">
-              <div *ngFor="let skill of rewardHero.skills" class="flex-row" style="flex-wrap: nowrap">
-                <div style="min-width: 70px">
+              <div *ngFor="let skill of rewardHero.skills" class="row p-2" style="flex-wrap: nowrap">
+                <div class="col-1">
                   <img src="{{skill.imgSrc}}" alt="{{skill.name}}" class="skill-preview-icon"/>
                 </div>
-                <div style="padding-left: 10px;">
+                <div class="col-11">
                   <span class="defence-color">{{skill.name}} {{skill.passive ? '( P )' : ''}}</span>
                   <div style="position: relative" contextMenuTriggerFor="{{skill.description}}">
                     <p class="d-inline-block" [innerHTML]="heroService.highlightEffects(skill.description)"></p>

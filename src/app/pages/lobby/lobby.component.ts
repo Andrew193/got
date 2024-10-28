@@ -47,6 +47,10 @@ export class LobbyComponent {
     this.router.navigate([frontRoutes.giftStore])
   }
 
+  public openDailyBoss = () => {
+    this.router.navigate([frontRoutes.dailyBoss])
+  }
+
   public showDailyReward = () => {
     this.isShowDailyReward = !this.isShowDailyReward;
   }

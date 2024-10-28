@@ -18,6 +18,13 @@ export enum heroType {
   DEFENCE
 }
 
+export enum rarity {
+  COMMON,
+  RARE,
+  EPIC,
+  LEGENDARY
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -60,6 +67,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
+      rarity: rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.burning],
@@ -79,7 +87,7 @@ export class HeroesService extends ContentService {
       imgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png",
       fullImgSrc: "../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png",
       name: "Дейнерис Таргариен ( Леди Драконьего Камня )",
-      description: "По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет ее совершать великие военные подвиги.",
+      description: "По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет её совершать великие военные подвиги.",
       skills: [
         {
           name: "Сожжение",
@@ -136,6 +144,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.DEFENCE,
+      rarity: rarity.EPIC,
       attackRange: 1,
       rankBoost: 1.2,
       ignoredDebuffs: [this.effectsService.effects.burning],
@@ -210,6 +219,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
+      rarity: rarity.RARE,
       heroType: heroType.ATTACK,
       rankBoost: 1.1,
       ignoredDebuffs: [],
@@ -261,6 +271,7 @@ export class HeroesService extends ContentService {
       ...this.getBasicUserConfig(),
       heroType: heroType.DEFENCE,
       healer: true,
+      rarity: rarity.EPIC,
       onlyHealer: false,
       attackRange: 1,
       rankBoost: 1.15,
@@ -333,6 +344,7 @@ export class HeroesService extends ContentService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
+      rarity: rarity.COMMON,
       rankBoost: 1.05,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -372,6 +384,7 @@ export class HeroesService extends ContentService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
+      rarity: rarity.COMMON,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -411,6 +424,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
+      rarity: rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.1,
       ignoredDebuffs: [this.effectsService.effects.poison, this.effectsService.effects.freezing, this.effectsService.effects.root],
@@ -481,6 +495,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
+      rarity: rarity.RARE,
       attackRange: 2,
       rankBoost: 1.1,
       ignoredDebuffs: [],
@@ -546,6 +561,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
+      rarity: rarity.LEGENDARY,
       attackRange: 1,
       rankBoost: 1.05,
       ignoredDebuffs: [],
@@ -553,13 +569,13 @@ export class HeroesService extends ContentService {
       dmgReducedBy: 0.5,
       canCross: 1,
       maxCanCross: 1,
-      health: 93837,
+      health: 33837,
       healthIncrement: 590,
       attack: 3529,
       attackIncrement: 19,
-      defence: 7385,
+      defence: 6385,
       defenceIncrement: 29,
-      maxHealth: 93837,
+      maxHealth: 33837,
       rage: 60,
       willpower: 15,
       imgSrc: "../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png",
@@ -612,6 +628,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
+      rarity: rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effectsService.effects.freezing],
@@ -686,6 +703,7 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
+      rarity: rarity.LEGENDARY,
       attackRange: 1,
       rankBoost: 1.2,
       ignoredDebuffs: [this.effectsService.effects.freezing],
@@ -743,6 +761,7 @@ export class HeroesService extends ContentService {
       ...this.getBasicUserConfig(),
       heroType: heroType.ATTACK,
       attackRange: 1,
+      rarity: rarity.LEGENDARY,
       rankBoost: 1.1,
       ignoredDebuffs: [this.effectsService.effects.freezing],
       reducedDmgFromDebuffs: [],
@@ -796,6 +815,7 @@ export class HeroesService extends ContentService {
       heroType: heroType.ATTACK,
       attackRange: 1,
       rankBoost: 1.3,
+      rarity: rarity.LEGENDARY,
       ignoredDebuffs: [this.effectsService.effects.freezing, this.effectsService.effects.attackBreak],
       reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
       dmgReducedBy: 0.1,
@@ -859,6 +879,84 @@ export class HeroesService extends ContentService {
         }
       ],
       effects: [this.effectsService.getDefBuff()]
+    }
+  }
+
+  getDailyBossVersion1(): Unit {
+    return {
+      ...this.getBasicUserConfig(),
+      heroType: heroType.ATTACK,
+      rarity: rarity.LEGENDARY,
+      attackRange: 1,
+      rankBoost: 1.5,
+      ignoredDebuffs: [this.effectsService.effects.burning],
+      reducedDmgFromDebuffs: [this.effectsService.effects.bleeding],
+      dmgReducedBy: 0.25,
+      canCross: 3,
+      maxCanCross: 3,
+      health: 39237,
+      healthIncrement: 3195,
+      attack: 1829,
+      attackIncrement: 23,
+      defence: 1485,
+      defenceIncrement: 15,
+      maxHealth: 39237,
+      rage: 145,
+      willpower: 50,
+      imgSrc: "../../../assets/resourses/imgs/boss/v1/UI_Avatar_Unit_GromyrtheFlame.png",
+      fullImgSrc: "../../../assets/resourses/imgs/boss/v1/UI_Boss_CutIn_Pic_1.png",
+      name: "Громирт Пламя",
+      description: "",
+      skills: [
+        {
+          name: "Горячий Приём",
+          imgSrc: "../../../assets/resourses/imgs/boss/v1/skills/gr_s1.png",
+          dmgM: 2.8,
+          cooldown: 0,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 1,
+          attackInRangeM: 2.35,
+          debuffs: [this.effectsService.getBurning(2), this.effectsService.getBurning(2)],
+          inRangeDebuffs: [this.effectsService.getDefBreak(2)],
+          description: "Наносит противнику урон в размере 280% от показателя атаки и накладывает на него 2 штрафa "
+            + this.effectsService.effects.burning + " на 2 ходa. Также атакует врагов в радиусе 1 клеткм на 235% от показателя атаки,"
+            + " накладывает на них штраф " + this.effectsService.effects.defBreak + " на 2 хода."
+        },
+        {
+          name: "Исцеление огнём",
+          imgSrc: "../../../assets/resourses/imgs/boss/v1/skills/boss_s2.png",
+          dmgM: 1.4,
+          healM: 0.01,
+          cooldown: 3,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 2,
+          attackInRangeM: 1.1,
+          healAll: true,
+          heal: true,
+          debuffs: [this.effectsService.getBurning(3), this.effectsService.getBurning(3), this.effectsService.getBurning(3), this.effectsService.getBurning(3)],
+          inRangeDebuffs: [this.effectsService.getDefBreak(3), this.effectsService.getBleeding(3), this.effectsService.getDefenceDestroy(3)],
+          description: "Наносит противнику урон в размере 140% от показателя атаки и накладывает на него 4 штрафa "
+            + this.effectsService.effects.burning + " на 3 ходa. Перед атакой восстанавливает всем союзникам здоровье в размере 1% от своего максимального здоровья."
+            + " Наносит 110% от атаки врагам в радиусе 2 клеток и накладывает на них штрафы: " + this.effectsService.effects.defDestroy + ", "
+          + this.effectsService.effects.bleeding + ", " + this.effectsService.effects.defBreak + " на 3 хода."
+        },
+        {
+          name: "Душа Пламени",
+          imgSrc: "../../../assets/resourses/imgs/debuffs/burning.png",
+          dmgM: 0,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [],
+          buffs: [],
+          passive: true,
+          restoreSkill: true,
+          description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штраф "
+            + this.effectsService.effects.burning + ". В начале игры получает бонус " + this.effectsService.effects.healthRestore + " до конца боя. Имеет шанс воскреснуть после смертельного удара."
+        }
+      ],
+      effects: [this.effectsService.getHealthRestore(1000)]
     }
   }
 

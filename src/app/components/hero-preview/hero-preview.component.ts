@@ -7,6 +7,7 @@ import {CommonModule} from "@angular/common";
 import {StatsComponent} from "../stats/stats.component";
 import {frontRoutes} from "../../app.routes";
 import {Unit} from "../../models/unit.model";
+import {SkillsRenderComponent} from "../skills-render/skills-render.component";
 
 @Component({
   selector: 'app-hero-preview',
@@ -15,7 +16,8 @@ import {Unit} from "../../models/unit.model";
     RatingModule,
     FormsModule,
     CommonModule,
-    StatsComponent
+    StatsComponent,
+    SkillsRenderComponent
   ],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss'
