@@ -1,8 +1,115 @@
-<div class="row ms-2 me-2">
-  <div class="col-6">
+<div class="row ms-2 me-2 mb-2" style="gap: 5px">
+  <div class="col-lg-6 col-sm-12" style="margin: 0px -2px;">
     <stats [selectedHero]="selectedHero"></stats>
   </div>
-  <div class="col-6">
+  <div class="col-lg-6 col-sm-12" style="margin: 0px -2px;">
     <skills-render [selectedHero]="selectedHero"></skills-render>
+  </div>
+</div>
+<div>
+  <h4>Choose Difficulty</h4>
+  <div class="pb-2">
+    <tabset>
+      <tab [heading]="'Super Easy'" id="tab0">
+        <div class="m-1">
+          <stats [selectedHero]="upBoss(1)"></stats>
+          <div class="skills-container p-2 mt-2 mb-2">
+              <h5 class="text-center">Reward</h5>
+              <div class="d-flex rewards-bar">
+                <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward"/>
+                <div class="ps-2">
+                  <p class="mb-0">
+                    <span class="copper">10.000 (+ 100.000 kill reward )</span>
+                    <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span class="highlight-effect">2500</span> DMG.
+                  </p>
+                  <p class="mb-0">
+                    <span class="silver">100 (+ 100 kill reward )</span>
+                    <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span class="highlight-effect">15000</span> DMG.
+                  </p>
+                  <p class="mb-0">
+                    <span class="gold">50 (+ 50 kill reward )</span>
+                    <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span class="highlight-effect">35000</span> DMG.
+                  </p>
+                </div>
+              </div>
+            </div>
+        </div>
+      </tab>
+      <tab [heading]="'Easy'" id="tab1">
+        <div class="m-1">
+          <stats [selectedHero]="upBoss(2)"></stats>
+          <div class="skills-container p-2 mt-2 mb-2">
+            <h5 class="text-center">Reward</h5>
+            <div class="d-flex rewards-bar">
+              <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward"/>
+              <div class="ps-2">
+                <p class="mb-0">
+                  <span class="copper">30.000 (+ 300.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span class="highlight-effect">25000</span> DMG.
+                </p>
+                <p class="mb-0">
+                  <span class="silver">300 (+ 1.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span class="highlight-effect">150000</span> DMG.
+                </p>
+                <p class="mb-0">
+                  <span class="gold">150 (+ 300 kill reward )</span>
+                  <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span class="highlight-effect">350000</span> DMG.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+      <tab [heading]="'Medium'" id="tab2">
+        <div class="m-1">
+          <stats [selectedHero]="upBoss(3)"></stats>
+          <div class="skills-container p-2 mt-2 mb-2">
+            <h5 class="text-center">Reward</h5>
+            <div class="d-flex rewards-bar">
+              <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward"/>
+              <div class="ps-2">
+                <p class="mb-0">
+                  <span class="copper">90.000 (+ 1.000.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span class="highlight-effect">150.000</span> DMG.
+                </p>
+                <p class="mb-0">
+                  <span class="silver">900 (+ 3.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span class="highlight-effect">200.000</span> DMG.
+                </p>
+                <p class="mb-0">
+                  <span class="gold">450 (+ 1.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span class="highlight-effect">500.000</span> DMG.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+      <tab [heading]="'Hard'" id="tab3">
+        <div class="m-1">
+          <stats [selectedHero]="upBoss(4)"></stats>
+          <div class="skills-container p-2 mt-2 mb-2">
+            <h5 class="text-center">Reward</h5>
+            <div class="d-flex rewards-bar">
+              <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward"/>
+              <div class="ps-2">
+                <p class="mb-0">
+                  <span class="copper">300.000 (+ 2.300.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span class="highlight-effect">250.000</span> DMG.
+                </p>
+                <p class="mb-0">
+                  <span class="silver">3.000 (+ 5.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span class="highlight-effect">1.000.000</span> DMG.
+                </p>
+                <p class="mb-0">
+                  <span class="gold">1.000 (+ 3.000 kill reward )</span>
+                  <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span class="highlight-effect">2.000.000</span> DMG.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
   </div>
 </div>

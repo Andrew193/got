@@ -26,6 +26,13 @@ export class HeroPreviewComponent implements OnInit {
   name = "";
   selectedHero: Unit;
 
+  itemDescriptions: {[key: string]: string} = {
+    eq1: 'The breastplate is a very important piece of armor for any warrior.',
+    eq2: 'Scrags are a very important piece of armor for any warrior. You can\'t fight much with bare feet.',
+    eq3: 'An amulet is a very important piece of armor for any warrior. Fortitude and faith are very important.',
+    eq4: 'A relic of this hero. Gives a bonus to parameters.',
+  }
+
   constructor(public heroService: HeroesService,
               private router: Router,
               private route: ActivatedRoute) {

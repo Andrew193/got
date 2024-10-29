@@ -1,6 +1,6 @@
 <div class="preview-container">
   <div class="m-5">
-    <div class="text-center"><h3>{{name}}</h3></div>
+    <div class="text-center"><h3>{{ name }}</h3></div>
     <div class="flex-row main-content">
       <div class="col-lg-4 col-sm-12 p-2 mb-3">
         <div class="card hero-card d-flex m-0-auto align-items-center col-12" style="max-height: 75vh">
@@ -9,7 +9,7 @@
             <div class="position-relative">
               <img src="assets/resourses/imgs/rank/{{heroService.getRank(selectedHero.level)}}_r.png" alt="rank level"
                    class="level_rank" [style]="{height: selectedHero.level === 60 ? '60px' : ''}">
-              <span [style]="{left: selectedHero.level > 10 ? '16px' : ''}">{{selectedHero.level}}</span>
+              <span [style]="{left: selectedHero.level > 10 ? '16px' : ''}">{{ selectedHero.level }}</span>
             </div>
           </div>
           <rating [(ngModel)]="selectedHero.rank" [max]="6" [readonly]="true"></rating>
@@ -24,214 +24,23 @@
       <aside class="col-lg-12 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">
         <div class="col-lg-12 col-sm-12 p-2 mb-3 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
-          <div class="flex-row">
-            <div class="mb-3 col-6 p-2">
-              <div class="col-12 flex-row">
-                <div style="min-width: 83px">
-                  <img src="assets/resourses/imgs/eq/eq1.png" alt="eq1"/>
-                </div>
-                <p class="ps-2">The breastplate is a very important piece of armor for any
-                  warrior.</p>
-              </div>
-              <div class="col-12 flex-row eq-stats mb-0">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Now</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>{{selectedHero.eq1Level * selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>{{selectedHero.eq1Level * selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>{{selectedHero.eq1Level * selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{selectedHero.eq1Level}}/200</p>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Per level</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>+{{selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>+{{selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>+{{selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{200 - selectedHero.eq1Level}}/200</p>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="200 - selectedHero.eq1Level > 0">
-                <div class="m-0-auto mt-2" style="width: 100px">
-                  <button class="btn btn-success">Upgrade</button>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3 col-6 p-2">
-              <div class="col-12 flex-row">
-                <div style="min-width: 83px">
-                  <img src="assets/resourses/imgs/eq/eq2.png" alt="eq2"/>
-                </div>
-                <p class="ps-2">Scrags are a very important piece of armor for any warrior.
-                  You can't fight much with bare feet.</p>
-              </div>
-              <div class="col-12 flex-row eq-stats mb-0">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Now</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>{{selectedHero.eq2Level * selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>{{selectedHero.eq2Level * selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>{{selectedHero.eq2Level * selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{selectedHero.eq2Level}}/200</p>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Per level</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>+{{selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>+{{selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>+{{selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{200 - selectedHero.eq2Level}}/200</p>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="200 - selectedHero.eq2Level > 0">
-                <div class="m-0-auto mt-2" style="width: 100px">
-                  <button class="btn btn-success">Upgrade</button>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3 col-6 p-2">
-              <div class="col-12 flex-row">
-                <div style="min-width: 83px">
-                  <img src="assets/resourses/imgs/eq/eq3.png" alt="eq3"/>
-                </div>
-                <p class="ps-2">An amulet is a very important piece of armor for any warrior.
-                  Fortitude and faith are very important.</p>
-              </div>
-              <div class="col-12 flex-row eq-stats mb-0">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Now</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>{{selectedHero.eq3Level * selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>{{selectedHero.eq3Level * selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>{{selectedHero.eq3Level * selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{selectedHero.eq3Level}}/200</p>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Per level</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>+{{selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>+{{selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>+{{selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{200 - selectedHero.eq3Level}}/200</p>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="200 - selectedHero.eq3Level > 0">
-                <div class="m-0-auto mt-2" style="width: 100px">
-                  <button class="btn btn-success">Upgrade</button>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3 col-6 p-2">
-              <div class="col-12 flex-row">
-                <div style="min-width: 83px">
-                  <img src="assets/resourses/imgs/eq/eq4.png" alt="eq4"/>
-                </div>
-                <p class="ps-2">A relic of this hero. Gives a bonus to parameters.</p>
-              </div>
-              <div class="col-12 flex-row eq-stats mb-0">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Now</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>{{selectedHero.eq4Level * selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>{{selectedHero.eq4Level * selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>{{selectedHero.eq4Level * selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{selectedHero.eq4Level}}/200</p>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-                  <div class="col-12">
-                    <p class="text-center fw-bold mt-1 mb-0">Per level</p>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
-                      <span>+{{selectedHero.attackIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
-                      <span>+{{selectedHero.defenceIncrement}}</span>
-                    </div>
-                    <div class="flex-row ps-2 mb-0">
-                      <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
-                      <span>+{{selectedHero.healthIncrement}}</span>
-                    </div>
-                    <p class="text-center mb-2 fw-bold">{{200 - selectedHero.eq4Level}}/200</p>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="200 - selectedHero.eq4Level > 0">
-                <div class="m-0-auto mt-2" style="width: 100px">
-                  <button class="btn btn-success">Upgrade</button>
-                </div>
-              </div>
-            </div>
+          <div class="d-flex flex-wrap gap-1">
+            <ng-container
+              [ngTemplateOutlet]="itemTemplate"
+              [ngTemplateOutletContext]="{name: 'eq1'}"
+            ></ng-container>
+            <ng-container
+              [ngTemplateOutlet]="itemTemplate"
+              [ngTemplateOutletContext]="{name: 'eq2'}"
+            ></ng-container>
+            <ng-container
+              [ngTemplateOutlet]="itemTemplate"
+              [ngTemplateOutletContext]="{name: 'eq3'}"
+            ></ng-container>
+            <ng-container
+              [ngTemplateOutlet]="itemTemplate"
+              [ngTemplateOutletContext]="{name: 'eq4'}"
+            ></ng-container>
           </div>
         </div>
       </aside>
@@ -239,3 +48,41 @@
     <button class="btn btn-info" (click)="backToTavern()">Back to Tavern</button>
   </div>
 </div>
+
+<ng-template #itemTemplate let-name="name">
+  <div class="col-lg-6 col-sm-12 row">
+    <div class="col-6 d-flex">
+      <div style="min-width: 83px">
+        <img [src]="'assets/resourses/imgs/eq/'+name + '.png'" [alt]="name"/>
+      </div>
+      <p class="ps-2">{{itemDescriptions[name]}}</p>
+    </div>
+    <div class="col-6 flex-row eq-stats mb-0">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
+        <div class="col-12">
+          <div class="flex-row ps-2 mb-0">
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack"/>
+            <span>{{ selectedHero[name + 'Level'] * selectedHero.attackIncrement }}</span>
+            <span>(+{{ selectedHero.attackIncrement }})</span>
+          </div>
+          <div class="flex-row ps-2 mb-0">
+            <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence"/>
+            <span>{{ selectedHero[name + 'Level'] * selectedHero.defenceIncrement }}</span>
+            <span>+({{ selectedHero.defenceIncrement }})</span>
+          </div>
+          <div class="flex-row ps-2 mb-0">
+            <img src="assets/resourses/imgs/icons/health_icon.png" alt="health"/>
+            <span>{{ selectedHero[name + 'Level'] * selectedHero.healthIncrement }}</span>
+            <span>(+{{ selectedHero.healthIncrement }})</span>
+          </div>
+          <p class="text-center mb-2 fw-bold">{{ selectedHero[name + 'Level'] }}/200</p>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="200 - selectedHero[name + 'Level'] > 0">
+      <div class="m-0-auto mt-2" style="width: 100px">
+        <button class="btn btn-success">Upgrade</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

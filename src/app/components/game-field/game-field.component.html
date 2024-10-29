@@ -23,7 +23,7 @@
                         (highlightMakeMove)="highlightMakeMove($event)"></basic-game-board>
     </div>
     <aside class="col-xl-3 col-lg-12 col-md-12 d-flex flex-column mb-3">
-      <div class="meta-aside mb-3 flex-row justify-content-evenly" *ngIf="skillsInAttackBar.length">
+      <div class="meta-aside mb-3 flex-row justify-content-evenly p-1" *ngIf="skillsInAttackBar.length">
         <ng-container *ngFor="let skill of skillsInAttackBar">
           <div class="skills-container col-3">
             <div>
@@ -31,9 +31,9 @@
               <div class="text-center">
                 <div class="position-relative" style="margin: 0 auto; width: fit-content"
                      tooltip="{{skill.description}}">
-                  <img alt="{{skill.name}}" src="{{skill.imgSrc}}" class="cursor-pointer"
+                  <img alt="{{skill.name}}" src="{{skill.imgSrc}}" class="cursor-pointer me-0"
                        (click)="attack(skill)"/>
-                  <div class="skill-disabled" style="top: 0px" *ngIf="skill.remainingCooldown || skill.passive">
+                  <div class="skill-disabled" style="top: 0px; left: 0px;" *ngIf="skill.remainingCooldown || skill.passive">
                     <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                   </div>
                 </div>
@@ -135,7 +135,7 @@
             <span class="d-block">{{ hero.defence }}</span>
           </p>
         </div>
-        <div class="col-12 flex-row" style="margin: unset">
+        <div class="col-12 row" style="margin: unset">
           <div class="stats h-100 w-100 skills-bar">
             <p>{{hero.health ? 'Здоровье героя: '+hero.health :''}}</p>
             <div class="flex-row skills-container justify-content-evenly">

@@ -350,6 +350,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
                 ...this.getAiLeadingUnits(aiMove)[index],
                 canAttack: false
               };
+              this.gameConfig = this.fieldService.getGameField(this.getUserLeadingUnits(aiMove), this.getAiLeadingUnits(aiMove), this.fieldService.getDefaultGameField());
+              return;
             }
           }
         }

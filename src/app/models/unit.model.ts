@@ -39,5 +39,6 @@ export interface Unit extends Coordinate {
   willpower: number,
   fullImgSrc?: string,
   skills: Skill[],
-  effects: Effect[]
+  effects: Effect[],
+  [key: string]: any,
 }

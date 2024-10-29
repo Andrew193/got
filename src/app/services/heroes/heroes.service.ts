@@ -48,7 +48,7 @@ export class HeroesService extends ContentService {
     const result = [];
     for (let i = 0; i < this.effectsService.effectsToHighlight.length; i++) {
       const effect = this.effectsService.effectsToHighlight[i];
-      if(text.includes(effect)) {
+      if (text.includes(effect)) {
         result.push(`${effect} - ${this.effectsService.effectsDescriptions[effect]}`)
       }
     }
@@ -320,7 +320,7 @@ export class HeroesService extends ContentService {
           heal: true,
           debuffs: [],
           description: "Наносит противнику урон в размере 100% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 25% от своего максимального здоровья."
-          + " Наносит 90% от атаки врагам в радиусе 3 клеток."
+            + " Наносит 90% от атаки врагам в радиусе 3 клеток."
         },
         {
           name: "Локранд",
@@ -457,7 +457,7 @@ export class HeroesService extends ContentService {
           debuffs: [this.effectsService.getPoison(), this.effectsService.getRoot()],
           inRangeDebuffs: [this.effectsService.getAttackBreak()],
           description: "Наносит противнику урон в размере 190% от показателя атаки, накладывает штраф " + this.effectsService.effects.poison + " на 2 ходa. "
-          + "Также накладывает штраф " + this.effectsService.effects.root + " на 2 хода. Все враги на поле получают штраф " + this.effectsService.effects.attackBreak + " на 2 ходa."
+            + "Также накладывает штраф " + this.effectsService.effects.root + " на 2 хода. Все враги на поле получают штраф " + this.effectsService.effects.attackBreak + " на 2 ходa."
         },
         {
           name: "Засада",
@@ -484,7 +484,7 @@ export class HeroesService extends ContentService {
           buffs: [],
           passive: true,
           description: "Этот герой получает на 25% меньше урона от штрафа " + this.effectsService.effects.bleeding + ". Может атаковать с растояния в 2 клетки."
-          + " На этого героя невозможно наложить штрафы: " + this.effectsService.effects.poison + ", " + this.effectsService.effects.freezing + ", " + this.effectsService.effects.root + "."
+            + " На этого героя невозможно наложить штрафы: " + this.effectsService.effects.poison + ", " + this.effectsService.effects.freezing + ", " + this.effectsService.effects.root + "."
         }
       ],
       effects: []
@@ -940,7 +940,7 @@ export class HeroesService extends ContentService {
           description: "Наносит противнику урон в размере 140% от показателя атаки и накладывает на него 4 штрафa "
             + this.effectsService.effects.burning + " на 3 ходa. Перед атакой восстанавливает всем союзникам здоровье в размере 1% от своего максимального здоровья."
             + " Наносит 110% от атаки врагам в радиусе 2 клеток и накладывает на них штрафы: " + this.effectsService.effects.defDestroy + ", "
-          + this.effectsService.effects.bleeding + ", " + this.effectsService.effects.defBreak + " на 3 хода."
+            + this.effectsService.effects.bleeding + ", " + this.effectsService.effects.defBreak + " на 3 хода."
         },
         {
           name: "Душа Пламени",
@@ -966,7 +966,10 @@ export class HeroesService extends ContentService {
       ...unit,
       attack: +(unit.attack + unit.attackIncrement * unit.level).toFixed(0),
       defence: +(unit.defence + unit.defenceIncrement * unit.level).toFixed(0),
-      health: +(unit.health + unit.healthIncrement * unit.level).toFixed(0)
+      health: +(unit.health + unit.healthIncrement * unit.level).toFixed(0),
+      rage: +(unit.rage + (unit.level > 1 ? 2 * unit.level : 0)).toFixed(0),
+      willpower: +(unit.willpower + (unit.level > 1 ? 2 * unit.level : 0)).toFixed(0),
+      dmgReducedBy: +(+((unit.dmgReducedBy * 100) + (unit.level > 1 ? 0.5 : 0) * unit.level).toFixed(0) / 100).toFixed(2),
     }
 
     //Rank
@@ -1004,7 +1007,7 @@ export class HeroesService extends ContentService {
   getAllHeroes() {
     const units = [this.getIceRiverHunter(), this.getJonKing(), this.getWhiteWalkerCapitan(), this.getWhiteWalkerGeneral(), this.getNightKing(),
       this.getGiant(), this.getFreeTrapper(), this.getBrownWolf(), this.getWhiteWolf(), this.getTargaryenKnight(), this.getLadyOfDragonStone(),
-    this.getRelinaShow(), this.getPriest()]
+      this.getRelinaShow(), this.getPriest(), this.getDailyBossVersion1()]
     return units.map((unit) => this.getEquipmentForUnit(unit));
   }
 
@@ -1031,7 +1034,7 @@ export class HeroesService extends ContentService {
   }
 
   getContent(contentType = ContentTypes.USER_UNITS) {
-    if(contentType === ContentTypes.USER_UNITS) {
+    if (contentType === ContentTypes.USER_UNITS) {
       return this.getAllHeroes();
     }
     return [];

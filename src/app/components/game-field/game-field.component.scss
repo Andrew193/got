@@ -13,6 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  flex-wrap: wrap;
 
   img {
     background: transparent !important;
@@ -36,6 +37,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: unset;
+  width: auto;
 
   p {
     margin-bottom: 1px;
@@ -120,7 +122,7 @@
       background-color: #800;
       border-bottom-left-radius: 50px;
       border-bottom-right-radius: 50px;
-      height: 100px;
+      height: 80px;
       box-shadow: $red-box-shadow;
       display: flex;
       align-items: center;
