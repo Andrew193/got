@@ -1,6 +1,6 @@
-@import "../../../../assets/resourses/styles/vars";
+@import "../../../assets/resourses/styles/vars";
 
-.units-config-container {
+.heroes-container {
   background-color: $background-color-main;
 
   .units-config-inner-container {
@@ -40,5 +40,35 @@
     &:first-of-type {
       border-right: 1px solid black;
     }
+  }
+}
+
+.preview-selected-heroes {
+  flex-wrap: nowrap;
+  flex-direction: column !important;
+  padding: 0px 10px;
+
+  img {
+    border-radius: 5px !important;
+  }
+
+  > div {
+    margin-bottom: 5px;
+    display: flex;
+    border: 1px solid black;
+    padding: 3px;
+    border-radius: 3px;
+    box-shadow: $box-shadow;
+  }
+
+  .description-bar {
+    padding-left: 5px;
+  }
+
+  .hero-name {
+    position: absolute;
+    font-size: 13px;
+    bottom: 0;
+    left: 10px;
   }
 }

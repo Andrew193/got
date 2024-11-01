@@ -7,7 +7,7 @@ import {DailyBossBattlefieldComponent} from "./battlefield/daily-boss-battlefiel
 
 const routes: Routes = [
   {component: DailyBossLobbyComponent, path: frontRoutes.base},
-  {component: DailyBossBattlefieldComponent, path: frontRoutes.dailyBossBattle},
+  {component: DailyBossBattlefieldComponent, path: `${frontRoutes.dailyBossBattle}/:bossLevel`},
 ];
 
 @NgModule({

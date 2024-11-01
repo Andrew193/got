@@ -38,3 +38,15 @@ export interface UnitWithReward extends Unit {
   reward: DisplayReward,
   inBattle: boolean,
 }
+
+export interface BossReward {
+  copper: number,
+  copperWin: number,
+  copperDMG: number,
+  silver: number,
+  silverWin: number,
+  silverDMG: number,
+  gold: number,
+  goldWin: number,
+  goldDMG: number,
+}

@@ -5,13 +5,17 @@ import {frontRoutes} from "../../../app.routes";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
+import {HeroesChooseComponent} from "../../../components/heroes-choose/heroes-choose.component";
+import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
 
 @Component({
   selector: 'training-config',
   standalone: true,
   imports: [
     CommonModule,
-    TooltipModule
+    TooltipModule,
+    HeroesChooseComponent,
+    HeroesSelectComponent
   ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss'
@@ -26,7 +30,7 @@ export class TrainingConfigComponent {
               private route: Router) {
   }
 
-  addUserUnit(unit: Unit, user = true) {
+  public addUserUnit = (unit: Unit, user = true) => {
     if (this[user ? 'userUnits' : 'aiUnits'].findIndex((el) => el.name === unit.name) === -1 && this[user ? 'userUnits' : 'aiUnits'].length < 5) {
       this[user ? 'userUnits' : 'aiUnits'].push(unit);
       this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'] = this[user ? 'userUnits' : 'aiUnits'].map(() => false);
@@ -36,11 +40,11 @@ export class TrainingConfigComponent {
     }
   }
 
-  toggleDescription(user: boolean, index: number) {
+  public toggleDescription = (user: boolean, index: number) => {
     this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'][index] = !this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'][index];
   }
 
-  getDescriptionState(user: boolean, index: number) {
+  public getDescriptionState = (user: boolean, index: number) => {
     return this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'][index];
   }
 
@@ -48,7 +52,7 @@ export class TrainingConfigComponent {
     return this.heroesService.getAllHeroes();
   }
 
-  checkSelected(unit: Unit, user = true) {
+  public checkSelected = (unit: Unit, user = true) => {
     return this[user ? 'userUnits' : 'aiUnits'].findIndex((el) => el.name === unit.name) !== -1
   }
 
