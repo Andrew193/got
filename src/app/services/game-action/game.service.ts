@@ -162,10 +162,10 @@ export class GameService {
     return units.every((userUnit) => !userUnit.health);
   }
 
-  checkDebuffs(unit: Unit, decreaseRestoreCooldown = true, battleMode: boolean) {
+  checkDebuffs(unit: Unit, decreaseRestoreCooldown = true, battleMode: boolean, canRestoreHealth: boolean) {
     let unitCopy: Unit = createDeepCopy(unit);
 
-    const unitWithUpdatedCooldown = this.updateEffectDuration(unitCopy, decreaseRestoreCooldown, battleMode)
+    const unitWithUpdatedCooldown = this.updateEffectDuration(unitCopy, decreaseRestoreCooldown, battleMode, canRestoreHealth)
     unitCopy = unitWithUpdatedCooldown.unit;
 
     const processEffectsResult = this.processEffects(createDeepCopy(unitCopy), battleMode);
@@ -175,13 +175,15 @@ export class GameService {
     return {unit: unitCopy, log: [...unitWithUpdatedCooldown.log, ...processEffectsResult.log]};
   }
 
-  private updateEffectDuration(unit: Unit, decreaseRestoreCooldown: boolean, battleMode: boolean) {
+  private updateEffectDuration(unit: Unit, decreaseRestoreCooldown: boolean, battleMode: boolean, checkHealthRestore = false) {
     const log: LogRecord[] = [];
     unit.effects.forEach((effect: Effect, i, array) => {
       if (effect.duration > 0) {
         if (effect.restore) {
-          array[i] = {...effect, duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration}
-          this.checkEffectsForHealthRestore(unit, log);
+          if(checkHealthRestore) {
+            array[i] = {...effect, duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration}
+            this.checkEffectsForHealthRestore(unit, log);
+          }
         } else {
           array[i] = {...effect, duration: effect.duration - 1}
           if (!effect.passive) {
@@ -250,7 +252,7 @@ export class GameService {
    */
   aiUnitAttack(index: number, units: Unit[], battleMode: boolean, makeAiMove: (aiUnit: Unit, index: number) => void, logs: LogRecord[]) {
     let aiUnit = units[index];
-    const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode);
+    const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode, true);
     units[index] = response.unit;
     logs.push(...response.log)
     aiUnit = units[index];

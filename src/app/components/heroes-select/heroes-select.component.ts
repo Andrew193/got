@@ -14,6 +14,7 @@ import {Unit} from "../../models/unit.model";
 })
 export class HeroesSelectComponent {
   @Input() title: string = '';
+  @Input() containerClass = '';
   @Input() allHeroes: Unit[] = [];
   @Input() isUser: boolean = false;
   @Input() addUserUnit: (unit: Unit, isUser?: boolean) => void = () => {

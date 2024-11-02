@@ -212,7 +212,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         this.attackUser(aiMove);
       } else {
         this.turnUser = true;
-        this.finishAiTurn(1, true, [])
+        this.finishAiTurn(true, [])
       }
     }
   }
@@ -254,14 +254,13 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     return this.gameActionService.getUserLeadingUnits.bind(this)(aiMove);
   }
 
-  finishAiTurn(interval: any, aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
-    clearInterval(interval);
+  finishAiTurn(aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
     //Update AI and user units arrays (update on ui and grid)
     this.fieldService.resetMoveAndAttack(this.getAiLeadingUnits(aiMove));
     this.fieldService.resetMoveAndAttack(this.getUserLeadingUnits(aiMove));
     //User's units take dmg from their debuffs
     for (let i = 0; i < this.getUserLeadingUnits(aiMove).length; i++) {
-      this.getUserLeadingUnits(aiMove)[i] = this.checkDebuffs(this.getUserLeadingUnits(aiMove)[i]);
+      this.getUserLeadingUnits(aiMove)[i] = this.checkDebuffs(this.getUserLeadingUnits(aiMove)[i], true, false);
     }
     usedAiSkills.forEach((config) => {
       const unitIndex = this.getUserLeadingUnits(aiMove).findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
@@ -362,11 +361,11 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     for (let i = 0; i < this.getAiLeadingUnits(aiMove).length; i++) {
       this.gameActionService.aiUnitAttack(i, this.getAiLeadingUnits(aiMove), this.battleMode, makeAiMove.bind(this), this.log)
     }
-    this.finishAiTurn(1, aiMove, usedAiSkills)
+    this.finishAiTurn(aiMove, usedAiSkills)
   }
 
-  checkDebuffs(unit: Unit, decreaseRestoreCooldown = true) {
-    const response = this.gameActionService.checkDebuffs(unit, decreaseRestoreCooldown, this.battleMode);
+  checkDebuffs(unit: Unit, decreaseRestoreCooldown = true, canRestoreHealth: boolean) {
+    const response = this.gameActionService.checkDebuffs(unit, decreaseRestoreCooldown, this.battleMode, canRestoreHealth);
     unit = response.unit;
     this.log.push(...response.log);
     return unit;

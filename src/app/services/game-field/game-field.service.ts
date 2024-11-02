@@ -28,8 +28,8 @@ export class GameFieldService extends AbstractFieldService {
     return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);
   }
 
-  getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number, defence: number }) {
-    const fixedDefence = this.gameActionService.getFixedDefence(config.defence, unitConfig.dmgTaker);
+  getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number}) {
+    const fixedDefence = this.gameActionService.getFixedDefence(unitConfig.dmgTaker.defence, unitConfig.dmgTaker);
     const fixedAttack = this.gameActionService.getFixedAttack(config.attack, unitConfig.attackDealer);
     const blockedDamage = fixedDefence * 0.4;
     if (blockedDamage - 200 > fixedAttack) {

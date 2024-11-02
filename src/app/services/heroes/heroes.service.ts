@@ -950,8 +950,6 @@ export class HeroesService extends ContentService {
           remainingCooldown: 0,
           debuffs: [],
           buffs: [],
-          passive: true,
-          restoreSkill: true,
           description: "Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафа" + this.effectsService.effects.bleeding + ". На этого героя невозможно наложить штраф "
             + this.effectsService.effects.burning + ". В начале игры получает бонус " + this.effectsService.effects.healthRestore + " до конца боя. Имеет шанс воскреснуть после смертельного удара."
         }
@@ -1011,10 +1009,10 @@ export class HeroesService extends ContentService {
     return units.map((unit) => this.getEquipmentForUnit(unit));
   }
 
-  getUnitByName(name: string, config: UnitConfig) {
+  getUnitByName(name: string, config?: UnitConfig) {
     const allUnits = this.getAllHeroes();
     const userUnit = allUnits.filter((unit) => unit.name === name)[0]
-    return this.getEquipmentForUnit({...userUnit, ...config});
+    return this.getEquipmentForUnit({...userUnit, ...(config || {})});
   }
 
   getBasicUserConfig() {

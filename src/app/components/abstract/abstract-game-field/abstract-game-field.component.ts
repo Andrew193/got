@@ -69,7 +69,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
 
   abstract attack(skill: Skill): void
 
-  abstract checkDebuffs(unit: Unit, decreaseRestoreCooldown: boolean): Unit
+  abstract checkDebuffs(unit: Unit, decreaseRestoreCooldown: boolean, canRestoreHealth: boolean): Unit
 
   universalRangeAttack(skill: Skill, clickedEnemy: Unit, enemiesArray: Unit[], userCheck: boolean, attacker: Unit) {
     if (skill.attackInRange) {
@@ -87,7 +87,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
   }
 
   makeAttackMove(enemyIndex: number, attack: number, defence: number, dmgTaker: Unit[], attackDealer: Unit, skill: Skill) {
-    const damage = this.abstractFieldS.getDamage({dmgTaker: dmgTaker[enemyIndex], attackDealer}, {defence, attack});
+    const damage = this.abstractFieldS.getDamage({dmgTaker: dmgTaker[enemyIndex], attackDealer}, {attack});
 
     if (dmgTaker[enemyIndex].health) {
       let newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);

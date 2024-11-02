@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeroesChooseComponent } from './heroes-choose.component';
+import { HeroesSelectPreviewComponent } from './heroes-select-preview.component';
 
 describe('HeroesChooseComponent', () => {
-  let component: HeroesChooseComponent;
-  let fixture: ComponentFixture<HeroesChooseComponent>;
+  let component: HeroesSelectPreviewComponent;
+  let fixture: ComponentFixture<HeroesSelectPreviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeroesChooseComponent]
+      imports: [HeroesSelectPreviewComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(HeroesChooseComponent);
+
+    fixture = TestBed.createComponent(HeroesSelectPreviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

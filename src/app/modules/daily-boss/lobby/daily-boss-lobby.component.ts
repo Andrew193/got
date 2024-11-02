@@ -6,9 +6,11 @@ import {SkillsRenderComponent} from "../../../components/skills-render/skills-re
 import {NgForOf, NgTemplateOutlet} from "@angular/common";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {createDeepCopy} from "../../../helpers";
-import {BossReward} from "../../../interface";
 import {Router} from "@angular/router";
 import {frontRoutes} from "../../../app.routes";
+import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
+import {DailyBossService} from "../../../services/daily-boss/daily-boss.service";
+import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-preview/heroes-select-preview.component";
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -18,99 +20,53 @@ import {frontRoutes} from "../../../app.routes";
     SkillsRenderComponent,
     NgForOf,
     TabsModule,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    HeroesSelectComponent,
+    HeroesSelectPreviewComponent
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss'
 })
 export class DailyBossLobbyComponent {
   selectedHero!: Unit;
+  chosenUnits: Unit[] = [];
   constructor(private heroesService: HeroesService,
-              private route: Router) {
+              private route: Router,
+              public dailyBossService: DailyBossService) {
     this.selectedHero = this.heroesService.getDailyBossVersion1();
   }
 
-  bossReward: {[key: number]: BossReward} = {
-    1: {
-      copper: 10000,
-      copperWin: 100000,
-      copperDMG: 2500,
-      silver: 100,
-      silverWin: 100,
-      silverDMG: 15000,
-      gold: 50,
-      goldWin: 50,
-      goldDMG: 35000,
-    },
-    2: {
-      copper: 30000,
-      copperWin: 300000,
-      copperDMG: 25000,
-      silver: 300,
-      silverWin: 1000,
-      silverDMG: 150000,
-      gold: 150,
-      goldWin: 300,
-      goldDMG: 350000,
-    },
-    3: {
-      copper: 90000,
-      copperWin: 1000000,
-      copperDMG: 150000,
-      silver: 900,
-      silverWin: 3000,
-      silverDMG: 200000,
-      gold: 450,
-      goldWin: 1000,
-      goldDMG: 500000,
-    },
-    4: {
-      copper: 300000,
-      copperWin: 2300000,
-      copperDMG: 250000,
-      silver: 3000,
-      silverWin: 5000,
-      silverDMG: 1000000,
-      gold: 1000,
-      goldWin: 3000,
-      goldDMG: 2000000,
+  public addUserUnit = (unit: Unit) => {
+    if (this.chosenUnits.findIndex((el) => el.name === unit.name) === -1 && this.chosenUnits.length < 5) {
+      this.chosenUnits.push(unit);
+    } else {
+      this.chosenUnits.splice(this.chosenUnits.findIndex((el) => el.name === unit.name), 1)
     }
+  }
+
+  public checkSelected = (unit: Unit) => {
+    return this.chosenUnits.findIndex((el) => el.name === unit.name) !== -1
+  }
+
+  get bossReward() {
+    return this.dailyBossService.bossReward;
   }
 
   upBoss(version: number) {
-    const versions:{[key: number]: any} = {
-      1: {},
-      2: {
-        level: 20,
-        rank: 2,
-        eq1Level: 50,
-        eq2Level: 50,
-        eq3Level: 50,
-        eq4Level: 50,
-      },
-      3: {
-        level: 40,
-        rank: 4,
-        eq1Level: 100,
-        eq2Level: 100,
-        eq3Level: 100,
-        eq4Level: 100,
-      },
-      4: {
-        level: 60,
-        rank: 6,
-        eq1Level: 200,
-        eq2Level: 200,
-        eq3Level: 200,
-        eq4Level: 200,
-      }
-    }
-    const copy = createDeepCopy({...this.selectedHero, ...versions[version]});
+    const levelConfig = this.dailyBossService.uppBoss(version);
 
-    return this.heroesService.getEquipmentForUnit(copy)
+    return this.heroesService.getEquipmentForUnit(createDeepCopy({...this.selectedHero, ...levelConfig}))
   }
 
   openFight(bossLevel: number) {
-    this.route.navigateByUrl(frontRoutes.dailyBoss + "/" + frontRoutes.dailyBossBattle + `/${bossLevel}`)
+    this.route.navigate([frontRoutes.dailyBoss,frontRoutes.dailyBossBattle,bossLevel], {
+      queryParams: {
+        units: this.chosenUnits.map((el)=>el.name)
+      }
+    })
+  }
+
+  get allHeroes() {
+    return this.heroesService.getAllHeroes();
   }
 }

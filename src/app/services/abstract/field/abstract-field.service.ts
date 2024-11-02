@@ -29,10 +29,7 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     return this.gameConfig;
   }
 
-  abstract getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: {
-    attack: number,
-    defence: number
-  }): number
+  abstract getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number }): number
 
   getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);

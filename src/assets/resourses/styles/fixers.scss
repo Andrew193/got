@@ -50,3 +50,7 @@
 .panel-title .accordion-toggle {
   padding: 0;
 }
+
+.border-radius-none, .border-radius-none > div {
+  border-radius: 0!important;
+}

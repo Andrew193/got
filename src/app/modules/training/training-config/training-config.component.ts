@@ -5,7 +5,7 @@ import {frontRoutes} from "../../../app.routes";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
-import {HeroesChooseComponent} from "../../../components/heroes-choose/heroes-choose.component";
+import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-preview/heroes-select-preview.component";
 import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
 
 @Component({
@@ -14,7 +14,7 @@ import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-se
   imports: [
     CommonModule,
     TooltipModule,
-    HeroesChooseComponent,
+    HeroesSelectPreviewComponent,
     HeroesSelectComponent
   ],
   templateUrl: './training-config.component.html',

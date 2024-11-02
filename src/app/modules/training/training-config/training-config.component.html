@@ -37,12 +37,12 @@
 
 <ng-template #selectedUnitsBar let-units="units" let-title="title" let-user="user">
   <div class="col-lg-6 col-md-12">
-    <heroes-choose
+    <heroes-select-preview
       [units]="units"
       [title]="title"
       [user]="user"
       [toggleDescription]="toggleDescription"
       [getDescriptionState]="getDescriptionState"
-    ></heroes-choose>
+    ></heroes-select-preview>
   </div>
 </ng-template>
