@@ -43,13 +43,13 @@ export class LoginPageComponent implements OnInit {
 
   submit() {
     this.validationService.validateFormAndSubmit(this.form, () => {
-      this.usersService.login(this.form.value as User, (user: User) => {
+      this.usersService.login(this.form.value as User, (user) => {
         this.form.enable();
         this.localStorageService.setItem(this.usersService.userToken, user);
         this.router.navigate([frontRoutes.base]);
       })
     }, () => {
-      this.usersService.createUser(this.form.value as User, (user: User) => {
+      this.usersService.createUser(this.form.value, (user: User) => {
         this.form.enable();
         this.localStorageService.setItem(this.usersService.userToken, user);
         this.router.navigate([frontRoutes.base]);

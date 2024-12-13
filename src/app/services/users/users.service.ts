@@ -1,14 +1,21 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {map, Observable, tap} from "rxjs";
+import {map, tap} from "rxjs";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {Router} from "@angular/router";
 import {frontRoutes} from "../../app.routes";
 
+export interface Currency {
+  gold: number,
+  silver: number,
+  cooper: number
+}
+
 export interface User {
   id: string,
-  login: string,
-  password: string
+  login: string | null | undefined,
+  password: string | null | undefined,
+  currency: Currency
 }
 
 @Injectable({
@@ -23,9 +30,20 @@ export class UsersService {
               private localStorage: LocalStorageService) {
   }
 
-  createUser(user: User, callback = (user: User) => {
+  basicUser(user: Partial<User>): User {
+    return {
+      ...user,
+      currency: {
+        gold: 300,
+        silver: 1000,
+        cooper: 15000
+      }
+    } as User
+  }
+
+  createUser(user: Partial<User>, callback = (user: User) => {
   }) {
-    this.http.post<User>(this.url, user).pipe(tap({
+    this.http.post<User>(this.url, this.basicUser(user)).pipe(tap({
       next: (user) => {
         callback(user);
       },
@@ -35,23 +53,28 @@ export class UsersService {
     })).subscribe();
   }
 
-  login(user: User, callback = (user: User) => {
+  login(user: Partial<User>, callback = (user: Partial<User> | []) => {
   }) {
-    this.http.get<User>(this.url, {
-      params: {...user}
-    }).pipe(tap({
-      next: (user) => {
-        callback(user);
-      },
-      error: (error) => {
-        console.log(error)
-        this.router.navigate([frontRoutes.login])
+    debugger
+    this.http.get<Partial<User[]>>(this.url, {
+      params: {
+        login: `${user.login}`,
+        password: `${user.password}`
       }
-    })).subscribe();
+    })
+      .pipe(tap({
+        next: (user) => {
+          callback(user[0] || []);
+        },
+        error: (error) => {
+          console.log(error)
+          this.router.navigate([frontRoutes.login])
+        }
+      })).subscribe();
   }
 
   doesUserExist() {
-    const user = (this.localStorage.getItem(this.userToken)[0] as User | undefined);
+    const user = (this.localStorage.getItem(this.userToken) as User | undefined);
     return this.http.get<any>(this.url, {
       params: {
         login: user?.login || '',

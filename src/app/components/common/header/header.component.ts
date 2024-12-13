@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PopoverModule} from "ngx-bootstrap/popover";
-import {UsersService} from "../../../services/users/users.service";
+import {User, UsersService} from "../../../services/users/users.service";
+import {LocalStorageService} from "../../../services/localStorage/local-storage.service";
 
 @Component({
   selector: 'header',
@@ -11,8 +12,18 @@ import {UsersService} from "../../../services/users/users.service";
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
-  constructor(private usersService: UsersService) {
+export class HeaderComponent implements OnInit {
+  user!: User;
+  constructor(private usersService: UsersService,
+              private localStorageService: LocalStorageService) {
+  }
+
+  ngOnInit() {
+    this.user = this.localStorageService.getItem(this.usersService.userToken);
+  }
+
+  get currency() {
+    return this.user.currency;
   }
 
   logOut() {

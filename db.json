@@ -9,15 +9,25 @@
       "id": "2ac5",
       "login": "test",
       "password": "test"
+    },
+    {
+      "id": "e046",
+      "login": "rest",
+      "password": "rest",
+      "currency": {
+        "gold": 300,
+        "silver": 1000,
+        "cooper": 15000
+      }
     }
   ],
   "dailyReward": [
     {
       "id": "6fe2",
       "userId": "2ac5",
-      "day": 24,
-      "totalDays": 24,
-      "lastLogin": "10/29/2024"
+      "day": 25,
+      "totalDays": 25,
+      "lastLogin": "12/13/2024"
     }
   ],
   "giftTrip": [
