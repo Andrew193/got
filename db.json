@@ -28,6 +28,13 @@
       "day": 25,
       "totalDays": 25,
       "lastLogin": "12/13/2024"
+    },
+    {
+      "id": "ab59",
+      "userId": "e046",
+      "day": 2,
+      "totalDays": 2,
+      "lastLogin": "12/24/2024"
     }
   ],
   "giftTrip": [
@@ -35,6 +42,11 @@
       "id": "6fe2",
       "userId": "2ac5",
       "lastVist": "10/29/2024"
+    },
+    {
+      "id": "16b0",
+      "userId": "e046",
+      "lastVist": "12/24/2024"
     }
   ]
 }

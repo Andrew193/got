@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UnitWithReward} from "../../interface";
+import {GiftConfig, UnitWithReward} from "../../interface";
 import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {NgIf} from "@angular/common";
@@ -7,7 +7,7 @@ import {NpcService} from "../../services/npc/npc.service";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
 import {DisplayRewardComponent} from "../display-reward/display-reward.component";
 import {Router, RouterLink} from "@angular/router";
-import {GiftConfig, GiftService} from "../../services/gift/gift.service";
+import {GiftService} from "../../services/gift/gift.service";
 import moment from "moment/moment";
 import {Unit} from "../../models/unit.model";
 
@@ -56,9 +56,9 @@ export class GiftStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.giftService.getGiftRewardConfig((config) => {
-      this.giftConfig = config;
-      if (this.giftConfig.lastVist === moment().format("MM/DD/YYYY")) {
+    this.giftService.getGiftRewardConfig((config, userId) => {
+      this.giftConfig = {...(config || {}), userId};
+      if (this.giftConfig.lastVist && this.giftConfig.lastVist === moment().format("MM/DD/YYYY")) {
         this.collectAndLeave();
       }
     });

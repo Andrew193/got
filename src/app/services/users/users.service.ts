@@ -55,7 +55,6 @@ export class UsersService {
 
   login(user: Partial<User>, callback = (user: Partial<User> | []) => {
   }) {
-    debugger
     this.http.get<Partial<User[]>>(this.url, {
       params: {
         login: `${user.login}`,

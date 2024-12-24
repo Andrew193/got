@@ -59,6 +59,10 @@
     padding: 3px;
     border-radius: 3px;
     box-shadow: $box-shadow;
+
+    &:last-of-type {
+      margin-bottom: 0px;
+    }
   }
 
   .description-bar {

@@ -5,10 +5,11 @@ import {HeroesService} from "../../services/heroes/heroes.service";
 import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {StatsComponent} from "../stats/stats.component";
-import {DailyReward, DailyRewardService} from "../../services/daily-reward/daily-reward.service";
+import {DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
 import {Unit} from "../../models/unit.model";
 import {ContextMenuTriggerDirective} from "../../directives/context-menu-trigger/context-menu-trigger.directive";
+import {DailyReward} from "../../interface";
 
 interface DayReward {
   copperCoin: number,
@@ -55,8 +56,8 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.rewardHero = this.heroService.getPriest();
-    this.dailyRewardService.getDailyRewardConfig((config) => {
-      this.dailyRewardConfig = config;
+    this.dailyRewardService.getDailyRewardConfig((config, userId) => {
+      this.dailyRewardConfig = {...(config || this.dailyRewardConfig), userId};
       this.month = this.monthReward;
     });
   }
@@ -69,7 +70,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
         totalDays: this.dailyRewardConfig.totalDays + 1,
         lastLogin: moment().format("MM/DD/YYYY")
       }, (newConfig) => {
-        this.dailyRewardConfig = newConfig;
+        this.dailyRewardConfig = newConfig as DailyReward;
       })
     }
   }
@@ -105,7 +106,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   get monthReward(): DayReward[] {
     const rewards = [];
     for (let i = 0; i < 4; i++) {
-      rewards.push(...this.getWeekReward(i + 1, i + 1, i + 1, i + 1, i + 1, this.dailyRewardConfig.totalDays))
+      rewards.push(...this.getWeekReward(i + 1, i + 1, i + 1, i + 1, i + 1, this.dailyRewardConfig.totalDays || 1))
     }
     return rewards;
   }

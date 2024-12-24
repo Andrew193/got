@@ -44,11 +44,9 @@ export class GameService {
     // Simplified decision logic
     let canGetToUnit;
     if (isWithinCanCrossLimit && !isAtAttackRange) {
-      if (aiUnit.canCross === 0) {
-        canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
-      } else {
-        canGetToUnit = shortestPathToUserUnit[canCrossLimit - 1];
-      }
+      canGetToUnit = aiUnit.canCross === 0
+        ? this.unitService.getPositionFromUnit(aiUnit)
+        : shortestPathToUserUnit[canCrossLimit - 1]
     } else if (isAttackRangeOrCannotCross) {
       if (!!aiUnit.canCross && shortestPathToUserUnit.length === 1 && aiUnit.attackRange > shortestPathToUserUnit.length) {
         canGetToUnit = isAtAttackRange ? this.unitService.getPositionFromUnit(aiUnit) : shortestPathToUserUnit[0];
@@ -56,7 +54,10 @@ export class GameService {
         canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
       }
     } else {
-      canGetToUnit = shortestPathToUserUnit[0];
+      const canCross = this.getCanCross(aiUnit);
+      canGetToUnit = canCross === 0
+        ? this.unitService.getPositionFromUnit(aiUnit)
+        : shortestPathToUserUnit[canCross - 1] || shortestPathToUserUnit[0]
     }
     if (userUnitPosition && !shortestPathToUserUnit.length) {
       canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
@@ -180,7 +181,7 @@ export class GameService {
     unit.effects.forEach((effect: Effect, i, array) => {
       if (effect.duration > 0) {
         if (effect.restore) {
-          if(checkHealthRestore) {
+          if (checkHealthRestore) {
             array[i] = {...effect, duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration}
             this.checkEffectsForHealthRestore(unit, log);
           }

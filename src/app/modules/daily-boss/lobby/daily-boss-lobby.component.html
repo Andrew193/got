@@ -28,7 +28,7 @@
 
 <ng-template #bossTemplate let-bossLevel="bossLevel">
   <div class="m-1 row">
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-12 col-sm-12">
       <stats [selectedHero]="upBoss(bossLevel)"></stats>
       <div class="skills-container p-2 mb-2 mt-1">
         <h5 class="text-center">Reward</h5>
@@ -36,35 +36,43 @@
           <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward"/>
           <div class="ps-2">
             <p class="mb-0">
-              <span class="copper">{{bossReward[bossLevel].copper}} (+ {{bossReward[bossLevel].copperWin}} kill reward )</span>
-              <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span class="highlight-effect">{{bossReward[bossLevel].copperDMG}}</span> DMG.
+              <span class="copper">{{ bossReward[bossLevel].copper }} (+ {{ bossReward[bossLevel].copperWin }} kill reward )</span>
+              <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span
+              class="highlight-effect">{{ bossReward[bossLevel].copperDMG }}</span> DMG.
             </p>
             <p class="mb-0">
-              <span class="silver">{{bossReward[bossLevel].silver}} (+ {{bossReward[bossLevel].silverWin}} kill reward )</span>
-              <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span class="highlight-effect">{{bossReward[bossLevel].silverDMG}}</span> DMG.
+              <span class="silver">{{ bossReward[bossLevel].silver }} (+ {{ bossReward[bossLevel].silverWin }} kill reward )</span>
+              <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span
+              class="highlight-effect">{{ bossReward[bossLevel].silverDMG }}</span> DMG.
             </p>
             <p class="mb-0">
-              <span class="gold">{{bossReward[bossLevel].gold}} (+ {{bossReward[bossLevel].goldWin}} kill reward )</span>
-              <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span class="highlight-effect">{{bossReward[bossLevel].goldDMG}}</span> DMG.
+              <span class="gold">{{ bossReward[bossLevel].gold }} (+ {{ bossReward[bossLevel].goldWin }}
+                kill reward )</span>
+              <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span
+              class="highlight-effect">{{ bossReward[bossLevel].goldDMG }}</span> DMG.
             </p>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 col-sm-12">
-      <heroes-select
-        [allHeroes]="allHeroes"
-        [isUser]="true"
-        [containerClass]="'border-radius-none border-end-0'"
-        [addUserUnit]="addUserUnit"
-        [checkSelected]="checkSelected"
-      ></heroes-select>
-      <div class="mb-1"></div>
-      <heroes-select-preview
-        [units]="chosenUnits"
-        [containerClass]="'border-radius-none border-end-0'"
-        [user]="true"
-      ></heroes-select-preview>
+    <div class="col-lg-12 col-sm-12 d-flex">
+      <div class="col-lg-6 col-sm-12">
+        <heroes-select
+          [allHeroes]="allHeroes"
+          [isUser]="true"
+          [containerClass]="'border-radius-none border-end-0'"
+          [addUserUnit]="addUserUnit"
+          [checkSelected]="checkSelected"
+        ></heroes-select>
+      </div>
+      <div class="col-lg-6 col-sm-12">
+        <heroes-select-preview
+          *ngIf="chosenUnits.length"
+          [units]="chosenUnits"
+          [containerClass]="'border-radius-none border-end-0'"
+          [user]="true"
+        ></heroes-select-preview>
+      </div>
     </div>
     <div class="mt-2">
       <button class="btn btn-danger d-block w-100" (click)="openFight(bossLevel)">Fight</button>

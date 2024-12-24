@@ -3,26 +3,23 @@ import {HttpClient} from "@angular/common/http";
 import {User, UsersService} from "../users/users.service";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {tap} from "rxjs";
-
-export interface GiftConfig {
-  id: string,
-  userId: string,
-  lastVist: string
-}
+import {ApiService} from "../abstract/api/api.service";
+import {GiftConfig, IdEntity} from "../../interface";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GiftService {
+export class GiftService extends ApiService {
   url = "/giftTrip";
 
-  constructor(private http: HttpClient,
+  constructor(http: HttpClient,
               private userService: UsersService,
               private localStorageService: LocalStorageService) {
+    super(http);
   }
 
-  getGiftRewardConfig(callback: (config: GiftConfig) => void) {
-    const [user] = this.localStorageService.getItem(this.userService.userToken) as User[];
+  getGiftRewardConfig(callback: (config: GiftConfig, userId: string) => void) {
+    const user = this.localStorageService.getItem(this.userService.userToken) as User;
 
     this.http.get<GiftConfig[]>(this.url, {
       params: {
@@ -30,7 +27,7 @@ export class GiftService {
       }
     }).pipe(tap({
       next: (giftConfig) => {
-        callback(giftConfig[0]);
+        callback(giftConfig[0], user.id);
       },
       error: (error) => {
         console.log(error)
@@ -38,14 +35,7 @@ export class GiftService {
     })).subscribe();
   }
 
-  claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: GiftConfig) => void) {
-    this.http.put<GiftConfig>(this.url + `/${giftConfig.id}`, giftConfig).pipe(tap({
-      next: (giftConfigConfig) => {
-        callback(giftConfigConfig);
-      },
-      error: (error) => {
-        console.log(error)
-      }
-    })).subscribe();
+  claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {
+    this.putPostCover(giftConfig, {url: this.url, callback});
   }
 }

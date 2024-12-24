@@ -12,6 +12,22 @@ export interface LogRecord {
   imgSrc: string
 }
 
+export interface IdEntity {
+  id?: string
+}
+
+export interface DailyReward extends IdEntity {
+  userId: string,
+  day: number,
+  totalDays: number,
+  lastLogin: string
+}
+
+export interface GiftConfig extends IdEntity {
+  userId: string,
+  lastVist: string
+}
+
 export class GameFieldVars {
   gameField: Tile[][] = [];
   gameConfig: any[][] = [];

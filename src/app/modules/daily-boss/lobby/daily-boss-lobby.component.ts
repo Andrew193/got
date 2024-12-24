@@ -3,7 +3,7 @@ import {StatsComponent} from "../../../components/stats/stats.component";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Unit} from "../../../models/unit.model";
 import {SkillsRenderComponent} from "../../../components/skills-render/skills-render.component";
-import {NgForOf, NgTemplateOutlet} from "@angular/common";
+import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {createDeepCopy} from "../../../helpers";
 import {Router} from "@angular/router";
@@ -22,7 +22,8 @@ import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-pr
     TabsModule,
     NgTemplateOutlet,
     HeroesSelectComponent,
-    HeroesSelectPreviewComponent
+    HeroesSelectPreviewComponent,
+    NgIf
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss'
