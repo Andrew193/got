@@ -70,24 +70,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   bottom: 0;
   width: 100%;
   height: 100%;
+  filter: drop-shadow(2px 4px 6px rgba(255, 0, 255, 0.6));
 }
 
 .glow-box {
   transition: all ease 0.5s;
   min-height: 650px;
-
-  &:hover {
-    box-shadow:
-      inset 0 0 50px rgba(255, 255, 255, 0.6),      /* inner white */
-      inset 20px 0 80px rgba(255, 0, 255, 0.6),   /* inner left magenta short */
-      inset -20px 0 80px rgba(0, 255, 255, 0.6),  /* inner right cyan short */
-      inset 20px 0 300px rgba(255, 0, 255, 0.6),  /* inner left magenta broad */
-      inset -20px 0 300px rgba(0, 255, 255, 0.6), /* inner right cyan broad */
-      0 0 50px rgba(255, 255, 255, 0.6),            /* outer white */
-      -10px 0 80px rgba(255, 0, 255, 0.6),        /* outer left magenta */
-      10px 0 80px rgba(0, 255, 255, 0.6);         /* outer right cyan */
-  }
-
   position: absolute;
   cursor: pointer;
   bottom: 0;
@@ -95,15 +83,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   left: 14%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
-  box-shadow:
-    inset 0 0 50px rgba(255, 255, 255, 0.3),      /* inner white */
-    inset 20px 0 80px rgba(255, 0, 255, 0.3),   /* inner left magenta short */
-    inset -20px 0 80px rgba(0, 255, 255, 0.3),  /* inner right cyan short */
-    inset 20px 0 300px rgba(255, 0, 255, 0.3),  /* inner left magenta broad */
-    inset -20px 0 300px rgba(0, 255, 255, 0.3), /* inner right cyan broad */
-    0 0 50px rgba(255, 255, 255, 0.3),            /* outer white */
-    -10px 0 80px rgba(255, 0, 255, 0.3),        /* outer left magenta */
-    10px 0 80px rgba(0, 255, 255, 0.3);         /* outer right cyan */
 }
 
 .copper {
@@ -271,10 +250,6 @@ a.fake-link {
 }
 
 .skills-container {
-  background: $background-color-main;
-  box-shadow: $box-shadow-out;
-  border-radius: 5px;
-
   img {
     width: 100px;
     height: 100px;

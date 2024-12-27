@@ -454,6 +454,7 @@ export class HeroesService extends ContentService {
           remainingCooldown: 0,
           attackInRange: true,
           attackInRangeM: 0,
+          attackRange: 20,
           debuffs: [this.effectsService.getPoison(), this.effectsService.getRoot()],
           inRangeDebuffs: [this.effectsService.getAttackBreak()],
           description: "Наносит противнику урон в размере 190% от показателя атаки, накладывает штраф " + this.effectsService.effects.poison + " на 2 ходa. "
