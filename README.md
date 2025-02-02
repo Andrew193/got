@@ -1,5 +1,8 @@
 # GameOfThrones
 
+To start this app you need to run server and UI.
+`npm run server` and after this `npm start`
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.0.
 
 ## Development server

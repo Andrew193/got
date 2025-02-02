@@ -7,6 +7,7 @@
 @import "assets/resourses/styles/common";
 @import "assets/resourses/styles/general-game-bed-styles";
 @import "assets/resourses/styles/pagination-override";
+@import "assets/resourses/styles/tablist";
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -47,6 +48,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   min-width: 100px;
   margin-bottom: 3px;
   flex: 1;
+  padding: 10px;
 
   img {
     height: 30px;
@@ -58,6 +60,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     align-items: center;
     margin: 5px;
     justify-content: center;
+    &.d-inline {
+      flex-basis: 100px;
+    }
   }
   span {
     height: fit-content;

@@ -31,6 +31,13 @@ import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-pr
 export class DailyBossLobbyComponent {
   selectedHero!: Unit;
   chosenUnits: Unit[] = [];
+  config: {level: number, heading: string}[] = [
+    {level:1, heading: 'Super Easy'},
+    {level:2, heading: 'Easy'},
+    {level:3, heading:'Medium'},
+    {level:4, heading:'Hard'}
+  ];
+
   constructor(private heroesService: HeroesService,
               private route: Router,
               public dailyBossService: DailyBossService) {

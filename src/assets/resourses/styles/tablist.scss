@@ -1,0 +1,22 @@
+.nav-tabs {
+  a.active {
+    font-weight: bold;
+  }
+
+  a {
+    padding: 5px 10px;
+  }
+
+  .nav-item {
+    &:first-of-type a {
+    border-top-left-radius: 10px;
+    }
+    &:last-of-type a {
+      border-top-right-radius: 10px;
+    }
+  }
+}
+
+.tab-pane {
+  background: #8080808f;
+}
