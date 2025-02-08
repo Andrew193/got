@@ -74,11 +74,11 @@ export class UsersService {
       })).subscribe();
   }
 
-  updateCurrency(newCurrency: Currency) {
+  updateCurrency(newCurrency: Currency, returnObs = false) {
     const apiService = this.injector.get(ApiService);
     const user = this.localStorage.getItem(this.userToken) as User;
 
-    apiService.putPostCover({...user, currency: {
+    return apiService.putPostCover({...user, currency: {
           gold: newCurrency.gold + user.currency.gold,
           silver: newCurrency.silver + user.currency.silver,
           cooper: newCurrency.cooper + user.currency.cooper
@@ -87,7 +87,8 @@ export class UsersService {
         url: this.url,
         callback: (res) => {
           this.localStorage.setItem(this.localStorage.names.user, res);
-        }
+        },
+        returnObs: returnObs
       })
   }
 

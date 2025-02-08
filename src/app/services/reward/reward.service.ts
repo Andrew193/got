@@ -23,7 +23,7 @@ export interface RewardLoot {
 })
 export class RewardService {
     rewardNames = {
-        copper: "Copper",
+        cooper: "Cooper",
         silver: "Silver",
         shards: "Shards",
         gold: "Gold",
@@ -31,7 +31,7 @@ export class RewardService {
     }
 
     rewardLoot: RewardLoot[] = [
-        {name: this.rewardNames.copper, min: 10000, max: 40000},
+        {name: this.rewardNames.cooper, min: 10000, max: 40000},
         {name: this.rewardNames.silver, min: 50, max: 500},
         {name: this.rewardNames.shards, min: 1, max: 10},
         {name: this.rewardNames.gold, min: 20, max: 50},
@@ -72,7 +72,7 @@ export class RewardService {
 
     getLootForReward(item: Reward): DisplayReward {
         const loot = this.rewardLoot.filter((reward) => reward.name === item.name)[0];
-        if (item.name === this.rewardNames.copper) {
+        if (item.name === this.rewardNames.cooper) {
             return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: "assets/resourses/imgs/copper.png"}
         } else if (item.name === this.rewardNames.silver) {
             return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: "assets/resourses/imgs/silver.png"}

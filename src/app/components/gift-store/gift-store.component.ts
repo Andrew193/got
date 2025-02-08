@@ -10,6 +10,8 @@ import {Router, RouterLink} from "@angular/router";
 import {GiftService} from "../../services/gift/gift.service";
 import moment from "moment/moment";
 import {Unit} from "../../models/unit.model";
+import {Currency, UsersService} from "../../services/users/users.service";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-gift-store',
@@ -38,6 +40,7 @@ export class GiftStoreComponent implements OnInit {
 
   constructor(private npcService: NpcService,
               private giftService: GiftService,
+              private usersService: UsersService,
               private rewardService: RewardService,
               private router: Router) {
 
@@ -65,12 +68,33 @@ export class GiftStoreComponent implements OnInit {
   }
 
   collectAndLeave() {
-    this.giftService.claimGiftReward({
-      ...this.giftConfig,
-      lastVist: moment().format("MM/DD/YYYY")
-    }, () => {
-      this.router.navigateByUrl('/')
+    const reward: Currency = {
+      gold: 0,
+      silver: 0,
+      cooper: 0
+    }
+
+    const chestsReward = this.loot.filter((el)=>el?.name === 'Chest').map(()=>this.npcService.getChestReward());
+    const otherRewards = this.loot.filter((el)=>el?.name !== 'Chest');
+    const allRewards = [...chestsReward, ...otherRewards].filter((el)=>!!el) as DisplayReward[];
+
+    allRewards.forEach((el) => {
+      const name = (el.name[0].toLowerCase() + el.name.slice(1)) as 'gold' | 'silver' | 'cooper';
+      reward[name] = reward[name] + el.amount;
     })
+
+    const newCurrency = this.usersService.updateCurrency(reward, true) as Observable<any>
+
+    newCurrency.pipe(tap({
+      next: () => {
+        this.giftService.claimGiftReward({
+          ...this.giftConfig,
+          lastVist: moment().format("MM/DD/YYYY")
+        }, () => {
+          this.router.navigateByUrl('/')
+        })
+      }
+    })).subscribe();
   }
 
   public gameResultsRedirect = (realAiUnits: Unit[]) => {

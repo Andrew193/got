@@ -22,7 +22,7 @@ export class SummonTreeComponent implements RewardComponent {
   rewards: DisplayReward[] = [];
 
   items = [
-    {name: this.rewardService.rewardNames.copper, probability: 0.70},
+    {name: this.rewardService.rewardNames.cooper, probability: 0.70},
     {name: this.rewardService.rewardNames.silver, probability: 0.45},
     {name: this.rewardService.rewardNames.shards, probability: 0.20},
     {name: this.rewardService.rewardNames.gold, probability: 0.01},

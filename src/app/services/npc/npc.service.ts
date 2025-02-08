@@ -10,7 +10,7 @@ import {Unit} from "../../models/unit.model";
 export class NpcService implements RewardComponent{
 
   items: Reward[] = [
-    {name: this.rewardService.rewardNames.copper, probability: 0.70},
+    {name: this.rewardService.rewardNames.cooper, probability: 0.70},
     {name: this.rewardService.rewardNames.chest, probability: 0.30},
   ];
 
@@ -18,6 +18,12 @@ export class NpcService implements RewardComponent{
     {name: this.rewardService.rewardNames.gold, probability: 0.20},
     {name: this.rewardService.rewardNames.chest, probability: 0.30},
     {name: this.rewardService.rewardNames.silver, probability: 0.50},
+  ];
+
+  chestItems: Reward[] = [
+    {name: this.rewardService.rewardNames.gold, probability: 0.40},
+    {name: this.rewardService.rewardNames.cooper, probability: 0.20},
+    {name: this.rewardService.rewardNames.silver, probability: 0.40},
   ];
 
   rewards: DisplayReward[] = [];
@@ -28,6 +34,10 @@ export class NpcService implements RewardComponent{
 
   getSpecialGiftReward() {
     return this.rewardService.getReward(1, this.specialGiftItems)[0]
+  }
+
+  getChestReward() {
+    return this.rewardService.getReward(1, this.chestItems)[0]
   }
 
   getGiftNPC() {
