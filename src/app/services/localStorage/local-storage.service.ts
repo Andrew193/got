@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {BehaviorSubject} from "rxjs";
 
 function isJsonString(jsonString: string) {
   try {
@@ -18,6 +19,9 @@ export class LocalStorageService {
     user: "user"
   }
 
+  updateLocalStorage = new BehaviorSubject(new Date().getMilliseconds());
+  updateLocalStorage$ = this.updateLocalStorage.asObservable();
+
   constructor() {
   }
 
@@ -32,6 +36,7 @@ export class LocalStorageService {
   setItem(key: string, value: any) {
     const valueToSet = typeof value === "object" ? JSON.stringify(value) : value;
     localStorage.setItem(this.getToken(key), valueToSet);
+    this.updateLocalStorage.next(new Date().getMilliseconds());
   }
 
   removeItem(key: string) {

@@ -10,6 +10,7 @@ import moment from "moment";
 import {Unit} from "../../models/unit.model";
 import {ContextMenuTriggerDirective} from "../../directives/context-menu-trigger/context-menu-trigger.directive";
 import {DailyReward} from "../../interface";
+import {UsersService} from "../../services/users/users.service";
 
 interface DayReward {
   copperCoin: number,
@@ -44,6 +45,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(public heroService: HeroesService,
               private dailyRewardService: DailyRewardService,
+              public usersService: UsersService,
               private render2: Renderer2) {
     this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
     this.month = this.monthReward;
@@ -62,7 +64,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  claimReward() {
+  claimReward(reward: DayReward) {
     if(this.dailyRewardConfig.lastLogin !== moment().format("MM/DD/YYYY")) {
       this.dailyRewardService.claimDailyReward({
         ...this.dailyRewardConfig,
@@ -70,6 +72,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
         totalDays: this.dailyRewardConfig.totalDays + 1,
         lastLogin: moment().format("MM/DD/YYYY")
       }, (newConfig) => {
+        this.usersService.updateCurrency({cooper: reward.copperCoin || 0, silver: reward.silverCoin || 0, gold: reward.goldCoin || 0})
         this.dailyRewardConfig = newConfig as DailyReward;
       })
     }

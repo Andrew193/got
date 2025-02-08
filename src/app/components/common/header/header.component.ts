@@ -20,6 +20,10 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.localStorageService.getItem(this.usersService.userToken);
+
+    this.localStorageService.updateLocalStorage$.subscribe(() => {
+      this.user = this.localStorageService.getItem(this.usersService.userToken);
+    })
   }
 
   get currency() {

@@ -13,7 +13,8 @@ export interface LogRecord {
 }
 
 export interface IdEntity {
-  id?: string
+  id?: string,
+  [key: string]: any
 }
 
 export interface DailyReward extends IdEntity {

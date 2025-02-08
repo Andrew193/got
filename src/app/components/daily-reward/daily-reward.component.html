@@ -13,7 +13,7 @@
       <div *ngIf="!isHeroPreview" class="flex-row">
         <ng-container *ngFor="let reward of month; let i = index">
           <div class="p-1" style="width: 14.28%">
-            <div class="reward d-flex flex-column p-2" [ngClass]="{'today': +(dailyRewardConfig.day || 1) === i+1}" (click)="claimReward()">
+            <div class="reward d-flex flex-column p-2" [ngClass]="{'today': +(dailyRewardConfig.day || 1) === i+1}" (click)="claimReward(reward)">
               <span class="text-center mb-1 fw-bold">День {{i + 1}}</span>
               <span class="copper fw-bold">
                                 <img src="assets/resourses/imgs/copper.png"
