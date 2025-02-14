@@ -263,7 +263,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.fieldService.resetMoveAndAttack(this.getUserLeadingUnits(aiMove));
     //User's units take dmg from their debuffs
     for (let i = 0; i < this.getUserLeadingUnits(aiMove).length; i++) {
-      this.getUserLeadingUnits(aiMove)[i] = this.checkDebuffs(this.getUserLeadingUnits(aiMove)[i], true, false);
+      this.getUserLeadingUnits(aiMove)[i] = this.checkDebuffs(this.getUserLeadingUnits(aiMove)[i], true, true);
     }
     usedAiSkills.forEach((config) => {
       const unitIndex = this.getUserLeadingUnits(aiMove).findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
