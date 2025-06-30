@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DebuffsBarComponent } from './debuffs-bar.component';
+import {DebuffsBarComponent} from './debuffs-bar.component';
 
 describe('DebuffsBarComponent', () => {
   let component: DebuffsBarComponent;
@@ -10,8 +10,8 @@ describe('DebuffsBarComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DebuffsBarComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DebuffsBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

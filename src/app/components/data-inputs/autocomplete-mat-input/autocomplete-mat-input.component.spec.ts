@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AutocompleteMatInputComponent } from './autocomplete-mat-input.component';
+import {AutocompleteMatInputComponent} from './autocomplete-mat-input.component';
 
 describe('TextInputComponent', () => {
   let component: AutocompleteMatInputComponent;
@@ -10,7 +10,7 @@ describe('TextInputComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AutocompleteMatInputComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AutocompleteMatInputComponent);
     component = fixture.componentInstance;

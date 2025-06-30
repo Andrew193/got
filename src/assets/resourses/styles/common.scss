@@ -1,35 +1,61 @@
 @import "./vars";
 
-.hero-card {
-  cursor: pointer;
-  text-align: center;
-  background: $background-color-main;
-  box-shadow: $box-shadow;
+$columns: 100;
+
+@for $i from 1 through $columns {
+  .w-#{$i} {
+    width: (1% * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  .pr-#{$i} {
+    padding-right: (1px * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  .w-#{$i}-i {
+    width: (1% * $i) !important;
+  }
+}
+
+@for $i from 1 through $columns {
+  #w-#{$i} {
+    width: (1% * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  #w-#{$i}-i {
+    width: (1% * $i) !important;
+  }
+}
+
+@for $i from 1 through $columns {
+  .h-#{$i} {
+    height: (1% * $i);
+  }
+}
+
+@for $i from 1 through $columns {
+  .h-#{$i}-i {
+    height: (1% * $i) !important;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+  flex-direction: row !important;
+
+  .pr-lg {
+    padding-right: 15px;
+  }
+}
+
+a.fake-link {
   color: white !important;
-  transition: background-color ease 0.5s;
-  position: relative;
-
-  .level {
-    position: absolute;
-    left: 0px;
-    .level_rank {
-      height: 50px;
-      width: 50px;
-    }
-    span {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-    }
-  }
-
-  img {
-    width: 80%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &:hover {
-    background: $background-color-main-hover !important;
-  }
+  text-decoration: none !important;
 }

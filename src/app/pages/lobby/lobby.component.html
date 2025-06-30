@@ -1,67 +1,67 @@
 <div class="lobby-container">
-    <main class="d-flex mt-4 ms-4 me-4">
-        <aside class="col-4">
-            <ul class="nav flex-column list-group">
-                <li class="nav-item list-group-item" *ngFor="let route of pageRoutes">
-                    <a [routerLink]="route.url" class="list-group-item">
+  <main class="d-flex mt-4 ms-4 me-4">
+    <aside class="col-4">
+      <ul class="nav flex-column list-group">
+        <li class="nav-item list-group-item" *ngFor="let route of pageRoutes">
+          <a [routerLink]="route.url" class="list-group-item">
                         <span><img src="{{'assets/resourses/imgs/nav_icons/' + route.src}}"
-                                   [alt]="route.name"/>{{route.name}}</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-        <div class="col-8 d-flex justify-content-end">
-            <div class="stores col-9 h-100">
-                <p class="col-12 text-center mt-2 store-title" style="height: 30px">Магазины и Награды</p>
-                <nav class="flex-row justify-content-between">
-                    <div class="flex-row store-row col-12">
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Поставки из Дара', src: 'icons/food', click: openGiftLand}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Обмен с Кpастером', src: 'icons/towers'}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Награды Древа', src: 'icons/tree', click: openSummonTree}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Магазин Сторожки', src: 'icons/raven'}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Магазин Арены', src: 'icons/arena-icon'}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Награды за Стеной', src: 'icons/maps'}">
-                        </ng-container>
-                    </div>
+                                   [alt]="route.name"/>{{ route.name }}</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div class="col-8 d-flex justify-content-end">
+      <div class="stores col-9 h-100">
+        <p class="col-12 text-center mt-2 store-title" style="height: 30px">Магазины и Награды</p>
+        <nav class="flex-row justify-content-between">
+          <div class="flex-row store-row col-12">
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Поставки из Дара', src: 'icons/food', click: openGiftLand}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Обмен с Кpастером', src: 'icons/towers'}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Награды Древа', src: 'icons/tree', click: openSummonTree}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Магазин Сторожки', src: 'icons/raven'}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Магазин Арены', src: 'icons/arena-icon'}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Награды за Стеной', src: 'icons/maps'}">
+            </ng-container>
+          </div>
 
-                    <div class="flex-row store-row col-12">
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Награды Входа', src: 'UI_Avatar_Unit_Alvar', click: showDailyReward}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Железный Банк', src: 'gold'}">
-                        </ng-container>
-                        <ng-container [ngTemplateOutlet]="storeTemplate"
-                                      [ngTemplateOutletContext]="{name:'Ремесленики', src: 'silver'}">
-                        </ng-container>
-                      <ng-container [ngTemplateOutlet]="storeTemplate"
-                                    [ngTemplateOutletContext]="{name:'Ежедневный Босс', src: 'UI_Avatar_Unit_PolarBear', click: openDailyBoss}">
-                      </ng-container>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </main>
+          <div class="flex-row store-row col-12">
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Награды Входа', src: 'UI_Avatar_Unit_Alvar', click: showDailyReward}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Железный Банк', src: 'gold'}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Ремесленики', src: 'silver'}">
+            </ng-container>
+            <ng-container [ngTemplateOutlet]="storeTemplate"
+                          [ngTemplateOutletContext]="{name:'Ежедневный Босс', src: 'UI_Avatar_Unit_PolarBear', click: openDailyBoss}">
+            </ng-container>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </main>
 </div>
 
 <ng-template #storeTemplate let-name="name" let-src="src" let-click="click">
-    <div class="col-lg-2 col-md-3 col-sm-4 mb-1 justify-content-center" (click)="click?click():true">
-        <div class="card col-10 d-flex align-items-center">
-            <img class="card-img-top" src="{{'./assets/resourses/imgs/'+src+'.png'}}" [alt]="name">
-            <span class="card-title">{{name}}</span>
-        </div>
+  <div class="col-lg-2 col-md-3 col-sm-4 mb-1 justify-content-center" (click)="click?click():true">
+    <div class="card col-10 d-flex align-items-center">
+      <img class="card-img-top" src="{{'./assets/resourses/imgs/'+src+'.png'}}" [alt]="name">
+      <span class="card-title">{{ name }}</span>
     </div>
+  </div>
 </ng-template>
 
 <daily-reward *ngIf="isShowDailyReward" [closePopup]="closePopup"></daily-reward>

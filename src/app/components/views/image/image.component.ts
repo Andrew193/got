@@ -11,6 +11,7 @@ import {CommonModule} from "@angular/common";
 export class ImageComponent {
   @Input() source!: string;
   loading: boolean = true
+
   onLoad() {
     this.loading = false;
   }

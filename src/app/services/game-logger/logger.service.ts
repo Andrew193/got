@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Skill} from "../../models/skill.model";
 import {Effect} from "../../models/effect.model";
 import {Unit} from "../../models/unit.model";
@@ -9,7 +9,8 @@ import {LogRecord} from "../../interface";
 })
 export class GameLoggerService {
 
-  constructor() { }
+  constructor() {
+  }
 
   logEvent(props: {
     damage: number | null,
@@ -18,7 +19,7 @@ export class GameLoggerService {
     battleMode: boolean
   }, isUser: boolean, skill: Skill | Effect, dmgTaker: Unit, message?: string): LogRecord {
     const logMsg = (mgs: string) => {
-      if(!props.battleMode) {
+      if (!props.battleMode) {
         mgs = `${!isUser ? 'Player' : 'Bot'} ${dmgTaker.name} (${dmgTaker.x + 1})(${dmgTaker.y + 1}) has been opened/collected!`;
       }
       return {

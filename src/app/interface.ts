@@ -5,6 +5,7 @@ export interface Position {
   i: number,
   j: number
 }
+
 export interface LogRecord {
   message: string,
   isUser?: boolean,
@@ -14,6 +15,7 @@ export interface LogRecord {
 
 export interface IdEntity {
   id?: string,
+
   [key: string]: any
 }
 

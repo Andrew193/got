@@ -1,4 +1,6 @@
-<div *ngIf="(validationService.isFormInvalid(form, checkErrors) && showErrors) || (errors.length && form.touched && showErrors)" class="alert alert-danger">
+<div
+  *ngIf="(validationService.isFormInvalid(form, checkErrors) && showErrors) || (errors.length && form.touched && showErrors)"
+  class="alert alert-danger">
   <span>Please, fix following error(s): </span>
   <ul class="pl-30 mt-10">
     <ng-container *ngFor="let error of  errors; let i = index">

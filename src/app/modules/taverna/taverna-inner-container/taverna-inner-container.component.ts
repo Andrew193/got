@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {TavernaHeroesBarComponent} from "../taverna-heroes-bar/taverna-heroes-bar.component";
 
 @Component({

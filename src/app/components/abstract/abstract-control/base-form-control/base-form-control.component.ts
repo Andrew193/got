@@ -16,12 +16,14 @@ export class BaseFormControlComponent implements ControlValueAccessor {
 
   public control: FormControl = new FormControl('');
 
-  private onChange = (value: any) => {};
-  private onTouched = () => {};
+  private onChange = (value: any) => {
+  };
+  private onTouched = () => {
+  };
 
   writeValue(value: any): void {
     this.control.setValue(value);
-    setTimeout(()=>this.onChange(value), 0)
+    setTimeout(() => this.onChange(value), 0)
   }
 
   registerOnChange(fn: any): void {

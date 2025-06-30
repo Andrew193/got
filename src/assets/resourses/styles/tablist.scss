@@ -9,8 +9,9 @@
 
   .nav-item {
     &:first-of-type a {
-    border-top-left-radius: 10px;
+      border-top-left-radius: 10px;
     }
+
     &:last-of-type a {
       border-top-right-radius: 10px;
     }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HeroPreviewComponent } from './hero-preview.component';
+import {HeroPreviewComponent} from './hero-preview.component';
 
 describe('HeroPreviewComponent', () => {
   let component: HeroPreviewComponent;
@@ -10,8 +10,8 @@ describe('HeroPreviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HeroPreviewComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(HeroPreviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

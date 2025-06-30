@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ErrorFieldComponent } from './error-field.component';
+import {ErrorFieldComponent} from './error-field.component';
 
 describe('ErrorFieldComponent', () => {
   let component: ErrorFieldComponent;
@@ -10,8 +10,8 @@ describe('ErrorFieldComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ErrorFieldComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ErrorFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

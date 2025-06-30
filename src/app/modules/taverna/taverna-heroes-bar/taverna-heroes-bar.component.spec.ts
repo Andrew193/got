@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TavernaHeroesBarComponent } from './taverna-heroes-bar.component';
+import {TavernaHeroesBarComponent} from './taverna-heroes-bar.component';
 
 describe('TavernaHeroesBarComponent', () => {
   let component: TavernaHeroesBarComponent;
@@ -10,8 +10,8 @@ describe('TavernaHeroesBarComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TavernaHeroesBarComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(TavernaHeroesBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

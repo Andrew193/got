@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
 export interface ModalConfig {
@@ -18,7 +18,8 @@ export class ModalWindowService {
     headerClass: '',
     closeBtnLabel: '',
     open: false,
-    callback: () => {}
+    callback: () => {
+    }
   }
   private _modalConfig: BehaviorSubject<ModalConfig> = new BehaviorSubject<ModalConfig>(this.init);
   modalConfig$ = this._modalConfig.asObservable();
@@ -35,7 +36,7 @@ export class ModalWindowService {
   }
 
   getModalConfig(headerClass = "", headerMessage = "", closeBtnLabel = "",
-                 callback: ()=> void) {
+                 callback: () => void) {
     return {
       headerClass: headerClass,
       headerMessage: headerMessage,

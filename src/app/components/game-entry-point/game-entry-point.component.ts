@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GameFieldComponent} from "../game-field/game-field.component";
 import {GameFieldService} from "../../services/game-field/game-field.service";
-import {JsonPipe} from "@angular/common";
 import {BasicGameFieldComponent} from "../abstract/basic-game-field/basic-game-field.component";
 import {GameLoggerService} from "../../services/game-logger/logger.service";
 import {GameService} from "../../services/game-action/game.service";
@@ -11,10 +10,7 @@ import {UnitService} from "../../services/unit/unit.service";
 @Component({
   selector: 'game-entry-point',
   standalone: true,
-  imports: [
-    GameFieldComponent,
-    JsonPipe
-  ],
+  imports: [GameFieldComponent],
   templateUrl: './game-entry-point.component.html',
   styleUrl: './game-entry-point.component.scss'
 })

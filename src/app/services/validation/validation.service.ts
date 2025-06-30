@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
 
 @Injectable({
@@ -6,10 +6,11 @@ import {FormArray, FormControl, FormGroup} from "@angular/forms";
 })
 export class ValidationService {
 
-  constructor() { }
+  constructor() {
+  }
 
   isFormInvalid(form: FormGroup, callback: any) {
-    if(callback) {
+    if (callback) {
       callback()
     }
     return form.invalid && (form.touched || form.dirty)

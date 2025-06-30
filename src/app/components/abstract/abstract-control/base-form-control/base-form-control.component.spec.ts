@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BaseFormControlComponent } from './base-form-control.component';
+import {BaseFormControlComponent} from './base-form-control.component';
 
 describe('BaseFormControlComponent', () => {
   let component: BaseFormControlComponent;
@@ -10,8 +10,8 @@ describe('BaseFormControlComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BaseFormControlComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(BaseFormControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {SiteComponent} from "./pages/site/site.component";
 import {CommonModule} from "@angular/common";
 import {LobbyComponent} from "./pages/lobby/lobby.component";

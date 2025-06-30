@@ -28,7 +28,7 @@ export class GameFieldService extends AbstractFieldService {
     return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);
   }
 
-  getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number}) {
+  getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number }) {
     const fixedDefence = this.gameActionService.getFixedDefence(unitConfig.dmgTaker.defence, unitConfig.dmgTaker);
     const fixedAttack = this.gameActionService.getFixedAttack(config.attack, unitConfig.attackDealer);
     const blockedDamage = fixedDefence * 0.4;
@@ -74,14 +74,17 @@ export class GameFieldService extends AbstractFieldService {
       // Check possible moves (up, down, left, right)
       const directions = getDiagonals(true);
 
-      for (const { di, dj } of directions) {
+      for (const {di, dj} of directions) {
         const newI = current!.i + di;
         const newJ = current!.j + dj;
 
         // Ensure the new position is within bounds and not blocked or visited
         if (newI >= 0 && newI < rows && newJ >= 0 && newJ < cols) {
-          if ((grid[newI][newJ] === 0 || (newI === target.i && newJ === target.j))&& !visited.has(positionKey({ i: newI, j: newJ }))) {
-            queue.push({ i: newI, j: newJ });
+          if ((grid[newI][newJ] === 0 || (newI === target.i && newJ === target.j)) && !visited.has(positionKey({
+            i: newI,
+            j: newJ
+          }))) {
+            queue.push({i: newI, j: newJ});
           }
         }
       }

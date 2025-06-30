@@ -1,0 +1,46 @@
+@import "./vars";
+
+.hero-in-frame {
+  position: absolute;
+  z-index: 101;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(2px 4px 6px rgba(255, 0, 255, 0.6));
+}
+
+.hero-card {
+  cursor: pointer;
+  text-align: center;
+  background: $background-color-main;
+  box-shadow: $box-shadow;
+  color: white !important;
+  transition: background-color ease 0.5s;
+  position: relative;
+
+  .level {
+    position: absolute;
+    left: 0px;
+
+    .level_rank {
+      height: 50px;
+      width: 50px;
+    }
+
+    span {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+    }
+  }
+
+  img {
+    width: 80%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:hover {
+    background: $background-color-main-hover !important;
+  }
+}

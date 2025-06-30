@@ -1,17 +1,22 @@
 import {RouterModule, Routes} from "@angular/router";
-import {frontRoutes} from "../../app.routes";
 import {NgModule} from "@angular/core";
 import {TrainingConfigComponent} from "./training-config/training-config.component";
 import {TrainingBattleComponent} from "./training-battle/training-battle.component";
+import {frontRoutes} from "../../constants";
+import {TrainingComponent} from "./training/training.component";
 
-
-const routes: Routes = [
+export const tavernaRoutes: Routes = [{
+  path: frontRoutes.base,
+  component: TrainingComponent,
+  children: [
     {component: TrainingConfigComponent, path: frontRoutes.base},
-    {component: TrainingBattleComponent, path: frontRoutes.trainingBattle},
-];
+    {component: TrainingBattleComponent, path: frontRoutes.trainingBattle}
+  ]
+}];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(tavernaRoutes)],
+  exports: [RouterModule]
 })
-export class TavernaRoutingModule { }
+export class TavernaRoutingModule {
+}

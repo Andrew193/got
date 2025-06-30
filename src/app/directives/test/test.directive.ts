@@ -6,7 +6,7 @@ import {Directive, Input, OnInit, TemplateRef, ViewContainerRef} from '@angular/
 })
 export class TestDirective implements OnInit {
   @Input('notIf') set display(newNotIf: boolean) {
-    if(!newNotIf) {
+    if (!newNotIf) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainerRef.clear();

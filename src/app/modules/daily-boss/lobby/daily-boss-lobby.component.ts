@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {StatsComponent} from "../../../components/stats/stats.component";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Unit} from "../../../models/unit.model";
@@ -7,10 +7,10 @@ import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {createDeepCopy} from "../../../helpers";
 import {Router} from "@angular/router";
-import {frontRoutes} from "../../../app.routes";
 import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
 import {DailyBossService} from "../../../services/daily-boss/daily-boss.service";
 import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-preview/heroes-select-preview.component";
+import {frontRoutes} from "../../../constants";
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -31,11 +31,11 @@ import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-pr
 export class DailyBossLobbyComponent {
   selectedHero!: Unit;
   chosenUnits: Unit[] = [];
-  config: {level: number, heading: string}[] = [
-    {level:1, heading: 'Super Easy'},
-    {level:2, heading: 'Easy'},
-    {level:3, heading:'Medium'},
-    {level:4, heading:'Hard'}
+  config: { level: number, heading: string }[] = [
+    {level: 1, heading: 'Super Easy'},
+    {level: 2, heading: 'Easy'},
+    {level: 3, heading: 'Medium'},
+    {level: 4, heading: 'Hard'}
   ];
 
   constructor(private heroesService: HeroesService,
@@ -67,9 +67,9 @@ export class DailyBossLobbyComponent {
   }
 
   openFight(bossLevel: number) {
-    this.route.navigate([frontRoutes.dailyBoss,frontRoutes.dailyBossBattle,bossLevel], {
+    this.route.navigate([frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, bossLevel], {
       queryParams: {
-        units: this.chosenUnits.map((el)=>el.name)
+        units: this.chosenUnits.map((el) => el.name)
       }
     })
   }

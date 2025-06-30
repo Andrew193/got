@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DisplayRewardComponent } from './display-reward.component';
+import {DisplayRewardComponent} from './display-reward.component';
 
 describe('DisplayRewardComponent', () => {
   let component: DisplayRewardComponent;
@@ -10,8 +10,8 @@ describe('DisplayRewardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DisplayRewardComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DisplayRewardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

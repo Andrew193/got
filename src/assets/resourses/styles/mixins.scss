@@ -1,7 +1,7 @@
 @import "./vars";
 
 @mixin grad-color {
-  display:inline-block;
+  display: inline-block;
   background-image: $gradient-color;
   background-size: 100%;
   -webkit-background-clip: text;

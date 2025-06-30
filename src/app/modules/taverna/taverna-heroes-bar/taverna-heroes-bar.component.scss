@@ -6,9 +6,11 @@ main {
     background: $background-color-main;
     box-shadow: $box-shadow;
   }
+
   .card {
     background: $background-color-main;
   }
+
   .card-title, h4 {
     @include grad-color;
   }
@@ -25,6 +27,7 @@ main {
     > div:first-of-type {
       order: 2;
     }
+
     > div:last-of-type {
       order: 1;
     }

@@ -11,7 +11,7 @@ import {CommonModule} from "@angular/common";
   templateUrl: './modal-window.component.html',
   styleUrl: './modal-window.component.scss'
 })
-export class ModalWindowComponent implements OnInit{
+export class ModalWindowComponent implements OnInit {
   modalRef?: BsModalRef;
   @ViewChild("template") modalTemplate: any;
   initConfig = {
@@ -19,7 +19,8 @@ export class ModalWindowComponent implements OnInit{
     headerMessage: '',
     closeBtnLabel: '',
     open: false,
-    callback: () => {}
+    callback: () => {
+    }
   };
   modalConfig: ModalConfig = this.initConfig
 
@@ -28,8 +29,8 @@ export class ModalWindowComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.modalWindowService.modalConfig$.subscribe((newConfig)=> {
-      if(newConfig.open) {
+    this.modalWindowService.modalConfig$.subscribe((newConfig) => {
+      if (newConfig.open) {
         this.modalConfig = newConfig;
         this.openModal(this.modalTemplate);
       } else {

@@ -10,7 +10,8 @@ import {BaseFormControlComponent} from "../base-form-control/base-form-control.c
   styleUrl: './base-select-form-control.component.scss'
 })
 export class BaseSelectFormControlComponent extends BaseFormControlComponent {
-  @Input() filteredOptions:  Observable<string[]> = new Observable<string[]>();
+  @Input() filteredOptions: Observable<string[]> = new Observable<string[]>();
+
   constructor() {
     super();
   }

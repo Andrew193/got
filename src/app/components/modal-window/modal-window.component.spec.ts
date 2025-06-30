@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ModalWindowComponent } from './modal-window.component';
+import {ModalWindowComponent} from './modal-window.component';
 
 describe('ModalWindowComponent', () => {
   let component: ModalWindowComponent;
@@ -10,8 +10,8 @@ describe('ModalWindowComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ModalWindowComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ModalWindowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

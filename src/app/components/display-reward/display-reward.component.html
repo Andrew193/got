@@ -2,7 +2,7 @@
   <div *ngFor="let reward of rewards">
     <div class="reward-inner-container" *ngIf="reward">
       <img src="{{reward.src}}" alt="{{reward.name}}">
-      <span>{{reward.amount}}</span>
+      <span>{{ reward.amount }}</span>
     </div>
     <div class="reward-inner-container" *ngIf="!reward">
       <span>Не собрано</span>

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { GameFieldService } from './game-field.service';
+import {GameFieldService} from './game-field.service';
 
 describe('GameFieldService', () => {
   let service: GameFieldService;

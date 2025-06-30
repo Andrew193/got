@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GameEntryPointComponent } from './game-entry-point.component';
+import {GameEntryPointComponent} from './game-entry-point.component';
 
 describe('GameBoardComponent', () => {
   let component: GameEntryPointComponent;
@@ -10,7 +10,7 @@ describe('GameBoardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GameEntryPointComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(GameEntryPointComponent);
     component = fixture.componentInstance;

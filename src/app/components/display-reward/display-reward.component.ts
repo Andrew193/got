@@ -5,9 +5,9 @@ import {DisplayReward} from "../../services/reward/reward.service";
 @Component({
   selector: 'display-reward',
   standalone: true,
-    imports: [
-        CommonModule
-    ],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './display-reward.component.html',
   styleUrl: './display-reward.component.scss'
 })

@@ -25,6 +25,7 @@
     display: flex;
     align-items: center;
     height: inherit;
+
     &:hover {
       span {
         @include grad-color;

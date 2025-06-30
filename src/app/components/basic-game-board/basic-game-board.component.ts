@@ -14,7 +14,7 @@ export class BasicGameBoardComponent {
   @Input() gameConfig: any[][] = [];
   @Input() battleMode: boolean = true;
   @Output() moveEntity = new EventEmitter();
-  @Output() highlightMakeMove= new EventEmitter();
+  @Output() highlightMakeMove = new EventEmitter();
 
   onMoveEntity(tile: Tile) {
     this.moveEntity.emit(tile);

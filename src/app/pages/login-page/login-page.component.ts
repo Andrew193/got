@@ -5,8 +5,8 @@ import {ValidationService} from "../../services/validation/validation.service";
 import {CommonModule} from "@angular/common";
 import {FormErrorsContainerComponent} from "../../components/form-errors-container/form-errors-container.component";
 import {Router} from "@angular/router";
-import {frontRoutes, routes} from "../../app.routes";
 import {LocalStorageService} from "../../services/localStorage/local-storage.service";
+import {frontRoutes} from "../../constants";
 
 @Component({
   selector: 'app-login-page',

@@ -14,6 +14,7 @@ import {LocalStorageService} from "../../../services/localStorage/local-storage.
 })
 export class HeaderComponent implements OnInit {
   user!: User;
+
   constructor(private usersService: UsersService,
               private localStorageService: LocalStorageService) {
   }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DailyBossEntryComponent } from './daily-boss-entry.component';
+import {DailyBossEntryComponent} from './daily-boss-entry.component';
 
 describe('DailyBossEntryComponent', () => {
   let component: DailyBossEntryComponent;
@@ -10,8 +10,8 @@ describe('DailyBossEntryComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DailyBossEntryComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DailyBossEntryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

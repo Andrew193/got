@@ -1,3 +1,7 @@
+.skills-bar {
+  flex-direction: column;
+}
+
 .skill-disabled {
   position: absolute;
   width: 100%;
@@ -20,6 +24,14 @@
   }
 }
 
+.skills-container {
+  img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+}
 
 .highlight-effect {
   font-weight: bold;

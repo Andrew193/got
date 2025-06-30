@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { NpcService } from './npc.service';
+import {NpcService} from './npc.service';
 
 describe('NpcService', () => {
   let service: NpcService;

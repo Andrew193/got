@@ -1,4 +1,4 @@
-import { ContextMenuTriggerDirective } from './context-menu-trigger.directive';
+import {ContextMenuTriggerDirective} from './context-menu-trigger.directive';
 
 describe('ContextMenuTriggerDirective', () => {
   it('should create an instance', () => {

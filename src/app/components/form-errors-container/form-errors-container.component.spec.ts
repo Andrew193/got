@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FormErrorsContainerComponent } from './form-errors-container.component';
+import {FormErrorsContainerComponent} from './form-errors-container.component';
 
 describe('FormErrorsContainerComponent', () => {
   let component: FormErrorsContainerComponent;
@@ -10,8 +10,8 @@ describe('FormErrorsContainerComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormErrorsContainerComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(FormErrorsContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

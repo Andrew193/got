@@ -1,56 +1,57 @@
 <div class="d-flex flex-nowrap" style="gap: 10px">
   <div style="width: 100px; min-width: 100px;">
-    <img alt="reward avatar" class="reward-avatar" [src]="selectedHero.imgSrc" />
+    <img alt="reward avatar" class="reward-avatar" [src]="selectedHero.imgSrc"/>
   </div>
-<div class="stats flex-column w-auto">
-  <div style="font-weight: bold; " class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/attack_icon.png">
-      <span>{{selectedHero.attack}}</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">The attack affects the damage dealt by this hero.</span>
+  <div class="stats flex-column w-auto">
+    <div style="font-weight: bold; " class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/attack_icon.png">
+        <span>{{ selectedHero.attack }}</span>
+      </p>
+      <span class="flex-grow-1 d-block text-start">The attack affects the damage dealt by this hero.</span>
+    </div>
+    <div style="font-weight: bold" class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/def_icon.png">
+        <span>{{ selectedHero.defence }}</span>
+      </p>
+      <span class="flex-grow-1 d-block text-start">Defense affects the amount of damage absorbed.</span>
+    </div>
+    <div style="font-weight: bold" class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/health_icon.png">
+        <span>{{ selectedHero.health }}</span>
+      </p>
+      <span class="flex-grow-1 d-block text-start">Health affects the survivability of this hero in battle.</span>
+    </div>
+    <div style="font-weight: bold" class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/f_power.png">
+        <span>{{ selectedHero.rage }}</span>
+      </p>
+      <span class="flex-grow-1 d-block text-start">Rage affects the ability to impose a penalty on the enemy.</span>
+    </div>
+    <div style="font-weight: bold" class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/anti_f_power.png">
+        <span>{{ selectedHero.willpower }}</span>
+      </p>
+      <span class="flex-grow-1 d-block text-start">Will power affects the ability to resist penalties.</span>
+    </div>
+    <div style="font-weight: bold" class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/dmg_red.png">
+        <span>{{ (selectedHero.dmgReducedBy * 100).toFixed(0) }}%</span>
+      </p>
+      <span class="flex-grow-1 d-block text-start">Absorption affects the amount of pure damage absorbed (stacks with defense).</span>
+    </div>
+    <div style="font-weight: bold" class="flex-row">
+      <p class="d-inline m-0">
+        <img src="assets/resourses/imgs/icons/move_icon.png">
+        <span>{{ selectedHero.canCross }}</span>
+      </p>
+      <span
+        class="flex-grow-1 d-block text-start">Mobility affects the number of cells a hero can move in a turn.</span>
+    </div>
   </div>
-  <div style="font-weight: bold" class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/def_icon.png">
-      <span>{{selectedHero.defence}}</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">Defense affects the amount of damage absorbed.</span>
-  </div>
-  <div style="font-weight: bold" class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/health_icon.png">
-      <span>{{selectedHero.health}}</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">Health affects the survivability of this hero in battle.</span>
-  </div>
-  <div style="font-weight: bold" class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/f_power.png">
-      <span>{{selectedHero.rage}}</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">Rage affects the ability to impose a penalty on the enemy.</span>
-  </div>
-  <div style="font-weight: bold" class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/anti_f_power.png">
-      <span>{{selectedHero.willpower}}</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">Will power affects the ability to resist penalties.</span>
-  </div>
-  <div style="font-weight: bold" class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/dmg_red.png">
-      <span>{{(selectedHero.dmgReducedBy * 100).toFixed(0)}}%</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">Absorption affects the amount of pure damage absorbed (stacks with defense).</span>
-  </div>
-  <div style="font-weight: bold" class="flex-row">
-    <p class="d-inline m-0">
-      <img src="assets/resourses/imgs/icons/move_icon.png">
-      <span>{{selectedHero.canCross}}</span>
-    </p>
-    <span class="flex-grow-1 d-block text-start">Mobility affects the number of cells a hero can move in a turn.</span>
-  </div>
-</div>
 </div>

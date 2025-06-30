@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
 import {Router} from "@angular/router";
-import {frontRoutes} from "../../app.routes";
 import {RewardComponent} from "../../interface";
 import {DisplayRewardComponent} from "../display-reward/display-reward.component";
 import {ImageComponent} from "../views/image/image.component";
+import {frontRoutes} from "../../constants";
 
 @Component({
   selector: 'app-summon-tree',

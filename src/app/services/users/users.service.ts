@@ -3,8 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {map, tap} from "rxjs";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {Router} from "@angular/router";
-import {frontRoutes} from "../../app.routes";
 import {ApiService} from "../abstract/api/api.service";
+import {frontRoutes} from "../../constants";
 
 export interface Currency {
   gold: number,
@@ -78,11 +78,13 @@ export class UsersService {
     const apiService = this.injector.get(ApiService);
     const user = this.localStorage.getItem(this.userToken) as User;
 
-    return apiService.putPostCover({...user, currency: {
+    return apiService.putPostCover({
+        ...user, currency: {
           gold: newCurrency.gold + user.currency.gold,
           silver: newCurrency.silver + user.currency.silver,
           cooper: newCurrency.cooper + user.currency.cooper
-        }},
+        }
+      },
       {
         url: this.url,
         callback: (res) => {
@@ -101,11 +103,11 @@ export class UsersService {
       },
       observe: "response"
     }).pipe(map((response) => {
-      if(response.status === 200 && (response.body[0] as User).id === user?.id) {
-        this.localStorage.setItem(this.userToken, response.body[0]);
-        return true;
-      }
-      return false;
+        if (response.status === 200 && (response.body[0] as User).id === user?.id) {
+          this.localStorage.setItem(this.userToken, response.body[0]);
+          return true;
+        }
+        return false;
       }),
       tap({
         error: () => {

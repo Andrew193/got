@@ -1,24 +1,8 @@
 import {Routes} from '@angular/router';
 import {SiteComponent} from "./pages/site/site.component";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
-import {TavernaComponent} from "./modules/taverna/taverna/taverna.component";
-import {TrainingComponent} from "./modules/training/training/training.component";
 import {AuthGuard} from "./guards/canActivate";
-import {DailyBossEntryComponent} from "./modules/daily-boss/daily-boss-entry/daily-boss-entry.component";
-
-export const frontRoutes = {
-  base: "",
-  taverna: "taverna",
-  preview: "preview",
-  battleField: "test-b",
-  training: "training",
-  trainingBattle: "training-battle",
-  dailyBoss: "daily-boss",
-  dailyBossBattle: "fight",
-  login: "login",
-  summonTree: "summon-tree",
-  giftStore: "gift-lands"
-}
+import {frontRoutes} from "./constants";
 
 export const routes: Routes = [
   {
@@ -26,19 +10,16 @@ export const routes: Routes = [
     children: [
       {component: LobbyComponent, path: frontRoutes.base},
       {
-        component: TavernaComponent,
         path: frontRoutes.taverna,
-        loadChildren: () => import('./modules/taverna/taverna.module').then(m => m.TavernaModule)
+        loadChildren: () => import('./modules/taverna/taverna-routing.module').then(m => m.tavernaRoutes)
       },
       {
-        component: TrainingComponent,
         path: frontRoutes.training,
-        loadChildren: () => import('./modules/training/training.module').then(m => m.TrainingModule)
+        loadChildren: () => import('./modules/training/training-routing.module').then(m => m.tavernaRoutes)
       },
       {
-        component: DailyBossEntryComponent,
         path: frontRoutes.dailyBoss,
-        loadChildren: () => import('./modules/daily-boss/daily-boss.module').then(m => m.DailyBossModule)
+        loadChildren: () => import('./modules/daily-boss/daily-boss-routing.module').then(m => m.dailyBossRoutes)
       },
       {
         path: frontRoutes.summonTree,

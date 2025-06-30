@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 export enum ContentTypes {
   USER_UNITS
@@ -9,7 +9,8 @@ export enum ContentTypes {
 })
 export abstract class ContentService {
 
-  constructor() { }
+  constructor() {
+  }
 
   abstract getContent(): any[]
 

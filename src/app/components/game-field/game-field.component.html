@@ -9,7 +9,7 @@
     <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
       <div class="col-9">
         <div tooltip="Закончить ход" (click)="finishTurn()">
-          <span>{{ turnCount }} / {{maxTurnCount}}</span>
+          <span>{{ turnCount }} / {{ maxTurnCount }}</span>
         </div>
       </div>
     </div>
@@ -33,7 +33,8 @@
                      tooltip="{{skill.description}}">
                   <img alt="{{skill.name}}" src="{{skill.imgSrc}}" class="cursor-pointer me-0"
                        (click)="attack(skill)"/>
-                  <div class="skill-disabled" style="top: 0px; left: 0px;" *ngIf="skill.remainingCooldown || skill.passive">
+                  <div class="skill-disabled" style="top: 0px; left: 0px;"
+                       *ngIf="skill.remainingCooldown || skill.passive">
                     <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                   </div>
                 </div>
@@ -105,10 +106,12 @@
           <div class="col-12 col-md-9 col-lg-9">
             <div class="col-12 aside-hero-tab-header">
               <h6>{{ hero.name }}</h6>
-              <progressbar *ngIf="battleMode?battleMode && (hero.inBattle === true || hero.inBattle === undefined):hero.user" [max]="hero.maxHealth" [value]="hero.health"
-                           [type]="progressbarClass"
-                           [striped]="true"
-                           [animate]="true">
+              <progressbar
+                *ngIf="battleMode?battleMode && (hero.inBattle === true || hero.inBattle === undefined):hero.user"
+                [max]="hero.maxHealth" [value]="hero.health"
+                [type]="progressbarClass"
+                [striped]="true"
+                [animate]="true">
               </progressbar>
             </div>
           </div>
@@ -120,7 +123,8 @@
           </div>
         </div>
       </div>
-      <div class="flex-row justify-content-between" *ngIf="battleMode && (hero.inBattle === true || hero.inBattle === undefined)?battleMode:hero.user; else lootDescription">
+      <div class="flex-row justify-content-between"
+           *ngIf="battleMode && (hero.inBattle === true || hero.inBattle === undefined)?battleMode:hero.user; else lootDescription">
         <div class="col-12 stats">
           <p>
             <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon"/>
@@ -137,7 +141,7 @@
         </div>
         <div class="col-12 row" style="margin: unset">
           <div class="stats h-100 w-100 skills-bar">
-            <p>{{hero.health ? 'Здоровье героя: '+hero.health :''}}</p>
+            <p>{{ hero.health ? 'Здоровье героя: ' + hero.health : '' }}</p>
             <div class="flex-row skills-container justify-content-evenly">
               <div class="position-relative" *ngFor="let skill of hero.skills"
                    tooltip="{{skill.description}}">

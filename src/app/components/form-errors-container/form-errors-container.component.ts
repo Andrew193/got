@@ -46,7 +46,7 @@ export class FormErrorsContainerComponent implements OnInit {
             const index = formArray.controls.indexOf(arrayControl);
             errors = [...errors, ...this.getFormValidationErrors(arrayControl as FormGroup, index)]
           }
-        } else if(control instanceof FormGroup) {
+        } else if (control instanceof FormGroup) {
           errors = [...errors, ...this.getFormValidationErrors(control, i)]
         }
         addError(formGroup || this.form, key, this.uiErrorsNames, i || innerIndex)

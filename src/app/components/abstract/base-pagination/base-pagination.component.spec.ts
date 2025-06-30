@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BasePaginationComponent } from './base-pagination.component';
+import {BasePaginationComponent} from './base-pagination.component';
 
 describe('BasePaginationComponent', () => {
   let component: BasePaginationComponent;
@@ -10,8 +10,8 @@ describe('BasePaginationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BasePaginationComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(BasePaginationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

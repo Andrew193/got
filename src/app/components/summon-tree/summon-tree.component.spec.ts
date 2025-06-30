@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SummonTreeComponent } from './summon-tree.component';
+import {SummonTreeComponent} from './summon-tree.component';
 
 describe('SummonTreeComponent', () => {
   let component: SummonTreeComponent;
@@ -10,8 +10,8 @@ describe('SummonTreeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SummonTreeComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(SummonTreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

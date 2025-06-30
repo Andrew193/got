@@ -65,14 +65,18 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   claimReward(reward: DayReward) {
-    if(this.dailyRewardConfig.lastLogin !== moment().format("MM/DD/YYYY")) {
+    if (this.dailyRewardConfig.lastLogin !== moment().format("MM/DD/YYYY")) {
       this.dailyRewardService.claimDailyReward({
         ...this.dailyRewardConfig,
         day: this.dailyRewardConfig.day + 1,
         totalDays: this.dailyRewardConfig.totalDays + 1,
         lastLogin: moment().format("MM/DD/YYYY")
       }, (newConfig) => {
-        this.usersService.updateCurrency({cooper: reward.copperCoin || 0, silver: reward.silverCoin || 0, gold: reward.goldCoin || 0})
+        this.usersService.updateCurrency({
+          cooper: reward.copperCoin || 0,
+          silver: reward.silverCoin || 0,
+          gold: reward.goldCoin || 0
+        })
         this.dailyRewardConfig = newConfig as DailyReward;
       })
     }

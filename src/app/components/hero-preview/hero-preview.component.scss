@@ -8,10 +8,12 @@
     box-shadow: $box-shadow;
     height: 100%;
   }
+
   .eq-stats {
     img {
       width: 30px;
     }
+
     span {
       text-align: center;
       line-height: 30px;
@@ -34,14 +36,15 @@
   .main-content {
     > div, aside {
     }
+
     aside > div {
     }
   }
 
   .stats-bar > div {
-      background: $background-color-main;
-      box-shadow: $box-shadow-out;
-      border-radius: 15px;
+    background: $background-color-main;
+    box-shadow: $box-shadow-out;
+    border-radius: 15px;
   }
 
   .card {

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {TavernaRoutingModule} from "./training-routing.module";
 
 @NgModule({
@@ -9,4 +9,5 @@ import {TavernaRoutingModule} from "./training-routing.module";
     TavernaRoutingModule
   ]
 })
-export class TrainingModule { }
+export class TrainingModule {
+}

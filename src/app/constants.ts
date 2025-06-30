@@ -19,3 +19,17 @@ export const getDiagonals = (checkDiagonals: boolean) => {
       {di: 0, dj: 1}
     ];
 }
+
+export const frontRoutes = {
+  base: "",
+  taverna: "taverna",
+  preview: "preview",
+  battleField: "test-b",
+  training: "training",
+  trainingBattle: "training-battle",
+  dailyBoss: "daily-boss",
+  dailyBossBattle: "fight",
+  login: "login",
+  summonTree: "summon-tree",
+  giftStore: "gift-lands"
+}

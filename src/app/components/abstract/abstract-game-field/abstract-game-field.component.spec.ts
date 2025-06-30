@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AbstractGameFieldComponent } from './abstract-game-field.component';
+import {AbstractGameFieldComponent} from './abstract-game-field.component';
 
 describe('AbstractGameFieldComponent', () => {
   let component: AbstractGameFieldComponent;
@@ -10,8 +10,8 @@ describe('AbstractGameFieldComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AbstractGameFieldComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(AbstractGameFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

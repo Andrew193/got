@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BossReward} from "../../interface";
 
 @Injectable({
@@ -6,9 +6,10 @@ import {BossReward} from "../../interface";
 })
 export class DailyBossService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  bossReward: {[key: number]: BossReward} = {
+  bossReward: { [key: number]: BossReward } = {
     1: {
       copper: 10000,
       copperWin: 100000,
@@ -56,7 +57,7 @@ export class DailyBossService {
   }
 
   uppBoss(version: number) {
-    const versions:{[key: number]: any} = {
+    const versions: { [key: number]: any } = {
       1: {},
       2: {
         level: 20,

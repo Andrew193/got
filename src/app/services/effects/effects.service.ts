@@ -22,7 +22,7 @@ export class EffectsService {
     root: "Корень",
   }
 
-  effectsDescriptions: {[key: string]: string} = {
+  effectsDescriptions: { [key: string]: string } = {
     'Горение': "Наносит противнику урон в размере 10% от его здоровья каждый ход.",
     'Заморозка': "Герой заморожен и может пройти только 1 клетку за ход.",
     'Восстановление': "Восстановливает 5% здоровья каждый ход.",
@@ -44,16 +44,16 @@ export class EffectsService {
   }
 
   getMobilityStatsBasedOnEffect(effect: Effect, unit: Unit) {
-      let message = "";
-      if (effect.type === this.effects.freezing) {
-        unit.canCross = 1;
-        message += unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
-      }
-      if (effect.type === this.effects.root) {
-        unit.canCross = 0;
-        message += unit.health ? `Герой скован корнями и не может двигаться.` : '';
-      }
-      return {unit, message: message};
+    let message = "";
+    if (effect.type === this.effects.freezing) {
+      unit.canCross = 1;
+      message += unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
+    }
+    if (effect.type === this.effects.root) {
+      unit.canCross = 0;
+      message += unit.health ? `Герой скован корнями и не может двигаться.` : '';
+    }
+    return {unit, message: message};
   }
 
   recountStatsBasedOnEffect(effect: Effect, unit: Unit) {

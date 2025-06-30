@@ -6,10 +6,10 @@ import {Unit} from "../../models/unit.model";
 @Component({
   selector: 'heroes-select-preview',
   standalone: true,
-    imports: [
-        NgForOf,
-        TooltipModule
-    ],
+  imports: [
+    NgForOf,
+    TooltipModule
+  ],
   templateUrl: './heroes-select-preview.component.html',
   styleUrl: './heroes-select-preview.component.scss'
 })
@@ -18,7 +18,8 @@ export class HeroesSelectPreviewComponent {
   @Input() title: string = '';
   @Input() containerClass = '';
   @Input() user: boolean = false;
-  @Input() toggleDescription: (user: boolean, index: number) => void = (user, index) => {}
+  @Input() toggleDescription: (user: boolean, index: number) => void = (user, index) => {
+  }
   @Input() getDescriptionState: (user: boolean, index: number) => boolean = (user, index) => false
 
 }

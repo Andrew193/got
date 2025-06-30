@@ -48,7 +48,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
               private gameLoggerS: GameLoggerService,
               private unitS: UnitService,
               private effectsS: EffectsService
-              ) {
+  ) {
     super();
     this._turnCount.subscribe((newTurn) => {
       this.turnCount = newTurn;
@@ -91,9 +91,17 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
 
     if (dmgTaker[enemyIndex].health) {
       let newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
-      this.log.push(this.gameLoggerS.logEvent({damage, newHealth: null, battleMode: this.battleMode}, attackDealer.user, skill, dmgTaker[enemyIndex]));
+      this.log.push(this.gameLoggerS.logEvent({
+        damage,
+        newHealth: null,
+        battleMode: this.battleMode
+      }, attackDealer.user, skill, dmgTaker[enemyIndex]));
       dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth};
-      this.log.push(this.gameLoggerS.logEvent({damage: 0, newHealth, battleMode: this.battleMode}, attackDealer.user, skill, dmgTaker[enemyIndex]));
+      this.log.push(this.gameLoggerS.logEvent({
+        damage: 0,
+        newHealth,
+        battleMode: this.battleMode
+      }, attackDealer.user, skill, dmgTaker[enemyIndex]));
     }
   }
 
@@ -104,7 +112,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
       return unit.health + healedHealth > unit.maxHealth ? unit.maxHealth : unit.health + healedHealth
     }
 
-    if(targetIndex) {
+    if (targetIndex) {
       units[targetIndex].health = getNewHealth(units[targetIndex]);
     } else {
       units.forEach((unit) => {

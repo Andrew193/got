@@ -12,7 +12,7 @@
          'block': tile.active === false && tile.entity === null
          }"
          [attr.data-y]="tile.y" [attr.data-active]="tile.active">
-      <span class="tile-label">{{tile.x + 1}}-{{tile.y + 1}}</span>
+      <span class="tile-label">{{ tile.x + 1 }}-{{ tile.y + 1 }}</span>
       <div *ngIf="tile.entity" class="position-relative">
         <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
              [ngClass]="{'loot-img': !battleMode && !tile.entity.user}"

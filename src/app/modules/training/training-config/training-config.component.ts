@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Unit} from "../../../models/unit.model";
-import {frontRoutes} from "../../../app.routes";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Router} from "@angular/router";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-preview/heroes-select-preview.component";
 import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
+import {frontRoutes} from "../../../constants";
 
 @Component({
   selector: 'training-config',

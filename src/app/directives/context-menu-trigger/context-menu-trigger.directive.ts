@@ -15,7 +15,7 @@ import {HeroesService} from "../../services/heroes/heroes.service";
   selector: '[contextMenuTriggerFor]',
   standalone: true
 })
-export class ContextMenuTriggerDirective implements OnInit  {
+export class ContextMenuTriggerDirective implements OnInit {
   @Input('contextMenuTriggerFor') text = '';
   tipRef!: Element | null;
 
@@ -41,7 +41,7 @@ export class ContextMenuTriggerDirective implements OnInit  {
   }
 
   removeTip() {
-    if(this.tipRef) {
+    if (this.tipRef) {
       this.render2.removeChild(this.el.nativeElement, this.tipRef);
       this.tipRef = null;
     }

@@ -1,4 +1,6 @@
 @import "assets/resourses/styles/_material-override-theme";
+@import "assets/resourses/styles/hero";
+@import "assets/resourses/styles/collors";
 @import "assets/resourses/styles/vars";
 @import "assets/resourses/styles/mixins";
 @import "assets/resourses/styles/fixers";
@@ -20,7 +22,10 @@ html, body {
   color: white;
 }
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .caption {
   @include grad-color;
@@ -33,10 +38,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: unset !important;
   max-width: 60px;
   max-height: 60px;
-}
-
-.skills-bar {
-  flex-direction: column;
 }
 
 .stats {
@@ -55,27 +56,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width: 30px;
     background-color: transparent !important;
   }
+
   p {
     display: flex;
     align-items: center;
     margin: 5px;
     justify-content: center;
+
     &.d-inline {
       flex-basis: 100px;
     }
   }
+
   span {
     height: fit-content;
   }
-}
-
-.hero-in-frame {
-  position: absolute;
-  z-index: 101;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(2px 4px 6px rgba(255, 0, 255, 0.6));
 }
 
 .glow-box {
@@ -90,18 +85,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-top-right-radius: 50px;
 }
 
-.copper {
-  color: #ffb47e !important;
-}
-
-.silver {
-  color: silver !important;
-}
-
-.gold {
-  color: gold !important;
-}
-
 .day-count-container {
   color: white;
   position: absolute;
@@ -111,85 +94,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-weight: bold;
     font-size: 24px;
     color: #FF9393FF;
-  }
-}
-
-.summon-scroll, .health-color {
-  color: #70FF70FF;
-}
-
-.summon-card, .defence-color {
-  color: #6ee9f6;
-}
-
-.hero-shard, .attack-color {
-  color: #FF9393FF;
-}
-
-.red-b {
-  background: $light-red;
-}
-
-.green-b {
-  background: $light-green;
-}
-
-.entity-b {
-  background: $light-gray;
-}
-
-.flex-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 7px;
-  flex-direction: row !important;
-
-  .pr-lg {
-    padding-right: 15px;
-  }
-}
-
-$columns: 100;
-
-@for $i from 1 through $columns {
-  .w-#{$i} {
-    width: (1% * $i);
-  }
-}
-
-@for $i from 1 through $columns {
-  .pr-#{$i} {
-    padding-right: (1px * $i);
-  }
-}
-
-@for $i from 1 through $columns {
-  .w-#{$i}-i {
-    width: (1% * $i) !important;
-  }
-}
-
-@for $i from 1 through $columns {
-  #w-#{$i} {
-    width: (1% * $i);
-  }
-}
-
-@for $i from 1 through $columns {
-  #w-#{$i}-i {
-    width: (1% * $i) !important;
-  }
-}
-
-@for $i from 1 through $columns {
-  .h-#{$i} {
-    height: (1% * $i);
-  }
-}
-
-@for $i from 1 through $columns {
-  .h-#{$i}-i {
-    height: (1% * $i) !important;
   }
 }
 
@@ -221,28 +125,27 @@ $columns: 100;
   }
 }
 
-a.fake-link {
-  color: white !important;
-  text-decoration: none !important;
-}
-
 :root {
   .card {
     --bs-card-spacer-y: 3px;
     --bs-card-spacer-x: 3px;
   }
+
   .nav-tabs {
     --bs-border-radius: 0px;
   }
+
   .nav-link {
     --bs-nav-link-padding-y: 5px;
     --bs-nav-link-padding-x: 5px;
     --bs-nav-tabs-border-radius: 0px;
     background: white;
   }
+
   .card-title {
     --bs-card-title-spacer-y: 2px;
   }
+
   .list-group-item {
     --bs-list-group-item-padding-y: 4px;
     --bs-list-group-item-padding-x: 4px;
@@ -252,15 +155,6 @@ a.fake-link {
 .nav-item .active {
   box-shadow: $box-shadow;
   border: none !important;
-}
-
-.skills-container {
-  img {
-    width: 100px;
-    height: 100px;
-    margin-right: 10px;
-    object-fit: cover;
-  }
 }
 
 .row:not(.stats) {

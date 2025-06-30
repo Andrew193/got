@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {GameEntryPointComponent} from "../../../components/game-entry-point/game-entry-point.component";
 import {ActivatedRoute} from "@angular/router";
@@ -23,13 +23,16 @@ export class DailyBossBattlefieldComponent {
   constructor(private route: ActivatedRoute,
               private dailyBossService: DailyBossService,
               private heroesService: HeroesService) {
-    this.route.params.subscribe((value)=>{
+    this.route.params.subscribe((value) => {
       this.aiUnits.push(this.heroesService.getEquipmentForUnit(
-        {...this.heroesService.getDailyBossVersion1(), user: false, ...this.dailyBossService.uppBoss(value['bossLevel'])})
+        {
+          ...this.heroesService.getDailyBossVersion1(),
+          user: false, ...this.dailyBossService.uppBoss(value['bossLevel'])
+        })
       )
     });
-    this.route.queryParams.subscribe((value)=>{
-      (value['units'] as string[]).forEach((el, index)=> {
+    this.route.queryParams.subscribe((value) => {
+      (value['units'] as string[]).forEach((el, index) => {
         this.userUnits.push({...this.heroesService.getUnitByName(el), y: 0, x: 1 + index})
       })
     })

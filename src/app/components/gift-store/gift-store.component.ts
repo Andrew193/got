@@ -74,9 +74,9 @@ export class GiftStoreComponent implements OnInit {
       cooper: 0
     }
 
-    const chestsReward = this.loot.filter((el)=>el?.name === 'Chest').map(()=>this.npcService.getChestReward());
-    const otherRewards = this.loot.filter((el)=>el?.name !== 'Chest');
-    const allRewards = [...chestsReward, ...otherRewards].filter((el)=>!!el) as DisplayReward[];
+    const chestsReward = this.loot.filter((el) => el?.name === 'Chest').map(() => this.npcService.getChestReward());
+    const otherRewards = this.loot.filter((el) => el?.name !== 'Chest');
+    const allRewards = [...chestsReward, ...otherRewards].filter((el) => !!el) as DisplayReward[];
 
     allRewards.forEach((el) => {
       const name = (el.name[0].toLowerCase() + el.name.slice(1)) as 'gold' | 'silver' | 'cooper';
@@ -99,7 +99,7 @@ export class GiftStoreComponent implements OnInit {
 
   public gameResultsRedirect = (realAiUnits: Unit[]) => {
     this.loot = this.aiUnits.map((el, index) => {
-      return !realAiUnits[index].health ? el.reward: null
+      return !realAiUnits[index].health ? el.reward : null
     })
   }
 }
