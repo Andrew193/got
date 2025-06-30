@@ -6,7 +6,6 @@ import {GameService} from "../../../services/game-action/game.service";
 import {GameLoggerService} from "../../../services/game-logger/logger.service";
 import {Skill} from "../../../models/skill.model";
 import {Unit} from "../../../models/unit.model";
-import {heroType} from "../../../services/heroes/heroes.service";
 import {createDeepCopy} from "../../../helpers";
 import {Position, Tile} from "../../../interface";
 import {AbstractGameFieldComponent} from "../abstract-game-field/abstract-game-field.component";
@@ -207,6 +206,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   checkAiMoves(aiMove: boolean = true) {
+    console.log('cjkecl')
+    this._turnCount.next(this.turnCount + 1);
     const userFinishedTurn = this.userUnits.every((userHero) => (!userHero.canMove && !userHero.canAttack) || !userHero.health);
     if (userFinishedTurn && !this.gameActionService.isDead(this.aiUnits)) {
       if (this.battleMode) {
@@ -222,25 +223,25 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
   startAutoFight(fastFight = false, oneTick = false) {
     this.autoFight = true;
+    const tick = () => {
+      console.log('attack')
+      this.attackUser(false);
+      this.fieldService.resetMoveAndAttack(this.userUnits, false);
+      this.checkAiMoves();
+      if (this.checkAutoFightEnd() || oneTick) {
+        this.autoFight = false;
+        return true;
+      }
+      return false;
+    }
+
     if (fastFight) {
       for (let i = 0; ; i++) {
-        this.attackUser(false);
-        this.fieldService.resetMoveAndAttack(this.userUnits, false);
-        this.checkAiMoves();
-        if (this.checkAutoFightEnd() || oneTick) {
-          this.autoFight = false;
-          break;
-        }
+        if(tick()) break
       }
     } else {
       const interval = setInterval(() => {
-        this.attackUser(false);
-        this.fieldService.resetMoveAndAttack(this.userUnits, false);
-        this.checkAiMoves();
-        if (this.checkAutoFightEnd() || oneTick) {
-          this.autoFight = false;
-          clearInterval(interval);
-        }
+        tick() && clearInterval(interval);
       }, BATTLE_SPEED)
     }
   }
@@ -282,7 +283,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   attackUser(aiMove = true) {
-    this._turnCount.next(this.turnCount + 1);
+    console.log('dffdsfsdf')
     const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
 
     const moveAiUnit = (index: number, aiUnit: Unit, userUnit: Unit) => {

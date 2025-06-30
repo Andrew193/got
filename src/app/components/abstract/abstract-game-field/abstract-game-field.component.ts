@@ -4,8 +4,6 @@ import {GameFieldVars, LogRecord, Position, Tile} from "../../../interface";
 import {BehaviorSubject} from "rxjs";
 import {Unit} from "../../../models/unit.model";
 import {Skill} from "../../../models/skill.model";
-import {Effect} from "../../../models/effect.model";
-import {heroType} from "../../../services/heroes/heroes.service";
 import {GameLoggerService} from "../../../services/game-logger/logger.service";
 import {UnitService} from "../../../services/unit/unit.service";
 import {EffectsService} from "../../../services/effects/effects.service";

@@ -1,7 +1,6 @@
 import {Coordinate} from "../interface";
 import {Skill} from "./skill.model";
 import {Effect} from "./effect.model";
-import {rarity} from "../services/heroes/heroes.service";
 
 export interface Unit extends Coordinate {
   rank: number,

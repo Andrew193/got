@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {GameFieldService} from "../../services/game-field/game-field.service";
 import {CommonModule} from "@angular/common";
-import {OutsideClickDirective} from "../../directives/outside-click.directive";
 import {PopoverModule} from "ngx-bootstrap/popover";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {ProgressbarModule} from "ngx-bootstrap/progressbar";
@@ -17,7 +16,7 @@ import {BasicGameFieldComponent} from "../abstract/basic-game-field/basic-game-f
 @Component({
   selector: 'game-field',
   standalone: true,
-  imports: [CommonModule, OutsideClickDirective, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent],
+  imports: [CommonModule, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss'
 })
