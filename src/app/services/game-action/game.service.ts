@@ -25,14 +25,14 @@ export class GameService {
   userUnits: Unit[] = [];
 
   constructor(private unitService: UnitService,
-              private effectsService: EffectsService,
+              private eS: EffectsService,
               private gameLoggerService: GameLoggerService,
               private modalWindowService: ModalWindowService) {
   }
 
   getFixedDefence(defence: number, unit: Unit) {
-    const defReducedEffect = unit.effects.find((effect) => effect.type === this.effectsService.effects.defBreak)
-    return !!defReducedEffect ? defence * this.effectsService.getMultForEffect(defReducedEffect) : defence
+    const defReducedEffect = unit.effects.find((effect) => effect.type === this.eS.effects.defBreak)
+    return !!defReducedEffect ? defence * this.eS.getMultForEffect(defReducedEffect) : defence
   }
 
   getCanGetToPosition(aiUnit: Unit, shortestPathToUserUnit: Position[], userUnitPosition: Position) {
@@ -68,9 +68,9 @@ export class GameService {
   getFixedAttack(attack: number, unit: Unit) {
     const attackReducedEffect = unit.effects.find((effect) => {
       return unit.heroType === heroType.ATTACK ?
-        effect.type === this.effectsService.effects.attackBreak : effect.type === this.effectsService.effects.defBreak
+        effect.type === this.eS.effects.attackBreak : effect.type === this.eS.effects.defBreak
     })
-    return !!attackReducedEffect ? attack * this.effectsService.getMultForEffect(attackReducedEffect) : attack
+    return !!attackReducedEffect ? attack * this.eS.getMultForEffect(attackReducedEffect) : attack
   }
 
   //Check buffs ( health restore )
@@ -95,9 +95,9 @@ export class GameService {
   }
 
   restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: Skill) {
-    const restoredHealth = this.effectsService.getNumberForCommonEffects(unit.maxHealth, buff.m);
+    const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
     this.logRestoreHealth(logs, skill, unit, restoredHealth);
-    unit.health = this.effectsService.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth)
+    unit.health = this.eS.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth)
     return unit;
   }
 
@@ -110,7 +110,7 @@ export class GameService {
 
   checkEffectsForHealthRestore(unit: Unit, logs: LogRecord[]) {
     unit.effects.forEach((effect) => {
-      if (effect.type === this.effectsService.effects.healthRestore) {
+      if (effect.type === this.eS.effects.healthRestore) {
         unit = this.restoreHealthForUnit(unit, effect, logs, {imgSrc: effect.imgSrc} as Skill)
       }
     })
@@ -188,7 +188,7 @@ export class GameService {
         } else {
           array[i] = {...effect, duration: effect.duration - 1}
           if (!effect.passive) {
-            const additionalDmg = this.getReducedDmgForEffects(unit, this.effectsService.getDebuffDmg(effect.type, unit.health, effect.m), effect);
+            const additionalDmg = this.getReducedDmgForEffects(unit, this.eS.getDebuffDmg(effect.type, unit.health, effect.m), effect);
             if (additionalDmg) {
               log.push(this.gameLoggerService.logEvent({
                 damage: null,
@@ -197,7 +197,7 @@ export class GameService {
                 battleMode: battleMode
               }, !unit.user, effect, unit))
             }
-            unit.health = this.effectsService.getHealthAfterDmg(unit.health, additionalDmg);
+            unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
           }
         }
       }
@@ -206,8 +206,8 @@ export class GameService {
   }
 
   getCanCross(entity: Unit) {
-    const isFrozen = entity.effects.findIndex((effect) => effect.type === this.effectsService.effects.freezing)
-    const isRooted = entity.effects.findIndex((effect) => effect.type === this.effectsService.effects.root)
+    const isFrozen = entity.effects.findIndex((effect) => effect.type === this.eS.effects.freezing)
+    const isRooted = entity.effects.findIndex((effect) => effect.type === this.eS.effects.root)
 
     return entity?.canMove
       ? isRooted !== -1
@@ -222,8 +222,8 @@ export class GameService {
     const log: LogRecord[] = [];
 
     unit.effects.forEach((effect) => {
-      let recountedUnit = this.effectsService.recountStatsBasedOnEffect(effect, unit);
-      recountedUnit = !effect.duration ? this.effectsService.restoreStatsAfterEffect(effect, recountedUnit) : recountedUnit;
+      let recountedUnit = this.eS.recountStatsBasedOnEffect(effect, unit);
+      recountedUnit = !effect.duration ? this.eS.restoreStatsAfterEffect(effect, recountedUnit) : recountedUnit;
       unit = recountedUnit.unit;
       if (recountedUnit.message) {
         log.push(this.gameLoggerService.logEvent({

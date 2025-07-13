@@ -20,10 +20,10 @@ import {BATTLE_SPEED} from "../../../constants";
 export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent {
   constructor(private fieldService: GameFieldService,
               private unitService: UnitService,
-              private effectsService: EffectsService,
+              private eS: EffectsService,
               private gameActionService: GameService,
               private gameLoggerService: GameLoggerService) {
-    super(fieldService, gameLoggerService, unitService, effectsService);
+    super(fieldService, gameLoggerService, unitService, eS);
   }
 
   attack(skill: Skill) {
@@ -42,7 +42,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       this.makeHealerMove(null, skill, user, this.userUnits);
     }
     if (!user.healer || (user.healer && !user.onlyHealer)) {
-      this.makeAttackMove(enemyIndex, this.effectsService.getBoostedParameterCover(user, user.effects) * skill.dmgM, this.effectsService.getBoostedParameterCover(this.aiUnits[enemyIndex], this.aiUnits[enemyIndex].effects), this.aiUnits, user, skill)
+      this.makeAttackMove(enemyIndex, this.eS.getBoostedParameterCover(user, user.effects) * skill.dmgM, this.eS.getBoostedParameterCover(this.aiUnits[enemyIndex], this.aiUnits[enemyIndex].effects), this.aiUnits, user, skill)
       this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, user)
     }
 
@@ -70,7 +70,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill, addRangeEffects = false) {
-    units[unitIndex] = this.unitService.addEffectToUnit(units, unitIndex, skill, addRangeEffects, this.effectsService.getEffectsWithIgnoreFilter)
+    units[unitIndex] = this.unitService.addEffectToUnit(units, unitIndex, skill, addRangeEffects, this.eS.getEffectsWithIgnoreFilter)
   }
 
   addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill) {
@@ -345,7 +345,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
               this.makeHealerMove(null, aiSkill, aiUnit, this.getAiLeadingUnits(aiMove));
             }
             if (!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
-              this.makeAttackMove(userIndex, this.effectsService.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.effectsService.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
+              this.makeAttackMove(userIndex, this.eS.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM, this.eS.getBoostedParameterCover(this.getUserLeadingUnits(aiMove)[userIndex], this.getUserLeadingUnits(aiMove)[userIndex].effects), this.getUserLeadingUnits(aiMove), aiUnit, aiSkill)
               this.universalRangeAttack(aiSkill, this.getUserLeadingUnits(aiMove)[userIndex] as Unit, this.getUserLeadingUnits(aiMove), aiMove, aiUnit)
             }
 
