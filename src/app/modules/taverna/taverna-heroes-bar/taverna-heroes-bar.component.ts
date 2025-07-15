@@ -15,6 +15,7 @@ import {
 } from "../../../components/data-inputs/autocomplete-mat-input/autocomplete-mat-input.component";
 import {BasePaginationComponent} from "../../../components/abstract/base-pagination/base-pagination.component";
 import {frontRoutes} from "../../../constants";
+import {trackByUnit} from "../../../helpers";
 
 @Component({
   selector: 'taverna-heroes-bar',
@@ -87,4 +88,6 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent implement
   backToMainPage() {
     this.router.navigate([frontRoutes.base]);
   }
+
+  protected readonly trackByUnit = trackByUnit;
 }

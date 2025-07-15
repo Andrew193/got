@@ -12,6 +12,7 @@ import {UnitService} from "../../services/unit/unit.service";
 import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
 import {GameLoggerService} from "../../services/game-logger/logger.service";
 import {BasicGameFieldComponent} from "../abstract/basic-game-field/basic-game-field.component";
+import {trackByEffect, trackBySkill, trackByUnit} from "../../helpers";
 
 @Component({
   selector: 'game-field',
@@ -28,4 +29,8 @@ export class GameFieldComponent extends BasicGameFieldComponent {
               gameLoggerService: GameLoggerService) {
     super(fieldService, unitService, effectsService, gameActionService, gameLoggerService);
   }
+
+  protected readonly trackBySkill = trackBySkill;
+  protected readonly trackByUnit = trackByUnit;
+  protected readonly trackByEffect = trackByEffect;
 }

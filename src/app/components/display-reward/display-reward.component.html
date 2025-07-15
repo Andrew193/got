@@ -1,5 +1,5 @@
 <div class="summon-container reward-container w-100 d-flex mb-3" *ngIf="rewards.length">
-  <div *ngFor="let reward of rewards">
+  <div *ngFor="let reward of rewards; trackBy trackByIndex">
     <div class="reward-inner-container" *ngIf="reward">
       <img src="{{reward.src}}" alt="{{reward.name}}">
       <span>{{ reward.amount }}</span>

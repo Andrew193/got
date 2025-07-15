@@ -3,8 +3,9 @@ import {Router, RouterModule} from "@angular/router";
 import {DailyRewardComponent} from "../../components/daily-reward/daily-reward.component";
 import {CommonModule} from "@angular/common";
 import {frontRoutes} from "../../constants";
+import {trackByRoute} from "../../helpers";
 
-interface route {
+export interface route {
   name: string,
   url: string,
   src: string
@@ -56,4 +57,5 @@ export class LobbyComponent {
   public closePopup = () => {
     this.showDailyReward();
   }
+  protected readonly trackByRoute = trackByRoute;
 }

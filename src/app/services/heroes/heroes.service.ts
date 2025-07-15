@@ -276,7 +276,7 @@ export class HeroesService extends ContentService {
       heroType: heroType.DEFENCE,
       healer: true,
       rarity: rarity.EPIC,
-      onlyHealer: false,
+      onlyHealer: true,
       attackRange: 1,
       rankBoost: 1.15,
       ignoredDebuffs: [],
@@ -883,7 +883,7 @@ export class HeroesService extends ContentService {
             + ". Перед началом хода накладывает на себя " + this.effects.attackBuff + " на 1 ход."
         }
       ],
-      effects: [...this.eS.getEffect(this.effects.defBreak)]
+      effects: [...this.eS.getEffect(this.effects.defBuff)]
     }
   }
 

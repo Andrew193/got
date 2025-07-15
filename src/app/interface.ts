@@ -6,6 +6,10 @@ export interface Position {
   j: number
 }
 
+export interface TilesToHighlight extends Position {
+  highlightedClass: string
+}
+
 export interface LogRecord {
   message: string,
   isUser?: boolean,
@@ -34,6 +38,7 @@ export interface GiftConfig extends IdEntity {
 export class GameFieldVars {
   gameField: Tile[][] = [];
   gameConfig: any[][] = [];
+  tilesToHighlight: TilesToHighlight[] = [];
   possibleMoves: Position[] = [];
 }
 

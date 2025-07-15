@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AbstractFieldService} from "../../../services/abstract/field/abstract-field.service";
-import {GameFieldVars, LogRecord, Position, Tile} from "../../../interface";
+import {GameFieldVars, LogRecord, Position, Tile, TilesToHighlight} from "../../../interface";
 import {BehaviorSubject} from "rxjs";
 import {Unit} from "../../../models/unit.model";
 import {Skill} from "../../../models/skill.model";
@@ -51,6 +51,10 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     this._turnCount.subscribe((newTurn) => {
       this.turnCount = newTurn;
     })
+  }
+
+  trackByLogRecord(index: number, log: LogRecord) {
+    return log.message;
   }
 
   ngOnInit(): void {
@@ -127,15 +131,25 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     this.showAttackBar = false;
   }
 
-  highlightCellsInnerFunction(path: Position[], className: string) {
+  highlightCellsInnerFunction(path: Position[], className: string, gameConfig: any[][]): TilesToHighlight[] {
+    const tilesToHighlight: TilesToHighlight[] = [];
+
     path.forEach((point) => {
       if (point) {
-        this.gameConfig[point.i][point.j] = {
-          ...this.gameConfig[point.i][point.j],
+        tilesToHighlight.push({
+          i: point.i,
+          j: point.j,
           highlightedClass: className
-        }
+        })
+         gameConfig[point.i][point.j].highlightedClass = className;
+        //   = {
+        //   ...this.gameConfig[point.i][point.j],
+        //   highlightedClass: className
+        // }
       }
     })
+
+    return tilesToHighlight;
   }
 
   updateGameFieldTile(i: any, j: any, entity: Unit | undefined = undefined, active: boolean = false) {

@@ -1,7 +1,8 @@
 <div class="game-board mb-3">
-  <div *ngFor="let row of gameConfig" class="flex-row">
-    <div *ngFor="let tile of row"
-         (click)="onMoveEntity(tile)"
+  <div *ngFor="let row of gameConfig; trackBy trackByRowIndex" class="flex-row">
+    <div *ngFor="let tile of row; trackBy: trackByHighlightedClass"
+         appDebounceClick
+         (debounceClick)="onMoveEntity(tile)"
          class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center {{tile.highlightedClass}}"
          [attr.data-x]="tile.x"
          [ngClass]="{
@@ -16,7 +17,8 @@
       <div *ngIf="tile.entity" class="position-relative">
         <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
              [ngClass]="{'loot-img': !battleMode && !tile.entity.user}"
-             (click)="onHighlightMakeMove(tile.entity, $event)"/>
+             appDebounceClick
+             (debounceClick)="onHighlightMakeMove(tile.entity, $event)"/>
         <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move"
              *ngIf="battleMode? tile.entity.canMove && !!tile.entity.health && (tile?.entity?.inBattle === true || tile?.entity?.inBattle === undefined): tile.entity.user"
              class="action-icon position-absolute can-move-icon"/>

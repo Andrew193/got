@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, ViewChild
 import {CommonModule} from "@angular/common";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {HeroesService} from "../../services/heroes/heroes.service";
-import {OutsideClickDirective} from "../../directives/outside-click.directive";
+import {OutsideClickDirective} from "../../directives/outside-click/outside-click.directive";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {StatsComponent} from "../stats/stats.component";
 import {DailyRewardService} from "../../services/daily-reward/daily-reward.service";
@@ -11,6 +11,8 @@ import {Unit} from "../../models/unit.model";
 import {ContextMenuTriggerDirective} from "../../directives/context-menu-trigger/context-menu-trigger.directive";
 import {DailyReward} from "../../interface";
 import {UsersService} from "../../services/users/users.service";
+import {Skill} from "../../models/skill.model";
+import {trackBySkill} from "../../helpers";
 
 interface DayReward {
   copperCoin: number,
@@ -34,7 +36,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('heroInFrame') heroInFrame: any;
   isHeroPreview: boolean = false;
   rewardHero: Unit;
-  month;
+  month: DayReward[] = [];
   dailyRewardConfig: DailyReward = {
     id: "",
     userId: "",
@@ -50,6 +52,10 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
     this.month = this.monthReward;
     document.body.style.overflow = "hidden";
+  }
+
+  trackByMonthIndex(index: number) {
+    return index;
   }
 
   showHeroPreview() {
@@ -122,4 +128,5 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     document.body.style.overflow = "auto";
   }
 
+  protected readonly trackBySkill = trackBySkill;
 }

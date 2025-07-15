@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {Unit} from "../../models/unit.model";
+import {trackBySkill, trackByUnit} from "../../helpers";
 
 @Component({
   selector: 'heroes-select-preview',
@@ -22,4 +23,6 @@ export class HeroesSelectPreviewComponent {
   }
   @Input() getDescriptionState: (user: boolean, index: number) => boolean = (user, index) => false
 
+  protected readonly trackBySkill = trackBySkill;
+  protected readonly trackByUnit = trackByUnit;
 }

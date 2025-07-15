@@ -6,6 +6,7 @@ import {AsyncPipe, NgForOf} from "@angular/common";
 import {
   BaseSelectFormControlComponent
 } from "../../abstract/abstract-control/base-select-form-control/base-select-form-control.component";
+import {trackByStringContent} from "../../../helpers";
 
 @Component({
   selector: 'autocomplete-mat-input',
@@ -29,4 +30,5 @@ export class AutocompleteMatInputComponent extends BaseSelectFormControlComponen
   ngAfterViewInit(): void {
   }
 
+  protected readonly trackByStringContent = trackByStringContent;
 }

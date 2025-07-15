@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {DisplayReward} from "../../services/reward/reward.service";
+import {trackByIndex} from "../../helpers";
 
 @Component({
   selector: 'display-reward',
@@ -14,4 +15,5 @@ import {DisplayReward} from "../../services/reward/reward.service";
 export class DisplayRewardComponent {
   @Input() rewards: (DisplayReward | null)[] = [];
 
+  protected readonly trackByIndex = trackByIndex;
 }

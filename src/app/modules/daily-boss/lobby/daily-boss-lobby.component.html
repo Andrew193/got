@@ -10,7 +10,7 @@
   <h4>Choose Difficulty</h4>
   <div class="pb-2">
     <tabset>
-      <tab *ngFor="let boss of config" [heading]="boss.heading" id="{{boss.heading}}">
+      <tab *ngFor="let boss of config; trackBy trackByLevel" [heading]="boss.heading" id="{{boss.heading}}">
         <ng-container [ngTemplateOutlet]="bossTemplate"
                       [ngTemplateOutletContext]="{bossLevel: boss.level}"></ng-container>
       </tab>
@@ -54,7 +54,6 @@
           [isUser]="true"
           [containerClass]="'border-radius-none border-end-0'"
           [addUserUnit]="addUserUnit"
-          [checkSelected]="checkSelected"
         ></heroes-select>
       </div>
       <div class="col-lg-6 col-sm-12">

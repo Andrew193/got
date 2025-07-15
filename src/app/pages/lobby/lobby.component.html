@@ -2,7 +2,7 @@
   <main class="d-flex mt-4 ms-4 me-4">
     <aside class="col-4">
       <ul class="nav flex-column list-group">
-        <li class="nav-item list-group-item" *ngFor="let route of pageRoutes">
+        <li class="nav-item list-group-item" *ngFor="let route of pageRoutes; trackBy trackByRoute">
           <a [routerLink]="route.url" class="list-group-item">
                         <span><img src="{{'assets/resourses/imgs/nav_icons/' + route.src}}"
                                    [alt]="route.name"/>{{ route.name }}</span>

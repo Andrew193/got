@@ -78,7 +78,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   updateGridUnits(unitsArray: Unit[]) {
-    this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
+    this.unitService.updateGridUnits(unitsArray, this.gameConfig);
+    //this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
   }
 
   dropEnemy() {
@@ -94,6 +95,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     event?.stopPropagation();
     if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack || entity.user === false)) {
+
       let possibleTargetsInAttackRadius;
       if (this.selectedEntity && this.selectedEntity.user) {
         possibleTargetsInAttackRadius = this.showPossibleMoves(this.unitService.getPositionFromUnit(this.selectedEntity), this.selectedEntity.attackRange, true)
@@ -113,13 +115,13 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
         if (entity.attackRange >= entity.canCross && !entity.healer) {
           this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
-        } else if (entity.healer && false) {
+        } else if (entity.healer) {
           //Only healers (do not deal dmg)
           this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
         }
 
         if (!entity?.canMove || !entity?.canCross) {
-          let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
+           let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
           if (enemyWhenCannotMove.length) {
             const enemyIndexList = [];
             for (let i = 0; i < enemyWhenCannotMove.length; i++) {
@@ -146,7 +148,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
             this.updateGridUnits(this.userUnits);
           }
         }
-        this.highlightCells(this.possibleMoves, entity.user ? "green-b" : "red-b")
+
+        this.highlightCells(this.possibleMoves, entity.user ? "green-b" : "red-b");
       }
 
       if (this.showAttackBar) {
@@ -155,8 +158,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     } else {
       this.ignoreMove = true;
       this.selectedEntity = null;
+      this.tilesToHighlight = [];
       this.fieldService.unhighlightCells.apply(this);
-      this.possibleMoves = [];
     }
   }
 
@@ -206,10 +209,9 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   checkAiMoves(aiMove: boolean = true) {
-    console.log('cjkecl')
-    this._turnCount.next(this.turnCount + 1);
     const userFinishedTurn = this.userUnits.every((userHero) => (!userHero.canMove && !userHero.canAttack) || !userHero.health);
     if (userFinishedTurn && !this.gameActionService.isDead(this.aiUnits)) {
+      this._turnCount.next(this.turnCount + 1);
       if (this.battleMode) {
         this.dropEnemy();
         this.turnUser = false;
@@ -224,7 +226,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   startAutoFight(fastFight = false, oneTick = false) {
     this.autoFight = true;
     const tick = () => {
-      console.log('attack')
       this.attackUser(false);
       this.fieldService.resetMoveAndAttack(this.userUnits, false);
       this.checkAiMoves();
@@ -283,7 +284,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   attackUser(aiMove = true) {
-    console.log('dffdsfsdf')
     const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
 
     const moveAiUnit = (index: number, aiUnit: Unit, userUnit: Unit) => {
@@ -380,9 +380,10 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   highlightCells(path: Position[], className: string) {
+    this.tilesToHighlight = [];
     this.fieldService.unhighlightCells.apply(this);
-    this.highlightCellsInnerFunction(path, className);
-    this.possibleMoves = path.filter((move) => !!move);
+    this.tilesToHighlight = this.highlightCellsInnerFunction(path, className, this.gameConfig);
+    //this.possibleMoves = path.filter((move) => !!move);
   }
 
   finishTurn() {

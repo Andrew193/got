@@ -5,7 +5,7 @@ import {Unit} from "../../../models/unit.model";
 import {SkillsRenderComponent} from "../../../components/skills-render/skills-render.component";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {TabsModule} from "ngx-bootstrap/tabs";
-import {createDeepCopy} from "../../../helpers";
+import {createDeepCopy, trackByLevel} from "../../../helpers";
 import {Router} from "@angular/router";
 import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
 import {DailyBossService} from "../../../services/daily-boss/daily-boss.service";
@@ -44,26 +44,24 @@ export class DailyBossLobbyComponent {
     this.selectedHero = this.heroesService.getDailyBossVersion1();
   }
 
-  public addUserUnit = (unit: Unit) => {
-    if (this.chosenUnits.findIndex((el) => el.name === unit.name) === -1 && this.chosenUnits.length < 5) {
-      this.chosenUnits.push(unit);
-    } else {
-      this.chosenUnits.splice(this.chosenUnits.findIndex((el) => el.name === unit.name), 1)
-    }
-  }
+  public addUserUnit = (unit: Unit): boolean => {
+    const index = this.chosenUnits.findIndex(el => el.name === unit.name);
 
-  public checkSelected = (unit: Unit) => {
-    return this.chosenUnits.findIndex((el) => el.name === unit.name) !== -1
-  }
+    if (index === -1 && this.chosenUnits.length < 5) {
+      this.chosenUnits = [...this.chosenUnits, unit];
+      return true;
+    } else {
+      this.chosenUnits = this.chosenUnits.filter((_, i) => i !== index);
+      return false;
+    }
+  };
 
   get bossReward() {
     return this.dailyBossService.bossReward;
   }
 
   upBoss(version: number) {
-    const levelConfig = this.dailyBossService.uppBoss(version);
-
-    return this.heroesService.getEquipmentForUnit(createDeepCopy({...this.selectedHero, ...levelConfig}))
+    return this.heroesService.getEquipmentForUnit(createDeepCopy({...this.selectedHero, ...this.dailyBossService.uppBoss(version)}))
   }
 
   openFight(bossLevel: number) {
@@ -77,4 +75,6 @@ export class DailyBossLobbyComponent {
   get allHeroes() {
     return this.heroesService.getAllHeroes();
   }
+
+  protected readonly trackByLevel = trackByLevel;
 }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Unit} from "../../../models/unit.model";
 import {HeroesService} from "../../../services/heroes/heroes.service";
@@ -18,7 +18,8 @@ import {frontRoutes} from "../../../constants";
     HeroesSelectComponent
   ],
   templateUrl: './training-config.component.html',
-  styleUrl: './training-config.component.scss'
+  styleUrl: './training-config.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TrainingConfigComponent {
   aiUnits: Unit[] = [];
@@ -30,30 +31,44 @@ export class TrainingConfigComponent {
               private route: Router) {
   }
 
-  public addUserUnit = (unit: Unit, user = true) => {
-    if (this[user ? 'userUnits' : 'aiUnits'].findIndex((el) => el.name === unit.name) === -1 && this[user ? 'userUnits' : 'aiUnits'].length < 5) {
-      this[user ? 'userUnits' : 'aiUnits'].push(unit);
-      this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'] = this[user ? 'userUnits' : 'aiUnits'].map(() => false);
-    } else {
-      this[user ? 'userUnits' : 'aiUnits'].splice(this[user ? 'userUnits' : 'aiUnits'].findIndex((el) => el.name === unit.name), 1)
-      this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'] = this[user ? 'userUnits' : 'aiUnits'].map(() => false);
-    }
+  getDescKey(user = true) {
+    return user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions';
   }
 
+  getUnitKey(user = true) {
+    return user ? 'userUnits' : 'aiUnits';
+  }
+
+  public addUserUnit = (unit: Unit, user = true): boolean => {
+    const unitKey = this.getUnitKey(user);
+    const descKey = this.getDescKey(user);
+    const currentUnits = this[unitKey];
+    const index = currentUnits.findIndex(el => el.name === unit.name);
+
+    if (index === -1 && currentUnits.length < 5) {
+      const updatedUnits = [...currentUnits, unit];
+      this[unitKey] = updatedUnits;
+      this[descKey] = updatedUnits.map(() => false);
+      return true;
+    } else {
+      const updatedUnits = currentUnits.filter((_, i) => i !== index);
+      this[unitKey] = updatedUnits;
+      this[descKey] = updatedUnits.map(() => false);
+      return false;
+    }
+  };
+
   public toggleDescription = (user: boolean, index: number) => {
-    this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'][index] = !this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'][index];
+    const descKey = this.getDescKey(user);
+    this[descKey][index] = !this[descKey][index];
   }
 
   public getDescriptionState = (user: boolean, index: number) => {
-    return this[user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions'][index];
+    return this[this.getDescKey(user)][index];
   }
 
   get allHeroes() {
     return this.heroesService.getAllHeroes();
-  }
-
-  public checkSelected = (unit: Unit, user = true) => {
-    return this[user ? 'userUnits' : 'aiUnits'].findIndex((el) => el.name === unit.name) !== -1
   }
 
   openFight() {
