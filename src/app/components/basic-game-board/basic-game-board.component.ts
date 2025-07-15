@@ -1,15 +1,16 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Coordinate, Tile, TilesToHighlight} from "../../interface";
 import {Unit} from "../../models/unit.model";
-import {DebounceClickDirective} from "../../directives/debounce-click/debounce-click.directive";
+import {trackByIndex} from "../../helpers";
 
 @Component({
   selector: 'basic-game-board',
   standalone: true,
-  imports: [CommonModule, DebounceClickDirective],
+  imports: [CommonModule],
   templateUrl: './basic-game-board.component.html',
-  styleUrl: './basic-game-board.component.scss'
+  styleUrl: './basic-game-board.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BasicGameBoardComponent {
   @Input() gameConfig: any[][] = [];
@@ -31,11 +32,9 @@ export class BasicGameBoardComponent {
     return tileFromArray?.highlightedClass || ''
   }
 
-  public trackByHighlightedClass = (index: number, tile: Coordinate): string => {
-    return this.getTileHighlightClass(tile);
+  public trackByHighlightedClass = (index: number, tile: Tile) => {
+    return tile?.x + '-' + tile?.y;
   }
 
-  trackByRowIndex(index: number): number {
-    return index;
-  }
+  protected readonly trackByIndex = trackByIndex;
 }

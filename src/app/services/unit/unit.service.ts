@@ -68,10 +68,10 @@ export class UnitService {
   }
 
   updateGridUnits(unitsArray: Unit[], gameConfig: any) {
+    const gameConfigCopy = createDeepCopy(gameConfig);
     unitsArray.forEach((unit) => {
-      gameConfig[unit.x][unit.y].entity = unit;
-        ///= {...gameConfigCopy[unit.x][unit.y], entity: unit}
+      gameConfigCopy[unit.x][unit.y] = {...gameConfigCopy[unit.x][unit.y], entity: unit}
     })
-    return gameConfig;
+    return gameConfigCopy;
   }
 }

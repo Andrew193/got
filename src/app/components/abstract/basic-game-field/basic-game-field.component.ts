@@ -78,8 +78,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   updateGridUnits(unitsArray: Unit[]) {
-    this.unitService.updateGridUnits(unitsArray, this.gameConfig);
-    //this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
+    this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
   }
 
   dropEnemy() {
@@ -205,7 +204,10 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       this.fieldService.unhighlightCells.apply(this);
       this.selectedEntity = null;
     }
-    this.checkAiMoves()
+    this.tilesToHighlight = [];
+    this.selectedEntity = null;
+    this.possibleMoves = [];
+    this.checkAiMoves();
   }
 
   checkAiMoves(aiMove: boolean = true) {
@@ -383,7 +385,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.tilesToHighlight = [];
     this.fieldService.unhighlightCells.apply(this);
     this.tilesToHighlight = this.highlightCellsInnerFunction(path, className, this.gameConfig);
-    //this.possibleMoves = path.filter((move) => !!move);
   }
 
   finishTurn() {

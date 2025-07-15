@@ -17,11 +17,9 @@ export class GameFieldService extends AbstractFieldService {
   unhighlightCells() {
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 10; j++) {
-        this.gameConfig[i][j].highlightedClass = "";
-          //= {...this.gameConfig[i][j], highlightedClass: ""}
+        this.gameConfig[i][j] = {...this.gameConfig[i][j], highlightedClass: ""}
       }
     }
-    //this.possibleMoves = [];
   }
 
   chooseAiSkill(skills: Skill[]): Skill {

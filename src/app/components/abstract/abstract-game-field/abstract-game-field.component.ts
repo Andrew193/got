@@ -141,11 +141,10 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
           j: point.j,
           highlightedClass: className
         })
-         gameConfig[point.i][point.j].highlightedClass = className;
-        //   = {
-        //   ...this.gameConfig[point.i][point.j],
-        //   highlightedClass: className
-        // }
+        gameConfig[point.i][point.j] = {
+          ...this.gameConfig[point.i][point.j],
+          highlightedClass: className
+        }
       }
     })
 
