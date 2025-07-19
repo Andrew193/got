@@ -410,94 +410,110 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     const aiUnits = this.getAiLeadingUnits(aiMove);
     const userUnits = this.getUserLeadingUnits(aiMove);
 
+    const updateField = () => {
+      this.gameConfig = this.fieldService.getGameField(userUnits, aiUnits, this.fieldService.getDefaultGameField());
+    };
+
     const moveAiUnit = (index: number, aiUnit: Unit, userUnit: Unit) => {
       const aiPos = this.unitService.getPositionFromUnit(aiUnit);
       const userPos = this.unitService.getPositionFromUnit(userUnit);
-      this.gameConfig = this.fieldService.getGameField(userUnits, aiUnits, this.fieldService.getDefaultGameField());
-
+      updateField();
       const path = this.fieldService.getShortestPathCover(
         this.fieldService.getGridFromField(this.gameConfig),
         aiPos, userPos, true, false, true
       );
+      const moveTo = this.gameActionService.getCanGetToPosition(aiUnit, path, userPos);
 
-      const finalPos = this.gameActionService.getCanGetToPosition(aiUnit, path, userPos);
-      aiUnits[index] = { ...aiUnits[index], canMove: false, x: finalPos.i, y: finalPos.j };
+      aiUnits[index] = {
+        ...aiUnits[index],
+        canMove: false,
+        x: moveTo.i,
+        y: moveTo.j,
+      };
     };
 
-    const updateFieldAndFinishAiTurn = (index: number, skills?: Skill[]) => {
+    const updateAiAfterAttack = (index: number, updatedSkills?: Skill[]) => {
       aiUnits[index] = {
         ...aiUnits[index],
         canAttack: false,
-        skills: skills || aiUnits[index].skills
+        skills: updatedSkills ?? aiUnits[index].skills,
       };
-      this.gameConfig = this.fieldService.getGameField(userUnits, aiUnits, this.fieldService.getDefaultGameField());
+      updateField();
+    };
+
+    const performAttack = (aiUnit: Unit, userIndex: number, aiSkill: Skill, index: number) => {
+      this.addBuffToUnit(aiUnits, index, aiSkill);
+      if (aiSkill.addBuffsBeforeAttack) {
+        aiUnit = aiUnits[index];
+      }
+
+      if (aiUnit.healer && aiSkill.healAll) {
+        this.makeHealerMove(null, aiSkill, aiUnit, aiUnits);
+      }
+
+      if (!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
+        const userTarget = userUnits[userIndex];
+        const dmg = this.eS.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM;
+        const defence = this.eS.getBoostedParameterCover(userTarget, userTarget.effects);
+        this.makeAttackMove(userIndex, dmg, defence, userUnits, aiUnit, aiSkill);
+        this.universalRangeAttack(aiSkill, userTarget, userUnits, aiMove, aiUnit);
+      }
+
+      const updatedSkills = this.updateSkillsCooldown(
+        createDeepCopy(aiUnits[index].skills),
+        userUnits,
+        userIndex,
+        this.unitService.findSkillIndex(aiUnit.skills, aiSkill),
+        aiSkill,
+        true,
+        true
+      );
+
+      usedAiSkills.push({ skill: aiSkill, unit: userUnits[userIndex], AI: aiUnit });
+      updateAiAfterAttack(index, updatedSkills);
     };
 
     const makeAiMove = (aiUnit: Unit, index: number) => {
       if (!aiUnit.health || !aiUnit.canMove) return;
 
-      const closestUserUnits = this.unitService.orderUnitsByDistance(aiUnit, userUnits) as Unit[];
+      const orderedTargets = this.unitService.orderUnitsByDistance(aiUnit, userUnits) as Unit[];
 
-      for (const userUnit of closestUserUnits) {
+      for (const userUnit of orderedTargets) {
         if (!userUnit.health) continue;
 
         moveAiUnit(index, aiUnit, userUnit);
 
-        const currentAi = aiUnits[index];
-        const enemyPos = this.getEnemyWhenCannotMove(currentAi, userUnits);
-        if (!enemyPos) {
-          updateFieldAndFinishAiTurn(index);
-          return;
+        const enemyPosition = this.getEnemyWhenCannotMove(aiUnits[index], userUnits);
+        if (enemyPosition) {
+          const userIndex = this.unitService.findUnitIndex(userUnits, this.unitService.getUnitFromPosition(enemyPosition));
+          const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
+          if (aiSkill) {
+            performAttack(aiUnit, userIndex, aiSkill, index);
+            return;
+          }
         }
 
-        const userIndex = this.unitService.findUnitIndex(userUnits, this.unitService.getUnitFromPosition(enemyPos));
-        const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
-        const aiSkillIndex = this.unitService.findSkillIndex(aiUnit.skills, aiSkill);
-        let updatedSkills: Skill[] = [];
-
-        if (aiSkill) {
-          this.addBuffToUnit(aiUnits, index, aiSkill);
-
-          // Re-fetch AI unit after buffing
-          aiUnit = aiUnits[index];
-
-          // Healer logic
-          if (aiUnit.healer && aiSkill.healAll) {
-            this.makeHealerMove(null, aiSkill, aiUnit, aiUnits);
-          }
-
-          // Damage logic
-          if (!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
-            const target = userUnits[userIndex];
-            const attackPower = this.eS.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM;
-            const defensePower = this.eS.getBoostedParameterCover(target, target.effects);
-            this.makeAttackMove(userIndex, attackPower, defensePower, userUnits, aiUnit, aiSkill);
-            this.universalRangeAttack(aiSkill, target, userUnits, aiMove, aiUnit);
-          }
-
-          // Cooldowns
-          updatedSkills = this.updateSkillsCooldown(
-            createDeepCopy(aiUnits[index].skills),
-            userUnits, userIndex, aiSkillIndex, aiSkill, true, true
-          );
-
-          usedAiSkills.push({ skill: aiSkill, unit: userUnits[userIndex], AI: aiUnit });
-        }
-
-        updateFieldAndFinishAiTurn(index, updatedSkills);
+        updateAiAfterAttack(index); // no valid enemy or skill
         return;
       }
     };
 
+    // Apply passive buffs to all AI units
     this.gameActionService.checkPassiveSkills(aiUnits, this.log);
 
-    aiUnits.forEach((aiUnit, i) => {
-      this.gameActionService.aiUnitAttack(i, aiUnits, this.battleMode, makeAiMove.bind(this), this.log);
-    });
+    for (let i = 0; i < aiUnits.length; i++) {
+      this.gameActionService.aiUnitAttack(
+        i,
+        aiUnits,
+        this.battleMode,
+        makeAiMove.bind(this),
+        this.log
+      );
+    }
 
+    // Finish AI turn — same behavior
     this.finishAiTurn(aiMove, usedAiSkills);
   }
-
 
   checkDebuffs(unit: Unit, decreaseRestoreCooldown = true, canRestoreHealth: boolean) {
     const response = this.gameActionService.checkDebuffs(unit, decreaseRestoreCooldown, this.battleMode, canRestoreHealth);
