@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnInit} from '@angular/core';
 import {AbstractFieldService} from "../../../services/abstract/field/abstract-field.service";
 import {GameFieldVars, LogRecord, Position, Tile, TilesToHighlight} from "../../../interface";
 import {BehaviorSubject} from "rxjs";
@@ -19,13 +19,15 @@ export interface GameField {
   standalone: true,
   imports: [],
   templateUrl: './abstract-game-field.component.html',
-  styleUrl: './abstract-game-field.component.scss'
+  styleUrl: './abstract-game-field.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnInit {
   @Input() userUnits: Unit[] = [];
   @Input() aiUnits: Unit[] = [];
   @Input() battleMode: boolean = true;
   autoFight: boolean = false;
+  cd = inject(ChangeDetectorRef);
 
   @Input() gameResultsRedirect: (realAiUnits: Unit[]) => void = () => {
   };
@@ -129,9 +131,10 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     this.selectedEntity = null;
     this.skillsInAttackBar = [];
     this.showAttackBar = false;
+    this.cd.detectChanges();
   }
 
-  highlightCellsInnerFunction(path: Position[], className: string, gameConfig: any[][]): TilesToHighlight[] {
+  highlightCellsInnerFunction(path: Position[], className: string): TilesToHighlight[] {
     const tilesToHighlight: TilesToHighlight[] = [];
 
     path.forEach((point) => {
@@ -141,10 +144,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
           j: point.j,
           highlightedClass: className
         })
-        gameConfig[point.i][point.j] = {
-          ...this.gameConfig[point.i][point.j],
-          highlightedClass: className
-        }
       }
     })
 

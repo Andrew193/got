@@ -12,26 +12,25 @@ export function trackByIndex(index: number) {
 }
 
 export function trackBySkill(index: number, skill: Skill) {
-  return skill.imgSrc;
+  return skill.imgSrc + index;
 }
 
 export function trackByEffect(index: number, effect: Effect) {
-  return effect.type;
+  return effect.type + index;
 }
 
 export function trackByUnit(index: number, unit: Unit) {
-  console.log(index, unit)
-  return unit.name;
+  return unit.name + unit.user;
 }
 
 export function trackByStringContent(index: number, content: string) {
-  return content;
+  return content + index;
 }
 
 export function trackByRoute(index: number, route: route) {
-  return route.name;
+  return route.name + index;
 }
 
 export function trackByLevel(index: number, content: {level: number}) {
-  return content.level;
+  return content.level + index;
 }

@@ -81,7 +81,8 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
 
   getGameField(userUnits: Unit[], aiUnits: Unit[], gameField: Tile[][], objects: Tile[] = []) {
     const field = createDeepCopy(gameField);
-    // const objects2 = [{x:0, y:1},{x:1, y:1},{x:2, y:1},{x:3, y:1},{x:4, y:1},{x:5, y:1}, {x:6, y:1}]
+    //const unplayableObjects = [{x:0, y:1},{x:1, y:1},{x:2, y:1},{x:3, y:1},{x:4, y:1},{x:5, y:1}, {x:6, y:1}]
+
     userUnits.forEach((user) => {
       field[user.x][user.y] = {...field[user.x][user.y], active: false, entity: user}
     })
@@ -94,11 +95,16 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
       field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: {}}
     })
 
-
     return field;
   }
 
-  resetMoveAndAttack(unitArray: Unit[], setValue = true) {
-    unitArray.forEach((aiUnit, index) => unitArray[index] = {...aiUnit, canMove: setValue, canAttack: setValue})
+  resetMoveAndAttack(unitArray: Unit[] | (Unit[][]), setValue = true) {
+    unitArray.forEach((aiUnit, index) => {
+      if(Array.isArray(aiUnit)) {
+        this.resetMoveAndAttack(aiUnit, setValue);
+      } else {
+        unitArray[index] = {...aiUnit, canMove: setValue, canAttack: setValue}
+      }
+    })
   }
 }

@@ -19,8 +19,9 @@
   </div>
   <main class="flex-row justify-content-between ">
     <div class="col-md-12 col-lg-12 col-xl-8">
-      <basic-game-board [gameConfig]="gameConfig" [battleMode]="battleMode" (moveEntity)="moveEntity($event)"
-                        [tilesToHighlight]="tilesToHighlight"
+      <basic-game-board [gameConfig]="gameConfig"
+                        [battleMode]="battleMode"
+                        (moveEntity)="moveEntity($event)"
                         (highlightMakeMove)="highlightMakeMove($event)"></basic-game-board>
     </div>
     <aside class="col-xl-3 col-lg-12 col-md-12 d-flex flex-column mb-3">
@@ -85,7 +86,6 @@
     <button *ngIf="!autoFight" class="btn btn-success ms-1" (click)="startAutoFight(false, true)">Skip one turn</button>
   </div>
 </div>
-
 
 <ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
   <accordion class="mb-2">

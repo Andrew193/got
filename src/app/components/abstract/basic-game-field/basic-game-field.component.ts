@@ -7,7 +7,7 @@ import {GameLoggerService} from "../../../services/game-logger/logger.service";
 import {Skill} from "../../../models/skill.model";
 import {Unit} from "../../../models/unit.model";
 import {createDeepCopy} from "../../../helpers";
-import {Position, Tile} from "../../../interface";
+import {Position, Tile, TilesToHighlight} from "../../../interface";
 import {AbstractGameFieldComponent} from "../abstract-game-field/abstract-game-field.component";
 import {BATTLE_SPEED} from "../../../constants";
 
@@ -48,11 +48,10 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     user = this.userUnits[userIndex];
 
-    const skills = this.updateSkillsCooldown(createDeepCopy(user.skills), this.aiUnits, enemyIndex, skillIndex, skill, false, enemyIndex ? !(user.rage > this.aiUnits[enemyIndex].willpower) : false);
+    const skills = this.updateSkillsCooldown(createDeepCopy(user.skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(user.rage > this.aiUnits[enemyIndex].willpower));
     this.userUnits[userIndex] = {...user, canAttack: false, canMove: false, skills: skills};
     this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
-    this.updateGridUnits(this.aiUnits);
-    this.updateGridUnits(this.userUnits);
+    this.updateGridUnits([...this.aiUnits, ...this.userUnits]);
     this.dropEnemy();
     this.checkAiMoves();
   }
@@ -82,84 +81,171 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   dropEnemy() {
-    this.fieldService.unhighlightCells.apply(this);
     this.dropEnemyState();
   }
 
-  highlightMakeMove(e: { entity: Unit, event?: MouseEvent }) {
-    const {entity, event} = e;
-    if (this.showAttackBar) {
-      this.dropEnemy();
-    }
+  highlightMakeMove(e: { entity: Unit, event?: MouseEvent, callback: (tiles: TilesToHighlight[]) => void }) {
+    // ORIGINAL LOGIC
+    // highlightMakeMove(e: { entity: Unit, event?: MouseEvent, callback: (tiles: TilesToHighlight[]) => void }) {
+    //   const {entity, event} = e;
+    //   if (this.showAttackBar) {
+    //     this.dropEnemy();
+    //   }
+    //
+    //   event?.stopPropagation();
+    //   if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack || entity.user === false)) {
+    //
+    //     let possibleTargetsInAttackRadius;
+    //     if (this.selectedEntity && this.selectedEntity.user) {
+    //       possibleTargetsInAttackRadius = this.showPossibleMoves(this.unitService.getPositionFromUnit(this.selectedEntity), this.selectedEntity.attackRange, true)
+    //     }
+    //
+    //     this.clickedEnemy = this.selectedEntity?.user ? this.checkAndShowAttackBar(entity) : null;
+    //     if (possibleTargetsInAttackRadius) {
+    //       const canAttackThisTargetFromRange = possibleTargetsInAttackRadius.find((possibleTarget) => possibleTarget.i === this.clickedEnemy?.x && possibleTarget.j === this.clickedEnemy?.y)
+    //       this.clickedEnemy = canAttackThisTargetFromRange ? this.clickedEnemy : null;
+    //     }
+    //     this.showAttackBar = !!this.clickedEnemy;
+    //
+    //     if (!this.showAttackBar) {
+    //       this.ignoreMove = false;
+    //       this.selectedEntity = entity;
+    //       this.possibleMoves = this.getPossibleMoves(entity);
+    //
+    //       if (entity.attackRange >= entity.canCross && !entity.healer) {
+    //         this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
+    //       } else if (entity.healer) {
+    //         //Only healers (do not deal dmg)
+    //         this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
+    //       }
+    //
+    //       if (!entity?.canMove || !entity?.canCross) {
+    //         let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
+    //         if (enemyWhenCannotMove.length) {
+    //           const enemyIndexList = [];
+    //           for (let i = 0; i < enemyWhenCannotMove.length; i++) {
+    //             const enemy = enemyWhenCannotMove[i]
+    //             const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.unitService.getUnitFromPosition(enemy));
+    //             enemyIndexList.push(enemyIndex);
+    //           }
+    //
+    //           enemyWhenCannotMove = enemyIndexList.map((enemyIndex) => {
+    //             return this.aiUnits[enemyIndex].health ? this.unitService.getPositionFromUnit(this.aiUnits[enemyIndex]) : undefined
+    //           })
+    //         }
+    //         if (enemyWhenCannotMove.length) {
+    //           this.possibleMoves = [...enemyWhenCannotMove]
+    //         } else {
+    //           this.possibleMoves = [];
+    //           this.userUnits[this.unitService.findUnitIndex(this.userUnits, this.selectedEntity)] = {
+    //             ...this.selectedEntity,
+    //             x: entity.x,
+    //             y: entity.y,
+    //             canMove: false,
+    //             canAttack: false
+    //           };
+    //           console.log('updateGridUnits')
+    //           this.updateGridUnits(this.userUnits);
+    //         }
+    //       }
+    //
+    //       this.highlightCells(this.possibleMoves, entity.user ? "green-b" : "red-b");
+    //     }
+    //
+    //     if (this.showAttackBar) {
+    //       this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
+    //     }
+    //   } else {
+    //     this.ignoreMove = true;
+    //     this.selectedEntity = null;
+    //   }
+    //
+    //   e.callback(this.tilesToHighlight);
+    // }
+    const { entity, event } = e;
+
+    if (this.showAttackBar) this.dropEnemy();
 
     event?.stopPropagation();
-    if (!(entity.x === this.selectedEntity?.x && entity.y === this.selectedEntity.y) && (entity?.canMove || entity?.canAttack || entity.user === false)) {
 
-      let possibleTargetsInAttackRadius;
-      if (this.selectedEntity && this.selectedEntity.user) {
-        possibleTargetsInAttackRadius = this.showPossibleMoves(this.unitService.getPositionFromUnit(this.selectedEntity), this.selectedEntity.attackRange, true)
-      }
+    const isSelected =
+      entity.x === this.selectedEntity?.x &&
+      entity.y === this.selectedEntity?.y;
 
-      this.clickedEnemy = this.selectedEntity?.user ? this.checkAndShowAttackBar(entity) : null;
-      if (possibleTargetsInAttackRadius) {
-        const canAttackThisTargetFromRange = possibleTargetsInAttackRadius.find((possibleTarget) => possibleTarget.i === this.clickedEnemy?.x && possibleTarget.j === this.clickedEnemy?.y)
-        this.clickedEnemy = canAttackThisTargetFromRange ? this.clickedEnemy : null;
-      }
-      this.showAttackBar = !!this.clickedEnemy;
-
-      if (!this.showAttackBar) {
-        this.ignoreMove = false;
-        this.selectedEntity = entity;
-        this.possibleMoves = this.getPossibleMoves(entity);
-
-        if (entity.attackRange >= entity.canCross && !entity.healer) {
-          this.possibleAttackMoves = this.getPossibleMoves({...entity, canCross: entity.attackRange})
-        } else if (entity.healer) {
-          //Only healers (do not deal dmg)
-          this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
-        }
-
-        if (!entity?.canMove || !entity?.canCross) {
-           let enemyWhenCannotMove: any[] = this.possibleMoves.filter((move) => this.aiUnits.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j));
-          if (enemyWhenCannotMove.length) {
-            const enemyIndexList = [];
-            for (let i = 0; i < enemyWhenCannotMove.length; i++) {
-              const enemy = enemyWhenCannotMove[i]
-              const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.unitService.getUnitFromPosition(enemy));
-              enemyIndexList.push(enemyIndex);
-            }
-
-            enemyWhenCannotMove = enemyIndexList.map((enemyIndex) => {
-              return this.aiUnits[enemyIndex].health ? this.unitService.getPositionFromUnit(this.aiUnits[enemyIndex]) : undefined
-            })
-          }
-          if (enemyWhenCannotMove.length) {
-            this.possibleMoves = [...enemyWhenCannotMove]
-          } else {
-            this.possibleMoves = [];
-            this.userUnits[this.unitService.findUnitIndex(this.userUnits, this.selectedEntity)] = {
-              ...this.selectedEntity,
-              x: entity.x,
-              y: entity.y,
-              canMove: false,
-              canAttack: false
-            };
-            this.updateGridUnits(this.userUnits);
-          }
-        }
-
-        this.highlightCells(this.possibleMoves, entity.user ? "green-b" : "red-b");
-      }
-
-      if (this.showAttackBar) {
-        this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
-      }
-    } else {
+    const canInteract = entity?.canMove || entity?.canAttack || !entity.user;
+    if (isSelected || !canInteract) {
       this.ignoreMove = true;
       this.selectedEntity = null;
-      this.tilesToHighlight = [];
-      this.fieldService.unhighlightCells.apply(this);
+      e.callback(this.tilesToHighlight);
+      return;
     }
+
+    let possibleTargetsInAttackRadius;
+    if (this.selectedEntity?.user) {
+      possibleTargetsInAttackRadius = this.showPossibleMoves(
+        this.unitService.getPositionFromUnit(this.selectedEntity),
+        this.selectedEntity.attackRange,
+        true
+      );
+    }
+
+    this.clickedEnemy = this.selectedEntity?.user
+      ? this.checkAndShowAttackBar(entity)
+      : null;
+
+    if (possibleTargetsInAttackRadius) {
+      const canAttack = possibleTargetsInAttackRadius.some(
+        (target) =>
+          target.i === this.clickedEnemy?.x &&
+          target.j === this.clickedEnemy?.y
+      );
+      if (!canAttack) this.clickedEnemy = null;
+    }
+
+    this.showAttackBar = !!this.clickedEnemy;
+
+    if (!this.showAttackBar) {
+      this.ignoreMove = false;
+      this.selectedEntity = entity;
+      this.possibleMoves = this.getPossibleMoves(entity);
+
+      if (entity.attackRange >= entity.canCross && !entity.healer) {
+        this.possibleAttackMoves = this.getPossibleMoves({
+          ...entity,
+          canCross: entity.attackRange,
+        });
+      } else if (entity.healer) {
+        this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
+      }
+
+      if (!entity?.canMove || !entity?.canCross) {
+        const enemyMoves = this.possibleMoves
+          .map((move) => this.aiUnits.find((ai) => ai.x === move.i && ai.y === move.j)).filter(Boolean);
+        if (enemyMoves.length) {
+          this.possibleMoves = enemyMoves
+            .map((enemy: any) => enemy.health ? this.unitService.getPositionFromUnit(enemy) : undefined).filter(Boolean) as Position[];
+        } else {
+          this.possibleMoves = [];
+          const idx = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
+          this.userUnits[idx] = {
+            ...this.selectedEntity,
+            x: entity.x,
+            y: entity.y,
+            canMove: false,
+            canAttack: false,
+          };
+          this.updateGridUnits(this.userUnits);
+        }
+      }
+
+      this.highlightCells(this.possibleMoves, entity.user ? 'green-b' : 'red-b');
+    }
+
+    if (this.showAttackBar) {
+      this.skillsInAttackBar = (this.selectedEntity as Unit).skills;
+    }
+
+    e.callback(this.tilesToHighlight);
   }
 
   getPossibleMoves(entity: Unit) {
@@ -201,10 +287,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
       this.updateGameFieldTile(tile.x, tile.y, createDeepCopy(this.userUnits[userIndex]))
       this.updateGameFieldTile(this.selectedEntity?.x, this.selectedEntity?.y, undefined, true)
-      this.fieldService.unhighlightCells.apply(this);
       this.selectedEntity = null;
     }
-    this.tilesToHighlight = [];
     this.selectedEntity = null;
     this.possibleMoves = [];
     this.checkAiMoves();
@@ -262,27 +346,63 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   finishAiTurn(aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
-    //Update AI and user units arrays (update on ui and grid)
-    this.fieldService.resetMoveAndAttack(this.getAiLeadingUnits(aiMove));
-    this.fieldService.resetMoveAndAttack(this.getUserLeadingUnits(aiMove));
-    //User's units take dmg from their debuffs
-    for (let i = 0; i < this.getUserLeadingUnits(aiMove).length; i++) {
-      this.getUserLeadingUnits(aiMove)[i] = this.checkDebuffs(this.getUserLeadingUnits(aiMove)[i], true, true);
+    // Original code:
+    // finishAiTurn(aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
+    //   //Update AI and user units arrays (update on ui and grid)
+    //   this.fieldService.resetMoveAndAttack([...this.getAiLeadingUnits(aiMove), ...this.getUserLeadingUnits(aiMove)]);
+    //   //User's units take dmg from their debuffs
+    //   for (let i = 0; i < this.getUserLeadingUnits(aiMove).length; i++) {
+    //     this.getUserLeadingUnits(aiMove)[i] = this.checkDebuffs(this.getUserLeadingUnits(aiMove)[i], true, true);
+    //   }
+    //   usedAiSkills.forEach((config) => {
+    //     const unitIndex = this.getUserLeadingUnits(aiMove).findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
+    //     if (config.AI.rage > this.getUserLeadingUnits(aiMove)[unitIndex].willpower) {
+    //       this.addEffectToUnit(this.getUserLeadingUnits(aiMove), unitIndex, config.skill)
+    //     }
+    //   })
+    //
+    //   if (aiMove && !this.autoFight) {
+    //     this.gameActionService.checkPassiveSkills(this.getUserLeadingUnits(aiMove), this.log)
+    //   }
+    //
+    //   this.gameConfig = this.fieldService.getGameField(this.getUserLeadingUnits(aiMove), this.getAiLeadingUnits(aiMove), this.fieldService.getDefaultGameField());
+    //   this.turnUser = true;
+    //   this.gameActionService.checkCloseFight(this.getUserLeadingUnits(aiMove), this.getAiLeadingUnits(aiMove), this.gameResultsRedirect);
+    // }
+    const userUnits = this.getUserLeadingUnits(aiMove);
+    const aiUnits = this.getAiLeadingUnits(aiMove);
+
+    // Reset move/attack flags
+    this.fieldService.resetMoveAndAttack([aiUnits, userUnits]);
+
+    // Apply debuff damage
+    for (let i = 0; i < userUnits.length; i++) {
+      userUnits[i] = this.checkDebuffs(userUnits[i], true, true);
     }
-    usedAiSkills.forEach((config) => {
-      const unitIndex = this.getUserLeadingUnits(aiMove).findIndex((user) => config.unit.x === user.x && config.unit.y === user.y)
-      if (config.AI.rage > this.getUserLeadingUnits(aiMove)[unitIndex].willpower) {
-        this.addEffectToUnit(this.getUserLeadingUnits(aiMove), unitIndex, config.skill)
+
+    // Apply effects from used AI skills
+    usedAiSkills.forEach(({ skill, unit, AI }) => {
+      const targetIndex = userUnits.findIndex(
+        (u) => u.x === unit.x && u.y === unit.y
+      );
+      if (targetIndex !== -1 && AI.rage > userUnits[targetIndex].willpower) {
+        this.addEffectToUnit(userUnits, targetIndex, skill);
       }
-    })
+    });
 
+    // Check passive skills if AI just moved
     if (aiMove && !this.autoFight) {
-      this.gameActionService.checkPassiveSkills(this.getUserLeadingUnits(aiMove), this.log)
+      this.gameActionService.checkPassiveSkills(userUnits, this.log);
     }
 
-    this.gameConfig = this.fieldService.getGameField(this.getUserLeadingUnits(aiMove), this.getAiLeadingUnits(aiMove), this.fieldService.getDefaultGameField());
+    // Update game state
+    this.gameConfig = this.fieldService.getGameField(
+      userUnits,
+      aiUnits,
+      this.fieldService.getDefaultGameField()
+    );
     this.turnUser = true;
-    this.gameActionService.checkCloseFight(this.getUserLeadingUnits(aiMove), this.getAiLeadingUnits(aiMove), this.gameResultsRedirect);
+    this.gameActionService.checkCloseFight(userUnits, aiUnits, this.gameResultsRedirect);
   }
 
   attackUser(aiMove = true) {
@@ -382,9 +502,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   highlightCells(path: Position[], className: string) {
-    this.tilesToHighlight = [];
-    this.fieldService.unhighlightCells.apply(this);
-    this.tilesToHighlight = this.highlightCellsInnerFunction(path, className, this.gameConfig);
+    this.tilesToHighlight = this.highlightCellsInnerFunction(path, className);
   }
 
   finishTurn() {

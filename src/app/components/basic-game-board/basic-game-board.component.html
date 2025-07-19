@@ -1,6 +1,8 @@
-<div class="game-board mb-3">
+<div class="game-board mb-3"
+     (appOutsideClick)="setTilesToHighlight([])"
+>
   <div *ngFor="let row of gameConfig; trackBy trackByIndex" class="flex-row">
-    <div *ngFor="let tile of row; trackBy: trackByHighlightedClass"
+    <div *ngFor="let tile of row; trackBy: trackByCoordinates"
          (click)="onMoveEntity(tile)"
          class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center {{getTileHighlightClass(tile)}}"
          [attr.data-x]="tile.x"

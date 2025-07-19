@@ -17,7 +17,7 @@
       "currency": {
         "gold": 722,
         "silver": 3120,
-        "cooper": 1544329
+        "cooper": 2254329
       }
     }
   ],
@@ -32,9 +32,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 7,
-      "totalDays": 7,
-      "lastLogin": "07/13/2025"
+      "day": 8,
+      "totalDays": 8,
+      "lastLogin": "07/19/2025"
     }
   ],
   "giftTrip": [

@@ -1,30 +1,41 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Coordinate, Tile, TilesToHighlight} from "../../interface";
 import {Unit} from "../../models/unit.model";
 import {trackByIndex} from "../../helpers";
+import {OutsideClickDirective} from "../../directives/outside-click/outside-click.directive";
 
 @Component({
   selector: 'basic-game-board',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OutsideClickDirective],
   templateUrl: './basic-game-board.component.html',
   styleUrl: './basic-game-board.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BasicGameBoardComponent {
   @Input() gameConfig: any[][] = [];
-  @Input() tilesToHighlight: TilesToHighlight[] = [];
   @Input() battleMode: boolean = true;
   @Output() moveEntity = new EventEmitter();
   @Output() highlightMakeMove = new EventEmitter();
 
+  private tilesToHighlight: TilesToHighlight[] = [];
+
   onMoveEntity(tile: Tile) {
+    this.tilesToHighlight = [];
     this.moveEntity.emit(tile);
   }
 
   onHighlightMakeMove(entity: Unit, event: MouseEvent) {
-    this.highlightMakeMove.emit({entity, event});
+    this.highlightMakeMove.emit({entity, event, callback: this.setTilesToHighlight.bind(this)});
+  }
+
+  setTilesToHighlight(tilesToHighlight: TilesToHighlight[]) {
+    this.tilesToHighlight = tilesToHighlight;
   }
 
   getTileHighlightClass(tile: Coordinate) {
@@ -32,7 +43,7 @@ export class BasicGameBoardComponent {
     return tileFromArray?.highlightedClass || ''
   }
 
-  public trackByHighlightedClass = (index: number, tile: Tile) => {
+  public trackByCoordinates = (index: number, tile: Tile) => {
     return tile?.x + '-' + tile?.y;
   }
 

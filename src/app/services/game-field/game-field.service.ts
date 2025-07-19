@@ -14,14 +14,6 @@ export class GameFieldService extends AbstractFieldService {
     super();
   }
 
-  unhighlightCells() {
-    for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < 10; j++) {
-        this.gameConfig[i][j] = {...this.gameConfig[i][j], highlightedClass: ""}
-      }
-    }
-  }
-
   chooseAiSkill(skills: Skill[]): Skill {
     const possibleActiveSkill = skills.find((skill) => skill.cooldown && !skill.remainingCooldown)
     return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);

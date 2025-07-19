@@ -55,7 +55,6 @@ export type Coordinate = {
 export interface Tile extends Coordinate {
   active: boolean,
   entity?: Unit,
-  highlightedClass?: string
 }
 
 export interface UnitWithReward extends Unit {
