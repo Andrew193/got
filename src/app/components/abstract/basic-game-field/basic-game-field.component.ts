@@ -12,10 +12,9 @@ import {AbstractGameFieldComponent} from "../abstract-game-field/abstract-game-f
 import {BATTLE_SPEED} from "../../../constants";
 
 @Component({
-  selector: 'basic-game-field',
-  standalone: true,
-  template: '',
-  imports: [],
+    selector: 'basic-game-field',
+    template: '',
+    imports: []
 })
 export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent {
   constructor(private fieldService: GameFieldService,

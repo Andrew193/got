@@ -1,7 +1,8 @@
-@import "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/vars";
 
 .user-bar {
-  @include grad-color;
+  @include mixins.grad-color;
 }
 
 .heroes {
@@ -64,7 +65,7 @@
 .log-record {
   padding: 5px;
   margin-bottom: 5px;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   border-radius: 5px;
   width: 100% !important;
   opacity: 1 !important;
@@ -78,8 +79,8 @@
 }
 
 .meta-aside {
-  box-shadow: $box-shadow;
-  background-color: $background-color-main;
+  box-shadow: vars.$box-shadow;
+  background-color: vars.$background-color-main;
   border-radius: 0;
 }
 
@@ -116,7 +117,7 @@
   }
 
   > div {
-    box-shadow: $box-shadow-out;
+    box-shadow: vars.$box-shadow-out;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
     height: 50px;
@@ -127,7 +128,7 @@
       border-bottom-left-radius: 50px;
       border-bottom-right-radius: 50px;
       height: 100%;
-      box-shadow: $red-box-shadow;
+      box-shadow: vars.$red-box-shadow;
       display: flex;
       align-items: center;
       justify-content: center;

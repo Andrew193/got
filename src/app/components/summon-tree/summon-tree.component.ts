@@ -8,11 +8,10 @@ import {ImageComponent} from "../views/image/image.component";
 import {frontRoutes} from "../../constants";
 
 @Component({
-  selector: 'app-summon-tree',
-  standalone: true,
-  imports: [CommonModule, DisplayRewardComponent, ImageComponent],
-  templateUrl: './summon-tree.component.html',
-  styleUrl: './summon-tree.component.scss'
+    selector: 'app-summon-tree',
+    imports: [CommonModule, DisplayRewardComponent, ImageComponent],
+    templateUrl: './summon-tree.component.html',
+    styleUrl: './summon-tree.component.scss'
 })
 export class SummonTreeComponent implements RewardComponent {
   constructor(public rewardService: RewardService,

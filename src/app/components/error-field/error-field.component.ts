@@ -3,11 +3,10 @@ import {AbstractControl, FormControl} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'error-field',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './error-field.component.html',
-  styleUrl: './error-field.component.scss'
+    selector: 'error-field',
+    imports: [CommonModule],
+    templateUrl: './error-field.component.html',
+    styleUrl: './error-field.component.scss'
 })
 export class ErrorFieldComponent {
   @Input() fieldToValidate: {

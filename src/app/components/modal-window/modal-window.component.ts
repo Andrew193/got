@@ -4,12 +4,11 @@ import {ModalConfig, ModalWindowService} from "../../services/modal/modal-window
 import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'modal-window',
-  standalone: true,
-  imports: [CommonModule],
-  providers: [BsModalService],
-  templateUrl: './modal-window.component.html',
-  styleUrl: './modal-window.component.scss'
+    selector: 'modal-window',
+    imports: [CommonModule],
+    providers: [BsModalService],
+    templateUrl: './modal-window.component.html',
+    styleUrl: './modal-window.component.scss'
 })
 export class ModalWindowComponent implements OnInit {
   modalRef?: BsModalRef;

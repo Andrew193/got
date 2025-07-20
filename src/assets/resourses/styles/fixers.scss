@@ -1,4 +1,4 @@
-@import "./vars";
+@use "./vars";
 
 .disabled {
   cursor: not-allowed;
@@ -22,7 +22,7 @@
   height: 70px !important;
   width: 70px !important;
   border-radius: 5px;
-  box-shadow: $box-shadow-out;
+  box-shadow: vars.$box-shadow-out;
 }
 
 .bs-rating-star {

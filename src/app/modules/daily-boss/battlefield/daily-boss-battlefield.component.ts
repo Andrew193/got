@@ -7,14 +7,13 @@ import {HeroesService} from "../../../services/heroes/heroes.service";
 import {DailyBossService} from "../../../services/daily-boss/daily-boss.service";
 
 @Component({
-  selector: 'app-battlefield',
-  standalone: true,
-  imports: [
-    CommonModule,
-    GameEntryPointComponent
-  ],
-  templateUrl: './daily-boss-battlefield.component.html',
-  styleUrl: './daily-boss-battlefield.component.scss'
+    selector: 'app-battlefield',
+    imports: [
+        CommonModule,
+        GameEntryPointComponent
+    ],
+    templateUrl: './daily-boss-battlefield.component.html',
+    styleUrl: './daily-boss-battlefield.component.scss'
 })
 export class DailyBossBattlefieldComponent {
   aiUnits: Unit[] = [];

@@ -1,5 +1,5 @@
-@import "./mixins";
-@import "./vars";
+@use "./mixins";
+@use "./vars";
 
 .tile {
   min-height: 100px;
@@ -18,8 +18,8 @@
 }
 
 .game-field-img {
-  @include avatar;
-  box-shadow: $box-shadow;
+  @include mixins.avatar;
+  box-shadow: vars.$box-shadow;
   height: 80px;
   width: 80px;
   padding: 5px;
@@ -29,23 +29,23 @@
   position: absolute;
   top: 0;
   right: 3px;
-  @include grad-color;
+  @include mixins.grad-color;
 }
 
 .entity-b.ai-heroes.green-b:not(.disabled) {
   border-color: #ff6c6c;
-  box-shadow: $red-box-shadow;
+  box-shadow: vars.$red-box-shadow;
 }
 
 .ai-heroes {
   img {
-    background-color: $light-red;
+    background-color: vars.$light-red;
   }
 }
 
 .user-heroes {
   img {
-    background-color: $light-green;
+    background-color: vars.$light-green;
   }
 }
 
@@ -71,8 +71,8 @@
 }
 
 .game-board {
-  box-shadow: $box-shadow;
-  background-color: $background-color-main;
+  box-shadow: vars.$box-shadow;
+  background-color: vars.$background-color-main;
   padding: 10px;
   border-radius: 5px;
 }

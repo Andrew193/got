@@ -18,22 +18,21 @@ import {frontRoutes} from "../../../constants";
 import {trackByUnit} from "../../../helpers";
 
 @Component({
-  selector: 'taverna-heroes-bar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    PaginationModule,
-    RatingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatSlideToggle,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    AutocompleteMatInputComponent
-  ],
-  templateUrl: './taverna-heroes-bar.component.html',
-  styleUrl: './taverna-heroes-bar.component.scss'
+    selector: 'taverna-heroes-bar',
+    imports: [
+        CommonModule,
+        PaginationModule,
+        RatingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatSlideToggle,
+        MatFormFieldModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        AutocompleteMatInputComponent
+    ],
+    templateUrl: './taverna-heroes-bar.component.html',
+    styleUrl: './taverna-heroes-bar.component.scss'
 })
 export class TavernaHeroesBarComponent extends BasePaginationComponent implements OnInit {
   formGroup;

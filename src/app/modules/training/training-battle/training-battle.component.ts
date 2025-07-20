@@ -7,14 +7,13 @@ import {ModalWindowService} from "../../../services/modal/modal-window.service";
 import {frontRoutes} from "../../../constants";
 
 @Component({
-  selector: 'training-battle',
-  standalone: true,
-  imports: [
-    CommonModule,
-    GameEntryPointComponent
-  ],
-  templateUrl: './training-battle.component.html',
-  styleUrl: './training-battle.component.scss'
+    selector: 'training-battle',
+    imports: [
+        CommonModule,
+        GameEntryPointComponent
+    ],
+    templateUrl: './training-battle.component.html',
+    styleUrl: './training-battle.component.scss'
 })
 export class TrainingBattleComponent {
   aiUnits: Unit[] = [];

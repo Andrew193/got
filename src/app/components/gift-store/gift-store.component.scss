@@ -1,16 +1,16 @@
-@import "../../../assets/resourses/styles/vars";
-@import "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/vars";
+@use "../../../assets/resourses/styles/mixins";
 
 .inner-container {
   background: url("../../../assets/resourses/imgs/background/gift.jpg") no-repeat;
   background-size: cover;
   min-height: 100%;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   position: relative;
   padding-top: 1px;
 
   h3 {
-    @include grad-color;
+    @include mixins.grad-color;
   }
 }
 
@@ -20,6 +20,6 @@
 
 .reward-bar {
   min-height: 100px;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   border-radius: 5px;
 }

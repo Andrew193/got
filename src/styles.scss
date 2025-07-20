@@ -1,20 +1,19 @@
-@import "assets/resourses/styles/_material-override-theme";
-@import "assets/resourses/styles/hero";
-@import "assets/resourses/styles/collors";
-@import "assets/resourses/styles/vars";
-@import "assets/resourses/styles/mixins";
-@import "assets/resourses/styles/fixers";
-@import "assets/resourses/styles/skills";
-@import "assets/resourses/styles/fields";
-@import "assets/resourses/styles/common";
-@import "assets/resourses/styles/general-game-bed-styles";
-@import "assets/resourses/styles/pagination-override";
-@import "assets/resourses/styles/tablist";
+@use "assets/resourses/styles/hero";
+@use "assets/resourses/styles/collors";
+@use "assets/resourses/styles/vars";
+@use "assets/resourses/styles/mixins";
+@use "assets/resourses/styles/fixers";
+@use "assets/resourses/styles/skills";
+@use "assets/resourses/styles/fields";
+@use "assets/resourses/styles/common";
+@use "assets/resourses/styles/general-game-bed-styles";
+@use "assets/resourses/styles/pagination-override";
+@use "assets/resourses/styles/tablist";
 
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap';
 
 html, body {
   height: 100%;
@@ -28,7 +27,7 @@ body {
 }
 
 .caption {
-  @include grad-color;
+  @include mixins.grad-color;
   width: 100%;
 }
 
@@ -41,8 +40,8 @@ body {
 }
 
 .stats {
-  box-shadow: $box-shadow;
-  background-color: $background-color-main;
+  box-shadow: vars.$box-shadow;
+  background-color: vars.$background-color-main;
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -153,7 +152,7 @@ body {
 }
 
 .nav-item .active {
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   border: none !important;
 }
 

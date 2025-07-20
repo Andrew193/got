@@ -4,13 +4,12 @@ import {User, UsersService} from "../../../services/users/users.service";
 import {LocalStorageService} from "../../../services/localStorage/local-storage.service";
 
 @Component({
-  selector: 'header',
-  standalone: true,
-  imports: [
-    PopoverModule
-  ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'header',
+    imports: [
+        PopoverModule
+    ],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
   user!: User;

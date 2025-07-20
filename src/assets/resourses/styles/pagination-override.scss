@@ -1,7 +1,7 @@
-@import "./vars";
+@use "./vars";
 
 .page-item:not(.active) {
   a {
-    background-color: $background-color-main !important;
+    background-color: vars.$background-color-main !important;
   }
 }

@@ -6,11 +6,10 @@ import {ErrorFieldComponent} from "../error-field/error-field.component";
 import {trackByIndex} from "../../helpers";
 
 @Component({
-  selector: 'form-errors-container',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ErrorFieldComponent],
-  templateUrl: './form-errors-container.component.html',
-  styleUrl: './form-errors-container.component.scss'
+    selector: 'form-errors-container',
+    imports: [CommonModule, FormsModule, ErrorFieldComponent],
+    templateUrl: './form-errors-container.component.html',
+    styleUrl: './form-errors-container.component.scss'
 })
 export class FormErrorsContainerComponent implements OnInit {
   @Input() form: FormGroup = new FormGroup({});

@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {GiftConfig, UnitWithReward} from "../../interface";
-import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.component";
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {NgIf} from "@angular/common";
 import {NpcService} from "../../services/npc/npc.service";
@@ -14,17 +13,15 @@ import {Currency, UsersService} from "../../services/users/users.service";
 import {Observable, tap} from "rxjs";
 
 @Component({
-  selector: 'app-gift-store',
-  standalone: true,
-  imports: [
-    BasicGameBoardComponent,
-    GameEntryPointComponent,
-    NgIf,
-    DisplayRewardComponent,
-    RouterLink
-  ],
-  templateUrl: './gift-store.component.html',
-  styleUrl: './gift-store.component.scss'
+    selector: 'app-gift-store',
+    imports: [
+        GameEntryPointComponent,
+        NgIf,
+        DisplayRewardComponent,
+        RouterLink
+    ],
+    templateUrl: './gift-store.component.html',
+    styleUrl: './gift-store.component.scss'
 })
 
 export class GiftStoreComponent implements OnInit {

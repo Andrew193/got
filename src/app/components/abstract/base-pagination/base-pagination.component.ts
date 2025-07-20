@@ -4,11 +4,10 @@ import {Unit} from "../../../models/unit.model";
 import {ContentService} from "../../../services/abstract/content/content-service.service";
 
 @Component({
-  selector: 'app-base-pagination',
-  standalone: true,
-  imports: [],
-  templateUrl: './base-pagination.component.html',
-  styleUrl: './base-pagination.component.scss'
+    selector: 'app-base-pagination',
+    imports: [],
+    templateUrl: './base-pagination.component.html',
+    styleUrl: './base-pagination.component.scss'
 })
 export class BasePaginationComponent {
   totalElements = 0;

@@ -9,17 +9,16 @@ import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-se
 import {frontRoutes} from "../../../constants";
 
 @Component({
-  selector: 'training-config',
-  standalone: true,
-  imports: [
-    CommonModule,
-    TooltipModule,
-    HeroesSelectPreviewComponent,
-    HeroesSelectComponent
-  ],
-  templateUrl: './training-config.component.html',
-  styleUrl: './training-config.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'training-config',
+    imports: [
+        CommonModule,
+        TooltipModule,
+        HeroesSelectPreviewComponent,
+        HeroesSelectComponent
+    ],
+    templateUrl: './training-config.component.html',
+    styleUrl: './training-config.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TrainingConfigComponent {
   aiUnits: Unit[] = [];

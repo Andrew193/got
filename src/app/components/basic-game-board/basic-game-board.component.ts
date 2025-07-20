@@ -11,11 +11,10 @@ import {trackByIndex} from "../../helpers";
 import {OutsideClickDirective} from "../../directives/outside-click/outside-click.directive";
 
 @Component({
-  selector: 'basic-game-board',
-  standalone: true,
-  imports: [CommonModule, OutsideClickDirective],
-  templateUrl: './basic-game-board.component.html',
-  styleUrl: './basic-game-board.component.scss',
+    selector: 'basic-game-board',
+    imports: [CommonModule, OutsideClickDirective],
+    templateUrl: './basic-game-board.component.html',
+    styleUrl: './basic-game-board.component.scss'
 })
 export class BasicGameBoardComponent {
   @Input() gameConfig: any[][] = [];

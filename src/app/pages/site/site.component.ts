@@ -7,16 +7,15 @@ import {UsersService} from "../../services/users/users.service";
 import {frontRoutes} from "../../constants";
 
 @Component({
-  selector: 'app-site',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    HeaderComponent,
-    CommonModule,
-    ModalWindowComponent
-  ],
-  templateUrl: './site.component.html',
-  styleUrl: './site.component.scss'
+    selector: 'app-site',
+    imports: [
+        RouterOutlet,
+        HeaderComponent,
+        CommonModule,
+        ModalWindowComponent
+    ],
+    templateUrl: './site.component.html',
+    styleUrl: './site.component.scss'
 })
 export class SiteComponent implements OnInit {
 

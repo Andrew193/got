@@ -1,4 +1,4 @@
-@import "./vars";
+@use "./vars";
 
 .hero-in-frame {
   position: absolute;
@@ -12,8 +12,8 @@
 .hero-card {
   cursor: pointer;
   text-align: center;
-  background: $background-color-main;
-  box-shadow: $box-shadow;
+  background: vars.$background-color-main;
+  box-shadow: vars.$box-shadow;
   color: white !important;
   transition: background-color ease 0.5s;
   position: relative;
@@ -41,6 +41,6 @@
   }
 
   &:hover {
-    background: $background-color-main-hover !important;
+    background: vars.$background-color-main-hover !important;
   }
 }

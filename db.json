@@ -16,8 +16,8 @@
       "password": "rest",
       "currency": {
         "gold": 722,
-        "silver": 3120,
-        "cooper": 2414329
+        "silver": 3541,
+        "cooper": 2659013
       }
     }
   ],
@@ -46,7 +46,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastVist": "02/14/2025"
+      "lastVist": "07/20/2025"
     }
   ]
 }

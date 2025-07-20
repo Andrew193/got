@@ -9,15 +9,14 @@ import {LocalStorageService} from "../../services/localStorage/local-storage.ser
 import {frontRoutes} from "../../constants";
 
 @Component({
-  selector: 'app-login-page',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    FormErrorsContainerComponent
-  ],
-  templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.scss'
+    selector: 'app-login-page',
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        FormErrorsContainerComponent
+    ],
+    templateUrl: './login-page.component.html',
+    styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent implements OnInit {
   form;

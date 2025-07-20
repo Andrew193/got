@@ -13,14 +13,12 @@ import {BasicGameBoardComponent} from "../basic-game-board/basic-game-board.comp
 import {GameLoggerService} from "../../services/game-logger/logger.service";
 import {BasicGameFieldComponent} from "../abstract/basic-game-field/basic-game-field.component";
 import {trackByEffect, trackBySkill, trackByUnit} from "../../helpers";
-import {OutsideClickDirective} from "../../directives/outside-click/outside-click.directive";
 
 @Component({
-  selector: 'game-field',
-  standalone: true,
-  imports: [CommonModule, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent, OutsideClickDirective],
-  templateUrl: './game-field.component.html',
-  styleUrl: './game-field.component.scss'
+    selector: 'game-field',
+    imports: [CommonModule, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent],
+    templateUrl: './game-field.component.html',
+    styleUrl: './game-field.component.scss'
 })
 export class GameFieldComponent extends BasicGameFieldComponent {
   constructor(fieldService: GameFieldService,

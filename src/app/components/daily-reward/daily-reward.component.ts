@@ -24,11 +24,10 @@ interface DayReward {
 }
 
 @Component({
-  selector: 'daily-reward',
-  standalone: true,
-  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, ContextMenuTriggerDirective],
-  templateUrl: './daily-reward.component.html',
-  styleUrl: './daily-reward.component.scss'
+    selector: 'daily-reward',
+    imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, ContextMenuTriggerDirective],
+    templateUrl: './daily-reward.component.html',
+    styleUrl: './daily-reward.component.scss'
 })
 export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() closePopup: () => void = () => {

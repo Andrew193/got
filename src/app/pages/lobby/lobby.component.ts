@@ -12,15 +12,14 @@ export interface route {
 }
 
 @Component({
-  selector: 'app-lobby',
-  standalone: true,
-  imports: [
-    DailyRewardComponent,
-    CommonModule,
-    RouterModule
-  ],
-  templateUrl: './lobby.component.html',
-  styleUrl: './lobby.component.scss'
+    selector: 'app-lobby',
+    imports: [
+        DailyRewardComponent,
+        CommonModule,
+        RouterModule
+    ],
+    templateUrl: './lobby.component.html',
+    styleUrl: './lobby.component.scss'
 })
 export class LobbyComponent {
   isShowDailyReward = false;

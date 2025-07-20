@@ -10,17 +10,16 @@ import {SkillsRenderComponent} from "../skills-render/skills-render.component";
 import {frontRoutes} from "../../constants";
 
 @Component({
-  selector: 'app-hero-preview',
-  standalone: true,
-  imports: [
-    RatingModule,
-    FormsModule,
-    CommonModule,
-    StatsComponent,
-    SkillsRenderComponent
-  ],
-  templateUrl: './hero-preview.component.html',
-  styleUrl: './hero-preview.component.scss'
+    selector: 'app-hero-preview',
+    imports: [
+        RatingModule,
+        FormsModule,
+        CommonModule,
+        StatsComponent,
+        SkillsRenderComponent
+    ],
+    templateUrl: './hero-preview.component.html',
+    styleUrl: './hero-preview.component.scss'
 })
 export class HeroPreviewComponent implements OnInit {
   name = "";

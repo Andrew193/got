@@ -5,13 +5,12 @@ import {HeroesService} from "../../services/heroes/heroes.service";
 import {trackBySkill} from "../../helpers";
 
 @Component({
-  selector: 'skills-render',
-  standalone: true,
-  imports: [
-    NgForOf
-  ],
-  templateUrl: './skills-render.component.html',
-  styleUrl: './skills-render.component.scss'
+    selector: 'skills-render',
+    imports: [
+        NgForOf
+    ],
+    templateUrl: './skills-render.component.html',
+    styleUrl: './skills-render.component.scss'
 })
 export class SkillsRenderComponent {
   @Input() selectedHero!: Unit;

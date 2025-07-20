@@ -15,12 +15,11 @@ export interface GameField {
 }
 
 @Component({
-  selector: 'app-abstract-game-field',
-  standalone: true,
-  imports: [],
-  templateUrl: './abstract-game-field.component.html',
-  styleUrl: './abstract-game-field.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-abstract-game-field',
+    imports: [],
+    templateUrl: './abstract-game-field.component.html',
+    styleUrl: './abstract-game-field.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnInit {
   @Input() userUnits: Unit[] = [];

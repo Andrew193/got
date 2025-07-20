@@ -1,4 +1,5 @@
-@import "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/vars";
 
 .hero {
   background-repeat: no-repeat !important;
@@ -16,7 +17,7 @@
 
   .inner-container {
     margin: 15px 0px;
-    box-shadow: $box-shadow;
+    box-shadow: vars.$box-shadow;
     border-radius: 15px;
     background: url("../../../assets/resourses/imgs/background/show_with_two_men.jpeg") no-repeat;
     background-size: cover;
@@ -31,7 +32,7 @@
   border: 1px solid #f8b163;
   cursor: pointer;
   border-radius: 5px;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   transition: all ease 0.4s;
   pointer-events: none;
   height: 100%;

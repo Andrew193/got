@@ -13,20 +13,19 @@ import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-pr
 import {frontRoutes} from "../../../constants";
 
 @Component({
-  selector: 'app-daily-boss-lobby',
-  standalone: true,
-  imports: [
-    StatsComponent,
-    SkillsRenderComponent,
-    NgForOf,
-    TabsModule,
-    NgTemplateOutlet,
-    HeroesSelectComponent,
-    HeroesSelectPreviewComponent,
-    NgIf
-  ],
-  templateUrl: './daily-boss-lobby.component.html',
-  styleUrl: './daily-boss-lobby.component.scss'
+    selector: 'app-daily-boss-lobby',
+    imports: [
+        StatsComponent,
+        SkillsRenderComponent,
+        NgForOf,
+        TabsModule,
+        NgTemplateOutlet,
+        HeroesSelectComponent,
+        HeroesSelectPreviewComponent,
+        NgIf
+    ],
+    templateUrl: './daily-boss-lobby.component.html',
+    styleUrl: './daily-boss-lobby.component.scss'
 })
 export class DailyBossLobbyComponent {
   selectedHero!: Unit;

@@ -3,15 +3,14 @@ import {NgForOf, NgIf} from "@angular/common";
 import {Unit} from "../../models/unit.model";
 
 @Component({
-  selector: 'heroes-select',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgIf
-  ],
-  templateUrl: './heroes-select.component.html',
-  styleUrl: './heroes-select.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'heroes-select',
+    imports: [
+        NgForOf,
+        NgIf
+    ],
+    templateUrl: './heroes-select.component.html',
+    styleUrl: './heroes-select.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroesSelectComponent {
   @Input() title: string = '';

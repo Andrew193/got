@@ -1,11 +1,11 @@
-@import "../../../assets/resourses/styles/vars";
-@import "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/vars";
+@use "../../../assets/resourses/styles/mixins";
 
 .lobby-container {
   background: url("../../../assets/resourses/imgs/lobby-back.jpeg") no-repeat;
   background-size: cover;
   min-height: 100%;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   position: relative;
   padding-top: 1px;
 }
@@ -13,11 +13,11 @@
 .stores {
   background: #00000070;
   background-size: cover;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   border-radius: 5px;
 
   .store-title {
-    @include grad-color;
+    @include mixins.grad-color;
   }
 
   .store-row > div {
@@ -28,14 +28,14 @@
 
     &:hover {
       span {
-        @include grad-color;
+        @include mixins.grad-color;
       }
     }
 
     .card {
       text-align: center;
-      background: $background-color-main;
-      box-shadow: $box-shadow;
+      background: vars.$background-color-main;
+      box-shadow: vars.$box-shadow;
       color: white;
       height: 100%;
     }
@@ -53,7 +53,7 @@
 }
 
 aside {
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   border-radius: 5px;
   height: fit-content;
 
@@ -67,7 +67,7 @@ aside {
       background: rgba(0, 0, 0, 0.56);
 
       a {
-        @include grad-color;
+        @include mixins.grad-color;
       }
     }
 

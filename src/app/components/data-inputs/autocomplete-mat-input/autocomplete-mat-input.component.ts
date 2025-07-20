@@ -9,18 +9,17 @@ import {
 import {trackByStringContent} from "../../../helpers";
 
 @Component({
-  selector: 'autocomplete-mat-input',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatInput, MatAutocompleteTrigger, AsyncPipe, MatAutocomplete, MatOption, NgForOf, MatLabel, MatFormField],
-  templateUrl: './autocomplete-mat-input.component.html',
-  styleUrl: './autocomplete-mat-input.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AutocompleteMatInputComponent),
-      multi: true,
-    },
-  ]
+    selector: 'autocomplete-mat-input',
+    imports: [FormsModule, ReactiveFormsModule, MatInput, MatAutocompleteTrigger, AsyncPipe, MatAutocomplete, MatOption, NgForOf, MatLabel, MatFormField],
+    templateUrl: './autocomplete-mat-input.component.html',
+    styleUrl: './autocomplete-mat-input.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => AutocompleteMatInputComponent),
+            multi: true,
+        },
+    ]
 })
 export class AutocompleteMatInputComponent extends BaseSelectFormControlComponent implements AfterViewInit {
   constructor() {

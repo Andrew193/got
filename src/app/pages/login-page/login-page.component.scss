@@ -1,11 +1,11 @@
-@import "../../../assets/resourses/styles/vars";
-@import "../../../assets/resourses/styles/mixins";
+@use "../../../assets/resourses/styles/vars";
+@use "../../../assets/resourses/styles/mixins";
 
 .login-container {
   background: url("../../../assets/resourses/imgs/background/summon_tree.jpg") no-repeat;
   background-size: cover;
   height: 100%;
-  box-shadow: $box-shadow;
+  box-shadow: vars.$box-shadow;
   position: relative;
   padding-top: 1px;
 
@@ -17,10 +17,10 @@
 
     form {
       border-radius: 15px;
-      box-shadow: $box-shadow;
+      box-shadow: vars.$box-shadow;
       min-height: 400px;
       width: 100%;
-      background: $background-color-main;
+      background: vars.$background-color-main;
     }
   }
 }

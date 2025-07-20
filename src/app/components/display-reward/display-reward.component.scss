@@ -1,7 +1,7 @@
-@import "../../../assets/resourses/styles/vars";
+@use "../../../assets/resourses/styles/vars";
 
 .reward-container {
-  background-color: $background-color-main;
+  background-color: vars.$background-color-main;
   justify-content: space-evenly;
   padding: 5px;
   border-radius: 3px;
@@ -13,8 +13,8 @@
   }
 
   > div {
-    background-color: $background-color-main-hover;
-    box-shadow: $box-shadow;
+    background-color: vars.$background-color-main-hover;
+    box-shadow: vars.$box-shadow;
     padding: 5px;
     border-radius: 5px;
     display: flex;

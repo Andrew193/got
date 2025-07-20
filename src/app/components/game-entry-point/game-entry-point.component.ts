@@ -8,11 +8,10 @@ import {EffectsService} from "../../services/effects/effects.service";
 import {UnitService} from "../../services/unit/unit.service";
 
 @Component({
-  selector: 'game-entry-point',
-  standalone: true,
-  imports: [GameFieldComponent],
-  templateUrl: './game-entry-point.component.html',
-  styleUrl: './game-entry-point.component.scss'
+    selector: 'game-entry-point',
+    imports: [GameFieldComponent],
+    templateUrl: './game-entry-point.component.html',
+    styleUrl: './game-entry-point.component.scss'
 })
 export class GameEntryPointComponent extends BasicGameFieldComponent implements OnInit {
 

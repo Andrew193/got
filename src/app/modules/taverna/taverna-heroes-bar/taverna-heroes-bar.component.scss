@@ -1,18 +1,18 @@
-@import "../../../../assets/resourses/styles/vars";
-@import "../../../../assets/resourses/styles/mixins";
+@use "../../../../assets/resourses/styles/vars";
+@use "../../../../assets/resourses/styles/mixins";
 
 main {
   aside {
-    background: $background-color-main;
-    box-shadow: $box-shadow;
+    background: vars.$background-color-main;
+    box-shadow: vars.$box-shadow;
   }
 
   .card {
-    background: $background-color-main;
+    background: vars.$background-color-main;
   }
 
   .card-title, h4 {
-    @include grad-color;
+    @include mixins.grad-color;
   }
 }
 
