@@ -1,4 +1,4 @@
-import {HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
+import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import {catchError, Observable, switchMap, throwError} from "rxjs";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {

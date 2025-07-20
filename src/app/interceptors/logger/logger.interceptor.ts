@@ -1,4 +1,4 @@
-import {HttpEventType, HttpInterceptorFn} from '@angular/common/http';
+import { HttpEventType, HttpInterceptorFn } from '@angular/common/http';
 import {map} from "rxjs";
 
 export const loggerInterceptor: HttpInterceptorFn = (req, next) => {
