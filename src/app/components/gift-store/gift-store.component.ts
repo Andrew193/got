@@ -11,6 +11,7 @@ import moment from "moment/moment";
 import {Unit} from "../../models/unit.model";
 import {Currency, UsersService} from "../../services/users/users.service";
 import {Observable, tap} from "rxjs";
+import {DATE_FORMAT} from "../../constants";
 
 @Component({
     selector: 'app-gift-store',
@@ -58,7 +59,7 @@ export class GiftStoreComponent implements OnInit {
   ngOnInit(): void {
     this.giftService.getGiftRewardConfig((config, userId) => {
       this.giftConfig = {...(config || {}), userId};
-      if (this.giftConfig.lastVist && this.giftConfig.lastVist === moment().format("MM/DD/YYYY")) {
+      if (this.giftConfig.lastVist && this.giftConfig.lastVist === moment().format(DATE_FORMAT)) {
         this.collectAndLeave();
       }
     });
@@ -86,7 +87,7 @@ export class GiftStoreComponent implements OnInit {
       next: () => {
         this.giftService.claimGiftReward({
           ...this.giftConfig,
-          lastVist: moment().format("MM/DD/YYYY")
+          lastVist: moment().format(DATE_FORMAT)
         }, () => {
           this.router.navigateByUrl('/')
         })

@@ -1,29 +1,28 @@
-<div class="game-board mb-3"
-     (appOutsideClick)="setTilesToHighlight([])"
->
+<div class="game-board mb-3" (appOutsideClick)="setTilesToHighlight([])">
   <div *ngFor="let row of gameConfig; trackBy trackByIndex" class="flex-row">
     <div *ngFor="let tile of row; trackBy: trackByCoordinates"
          (click)="onMoveEntity(tile)"
          class="col tile data-i-{{tile.x}} data-j-{{tile.y}} d-flex align-items-center justify-content-center {{getTileHighlightClass(tile)}}"
-         [attr.data-x]="tile.x"
          [ngClass]="{
          'ai-heroes': !tile?.entity?.user,
          'user-heroes': tile?.entity?.user,
          'entity-b': tile?.entity,
          'disabled': tile?.entity?.health === 0,
          'block': tile.active === false && tile.entity === null
-         }"
-         [attr.data-y]="tile.y" [attr.data-active]="tile.active">
+         }">
       <span class="tile-label">{{ tile.x + 1 }}-{{ tile.y + 1 }}</span>
       <div *ngIf="tile.entity" class="position-relative">
+        @let showMoveIcon = showActionButtonCondition(tile, 'canMove');
+        @let showAttackIcon = showActionButtonCondition(tile, 'canAttack');
+
         <img src="{{tile?.entity?.imgSrc}}" alt="Entity" class="game-field-img"
              [ngClass]="{'loot-img': !battleMode && !tile.entity.user}"
              (click)="onHighlightMakeMove(tile.entity, $event)"/>
         <img src="assets/resourses/imgs/icons/move_icon.png" alt="can move"
-             *ngIf="battleMode? tile.entity.canMove && !!tile.entity.health && (tile?.entity?.inBattle === true || tile?.entity?.inBattle === undefined): tile.entity.user"
+             *ngIf="showMoveIcon"
              class="action-icon position-absolute can-move-icon"/>
         <img src="assets/resourses/imgs/icons/attack_icon.png" alt="can attack"
-             *ngIf="battleMode? tile.entity.canAttack && !!tile.entity.health && (tile?.entity?.inBattle === true || tile?.entity?.inBattle === undefined): tile.entity.user"
+             *ngIf="showAttackIcon"
              class="action-icon position-absolute can-attack-icon"/>
       </div>
     </div>

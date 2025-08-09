@@ -1,0 +1,8 @@
+@let type = notificationType();
+@let notifications = notificationConfig | async;
+
+@if (notifications !== null) {
+  @if (getNotification(+type, notifications)) {
+    <span class="red-dot"></span>
+  }
+}

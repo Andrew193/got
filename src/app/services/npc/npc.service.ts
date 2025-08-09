@@ -81,7 +81,7 @@ export class NpcService implements RewardComponent {
       dmgReducedBy: 0,
       canCross: 2,
       maxCanCross: 2,
-      health: 844169,
+      health: 8169,
       healthIncrement: 89,
       attack: 1299,
       attackIncrement: 12,

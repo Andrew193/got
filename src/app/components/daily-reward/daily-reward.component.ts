@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {HeroesService} from "../../services/heroes/heroes.service";
@@ -13,6 +13,9 @@ import {DailyReward} from "../../interface";
 import {UsersService} from "../../services/users/users.service";
 import {Skill} from "../../models/skill.model";
 import {trackBySkill} from "../../helpers";
+import {DATE_FORMAT} from "../../constants";
+import {NotificationsService, NotificationType} from "../../services/notifications/notifications.service";
+import {RewardCoinComponent} from "../reward-coin/reward-coin.component";
 
 interface DayReward {
   copperCoin: number,
@@ -24,12 +27,14 @@ interface DayReward {
 }
 
 @Component({
-    selector: 'daily-reward',
-    imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, ContextMenuTriggerDirective],
-    templateUrl: './daily-reward.component.html',
-    styleUrl: './daily-reward.component.scss'
+  selector: 'daily-reward',
+  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, RewardCoinComponent, ContextMenuTriggerDirective],
+  templateUrl: './daily-reward.component.html',
+  styleUrl: './daily-reward.component.scss'
 })
 export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
+  notificationService = inject(NotificationsService);
+
   @Input() closePopup: () => void = () => {
   };
   @ViewChild('heroInFrame') heroInFrame: any;
@@ -44,6 +49,8 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     lastLogin: ""
   };
 
+  daysCoins = new Map<number, any[]>();
+
   constructor(public heroService: HeroesService,
               private dailyRewardService: DailyRewardService,
               public usersService: UsersService,
@@ -52,6 +59,20 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.month = this.monthReward;
     document.body.style.overflow = "hidden";
   }
+
+  rewardCoins(reward: DayReward, day: number) {
+    const coins = [];
+    if (reward.copperCoin) coins.push({ class: 'copper', imgSrc: 'assets/resourses/imgs/copper.png', alt: 'copperCoin', amount: reward.copperCoin });
+    if (reward.silverCoin) coins.push({ class: 'silver', imgSrc: 'assets/resourses/imgs/silver.png', alt: 'silverCoin', amount: reward.silverCoin });
+    if (reward.goldCoin) coins.push({ class: 'gold', imgSrc: 'assets/resourses/imgs/gold.png', alt: 'goldCoin', amount: reward.goldCoin });
+    if (reward.summonScroll) coins.push({ class: 'summon-scroll', imgSrc: 'assets/resourses/imgs/icons/card_scroll.png', alt: 'summonScroll', amount: reward.summonScroll });
+    if (reward.summonCard) coins.push({ class: 'summon-card', imgSrc: 'assets/resourses/imgs/icons/hero_shard.png', alt: 'summonCard', amount: reward.summonCard });
+    if (reward.heroShard) coins.push({ class: 'hero-shard', imgSrc: 'assets/resourses/imgs/icons/hero_puzzle.png', alt: 'heroShard', amount: reward.heroShard });
+
+    this.daysCoins.has(day) ? this.daysCoins.get(day) : this.daysCoins.set(day, coins);
+    return this.daysCoins.get(day);
+  }
+
 
   trackByMonthIndex(index: number) {
     return index;
@@ -70,12 +91,12 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   claimReward(reward: DayReward) {
-    if (this.dailyRewardConfig.lastLogin !== moment().format("MM/DD/YYYY")) {
+    if (this.dailyRewardConfig.lastLogin !== moment().format(DATE_FORMAT)) {
       this.dailyRewardService.claimDailyReward({
         ...this.dailyRewardConfig,
         day: this.dailyRewardConfig.day + 1,
         totalDays: this.dailyRewardConfig.totalDays + 1,
-        lastLogin: moment().format("MM/DD/YYYY")
+        lastLogin: moment().format(DATE_FORMAT)
       }, (newConfig) => {
         this.usersService.updateCurrency({
           cooper: reward.copperCoin || 0,
@@ -83,6 +104,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
           gold: reward.goldCoin || 0
         })
         this.dailyRewardConfig = newConfig as DailyReward;
+        this.notificationService.notificationsValue(NotificationType.daily_reward, false);
       })
     }
   }

@@ -7,6 +7,11 @@
   background-position: bottom !important;
 }
 
+.day {
+  flex: 1;
+  flex-basis: 14%;
+}
+
 .c-container {
   position: fixed;
   top: 0;
@@ -36,11 +41,6 @@
   transition: all ease 0.4s;
   pointer-events: none;
   height: 100%;
-
-  img {
-    height: 30px;
-    width: 30px;
-  }
 
   &.today {
     background-color: #855a5a;

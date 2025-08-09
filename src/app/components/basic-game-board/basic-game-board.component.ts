@@ -46,5 +46,10 @@ export class BasicGameBoardComponent {
     return tile?.x + '-' + tile?.y;
   }
 
+  showActionButtonCondition(tile: Tile, type: string) {
+    const entity = (tile as Tile).entity as Unit;
+    return this.battleMode ? entity[type] && !!entity.health && (entity?.inBattle === true || entity?.inBattle === undefined): entity.user;
+  }
+
   protected readonly trackByIndex = trackByIndex;
 }

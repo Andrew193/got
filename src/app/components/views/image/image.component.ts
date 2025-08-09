@@ -8,11 +8,13 @@ import {CommonModule} from "@angular/common";
     styleUrl: './image.component.scss'
 })
 export class ImageComponent {
-  @Input() source!: string;
+  @Input({required: true}) source!: string;
+  @Input({required: true}) alt!: string;
+  @Input() useFixSize: boolean = false;
+
   loading: boolean = true
 
   onLoad() {
     this.loading = false;
   }
-
 }

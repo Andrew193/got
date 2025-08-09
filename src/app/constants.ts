@@ -33,3 +33,5 @@ export const frontRoutes = {
   summonTree: "summon-tree",
   giftStore: "gift-lands"
 }
+
+export const DATE_FORMAT = "MM/DD/YYYY";
