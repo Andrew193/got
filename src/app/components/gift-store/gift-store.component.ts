@@ -57,12 +57,12 @@ export class GiftStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.giftService.getGiftRewardConfig((config, userId) => {
-      this.giftConfig = {...(config || {}), userId};
+    this.giftService._data.subscribe((config) => {
+      this.giftConfig = {...(config || {}), userId: config.userId};
       if (this.giftConfig.lastVist && this.giftConfig.lastVist === moment().format(DATE_FORMAT)) {
         this.collectAndLeave();
       }
-    });
+    })
   }
 
   collectAndLeave() {

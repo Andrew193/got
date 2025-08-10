@@ -1,14 +1,25 @@
-import {Injectable} from '@angular/core';
-import {tap} from "rxjs";
-import {IdEntity} from "../../../interface";
+import {inject, Injectable} from '@angular/core';
+import {BehaviorSubject, tap} from "rxjs";
+import {DailyReward, IdEntity} from "../../../interface";
 import { HttpClient } from "@angular/common/http";
+import {User, UsersService} from "../../users/users.service";
+import {LocalStorageService} from "../../localStorage/local-storage.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiService<T> {
+  protected data = new BehaviorSubject<T>({} as T);
+  _data = this.data.asObservable();
 
-  constructor(public http: HttpClient) {
+  protected http = inject(HttpClient)
+  protected localStorageService = inject(LocalStorageService);
+  protected userService = inject(UsersService);
+
+  protected userId = '0';
+
+  constructor() {
+    this.userId = this.getUserId();
   }
 
   putPostCover(entity: IdEntity, meta: { url: string, callback: (res: IdEntity) => void, returnObs?: boolean }) {
@@ -28,5 +39,22 @@ export class ApiService {
       delete entity.id;
       return meta.returnObs ? this.http.post<IdEntity>(url, entity).pipe(tap(process)) : this.http.post<IdEntity>(url, entity).pipe(tap(process)).subscribe()
     }
+  }
+
+  protected basicResponseTapParser(callback: (config: T, userId: string) => void) {
+    return tap({
+      next: (response: T[]) => {
+        this.data.next(response[0]);
+        callback(response[0], this.userId);
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
+  private getUserId() {
+    const user = this.localStorageService.getItem(this.userService.userToken) as User;
+    return user.id;
   }
 }

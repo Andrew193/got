@@ -11,8 +11,7 @@ import {Unit} from "../../models/unit.model";
 import {ContextMenuTriggerDirective} from "../../directives/context-menu-trigger/context-menu-trigger.directive";
 import {DailyReward} from "../../interface";
 import {UsersService} from "../../services/users/users.service";
-import {Skill} from "../../models/skill.model";
-import {trackBySkill} from "../../helpers";
+import {trackByIndex, trackBySkill} from "../../helpers";
 import {DATE_FORMAT} from "../../constants";
 import {NotificationsService, NotificationType} from "../../services/notifications/notifications.service";
 import {RewardCoinComponent} from "../reward-coin/reward-coin.component";
@@ -73,21 +72,17 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.daysCoins.get(day);
   }
 
-
-  trackByMonthIndex(index: number) {
-    return index;
-  }
-
   showHeroPreview() {
     this.isHeroPreview = !this.isHeroPreview;
   }
 
   ngOnInit(): void {
     this.rewardHero = this.heroService.getPriest();
-    this.dailyRewardService.getDailyRewardConfig((config, userId) => {
-      this.dailyRewardConfig = {...(config || this.dailyRewardConfig), userId};
+
+    this.dailyRewardService._data.subscribe((config) => {
+      this.dailyRewardConfig = {...(config || this.dailyRewardConfig), userId: config.userId};
       this.month = this.monthReward;
-    });
+    })
   }
 
   claimReward(reward: DayReward) {
@@ -150,4 +145,5 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected readonly trackBySkill = trackBySkill;
+  protected readonly trackByIndex = trackByIndex;
 }

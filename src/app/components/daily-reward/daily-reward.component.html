@@ -18,7 +18,7 @@
       <!-- Rewards List -->
       @if (!isHeroPreview && dailyRewardConfig.totalDays) {
         <div class="flex-row">
-          <ng-container *ngFor="let reward of month; let i = index; trackBy trackByMonthIndex">
+          <ng-container *ngFor="let reward of month; let i = index; trackBy trackByIndex">
             <div class="p-1 day">
               <div class="reward d-flex flex-column p-2" [ngClass]="{'today': +(dailyRewardConfig.day || 1) === i+1}" (click)="claimReward(reward)">
                 <span class="text-center mb-1 fw-bold">День {{ i + 1 }}</span>

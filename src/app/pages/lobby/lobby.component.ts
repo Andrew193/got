@@ -66,7 +66,7 @@ export class LobbyComponent {
   protected readonly trackByRoute = trackByRoute;
 
   activities = [
-    {name:'Поставки из Дара', src: 'icons/food', click: this.openGiftLand},
+    {name:'Поставки из Дара', src: 'icons/food', click: this.openGiftLand, notification: NotificationType.gift_store},
     {name:'Обмен с Кpастером', src: 'icons/towers'},
     {name:'Награды Древа', src: 'icons/tree', click: this.openSummonTree},
     {name:'Магазин Сторожки', src: 'icons/raven'},

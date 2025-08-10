@@ -3,9 +3,11 @@ import {BehaviorSubject} from "rxjs";
 import {DailyRewardService} from "../daily-reward/daily-reward.service";
 import moment from "moment/moment";
 import {DATE_FORMAT} from "../../constants";
+import {GiftService} from "../gift/gift.service";
 
 export enum NotificationType {
-  daily_reward
+  daily_reward,
+  gift_store
 }
 
 @Injectable({
@@ -13,23 +15,32 @@ export enum NotificationType {
 })
 export class NotificationsService {
   private dailyRewardService = inject(DailyRewardService);
+  private giftService = inject(GiftService);
 
   private initNotificationConfig = new Map(Object.entries({
     [NotificationType.daily_reward]: false,
+    [NotificationType.gift_store]: false,
   }))
 
   private notifications: BehaviorSubject<Map<string, boolean>> = new BehaviorSubject(this.initNotificationConfig);
   $notifications = this.notifications.asObservable();
 
+  today = moment().format(DATE_FORMAT)
+
   constructor() { }
 
   init() {
-    this.dailyRewardService.getDailyRewardConfig((config, userId) => {
-      const today = moment().format(DATE_FORMAT);
-
-      if(config.lastLogin !== today) {
-        console.log('t')
+    //Get Daily reward notification
+    this.dailyRewardService.getDailyRewardConfig((config) => {
+      if(config.lastLogin !== this.today) {
         this.notificationsValue(NotificationType.daily_reward, true);
+      }
+    });
+
+    //Get Gift store notification
+    this.giftService.getGiftRewardConfig((config) => {
+      if (config.lastVist !== this.today) {
+        this.notificationsValue(NotificationType.gift_store, true);
       }
     });
   }
