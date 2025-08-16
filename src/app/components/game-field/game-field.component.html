@@ -1,22 +1,32 @@
-<div class="container-fluid">
-  <h4 class="text-center" *ngIf="battleMode">
-    <span class="user-bar">Ходит {{ turnUser ? 'игрок' : 'AI' }}</span>
-  </h4>
-  <div class="heroes-bar flex-row" *ngIf="battleMode">
-    <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
-      <ng-container [ngTemplateOutlet]="usersTopBar" [ngTemplateOutletContext]="{units: userUnits}"></ng-container>
+<div class="container-fluid position-relative">
+  @if (autoFight) {
+    <div class="position-absolute top-0 h-100 auto-fight-banner">
+      <h3 class="text-center mt-2 fade-black-bg">
+        <span class="caption">Auto fight. Please wait.</span>
+      </h3>
     </div>
-    <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
-      <div class="col-9">
-        <div tooltip="Закончить ход" (click)="finishTurn()">
-          <span>{{ turnCount }} / {{ maxTurnCount }}</span>
+  }
+
+  @if (battleMode) {
+    <h4 class="text-center">
+      <span class="user-bar">Ходит {{ turnUser ? 'игрок' : 'AI' }}</span>
+    </h4>
+    <div class="heroes-bar flex-row">
+      <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
+        <ng-container [ngTemplateOutlet]="usersTopBar" [ngTemplateOutletContext]="{units: userUnits}"></ng-container>
+      </div>
+      <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
+        <div class="col-9">
+          <div tooltip="Закончить ход" (click)="finishTurn()">
+            <span>{{ turnCount }} / {{ maxTurnCount }}</span>
+          </div>
         </div>
       </div>
+      <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
+        <ng-container [ngTemplateOutlet]="usersTopBar" [ngTemplateOutletContext]="{units: aiUnits}"></ng-container>
+      </div>
     </div>
-    <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
-      <ng-container [ngTemplateOutlet]="usersTopBar" [ngTemplateOutletContext]="{units: aiUnits}"></ng-container>
-    </div>
-  </div>
+  }
   <main class="flex-row justify-content-between ">
     <div class="col-md-12 col-lg-12 col-xl-8">
       <basic-game-board [gameConfig]="gameConfig"
@@ -82,8 +92,11 @@
     </aside>
   </main>
   <div class="d-flex">
-    <button *ngIf="!autoFight" class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
-    <button *ngIf="!autoFight" class="btn btn-success ms-1" (click)="startAutoFight(false, true)">Skip one turn</button>
+    @if (!autoFight) {
+      <button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
+      <button class="btn btn-success ms-1" (click)="startAutoFight(false, true)">Skip one turn</button>
+    }
+    <ng-content select="bottom-navigation"></ng-content>
   </div>
 </div>
 

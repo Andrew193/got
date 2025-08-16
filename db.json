@@ -15,9 +15,9 @@
       "login": "rest",
       "password": "rest",
       "currency": {
-        "gold": 792,
+        "gold": 1231,
         "silver": 7022,
-        "cooper": 3217526
+        "cooper": 3663509
       }
     }
   ],
@@ -32,9 +32,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 11,
-      "totalDays": 11,
-      "lastLogin": "08/10/2025"
+      "day": 12,
+      "totalDays": 12,
+      "lastLogin": "08/16/2025"
     }
   ],
   "giftTrip": [
@@ -46,7 +46,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastVist": "08/10/2025"
+      "lastVist": "08/16/2025"
     }
   ]
 }

@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {GiftConfig, UnitWithReward} from "../../interface";
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
-import {NgIf} from "@angular/common";
 import {NpcService} from "../../services/npc/npc.service";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
 import {DisplayRewardComponent} from "../display-reward/display-reward.component";
@@ -12,12 +11,12 @@ import {Unit} from "../../models/unit.model";
 import {Currency, UsersService} from "../../services/users/users.service";
 import {Observable, tap} from "rxjs";
 import {DATE_FORMAT} from "../../constants";
+import {NotificationsService, NotificationType} from "../../services/notifications/notifications.service";
 
 @Component({
     selector: 'app-gift-store',
     imports: [
         GameEntryPointComponent,
-        NgIf,
         DisplayRewardComponent,
         RouterLink
     ],
@@ -25,7 +24,9 @@ import {DATE_FORMAT} from "../../constants";
     styleUrl: './gift-store.component.scss'
 })
 
-export class GiftStoreComponent implements OnInit {
+export class GiftStoreComponent {
+  notificationService = inject(NotificationsService);
+
   loot: (DisplayReward | null)[] = [];
   aiUnits: UnitWithReward[] = [];
   userUnits: Unit[] = [];
@@ -41,28 +42,25 @@ export class GiftStoreComponent implements OnInit {
               private usersService: UsersService,
               private rewardService: RewardService,
               private router: Router) {
+    this.init();
+  }
+
+  init() {
+    this.userUnits = [];
+    this.aiUnits = [];
 
     this.userUnits.push({...this.npcService.getUser(), attackRange: 1, x: 0, y: 0, inBattle: true});
     this.npcService.getGiftNPC().map((el) => ({...el, imgSrc: el.reward.src, user: false, canMove: false}))
-      .forEach((el, index, elements) => {
+      .forEach((el) => {
         const elType = this.rewardService.getReward(1, this.items)[0];
         this.aiUnits.push(elType.name === '0' ? {
           ...this.npcService.getWildling(),
           x: el.x,
           y: el.y,
           reward: this.npcService.getSpecialGiftReward(),
-          inBattle: true
+          inBattle: true,
         } : el);
       })
-  }
-
-  ngOnInit(): void {
-    this.giftService._data.subscribe((config) => {
-      this.giftConfig = {...(config || {}), userId: config.userId};
-      if (this.giftConfig.lastVist && this.giftConfig.lastVist === moment().format(DATE_FORMAT)) {
-        this.collectAndLeave();
-      }
-    })
   }
 
   collectAndLeave() {
@@ -89,15 +87,14 @@ export class GiftStoreComponent implements OnInit {
           ...this.giftConfig,
           lastVist: moment().format(DATE_FORMAT)
         }, () => {
-          this.router.navigateByUrl('/')
+          this.notificationService.notificationsValue(NotificationType.gift_store, false);
+          this.router.navigateByUrl('/');
         })
       }
     })).subscribe();
   }
 
   public gameResultsRedirect = (realAiUnits: Unit[]) => {
-    this.loot = this.aiUnits.map((el, index) => {
-      return !realAiUnits[index].health ? el.reward : null
-    })
+    this.loot = this.aiUnits.map((el, index) => !realAiUnits[index].health ? el.reward : null)
   }
 }

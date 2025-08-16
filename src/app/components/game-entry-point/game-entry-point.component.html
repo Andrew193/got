@@ -1,6 +1,10 @@
 <game-field
-  [aiUnits]="aiUnits"
-  [userUnits]="userUnits"
-  [battleMode]="battleMode"
+  [aiUnits]="aiUnits()"
+  [userUnits]="userUnits()"
+  [battleMode]="battleMode()"
   [gameResultsRedirect]="gameResultsRedirect"
-></game-field>
+>
+  <ng-container ngProjectAs="bottom-navigation">
+    <ng-content select="bottom-navigation"></ng-content>
+  </ng-container>
+</game-field>

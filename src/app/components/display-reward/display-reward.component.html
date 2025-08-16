@@ -1,11 +1,16 @@
-<div class="summon-container reward-container w-100 d-flex mb-3" *ngIf="rewards.length">
-  <div *ngFor="let reward of rewards; trackBy trackByIndex">
-    <div class="reward-inner-container" *ngIf="reward">
-      <img src="{{reward.src}}" alt="{{reward.name}}">
-      <span>{{ reward.amount }}</span>
-    </div>
-    <div class="reward-inner-container" *ngIf="!reward">
-      <span>Не собрано</span>
-    </div>
-  </div>
+@if (rewards.length) {
+<div class="summon-container reward-container w-100 d-flex mb-3">
+  @for (reward of rewards; track trackByIndex($index)) {
+    @if (reward) {
+      <div class="reward-inner-container">
+        <image [alt]="reward.name" [source]="reward.src"/>
+        <span>{{ reward.amount }}</span>
+      </div>
+    } @else {
+      <div class="reward-inner-container">
+        <i class="material-icons">close</i>
+      </div>
+    }
+  }
 </div>
+}

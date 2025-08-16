@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {GameFieldService} from "../../services/game-field/game-field.service";
 import {CommonModule} from "@angular/common";
 import {PopoverModule} from "ngx-bootstrap/popover";
@@ -15,10 +15,11 @@ import {BasicGameFieldComponent} from "../abstract/basic-game-field/basic-game-f
 import {trackByEffect, trackBySkill, trackByUnit} from "../../helpers";
 
 @Component({
-    selector: 'game-field',
-    imports: [CommonModule, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent],
-    templateUrl: './game-field.component.html',
-    styleUrl: './game-field.component.scss'
+  selector: 'game-field',
+  imports: [CommonModule, PopoverModule, TabsModule, ProgressbarModule, AccordionModule, TooltipModule, BasicGameBoardComponent],
+  templateUrl: './game-field.component.html',
+  styleUrl: './game-field.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameFieldComponent extends BasicGameFieldComponent {
   constructor(fieldService: GameFieldService,

@@ -8,17 +8,25 @@
         [gameResultsRedirect]="gameResultsRedirect"
         [userUnits]="userUnits"
         [battleMode]="true"
-      ></game-entry-point>
+      >
+        <ng-container ngProjectAs="bottom-navigation">
+          <button class="btn btn-danger ms-1"
+                  (click)="init()">
+            Refresh field (load new rewards)
+          </button>
+          <button class="btn btn-primary ms-1">
+            <a routerLink="/" class="fake-link">Back to Castle Black</a>
+          </button>
+          @if (loot.length) {
+            <button class="btn btn-success ms-1" (click)="collectAndLeave()">Collect loot and leave</button>
+          }
+        </ng-container>
+      </game-entry-point>
     </div>
-    <div class="col-lg-12 col-md-12 mt-3" *ngIf="loot.length">
-      <display-reward [rewards]="loot"></display-reward>
-    </div>
-    <div class="d-flex mt-1">
-      <button class="btn btn-primary">
-        <a routerLink="/" class="fake-link">Back to Castle Black</a>
-      </button>
-      <button class="btn btn-success ms-1" *ngIf="loot.length" (click)="collectAndLeave()">Collect loot and leave
-      </button>
-    </div>
+    @if (loot.length) {
+      <div class="col-lg-12 col-md-12 mt-3">
+        <display-reward [rewards]="loot"></display-reward>
+      </div>
+    }
   </div>
 </div>

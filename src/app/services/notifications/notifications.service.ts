@@ -23,9 +23,9 @@ export class NotificationsService {
   }))
 
   private notifications: BehaviorSubject<Map<string, boolean>> = new BehaviorSubject(this.initNotificationConfig);
-  $notifications = this.notifications.asObservable();
+  readonly $notifications = this.notifications.asObservable();
 
-  today = moment().format(DATE_FORMAT)
+  private readonly today = moment().format(DATE_FORMAT)
 
   constructor() { }
 

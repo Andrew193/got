@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AbstractFieldService} from "../../../services/abstract/field/abstract-field.service";
 import {GameFieldVars, LogRecord, Position, Tile, TilesToHighlight} from "../../../interface";
 import {BehaviorSubject} from "rxjs";
@@ -17,16 +17,15 @@ export interface GameField {
 @Component({
     selector: 'app-abstract-game-field',
     imports: [],
-    templateUrl: './abstract-game-field.component.html',
+    template: '',
     styleUrl: './abstract-game-field.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnInit {
+export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnInit, OnDestroy {
   @Input() userUnits: Unit[] = [];
   @Input() aiUnits: Unit[] = [];
   @Input() battleMode: boolean = true;
   autoFight: boolean = false;
-  cd = inject(ChangeDetectorRef);
 
   @Input() gameResultsRedirect: (realAiUnits: Unit[]) => void = () => {
   };
@@ -54,12 +53,21 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     })
   }
 
-  trackByLogRecord(index: number, log: LogRecord) {
-    return log.message;
+  recreateGameConfig(newUserUnit: Unit[], newAiUnit: Unit[]) {
+    this.ngOnDestroy();
+
+    if(newUserUnit) {
+      this.userUnits = [...newUserUnit];
+    }
+    if(newAiUnit) {
+      this.aiUnits = [...newAiUnit];
+    }
+
+    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
   }
 
-  ngOnInit(): void {
-    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
+  trackByLogRecord(index: number, log: LogRecord) {
+    return log.message;
   }
 
   showPossibleMoves(location: Position, radius: number, diagCheck: boolean = false) {
@@ -130,7 +138,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     this.selectedEntity = null;
     this.skillsInAttackBar = [];
     this.showAttackBar = false;
-    this.cd.detectChanges();
   }
 
   highlightCellsInnerFunction(path: Position[], className: string): TilesToHighlight[] {
@@ -163,5 +170,23 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     }
     const enemyClicked = this.possibleMoves.find((possibleTile) => possibleTile.i === clickedTile.x && possibleTile.j === clickedTile.y)
     return enemyClicked ? clickedTile : null;
+  }
+
+  ngOnInit(): void {
+    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
+  }
+
+  ngOnDestroy() {
+    this.log = [];
+    this.turnUser = true;
+    this.turnCount = 0;
+    this.clickedEnemy = null;
+    this.selectedEntity = null;
+    this.possibleAttackMoves = [];
+    this.ignoreMove = false;
+    this.skillsInAttackBar = [];
+    this.showAttackBar = false;
+    this._turnCount.next(1);
+    this.autoFight = false;
   }
 }

@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 import {SiteComponent} from "./pages/site/site.component";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
-import {AuthGuard} from "./guards/canActivate";
+import {AuthGuard, GiftGuard} from "./guards/canActivate";
 import {frontRoutes} from "./constants";
 
 export const routes: Routes = [
@@ -31,6 +31,7 @@ export const routes: Routes = [
       },
       {
         path: frontRoutes.giftStore,
+        canActivate: [GiftGuard],
         loadComponent: () => import('./components/gift-store/gift-store.component').then(c => c.GiftStoreComponent)
       }
     ]
