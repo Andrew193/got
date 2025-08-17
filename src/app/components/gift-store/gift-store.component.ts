@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {GiftConfig, UnitWithReward} from "../../interface";
 import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
 import {NpcService} from "../../services/npc/npc.service";
@@ -24,7 +24,7 @@ import {NotificationsService, NotificationType} from "../../services/notificatio
     styleUrl: './gift-store.component.scss'
 })
 
-export class GiftStoreComponent {
+export class GiftStoreComponent implements OnInit {
   notificationService = inject(NotificationsService);
 
   loot: (DisplayReward | null)[] = [];
@@ -43,6 +43,12 @@ export class GiftStoreComponent {
               private rewardService: RewardService,
               private router: Router) {
     this.init();
+  }
+
+  ngOnInit(): void {
+    this.giftService._data.subscribe((config) => {
+      this.giftConfig = {...(config || {}), userId: config.userId};
+    })
   }
 
   init() {
@@ -85,7 +91,7 @@ export class GiftStoreComponent {
       next: () => {
         this.giftService.claimGiftReward({
           ...this.giftConfig,
-          lastVist: moment().format(DATE_FORMAT)
+          lastLogin: moment().format(DATE_FORMAT)
         }, () => {
           this.notificationService.notificationsValue(NotificationType.gift_store, false);
           this.router.navigateByUrl('/');

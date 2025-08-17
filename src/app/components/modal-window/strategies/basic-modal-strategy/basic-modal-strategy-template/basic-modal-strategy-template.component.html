@@ -1,0 +1,11 @@
+@let _modalConfig = modalConfig();
+
+<div>
+  <div class="modal-header {{_modalConfig.headerClass}}">
+    <h4 class="modal-title pull-left">{{ _modalConfig.headerMessage }}</h4>
+  </div>
+  <div class="modal-body">
+    This is a modal.
+    <button class="btn btn-success" (click)="_modalConfig.close()">{{ _modalConfig.closeBtnLabel }}</button>
+  </div>
+</div>

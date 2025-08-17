@@ -94,6 +94,12 @@ export class UsersService {
       })
   }
 
+  getUserId() {
+    const user = this.localStorage.getItem(this.userToken) as User;
+
+    return user.id;
+  }
+
   doesUserExist() {
     const user = (this.localStorage.getItem(this.userToken) as User | undefined);
     return this.http.get<any>(this.url, {

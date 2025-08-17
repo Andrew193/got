@@ -9,7 +9,7 @@ import {ApiService} from "../abstract/api/api.service";
 export class DailyRewardService extends ApiService<DailyReward> {
   private url = "/dailyReward";
 
-  getDailyRewardConfig(callback: (config: DailyReward, userId: string) => void) {
+  getConfig(callback: (config: DailyReward, userId: string) => void) {
     this.http.get<DailyReward[]>(this.url, {
       params: {
         userId: this.userId

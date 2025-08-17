@@ -5,6 +5,7 @@ import {GameEntryPointComponent} from "../../../components/game-entry-point/game
 import {CommonModule} from "@angular/common";
 import {ModalWindowService} from "../../../services/modal/modal-window.service";
 import {frontRoutes} from "../../../constants";
+import {ModalStrategiesTypes} from "../../../components/modal-window/modal-interfaces";
 
 @Component({
     selector: 'training-battle',
@@ -45,7 +46,7 @@ export class TrainingBattleComponent {
           "red-b",
           "Something went wrong",
           "Ok",
-          {callback:this.victoryRedirect, open: true}
+          {callback:this.victoryRedirect, open: true, strategy: ModalStrategiesTypes.base}
         )
       )
     }, 300)

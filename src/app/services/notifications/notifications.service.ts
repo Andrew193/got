@@ -5,7 +5,7 @@ import moment from "moment/moment";
 import {DATE_FORMAT} from "../../constants";
 import {GiftService} from "../gift/gift.service";
 import {ModalWindowService} from "../modal/modal-window.service";
-import {GiftStoreComponent} from "../../components/gift-store/gift-store.component";
+import {ModalStrategiesTypes} from "../../components/modal-window/modal-interfaces";
 
 export enum NotificationType {
   daily_reward,
@@ -33,19 +33,19 @@ export class NotificationsService {
   constructor() { }
 
   init() {
-    //Get Daily reward notification
-    this.dailyRewardService.getDailyRewardConfig((config) => {
-      if(config.lastLogin !== this.today) {
-        this.notificationsValue(NotificationType.daily_reward, true);
-      }
-    });
+    const services = [
+      {api: this.dailyRewardService, type: NotificationType.daily_reward},
+      {api: this.giftService, type: NotificationType.gift_store}
+    ];
 
-    //Get Gift store notification
-    this.giftService.getGiftRewardConfig((config) => {
-      if (config.lastVist !== this.today) {
-        this.notificationsValue(NotificationType.gift_store, true);
-      }
-    });
+    services.forEach((el) => {
+      el.api.getConfig((config) => {
+        console.log(config)
+        if(config.lastLogin !== this.today) {
+          this.notificationsValue(el.type, true);
+        }
+      });
+    })
 
     this.showPossibleActivities();
   }
@@ -69,9 +69,9 @@ export class NotificationsService {
       {
         open: true,
         callback: () => {},
-        component: GiftStoreComponent
+        strategy: ModalStrategiesTypes.base
       });
 
-    this.modalWindowService.openModal(config);
+   // this.modalWindowService.openModal(config);
   }
 }

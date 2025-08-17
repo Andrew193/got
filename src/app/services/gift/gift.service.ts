@@ -9,7 +9,7 @@ import {GiftConfig, IdEntity} from "../../interface";
 export class GiftService extends ApiService<GiftConfig> {
   private url = "/giftTrip";
 
-  getGiftRewardConfig(callback: (config: GiftConfig, userId: string) => void) {
+  getConfig(callback: (config: GiftConfig, userId: string) => void) {
     this.http.get<GiftConfig[]>(this.url, {
       params: {
         userId: this.userId

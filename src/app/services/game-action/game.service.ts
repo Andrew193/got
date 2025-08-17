@@ -9,6 +9,7 @@ import {Unit} from "../../models/unit.model";
 import {Skill} from "../../models/skill.model";
 import {Effect} from "../../models/effect.model";
 import {GameLoggerService} from "../game-logger/logger.service";
+import {ModalStrategiesTypes} from "../../components/modal-window/modal-interfaces";
 
 @Injectable({
   providedIn: 'root',
@@ -161,7 +162,8 @@ export class GameService {
           open: true,
           callback: () => {
             callback(realAiUnits)
-          }
+          },
+          strategy: ModalStrategiesTypes.base
         });
 
       this.modalWindowService.openModal(config);

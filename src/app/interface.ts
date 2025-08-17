@@ -32,7 +32,7 @@ export interface DailyReward extends IdEntity {
 
 export interface GiftConfig extends IdEntity {
   userId: string,
-  lastVist: string
+  lastLogin: string
 }
 
 export class GameFieldVars {
