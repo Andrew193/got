@@ -45,7 +45,7 @@ export class TrainingBattleComponent {
           "red-b",
           "Something went wrong",
           "Ok",
-          this.victoryRedirect
+          {callback:this.victoryRedirect, open: true}
         )
       )
     }, 300)

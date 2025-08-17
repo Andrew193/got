@@ -1,11 +1,22 @@
 <ng-template #template>
-  <div *ngIf="modalConfig.headerMessage">
-    <div class="modal-header {{modalConfig.headerClass}}">
-      <h4 class="modal-title pull-left">{{ modalConfig.headerMessage }}</h4>
+  @if (modalConfig.config.component) {
+    <div class="dynamic-cover">
+      <dynamic-modal-host [component]="modalConfig.config.component">
+        <div class="modal-body">
+          <span>This is a modal.</span>
+          <button class="btn btn-success" (click)="close()">{{ modalConfig.closeBtnLabel }}</button>
+        </div>
+      </dynamic-modal-host>
     </div>
-    <div class="modal-body">
-      This is a modal.
-      <button class="btn btn-success" (click)="close()">{{ modalConfig.closeBtnLabel }}</button>
+  } @else if (modalConfig.headerMessage && !modalConfig.config.component) {
+    <div>
+      <div class="modal-header {{modalConfig.headerClass}}">
+        <h4 class="modal-title pull-left">{{ modalConfig.headerMessage }}</h4>
+      </div>
+      <div class="modal-body">
+        This is a modal.
+        <button class="btn btn-success" (click)="close()">{{ modalConfig.closeBtnLabel }}</button>
+      </div>
     </div>
-  </div>
+  }
 </ng-template>

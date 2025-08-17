@@ -1,12 +1,16 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
+import {DailyRewardComponent} from "../../components/daily-reward/daily-reward.component";
 
 export interface ModalConfig {
   headerClass: string,
   headerMessage: string,
   closeBtnLabel: string,
-  open: boolean,
-  callback: () => void
+  config: {
+    open: boolean,
+    callback: () => void,
+    component?: any
+  }
 }
 
 @Injectable({
@@ -17,8 +21,10 @@ export class ModalWindowService {
     headerMessage: '',
     headerClass: '',
     closeBtnLabel: '',
-    open: false,
-    callback: () => {
+    config: {
+      open: false,
+      callback: () => {
+      }
     }
   }
   private _modalConfig: BehaviorSubject<ModalConfig> = new BehaviorSubject<ModalConfig>(this.init);
@@ -35,14 +41,20 @@ export class ModalWindowService {
     this._modalConfig.next(this.init)
   }
 
-  getModalConfig(headerClass = "", headerMessage = "", closeBtnLabel = "",
-                 callback: () => void) {
+  getModalConfig(headerClass = "", headerMessage = "", closeBtnLabel = "", config: {
+    open: boolean,
+    callback: () => void,
+    component?: any
+  }) {
     return {
       headerClass: headerClass,
       headerMessage: headerMessage,
       closeBtnLabel: closeBtnLabel,
-      callback: callback,
-      open: true
+      config: {
+        callback: config.callback,
+        open: config.open,
+        component: config.component
+      }
     }
   }
 }

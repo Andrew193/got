@@ -155,7 +155,16 @@ export class GameService {
           callback(realAiUnits)
         }
       }
-      this.modalWindowService.openModal({...this.gameResult, open: true})
+
+      const config =
+        this.modalWindowService.getModalConfig(this.gameResult.headerClass, this.gameResult.headerMessage, this.gameResult.closeBtnLabel, {
+          open: true,
+          callback: () => {
+            callback(realAiUnits)
+          }
+        });
+
+      this.modalWindowService.openModal(config);
     }
   }
 

@@ -4,6 +4,8 @@ import {DailyRewardService} from "../daily-reward/daily-reward.service";
 import moment from "moment/moment";
 import {DATE_FORMAT} from "../../constants";
 import {GiftService} from "../gift/gift.service";
+import {ModalWindowService} from "../modal/modal-window.service";
+import {GiftStoreComponent} from "../../components/gift-store/gift-store.component";
 
 export enum NotificationType {
   daily_reward,
@@ -16,6 +18,7 @@ export enum NotificationType {
 export class NotificationsService {
   private dailyRewardService = inject(DailyRewardService);
   private giftService = inject(GiftService);
+  private modalWindowService = inject(ModalWindowService);
 
   private initNotificationConfig = new Map(Object.entries({
     [NotificationType.daily_reward]: false,
@@ -43,6 +46,8 @@ export class NotificationsService {
         this.notificationsValue(NotificationType.gift_store, true);
       }
     });
+
+    this.showPossibleActivities();
   }
 
   notificationsValue(key?: number, value?: boolean) {
@@ -57,5 +62,16 @@ export class NotificationsService {
 
   getNotification(key: number, notificationMap: Map<string, boolean>) {
     return notificationMap.get(key.toString());
+  }
+
+  private showPossibleActivities() {
+    const config = this.modalWindowService.getModalConfig('', 'test', 'Ok',
+      {
+        open: true,
+        callback: () => {},
+        component: GiftStoreComponent
+      });
+
+    this.modalWindowService.openModal(config);
   }
 }
