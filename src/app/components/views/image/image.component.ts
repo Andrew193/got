@@ -11,6 +11,7 @@ export class ImageComponent {
   @Input({required: true}) source!: string;
   @Input({required: true}) alt!: string;
   @Input() useFixSize: boolean = false;
+  @Input() imageClass: string = '';
 
   loading: boolean = true
 

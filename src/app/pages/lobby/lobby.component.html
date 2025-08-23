@@ -1,6 +1,6 @@
-<div class="lobby-container">
-  <main class="d-flex mt-4 ms-4 me-4">
-    <aside class="col-4">
+<div class="lobby-container container-fluid">
+  <main class="row mt-4">
+    <aside class="col-sm-12 col-md-6 shadow-none">
       <ul class="nav flex-column list-group">
         <li class="nav-item list-group-item" *ngFor="let route of pageRoutes; trackBy trackByRoute">
           <a [routerLink]="route.url" class="list-group-item">
@@ -12,9 +12,9 @@
         </li>
       </ul>
     </aside>
-    <div class="col-8 d-flex justify-content-end">
-      <div class="stores col-9 h-100">
-        <p class="col-12 text-center mt-2 store-title" style="height: 30px">Магазины и Награды</p>
+    <div class="col-sm-12 col-md-6">
+      <div class="stores h-100">
+        <p class="col-12 text-center mt-2 mb-0 store-title">Магазины и Награды</p>
         <nav class="flex-row justify-content-between">
           <div class="flex-row store-row">
           @for (activity of activities; track activity.name) {
@@ -35,7 +35,7 @@
              let-notification="notification">
   <div class="justify-content-center" (click)="click ? click() : true">
     <div class="card d-flex align-items-center position-relative">
-      <img class="card-img-top" src="{{'./assets/resourses/imgs/'+src+'.png'}}" [alt]="name">
+      <image [source]="'./assets/resourses/imgs/'+src+'.png'" [alt]="name" imageClass="card-img-top image-75"/>
       <span class="card-title">{{ name }}</span>
       <app-notification-marker [notificationType]="notification"/>
     </div>

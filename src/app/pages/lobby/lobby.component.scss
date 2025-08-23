@@ -18,6 +18,9 @@
 
   .store-title {
     @include mixins.grad-color;
+    vertical-align: middle;
+    line-height: 30px;
+    height: 30px;
   }
 
   .store-row {
@@ -57,17 +60,16 @@
       }
     }
   }
-
-  img {
-    height: 75px;
-    width: 75px;
-  }
 }
 
 aside {
   box-shadow: vars.$box-shadow;
   border-radius: 5px;
   height: fit-content;
+
+  ul {
+    box-shadow: vars.$box-shadow;
+  }
 
   li {
     background: #00000070;
