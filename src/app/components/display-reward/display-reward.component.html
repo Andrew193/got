@@ -1,16 +1,49 @@
-@if (rewards.length) {
-<div class="summon-container reward-container w-100 d-flex mb-3">
-  @for (reward of rewards; track trackByIndex($index)) {
-    @if (reward) {
-      <div class="reward-inner-container">
-        <image [alt]="reward.name" [source]="reward.src"/>
-        <span>{{ reward.amount }}</span>
-      </div>
-    } @else {
-      <div class="reward-inner-container">
-        <i class="material-icons">close</i>
+@let _cards = cards();
+
+@if (_cards.length) {
+  <div class="summon-container reward-container row gap-2 m-2">
+    @for (card of _cards; track trackByIndex($index)) {
+      @if (card) {
+        <div
+          class="reward-inner-container col"
+          [class.flipped]="card.flipped">
+          <div class="card-inner">
+            <div class="card-front">
+              ?
+            </div>
+            <div class="card-back">
+              <image [alt]="card.name" [source]="card.src" [imageClass]="'reward-image'"/>
+              <span>{{ card.amount | number }}</span>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="reward-inner-container col">
+          <i class="material-icons">close</i>
+        </div>
+      }
+    }
+    @if (showOpenButton()) {
+      <button (click)="revealAll()">Open cards</button>
+    } @else if (showTotalReward()) {
+      <div style="grid-template-columns: 1fr 3fr;" class="d-grid p-0 gap-2">
+        <p class="m-0 total-reward-title">Total reward:</p>
+        <div class="row ps-2 pe-2 m-0 gap-2">
+          @let _prize = cardsPrize();
+
+          @for (el of _prize; track el[0]) {
+            <div
+              class="reward-inner-container flipped col">
+              <div class="card-inner">
+                <div class="card-back">
+                  <image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'reward-image'"/>
+                  <span>{{ el[1]['amount'] | number }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
       </div>
     }
-  }
-</div>
+  </div>
 }

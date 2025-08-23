@@ -1,10 +1,12 @@
 import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {ImageComponent} from "../views/image/image.component";
+import {DecimalPipe} from "@angular/common";
 
 @Component({
   selector: 'app-reward-coin',
   imports: [
-    ImageComponent
+    ImageComponent,
+    DecimalPipe
   ],
   templateUrl: './reward-coin.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,7 +3,7 @@ import {StatsComponent} from "../../../components/stats/stats.component";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Unit} from "../../../models/unit.model";
 import {SkillsRenderComponent} from "../../../components/skills-render/skills-render.component";
-import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
+import {DecimalPipe, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {createDeepCopy, trackByLevel} from "../../../helpers";
 import {Router} from "@angular/router";
@@ -14,16 +14,17 @@ import {frontRoutes} from "../../../constants";
 
 @Component({
     selector: 'app-daily-boss-lobby',
-    imports: [
-        StatsComponent,
-        SkillsRenderComponent,
-        NgForOf,
-        TabsModule,
-        NgTemplateOutlet,
-        HeroesSelectComponent,
-        HeroesSelectPreviewComponent,
-        NgIf
-    ],
+  imports: [
+    StatsComponent,
+    SkillsRenderComponent,
+    NgForOf,
+    TabsModule,
+    NgTemplateOutlet,
+    HeroesSelectComponent,
+    HeroesSelectPreviewComponent,
+    NgIf,
+    DecimalPipe
+  ],
     templateUrl: './daily-boss-lobby.component.html',
     styleUrl: './daily-boss-lobby.component.scss'
 })

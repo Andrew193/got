@@ -1,7 +1,5 @@
 <div class="c-container d-flex align-items-center justify-content-center">
   <div (appOutsideClick)="closePopup()" class="col-11 inner-container flex-row position-relative">
-    <!-- Reward Count Display -->
-    <p class="day-count-container">X <span class="day-count">{{ dailyRewardConfig.totalDays || 1 }}</span> награды</p>
 
     <!-- Hero Preview Section -->
     <div class="position-relative h-100 col-lg-3 col-md-12 col-sm-12">
@@ -13,19 +11,30 @@
     <!-- Rewards Section or Hero Preview -->
     <aside class="p-1 h-100 col-lg-9 col-md-12 col-sm-12 d-flex flex-column justify-content-evenly">
       <!-- Hero Preview Header and Description -->
-      <h4 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только расти!!!</h4>
+      <h1 *ngIf="!isHeroPreview" class="text-center caption">Забирай награды каждый день и они будут только расти!!!</h1>
 
       <!-- Rewards List -->
       @if (!isHeroPreview && dailyRewardConfig.totalDays) {
         <div class="flex-row">
           <ng-container *ngFor="let reward of month; let i = index; trackBy trackByIndex">
-            <div class="p-1 day">
-              <div class="reward d-flex flex-column p-2" [ngClass]="{'today': +(dailyRewardConfig.day || 1) === i+1}" (click)="claimReward(reward)">
-                <span class="text-center mb-1 fw-bold">День {{ i + 1 }}</span>
-                @let coins = rewardCoins(reward, i);
-                <app-reward-coin *ngFor="let coin of coins"
-                                 [useFixSize]="true"
-                                 [coinConfig]="coin"></app-reward-coin>
+            <div class="p-1 day" [class.claimed]="i + 1 <= (dailyRewardConfig.day || 0)">
+              <div class="reward d-flex flex-column p-2"
+                   [ngClass]="{'today': +(dailyRewardConfig.day || 1) === i}"
+                   (click)="claimReward(reward)">
+                <div class="flip-wrap">
+                  <div class="flip-inner">
+                    <div class="flip-face flip-front">
+                      <span class="text-center mb-1 fw-bold">День {{ i + 1 }}</span>
+                    </div>
+
+                    <div class="flip-face flip-back">
+                      @let coins = rewardCoins(reward, i);
+                      <app-reward-coin *ngFor="let coin of coins"
+                                       [useFixSize]="true"
+                                       [coinConfig]="coin"></app-reward-coin>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </ng-container>
@@ -47,7 +56,8 @@
           <div class="col-12" style="font-weight: bold">
             <p class="text-center w-100 d-block"><b>Навыки героя</b></p>
             <div class="m-1">
-              <div *ngFor="let skill of rewardHero.skills; trackBy trackBySkill" class="row p-2" style="flex-wrap: nowrap">
+
+              <div *ngFor="let skill of rewardHero.skills; trackBy trackBySkill" class="d-grid p-0 gap-2" style="grid-template-columns: 1fr 11fr;">
                 <div class="col-1">
                   <img [src]="skill.imgSrc" [alt]="skill.name" class="skill-preview-icon" />
                 </div>

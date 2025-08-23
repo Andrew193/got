@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {PopoverModule} from "ngx-bootstrap/popover";
 import {User, UsersService} from "../../../services/users/users.service";
 import {LocalStorageService} from "../../../services/localStorage/local-storage.service";
+import {DecimalPipe} from "@angular/common";
 
 @Component({
     selector: 'header',
-    imports: [
-        PopoverModule
-    ],
+  imports: [
+    PopoverModule,
+    DecimalPipe
+  ],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })

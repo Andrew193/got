@@ -89,18 +89,6 @@ body {
   border-top-right-radius: 50px;
 }
 
-.day-count-container {
-  color: white;
-  position: absolute;
-  right: 20px;
-
-  span {
-    font-weight: bold;
-    font-size: 24px;
-    color: #FF9393FF;
-  }
-}
-
 .form-inline {
   display: flex;
   flex-flow: row nowrap;
@@ -162,5 +150,5 @@ body {
 }
 
 .row:not(.stats) {
-  flex: 1 0 auto !important;
+ // flex: 1 0 auto !important;
 }

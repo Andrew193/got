@@ -9,7 +9,8 @@ export interface Reward {
 export interface DisplayReward {
   name: string,
   amount: number,
-  src: string
+  src: string,
+  flipped: boolean
 }
 
 export interface RewardLoot {
@@ -76,23 +77,25 @@ export class RewardService {
       return {
         amount: this.getNumberInRange(loot.min, loot.max),
         name: item.name,
-        src: "assets/resourses/imgs/copper.png"
+        src: "assets/resourses/imgs/copper.png",
+        flipped: false
       }
     } else if (item.name === this.rewardNames.silver) {
       return {
         amount: this.getNumberInRange(loot.min, loot.max),
         name: item.name,
-        src: "assets/resourses/imgs/silver.png"
+        src: "assets/resourses/imgs/silver.png",
+        flipped: false
       }
     } else if (item.name === this.rewardNames.shards) {
       const heroes = this.heroService.getAllHeroes();
       const heroIndex = this.getNumberInRange(0, heroes.length - 1)
-      return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: heroes[heroIndex].imgSrc}
+      return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: heroes[heroIndex].imgSrc, flipped: false}
     } else if (item.name === this.rewardNames.gold) {
-      return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: "assets/resourses/imgs/gold.png"}
+      return {amount: this.getNumberInRange(loot.min, loot.max), name: item.name, src: "assets/resourses/imgs/gold.png", flipped: false}
     } else if (item.name === this.rewardNames.chest) {
-      return {amount: 1, name: item.name, src: "assets/resourses/imgs/icons/chest.png"}
+      return {amount: 1, name: item.name, src: "assets/resourses/imgs/icons/chest.png", flipped: false}
     }
-    return {amount: 1, src: "", name: item.name};
+    return {amount: 1, src: "", name: item.name, flipped: false};
   }
 }

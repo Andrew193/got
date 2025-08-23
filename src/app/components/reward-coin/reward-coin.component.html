@@ -5,6 +5,6 @@
     <image [source]="coin.imgSrc"
            [useFixSize]="useFixSize()"
            [alt]="coin.alt"></image>
-    {{ coin.amount }}
+    {{ coin.amount | number }}
   </span>
 }

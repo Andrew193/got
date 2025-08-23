@@ -5,6 +5,7 @@
         <image
           [source]="'assets/resourses/imgs/background/summon1.png'"
           [alt]="'summon'"
+          [imageClass]="'summon-background'"
         ></image>
       </div>
       <div class="mb-3">
@@ -15,7 +16,7 @@
             <img alt="silver coin" src="assets/resourses/imgs/silver.png">300
           </button>
           <button class="btn btn-success silver" (click)="getReward(10)">
-            <img alt="silver coin" src="assets/resourses/imgs/silver.png">2700
+            <img alt="silver coin" src="assets/resourses/imgs/silver.png">{{2700 | number}}
           </button>
         </div>
       </div>

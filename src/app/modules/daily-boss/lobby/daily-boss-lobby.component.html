@@ -28,20 +28,20 @@
           <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward"/>
           <div class="ps-2">
             <p class="mb-0">
-              <span class="copper">{{ bossReward[bossLevel].copper }} (+ {{ bossReward[bossLevel].copperWin }} kill reward )</span>
+              <span class="copper">{{ bossReward[bossLevel].copper | number }} (+ {{ bossReward[bossLevel].copperWin | number }} kill reward )</span>
               <img src="assets/resourses/imgs/copper.png" alt="reward"/> for every <span
-              class="highlight-effect">{{ bossReward[bossLevel].copperDMG }}</span> DMG.
+              class="highlight-effect">{{ bossReward[bossLevel].copperDMG | number }}</span> DMG.
             </p>
             <p class="mb-0">
-              <span class="silver">{{ bossReward[bossLevel].silver }} (+ {{ bossReward[bossLevel].silverWin }} kill reward )</span>
+              <span class="silver">{{ bossReward[bossLevel].silver | number }} (+ {{ bossReward[bossLevel].silverWin | number }} kill reward )</span>
               <img src="assets/resourses/imgs/silver.png" alt="reward"/> for every <span
-              class="highlight-effect">{{ bossReward[bossLevel].silverDMG }}</span> DMG.
+              class="highlight-effect">{{ bossReward[bossLevel].silverDMG | number }}</span> DMG.
             </p>
             <p class="mb-0">
-              <span class="gold">{{ bossReward[bossLevel].gold }} (+ {{ bossReward[bossLevel].goldWin }}
+              <span class="gold">{{ bossReward[bossLevel].gold | number }} (+ {{ bossReward[bossLevel].goldWin | number }}
                 kill reward )</span>
               <img src="assets/resourses/imgs/gold.png" alt="reward"/> for every <span
-              class="highlight-effect">{{ bossReward[bossLevel].goldDMG }}</span> DMG.
+              class="highlight-effect">{{ bossReward[bossLevel].goldDMG | number }}</span> DMG.
             </p>
           </div>
         </div>

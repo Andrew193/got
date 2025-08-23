@@ -3,13 +3,13 @@
        alt="avatar" [popover]="popTemplate" [outsideClick]="true" [placement]="'bottom'"/>
   <div class="d-flex currency-bar align-items-center">
     <div class="d-flex align-items-center">
-      <img src="./assets/resourses/imgs/copper.png" alt="coin copper"/><span class="copper">{{ currency.cooper }}</span>
+      <img src="./assets/resourses/imgs/copper.png" alt="coin copper"/><span class="copper">{{ currency.cooper | number }}</span>
     </div>
     <div class="d-flex align-items-center">
-      <img src="./assets/resourses/imgs/silver.png" alt="coin silver"/><span class="silver">{{ currency.silver }}</span>
+      <img src="./assets/resourses/imgs/silver.png" alt="coin silver"/><span class="silver">{{ currency.silver | number }}</span>
     </div>
     <div class="d-flex align-items-center">
-      <img src="./assets/resourses/imgs/gold.png" alt="coin gold"/><span class="gold">{{ currency.gold }}</span></div>
+      <img src="./assets/resourses/imgs/gold.png" alt="coin gold"/><span class="gold">{{ currency.gold | number }}</span></div>
   </div>
 </nav>
 

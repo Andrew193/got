@@ -1,0 +1,43 @@
+@use "sass:meta";
+
+/* === Glow pulse === */
+@mixin glow-pulse($selector: "&", $name: glowPulse, $duration: 2s) {
+  animation: #{$name} $duration ease-in-out infinite;
+
+  @keyframes #{$name} {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.12), 0 8px 16px rgba(0,0,0,.25); }
+    50%      { box-shadow: 0 0 12px 4px rgba(255, 215, 0, 0.35), 0 12px 24px rgba(0,0,0,.45); }
+  }
+}
+
+/* === Shine sweep === */
+@mixin shine-sweep(
+  $selector: "&",
+  $name: shineSweep,
+  $duration: .7s,
+  $ease: ease,
+  $border-radius: 10px
+) {
+  #{$selector}::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(75deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,.7) 50%,
+      rgba(255,255,255,0) 70%);
+    transform: translateX(-120%) skewX(-20deg);
+    animation: #{$name} $duration $ease forwards;
+    border-radius: $border-radius;
+    pointer-events: none;
+    opacity: 0;
+  }
+  @keyframes #{$name} {
+    0%   { transform: translateX(-120%) skewX(-20deg); opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateX(140%)  skewX(-20deg); opacity: 0; }
+  }
+}
+
+@mixin no-shine($selector: "&") {
+  #{$selector}::after { display: none !important; }
+}
