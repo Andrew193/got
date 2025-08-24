@@ -20,8 +20,6 @@
 .game-field-img {
   @include mixins.avatar;
   box-shadow: vars.$box-shadow;
-  height: 80px;
-  width: 80px;
   padding: 5px;
 }
 

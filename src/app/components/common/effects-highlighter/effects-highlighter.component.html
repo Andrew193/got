@@ -1,0 +1,14 @@
+<div>
+  <p class="d-inline-block">
+    @for (word of formatedText(); track word.hint + word.text + $index) {
+      @if (word.hint) {
+        <span
+          class='highlight-effect'
+          [matTooltip]="word.desc"
+        >{{ word.text }}</span>
+      } @else {
+        <span>{{ word.text }}</span>
+      }
+    }
+  </p>
+</div>

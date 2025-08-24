@@ -1,14 +1,10 @@
 import {
   Directive,
   ElementRef,
-  HostListener,
   Input,
   OnInit,
   Renderer2,
-  TemplateRef,
-  ViewContainerRef
 } from '@angular/core';
-import {MatMenuPanel, MatMenuTrigger} from "@angular/material/menu";
 import {HeroesService} from "../../services/heroes/heroes.service";
 
 @Directive({

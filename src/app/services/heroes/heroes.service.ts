@@ -35,6 +35,14 @@ export class HeroesService extends ContentService {
     super();
   }
 
+  getEffectsToHighlight() {
+    return this.eS.effectsToHighlight;
+  }
+
+  getEffectsDescription(effect: string) {
+    return this.eS.effectsDescriptions[effect];
+  }
+
   highlightEffects(text: string) {
     for (let i = 0; i < this.eS.effectsToHighlight.length; i++) {
       const effect = this.eS.effectsToHighlight[i];
@@ -49,7 +57,7 @@ export class HeroesService extends ContentService {
     for (let i = 0; i < this.eS.effectsToHighlight.length; i++) {
       const effect = this.eS.effectsToHighlight[i];
       if (text.includes(effect)) {
-        result.push(`${effect} - ${this.eS.effectsDescriptions[effect]}`)
+        result.push(`${effect} - ${this.getEffectsDescription(effect)}`)
       }
     }
     return result;

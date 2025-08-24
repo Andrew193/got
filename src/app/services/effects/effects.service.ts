@@ -30,7 +30,7 @@ export class EffectsService {
     [this.effects.bleeding]: "Наносит противнику урон в размере 5% от его здоровья каждый ход.",
     [this.effects.poison]: "Наносит противнику урон в размере 7.5% от его здоровья каждый ход.",
     [this.effects.attackBuff]: "Увеличивает атаку героя на 50%.",
-    [this.effects.defBreak]: "Увеличивает защиту героя на 50%.",
+    [this.effects.defBuff]: "Увеличивает защиту героя на 50%.",
     [this.effects.attackBreak]: "Уменьшает атаку героя на 50%.",
     [this.effects.defDestroy]: "Уменьшает защиту героя на 50%.",
     [this.effects.root]: "Герой скован корнями и не может двигаться.",

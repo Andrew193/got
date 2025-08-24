@@ -18,7 +18,6 @@ import {StatsComponent} from "../views/stats/stats.component";
 import {DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
 import {Unit} from "../../models/unit.model";
-import {ContextMenuTriggerDirective} from "../../directives/context-menu-trigger/context-menu-trigger.directive";
 import {DailyReward} from "../../interface";
 import {UsersService} from "../../services/users/users.service";
 import {trackByIndex, trackBySkill} from "../../helpers";
@@ -26,6 +25,7 @@ import {DATE_FORMAT} from "../../constants";
 import {NotificationsService, NotificationType} from "../../services/notifications/notifications.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {RewardsCalendarComponent} from "../common/rewards-calendar/rewards-calendar.component";
+import {EffectsHighlighterComponent} from "../common/effects-highlighter/effects-highlighter.component";
 
 export interface DayReward {
   copperCoin: number,
@@ -38,7 +38,7 @@ export interface DayReward {
 
 @Component({
   selector: 'daily-reward',
-  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, ContextMenuTriggerDirective, RewardsCalendarComponent],
+  imports: [CommonModule, ModalModule, OutsideClickDirective, TooltipModule, StatsComponent, RewardsCalendarComponent, EffectsHighlighterComponent],
   templateUrl: './daily-reward.component.html',
   styleUrl: './daily-reward.component.scss'
 })

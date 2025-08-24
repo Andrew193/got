@@ -29,7 +29,7 @@
   box-shadow: vars.$box-shadow;
   position: relative;
   padding-top: 1px;
-  max-height: 100%;
+
   overflow: auto;
 
   .main-content {
@@ -48,7 +48,6 @@
 
   .card {
     background: vars.$background-color-main;
-    max-width: 350px;
     height: 100%;
   }
 

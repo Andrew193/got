@@ -15,7 +15,7 @@
             <div class="d-flex justify-content-evenly">
               <ng-container *ngFor="let skill of unit.skills; trackBy trackBySkill;">
                 <div class="d-flex flex-column align-items-center">
-                  <h6>{{ skill.name }}</h6>
+                  <h5>{{ skill.name }}</h5>
                   <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
                        [alt]="skill.name"/>
                 </div>

@@ -12,7 +12,9 @@
               <span [style]="{left: selectedHero.level > 10 ? '16px' : ''}">{{ selectedHero.level }}</span>
             </div>
           </div>
-          <rating [(ngModel)]="selectedHero.rank" [max]="6" [readonly]="true"></rating>
+          <rating [(ngModel)]="selectedHero.rank" [max]="6" [readonly]="true"
+          [style]="{position: 'absolute', bottom: 0}"
+          ></rating>
         </div>
       </div>
       <aside class="col-lg-8 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">

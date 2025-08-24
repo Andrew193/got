@@ -104,8 +104,8 @@
   <accordion class="mb-2">
     <accordion-group>
       <div class="btn btn-link btn-block flex-column d-flex w-100 p-1 shadow-none" accordion-heading>
-        <div class="justify-content-between flex-row">
-          <div class="col-12 col-md-3 col-lg-2" style="min-width: 80px">
+        <div style="grid-template-columns: 1fr 3fr;" class="d-grid p-0 gap-2">
+          <div class="p-0">
             <div class="position-relative m-0-auto" style="width: fit-content">
               <img src="{{hero.imgSrc}}" [alt]="hero.name" class="game-field-img"
                    [ngClass]="{'disabled': !hero.health}"/>
@@ -117,7 +117,7 @@
                    class="action-icon position-absolute can-attack-icon"/>
             </div>
           </div>
-          <div class="col-12 col-md-9 col-lg-10">
+          <div class="p-0">
             <div class="col-12 aside-hero-tab-header">
               <h4>{{ hero.name }}</h4>
               <progressbar

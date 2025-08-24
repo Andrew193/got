@@ -48,9 +48,7 @@
                 </div>
                 <div class="col-11">
                   <span class="defence-color">{{ skill.name }} {{ skill.passive ? '( P )' : '' }}</span>
-                  <div style="position: relative" contextMenuTriggerFor="{{ skill.description }}">
-                    <p class="d-inline-block" [innerHTML]="heroService.highlightEffects(skill.description)"></p>
-                  </div>
+                  <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
                 </div>
               </div>
             </div>
