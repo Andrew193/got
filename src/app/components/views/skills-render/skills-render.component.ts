@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {Unit} from "../../models/unit.model";
-import {HeroesService} from "../../services/heroes/heroes.service";
-import {trackBySkill} from "../../helpers";
+import {Unit} from "../../../models/unit.model";
+import {HeroesService} from "../../../services/heroes/heroes.service";
+import {trackBySkill} from "../../../helpers";
 
 @Component({
     selector: 'skills-render',

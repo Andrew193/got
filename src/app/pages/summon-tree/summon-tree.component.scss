@@ -2,13 +2,12 @@
 @use "../../../assets/resourses/styles/mixins";
 
 .inner-container {
-  background: url("../../../assets/resourses/imgs/background/summon-tree-component.png") no-repeat;
+  background: url("../../../assets/resourses/imgs/background/summon-tree-component.png") no-repeat center;
   background-size: cover;
   min-height: 100%;
   box-shadow: vars.$box-shadow;
   position: relative;
   padding-top: 1px;
-  background-position: center;
 
   h4 {
     @include mixins.grad-color;

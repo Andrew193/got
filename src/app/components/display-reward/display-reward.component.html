@@ -6,8 +6,8 @@
       @if (card) {
         <div
           class="reward-inner-container col"
-          [class.flipped]="card.flipped">
-          <div class="card-inner">
+          [class.claimed]="card.flipped">
+          <div class="reward">
             <div class="card-front">
               ?
             </div>
@@ -33,8 +33,8 @@
 
           @for (el of _prize; track el[0]) {
             <div
-              class="reward-inner-container flipped col">
-              <div class="card-inner">
+              class="reward-inner-container claimed col">
+              <div class="reward">
                 <div class="card-back">
                   <image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'reward-image'"/>
                   <span>{{ el[1]['amount'] | number }}</span>

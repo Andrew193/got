@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {StatsComponent} from "../../../components/stats/stats.component";
+import {StatsComponent} from "../../../components/views/stats/stats.component";
 import {HeroesService} from "../../../services/heroes/heroes.service";
 import {Unit} from "../../../models/unit.model";
-import {SkillsRenderComponent} from "../../../components/skills-render/skills-render.component";
+import {SkillsRenderComponent} from "../../../components/views/skills-render/skills-render.component";
 import {DecimalPipe, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {TabsModule} from "ngx-bootstrap/tabs";
 import {createDeepCopy, trackByLevel} from "../../../helpers";

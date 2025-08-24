@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {ValidationService} from "../../services/validation/validation.service";
+import {ValidationService} from "../../../services/validation/validation.service";
 import {FormArray, FormGroup, FormsModule} from "@angular/forms";
 import {ErrorFieldComponent} from "../error-field/error-field.component";
-import {trackByIndex} from "../../helpers";
+import {trackByIndex} from "../../../helpers";
 
 @Component({
     selector: 'form-errors-container',

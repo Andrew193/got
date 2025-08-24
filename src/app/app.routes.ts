@@ -23,7 +23,7 @@ export const routes: Routes = [
       },
       {
         path: frontRoutes.summonTree,
-        loadComponent: () => import('./components/summon-tree/summon-tree.component').then(c => c.SummonTreeComponent)
+        loadComponent: () => import('./pages/summon-tree/summon-tree.component').then(c => c.SummonTreeComponent)
       },
       {
         path: frontRoutes.battleField,
@@ -32,7 +32,7 @@ export const routes: Routes = [
       {
         path: frontRoutes.giftStore,
         canActivate: [GiftGuard],
-        loadComponent: () => import('./components/gift-store/gift-store.component').then(c => c.GiftStoreComponent)
+        loadComponent: () => import('./pages/gift-store/gift-store.component').then(c => c.GiftStoreComponent)
       }
     ]
   },

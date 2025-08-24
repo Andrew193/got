@@ -8,11 +8,6 @@
   background-position: bottom !important;
 }
 
-.day {
-  flex: 1;
-  flex-basis: 14%;
-}
-
 .c-container {
   position: fixed;
   top: 0;
@@ -30,80 +25,5 @@
     height: 80%;
     overflow: auto;
   }
-}
-
-.reward {
-  min-height: 120px;
-  background-color: rgb(255, 241, 241);
-  border: 1px solid #f8b163;
-  cursor: pointer;
-  border-radius: 5px;
-  box-shadow: vars.$box-shadow;
-  transition: all ease 0.4s;
-  pointer-events: none;
-  height: 100%;
-  overflow: hidden;
-
-  &.today {
-    background-color: #855a5a;
-    pointer-events: auto;
-
-    &:hover {
-      background-color: rgba(255, 241, 241, 0.64);
-    }
-  }
-}
-
-.reward.today {
-  position: relative;
-  border: 2px solid rgba(255, 215, 0, 0.85);
-  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.15), 0 10px 20px rgba(0,0,0,.35);
-  @include eff.glow-pulse($selector: &, $name: glowPulse-dr, $duration: 2s);
-
-}
-
-
-
-.day .reward {
-  transform: translateZ(0);
-  transition: transform .15s ease, box-shadow .15s ease;
-  will-change: transform;
-}
-
-.day .reward:hover {
-  transform: translateY(-2px) scale(1.02);
-}
-
-.day .flip-wrap {
-  perspective: 1000px;
-  width: 100%;
-  height: 100%;
-}
-
-.day .flip-inner {
-  position: relative;
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  transition: transform .6s cubic-bezier(.4,.2,.2,1);
-}
-
-.day.claimed .flip-inner { transform: rotateY(180deg); }
-
-.day .flip-face {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  backface-visibility: hidden;
-  border-radius: 10px;
-}
-
-.flip-front { background: linear-gradient(135deg, #2b2f3a, #1a1d24); color: #eee; }
-.flip-back  { background: linear-gradient(145deg, #f1d125, #e5d4a2); transform: rotateY(180deg); color: #222; }
-
-.day.claimed .reward {
-  @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.7s);
-}
-
-.reward.no-shine {
-  @include eff.no-shine();
 }
 

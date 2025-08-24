@@ -4,9 +4,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {RatingModule} from "ngx-bootstrap/rating";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
-import {StatsComponent} from "../stats/stats.component";
+import {StatsComponent} from "../views/stats/stats.component";
 import {Unit} from "../../models/unit.model";
-import {SkillsRenderComponent} from "../skills-render/skills-render.component";
+import {SkillsRenderComponent} from "../views/skills-render/skills-render.component";
 import {frontRoutes} from "../../constants";
 
 @Component({

@@ -3,7 +3,7 @@ import {User, UsersService} from "../../services/users/users.service";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ValidationService} from "../../services/validation/validation.service";
 import {CommonModule} from "@angular/common";
-import {FormErrorsContainerComponent} from "../../components/form-errors-container/form-errors-container.component";
+import {FormErrorsContainerComponent} from "../../components/form/form-errors-container/form-errors-container.component";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "../../services/localStorage/local-storage.service";
 import {frontRoutes} from "../../constants";

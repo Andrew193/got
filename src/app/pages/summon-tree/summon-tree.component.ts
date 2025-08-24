@@ -3,8 +3,8 @@ import {CommonModule} from "@angular/common";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
 import {Router} from "@angular/router";
 import {RewardComponent} from "../../interface";
-import {DisplayRewardComponent} from "../display-reward/display-reward.component";
-import {ImageComponent} from "../views/image/image.component";
+import {DisplayRewardComponent} from "../../components/display-reward/display-reward.component";
+import {ImageComponent} from "../../components/views/image/image.component";
 import {frontRoutes} from "../../constants";
 
 @Component({

@@ -1,9 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {GiftConfig, UnitWithReward} from "../../interface";
-import {GameEntryPointComponent} from "../game-entry-point/game-entry-point.component";
+import {GameEntryPointComponent} from "../../components/game-entry-point/game-entry-point.component";
 import {NpcService} from "../../services/npc/npc.service";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
-import {DisplayRewardComponent} from "../display-reward/display-reward.component";
+import {DisplayRewardComponent} from "../../components/display-reward/display-reward.component";
 import {Router, RouterLink} from "@angular/router";
 import {GiftService} from "../../services/gift/gift.service";
 import moment from "moment/moment";

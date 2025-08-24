@@ -16,7 +16,8 @@
   $name: shineSweep,
   $duration: .7s,
   $ease: ease,
-  $border-radius: 10px
+  $border-radius: 10px,
+  $animation-delay: 0s
 ) {
   #{$selector}::after {
     content: "";
@@ -27,6 +28,7 @@
       rgba(255,255,255,0) 70%);
     transform: translateX(-120%) skewX(-20deg);
     animation: #{$name} $duration $ease forwards;
+    animation-delay: $animation-delay;
     border-radius: $border-radius;
     pointer-events: none;
     opacity: 0;

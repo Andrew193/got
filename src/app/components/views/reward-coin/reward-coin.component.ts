@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, input} from '@angular/core';
-import {ImageComponent} from "../views/image/image.component";
+import {ImageComponent} from "../image/image.component";
 import {DecimalPipe} from "@angular/common";
 
 @Component({

@@ -22,9 +22,10 @@ export class ApiService<T> {
     this.userId = this.getUserId();
   }
 
-  putPostCover(entity: IdEntity, meta: { url: string, callback: (res: IdEntity) => void, returnObs?: boolean }) {
+  putPostCover(entity: IdEntity, meta: { url: string, callback: (res: T) => void, returnObs?: boolean }) {
     const process = {
-      next: (response: IdEntity) => {
+      next: (response: T) => {
+        this.data.next(response);
         meta.callback(response);
       },
       error: (error: any) => {
@@ -34,10 +35,10 @@ export class ApiService<T> {
     const url = entity.id ? meta.url + `/${entity.id}` : meta.url;
 
     if (entity.id) {
-      return meta.returnObs ? this.http.put<IdEntity>(url, entity).pipe(tap(process)) : this.http.put<IdEntity>(url, entity).pipe(tap(process)).subscribe()
+      return meta.returnObs ? this.http.put<T>(url, entity).pipe(tap(process)) : this.http.put<T>(url, entity).pipe(tap(process)).subscribe()
     } else {
       delete entity.id;
-      return meta.returnObs ? this.http.post<IdEntity>(url, entity).pipe(tap(process)) : this.http.post<IdEntity>(url, entity).pipe(tap(process)).subscribe()
+      return meta.returnObs ? this.http.post<T>(url, entity).pipe(tap(process)) : this.http.post<T>(url, entity).pipe(tap(process)).subscribe()
     }
   }
 
