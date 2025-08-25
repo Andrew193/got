@@ -1,0 +1,27 @@
+.image {
+  object-fit: scale-down;
+}
+
+.image-75 {
+  height: 75px;
+  width: 75px;
+  @extend .image;
+}
+
+.image-150 {
+  height: 150px;
+  width: 150px;
+  @extend .image;
+}
+
+.image-350-h {
+  height: 350px;
+  @extend .image;
+}
+
+.reward-image {
+  width: 55px;
+  margin-bottom: unset;
+  max-height: 55px;
+  min-height: min-content;
+}

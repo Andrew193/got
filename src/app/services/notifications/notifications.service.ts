@@ -6,6 +6,7 @@ import {DATE_FORMAT} from "../../constants";
 import {GiftService} from "../gift/gift.service";
 import {ModalWindowService} from "../modal/modal-window.service";
 import {ModalStrategiesTypes} from "../../components/modal-window/modal-interfaces";
+import {NotificationComponent} from "../../components/modal-window/notification/notification.component";
 
 export enum NotificationType {
   daily_reward,
@@ -65,13 +66,15 @@ export class NotificationsService {
   }
 
   private showPossibleActivities() {
-    const config = this.modalWindowService.getModalConfig('', 'test', 'Ok',
+    const config = this.modalWindowService.getModalConfig('', '', '',
       {
         open: true,
         callback: () => {},
-        strategy: ModalStrategiesTypes.base
+        strategy: ModalStrategiesTypes.component,
+        component: NotificationComponent,
+        modalRootClass: 'modal-70 container'
       });
 
-   // this.modalWindowService.openModal(config);
+    this.modalWindowService.openModal(config);
   }
 }

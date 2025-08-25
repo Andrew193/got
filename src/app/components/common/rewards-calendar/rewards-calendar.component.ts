@@ -14,11 +14,19 @@ import {DayReward} from "../../daily-reward/daily-reward.component";
   styleUrl: './rewards-calendar.component.scss'
 })
 export class RewardsCalendarComponent {
+  chainMode = input<boolean>(false);
   rewardPool = input.required<DayReward[]>();
   claimed = input.required<(i: number) => boolean>();
   claimReward = input.required<(reward: DayReward) => void>();
   rewardCoins = input.required<(reward: DayReward, day: number) => any[] | undefined>();
+  rewardBackLabels = input<Record<number, string>>();
 
   rewardClass = input<(i: number) => string>((i) => '');
   protected readonly trackByIndex = trackByIndex;
+
+  getLabel = (i: number) => {
+    const _rewardBackLabels = this.rewardBackLabels();
+
+    return !!_rewardBackLabels ? _rewardBackLabels[i] : `День ${i + 1}`;
+  }
 }

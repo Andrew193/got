@@ -36,6 +36,7 @@ export class ModalWindowService {
     callback: () => void,
     strategy: number,
     component?: any
+    modalRootClass?: string
   }): ModalConfig {
     return {
       headerClass: headerClass,
@@ -45,7 +46,8 @@ export class ModalWindowService {
         callback: config.callback,
         open: config.open,
         strategy: config.strategy,
-        component: config.component
+        component: config.component,
+        modalRootClass: config.modalRootClass
       }
     }
   }

@@ -1,0 +1,50 @@
+@use "../../../../assets/resourses/styles/vars";
+@use "../../../../assets/resourses/styles/animations" as eff;
+
+.inner-container {
+  background: url("../../../../assets/resourses/imgs/background/wall.jpeg") no-repeat center;
+  background-size: cover;
+  min-height: 100%;
+  box-shadow: vars.$box-shadow;
+  position: relative;
+  padding-top: 1px;
+}
+
+.card-title {
+  bottom: 5px;
+  width: 100%;
+  text-align: center;
+  font-size: 16px !important;
+  color: white;
+}
+
+.modal-title {
+  text-shadow: 1px 1px 1px #000000;
+}
+
+.step-container {
+  min-width: auto !important;
+  min-height: auto !important;
+  width: 100%;
+  position: relative;
+  left: auto;
+  bottom: auto;
+}
+
+.hero {
+  overflow: hidden;
+
+  image {
+    opacity: 0;
+    animation: fadeInHero 1s ease forwards;
+    animation-delay: 1.5s;
+  }
+
+  @include eff.swirl-particles($name: swirl-particles-dr);
+  @include eff.swirl-out($name: swirl-out-dr);
+
+}
+
+@keyframes fadeInHero {
+  to { opacity: 1; }
+}

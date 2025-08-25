@@ -40,6 +40,90 @@
   }
 }
 
+/* === Swirl out === */
+@mixin swirl-out(
+  $selector: "&",
+  $name: shineSweep,
+  $duration: 1.2s,
+  $ease: ease-out,
+  $border-radius: 10px,
+  $animation-delay: 0s
+) {
+  #{$selector}::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow:
+      0 0 #fff, 30px 20px #ffd, -20px 40px #fdf, -40px -30px #cdf,
+      60px -20px #fcf, -60px 30px #def, 20px -50px #ffe, -30px 60px #ddf;
+    animation: #{$name} $duration $ease forwards;
+    animation-delay: $animation-delay;
+  }
+  @keyframes #{$name} {
+    0% {
+      transform: scale(0.2) rotate(0deg);
+      opacity: 1;
+      filter: blur(20px);
+    }
+    70% {
+      transform: scale(1.4) rotate(360deg);
+      opacity: 0.8;
+      filter: blur(30px);
+    }
+    100% {
+      transform: scale(2.2) rotate(720deg);
+      opacity: 0;
+      filter: blur(40px);
+    }
+  }
+}
+
+/* === Swirl particles === */
+@mixin swirl-particles(
+  $selector: "&",
+  $name: shineSweep,
+  $duration: .7s,
+  $ease: ease,
+  $border-radius: 10px,
+  $animation-delay: 0.4s
+) {
+  #{$selector}::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    box-shadow:
+      0 0 6px 2px rgba(255,255,200,0.9),
+      40px -20px 8px rgba(200,200,255,0.7),
+      -30px 10px 10px rgba(180,255,255,0.6),
+      25px 30px 6px rgba(255,150,150,0.7),
+      -40px -25px 9px rgba(255,220,180,0.8);
+    border-radius: 20%;
+    animation: #{$name} $duration $ease forwards;
+    animation-delay: $animation-delay;
+  }
+  @keyframes #{$name} {
+    0% {
+      transform: scale(0.2) rotate(0deg);
+      opacity: 1;
+      filter: blur(6px);
+    }
+    50% {
+      transform: scale(0.6) rotate(180deg);
+      opacity: 0.9;
+      filter: blur(10px);
+    }
+    100% {
+      transform: scale(1.5) rotate(720deg);
+      opacity: 0;
+      filter: blur(20px);
+    }
+  }
+}
+
 @mixin no-shine($selector: "&") {
   #{$selector}::after { display: none !important; }
 }
+

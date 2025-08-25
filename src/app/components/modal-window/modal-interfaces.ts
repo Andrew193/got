@@ -2,6 +2,10 @@ import {ComponentRef, ViewContainerRef} from "@angular/core";
 import {BasicModalStrategy} from "./strategies/basic-modal-strategy/basic-modal-strategy";
 import {ComponentModalStrategy} from "./strategies/component-modal-strategy/component-modal-strategy";
 
+export interface HasFooterHost {
+  footerHost: ViewContainerRef;
+}
+
 export interface ModalConfig {
   headerClass: string,
   headerMessage: string,
@@ -10,6 +14,7 @@ export interface ModalConfig {
     open: boolean,
     callback: () => void,
     strategy: number,
+    modalRootClass?: string,
     component?: any
   }
 }

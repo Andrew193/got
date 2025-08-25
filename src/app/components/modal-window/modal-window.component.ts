@@ -42,7 +42,7 @@ export class ModalWindowComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<void>) {
-    this.modalRef = this.modalService.show(template, {ignoreBackdropClick: true, class: 'modal-lg'});
+    this.modalRef = this.modalService.show(template, {ignoreBackdropClick: true, class: `modal-lg ${this.modalConfig.config.modalRootClass || ''}`});
   }
 
   get contextConfig() {

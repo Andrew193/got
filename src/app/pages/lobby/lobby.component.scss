@@ -10,58 +10,6 @@
   padding-top: 1px;
 }
 
-.stores {
-  background: #00000070;
-  background-size: cover;
-  box-shadow: vars.$box-shadow;
-  border-radius: 5px;
-
-  .store-title {
-    @include mixins.grad-color;
-    vertical-align: middle;
-    line-height: 30px;
-    height: 30px;
-  }
-
-  .store-row {
-    gap: 5px;
-    flex-wrap: wrap;
-    margin: 10px;
-
-    > div {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      height: inherit;
-      flex: 1;
-      flex-basis: 15%;
-
-      &:hover {
-        span {
-          @include mixins.grad-color;
-        }
-      }
-
-      .card {
-        text-align: center;
-        background: vars.$background-color-main;
-        box-shadow: vars.$box-shadow;
-        color: white;
-        height: 100%;
-        width: 100%;
-        background-image: url('/assets/resourses/imgs/background/crack.png');
-        background-size: cover;
-        background-position: center;
-      }
-
-      span {
-        font-size: 14px;
-        display: inline !important;
-      }
-    }
-  }
-}
-
 aside {
   box-shadow: vars.$box-shadow;
   border-radius: 5px;

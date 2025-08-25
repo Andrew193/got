@@ -60,18 +60,19 @@ a.fake-link {
   text-decoration: none !important;
 }
 
-.image-75 {
-  height: 75px;
-  width: 75px;
-}
-
-.reward-image {
-  width: 55px;
-  margin-bottom: unset;
-  max-height: 55px;
-  min-height: min-content;
-}
-
 .summon-background {
   object-fit: contain;
+}
+
+.banner {
+  box-shadow: vars.$box-shadow;
+  background-color: vars.$background-color-main;
+  width: calc(100% - (2 * (var(--bs-gutter-x) * .5)));
+  z-index: 1;
+  align-content: space-evenly;
+
+  .fade-black-bg {
+    background: radial-gradient(circle at center, rgb(0, 0, 0) 40%, rgba(0, 0, 0, 0.3) 65%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.2) 100%);
+    padding: 5px;
+  }
 }

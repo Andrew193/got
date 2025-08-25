@@ -1,24 +1,24 @@
 @let _cards = cards();
 
 @if (_cards.length) {
-  <div class="summon-container reward-container row gap-2 m-2">
+  <div class="summon-container flip-items-container row gap-2 m-2">
     @for (card of _cards; track trackByIndex($index)) {
       @if (card) {
         <div
-          class="reward-inner-container col"
+          class="flip-items-inner-container col"
           [class.claimed]="card.flipped">
-          <div class="reward">
+          <div class="flip-card">
             <div class="card-front">
               ?
             </div>
             <div class="card-back">
-              <image [alt]="card.name" [source]="card.src" [imageClass]="'reward-image'"/>
+              <image [alt]="card.name" [source]="card.src" [imageClass]="'card-image'"/>
               <span>{{ card.amount | number }}</span>
             </div>
           </div>
         </div>
       } @else {
-        <div class="reward-inner-container col">
+        <div class="flip-items-inner-container col">
           <i class="material-icons">close</i>
         </div>
       }
@@ -33,10 +33,10 @@
 
           @for (el of _prize; track el[0]) {
             <div
-              class="reward-inner-container claimed col">
-              <div class="reward">
+              class="flip-items-inner-container claimed col">
+              <div class="flip-card">
                 <div class="card-back">
-                  <image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'reward-image'"/>
+                  <image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'card-image'"/>
                   <span>{{ el[1]['amount'] | number }}</span>
                 </div>
               </div>

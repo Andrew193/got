@@ -24,14 +24,14 @@
   }
 }
 
-.reward.today {
+.reward.today:not(.claimed) {
   position: relative;
   border: 2px solid rgba(255, 215, 0, 0.85);
   box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.15), 0 10px 20px rgba(0,0,0,.35);
   @include eff.glow-pulse($selector: &, $name: glowPulse-dr, $duration: 2s);
 }
 
-.day {
+.day:not(.col) {
   flex: 1;
   flex-basis: 14%;
 }
@@ -77,4 +77,38 @@
 
 .reward.no-shine {
   @include eff.no-shine();
+}
+
+.chainMode {
+  .day {
+    background: transparent;
+    padding: unset !important;
+  }
+
+  .reward {
+    background: transparent;
+    padding: unset !important;
+    border-radius: 10px;
+  }
+
+  .flip-wrap {
+    overflow: hidden;
+  }
+
+  .day-connector {
+    &:last-of-type {
+      display: none;
+    }
+
+    background: url("../../../../assets/resourses/imgs/icons/connector.png") no-repeat;
+    background-size: contain;
+    background-position: center center;
+    margin: 0 10px;
+  }
+
+  .reward.claimed .flip-inner { transform: rotateY(180deg); }
+
+  .reward.claimed .flip-wrap {
+    @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.7s);
+  }
 }
