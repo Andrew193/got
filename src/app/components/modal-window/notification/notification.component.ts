@@ -10,7 +10,6 @@ import {HasFooterHost} from "../modal-interfaces";
 import {RewardCoinComponent} from "../../views/reward-coin/reward-coin.component";
 import {AsyncPipe, DecimalPipe} from "@angular/common";
 import {TimeService} from "../../../services/time/time.service";
-import {PinBadgeComponent} from "../../common/pin-badge/pin-badge.component";
 
 @Component({
   selector: 'app-notification',
@@ -20,7 +19,6 @@ import {PinBadgeComponent} from "../../common/pin-badge/pin-badge.component";
     RewardCoinComponent,
     AsyncPipe,
     DecimalPipe,
-    PinBadgeComponent
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss'
