@@ -1,0 +1,25 @@
+@if (href) {
+  <a
+    [href]="href"
+    class="pb-root"
+    [ngClass]="[variantClass, positionClass, pulse ? 'pb-pulse' : '']"
+    [attr.aria-label]="ariaLabel"
+    [style.--pb-bg]="background"
+    [style.--pb-fg]="color"
+    [style.--pb-shadow]="shadowColor">
+    <ng-container [ngTemplateOutlet]="text"/>
+  </a>
+} @else {
+  <div class="pb-root"
+       [ngClass]="[variantClass, positionClass, pulse ? 'pb-pulse' : '']"
+       [attr.aria-label]="ariaLabel"
+       [style.--pb-bg]="background"
+       [style.--pb-fg]="color"
+       [style.--pb-shadow]="shadowColor">
+    <ng-container [ngTemplateOutlet]="text"/>
+  </div>
+}
+
+<ng-template #text>
+  <span class="pb-content">{{ displayText }}</span>
+</ng-template>

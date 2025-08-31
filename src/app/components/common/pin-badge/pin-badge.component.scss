@@ -1,0 +1,81 @@
+:host { position: absolute; inset: 0; pointer-events: none; }
+.pb-root {
+  position: absolute; z-index: 10; pointer-events: auto;
+  --pb-bg: #111827;       /* default bg   */
+  --pb-fg: #ffffff;       /* default text */
+  --pb-shadow: rgba(0,0,0,0.25);
+}
+
+/* Positions */
+.pb-top-left    { top: .5rem; left: .5rem; }
+.pb-top-right   { top: .5rem; right: .5rem; }
+.pb-bottom-left { bottom: .5rem; left: .5rem; }
+.pb-bottom-right{ bottom: .5rem; right: .5rem; }
+
+/* Badge (pill) */
+.pb-badge .pb-content {
+  display: inline-block;
+  font-weight: 700;
+  font-size: .875rem;
+  letter-spacing: .3px;
+  padding: .375rem .625rem;
+  border-radius: 999px;
+  background: var(--pb-bg);
+  color: var(--pb-fg);
+  box-shadow: 0 6px 18px var(--pb-shadow);
+  user-select: none;
+}
+
+/* Ribbon (diagonal) */
+.pb-ribbon {
+  width: 10rem; height: 10rem; overflow: visible;
+}
+.pb-ribbon.pb-top-right  { top: 0; right: 0; }
+.pb-ribbon.pb-top-left   { top: 0; left: 0;  }
+.pb-ribbon.pb-bottom-right{ bottom: 0; right: 0; }
+.pb-ribbon.pb-bottom-left { bottom: 0; left: 0;  }
+
+.pb-ribbon .pb-content {
+  position: absolute;
+  top: 1.1rem;
+  right: 0rem;
+  transform: rotate(45deg);
+  transform-origin: center;
+  background: var(--pb-bg);
+  color: var(--pb-fg);
+  font-weight: 800;
+  font-size: .85rem;
+  padding: .35rem 1.1rem;
+  text-transform: uppercase;
+  box-shadow: 0 6px 18px var(--pb-shadow);
+  border-radius: .25rem;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Adjust rotation/anchor for other corners */
+.pb-ribbon.pb-top-left .pb-content {
+  left: -3rem; right: auto; transform: rotate(-45deg);
+}
+.pb-ribbon.pb-bottom-right .pb-content {
+  top: auto; bottom: 1.1rem; right: -3rem; transform: rotate(-45deg);
+}
+.pb-ribbon.pb-bottom-left .pb-content {
+  top: auto; bottom: 1.1rem; left: -3rem; right: auto; transform: rotate(45deg);
+}
+
+/* Pulse effect (optional) */
+.pb-pulse .pb-content,
+.pb-pulse .pb-corner {
+  animation: pbPulse 1.8s ease-in-out infinite;
+}
+@keyframes pbPulse {
+  0%, 100% { transform: translateZ(0) scale(1); box-shadow: 0 6px 18px var(--pb-shadow); }
+  50%      { transform: translateZ(0) scale(1.04); box-shadow: 0 10px 22px var(--pb-shadow); }
+}
+
+/* Responsive tweak: smaller on tiny screens */
+@media (max-width: 420px) {
+  .pb-badge .pb-content { font-size: .8rem; padding: .3rem .55rem; }
+  .pb-ribbon .pb-content { font-size: .78rem; }
+}
