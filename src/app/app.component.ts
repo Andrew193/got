@@ -3,6 +3,7 @@ import {RouterOutlet} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {TavernaModule} from "./modules/taverna/taverna.module";
 import {NotificationsService} from "./services/notifications/notifications.service";
+import {OnlineService} from "./services/online/online.service";
 
 @Component({
     selector: 'app-root',
@@ -16,8 +17,10 @@ import {NotificationsService} from "./services/notifications/notifications.servi
 })
 export class AppComponent implements OnInit {
   notificationsService = inject(NotificationsService);
+  online = inject(OnlineService);
 
   ngOnInit() {
     this.notificationsService.init();
+    this.online.trackOnlineTimer();
   }
 }

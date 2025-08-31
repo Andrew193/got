@@ -112,3 +112,10 @@
     @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.7s);
   }
 }
+
+@media (max-width: 1000px) {
+  .reward {
+    max-height: 85px !important;
+    min-height: 85px !important;
+  }
+}

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BossReward} from "../../interface";
+import {BossReward} from "../../models/reward-based.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,9 @@ export class DailyBossService {
 
   bossReward: { [key: number]: BossReward } = {
     1: {
-      copper: 10000,
-      copperWin: 100000,
-      copperDMG: 2500,
+      cooper: 10000,
+      cooperWin: 100000,
+      cooperDMG: 2500,
       silver: 100,
       silverWin: 100,
       silverDMG: 15000,
@@ -22,9 +22,9 @@ export class DailyBossService {
       goldDMG: 35000,
     },
     2: {
-      copper: 30000,
-      copperWin: 300000,
-      copperDMG: 25000,
+      cooper: 30000,
+      cooperWin: 300000,
+      cooperDMG: 25000,
       silver: 300,
       silverWin: 1000,
       silverDMG: 150000,
@@ -33,9 +33,9 @@ export class DailyBossService {
       goldDMG: 350000,
     },
     3: {
-      copper: 90000,
-      copperWin: 1000000,
-      copperDMG: 150000,
+      cooper: 90000,
+      cooperWin: 1000000,
+      cooperDMG: 150000,
       silver: 900,
       silverWin: 3000,
       silverDMG: 200000,
@@ -44,9 +44,9 @@ export class DailyBossService {
       goldDMG: 500000,
     },
     4: {
-      copper: 300000,
-      copperWin: 2300000,
-      copperDMG: 250000,
+      cooper: 300000,
+      cooperWin: 2300000,
+      cooperDMG: 250000,
       silver: 3000,
       silverWin: 5000,
       silverDMG: 1000000,

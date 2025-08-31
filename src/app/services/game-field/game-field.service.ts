@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Position} from "../../interface";
 import {AbstractFieldService} from "../abstract/field/abstract-field.service";
 import {GameService} from "../game-action/game.service";
 import {Skill} from "../../models/skill.model";
 import {Unit} from "../../models/unit.model";
 import {getDiagonals} from "../../constants";
+import {Position} from "../../models/field.model";
 
 @Injectable({
   providedIn: 'root'

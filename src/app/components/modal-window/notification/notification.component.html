@@ -1,49 +1,38 @@
+@let activities = helper.getActivities();
+@let canGetLoyaltyBonus = helper.canGetLoyaltyBonus | async;
+@let user = helper.userService.$user | async;
+@let played = timeService.getTotalPlaytime(user?.createdAt || 0);
+
 <div class="inner-container stores flip-items-container d-block">
+  <div class="footer-cover">
+    <ng-template #footerHost></ng-template>
+  </div>
   <div class="row store-row">
     <h2 class="col-12 text-center mt-2 mb-0 store-title modal-title">Welcome back. Check these activities out!!!</h2>
-    <div class="col-4 position-relative p-0 flip-items-inner-container">
-      <div class="flip-card">
-        <div class="card-front">
-          <div class="card">
-            <image
-              [source]="'./assets/resourses/imgs/icons/food.png'"
-              [imageClass]="'image-150'"
-              [alt]="'gift_store'"
-            />
+
+    @for (activity of activities; track activity.name) {
+      <div
+        [class.claimed]="activity.flipped"
+        class="position-relative p-0 flip-items-inner-container" style="height: 150px">
+        <div class="flip-card" (click)="helper.flipActivity($index)">
+          <div class="card-front">
+            <div class="card">
+              <image
+                [source]="activity.poster.src"
+                [imageClass]="'image-150'"
+                [alt]="activity.poster.alt"
+              />
+            </div>
+            <div class="position-absolute card-title banner">
+              <p class="text-center fade-black-bg w-100 mb-0">{{ activity.name }}</p>
+            </div>
           </div>
-          <div class="position-absolute card-title banner">
-            <p class="text-center fade-black-bg w-100 mb-0">Gift store</p>
+          <div class="card-back">
+            <p class="p-1 w-100">{{ activity.desc }}</p>
           </div>
         </div>
-        <div class="card-back">
-          back
-        </div>
       </div>
-    </div>
-    <div class="col-4 position-relative p-0">
-      <div class="card">
-        <image
-          [source]="'./assets/resourses/imgs/UI_Avatar_Unit_Alvar.png'"
-          [imageClass]="'image-150'"
-          [alt]="'daily_reward'"
-        />
-      </div>
-      <div class="position-absolute card-title banner">
-        <p class="text-center fade-black-bg w-100 mb-0">Daily reward</p>
-      </div>
-    </div>
-    <div class="col-4 position-relative p-0">
-      <div class="card">
-        <image
-          [source]="'./assets/resourses/imgs/UI_Avatar_Unit_PolarBear.png'"
-          [imageClass]="'image-150'"
-          [alt]="'daily_boss'"
-        />
-      </div>
-      <div class="position-absolute card-title banner">
-        <p class="text-center fade-black-bg w-100 mb-0">Daily boss</p>
-      </div>
-    </div>
+    }
   </div>
 
   <div class="row">
@@ -59,18 +48,57 @@
       </div>
     </div>
 
-    <aside class="col step-rewards">
-      <p>You can collect rewards for playing online. Every session counts, you don't have to play 24 hours straight to get all the rewards.</p>
+    <aside class="col step-rewards position-relative">
+      <div class="position-relative row">
+        <p class="text col-10">You can collect rewards for playing online. Every session counts, you don't have to play
+          24 hours straight to get all the rewards.</p>
+        <p class="online-time col-2">Online: <span
+          style="color: darkred">{{ timeService.convertToHours(stepsRewardConfig.time) }}</span> hour(s)</p>
+      </div>
       <app-rewards-calendar
         [rewardPool]="steps"
-        [claimReward]="claimReward"
-        [rewardClass]="rewardClass"
-        [claimed]="claimed"
+        [claimReward]="helper.claimReward"
+        [rewardClass]="helper.rewardClass"
+        [claimed]="helper.claimed"
         [rewardCoins]="dailyRewardService.rewardCoins"
-        [rewardBackLabels]="labels"
+        [rewardBackLabels]="helper.getLabels()"
         [chainMode]="true"
       ></app-rewards-calendar>
+
+      <div class="row">
+        <div class="col-auto" style="min-width: 150px;">
+          <image source="./assets/resourses/imgs/icons/money.png" alt="Big reward"
+                 [imageClass]="'image-150 border-radius-10p'"/>
+        </div>
+        <div class="col flex-grow-1 position-relative">
+          <p class="text">
+            You can get an additional bonus for staying in the Night Watch for: <b style="color: darkred">{{played.diffInDays}}</b> day(s).
+            Reward: <b style="color: darkred">{{(helper.loyaltyRewardBoostedBy(played.diffInDays) * 100) | number}}%</b>
+          </p>
+          <div>
+            @let boostedLoyaltyBonus = helper.boostedLoyaltyBonus(played.diffInDays);
+            @for (reward of boostedLoyaltyBonus; track reward.class) {
+              <app-reward-coin [coinConfig]="reward"></app-reward-coin>
+            }
+          </div>
+          @if (canGetLoyaltyBonus) {
+            <button class="btn btn-primary" (click)="helper.getLoyaltyBonus(boostedLoyaltyBonus)">Claim reward</button>
+          } @else {
+            <p class="text" style="margin-top: 12px">That is all for today. Come back tomorrow and get even more!!!</p>
+          }
+
+          <app-pin-badge
+            text="+300%"
+            variant="ribbon"
+            position="bottom-left"
+            background="#0ea5e9"
+          color="#0b1020"
+          shadowColor="rgba(14,165,233,.35)">
+          </app-pin-badge>
+        </div>
+      </div>
+
+      <small class="text tip border-radius-none">*Ravens bring news every 10 minutes.</small>
     </aside>
   </div>
-  <ng-template #footerHost></ng-template>
 </div>

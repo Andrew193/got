@@ -7,9 +7,9 @@ import {GameLoggerService} from "../../../services/game-logger/logger.service";
 import {Skill} from "../../../models/skill.model";
 import {Unit} from "../../../models/unit.model";
 import {createDeepCopy} from "../../../helpers";
-import {Position, Tile, TilesToHighlight} from "../../../interface";
 import {AbstractGameFieldComponent} from "../abstract-game-field/abstract-game-field.component";
 import {BATTLE_SPEED} from "../../../constants";
+import {Position, Tile, TilesToHighlight} from "../../../models/field.model";
 
 @Component({
     selector: 'basic-game-field',

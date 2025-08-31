@@ -1,9 +1,10 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from "rxjs";
-import {DailyReward, IdEntity} from "../../../interface";
 import { HttpClient } from "@angular/common/http";
-import {User, UsersService} from "../../users/users.service";
 import {LocalStorageService} from "../../localStorage/local-storage.service";
+import {IdEntity} from "../../../models/common.model";
+import {USER_TOKEN} from "../../../constants";
+import {User} from "../../users/users.interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,6 @@ export class ApiService<T> {
 
   protected http = inject(HttpClient)
   protected localStorageService = inject(LocalStorageService);
-  protected userService = inject(UsersService);
 
   protected userId = '0';
 
@@ -37,8 +37,9 @@ export class ApiService<T> {
     if (entity.id) {
       return meta.returnObs ? this.http.put<T>(url, entity).pipe(tap(process)) : this.http.put<T>(url, entity).pipe(tap(process)).subscribe()
     } else {
+      const withDate = {...entity, createdAt: Date.now()};
       delete entity.id;
-      return meta.returnObs ? this.http.post<T>(url, entity).pipe(tap(process)) : this.http.post<T>(url, entity).pipe(tap(process)).subscribe()
+      return meta.returnObs ? this.http.post<T>(url, withDate).pipe(tap(process)) : this.http.post<T>(url, withDate).pipe(tap(process)).subscribe()
     }
   }
 
@@ -55,7 +56,7 @@ export class ApiService<T> {
   }
 
   private getUserId() {
-    const user = this.localStorageService.getItem(this.userService.userToken) as User;
+    const user = this.localStorageService.getItem(USER_TOKEN) as User;
     return user.id;
   }
 }

@@ -1,17 +1,21 @@
-import {Injectable} from '@angular/core';
-import {DailyReward, IdEntity} from "../../interface";
+import {inject, Injectable} from '@angular/core';
 import {ApiService} from "../abstract/api/api.service";
 import {DayReward} from "../../components/daily-reward/daily-reward.component";
+import {DailyReward} from "../../models/reward-based.model";
+import {IdEntity} from "../../models/common.model";
+import {NumbersService} from "../numbers/numbers.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DailyRewardService extends ApiService<DailyReward> {
+  numbersService = inject(NumbersService);
+
   daysCoins = new Map<number, any[]>();
 
   rewardCoins = (reward: DayReward, day: number) => {
     const coins = [];
-    if (reward.copperCoin) coins.push({ class: 'copper', imgSrc: 'assets/resourses/imgs/copper.png', alt: 'copperCoin', amount: reward.copperCoin });
+    if (reward.cooperCoin) coins.push({ class: 'cooper', imgSrc: 'assets/resourses/imgs/cooper.png', alt: 'cooperCoin', amount: reward.cooperCoin });
     if (reward.silverCoin) coins.push({ class: 'silver', imgSrc: 'assets/resourses/imgs/silver.png', alt: 'silverCoin', amount: reward.silverCoin });
     if (reward.goldCoin) coins.push({ class: 'gold', imgSrc: 'assets/resourses/imgs/gold.png', alt: 'goldCoin', amount: reward.goldCoin });
     if (reward.summonScroll) coins.push({ class: 'summon-scroll', imgSrc: 'assets/resourses/imgs/icons/card_scroll.png', alt: 'summonScroll', amount: reward.summonScroll });
@@ -38,18 +42,14 @@ export class DailyRewardService extends ApiService<DailyReward> {
 
   private baseWeek(dayM = 1): DayReward[] {
     return [
-      { copperCoin: 10000 * dayM },
-      { copperCoin: 15000 * dayM },
-      { copperCoin: 20000 * dayM, silverCoin: 150 * dayM },
-      { copperCoin: 25000 * dayM, goldCoin: 75 * dayM },
-      { copperCoin: 35000 * dayM, summonCard: 1 * dayM },
-      { copperCoin: 45000 * dayM, summonScroll: 1 * dayM },
-      { copperCoin: 55000 * dayM, heroShard: 25 },
+      { cooperCoin: 10000 * dayM },
+      { cooperCoin: 15000 * dayM },
+      { cooperCoin: 20000 * dayM, silverCoin: 150 * dayM },
+      { cooperCoin: 25000 * dayM, goldCoin: 75 * dayM },
+      { cooperCoin: 35000 * dayM, summonCard: 1 * dayM },
+      { cooperCoin: 45000 * dayM, summonScroll: 1 * dayM },
+      { cooperCoin: 55000 * dayM, heroShard: 25 },
     ];
-  }
-
-  private roundToStep(v: number, step = 100): number {
-    return Math.round(v / step) * step;
   }
 
   getWeekReward(weekIndex0: number, totalDays: number): DayReward[] {
@@ -61,9 +61,9 @@ export class DailyRewardService extends ApiService<DailyReward> {
     const m = streakMultiplier * weekRamp;
 
     return this.baseWeek(1).slice(0, totalDays).map(r => ({
-      copperCoin : r.copperCoin  ? this.roundToStep(r.copperCoin * m, 1000) : undefined,
-      silverCoin : r.silverCoin  ? this.roundToStep(r.silverCoin * m, 10)   : undefined,
-      goldCoin   : r.goldCoin    ? this.roundToStep(r.goldCoin   * m, 5)    : undefined,
+      cooperCoin : r.cooperCoin  ? this.numbersService.roundToStep(r.cooperCoin * m, 1000) : undefined,
+      silverCoin : r.silverCoin  ? this.numbersService.roundToStep(r.silverCoin * m, 10)   : undefined,
+      goldCoin   : r.goldCoin    ? this.numbersService.roundToStep(r.goldCoin   * m, 5)    : undefined,
       summonScroll: r.summonScroll,
       summonCard  : r.summonCard,
       heroShard   : r.heroShard,

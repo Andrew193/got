@@ -15,7 +15,7 @@ export interface ModalConfig {
     callback: () => void,
     strategy: number,
     modalRootClass?: string,
-    component?: any
+    component?: HasFooterHost
   }
 }
 

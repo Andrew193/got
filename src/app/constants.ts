@@ -1,4 +1,9 @@
+import moment from "moment";
+
+export const DATE_FORMAT = "MM/DD/YYYY";
 export const BATTLE_SPEED = 500;
+export const USER_TOKEN = 'user';
+export const TODAY = moment().format(DATE_FORMAT);
 
 export const getDiagonals = (checkDiagonals: boolean) => {
   return checkDiagonals
@@ -33,5 +38,3 @@ export const frontRoutes = {
   summonTree: "summon-tree",
   giftStore: "gift-lands"
 }
-
-export const DATE_FORMAT = "MM/DD/YYYY";

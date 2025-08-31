@@ -31,6 +31,10 @@
   bottom: auto;
 }
 
+aside {
+  padding-bottom: 10px;
+}
+
 .hero {
   overflow: hidden;
 
@@ -42,7 +46,30 @@
 
   @include eff.swirl-particles($name: swirl-particles-dr);
   @include eff.swirl-out($name: swirl-out-dr);
+}
 
+.online-time {
+  font-weight: 600;
+  text-align: right;
+}
+
+.text {
+  font-weight: 500;
+  color: white;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+.tip {
+  color: red;
+  bottom: -5px;
+  position: absolute;
+  right: calc(var(--bs-gutter-x) * .5);
+}
+
+.footer-cover {
+  display: inline;
+  position: absolute;
+  right: 0px;
 }
 
 @keyframes fadeInHero {

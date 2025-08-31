@@ -1,17 +1,13 @@
 import {Injectable} from '@angular/core';
 import {GameField} from "../../../components/abstract/abstract-game-field/abstract-game-field.component";
-import {GameFieldVars, Position, Tile} from "../../../interface";
 import {createDeepCopy} from "../../../helpers";
 import {Unit} from "../../../models/unit.model";
+import {GameFieldVars, Position, Tile} from "../../../models/field.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export abstract class AbstractFieldService extends GameFieldVars implements Partial<GameField> {
-  constructor() {
-    super()
-  }
-
   getGridFromField(field: Tile[][]): number[][] {
     const grid = [];
     for (let i = 0; i < 7; i++) {

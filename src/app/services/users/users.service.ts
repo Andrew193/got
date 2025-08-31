@@ -1,40 +1,36 @@
-import {Injectable, Injector} from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import {map, tap} from "rxjs";
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, map, tap} from "rxjs";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {Router} from "@angular/router";
 import {ApiService} from "../abstract/api/api.service";
-import {frontRoutes} from "../../constants";
-
-export interface Currency {
-  gold: number,
-  silver: number,
-  cooper: number
-}
-
-export interface User {
-  id: string,
-  login: string | null | undefined,
-  password: string | null | undefined,
-  currency: Currency
-}
+import {frontRoutes, USER_TOKEN} from "../../constants";
+import {Currency, User} from "./users.interfaces";
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  url = "/users";
-  userToken = "user"
+  private url = "/users";
+
+  private user = new BehaviorSubject<User | null>(null);
+  $user = this.user.asObservable();
+
+  apiService = inject(ApiService);
 
   constructor(private http: HttpClient,
               private router: Router,
-              private injector: Injector,
               private localStorage: LocalStorageService) {
   }
 
   basicUser(user: Partial<User>): User {
     return {
       ...user,
+      online: {
+        onlineTime: 0,
+        claimedRewards: [],
+        lastLoyaltyBonus: ''
+      },
       currency: {
         gold: 300,
         silver: 1000,
@@ -66,6 +62,7 @@ export class UsersService {
       .pipe(tap({
         next: (user) => {
           callback(user[0] || []);
+          this.user.next(user[0] as User);
         },
         error: (error) => {
           console.log(error)
@@ -75,10 +72,9 @@ export class UsersService {
   }
 
   updateCurrency(newCurrency: Currency, returnObs = false) {
-    const apiService = this.injector.get(ApiService);
-    const user = this.localStorage.getItem(this.userToken) as User;
+    const user = this.localStorage.getItem(USER_TOKEN) as User;
 
-    return apiService.putPostCover({
+    return this.apiService.putPostCover({
         ...user, currency: {
           gold: newCurrency.gold + user.currency.gold,
           silver: newCurrency.silver + user.currency.silver,
@@ -94,14 +90,8 @@ export class UsersService {
       })
   }
 
-  getUserId() {
-    const user = this.localStorage.getItem(this.userToken) as User;
-
-    return user.id;
-  }
-
   doesUserExist() {
-    const user = (this.localStorage.getItem(this.userToken) as User | undefined);
+    const user = (this.localStorage.getItem(USER_TOKEN) as User | undefined);
     return this.http.get<any>(this.url, {
       params: {
         login: user?.login || '',
@@ -110,7 +100,8 @@ export class UsersService {
       observe: "response"
     }).pipe(map((response) => {
         if (response.status === 200 && (response.body[0] as User).id === user?.id) {
-          this.localStorage.setItem(this.userToken, response.body[0]);
+          this.localStorage.setItem(USER_TOKEN, response.body[0]);
+          this.user.next(response.body[0] as User);
           return true;
         }
         return false;
@@ -123,11 +114,39 @@ export class UsersService {
   }
 
   isAuth() {
-    return !!this.localStorage.getItem(this.userToken);
+    return !!this.localStorage.getItem(USER_TOKEN);
   }
 
   logout() {
-    this.localStorage.removeItem(this.userToken);
+    this.localStorage.removeItem(USER_TOKEN);
     this.router.navigate([frontRoutes.login])
+  }
+
+  updateOnline(config: { time?: number, claimed?: number, lastLoyaltyBonus?: string }, returnObs = false) {
+    const user = this.localStorage.getItem(USER_TOKEN) as User;
+
+    const data: User = {
+      ...user,
+      online: {
+        ...user.online,
+        ...((config.time || config.claimed === 24) ? {
+          onlineTime: config.claimed === 24 ? 0 : user.online.onlineTime + (config as {
+            time: number
+          }).time
+        } : {}),
+        ...(config.claimed ? {claimedRewards: config.claimed === 24 ? [] : [...user.online.claimedRewards, config.claimed.toString()]} : {}),
+        ...(config.lastLoyaltyBonus ? {lastLoyaltyBonus: config.lastLoyaltyBonus} : {}),
+      }
+    }
+
+    return this.apiService.putPostCover(data,
+      {
+        url: this.url,
+        callback: (res) => {
+          this.localStorage.setItem(this.localStorage.names.user, res);
+          this.user.next(res as User);
+        },
+        returnObs: returnObs
+      })
   }
 }

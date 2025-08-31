@@ -77,7 +77,7 @@ export class RewardService {
       return {
         amount: this.getNumberInRange(loot.min, loot.max),
         name: item.name,
-        src: "assets/resourses/imgs/copper.png",
+        src: "assets/resourses/imgs/cooper.png",
         flipped: false
       }
     } else if (item.name === this.rewardNames.silver) {

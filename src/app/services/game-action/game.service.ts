@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {LogRecord, Position} from "../../interface";
 import {createDeepCopy} from "../../helpers";
 import {ModalWindowService} from "../modal/modal-window.service";
 import {EffectsService} from "../effects/effects.service";
@@ -10,6 +9,8 @@ import {Skill} from "../../models/skill.model";
 import {Effect} from "../../models/effect.model";
 import {GameLoggerService} from "../game-logger/logger.service";
 import {ModalStrategiesTypes} from "../../components/modal-window/modal-interfaces";
+import {Position} from "../../models/field.model";
+import {LogRecord} from "../../models/common.model";
 
 @Injectable({
   providedIn: 'root',

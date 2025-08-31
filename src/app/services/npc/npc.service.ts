@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HeroesService, heroType, rarity} from "../heroes/heroes.service";
-import {RewardComponent, UnitWithReward} from "../../interface";
 import {DisplayReward, Reward, RewardService} from "../reward/reward.service";
-import {Unit} from "../../models/unit.model";
+import {Unit, UnitWithReward} from "../../models/unit.model";
+import {RewardComponent} from "../../models/reward-based.model";
 
 @Injectable({
   providedIn: 'root'

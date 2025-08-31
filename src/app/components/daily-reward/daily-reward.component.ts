@@ -18,7 +18,6 @@ import {StatsComponent} from "../views/stats/stats.component";
 import {DailyRewardService} from "../../services/daily-reward/daily-reward.service";
 import moment from "moment";
 import {Unit} from "../../models/unit.model";
-import {DailyReward} from "../../interface";
 import {UsersService} from "../../services/users/users.service";
 import {trackByIndex, trackBySkill} from "../../helpers";
 import {DATE_FORMAT} from "../../constants";
@@ -26,9 +25,10 @@ import {NotificationsService, NotificationType} from "../../services/notificatio
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {RewardsCalendarComponent} from "../common/rewards-calendar/rewards-calendar.component";
 import {EffectsHighlighterComponent} from "../common/effects-highlighter/effects-highlighter.component";
+import {DailyReward} from "../../models/reward-based.model";
 
 export interface DayReward {
-  copperCoin: number,
+  cooperCoin: number,
   silverCoin?: number,
   goldCoin?: number,
   summonScroll?: number,
@@ -43,12 +43,12 @@ export interface DayReward {
   styleUrl: './daily-reward.component.scss'
 })
 export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
-  notificationService = inject(NotificationsService);
-  destroyRef = inject(DestroyRef);
-
   @Input() closePopup: () => void = () => {
   };
   @ViewChild('heroInFrame') heroInFrame: any;
+
+  notificationService = inject(NotificationsService);
+  destroyRef = inject(DestroyRef);
   isHeroPreview: boolean = false;
   rewardHero: Unit;
   month: DayReward[] = [];
@@ -97,7 +97,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
         lastLogin: moment().format(DATE_FORMAT)
       }, (newConfig) => {
         this.usersService.updateCurrency({
-          cooper: reward.copperCoin || 0,
+          cooper: reward.cooperCoin || 0,
           silver: reward.silverCoin || 0,
           gold: reward.goldCoin || 0
         })

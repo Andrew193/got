@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {User, UsersService} from "../../services/users/users.service";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ValidationService} from "../../services/validation/validation.service";
 import {CommonModule} from "@angular/common";
 import {FormErrorsContainerComponent} from "../../components/form/form-errors-container/form-errors-container.component";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "../../services/localStorage/local-storage.service";
-import {frontRoutes} from "../../constants";
+import {frontRoutes, USER_TOKEN} from "../../constants";
+import {UsersService} from "../../services/users/users.service";
+import {User} from "../../services/users/users.interfaces";
 
 @Component({
     selector: 'app-login-page',
@@ -44,13 +45,13 @@ export class LoginPageComponent implements OnInit {
     this.validationService.validateFormAndSubmit(this.form, () => {
       this.usersService.login(this.form.value as User, (user) => {
         this.form.enable();
-        this.localStorageService.setItem(this.usersService.userToken, user);
+        this.localStorageService.setItem(USER_TOKEN, user);
         this.router.navigate([frontRoutes.base]);
       })
     }, () => {
       this.usersService.createUser(this.form.value, (user: User) => {
         this.form.enable();
-        this.localStorageService.setItem(this.usersService.userToken, user);
+        this.localStorageService.setItem(USER_TOKEN, user);
         this.router.navigate([frontRoutes.base]);
       })
     }, !this.createUser)

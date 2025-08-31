@@ -1,6 +1,7 @@
-import {Coordinate} from "../interface";
 import {Skill} from "./skill.model";
 import {Effect} from "./effect.model";
+import {DisplayReward} from "../services/reward/reward.service";
+import {Coordinate} from "./field.model";
 
 export interface Unit extends Coordinate {
   rank: number,
@@ -41,4 +42,9 @@ export interface Unit extends Coordinate {
   effects: Effect[],
 
   [key: string]: any,
+}
+
+export interface UnitWithReward extends Unit {
+  reward: DisplayReward,
+  inBattle: boolean,
 }

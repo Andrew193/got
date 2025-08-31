@@ -16,7 +16,8 @@ function isJsonString(jsonString: string) {
 export class LocalStorageService {
   prefix = "got_"
   names = {
-    user: "user"
+    user: "user",
+    localOnlineBuffer: "localOnlineBuffer"
   }
 
   updateLocalStorage = new BehaviorSubject(new Date().getMilliseconds());

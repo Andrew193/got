@@ -1,5 +1,4 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {GiftConfig, UnitWithReward} from "../../interface";
 import {GameEntryPointComponent} from "../../components/game-entry-point/game-entry-point.component";
 import {NpcService} from "../../services/npc/npc.service";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
@@ -7,11 +6,13 @@ import {DisplayRewardComponent} from "../../components/display-reward/display-re
 import {Router, RouterLink} from "@angular/router";
 import {GiftService} from "../../services/gift/gift.service";
 import moment from "moment/moment";
-import {Unit} from "../../models/unit.model";
-import {Currency, UsersService} from "../../services/users/users.service";
+import {Unit, UnitWithReward} from "../../models/unit.model";
 import {Observable, tap} from "rxjs";
 import {DATE_FORMAT} from "../../constants";
 import {NotificationsService, NotificationType} from "../../services/notifications/notifications.service";
+import {GiftConfig} from "../../models/gift.model";
+import {UsersService} from "../../services/users/users.service";
+import {Currency} from "../../services/users/users.interfaces";
 
 @Component({
     selector: 'app-gift-store',

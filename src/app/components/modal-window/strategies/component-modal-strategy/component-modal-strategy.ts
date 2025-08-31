@@ -3,7 +3,7 @@ import {ExtendedModalConfig, HasFooterHost, ModalStrategy} from "../../modal-int
 
 @Component({
   imports: [],
-  template: '<div class="p-2"><button class="btn btn-success" (click)="close()">Close</button></div>',
+  template: '<div class="p-2"><i class="material-icons cursor-pointer" (click)="close()">close</i></div>',
 })
 class ComponentModalStrategyFooter {
   @Input({ required: true }) close!: () => void;
@@ -15,17 +15,18 @@ function hasFooterHost(instance: any): instance is HasFooterHost {
 
 export class ComponentModalStrategy implements ModalStrategy {
   render(vc: ViewContainerRef, modalConfig: ExtendedModalConfig) {
+    // @ts-ignore
     const componentRef = vc.createComponent(modalConfig.config.component);
+    let footerRef;
 
     if (hasFooterHost(componentRef.instance)) {
       const footerVc = componentRef.instance.footerHost;
-      const footerRef = footerVc.createComponent(ComponentModalStrategyFooter);
-      footerRef.setInput('close', modalConfig.close);
+      footerRef = footerVc.createComponent(ComponentModalStrategyFooter);
     } else {
-      const footerRef = vc.createComponent(ComponentModalStrategyFooter);
-      footerRef.setInput('close', modalConfig.close);
+      footerRef = vc.createComponent(ComponentModalStrategyFooter);
     }
 
+    footerRef.setInput('close', modalConfig.close);
     return componentRef;
   }
 }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {tap} from "rxjs";
 import {ApiService} from "../abstract/api/api.service";
-import {GiftConfig, IdEntity} from "../../interface";
+import {GiftConfig} from "../../models/gift.model";
+import {IdEntity} from "../../models/common.model";
 
 @Injectable({
   providedIn: 'root'

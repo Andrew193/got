@@ -5,10 +5,10 @@ import {
   Output
 } from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {Coordinate, Tile, TilesToHighlight} from "../../interface";
 import {Unit} from "../../models/unit.model";
 import {trackByIndex} from "../../helpers";
 import {OutsideClickDirective} from "../../directives/outside-click/outside-click.directive";
+import {Coordinate, Tile, TilesToHighlight} from "../../models/field.model";
 
 @Component({
     selector: 'basic-game-board',

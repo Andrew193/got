@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {PopoverModule} from "ngx-bootstrap/popover";
-import {User, UsersService} from "../../../services/users/users.service";
 import {LocalStorageService} from "../../../services/localStorage/local-storage.service";
 import {DecimalPipe} from "@angular/common";
+import {USER_TOKEN} from "../../../constants";
+import {UsersService} from "../../../services/users/users.service";
+import {User} from "../../../services/users/users.interfaces";
 
 @Component({
     selector: 'header',
@@ -21,10 +23,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.localStorageService.getItem(this.usersService.userToken);
+    this.user = this.localStorageService.getItem(USER_TOKEN);
 
     this.localStorageService.updateLocalStorage$.subscribe(() => {
-      this.user = this.localStorageService.getItem(this.usersService.userToken);
+      this.user = this.localStorageService.getItem(USER_TOKEN);
     })
   }
 

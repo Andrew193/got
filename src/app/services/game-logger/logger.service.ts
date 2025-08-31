@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Skill} from "../../models/skill.model";
 import {Effect} from "../../models/effect.model";
 import {Unit} from "../../models/unit.model";
-import {LogRecord} from "../../interface";
+import {LogRecord} from "../../models/common.model";
 
 @Injectable({
   providedIn: 'root'

@@ -1,44 +1,51 @@
-import {Component, inject, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ImageComponent} from "../../views/image/image.component";
 import {RewardsCalendarComponent} from "../../common/rewards-calendar/rewards-calendar.component";
 import {DayReward} from "../../daily-reward/daily-reward.component";
 import {DailyRewardService} from "../../../services/daily-reward/daily-reward.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {StepsReward} from "../../../models/notification.model";
+import {NotificationHelperService} from "./meta/notification-helper.service";
+import {HasFooterHost} from "../modal-interfaces";
+import {RewardCoinComponent} from "../../views/reward-coin/reward-coin.component";
+import {AsyncPipe, DecimalPipe} from "@angular/common";
+import {TimeService} from "../../../services/time/time.service";
+import {PinBadgeComponent} from "../../common/pin-badge/pin-badge.component";
 
 @Component({
   selector: 'app-notification',
   imports: [
     ImageComponent,
-    RewardsCalendarComponent
+    RewardsCalendarComponent,
+    RewardCoinComponent,
+    AsyncPipe,
+    DecimalPipe,
+    PinBadgeComponent
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss'
 })
-export class NotificationComponent {
+export class NotificationComponent implements OnInit, HasFooterHost {
   @ViewChild('footerHost', { read: ViewContainerRef, static: true })
   footerHost!: ViewContainerRef;
+  destroyRef = inject(DestroyRef);
 
   dailyRewardService = inject(DailyRewardService);
-  labels = {
-    0: '2 hours',
-    1: '4 hours',
-    2: '8 hours',
-    3: '12 hours',
-    4: '24 hours',
-  }
+  helper = inject(NotificationHelperService);
+  timeService = inject(TimeService);
 
   steps: DayReward[] = [];
-  stepsRewardConfig: {step: number} = {
-    step: 0
-  }
+  stepsRewardConfig: StepsReward = this.helper.getStepsRewardConfig();
 
   constructor() {
     this.steps = this.dailyRewardService.getWeekReward(10, 5)
   }
 
-  claimReward = (reward: DayReward) => {
-    this.stepsRewardConfig.step = this.stepsRewardConfig.step + 1;
+  ngOnInit(): void {
+    this.helper.userService.$user
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((model) => {
+        model && (this.stepsRewardConfig = this.helper.configStepsRewardConfig(model));
+    })
   }
-
-  claimed = (i: number) => i + 1 <= (this.stepsRewardConfig.step || 0)
-  rewardClass = (i: number) => 'today' ;
 }

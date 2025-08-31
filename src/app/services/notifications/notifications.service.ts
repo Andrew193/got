@@ -1,12 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {DailyRewardService} from "../daily-reward/daily-reward.service";
-import moment from "moment/moment";
-import {DATE_FORMAT} from "../../constants";
 import {GiftService} from "../gift/gift.service";
 import {ModalWindowService} from "../modal/modal-window.service";
 import {ModalStrategiesTypes} from "../../components/modal-window/modal-interfaces";
 import {NotificationComponent} from "../../components/modal-window/notification/notification.component";
+import {TODAY} from "../../constants";
 
 export enum NotificationType {
   daily_reward,
@@ -29,10 +28,6 @@ export class NotificationsService {
   private notifications: BehaviorSubject<Map<string, boolean>> = new BehaviorSubject(this.initNotificationConfig);
   readonly $notifications = this.notifications.asObservable();
 
-  private readonly today = moment().format(DATE_FORMAT)
-
-  constructor() { }
-
   init() {
     const services = [
       {api: this.dailyRewardService, type: NotificationType.daily_reward},
@@ -42,7 +37,7 @@ export class NotificationsService {
     services.forEach((el) => {
       el.api.getConfig((config) => {
         console.log(config)
-        if(config.lastLogin !== this.today) {
+        if(config.lastLogin !== TODAY) {
           this.notificationsValue(el.type, true);
         }
       });

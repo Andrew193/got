@@ -17,7 +17,7 @@ export class RewardsCalendarComponent {
   chainMode = input<boolean>(false);
   rewardPool = input.required<DayReward[]>();
   claimed = input.required<(i: number) => boolean>();
-  claimReward = input.required<(reward: DayReward) => void>();
+  claimReward = input.required<(reward: DayReward, i: number) => void>();
   rewardCoins = input.required<(reward: DayReward, day: number) => any[] | undefined>();
   rewardBackLabels = input<Record<number, string>>();
 
