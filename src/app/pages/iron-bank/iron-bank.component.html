@@ -1,0 +1,85 @@
+@let model = helper.form;
+@let rateLabel = helper.rateLabel;
+@let result = helper.result;
+@let from = model.value.from;
+@let coins = getUserCurrencyInCoins();
+@let key = from?.toLowerCase() || 'cooper';
+
+<div class="inner-container">
+  <main class="row gap-4 m-0 p-2">
+    <aside class="col stores">
+      <div class="row m-0 store-row">
+        <h4 class="w-100 text-center">Exchanger</h4>
+
+        <div class="no-text-highlight cursor-unset">
+          <p class="m-0">You have: </p>
+          <div class="ps-2">
+            @for (reward of coins; track reward.class) {
+              <app-reward-coin [coinConfig]="reward"></app-reward-coin>
+            }
+          </div>
+        </div>
+
+        <form [formGroup]="model" class="row gap-4 m-0 p-0 w-100">
+          <div class="col p-0">
+            <mat-form-field class="w-100">
+              <mat-label>From</mat-label>
+              <mat-select formControlName="from">
+                @for (c of helper.currencies; track c) {
+                  <mat-option [value]="c">{{ c }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col p-0">
+            <mat-form-field class="w-100">
+              <mat-label>To</mat-label>
+              <mat-select formControlName="to">
+                @for (c of helper.allowedToOptions(model.controls.from.value); track c) {
+                  <mat-option [value]="c">{{ c }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col p-0">
+            <mat-form-field class="w-100">
+              <mat-label>Amount (From)</mat-label>
+              <input matInput type="number" min="1" [max]="getMax(user, key)" formControlName="amount">
+            </mat-form-field>
+          </div>
+
+          <div class="col p-0">
+            <div class="alert alert-primary w-100">You get: <b>{{ result | number }}</b></div>
+          </div>
+        </form>
+
+        @if (rateLabel) {
+          <p class="form-text">{{ rateLabel }}</p>
+        }
+
+        @if (model.valid && result > 0) {
+          <button mat-fab extended class="mb-2"
+                  (click)="exchangeCurrency(result)">
+            <mat-icon>currency_exchange</mat-icon>
+            Exchange
+          </button>
+        } @else {
+          <form-errors-container [form]="model"
+                                 [uiErrorsNames]="{}"></form-errors-container>
+        }
+
+      </div>
+    </aside>
+    <aside class="col stores">
+      <div class="flex-row store-row">
+        <h4 class="w-100 text-center">Purchase</h4>
+      </div>
+    </aside>
+  </main>
+
+  <button class="btn btn-primary ms-1">
+    <a routerLink="/" class="fake-link">Back to Castle Black</a>
+  </button>
+</div>
