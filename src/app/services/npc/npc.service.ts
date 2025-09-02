@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HeroesService, heroType, rarity} from "../heroes/heroes.service";
 import {DisplayReward, Reward, RewardService} from "../reward/reward.service";
 import {Unit, UnitWithReward} from "../../models/unit.model";
 import {RewardComponent} from "../../models/reward-based.model";
+import {NumbersService} from "../numbers/numbers.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NpcService implements RewardComponent {
+  numberService = inject(NumbersService);
 
   items: Reward[] = [
     {name: this.rewardService.rewardNames.cooper, probability: 0.70},
@@ -43,8 +45,8 @@ export class NpcService implements RewardComponent {
   getGiftNPC() {
     const npc: UnitWithReward[] = []
     while (true) {
-      const i = this.rewardService.getNumberInRange(0, 6);
-      const j = this.rewardService.getNumberInRange(0, 9);
+      const i = this.numberService.getNumberInRange(0, 6);
+      const j = this.numberService.getNumberInRange(0, 9);
       if (i !== 0 && j !== 0) {
         if (npc.findIndex((npc) => npc.x === i && npc.y === j) === -1) {
           const reward = this.rewardService.getReward(1, this.items)[0]

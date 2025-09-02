@@ -3,6 +3,7 @@ import {SiteComponent} from "./pages/site/site.component";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
 import {AuthGuard, GiftGuard} from "./guards/canActivate";
 import {frontRoutes} from "./constants";
+import {trainingRoutes} from "./modules/training/training-routing.module";
 
 export const routes: Routes = [
   {
@@ -15,7 +16,7 @@ export const routes: Routes = [
       },
       {
         path: frontRoutes.training,
-        loadChildren: () => import('./modules/training/training-routing.module').then(m => m.tavernaRoutes)
+        loadChildren: () => import('./modules/training/training-routing.module').then(m => m.trainingRoutes)
       },
       {
         path: frontRoutes.dailyBoss,
@@ -33,7 +34,11 @@ export const routes: Routes = [
         path: frontRoutes.giftStore,
         canActivate: [GiftGuard],
         loadComponent: () => import('./pages/gift-store/gift-store.component').then(c => c.GiftStoreComponent)
-      }
+      },
+      {
+        path: frontRoutes.ironBank,
+        loadComponent: () => import('./pages/iron-bank/iron-bank.component').then(c => c.IronBankComponent)
+      },
     ]
   },
   {

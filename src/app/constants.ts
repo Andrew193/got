@@ -33,6 +33,7 @@ export const frontRoutes = {
   training: "training",
   trainingBattle: "training-battle",
   dailyBoss: "daily-boss",
+  ironBank: "iron-bank",
   dailyBossBattle: "fight",
   login: "login",
   summonTree: "summon-tree",

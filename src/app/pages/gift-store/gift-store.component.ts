@@ -86,7 +86,7 @@ export class GiftStoreComponent implements OnInit {
       reward[name] = reward[name] + el.amount;
     })
 
-    const newCurrency = this.usersService.updateCurrency(reward, true) as Observable<any>
+    const newCurrency = this.usersService.updateCurrency(reward, {returnObs:true}) as Observable<any>
 
     newCurrency.pipe(tap({
       next: () => {

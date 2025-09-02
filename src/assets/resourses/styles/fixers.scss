@@ -14,6 +14,10 @@
   cursor: pointer;
 }
 
+.cursor-unset {
+  cursor: unset !important;
+}
+
 .panel-body > div {
   margin-bottom: unset;
 }
@@ -57,4 +61,8 @@
 
 .border-radius-10p {
   border-radius: 10% !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  display: none;
 }

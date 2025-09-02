@@ -43,16 +43,20 @@ export class LobbyComponent {
   constructor(private router: Router) {
   }
 
+  public openIronBank = () => {
+    this.router.navigateByUrl(frontRoutes.ironBank)
+  }
+
   public openSummonTree = () => {
-    this.router.navigate([frontRoutes.summonTree])
+    this.router.navigateByUrl(frontRoutes.summonTree)
   }
 
   public openGiftLand = () => {
-    this.router.navigate([frontRoutes.giftStore])
+    this.router.navigateByUrl(frontRoutes.giftStore)
   }
 
   public openDailyBoss = () => {
-    this.router.navigate([frontRoutes.dailyBoss])
+    this.router.navigateByUrl(frontRoutes.dailyBoss)
   }
 
   public showDailyReward = () => {
@@ -73,7 +77,7 @@ export class LobbyComponent {
     {name:'Магазин Арены', src: 'icons/arena-icon'},
     {name:'Награды за Стеной', src: 'icons/maps'},
     {name:'Награды Входа', src: 'UI_Avatar_Unit_Alvar', click: this.showDailyReward, notification: NotificationType.daily_reward},
-    {name:'Железный Банк', src: 'gold'},
+    {name:'Железный Банк', src: 'gold', click: this.openIronBank},
     {name:'Ремесленики', src: 'silver'},
     {name:'Ежедневный Босс', src: 'UI_Avatar_Unit_PolarBear', click: this.openDailyBoss}
   ]

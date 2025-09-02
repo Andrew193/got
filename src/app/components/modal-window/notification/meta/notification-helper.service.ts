@@ -94,7 +94,7 @@ export class NotificationHelperService {
         cooper: reward.cooperCoin || 0,
         silver: reward.silverCoin || 0,
         gold: reward.goldCoin || 0
-      }, true) as Observable<any>;
+      }, {returnObs: true}) as Observable<any>;
 
       getReward.pipe(
         concatMap(res =>
@@ -113,7 +113,7 @@ export class NotificationHelperService {
       totalReward[key] += part.amount || 0;
     })
 
-    const getReward = this.userService.updateCurrency(totalReward, true) as Observable<any>;
+    const getReward = this.userService.updateCurrency(totalReward, {returnObs: true}) as Observable<any>;
 
     getReward.pipe(
       concatMap(res =>

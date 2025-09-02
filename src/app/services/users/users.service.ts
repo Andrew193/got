@@ -6,17 +6,21 @@ import {Router} from "@angular/router";
 import {ApiService} from "../abstract/api/api.service";
 import {frontRoutes, USER_TOKEN} from "../../constants";
 import {Currency, User} from "./users.interfaces";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {CurrencyDifComponent} from "../../components/modal-window/currency/currency-dif/currency-dif.component";
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
+  private _snackBar = inject(MatSnackBar);
+
   private url = "/users";
 
   private user = new BehaviorSubject<User | null>(null);
   $user = this.user.asObservable();
 
-  apiService = inject(ApiService);
+  apiService = inject(ApiService<User>);
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -71,22 +75,32 @@ export class UsersService {
       })).subscribe();
   }
 
-  updateCurrency(newCurrency: Currency, returnObs = false) {
+  updateCurrency(newCurrency: Currency, config: {returnObs?: boolean, hardSet?: boolean} = {returnObs: false, hardSet: false}) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
     return this.apiService.putPostCover({
         ...user, currency: {
-          gold: newCurrency.gold + user.currency.gold,
-          silver: newCurrency.silver + user.currency.silver,
-          cooper: newCurrency.cooper + user.currency.cooper
+          gold:  newCurrency.gold + (config.hardSet ? 0 : user.currency.gold),
+          silver: newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
+          cooper: newCurrency.cooper + (config.hardSet ? 0 : user.currency.cooper)
         }
       },
       {
         url: this.url,
-        callback: (res) => {
-          this.localStorage.setItem(this.localStorage.names.user, res);
+        callback: (response) => {
+          this.localStorage.setItem(this.localStorage.names.user, response);
+          this.user.next(response);
+          this._snackBar.openFromComponent(CurrencyDifComponent, {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 5000,
+            data: {
+              old: user.currency,
+              new: response.currency
+            }
+          });
         },
-        returnObs: returnObs
+        returnObs: config.returnObs
       })
   }
 
@@ -142,9 +156,9 @@ export class UsersService {
     return this.apiService.putPostCover(data,
       {
         url: this.url,
-        callback: (res) => {
-          this.localStorage.setItem(this.localStorage.names.user, res);
-          this.user.next(res as User);
+        callback: (response) => {
+          this.localStorage.setItem(this.localStorage.names.user, response);
+          this.user.next(response as User);
         },
         returnObs: returnObs
       })
