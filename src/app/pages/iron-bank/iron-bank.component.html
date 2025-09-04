@@ -1,14 +1,18 @@
 @let model = helper.form;
+@let depositModel = helper.depositForm;
+
 @let rateLabel = helper.rateLabel;
 @let result = helper.result;
 @let from = model.value.from;
 @let coins = getUserCurrencyInCoins();
 @let key = from?.toLowerCase() || 'cooper';
 
+{{depositModel.value | json}}
+
 <div class="inner-container">
   <main class="row gap-4 m-0 p-2">
-    <aside class="col stores">
-      <div class="row m-0 store-row">
+    <aside class="col-12 col-md stores">
+      <div class="row m-0 mt-2 store-row">
         <h4 class="w-100 text-center">Exchanger</h4>
 
         <div class="no-text-highlight cursor-unset">
@@ -67,14 +71,59 @@
           </button>
         } @else {
           <form-errors-container [form]="model"
-                                 [uiErrorsNames]="{}"></form-errors-container>
+                                 [uiErrorsNames]="helper.uiErrorsNames"></form-errors-container>
         }
 
       </div>
     </aside>
-    <aside class="col stores">
+    <aside class="col-12 col-md stores">
       <div class="flex-row store-row">
-        <h4 class="w-100 text-center">Purchase</h4>
+        <h4 class="w-100 text-center">Deposit</h4>
+        <form [formGroup]="depositModel" class="w-100">
+          <div class="row">
+            <p class="col-2 mb-0 deposit-label">Duration:</p>
+            <app-slider
+              class="col-10"
+              [controlName]="'days'"
+              [options]="helper.depositOptions" />
+          </div>
+          <div class="row m-0 gap-2">
+            <div class="col p-0">
+              <app-number-input
+                [max]="getMax(user, 'cooper')"
+                [label]="'Cooper: '"
+                [controlName]="'cooper'">
+              </app-number-input>
+            </div>
+            <div class="col p-0">
+              <app-number-input
+                [max]="getMax(user, 'silver')"
+                [label]="'Silver: '"
+                [controlName]="'silver'">
+              </app-number-input>
+            </div>
+            <div class="col p-0">
+              <app-number-input
+                [max]="getMax(user, 'gold')"
+                [label]="'Gold: '"
+                [controlName]="'gold'">
+              </app-number-input>
+            </div>
+          </div>
+        </form>
+
+        @if (depositModel.valid) {
+          <button mat-fab extended class="mb-2"
+                  (click)="exchangeCurrency(result)">
+            <mat-icon>currency_exchange</mat-icon>
+            Deposit
+          </button>
+        } @else {
+          <form-errors-container
+            class="w-100"
+            [form]="depositModel"
+            [uiErrorsNames]="helper.uiErrorsNames"></form-errors-container>
+        }
       </div>
     </aside>
   </main>

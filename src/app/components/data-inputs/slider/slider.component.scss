@@ -1,0 +1,18 @@
+.tick-labels {
+  position: relative;
+  height: 20px;
+  margin: -4px 12px 0;
+  color: white;
+  font-weight: bold;
+}
+
+.tick-labels .tick {
+  position: absolute;
+  font-size: 12px;
+  white-space: nowrap;
+  top: 0;
+}
+
+mat-slider {
+  width: 100%;
+}

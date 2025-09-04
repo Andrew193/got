@@ -1,11 +1,11 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {IronBankHelperService} from "./helper/iron-bank-helper.service";
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule} from "@angular/forms";
 import {MatFormField, MatInput, MatLabel} from "@angular/material/input";
 import {MatSelect} from "@angular/material/select";
 import {MatOption} from "@angular/material/autocomplete";
-import {DecimalPipe} from "@angular/common";
+import {DecimalPipe, JsonPipe} from "@angular/common";
 import {UsersService} from "../../services/users/users.service";
 import {User} from "../../services/users/users.interfaces";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
@@ -16,6 +16,8 @@ import {
 } from "../../components/form/form-errors-container/form-errors-container.component";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {SliderComponent} from "../../components/data-inputs/slider/slider.component";
+import {NumberInputComponent} from "../../components/data-inputs/number-input/number-input.component";
 
 @Component({
   selector: 'app-iron-bank',
@@ -31,7 +33,10 @@ import {MatButtonModule} from "@angular/material/button";
     RewardCoinComponent,
     FormErrorsContainerComponent,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    SliderComponent,
+    JsonPipe,
+    NumberInputComponent,
   ],
   templateUrl: './iron-bank.component.html',
   styleUrl: './iron-bank.component.scss'

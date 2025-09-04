@@ -18,6 +18,16 @@ interface Quote {
   providedIn: 'root'
 })
 export class IronBankHelperService {
+  uiErrorsNames = {
+    amount: 'Amount',
+    gold: 'Gold',
+    cooper: 'Cooper',
+    silver: 'Silver',
+    days: 'Duration'
+  }
+
+  depositOptions = [3, 10, 25, 120, 365];
+
   numberServices = inject(NumbersService);
 
   private readonly META: Record<Cur, CurMeta> = {
@@ -33,6 +43,13 @@ export class IronBankHelperService {
     from:   ['COOPER' as Cur, Validators.required],
     to:     ['GOLD'   as Cur, Validators.required],
     amount: [0, [Validators.required, Validators.min(1)]],
+  });
+
+  depositForm = this.fb.group({
+    days: [0, [Validators.required]],
+    cooper: [0, []],
+    silver: [0, []],
+    gold: [0, []],
   });
 
   rateLabel = '';

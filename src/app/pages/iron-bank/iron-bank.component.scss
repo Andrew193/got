@@ -15,6 +15,10 @@
     font-weight: bold;
   }
 
+  .deposit-label {
+    line-height: 46px;
+  }
+
   h4 {
     @include mixins.grad-color;
     font-size: 20px;

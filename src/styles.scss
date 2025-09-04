@@ -152,6 +152,13 @@ body {
   border: none !important;
 }
 
-.row:not(.stats) {
- // flex: 1 0 auto !important;
+.mdc-slider {
+  --mdc-slider-handle-color: #b8860b;
+  --mdc-slider-focus-handle-color: #daa520;
+  --mdc-slider-hover-handle-color: #ffd700;
+  --mdc-slider-active-track-color: #b8860b;
+  --mdc-slider-inactive-track-color: rgba(184, 134, 11, 0.3);
+  --mdc-slider-with-tick-marks-inactive-container-color: rgba(184, 134, 11, 0.3);
+  --mdc-slider-with-tick-marks-active-container-color: #b8860b;
+  --mat-slider-focus-state-layer-color: rgba(184, 134, 11, 0.24);
 }
