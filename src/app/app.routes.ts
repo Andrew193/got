@@ -3,7 +3,6 @@ import {SiteComponent} from "./pages/site/site.component";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
 import {AuthGuard, GiftGuard} from "./guards/canActivate";
 import {frontRoutes} from "./constants";
-import {trainingRoutes} from "./modules/training/training-routing.module";
 
 export const routes: Routes = [
   {
@@ -12,15 +11,15 @@ export const routes: Routes = [
       {component: LobbyComponent, path: frontRoutes.base},
       {
         path: frontRoutes.taverna,
-        loadChildren: () => import('./modules/taverna/taverna-routing.module').then(m => m.tavernaRoutes)
+        loadChildren: () => import('./modules/taverna/taverna.module').then(m => m.TavernaModule)
       },
       {
         path: frontRoutes.training,
-        loadChildren: () => import('./modules/training/training-routing.module').then(m => m.trainingRoutes)
+        loadChildren: () => import('./modules/training/training.module').then(m => m.TrainingModule)
       },
       {
         path: frontRoutes.dailyBoss,
-        loadChildren: () => import('./modules/daily-boss/daily-boss-routing.module').then(m => m.dailyBossRoutes)
+        loadChildren: () => import('./modules/daily-boss/daily-boss.module').then(m => m.DailyBossModule)
       },
       {
         path: frontRoutes.summonTree,

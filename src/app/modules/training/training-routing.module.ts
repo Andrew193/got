@@ -18,5 +18,5 @@ export const trainingRoutes: Routes = [{
   imports: [RouterModule.forChild(trainingRoutes)],
   exports: [RouterModule]
 })
-export class TavernaRoutingModule {
+export class TrainingRoutingModule {
 }
