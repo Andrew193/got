@@ -20,9 +20,9 @@ export class TimeService {
     const diffInHours = now.diff(createdMoment, "hours");
     const diffInMinutes = now.diff(createdMoment, "minutes");
 
-    console.log("Created at:", createdMoment.format("YYYY-MM-DD HH:mm:ss"));
-    console.log("Now:", now.format("YYYY-MM-DD HH:mm:ss"));
-    console.log("Difference:", diffInDays, "days,", diffInHours, "hours,", diffInMinutes, "minutes");
+    // console.log("Created at:", createdMoment.format("YYYY-MM-DD HH:mm:ss"));
+    // console.log("Now:", now.format("YYYY-MM-DD HH:mm:ss"));
+    // console.log("Difference:", diffInDays, "days,", diffInHours, "hours,", diffInMinutes, "minutes");
 
     return {
       diffInDays,

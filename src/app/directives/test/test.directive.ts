@@ -1,21 +1,28 @@
-import {Directive, Input, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
+import {Directive, effect, input, TemplateRef, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[notIf]',
+  selector: '[appRepeat]',
   standalone: true
 })
-export class TestDirective implements OnInit {
-  @Input('notIf') set display(newNotIf: boolean) {
-    if (!newNotIf) {
-      this.viewContainerRef.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainerRef.clear();
-    }
-  };
+export class TestDirective {
+  appRepeatText = input<string | null | undefined>('');
+  appRepeatTail = input<string>('');
+  appRepeat = input<number | null | undefined>(null);
 
-  constructor(private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {
+  constructor(private tpl: TemplateRef<any>, private vcr: ViewContainerRef) {
+    effect(() => {
+      this.render(this.appRepeat() || 0, this.appRepeatText() || '', this.appRepeatTail() || '');
+    });
   }
 
-  ngOnInit(): void {
+  private render(_repeat: number, _message: string, _tail: string) {
+    this.vcr.clear();
+    for (let i = 0; i < _repeat; i++) {
+      this.vcr.createEmbeddedView(this.tpl, {
+        $implicit: i,
+        message: _message,
+        tail: _tail
+      });
+    }
   }
 }

@@ -43,7 +43,7 @@ export class NotificationsService {
       });
     })
 
-    this.showPossibleActivities();
+    //this.showPossibleActivities();
   }
 
   notificationsValue(key?: number, value?: boolean) {

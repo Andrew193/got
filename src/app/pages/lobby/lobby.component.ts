@@ -1,5 +1,22 @@
-import {Component} from '@angular/core';
-import {Router, RouterModule} from "@angular/router";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  forwardRef,
+  inject,
+  InjectionToken,
+  input,
+  linkedSignal,
+  model,
+  signal,
+  untracked,
+  viewChild,
+} from '@angular/core';
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {DailyRewardComponent} from "../../components/daily-reward/daily-reward.component";
 import {CommonModule} from "@angular/common";
 import {frontRoutes} from "../../constants";
@@ -7,6 +24,28 @@ import {trackByRoute} from "../../helpers";
 import {NotificationType} from "../../services/notifications/notifications.service";
 import {NotificationMarkerComponent} from "../../directives/notification-marker/notification-marker.component";
 import {ImageComponent} from "../../components/views/image/image.component";
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule, Validators
+} from "@angular/forms";
+import {
+  auditTime,
+  BehaviorSubject, catchError,
+  combineLatest, concat,
+  debounce, delay, distinct, distinctUntilChanged, EMPTY, exhaustMap, filter, finalize, forkJoin, from,
+  fromEvent, interval, map, mapTo, merge, mergeMap, of, pluck, reduce,
+  sampleTime, shareReplay, startWith,
+  Subject, switchAll, switchMap,
+  take, takeUntil, tap,
+  throttleTime, throwError, timer, toArray, withLatestFrom, zip
+} from "rxjs";
+import {debounceTime} from "rxjs/operators";
+import {HighlightDirective} from "../../directives/highlight/highlight.directive";
+import {TestDirective} from "../../directives/test/test.directive";
 
 export interface route {
   name: string,
@@ -15,18 +54,64 @@ export interface route {
 }
 
 @Component({
+  selector: 'app-user',
+  template: `
+    <div>Test</div>
+    <input [(ngModel)]="value"/>
+  `,
+  imports: [
+    FormsModule
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class UserComponent {
+  test = model.required<{test: string}>();
+
+  get value() {
+    return this.test().test;
+  }
+
+  set value(newValue) {
+    this.test.update(() => ({test: newValue}));
+  }
+
+  constructor() {
+    effect(() => {
+      console.log(this.test(), 'child');
+    });
+  }
+}
+
+
+@Component({
     selector: 'app-lobby',
   imports: [
     DailyRewardComponent,
     CommonModule,
     RouterModule,
     NotificationMarkerComponent,
-    ImageComponent
+    ImageComponent,
+    ReactiveFormsModule,
+    FormsModule,
+    HighlightDirective
   ],
     templateUrl: './lobby.component.html',
-    styleUrl: './lobby.component.scss'
+    styleUrl: './lobby.component.scss',
 })
-export class LobbyComponent {
+export class LobbyComponent implements AfterViewInit {
+  directive = viewChild<HighlightDirective>('directive');
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngAfterViewInit() {
+    const _dir = this.directive();
+
+    if(_dir) {
+      _dir.onMouseEnter()
+    }
+
+    this.route.data.subscribe(console.log)
+  }
 
   isShowDailyReward = false;
 
@@ -39,9 +124,6 @@ export class LobbyComponent {
     {name: "Сторожка", url: "#", src: "knight.png"},
     {name: "За Стену", url: frontRoutes.battleField, src: "wall.png"}
   ]
-
-  constructor(private router: Router) {
-  }
 
   public openIronBank = () => {
     this.router.navigateByUrl(frontRoutes.ironBank)

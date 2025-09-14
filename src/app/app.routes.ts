@@ -3,15 +3,16 @@ import {SiteComponent} from "./pages/site/site.component";
 import {LobbyComponent} from "./pages/lobby/lobby.component";
 import {AuthGuard, GiftGuard} from "./guards/canActivate";
 import {frontRoutes} from "./constants";
+import {TestResolver} from "./test.resolver";
 
 export const routes: Routes = [
   {
     component: SiteComponent, path: frontRoutes.base, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
-      {component: LobbyComponent, path: frontRoutes.base},
+      {component: LobbyComponent, path: frontRoutes.base, resolve: {test: TestResolver}},
       {
         path: frontRoutes.taverna,
-        loadChildren: () => import('./modules/taverna/taverna.module').then(m => m.TavernaModule)
+        loadChildren: () => import('./modules/taverna/taverna.module').then(m => m.TavernaModule),
       },
       {
         path: frontRoutes.training,

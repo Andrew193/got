@@ -13,7 +13,7 @@ import {ViewProviderComponent} from "../../abstract/abstract-control/view-provid
     ReactiveFormsModule
   ],
   templateUrl: './number-input.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective}],
+  viewProviders: [{provide: ControlContainer, useExisting: FormGroupDirective}],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './number-input.component.scss'
 })
@@ -23,18 +23,13 @@ export class NumberInputComponent extends ViewProviderComponent {
   constructor() {
     super();
     effect(() => {
-        const m = this.max();
+      const m = this.max();
 
-        // Сохраняем любые уже заданные валидаторы (например, из родителя)
-        const existing = this.control.validator ? [this.control.validator] : [];
-        const composed = Validators.compose([...existing, Validators.max(m)]);
-        this.control.setValidators(composed);
+      const existing = this.control.validator ? [this.control.validator] : [];
+      const composed = Validators.compose([...existing, Validators.max(m)]);
+      this.control.setValidators(composed);
 
-        // Пересчитываем статус, но без лишних эмитов
-        this.control.updateValueAndValidity({ emitEvent: false });
-
-      console.log(this.control)
-      });
+      this.control.updateValueAndValidity({emitEvent: false});
+    });
   }
-
 }

@@ -19,16 +19,13 @@ class PermissionsService {
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean> | boolean {
     return this.usersService.doesUserExist().pipe(map((doesUserExist) => {
-      if (doesUserExist) {
-        return doesUserExist;
-      }
-      return this.router.createUrlTree([frontRoutes.login]);
+      return doesUserExist || this.router.createUrlTree([frontRoutes.login]);
     }));
   }
 
   canActivateGift(): Observable<boolean | UrlTree> | Promise<boolean> | boolean {
     const canActivate = this.notificationService.getNotification(NotificationType.gift_store, this.notifications());
-    return of(!!canActivate ? true : this.router.createUrlTree([frontRoutes.base]));
+    return of(canActivate || this.router.createUrlTree([frontRoutes.base]));
   }
 }
 

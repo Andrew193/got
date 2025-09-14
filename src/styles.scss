@@ -80,6 +80,10 @@ body {
   }
 }
 
+.app-loading {
+  overflow: hidden;
+}
+
 .glow-box {
   transition: all ease 0.5s;
   min-height: 650px;
