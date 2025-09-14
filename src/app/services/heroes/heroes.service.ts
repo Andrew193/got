@@ -54,8 +54,10 @@ export class HeroesService extends ContentService {
 
   getEffectsFromString(text: string) {
     const result = [];
-    for (let i = 0; i < this.eS.effectsToHighlight.length; i++) {
-      const effect = this.eS.effectsToHighlight[i];
+    const effects = this.getEffectsToHighlight();
+
+    for (let i = 0; i < effects.length; i++) {
+      const effect = effects[i];
       if (text.includes(effect)) {
         result.push(`${effect} - ${this.getEffectsDescription(effect)}`)
       }

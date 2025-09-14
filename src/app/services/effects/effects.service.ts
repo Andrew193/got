@@ -114,7 +114,7 @@ export class EffectsService {
 
   getEffect(effectType: string, turns: number = 2, count?: number) {
     if(count) {
-      return new Array(count).map(() => this.effectsMap[effectType](turns))
+      return new Array(count).fill(0).map(() => this.effectsMap[effectType](turns))
     }
     return [this.effectsMap[effectType](turns)];
   }
