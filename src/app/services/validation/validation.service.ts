@@ -9,7 +9,7 @@ export class ValidationService {
   constructor() {
   }
 
-  isFormInvalid(form: FormGroup, callback: any) {
+  isFormInvalid(form: FormGroup, callback: () => void) {
     if (callback) {
       callback()
     }
@@ -43,12 +43,12 @@ export class ValidationService {
     return formGroupToValidate;
   }
 
-  validateFormAndSubmit(form: FormGroup<any>, updateCallback: any, createCallback: any, id: boolean) {
+  validateFormAndSubmit(form: FormGroup<any>, updateCallback: () => void, createCallback: () => void, isUpdate: boolean) {
     this.validateAllFormFields(form);
 
     if (form.valid) {
       form.disable();
-      if (id) {
+      if (isUpdate) {
         updateCallback();
       } else {
         createCallback();
