@@ -4,6 +4,8 @@ import {UsersService} from "../users/users.service";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {TIME} from "./online.contrants";
 
+export type Online = { time: number, claimed: number, lastLoyaltyBonus: string }
+
 @Injectable({
   providedIn: 'root'
 })

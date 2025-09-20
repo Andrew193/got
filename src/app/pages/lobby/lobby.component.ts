@@ -93,7 +93,8 @@ export class UserComponent {
     ImageComponent,
     ReactiveFormsModule,
     FormsModule,
-    HighlightDirective
+    HighlightDirective,
+    TestDirective
   ],
     templateUrl: './lobby.component.html',
     styleUrl: './lobby.component.scss',

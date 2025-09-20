@@ -45,19 +45,16 @@ export class UsersService {
 
   createUser(user: Partial<User>, callback = (user: User) => {
   }) {
-    this.http.post<User>(this.url, this.basicUser(user)).pipe(tap({
+    return this.http.post<User>(this.url, this.basicUser(user)).pipe(tap({
       next: (user) => {
         callback(user);
-      },
-      error: (error) => {
-        console.log(error)
       }
-    })).subscribe();
+    }));
   }
 
   login(user: Partial<User>, callback = (user: Partial<User> | []) => {
   }) {
-    this.http.get<Partial<User[]>>(this.url, {
+    return this.http.get<Partial<User[]>>(this.url, {
       params: {
         login: `${user.login}`,
         password: `${user.password}`
@@ -68,11 +65,10 @@ export class UsersService {
           callback(user[0] || []);
           this.user.next(user[0] as User);
         },
-        error: (error) => {
-          console.log(error)
-          this.router.navigate([frontRoutes.login])
+        error: () => {
+          this.router.navigate([frontRoutes.login]);
         }
-      })).subscribe();
+      }))
   }
 
   updateCurrency(newCurrency: Currency, config: {returnObs?: boolean, hardSet?: boolean} = {returnObs: false, hardSet: false}) {

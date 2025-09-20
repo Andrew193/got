@@ -47,13 +47,13 @@ export class LoginPageComponent implements OnInit {
         this.form.enable();
         this.localStorageService.setItem(USER_TOKEN, user);
         this.router.navigate([frontRoutes.base]);
-      })
+      }).subscribe();
     }, () => {
       this.usersService.createUser(this.form.value, (user: User) => {
         this.form.enable();
         this.localStorageService.setItem(USER_TOKEN, user);
         this.router.navigate([frontRoutes.base]);
-      })
+      }).subscribe();
     }, !this.createUser)
   }
 

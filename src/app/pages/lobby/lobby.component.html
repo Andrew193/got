@@ -1,5 +1,8 @@
 <div class="lobby-container container-fluid">
   <button appHighlight="green" testColor="black" #directive='appHighlight'>click</button>
+  <div *appRepeat="5; text: 'Привет'; let i; let m = message; let t = tail">
+    #{{ i }} — {{ m }} - {{t}}
+  </div>
 
   <main class="row mt-4">
     <aside class="col-sm-12 col-md-6 shadow-none">
