@@ -85,7 +85,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
 
   universalRangeAttack(skill: Skill, clickedEnemy: Unit, enemiesArray: Unit[], userCheck: boolean, attacker: Unit) {
     if (skill.attackInRange) {
-      const tilesInRange = this.abstractFieldS.getFieldsInRadius(this.gameConfig, this.unitS.getPositionFromUnit(clickedEnemy as Unit), skill.attackRange as number, true)
+      const tilesInRange = this.abstractFieldS.getFieldsInRadius(this.gameConfig, this.unitS.getPositionFromCoordinate(clickedEnemy as Unit), skill.attackRange as number, true)
       const enemiesInRange: Unit[] = tilesInRange.map((tile) => enemiesArray.find((unit) => unit.x === tile.i && unit.y === tile.j && unit.user === userCheck))
         .filter((e) => !!e) as Unit[];
       for (let i = 0; i < enemiesInRange.length; i++) {

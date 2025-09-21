@@ -182,7 +182,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     let possibleTargetsInAttackRadius;
     if (this.selectedEntity?.user) {
       possibleTargetsInAttackRadius = this.showPossibleMoves(
-        this.unitService.getPositionFromUnit(this.selectedEntity),
+        this.unitService.getPositionFromCoordinate(this.selectedEntity),
         this.selectedEntity.attackRange,
         true
       );
@@ -222,7 +222,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
           .map((move) => this.aiUnits.find((ai) => ai.x === move.i && ai.y === move.j)).filter(Boolean);
         if (enemyMoves.length) {
           this.possibleMoves = enemyMoves
-            .map((enemy: any) => enemy.health ? this.unitService.getPositionFromUnit(enemy) : undefined).filter(Boolean) as Position[];
+            .map((enemy: any) => enemy.health ? this.unitService.getPositionFromCoordinate(enemy) : undefined).filter(Boolean) as Position[];
         } else {
           this.possibleMoves = [];
           const idx = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
@@ -251,7 +251,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     //Original code:
     //     return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross || 1 : entity.attackRange, !entity?.canMove);
     const canCross = this.gameActionService.getCanCross(entity);
-    return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), canCross, true)
+    return this.showPossibleMoves(this.unitService.getPositionFromCoordinate(entity), canCross, true)
       .filter((position) => {
         return this.fieldService.canReachPosition(this.fieldService.getGridFromField(this.gameConfig), {
           i: this.selectedEntity?.x || 0,
@@ -274,7 +274,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       //Look for targets to attack
       let enemyWhenCannotMove = this.getEnemyWhenCannotMove(this.userUnits[userIndex], this.aiUnits)
       if (enemyWhenCannotMove) {
-        const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.unitService.getUnitFromPosition(enemyWhenCannotMove));
+        const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.unitService.getCoordinateFromPosition(enemyWhenCannotMove));
         enemyWhenCannotMove = this.aiUnits[enemyIndex].health ? enemyWhenCannotMove : undefined;
       }
       if (!enemyWhenCannotMove) {
@@ -414,8 +414,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     };
 
     const moveAiUnit = (index: number, aiUnit: Unit, userUnit: Unit) => {
-      const aiPos = this.unitService.getPositionFromUnit(aiUnit);
-      const userPos = this.unitService.getPositionFromUnit(userUnit);
+      const aiPos = this.unitService.getPositionFromCoordinate(aiUnit);
+      const userPos = this.unitService.getPositionFromCoordinate(userUnit);
       updateField();
       const path = this.fieldService.getShortestPathCover(
         this.fieldService.getGridFromField(this.gameConfig),
@@ -484,7 +484,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
         const enemyPosition = this.getEnemyWhenCannotMove(aiUnits[index], userUnits);
         if (enemyPosition) {
-          const userIndex = this.unitService.findUnitIndex(userUnits, this.unitService.getUnitFromPosition(enemyPosition));
+          const userIndex = this.unitService.findUnitIndex(userUnits, this.unitService.getCoordinateFromPosition(enemyPosition));
           const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
           if (aiSkill) {
             performAttack(aiUnit, userIndex, aiSkill, index);

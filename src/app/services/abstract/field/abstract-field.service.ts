@@ -31,7 +31,7 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
   }
 
-  getFieldsInRadius(grid: Tile[][], location: Position, radius: number, diagonalCheck?: boolean) {
+  getFieldsInRadius(grid: Tile[][], location: Position, radius: number, diagonalCheck?: boolean): Position[] {
     const fields = [];
     const rows = grid.length;
     const cols = grid[0].length;
@@ -88,7 +88,7 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     })
 
     objects.forEach((ai) => {
-      field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: {}}
+      field[ai.x][ai.y] = {...field[ai.x][ai.y], active: false, entity: {} as Unit}
     })
 
     return field;

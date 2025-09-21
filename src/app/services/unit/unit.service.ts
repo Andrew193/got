@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {createDeepCopy} from "../../helpers";
 import {Unit} from "../../models/unit.model";
 import {Skill} from "../../models/skill.model";
-import {Position} from "../../models/field.model";
+import {Coordinate, Position, Tile} from "../../models/field.model";
+import {Effect} from "../../models/effect.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class UnitService {
   constructor() {
   }
 
-  findUnitIndex(units: Unit[], unit: { x: number, y: number, [key: string]: any } | null) {
+  findUnitIndex(units: Unit[], unit: Partial<Unit> | null) {
     return units.findIndex((enemy) => enemy.x === unit?.x && enemy.y === unit?.y)
   }
 
@@ -25,7 +26,7 @@ export class UnitService {
     return skills.findIndex((skill) => skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name)
   }
 
-  orderUnitsByDistance(start: { x: number, y: number }, positions: { x: number, y: number }[]) {
+  orderUnitsByDistance(start: Coordinate, positions: Coordinate[]): Coordinate[] {
     return positions.sort((a, b) => {
       const distanceA = Math.abs(a.x - start.x) + Math.abs(a.y - start.y);
       const distanceB = Math.abs(b.x - start.x) + Math.abs(b.y - start.y);
@@ -33,21 +34,21 @@ export class UnitService {
     });
   }
 
-  getPositionFromUnit(unit: Unit) {
+  getPositionFromCoordinate(unit: Coordinate): Position {
     return {
       i: unit.x,
       j: unit.y
     }
   }
 
-  getUnitFromPosition(position: Position) {
+  getCoordinateFromPosition(position: Position): Coordinate {
     return {
       x: position?.i,
       y: position?.j
     }
   }
 
-  addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill, addRangeEffects = false, getEffectsWithIgnoreFilter: (unit: Unit, skill: Skill, addRangeEffects: boolean) => any[]) {
+  addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill, addRangeEffects = false, getEffectsWithIgnoreFilter: (unit: Unit, skill: Skill, addRangeEffects: boolean) => Effect[]) {
     const unitsCopy = createDeepCopy(units);
     unitsCopy[unitIndex] = {
       ...unitsCopy[unitIndex],
@@ -67,7 +68,7 @@ export class UnitService {
     return unitsCopy[unitIndex];
   }
 
-  updateGridUnits(unitsArray: Unit[], gameConfig: any) {
+  updateGridUnits(unitsArray: Unit[], gameConfig: Tile[][]) {
     const gameConfigCopy = createDeepCopy(gameConfig);
     unitsArray.forEach((unit) => {
       gameConfigCopy[unit.x][unit.y] = {...gameConfigCopy[unit.x][unit.y], entity: unit}

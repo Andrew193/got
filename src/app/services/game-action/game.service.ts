@@ -47,22 +47,22 @@ export class GameService {
     let canGetToUnit;
     if (isWithinCanCrossLimit && !isAtAttackRange) {
       canGetToUnit = aiUnit.canCross === 0
-        ? this.unitService.getPositionFromUnit(aiUnit)
+        ? this.unitService.getPositionFromCoordinate(aiUnit)
         : shortestPathToUserUnit[canCrossLimit - 1]
     } else if (isAttackRangeOrCannotCross) {
       if (!!aiUnit.canCross && shortestPathToUserUnit.length === 1 && aiUnit.attackRange > shortestPathToUserUnit.length) {
-        canGetToUnit = isAtAttackRange ? this.unitService.getPositionFromUnit(aiUnit) : shortestPathToUserUnit[0];
+        canGetToUnit = isAtAttackRange ? this.unitService.getPositionFromCoordinate(aiUnit) : shortestPathToUserUnit[0];
       } else {
-        canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+        canGetToUnit = this.unitService.getPositionFromCoordinate(aiUnit);
       }
     } else {
       const canCross = this.getCanCross(aiUnit);
       canGetToUnit = canCross === 0
-        ? this.unitService.getPositionFromUnit(aiUnit)
+        ? this.unitService.getPositionFromCoordinate(aiUnit)
         : shortestPathToUserUnit[canCross - 1] || shortestPathToUserUnit[0]
     }
     if (userUnitPosition && !shortestPathToUserUnit.length) {
-      canGetToUnit = this.unitService.getPositionFromUnit(aiUnit);
+      canGetToUnit = this.unitService.getPositionFromCoordinate(aiUnit);
     }
     return canGetToUnit;
   }

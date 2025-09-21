@@ -3,8 +3,8 @@ import {Unit} from "./models/unit.model";
 import {route} from "./pages/lobby/lobby.component";
 import {Effect} from "./models/effect.model";
 
-export function createDeepCopy(object: { [key: string]: any }) {
-  return JSON.parse(JSON.stringify(object))
+export function createDeepCopy<T>(object: T) {
+  return JSON.parse(JSON.stringify(object)) as T
 }
 
 export function trackByIndex(index: number) {
