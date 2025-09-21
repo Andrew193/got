@@ -18,7 +18,7 @@ interface Quote {
   providedIn: 'root'
 })
 export class IronBankHelperService {
-  uiErrorsNames = {
+  readonly uiErrorsNames = {
     amount: 'Amount',
     gold: 'Gold',
     cooper: 'Cooper',
@@ -26,9 +26,9 @@ export class IronBankHelperService {
     days: 'Duration'
   }
 
-  depositOptions = [3, 10, 25, 120, 365];
+  readonly depositOptions = [3, 10, 25, 120, 365];
 
-  numberServices = inject(NumbersService);
+  private numberServices = inject(NumbersService);
 
   private readonly META: Record<Cur, CurMeta> = {
     COOPER: { valueInCooper: 1,     decimals: 0, label: 'Cooper' },
