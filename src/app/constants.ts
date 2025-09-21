@@ -1,5 +1,6 @@
 import moment from "moment";
 import {RewardLootConstant} from "./models/reward-based.model";
+import {User} from "./services/users/users.interfaces";
 
 export const DATE_FORMAT = "MM/DD/YYYY";
 export const BATTLE_SPEED = 500;
@@ -47,3 +48,20 @@ export const REWARD: RewardLootConstant = {
   shards: {min: 1, max: 10},
   silver: {min: 50, max: 250}
 }
+
+export const fakeUser: User = {
+  createdAt: 0,
+  currency: {
+    gold: 0,
+    silver: 0,
+    cooper: 0
+  },
+  id: "1",
+  login: 'rest',
+  online: {
+    onlineTime: 0,
+    claimedRewards: [],
+    lastLoyaltyBonus: ''
+  },
+  password: 'test'
+};

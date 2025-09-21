@@ -10,21 +10,38 @@ function isJsonString(jsonString: string) {
   return true;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class LocalStorageService {
+class BasicLocalStorage {
   prefix = "got_"
   names = {
     user: "user",
     localOnlineBuffer: "localOnlineBuffer"
   }
+}
 
+export class FakeLocalStorage extends BasicLocalStorage {
+  store: Map<string, string | Record<string, any>> = new Map([
+    ['localOnlineBuffer', '600']
+  ]);
+
+  getItem(key: string) {
+    return this.store.get(key) || '';
+  }
+
+  setItem(key: string, value: string | Record<string, any>) {
+    this.store.set(key, value)
+  }
+
+  removeItem(key: string) {
+    this.store.delete(key);
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LocalStorageService extends BasicLocalStorage {
   updateLocalStorage = new BehaviorSubject(new Date().getMilliseconds());
   updateLocalStorage$ = this.updateLocalStorage.asObservable();
-
-  constructor() {
-  }
 
   getItem(key: string) {
     const item = localStorage.getItem(this.getToken(key));
