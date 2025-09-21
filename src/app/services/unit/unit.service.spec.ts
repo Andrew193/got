@@ -1,5 +1,4 @@
 import {TestBed} from '@angular/core/testing';
-
 import {UnitService} from './unit.service';
 import {Unit} from "../../models/unit.model";
 import {EffectsService} from "../effects/effects.service";
@@ -7,7 +6,6 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {HeroesService} from "../heroes/heroes.service";
 import {Skill} from "../../models/skill.model";
 import {Coordinate, Position, Tile} from "../../models/field.model";
-import {Effect} from "../../models/effect.model";
 
 describe('UnitService', () => {
   let unitService: UnitService;
