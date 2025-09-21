@@ -34,8 +34,8 @@ export class GiftStoreComponent implements OnInit {
   giftConfig!: GiftConfig;
 
   items = [
-    {name: '1', probability: 0.9},
-    {name: '0', probability: 0.1},
+    {name: this.rewardService.rewardNames.special1, probability: 0.9},
+    {name: this.rewardService.rewardNames.special0, probability: 0.1},
   ];
 
   constructor(private npcService: NpcService,
@@ -60,7 +60,7 @@ export class GiftStoreComponent implements OnInit {
     this.npcService.getGiftNPC().map((el) => ({...el, imgSrc: el.reward.src, user: false, canMove: false}))
       .forEach((el) => {
         const elType = this.rewardService.getReward(1, this.items)[0];
-        this.aiUnits.push(elType.name === '0' ? {
+        this.aiUnits.push(elType.name === 'Special 0' ? {
           ...this.npcService.getWildling(),
           x: el.x,
           y: el.y,

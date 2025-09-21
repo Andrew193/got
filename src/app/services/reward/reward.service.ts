@@ -1,53 +1,66 @@
 import {inject, Injectable} from '@angular/core';
 import {HeroesService} from "../heroes/heroes.service";
 import {NumbersService} from "../numbers/numbers.service";
-import {Currency, User} from "../users/users.interfaces";
-import {Coin} from "../../models/reward-based.model";
+import {Currency} from "../users/users.interfaces";
+import {Coin, CoinNames, RewardValues} from "../../models/reward-based.model";
+import {REWARD} from "../../constants";
 
-export interface Reward {
+export type Reward = {
   probability: number,
-  name: string
+  name: RewardValues
 }
 
-export interface DisplayReward {
-  name: string,
+export type DisplayReward = {
+  name: RewardValues,
   amount: number,
   src: string,
   flipped: boolean
 }
 
-export interface RewardLoot {
+export type RewardLoot = {
   min: number,
   max: number,
-  name: string
+  name: RewardValues
+}
+
+export type RewardNames = {
+  cooper: "Cooper",
+  silver: "Silver",
+  shards: "Shards",
+  gold: "Gold",
+  chest: "Chest",
+  special0: "Special 0",
+  special1: "Special 1"
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class RewardService {
-  numberService = inject(NumbersService);
+  private numberService = inject(NumbersService);
 
-  rewardNames = {
+  readonly rewardNames: RewardNames = {
     cooper: "Cooper",
     silver: "Silver",
     shards: "Shards",
     gold: "Gold",
     chest: "Chest",
+    special0: "Special 0",
+    special1: "Special 1"
   }
 
-  rewardLoot: RewardLoot[] = [
-    {name: this.rewardNames.cooper, min: 10000, max: 40000},
-    {name: this.rewardNames.silver, min: 50, max: 250},
-    {name: this.rewardNames.shards, min: 1, max: 10},
-    {name: this.rewardNames.gold, min: 20, max: 50},
+  readonly rewardLoot: RewardLoot[] = [
+    {name: this.rewardNames.cooper, ...REWARD.cooper},
+    {name: this.rewardNames.silver, ...REWARD.silver},
+    {name: this.rewardNames.shards, ...REWARD.shards},
+    {name: this.rewardNames.gold,...REWARD.gold},
   ]
 
   constructor(private heroService: HeroesService) {
   }
 
   convertUserCurrencyToCoin(currency: Currency): Coin[] {
-    return [this.getCoin(currency.gold, this.rewardNames.gold), this.getCoin(currency.silver, this.rewardNames.silver), this.getCoin(currency.cooper, this.rewardNames.cooper)];
+    return [this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames), this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames), this.getCoin(currency.cooper, this.rewardNames.cooper.toLowerCase() as CoinNames)];
   }
 
   getReward(amountOfRewards = 1, items: Reward[]) {
@@ -84,20 +97,24 @@ export class RewardService {
     } else if (item.name === this.rewardNames.shards) {
       const heroes = this.heroService.getAllHeroes();
       const heroIndex = this.numberService.getNumberInRange(0, heroes.length - 1)
-      return {amount: this.numberService.getNumberInRange(loot.min, loot.max), name: item.name, src: heroes[heroIndex].imgSrc, flipped: false}
+      return {
+        amount: this.numberService.getNumberInRange(loot.min, loot.max),
+        name: item.name,
+        src: heroes[heroIndex].imgSrc,
+        flipped: false
+      }
     } else if (item.name === this.rewardNames.chest) {
       return {amount: 1, name: item.name, src: "assets/resourses/imgs/icons/chest.png", flipped: false}
     }
     return {amount: 1, src: "", name: item.name, flipped: false};
   }
 
-  private getCoin(amount: number, name: string): Coin {
-    const _name = name.toLowerCase();
+  private getCoin(amount: number, name: CoinNames): Coin {
     return {
-      alt: _name,
+      alt: name,
       amount: amount,
-      class: _name,
-      imgSrc: `assets/resourses/imgs/${_name}.png`
+      class: name,
+      imgSrc: `assets/resourses/imgs/${name}.png`
     }
   }
 
