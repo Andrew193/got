@@ -11,13 +11,9 @@ describe('LoaderService', () => {
     rendererFactory2Spy = jasmine.createSpyObj('RendererFactory2', ['createRenderer']);
     rendererSpy = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass']);
 
-    rendererSpy.addClass.and.callFake(() => {
-      console.log('add')
-    });
+    rendererSpy.addClass.and.callFake(() => {});
 
-    rendererSpy.removeClass.and.callFake(() => {
-      console.log('remove')
-    })
+    rendererSpy.removeClass.and.callFake(() => {})
 
     rendererFactory2Spy.createRenderer.and.returnValue(rendererSpy);
 
