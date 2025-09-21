@@ -23,19 +23,17 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 102660,
+        "onlineTime": 23180,
         "claimedRewards": [
           "2",
-          "4",
-          "8",
-          "12"
+          "4"
         ],
-        "lastLoyaltyBonus": "09/20/2025"
+        "lastLoyaltyBonus": "09/21/2025"
       },
       "currency": {
-        "gold": 11202,
-        "silver": 24564,
-        "cooper": 20904972
+        "gold": 11218,
+        "silver": 24724,
+        "cooper": 21660972
       },
       "createdAt": 1756640349588
     }

@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 import {DisplayRewardComponent} from "../../components/display-reward/display-reward.component";
 import {ImageComponent} from "../../components/views/image/image.component";
 import {frontRoutes} from "../../constants";
-import {RewardComponent} from "../../models/reward-based.model";
+import {RewardComponentInterface} from "../../models/reward-based.model";
 
 @Component({
     selector: 'app-summon-tree',
@@ -13,7 +13,7 @@ import {RewardComponent} from "../../models/reward-based.model";
     templateUrl: './summon-tree.component.html',
     styleUrl: './summon-tree.component.scss'
 })
-export class SummonTreeComponent implements RewardComponent {
+export class SummonTreeComponent implements RewardComponentInterface {
   constructor(public rewardService: RewardService,
               private route: Router) {
   }

@@ -105,7 +105,7 @@ describe('RewardService', () => {
 
     const rewardToCheck = rewardService.getReward(1, rewards);
 
-    expect(rewardToCheck[0].name).toBe(rewards[0].name);
+    expect(rewardToCheck.name).toBe(rewards[0].name);
   })
 
   it('RewardService should open box', () => {

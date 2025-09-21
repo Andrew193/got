@@ -8,7 +8,7 @@ export interface DailyReward extends IdEntity {
   lastLogin: string
 }
 
-export interface RewardComponent {
+export interface RewardComponentInterface {
   items: Reward[];
   rewards: DisplayReward[];
 }

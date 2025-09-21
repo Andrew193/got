@@ -6,6 +6,7 @@ export const DATE_FORMAT = "MM/DD/YYYY";
 export const BATTLE_SPEED = 500;
 export const USER_TOKEN = 'user';
 export const TODAY = moment().format(DATE_FORMAT);
+export const GIFT_STORE_NPC_AMOUNT = 10;
 
 export const getDiagonals = (checkDiagonals: boolean) => {
   return checkDiagonals

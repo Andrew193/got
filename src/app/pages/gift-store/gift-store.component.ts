@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {GameEntryPointComponent} from "../../components/game-entry-point/game-entry-point.component";
-import {NpcService} from "../../services/npc/npc.service";
+import {GiftNpcService} from "../../services/gift-npc/gift-npc.service";
 import {DisplayReward, RewardService} from "../../services/reward/reward.service";
 import {DisplayRewardComponent} from "../../components/display-reward/display-reward.component";
 import {Router, RouterLink} from "@angular/router";
@@ -38,7 +38,7 @@ export class GiftStoreComponent implements OnInit {
     {name: this.rewardService.rewardNames.special0, probability: 0.1},
   ];
 
-  constructor(private npcService: NpcService,
+  constructor(private npcService: GiftNpcService,
               private giftService: GiftService,
               private usersService: UsersService,
               private rewardService: RewardService,
@@ -56,10 +56,11 @@ export class GiftStoreComponent implements OnInit {
     this.userUnits = [];
     this.aiUnits = [];
 
-    this.userUnits.push({...this.npcService.getUser(), attackRange: 1, x: 0, y: 0, inBattle: true});
+    this.userUnits.push({...this.npcService.getUserForNPC(), attackRange: 1, x: 0, y: 0, inBattle: true});
+
     this.npcService.getGiftNPC().map((el) => ({...el, imgSrc: el.reward.src, user: false, canMove: false}))
       .forEach((el) => {
-        const elType = this.rewardService.getReward(1, this.items)[0];
+        const elType = this.rewardService.getReward(1, this.items);
         this.aiUnits.push(elType.name === 'Special 0' ? {
           ...this.npcService.getWildling(),
           x: el.x,

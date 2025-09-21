@@ -33,21 +33,23 @@ export type RewardNames = {
   special1: "Special 1"
 }
 
+export const basicRewardNames: RewardNames = {
+  cooper: "Cooper",
+  silver: "Silver",
+  shards: "Shards",
+  gold: "Gold",
+  chest: "Chest",
+  special0: "Special 0",
+  special1: "Special 1"
+} as const;
+
 @Injectable({
   providedIn: 'root'
 })
 export class RewardService {
   private numberService = inject(NumbersService);
 
-  readonly rewardNames: RewardNames = {
-    cooper: "Cooper",
-    silver: "Silver",
-    shards: "Shards",
-    gold: "Gold",
-    chest: "Chest",
-    special0: "Special 0",
-    special1: "Special 1"
-  }
+  readonly rewardNames: RewardNames = basicRewardNames;
 
   readonly rewardLoot: RewardLoot[] = [
     {name: this.rewardNames.cooper, ...REWARD.cooper},
@@ -63,12 +65,14 @@ export class RewardService {
     return [this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames), this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames), this.getCoin(currency.cooper, this.rewardNames.cooper.toLowerCase() as CoinNames)];
   }
 
-  getReward(amountOfRewards = 1, items: Reward[]) {
+  getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
+  getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
+  getReward(amountOfRewards: number = 1, items: Reward[]) {
     let rewards: DisplayReward[] = [];
     for (let i = 0; i < amountOfRewards; i++) {
       rewards = [...rewards, this.getLoot(items)];
     }
-    return rewards;
+    return amountOfRewards === 1 ? rewards[0]: rewards ;
   }
 
   openBox(items: Reward[]): Reward {

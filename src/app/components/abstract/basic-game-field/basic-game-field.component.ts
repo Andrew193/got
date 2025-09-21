@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {GameFieldService} from "../../../services/game-field/game-field.service";
 import {UnitService} from "../../../services/unit/unit.service";
 import {EffectsService} from "../../../services/effects/effects.service";
@@ -17,6 +17,8 @@ import {Position, Tile, TilesToHighlight} from "../../../models/field.model";
     imports: []
 })
 export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent {
+  cdRef = inject(ChangeDetectorRef);
+
   constructor(private fieldService: GameFieldService,
               private unitService: UnitService,
               private eS: EffectsService,
@@ -310,12 +312,15 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
   startAutoFight(fastFight = false, oneTick = false) {
     this.autoFight = true;
+
     const tick = () => {
       this.attackUser(false);
       this.fieldService.resetMoveAndAttack(this.userUnits, false);
       this.checkAiMoves();
+
       if (this.checkAutoFightEnd() || oneTick) {
         this.autoFight = false;
+        this.cdRef.markForCheck();
         return true;
       }
       return false;

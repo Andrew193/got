@@ -36,14 +36,13 @@ export class NotificationsService {
 
     services.forEach((el) => {
       el.api.getConfig((config) => {
-        console.log(config)
         if(config.lastLogin !== TODAY) {
           this.notificationsValue(el.type, true);
         }
       });
     })
 
-    //this.showPossibleActivities();
+    this.showPossibleActivities();
   }
 
   notificationsValue(key?: number, value?: boolean) {

@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import {HeroesService, heroType, rarity} from "../heroes/heroes.service";
 import {DisplayReward, Reward, RewardService} from "../reward/reward.service";
 import {Unit, UnitWithReward} from "../../models/unit.model";
-import {RewardComponent} from "../../models/reward-based.model";
+import {RewardComponentInterface} from "../../models/reward-based.model";
 import {NumbersService} from "../numbers/numbers.service";
+import {GIFT_STORE_NPC_AMOUNT} from "../../constants";
 
 @Injectable({
   providedIn: 'root'
 })
-export class NpcService implements RewardComponent {
+export class GiftNpcService implements RewardComponentInterface {
   numberService = inject(NumbersService);
 
   items: Reward[] = [
@@ -35,26 +36,27 @@ export class NpcService implements RewardComponent {
   }
 
   getSpecialGiftReward() {
-    return this.rewardService.getReward(1, this.specialGiftItems)[0]
+    return this.rewardService.getReward(1, this.specialGiftItems);
   }
 
   getChestReward() {
-    return this.rewardService.getReward(1, this.chestItems)[0]
+    return this.rewardService.getReward(1, this.chestItems);
   }
 
   getGiftNPC() {
-    const npc: UnitWithReward[] = []
+    const npc: UnitWithReward[] = [];
+
     while (true) {
       const i = this.numberService.getNumberInRange(0, 6);
       const j = this.numberService.getNumberInRange(0, 9);
       if (i !== 0 && j !== 0) {
         if (npc.findIndex((npc) => npc.x === i && npc.y === j) === -1) {
-          const reward = this.rewardService.getReward(1, this.items)[0]
+          const reward = this.rewardService.getReward(1, this.items);
           npc.push({...this.getNPC(reward.name), reward: reward, x: i, y: j, inBattle: false})
         }
       }
 
-      if (npc.length === 10) {
+      if (npc.length === GIFT_STORE_NPC_AMOUNT) {
         break;
       }
     }
@@ -65,7 +67,7 @@ export class NpcService implements RewardComponent {
     return this.heroService.getFreeTrapper();
   }
 
-  getUser(): Unit {
+  getUserForNPC(): Unit {
     return {
       ...this.heroService.getBasicUserConfig(),
       attackRange: 1,
