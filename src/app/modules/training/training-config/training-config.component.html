@@ -11,13 +11,8 @@
     </ng-container>
   </div>
   <div class="d-flex ms-4 me-4">
-    <button class="btn btn-primary me-2" (click)="goToMainPage()">
-      Back to Castle Black
-    </button>
-    <button
-      class="btn btn-danger"
-      *ngIf="aiUnits.length && userUnits.length"
-      (click)="openFight()">
+    <button class="btn btn-primary me-2" (click)="goToMainPage()">Back to Castle Black</button>
+    <button class="btn btn-danger" *ngIf="aiUnits.length && userUnits.length" (click)="openFight()">
       Fight
     </button>
   </div>
@@ -44,25 +39,21 @@
 
 <ng-template #unitsBar let-isUser="isUser" let-title="title">
   <div class="col-lg-6 col-md-12">
-    <heroes-select
+    <app-heroes-select
       [title]="title"
       [isUser]="isUser"
       [allHeroes]="allHeroes"
-      [addUserUnit]="addUserUnit"></heroes-select>
+      [addUserUnit]="addUserUnit"></app-heroes-select>
   </div>
 </ng-template>
 
-<ng-template
-  #selectedUnitsBar
-  let-units="units"
-  let-title="title"
-  let-user="user">
+<ng-template #selectedUnitsBar let-units="units" let-title="title" let-user="user">
   <div class="col-lg-6 col-md-12">
-    <heroes-select-preview
+    <app-heroes-select-preview
       [units]="units"
       [title]="title"
       [user]="user"
       [toggleDescription]="toggleDescription"
-      [getDescriptionState]="getDescriptionState"></heroes-select-preview>
+      [getDescriptionState]="getDescriptionState"></app-heroes-select-preview>
   </div>
 </ng-template>

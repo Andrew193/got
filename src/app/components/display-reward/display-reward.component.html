@@ -4,16 +4,11 @@
   <div class="summon-container flip-items-container row gap-2 m-2">
     @for (card of _cards; track trackByIndex($index)) {
       @if (card) {
-        <div
-          class="flip-items-inner-container col"
-          [class.claimed]="card.flipped">
+        <div class="flip-items-inner-container col" [class.claimed]="card.flipped">
           <div class="flip-card">
             <div class="card-front">?</div>
             <div class="card-back">
-              <image
-                [alt]="card.name"
-                [source]="card.src"
-                [imageClass]="'card-image'" />
+              <app-image [alt]="card.name" [source]="card.src" [imageClass]="'card-image'" />
               <span>{{ card.amount | number }}</span>
             </div>
           </div>
@@ -36,10 +31,7 @@
             <div class="flip-items-inner-container claimed col">
               <div class="flip-card">
                 <div class="card-back">
-                  <image
-                    [alt]="el[0]"
-                    [source]="el[1]['src']"
-                    [imageClass]="'card-image'" />
+                  <app-image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'card-image'" />
                   <span>{{ el[1]['amount'] | number }}</span>
                 </div>
               </div>

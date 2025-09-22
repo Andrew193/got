@@ -2,36 +2,29 @@
   <div class="d-flex justify-content-center flex-column align-items-center">
     <div class="summon-container container">
       <div class="m-0-auto" style="width: fit-content">
-        <image
+        <app-image
           [source]="'assets/resourses/imgs/background/summon1.png'"
           [alt]="'summon'"
-          [imageClass]="'summon-background'"></image>
+          [imageClass]="'summon-background'"></app-image>
       </div>
       <div class="mb-3">
         <h4>
-          Donate coins and receive heroes or their fragments. For duplicates of
-          heroes you will receive a large number of fragments.
+          Donate coins and receive heroes or their fragments. For duplicates of heroes you will
+          receive a large number of fragments.
         </h4>
-        <div
-          class="d-flex align-items-center justify-content-evenly roll-container">
+        <div class="d-flex align-items-center justify-content-evenly roll-container">
           <button class="btn btn-success silver" (click)="getReward()">
-            <img
-              alt="silver coin"
-              src="../../../assets/resourses/imgs/silver.png" />300
+            <img alt="silver coin" src="../../../assets/resourses/imgs/silver.png" />300
           </button>
           <button class="btn btn-success silver" (click)="getReward(10)">
-            <img
-              alt="silver coin"
-              src="../../../assets/resourses/imgs/silver.png" />{{
+            <img alt="silver coin" src="../../../assets/resourses/imgs/silver.png" />{{
               2700 | number
             }}
           </button>
         </div>
       </div>
-      <display-reward [rewards]="rewards"></display-reward>
-      <button class="btn btn-primary" (click)="goToMainPage()">
-        Back to Castle Black
-      </button>
+      <app-display-reward [rewards]="rewards"></app-display-reward>
+      <button class="btn btn-primary" (click)="goToMainPage()">Back to Castle Black</button>
     </div>
   </div>
 </div>

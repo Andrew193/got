@@ -1,7 +1,5 @@
 <div class="lobby-container container-fluid">
-  <button appHighlight="green" testColor="black" #directive="appHighlight">
-    click
-  </button>
+  <button appHighlight="green" testColor="black" #directive="appHighlight">click</button>
   <div *appRepeat="5; text: 'Привет'; let i; let m = message; let t = tail">
     #{{ i }} — {{ m }} - {{ t }}
   </div>
@@ -14,9 +12,9 @@
           *ngFor="let route of pageRoutes; trackBy: trackByRoute">
           <a [routerLink]="route.url" class="list-group-item">
             <span>
-              <image
+              <app-image
                 [source]="'assets/resourses/imgs/nav_icons/' + route.src"
-                [alt]="route.name"></image>
+                [alt]="route.name"></app-image>
               {{ route.name }}
             </span>
           </a>
@@ -25,9 +23,7 @@
     </aside>
     <div class="col-sm-12 col-md-6">
       <div class="stores h-100">
-        <p class="col-12 text-center mt-2 mb-0 store-title">
-          Магазины и Награды
-        </p>
+        <p class="col-12 text-center mt-2 mb-0 store-title">Магазины и Награды</p>
         <nav class="flex-row justify-content-between">
           <div class="flex-row store-row">
             @for (activity of activities; track activity.name) {
@@ -50,7 +46,7 @@
   let-notification="notification">
   <div class="justify-content-center" (click)="click ? click() : true">
     <div class="card d-flex align-items-center position-relative">
-      <image
+      <app-image
         [source]="'./assets/resourses/imgs/' + src + '.png'"
         [alt]="name"
         imageClass="card-img-top image-75" />
@@ -60,6 +56,4 @@
   </div>
 </ng-template>
 
-<daily-reward
-  *ngIf="isShowDailyReward"
-  [closePopup]="closePopup"></daily-reward>
+<app-daily-reward *ngIf="isShowDailyReward" [closePopup]="closePopup"></app-daily-reward>

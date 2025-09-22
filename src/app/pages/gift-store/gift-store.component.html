@@ -1,11 +1,11 @@
 <div class="inner-container">
   <h4 class="text-center caption mt-2">
-    Explore the Gift and reap the harvest. Be extremely careful because
-    sometimes there are wildlings here
+    Explore the Gift and reap the harvest. Be extremely careful because sometimes there are
+    wildlings here
   </h4>
   <div class="flex-row harvest-container">
     <div class="col-lg-12 col-md-12">
-      <game-entry-point
+      <app-game-entry-point
         [aiUnits]="aiUnits"
         [gameResultsRedirect]="gameResultsRedirect"
         [userUnits]="userUnits"
@@ -23,11 +23,11 @@
             </button>
           }
         </ng-container>
-      </game-entry-point>
+      </app-game-entry-point>
     </div>
     @if (loot.length) {
       <div class="col-lg-12 col-md-12 mt-3">
-        <display-reward [rewards]="loot"></display-reward>
+        <app-display-reward [rewards]="loot"></app-display-reward>
       </div>
     }
   </div>

@@ -13,22 +13,19 @@
       {{ autoFight + 'f' }}
     </h4>
     <div class="heroes-bar flex-row">
-      <div
-        class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
+      <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
         <ng-container
           [ngTemplateOutlet]="usersTopBar"
           [ngTemplateOutletContext]="{ units: userUnits }"></ng-container>
       </div>
-      <div
-        class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
+      <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
         <div class="col-9">
           <div tooltip="Закончить ход" (click)="finishTurn()">
             <span>{{ turnCount }} / {{ maxTurnCount }}</span>
           </div>
         </div>
       </div>
-      <div
-        class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
+      <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
         <ng-container
           [ngTemplateOutlet]="usersTopBar"
           [ngTemplateOutletContext]="{ units: aiUnits }"></ng-container>
@@ -37,18 +34,17 @@
   }
   <main class="flex-row justify-content-between">
     <div class="col-md-12 col-lg-12 col-xl-8">
-      <basic-game-board
+      <app-basic-game-board
         [gameConfig]="gameConfig"
         [battleMode]="battleMode"
         (moveEntity)="moveEntity($event)"
-        (highlightMakeMove)="highlightMakeMove($event)"></basic-game-board>
+        (highlightMakeMove)="highlightMakeMove($event)"></app-basic-game-board>
     </div>
     <aside class="col-xl-3 col-lg-12 col-md-12 d-flex flex-column mb-3">
       <div
         class="meta-aside mb-3 flex-row justify-content-evenly p-1"
         *ngIf="skillsInAttackBar.length">
-        <ng-container
-          *ngFor="let skill of skillsInAttackBar; trackBy: trackBySkill">
+        <ng-container *ngFor="let skill of skillsInAttackBar; trackBy: trackBySkill">
           <div class="skills-container col-3">
             <div>
               <p class="text-center">{{ skill.name }}</p>
@@ -66,9 +62,7 @@
                     class="skill-disabled"
                     style="top: 0px; left: 0px"
                     *ngIf="skill.remainingCooldown || skill.passive">
-                    <i aria-hidden="true">{{
-                      skill.passive ? 'P' : skill.remainingCooldown
-                    }}</i>
+                    <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                   </div>
                 </div>
               </div>
@@ -80,8 +74,7 @@
         <tabset>
           <tab [heading]="battleMode ? 'Мои герои' : 'Разведчик'" id="tab1">
             <div class="heroes user-heroes m-1">
-              <ng-container
-                *ngFor="let hero of userUnits; trackBy: trackByUnit">
+              <ng-container *ngFor="let hero of userUnits; trackBy: trackByUnit">
                 <ng-container
                   [ngTemplateOutlet]="asideUnits"
                   [ngTemplateOutletContext]="{
@@ -103,12 +96,9 @@
               </ng-container>
             </div>
           </tab>
-          <tab
-            [heading]="battleMode ? 'История боя' : 'История'"
-            class="history-tab">
+          <tab [heading]="battleMode ? 'История боя' : 'История'" class="history-tab">
             <div class="m-1">
-              <ng-container
-                *ngFor="let logRecord of log; trackBy: trackByLogRecord">
+              <ng-container *ngFor="let logRecord of log; trackBy: trackByLogRecord">
                 <p
                   class="log-record"
                   *ngIf="logRecord.message"
@@ -129,12 +119,8 @@
   </main>
   <div class="d-flex">
     @if (!autoFight) {
-      <button class="btn btn-success" (click)="startAutoFight(false)">
-        Auto Play
-      </button>
-      <button
-        class="btn btn-success ms-1"
-        (click)="startAutoFight(false, true)">
+      <button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
+      <button class="btn btn-success ms-1" (click)="startAutoFight(false, true)">
         Skip one turn
       </button>
     }
@@ -142,10 +128,7 @@
   </div>
 </div>
 
-<ng-template
-  #asideUnits
-  let-hero="hero"
-  let-progressbarClass="progressbarClass">
+<ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
   <accordion class="mb-2">
     <accordion-group>
       <div
@@ -163,8 +146,7 @@
                 src="assets/resourses/imgs/icons/move_icon.png"
                 alt="can move"
                 *ngIf="
-                  battleMode &&
-                  (hero.inBattle === true || hero.inBattle === undefined)
+                  battleMode && (hero.inBattle === true || hero.inBattle === undefined)
                     ? battleMode
                     : hero.user
                       ? hero.canMove && hero.health
@@ -175,8 +157,7 @@
                 src="assets/resourses/imgs/icons/attack_icon.png"
                 alt="can attack"
                 *ngIf="
-                  battleMode &&
-                  (hero.inBattle === true || hero.inBattle === undefined)
+                  battleMode && (hero.inBattle === true || hero.inBattle === undefined)
                     ? battleMode
                     : hero.user
                       ? hero.canAttack && hero.health
@@ -191,8 +172,7 @@
               <progressbar
                 *ngIf="
                   battleMode
-                    ? battleMode &&
-                      (hero.inBattle === true || hero.inBattle === undefined)
+                    ? battleMode && (hero.inBattle === true || hero.inBattle === undefined)
                     : hero.user
                 "
                 [max]="hero.maxHealth"
@@ -204,9 +184,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="effects-container mt-1"
-          *ngIf="battleMode ? battleMode : hero.user">
+        <div class="effects-container mt-1" *ngIf="battleMode ? battleMode : hero.user">
           <div
             *ngFor="let effect of hero.effects; trackBy: trackByEffect"
             class="position-relative">
@@ -225,21 +203,15 @@
         ">
         <div class="col-12 stats">
           <p>
-            <img
-              src="assets/resourses/imgs/icons/health_icon.png"
-              alt="health icon" />
+            <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon" />
             <span class="d-block">{{ hero.maxHealth }}</span>
           </p>
           <p>
-            <img
-              src="assets/resourses/imgs/icons/attack_icon.png"
-              alt="attack icon" />
+            <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack icon" />
             <span class="d-block">{{ hero.attack }}</span>
           </p>
           <p>
-            <img
-              src="assets/resourses/imgs/icons/def_icon.png"
-              alt="defence icon" />
+            <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence icon" />
             <span class="d-block">{{ hero.defence }}</span>
           </p>
         </div>
@@ -252,12 +224,8 @@
                 *ngFor="let skill of hero.skills; trackBy: trackBySkill"
                 tooltip="{{ skill.description }}">
                 <img alt="skill" src="{{ skill.imgSrc }}" />
-                <div
-                  class="skill-disabled"
-                  *ngIf="skill.remainingCooldown || skill.passive">
-                  <i aria-hidden="true">{{
-                    skill.passive ? 'P' : skill.remainingCooldown
-                  }}</i>
+                <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
+                  <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
                 </div>
               </div>
             </div>

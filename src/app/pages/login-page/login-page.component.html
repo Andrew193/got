@@ -25,15 +25,10 @@
             placeholder="Password"
             formControlName="password" />
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary mt-2 mb-2"
-          (click)="submit()">
-          Submit
-        </button>
-        <form-errors-container
+        <button type="submit" class="btn btn-primary mt-2 mb-2" (click)="submit()">Submit</button>
+        <app-form-errors-container
           [form]="form"
-          [uiErrorsNames]="onUIFieldsName"></form-errors-container>
+          [uiErrorsNames]="onUIFieldsName"></app-form-errors-container>
       </div>
     </form>
   </main>

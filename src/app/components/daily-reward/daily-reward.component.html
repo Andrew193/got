@@ -1,7 +1,5 @@
 <div class="c-container d-flex align-items-center justify-content-center">
-  <div
-    (appOutsideClick)="closePopup()"
-    class="col-11 inner-container row position-relative">
+  <div (appOutsideClick)="closePopup()" class="col-11 inner-container row position-relative">
     <!-- Hero Preview Section -->
     <div class="position-relative h-100 col-lg-3 col-md-12 col-sm-12">
       <div class="glow-box" (click)="showHeroPreview()">
@@ -10,8 +8,7 @@
     </div>
 
     <!-- Rewards Section or Hero Preview -->
-    <aside
-      class="p-1 h-100 col-lg-9 col-md-12 col-sm-12 d-flex flex-column justify-content-evenly">
+    <aside class="p-1 h-100 col-lg-9 col-md-12 col-sm-12 d-flex flex-column justify-content-evenly">
       <!-- Hero Preview Header and Description -->
       <h1 *ngIf="!isHeroPreview" class="text-center caption">
         Забирай награды каждый день и они будут только расти!!!
@@ -29,9 +26,7 @@
 
       <!-- Hero Preview Details -->
       <div *ngIf="isHeroPreview">
-        <h4
-          id="dialog-sizes-name"
-          class="modal-title text-center w-100 caption mb-2">
+        <h4 id="dialog-sizes-name" class="modal-title text-center w-100 caption mb-2">
           {{ rewardHero.name }}
         </h4>
         <p style="font-weight: bold; color: white">
@@ -40,9 +35,8 @@
 
         <!-- Hero Stats Section -->
         <div class="col-lg-11 col-md-12 col-sm-12 stats h-100 flex-row">
-          <div
-            class="col-12 mt-2 p-2 justify-content-center align-items-center">
-            <stats [selectedHero]="rewardHero"></stats>
+          <div class="col-12 mt-2 p-2 justify-content-center align-items-center">
+            <app-stats [selectedHero]="rewardHero"></app-stats>
           </div>
 
           <!-- Hero Skills Section -->
@@ -54,17 +48,13 @@
                 class="d-grid p-0 gap-2"
                 style="grid-template-columns: 1fr 11fr">
                 <div class="col-1">
-                  <img
-                    [src]="skill.imgSrc"
-                    [alt]="skill.name"
-                    class="skill-preview-icon" />
+                  <img [src]="skill.imgSrc" [alt]="skill.name" class="skill-preview-icon" />
                 </div>
                 <div class="col-11">
                   <span class="defence-color"
                     >{{ skill.name }} {{ skill.passive ? '( P )' : '' }}</span
                   >
-                  <app-effects-highlighter
-                    [text]="skill.description"></app-effects-highlighter>
+                  <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
                 </div>
               </div>
             </div>

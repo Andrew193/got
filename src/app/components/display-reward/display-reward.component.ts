@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  Input,
-  model,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DisplayReward } from '../../services/reward/reward.service';
 import { trackByIndex } from '../../helpers';

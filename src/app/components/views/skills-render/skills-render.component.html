@@ -2,9 +2,8 @@
   <p class="text-center fw-bold mb-0">Skills</p>
   <div *ngFor="let skill of selectedHero.skills; trackBy: trackBySkill">
     <div class="flex-row flex-nowrap">
-      <image [source]="skill.imgSrc" [alt]="skill.name" />
-      <app-effects-highlighter
-        [text]="skill.description"></app-effects-highlighter>
+      <app-image [source]="skill.imgSrc" [alt]="skill.name" />
+      <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
     </div>
   </div>
 </div>

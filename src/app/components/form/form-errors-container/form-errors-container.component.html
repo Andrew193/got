@@ -6,12 +6,9 @@
   class="alert alert-danger">
   <span>Please, fix following error(s): </span>
   <ul class="pl-30 mt-10">
-    <ng-container
-      *ngFor="let error of errors; let i = index; trackBy: trackByIndex">
-      <li *ngIf="isRequiredErrors && i === 0">
-        Fields marked with an asterisk (*) are required.
-      </li>
-      <error-field [fieldToValidate]="error"></error-field>
+    <ng-container *ngFor="let error of errors; let i = index; trackBy: trackByIndex">
+      <li *ngIf="isRequiredErrors && i === 0">Fields marked with an asterisk (*) are required.</li>
+      <app-error-field [fieldToValidate]="error"></app-error-field>
     </ng-container>
   </ul>
 </div>

@@ -40,10 +40,7 @@
             <mat-form-field class="w-100">
               <mat-label>To</mat-label>
               <mat-select formControlName="to">
-                @for (
-                  c of helper.allowedToOptions(model.controls.from.value);
-                  track c
-                ) {
+                @for (c of helper.allowedToOptions(model.controls.from.value); track c) {
                   <mat-option [value]="c">{{ c }}</mat-option>
                 }
               </mat-select>
@@ -74,18 +71,14 @@
         }
 
         @if (model.valid && result > 0) {
-          <button
-            mat-fab
-            extended
-            class="mb-2"
-            (click)="exchangeCurrency(result)">
+          <button mat-fab extended class="mb-2" (click)="exchangeCurrency(result)">
             <mat-icon>currency_exchange</mat-icon>
             Exchange
           </button>
         } @else {
-          <form-errors-container
+          <app-form-errors-container
             [form]="model"
-            [uiErrorsNames]="helper.uiErrorsNames"></form-errors-container>
+            [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
         }
       </div>
     </aside>
@@ -95,10 +88,7 @@
         <form [formGroup]="depositModel" class="w-100">
           <div class="row">
             <p class="col-2 mb-0 deposit-label">Duration:</p>
-            <app-slider
-              class="col-10"
-              [controlName]="'days'"
-              [options]="helper.depositOptions" />
+            <app-slider class="col-10" [controlName]="'days'" [options]="helper.depositOptions" />
           </div>
           <div class="row m-0 gap-2">
             <div class="col p-0">
@@ -126,19 +116,15 @@
         </form>
 
         @if (depositModel.valid) {
-          <button
-            mat-fab
-            extended
-            class="mb-2"
-            (click)="exchangeCurrency(result)">
+          <button mat-fab extended class="mb-2" (click)="exchangeCurrency(result)">
             <mat-icon>currency_exchange</mat-icon>
             Deposit
           </button>
         } @else {
-          <form-errors-container
+          <app-form-errors-container
             class="w-100"
             [form]="depositModel"
-            [uiErrorsNames]="helper.uiErrorsNames"></form-errors-container>
+            [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
         }
       </div>
     </aside>
