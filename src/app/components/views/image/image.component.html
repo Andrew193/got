@@ -1,9 +1,10 @@
-<img *ngIf="loading" src="/assets/loader.png" alt="loading" class="loader"/>
-<img [hidden]="loading"
-     [ngClass]="{
-     'fix-size': useFixSize
-     }"
-     [class]="imageClass"
-     [alt]="alt"
-     (load)="onLoad()"
-     [src]="source" />
+<img *ngIf="loading" src="/assets/loader.png" alt="loading" class="loader" />
+<img
+  [hidden]="loading"
+  [ngClass]="{
+    'fix-size': useFixSize,
+  }"
+  [class]="imageClass"
+  [alt]="alt"
+  (load)="onLoad()"
+  [src]="source" />

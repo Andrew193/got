@@ -8,23 +8,27 @@
     <ng-template #footerHost></ng-template>
   </div>
   <div class="row store-row">
-    <h2 class="col-12 text-center mt-2 mb-0 store-title modal-title">Welcome back. Check these activities out!!!</h2>
+    <h2 class="col-12 text-center mt-2 mb-0 store-title modal-title">
+      Welcome back. Check these activities out!!!
+    </h2>
 
     @for (activity of activities; track activity.name) {
       <div
         [class.claimed]="activity.flipped"
-        class="position-relative p-0 flip-items-inner-container" style="height: 150px">
+        class="position-relative p-0 flip-items-inner-container"
+        style="height: 150px">
         <div class="flip-card" (click)="helper.flipActivity($index)">
           <div class="card-front">
             <div class="card">
               <image
                 [source]="activity.poster.src"
                 [imageClass]="'image-150'"
-                [alt]="activity.poster.alt"
-              />
+                [alt]="activity.poster.alt" />
             </div>
             <div class="position-absolute card-title banner">
-              <p class="text-center fade-black-bg w-100 mb-0">{{ activity.name }}</p>
+              <p class="text-center fade-black-bg w-100 mb-0">
+                {{ activity.name }}
+              </p>
             </div>
           </div>
           <div class="card-back">
@@ -38,22 +42,32 @@
   <div class="row">
     <div class="col-2 d-none d-md-block" style="min-width: 210px">
       <div class="glow-box step-container">
-        <div class="hero-in-frame text-center hero position-relative" id="hero-in-frame">
+        <div
+          class="hero-in-frame text-center hero position-relative"
+          id="hero-in-frame">
           <image
-            [source]="'./assets/resourses/imgs/heroes/dp/ProtectoroftheRealm_DaenarysTargaryen.png'"
+            [source]="
+              './assets/resourses/imgs/heroes/dp/ProtectoroftheRealm_DaenarysTargaryen.png'
+            "
             [imageClass]="'image-350-h'"
-            [alt]="'gift_store'"
-          />
+            [alt]="'gift_store'" />
         </div>
       </div>
     </div>
 
     <aside class="col step-rewards position-relative">
       <div class="position-relative row">
-        <p class="text col-10">You can collect rewards for playing online. Every session counts, you don't have to play
-          24 hours straight to get all the rewards.</p>
-        <p class="online-time col-2">Online: <span
-          style="color: darkred">{{ timeService.convertToHours(stepsRewardConfig.time) }}</span> hour(s)</p>
+        <p class="text col-10">
+          You can collect rewards for playing online. Every session counts, you
+          don't have to play 24 hours straight to get all the rewards.
+        </p>
+        <p class="online-time col-2">
+          Online:
+          <span style="color: darkred">{{
+            timeService.convertToHours(stepsRewardConfig.time)
+          }}</span>
+          hour(s)
+        </p>
       </div>
       <app-rewards-calendar
         [rewardPool]="steps"
@@ -62,34 +76,50 @@
         [claimed]="helper.claimed"
         [rewardCoins]="dailyRewardService.rewardCoins"
         [rewardBackLabels]="helper.getLabels()"
-        [chainMode]="true"
-      ></app-rewards-calendar>
+        [chainMode]="true"></app-rewards-calendar>
 
       <div class="row">
-        <div class="col-auto" style="min-width: 150px;">
-          <image source="./assets/resourses/imgs/icons/money.png" alt="Big reward"
-                 [imageClass]="'image-150 border-radius-10p'"/>
+        <div class="col-auto" style="min-width: 150px">
+          <image
+            source="./assets/resourses/imgs/icons/money.png"
+            alt="Big reward"
+            [imageClass]="'image-150 border-radius-10p'" />
         </div>
         <div class="col flex-grow-1 position-relative">
           <p class="text">
-            You can get an additional bonus for staying in the Night Watch for: <b style="color: darkred">{{played.diffInDays}}</b> day(s).
-            Reward: <b style="color: darkred">{{(helper.loyaltyRewardBoostedBy(played.diffInDays) * 100) | number}}%</b>
+            You can get an additional bonus for staying in the Night Watch for:
+            <b style="color: darkred">{{ played.diffInDays }}</b> day(s).
+            Reward:
+            <b style="color: darkred"
+              >{{
+                helper.loyaltyRewardBoostedBy(played.diffInDays) * 100 | number
+              }}%</b
+            >
           </p>
           <div>
-            @let boostedLoyaltyBonus = helper.boostedLoyaltyBonus(played.diffInDays);
+            @let boostedLoyaltyBonus =
+              helper.boostedLoyaltyBonus(played.diffInDays);
             @for (reward of boostedLoyaltyBonus; track reward.class) {
               <app-reward-coin [coinConfig]="reward"></app-reward-coin>
             }
           </div>
           @if (canGetLoyaltyBonus) {
-            <button class="btn btn-primary" (click)="helper.getLoyaltyBonus(boostedLoyaltyBonus)">Claim reward</button>
+            <button
+              class="btn btn-primary"
+              (click)="helper.getLoyaltyBonus(boostedLoyaltyBonus)">
+              Claim reward
+            </button>
           } @else {
-            <p class="text" style="margin-top: 12px">That is all for today. Come back tomorrow and get even more!!!</p>
+            <p class="text" style="margin-top: 12px">
+              That is all for today. Come back tomorrow and get even more!!!
+            </p>
           }
         </div>
       </div>
 
-      <small class="text tip border-radius-none">*Ravens bring news every 10 minutes.</small>
+      <small class="text tip border-radius-none"
+        >*Ravens bring news every 10 minutes.</small
+      >
     </aside>
   </div>
 </div>

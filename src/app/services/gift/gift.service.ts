@@ -1,23 +1,28 @@
-import {Injectable} from '@angular/core';
-import {ApiService} from "../abstract/api/api.service";
-import {GiftConfig} from "../../models/gift.model";
-import {IdEntity} from "../../models/common.model";
+import { Injectable } from '@angular/core';
+import { ApiService } from '../abstract/api/api.service';
+import { GiftConfig } from '../../models/gift.model';
+import { IdEntity } from '../../models/common.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GiftService extends ApiService<GiftConfig> {
-  private url = "/giftTrip";
+  private url = '/giftTrip';
 
   getConfig(callback: (config: GiftConfig, userId: string) => void) {
-    return this.http.get<GiftConfig[]>(this.url, {
-      params: {
-        userId: this.userId
-      }
-    }).pipe(this.basicResponseTapParser(callback))
+    return this.http
+      .get<GiftConfig[]>(this.url, {
+        params: {
+          userId: this.userId,
+        },
+      })
+      .pipe(this.basicResponseTapParser(callback));
   }
 
-  claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {
-    this.putPostCover(giftConfig, {url: this.url, callback});
+  claimGiftReward(
+    giftConfig: GiftConfig,
+    callback: (newConfig: IdEntity) => void
+  ) {
+    this.putPostCover(giftConfig, { url: this.url, callback });
   }
 }

@@ -1,40 +1,39 @@
-import {inject, Injectable} from '@angular/core';
-import {PreloadingStrategy, Route} from "@angular/router";
-import {filter, Observable, of, switchMap, take} from 'rxjs';
-import {UsersService} from "../users/users.service";
-import {frontRoutes} from "../../constants";
+import { inject, Injectable } from '@angular/core';
+import { PreloadingStrategy, Route } from '@angular/router';
+import { filter, Observable, of, switchMap, take } from 'rxjs';
+import { UsersService } from '../users/users.service';
+import { frontRoutes } from '../../constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PreloadingStrategyService implements PreloadingStrategy {
   private userService = inject(UsersService);
   private readonly user = this.userService.$user;
 
-  constructor() {
-  }
+  constructor() {}
 
   preload(route: Route, load: () => Observable<any>): Observable<any> {
     const mockConfig = {
       rest: [frontRoutes.taverna],
-      empty: [] as string[]
-    }
+      empty: [] as string[],
+    };
 
     const fakeCheck = () => {
       return this.user.pipe(
-        filter((value) => !!value),
+        filter(value => !!value),
         take(1)
-      )
-    }
+      );
+    };
 
     return fakeCheck().pipe(
-      switchMap((response) => {
-        const key = response?.login
+      switchMap(response => {
+        const key = response?.login;
 
-        const userConfig  = mockConfig[key === 'rest' ? key : 'empty'];
+        const userConfig = mockConfig[key === 'rest' ? key : 'empty'];
 
         return userConfig.includes(route.path || '') ? load() : of(null);
       })
-    )
+    );
   }
 }

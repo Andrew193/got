@@ -1,5 +1,5 @@
-@use "../../../../assets/resourses/styles/mixins";
-@use "../../../../assets/resourses/styles/vars";
+@use '../../../../assets/resourses/styles/mixins';
+@use '../../../../assets/resourses/styles/vars';
 
 .header-avatar-popper {
   min-width: 210px;
@@ -14,7 +14,8 @@ nav {
   color: white;
   margin-bottom: unset;
   background-size: cover;
-  background: url("../../../../assets/resourses/imgs/small-forest.jpeg") no-repeat top;
+  background: url('../../../../assets/resourses/imgs/small-forest.jpeg')
+    no-repeat top;
   box-shadow: vars.$box-shadow;
 
   span {

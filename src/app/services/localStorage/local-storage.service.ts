@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {fakeUser} from "../../constants";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { fakeUser } from '../../constants';
 
 function isJsonString(jsonString: string) {
   try {
@@ -12,17 +12,20 @@ function isJsonString(jsonString: string) {
 }
 
 class BasicLocalStorage {
-  prefix = "got_"
+  prefix = 'got_';
   names = {
-    user: "user",
-    localOnlineBuffer: "localOnlineBuffer"
-  }
+    user: 'user',
+    localOnlineBuffer: 'localOnlineBuffer',
+  };
 }
 
 export class FakeLocalStorage extends BasicLocalStorage {
-  store: Map<string, string | Record<string, any>> = new Map<string, string | Record<string, any>>([
+  store: Map<string, string | Record<string, any>> = new Map<
+    string,
+    string | Record<string, any>
+  >([
     ['localOnlineBuffer', '600'],
-    [this.names.user, fakeUser]
+    [this.names.user, fakeUser],
   ]);
 
   getItem(key: string) {
@@ -30,7 +33,7 @@ export class FakeLocalStorage extends BasicLocalStorage {
   }
 
   setItem(key: string, value: string | Record<string, any>) {
-    this.store.set(key, value)
+    this.store.set(key, value);
   }
 
   removeItem(key: string) {
@@ -39,7 +42,7 @@ export class FakeLocalStorage extends BasicLocalStorage {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocalStorageService extends BasicLocalStorage {
   updateLocalStorage = new BehaviorSubject(new Date().getMilliseconds());
@@ -50,11 +53,12 @@ export class LocalStorageService extends BasicLocalStorage {
     if (item) {
       return isJsonString(item) ? JSON.parse(item) : item;
     }
-    return "";
+    return '';
   }
 
   setItem(key: string, value: any) {
-    const valueToSet = typeof value === "object" ? JSON.stringify(value) : value;
+    const valueToSet =
+      typeof value === 'object' ? JSON.stringify(value) : value;
     localStorage.setItem(this.getToken(key), valueToSet);
     this.updateLocalStorage.next(new Date().getMilliseconds());
   }

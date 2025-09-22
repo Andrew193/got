@@ -1,8 +1,9 @@
-@use "../../../../assets/resourses/styles/vars";
-@use "../../../../assets/resourses/styles/animations" as eff;
+@use '../../../../assets/resourses/styles/vars';
+@use '../../../../assets/resourses/styles/animations' as eff;
 
 .inner-container {
-  background: url("../../../../assets/resourses/imgs/background/wall.jpeg") no-repeat center;
+  background: url('../../../../assets/resourses/imgs/background/wall.jpeg')
+    no-repeat center;
   background-size: cover;
   min-height: 100%;
   box-shadow: vars.$box-shadow;
@@ -63,7 +64,7 @@ aside {
   color: red;
   bottom: -5px;
   position: absolute;
-  right: calc(var(--bs-gutter-x) * .5);
+  right: calc(var(--bs-gutter-x) * 0.5);
 }
 
 .footer-cover {
@@ -73,5 +74,7 @@ aside {
 }
 
 @keyframes fadeInHero {
-  to { opacity: 1; }
+  to {
+    opacity: 1;
+  }
 }

@@ -1,10 +1,10 @@
-import {Skill} from "./models/skill.model";
-import {Unit} from "./models/unit.model";
-import {route} from "./pages/lobby/lobby.component";
-import {Effect} from "./models/effect.model";
+import { Skill } from './models/skill.model';
+import { Unit } from './models/unit.model';
+import { route } from './pages/lobby/lobby.component';
+import { Effect } from './models/effect.model';
 
 export function createDeepCopy<T>(object: T) {
-  return JSON.parse(JSON.stringify(object)) as T
+  return JSON.parse(JSON.stringify(object)) as T;
 }
 
 export function trackByIndex(index: number) {
@@ -31,6 +31,6 @@ export function trackByRoute(index: number, route: route) {
   return route.name + index;
 }
 
-export function trackByLevel(index: number, content: {level: number}) {
+export function trackByLevel(index: number, content: { level: number }) {
   return content.level + index;
 }

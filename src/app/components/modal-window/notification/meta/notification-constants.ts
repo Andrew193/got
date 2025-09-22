@@ -1,4 +1,4 @@
-import {NotificationActivity} from "../../../../models/notification.model";
+import { NotificationActivity } from '../../../../models/notification.model';
 
 export const NotificationActivities: NotificationActivity[] = [
   {
@@ -6,26 +6,26 @@ export const NotificationActivities: NotificationActivity[] = [
     flipped: false,
     poster: {
       src: './assets/resourses/imgs/icons/food.png',
-      alt: 'gift_store'
+      alt: 'gift_store',
     },
-    desc: 'You can get cooper, gold, silver and chests!!!'
+    desc: 'You can get cooper, gold, silver and chests!!!',
   },
   {
     name: 'Daily reward',
     flipped: false,
     poster: {
       src: './assets/resourses/imgs/UI_Avatar_Unit_Alvar.png',
-      alt: 'daily_reward'
+      alt: 'daily_reward',
     },
-    desc: 'You can get your reward. Such as coins, scrolls and books!!!'
+    desc: 'You can get your reward. Such as coins, scrolls and books!!!',
   },
   {
     name: 'Daily boss',
     flipped: false,
     poster: {
       src: './assets/resourses/imgs/UI_Avatar_Unit_PolarBear.png',
-      alt: 'daily_boss'
+      alt: 'daily_boss',
     },
-    desc: 'You can get even more resources here. Especially if you kill the boss!!'
-  }
-]
+    desc: 'You can get even more resources here. Especially if you kill the boss!!',
+  },
+];

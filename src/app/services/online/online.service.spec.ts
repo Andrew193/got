@@ -1,12 +1,15 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {OnlineService} from './online.service';
-import {FakeLocalStorage, LocalStorageService} from "../localStorage/local-storage.service";
-import {UsersService} from "../users/users.service";
-import {of} from "rxjs";
-import {createDeepCopy} from "../../helpers";
-import {fakeUser} from "../../constants";
-import {TIME} from "./online.contrants";
+import { OnlineService } from './online.service';
+import {
+  FakeLocalStorage,
+  LocalStorageService,
+} from '../localStorage/local-storage.service';
+import { UsersService } from '../users/users.service';
+import { of } from 'rxjs';
+import { createDeepCopy } from '../../helpers';
+import { fakeUser } from '../../constants';
+import { TIME } from './online.contrants';
 
 describe('OnlineService', () => {
   let onlineService: OnlineService;
@@ -16,18 +19,18 @@ describe('OnlineService', () => {
     const user = createDeepCopy(fakeUser);
 
     userServiceSpy = jasmine.createSpyObj('UsersService', ['updateOnline']);
-    userServiceSpy.updateOnline.and.returnValue(of(user))
+    userServiceSpy.updateOnline.and.returnValue(of(user));
 
     TestBed.configureTestingModule({
       providers: [
         OnlineService,
-        {provide: LocalStorageService, useClass: FakeLocalStorage},
-        {provide: UsersService, useValue: userServiceSpy}
-      ]
-    })
+        { provide: LocalStorageService, useClass: FakeLocalStorage },
+        { provide: UsersService, useValue: userServiceSpy },
+      ],
+    });
 
     onlineService = TestBed.inject(OnlineService);
-  })
+  });
 
   it('OnlineService should be created', () => {
     expect(onlineService).toBeTruthy();
@@ -43,7 +46,7 @@ describe('OnlineService', () => {
     onlineService.trackOnlineTimer();
 
     //Add buffer to the online time
-    expect(userServiceSpy.updateOnline).toHaveBeenCalledWith({time: buffer});
+    expect(userServiceSpy.updateOnline).toHaveBeenCalledWith({ time: buffer });
 
     //Drop buffer after this
     buffer = onlineService.localBuffer;
@@ -61,8 +64,8 @@ describe('OnlineService', () => {
     //4) Get to 10 minutes
     tick(TIME.oneMinuteMilliseconds * 9);
     expect(userServiceSpy.updateOnline).toHaveBeenCalledWith(
-      jasmine.objectContaining({time: 600}),
+      jasmine.objectContaining({ time: 600 }),
       true
     );
-  }))
+  }));
 });

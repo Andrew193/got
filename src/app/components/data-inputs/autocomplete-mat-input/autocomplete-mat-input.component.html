@@ -6,9 +6,14 @@
       [formControl]="control"
       matInput
       [matAutocomplete]="auto"
-      [placeholder]="placeholder">
+      [placeholder]="placeholder" />
     <mat-autocomplete autoActiveFirstOption="true" #auto="matAutocomplete">
-      <mat-option *ngFor='let option of filteredOptions | async; trackBy trackByStringContent' [value]="option">
+      <mat-option
+        *ngFor="
+          let option of filteredOptions | async;
+          trackBy: trackByStringContent
+        "
+        [value]="option">
         {{ option }}
       </mat-option>
     </mat-autocomplete>

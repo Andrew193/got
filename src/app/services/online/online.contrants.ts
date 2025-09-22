@@ -3,4 +3,4 @@ export const TIME = {
   tenMinutesMilliseconds: 600000,
   oneMinuteSeconds: 60,
   tenMinuteSeconds: 600,
-}
+};

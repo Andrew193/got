@@ -1,17 +1,24 @@
-import {Component, input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {ExtendedModalConfig, ModalStrategy} from "../modal-interfaces";
+import {
+  Component,
+  input,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { ExtendedModalConfig, ModalStrategy } from '../modal-interfaces';
 
 @Component({
   selector: 'app-dynamic-modal-host',
   imports: [],
   templateUrl: './dynamic-host.component.html',
-  styleUrl: './dynamic-host.component.scss'
+  styleUrl: './dynamic-host.component.scss',
 })
 export class DynamicHostComponent implements OnInit {
   strategy = input.required<ModalStrategy>();
   strategyModalData = input.required<ExtendedModalConfig>();
 
-  @ViewChild('vc', { read: ViewContainerRef, static: true }) vc!: ViewContainerRef;
+  @ViewChild('vc', { read: ViewContainerRef, static: true })
+  vc!: ViewContainerRef;
 
   ngOnInit() {
     this.createCustomModalComponent(this.strategy());
@@ -19,6 +26,6 @@ export class DynamicHostComponent implements OnInit {
 
   createCustomModalComponent(strategy: ModalStrategy) {
     this.vc.clear();
-    const componentRef = strategy.render(this.vc, this.strategyModalData())
+    const componentRef = strategy.render(this.vc, this.strategyModalData());
   }
 }

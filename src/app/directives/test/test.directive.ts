@@ -1,15 +1,24 @@
-import {Directive, effect, input, TemplateRef, ViewContainerRef} from '@angular/core';
+import {
+  Directive,
+  effect,
+  input,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 
 @Directive({
   selector: '[appRepeat]',
-  standalone: true
+  standalone: true,
 })
 export class TestDirective {
-  text = input<string | null | undefined>('', {alias: 'appRepeatText'});
-  tail = input<string>('', {alias: 'appRepeatTail'});
+  text = input<string | null | undefined>('', { alias: 'appRepeatText' });
+  tail = input<string>('', { alias: 'appRepeatTail' });
   appRepeat = input<number | null | undefined>(null);
 
-  constructor(private tpl: TemplateRef<any>, private vcr: ViewContainerRef) {
+  constructor(
+    private tpl: TemplateRef<any>,
+    private vcr: ViewContainerRef
+  ) {
     effect(() => {
       this.render(this.appRepeat() || 0, this.text() || '', this.tail() || '');
     });
@@ -21,7 +30,7 @@ export class TestDirective {
       this.vcr.createEmbeddedView(this.tpl, {
         $implicit: i,
         message: _message,
-        tail: _tail
+        tail: _tail,
       });
     }
   }

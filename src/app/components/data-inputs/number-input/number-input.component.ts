@@ -1,7 +1,17 @@
-import {ChangeDetectionStrategy, Component, effect, input} from '@angular/core';
-import {MatFormField, MatInput, MatLabel} from "@angular/material/input";
-import {ControlContainer, FormGroupDirective, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ViewProviderComponent} from "../../abstract/abstract-control/view-provider/view-provider.component";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  input,
+} from '@angular/core';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import {
+  ControlContainer,
+  FormGroupDirective,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ViewProviderComponent } from '../../abstract/abstract-control/view-provider/view-provider.component';
 
 @Component({
   selector: 'app-number-input',
@@ -10,12 +20,14 @@ import {ViewProviderComponent} from "../../abstract/abstract-control/view-provid
     MatInput,
     MatLabel,
     MatFormField,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './number-input.component.html',
-  viewProviders: [{provide: ControlContainer, useExisting: FormGroupDirective}],
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './number-input.component.scss'
+  styleUrl: './number-input.component.scss',
 })
 export class NumberInputComponent extends ViewProviderComponent {
   max = input<number>(999999);
@@ -29,7 +41,7 @@ export class NumberInputComponent extends ViewProviderComponent {
       const composed = Validators.compose([...existing, Validators.max(m)]);
       this.control.setValidators(composed);
 
-      this.control.updateValueAndValidity({emitEvent: false});
+      this.control.updateValueAndValidity({ emitEvent: false });
     });
   }
 }

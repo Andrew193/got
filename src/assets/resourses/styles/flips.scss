@@ -1,6 +1,6 @@
-@use "./vars";
-@use "./mixins";
-@use "./animations" as eff;
+@use './vars';
+@use './mixins';
+@use './animations' as eff;
 
 .flip-items-container {
   background-color: vars.$background-color-main;
@@ -35,7 +35,9 @@
     border-radius: 5px;
 
     border: 2px solid rgba(255, 215, 0, 0.85);
-    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.15), 0 10px 20px rgba(0,0,0,.35);
+    box-shadow:
+      0 0 0 2px rgba(255, 215, 0, 0.15),
+      0 10px 20px rgba(0, 0, 0, 0.35);
   }
 
   .flip-items-inner-container.claimed .flip-card {
@@ -44,7 +46,11 @@
   }
 
   .flip-items-inner-container.claimed .card-back {
-    @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.6s, $animation-delay: 1s);
+    @include eff.shine-sweep(
+      $name: shineSweep-dr,
+      $duration: 2.6s,
+      $animation-delay: 1s
+    );
   }
 
   .flip-card.no-shine {

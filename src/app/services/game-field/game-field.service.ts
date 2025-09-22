@@ -1,14 +1,14 @@
-import {inject, Injectable} from '@angular/core';
-import {AbstractFieldService} from "../abstract/field/abstract-field.service";
-import {GameService} from "../game-action/game.service";
-import {Skill} from "../../models/skill.model";
-import {Unit} from "../../models/unit.model";
-import {getDiagonals} from "../../constants";
-import {Position} from "../../models/field.model";
-import {NumbersService} from "../numbers/numbers.service";
+import { inject, Injectable } from '@angular/core';
+import { AbstractFieldService } from '../abstract/field/abstract-field.service';
+import { GameService } from '../game-action/game.service';
+import { Skill } from '../../models/skill.model';
+import { Unit } from '../../models/unit.model';
+import { getDiagonals } from '../../constants';
+import { Position } from '../../models/field.model';
+import { NumbersService } from '../numbers/numbers.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameFieldService extends AbstractFieldService {
   private numberService = inject(NumbersService);
@@ -18,29 +18,57 @@ export class GameFieldService extends AbstractFieldService {
   }
 
   chooseAiSkill(skills: Skill[]): Skill {
-    const possibleActiveSkill = skills.find((skill) => skill.cooldown && !skill.remainingCooldown)
-    return possibleActiveSkill || (skills.find((skill) => !skill.cooldown) as Skill);
+    const possibleActiveSkill = skills.find(
+      skill => skill.cooldown && !skill.remainingCooldown
+    );
+    return (
+      possibleActiveSkill || (skills.find(skill => !skill.cooldown) as Skill)
+    );
   }
 
-  getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number }) {
-    const fixedDefence = this.gameActionService.getFixedDefence(unitConfig.dmgTaker.defence, unitConfig.dmgTaker);
-    const fixedAttack = this.gameActionService.getFixedAttack(config.attack, unitConfig.attackDealer);
+  getDamage(
+    unitConfig: { dmgTaker: Unit; attackDealer: Unit },
+    config: { attack: number }
+  ) {
+    const fixedDefence = this.gameActionService.getFixedDefence(
+      unitConfig.dmgTaker.defence,
+      unitConfig.dmgTaker
+    );
+    const fixedAttack = this.gameActionService.getFixedAttack(
+      config.attack,
+      unitConfig.attackDealer
+    );
     const blockedDamage = fixedDefence * 0.4;
     if (blockedDamage - 200 > fixedAttack) {
       return +(100 + this.numberService.getRandomInt(10, 70)).toFixed(0);
     } else {
-      const fixedDmg = !!unitConfig.dmgTaker.dmgReducedBy ? (fixedAttack - blockedDamage) - ((fixedAttack - blockedDamage) * unitConfig.dmgTaker.dmgReducedBy) : fixedAttack - blockedDamage
+      const fixedDmg = !!unitConfig.dmgTaker.dmgReducedBy
+        ? fixedAttack -
+          blockedDamage -
+          (fixedAttack - blockedDamage) * unitConfig.dmgTaker.dmgReducedBy
+        : fixedAttack - blockedDamage;
       return +(fixedDmg + this.numberService.getRandomInt(30, 100)).toFixed(0);
     }
   }
 
-  getShortestPathCover(grid: number[][], start: Position, end: Position, removeStart = false, removeEnd = false, checkDiagonals = false) {
+  getShortestPathCover(
+    grid: number[][],
+    start: Position,
+    end: Position,
+    removeStart = false,
+    removeEnd = false,
+    checkDiagonals = false
+  ) {
     const path = this.shortestPath(grid, start, end, checkDiagonals);
     if (removeStart) {
-      return path.filter((position) => position.j !== start.j || position.i !== start.i)
+      return path.filter(
+        position => position.j !== start.j || position.i !== start.i
+      );
     }
     if (removeEnd) {
-      return path.filter((position) => position.i !== end.i || position.j !== end.j)
+      return path.filter(
+        position => position.i !== end.i || position.j !== end.j
+      );
     }
     return path;
   }
@@ -68,17 +96,23 @@ export class GameFieldService extends AbstractFieldService {
       // Check possible moves (up, down, left, right)
       const directions = getDiagonals(true);
 
-      for (const {di, dj} of directions) {
+      for (const { di, dj } of directions) {
         const newI = current!.i + di;
         const newJ = current!.j + dj;
 
         // Ensure the new position is within bounds and not blocked or visited
         if (newI >= 0 && newI < rows && newJ >= 0 && newJ < cols) {
-          if ((grid[newI][newJ] === 0 || (newI === target.i && newJ === target.j)) && !visited.has(positionKey({
-            i: newI,
-            j: newJ
-          }))) {
-            queue.push({i: newI, j: newJ});
+          if (
+            (grid[newI][newJ] === 0 ||
+              (newI === target.i && newJ === target.j)) &&
+            !visited.has(
+              positionKey({
+                i: newI,
+                j: newJ,
+              })
+            )
+          ) {
+            queue.push({ i: newI, j: newJ });
           }
         }
       }
@@ -87,10 +121,15 @@ export class GameFieldService extends AbstractFieldService {
     return false; // Target cannot be reached
   }
 
-  private shortestPath(grid: any[], start: Position, end: Position, checkDiagonals = false): Position[] {
+  private shortestPath(
+    grid: any[],
+    start: Position,
+    end: Position,
+    checkDiagonals = false
+  ): Position[] {
     const rows = grid.length;
     const cols = grid[0].length;
-    const queue = [{position: start, path: [start]}];
+    const queue = [{ position: start, path: [start] }];
     const visited = new Set();
 
     const directions = getDiagonals(checkDiagonals);
@@ -100,8 +139,9 @@ export class GameFieldService extends AbstractFieldService {
 
     while (queue.length > 0) {
       // @ts-ignore
-      const {position, path} = queue.shift();
-      const distanceToEnd = Math.abs(position.i - end.i) + Math.abs(position.j - end.j);
+      const { position, path } = queue.shift();
+      const distanceToEnd =
+        Math.abs(position.i - end.i) + Math.abs(position.j - end.j);
 
       if (distanceToEnd < minDistance) {
         closestPosition = position;
@@ -112,13 +152,20 @@ export class GameFieldService extends AbstractFieldService {
         return path;
       }
 
-      for (const {di, dj} of directions) {
+      for (const { di, dj } of directions) {
         const i = position.i + di;
         const j = position.j + dj;
 
-        if (i >= 0 && i < rows && j >= 0 && j < cols && grid[i][j] !== 1 && !visited.has(`${i},${j}`)) {
-          const newPath = [...path, {i, j}];
-          queue.push({position: {i, j}, path: newPath});
+        if (
+          i >= 0 &&
+          i < rows &&
+          j >= 0 &&
+          j < cols &&
+          grid[i][j] !== 1 &&
+          !visited.has(`${i},${j}`)
+        ) {
+          const newPath = [...path, { i, j }];
+          queue.push({ position: { i, j }, path: newPath });
           visited.add(`${i},${j}`);
         }
       }
@@ -127,4 +174,3 @@ export class GameFieldService extends AbstractFieldService {
     return this.shortestPath(grid, start, closestPosition, checkDiagonals);
   }
 }
-

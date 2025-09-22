@@ -1,31 +1,40 @@
 <div class="lobby-container container-fluid">
-  <button appHighlight="green" testColor="black" #directive='appHighlight'>click</button>
+  <button appHighlight="green" testColor="black" #directive="appHighlight">
+    click
+  </button>
   <div *appRepeat="5; text: 'Привет'; let i; let m = message; let t = tail">
-    #{{ i }} — {{ m }} - {{t}}
+    #{{ i }} — {{ m }} - {{ t }}
   </div>
 
   <main class="row mt-4">
     <aside class="col-sm-12 col-md-6 shadow-none">
       <ul class="nav flex-column list-group">
-        <li class="nav-item list-group-item" *ngFor="let route of pageRoutes; trackBy trackByRoute">
+        <li
+          class="nav-item list-group-item"
+          *ngFor="let route of pageRoutes; trackBy: trackByRoute">
           <a [routerLink]="route.url" class="list-group-item">
-                        <span>
-                          <image [source]="'assets/resourses/imgs/nav_icons/' + route.src" [alt]="route.name"></image>
-                          {{ route.name }}
-                        </span>
+            <span>
+              <image
+                [source]="'assets/resourses/imgs/nav_icons/' + route.src"
+                [alt]="route.name"></image>
+              {{ route.name }}
+            </span>
           </a>
         </li>
       </ul>
     </aside>
     <div class="col-sm-12 col-md-6">
       <div class="stores h-100">
-        <p class="col-12 text-center mt-2 mb-0 store-title">Магазины и Награды</p>
+        <p class="col-12 text-center mt-2 mb-0 store-title">
+          Магазины и Награды
+        </p>
         <nav class="flex-row justify-content-between">
           <div class="flex-row store-row">
-          @for (activity of activities; track activity.name) {
-            <ng-container [ngTemplateOutlet]="storeTemplate"
-                          [ngTemplateOutletContext]="activity"/>
-          }
+            @for (activity of activities; track activity.name) {
+              <ng-container
+                [ngTemplateOutlet]="storeTemplate"
+                [ngTemplateOutletContext]="activity" />
+            }
           </div>
         </nav>
       </div>
@@ -33,18 +42,24 @@
   </main>
 </div>
 
-<ng-template #storeTemplate
-             let-name="name"
-             let-src="src"
-             let-click="click"
-             let-notification="notification">
+<ng-template
+  #storeTemplate
+  let-name="name"
+  let-src="src"
+  let-click="click"
+  let-notification="notification">
   <div class="justify-content-center" (click)="click ? click() : true">
     <div class="card d-flex align-items-center position-relative">
-      <image [source]="'./assets/resourses/imgs/'+src+'.png'" [alt]="name" imageClass="card-img-top image-75"/>
+      <image
+        [source]="'./assets/resourses/imgs/' + src + '.png'"
+        [alt]="name"
+        imageClass="card-img-top image-75" />
       <span class="card-title">{{ name }}</span>
-      <app-notification-marker [notificationType]="notification"/>
+      <app-notification-marker [notificationType]="notification" />
     </div>
   </div>
 </ng-template>
 
-<daily-reward *ngIf="isShowDailyReward" [closePopup]="closePopup"></daily-reward>
+<daily-reward
+  *ngIf="isShowDailyReward"
+  [closePopup]="closePopup"></daily-reward>

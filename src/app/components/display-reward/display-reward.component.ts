@@ -1,15 +1,19 @@
-import {ChangeDetectionStrategy, Component, computed, input, Input, model} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {DisplayReward} from "../../services/reward/reward.service";
-import {trackByIndex} from "../../helpers";
-import {ImageComponent} from "../views/image/image.component";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  Input,
+  model,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DisplayReward } from '../../services/reward/reward.service';
+import { trackByIndex } from '../../helpers';
+import { ImageComponent } from '../views/image/image.component';
 
 @Component({
   selector: 'display-reward',
-  imports: [
-    CommonModule,
-    ImageComponent
-  ],
+  imports: [CommonModule, ImageComponent],
   templateUrl: './display-reward.component.html',
   styleUrl: './display-reward.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,32 +25,38 @@ export class DisplayRewardComponent {
   cardsPrize = computed(() => {
     const total: Record<string, Record<any, any>> = {};
 
-    this.rewards().filter((e) => !!e).forEach((reward) => {
-      if(total[reward?.name]) {
-        total[reward?.name] = {
-          src: reward?.src,
-          amount: total[reward?.name]['amount'] + reward?.amount
+    this.rewards()
+      .filter(e => !!e)
+      .forEach(reward => {
+        if (total[reward?.name]) {
+          total[reward?.name] = {
+            src: reward?.src,
+            amount: total[reward?.name]['amount'] + reward?.amount,
+          };
+        } else {
+          total[reward?.name] = {
+            src: reward?.src,
+            amount: reward?.amount,
+          };
         }
-      } else {
-        total[reward?.name] = {
-          src: reward?.src,
-          amount: reward?.amount
-        }
-      }
-    })
+      });
 
-    console.log(Object.entries(total))
+    console.log(Object.entries(total));
 
     return Object.entries(total);
-  })
+  });
 
-  showOpenButton= computed(() => {
-    return this.rewards().filter((e) => !!e).every((e) => e?.flipped === false);
-  })
+  showOpenButton = computed(() => {
+    return this.rewards()
+      .filter(e => !!e)
+      .every(e => e?.flipped === false);
+  });
 
-  showTotalReward= computed(() => {
-    return this.rewards().filter((e) => !!e).every((e) => e?.flipped === true);
-  })
+  showTotalReward = computed(() => {
+    return this.rewards()
+      .filter(e => !!e)
+      .every(e => e?.flipped === true);
+  });
 
   protected readonly trackByIndex = trackByIndex;
 
@@ -55,15 +65,17 @@ export class DisplayRewardComponent {
       await new Promise(r => setTimeout(r, 300));
       const reward = this.rewards()[i];
 
-      if(reward) {
-        this.rewards.update((model) => {
-          return model.map((_,index) => {
-            return i === index ? {
-              ...reward,
-              flipped: true
-            } : _
-          })
-        })
+      if (reward) {
+        this.rewards.update(model => {
+          return model.map((_, index) => {
+            return i === index
+              ? {
+                  ...reward,
+                  flipped: true,
+                }
+              : _;
+          });
+        });
       }
     }
   }

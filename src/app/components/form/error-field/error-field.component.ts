@@ -1,23 +1,28 @@
-import {Component, Input} from '@angular/core';
-import {AbstractControl, FormControl} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import { Component, Input } from '@angular/core';
+import { AbstractControl, FormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'error-field',
-    imports: [CommonModule],
-    templateUrl: './error-field.component.html',
-    styleUrl: './error-field.component.scss'
+  selector: 'error-field',
+  imports: [CommonModule],
+  templateUrl: './error-field.component.html',
+  styleUrl: './error-field.component.scss',
 })
 export class ErrorFieldComponent {
   @Input() fieldToValidate: {
-    meta: AbstractControl<any, any> | null,
-    name: string,
-    htmlName?: string,
-    additionalText?: string
-  }
+    meta: AbstractControl<any, any> | null;
+    name: string;
+    htmlName?: string;
+    additionalText?: string;
+  };
 
   constructor() {
-    this.fieldToValidate = {meta: new FormControl(null), name: "start", htmlName: "", additionalText: ""}
+    this.fieldToValidate = {
+      meta: new FormControl(null),
+      name: 'start',
+      htmlName: '',
+      additionalText: '',
+    };
   }
 
   get field() {
@@ -51,5 +56,4 @@ export class ErrorFieldComponent {
   get fieldMax() {
     return this.field?.errors?.['max'];
   }
-
 }

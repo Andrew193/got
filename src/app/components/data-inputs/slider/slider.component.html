@@ -3,19 +3,15 @@
 
 @let max = _options.length - 1;
 
-<mat-slider
-  [min]="0"
-  [max]="max"
-  [step]="1"
-  [displayWith]="formatLabel">
-  <input matSliderThumb [formControlName]="_name">
+<mat-slider [min]="0" [max]="max" [step]="1" [displayWith]="formatLabel">
+  <input matSliderThumb [formControlName]="_name" />
 </mat-slider>
 
 <div class="tick-labels">
   <span
     *ngFor="let v of _options; index as i"
     class="tick"
-    [style.left.%]="(i / (max)) * 100">
+    [style.left.%]="(i / max) * 100">
     {{ v }}
   </span>
 </div>

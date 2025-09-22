@@ -1,16 +1,25 @@
-import {Component, Input, ViewContainerRef} from '@angular/core';
-import {ExtendedModalConfig, HasFooterHost, ModalStrategy} from "../../modal-interfaces";
+import { Component, Input, ViewContainerRef } from '@angular/core';
+import {
+  ExtendedModalConfig,
+  HasFooterHost,
+  ModalStrategy,
+} from '../../modal-interfaces';
 
 @Component({
   imports: [],
-  template: '<div class="p-2"><i class="material-icons cursor-pointer" (click)="close()">close</i></div>',
+  template:
+    '<div class="p-2"><i class="material-icons cursor-pointer" (click)="close()">close</i></div>',
 })
 class ComponentModalStrategyFooter {
   @Input({ required: true }) close!: () => void;
 }
 
 function hasFooterHost(instance: any): instance is HasFooterHost {
-  return instance && 'footerHost' in instance && instance.footerHost instanceof ViewContainerRef;
+  return (
+    instance &&
+    'footerHost' in instance &&
+    instance.footerHost instanceof ViewContainerRef
+  );
 }
 
 export class ComponentModalStrategy implements ModalStrategy {

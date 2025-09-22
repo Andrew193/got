@@ -1,5 +1,5 @@
-import {Component, inject, input} from '@angular/core';
-import {FormControl, FormGroupDirective} from "@angular/forms";
+import { Component, inject, input } from '@angular/core';
+import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
   selector: 'app-view-provider',

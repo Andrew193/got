@@ -1,13 +1,21 @@
 <div class="d-flex justify-content-center heroes-select-container">
-  <div class="col-12 units-config-inner-container {{containerClass}}">
+  <div class="col-12 units-config-inner-container {{ containerClass }}">
     <h4 class="text-center">{{ title }}</h4>
     <div class="flex-row justify-content-evenly">
-      <div *ngFor="let unit of allHeroes; trackBy trackByUnit;" class="m-1"
-           (click)="unitClick(unit)">
-        <img src="{{unit.imgSrc}}" alt="{{unit.name}}" *ngIf="isUser"
-             [class.selected]="checkSelected(unit)">
-        <img src="{{unit.imgSrc}}" alt="{{unit.name}}" *ngIf="!isUser"
-             [class.selected-enemy]="checkSelected(unit, false)">
+      <div
+        *ngFor="let unit of allHeroes; trackBy: trackByUnit"
+        class="m-1"
+        (click)="unitClick(unit)">
+        <img
+          src="{{ unit.imgSrc }}"
+          alt="{{ unit.name }}"
+          *ngIf="isUser"
+          [class.selected]="checkSelected(unit)" />
+        <img
+          src="{{ unit.imgSrc }}"
+          alt="{{ unit.name }}"
+          *ngIf="!isUser"
+          [class.selected-enemy]="checkSelected(unit, false)" />
       </div>
     </div>
   </div>

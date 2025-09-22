@@ -1,39 +1,40 @@
-import {inject, Injectable} from '@angular/core';
-import {HeroesService, heroType, rarity} from "../heroes/heroes.service";
-import {DisplayReward, Reward, RewardService} from "../reward/reward.service";
-import {Unit, UnitWithReward} from "../../models/unit.model";
-import {RewardComponentInterface} from "../../models/reward-based.model";
-import {NumbersService} from "../numbers/numbers.service";
-import {GIFT_STORE_NPC_AMOUNT} from "../../constants";
+import { inject, Injectable } from '@angular/core';
+import { HeroesService, heroType, rarity } from '../heroes/heroes.service';
+import { DisplayReward, Reward, RewardService } from '../reward/reward.service';
+import { Unit, UnitWithReward } from '../../models/unit.model';
+import { RewardComponentInterface } from '../../models/reward-based.model';
+import { NumbersService } from '../numbers/numbers.service';
+import { GIFT_STORE_NPC_AMOUNT } from '../../constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GiftNpcService implements RewardComponentInterface {
   numberService = inject(NumbersService);
 
   items: Reward[] = [
-    {name: this.rewardService.rewardNames.cooper, probability: 0.70},
-    {name: this.rewardService.rewardNames.chest, probability: 0.30},
+    { name: this.rewardService.rewardNames.cooper, probability: 0.7 },
+    { name: this.rewardService.rewardNames.chest, probability: 0.3 },
   ];
 
   specialGiftItems: Reward[] = [
-    {name: this.rewardService.rewardNames.gold, probability: 0.20},
-    {name: this.rewardService.rewardNames.chest, probability: 0.30},
-    {name: this.rewardService.rewardNames.silver, probability: 0.50},
+    { name: this.rewardService.rewardNames.gold, probability: 0.2 },
+    { name: this.rewardService.rewardNames.chest, probability: 0.3 },
+    { name: this.rewardService.rewardNames.silver, probability: 0.5 },
   ];
 
   chestItems: Reward[] = [
-    {name: this.rewardService.rewardNames.gold, probability: 0.40},
-    {name: this.rewardService.rewardNames.cooper, probability: 0.20},
-    {name: this.rewardService.rewardNames.silver, probability: 0.40},
+    { name: this.rewardService.rewardNames.gold, probability: 0.4 },
+    { name: this.rewardService.rewardNames.cooper, probability: 0.2 },
+    { name: this.rewardService.rewardNames.silver, probability: 0.4 },
   ];
 
   rewards: DisplayReward[] = [];
 
-  constructor(private heroService: HeroesService,
-              public rewardService: RewardService) {
-  }
+  constructor(
+    private heroService: HeroesService,
+    public rewardService: RewardService
+  ) {}
 
   getSpecialGiftReward() {
     return this.rewardService.getReward(1, this.specialGiftItems);
@@ -50,9 +51,15 @@ export class GiftNpcService implements RewardComponentInterface {
       const i = this.numberService.getNumberInRange(0, 6);
       const j = this.numberService.getNumberInRange(0, 9);
       if (i !== 0 && j !== 0) {
-        if (npc.findIndex((npc) => npc.x === i && npc.y === j) === -1) {
+        if (npc.findIndex(npc => npc.x === i && npc.y === j) === -1) {
           const reward = this.rewardService.getReward(1, this.items);
-          npc.push({...this.getNPC(reward.name), reward: reward, x: i, y: j, inBattle: false})
+          npc.push({
+            ...this.getNPC(reward.name),
+            reward: reward,
+            x: i,
+            y: j,
+            inBattle: false,
+          });
         }
       }
 
@@ -94,32 +101,35 @@ export class GiftNpcService implements RewardComponentInterface {
       maxHealth: 8169,
       rage: 20,
       willpower: 20,
-      imgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png",
-      fullImgSrc: "../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png",
-      name: "Разведчик",
-      description: "Разведчик Ночного Дозора.",
+      imgSrc:
+        '../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png',
+      fullImgSrc:
+        '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
+      name: 'Разведчик',
+      description: 'Разведчик Ночного Дозора.',
       skills: [
         {
-          name: "Собрать",
-          imgSrc: "../../../assets/resourses/imgs/icons/open.png",
+          name: 'Собрать',
+          imgSrc: '../../../assets/resourses/imgs/icons/open.png',
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
-          description: "Открывает сундуки и собирает предметы."
+          description: 'Открывает сундуки и собирает предметы.',
         },
         {
-          name: "Ударить",
-          imgSrc: "../../../assets/resourses/imgs/icons/open.png",
+          name: 'Ударить',
+          imgSrc: '../../../assets/resourses/imgs/icons/open.png',
           dmgM: 2.2,
           cooldown: 2,
           remainingCooldown: 0,
           debuffs: [],
-          description: "Открывает сундуки и собирает предметы, а также наносит существенный урон."
-        }
+          description:
+            'Открывает сундуки и собирает предметы, а также наносит существенный урон.',
+        },
       ],
-      effects: []
-    }
+      effects: [],
+    };
   }
 
   getNPC(name?: string, description?: string): Unit {
@@ -149,12 +159,14 @@ export class GiftNpcService implements RewardComponentInterface {
       maxHealth: 1,
       rage: 0,
       willpower: 0,
-      imgSrc: "../../../assets/resourses/imgs/icons/chest.png",
-      fullImgSrc: "../../../assets/resourses/imgs/icons/chest.png",
-      name: name || "Chest",
-      description: description || "Сундук со случайной наградой. Был давно потерян в этих краях.",
+      imgSrc: '../../../assets/resourses/imgs/icons/chest.png',
+      fullImgSrc: '../../../assets/resourses/imgs/icons/chest.png',
+      name: name || 'Chest',
+      description:
+        description ||
+        'Сундук со случайной наградой. Был давно потерян в этих краях.',
       skills: [],
-      effects: []
-    }
+      effects: [],
+    };
   }
 }

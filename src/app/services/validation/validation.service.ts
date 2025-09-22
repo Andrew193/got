@@ -1,19 +1,17 @@
-import {Injectable} from '@angular/core';
-import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import { Injectable } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ValidationService {
-
-  constructor() {
-  }
+  constructor() {}
 
   isFormInvalid(form: FormGroup, callback: () => void) {
     if (callback) {
-      callback()
+      callback();
     }
-    return form.invalid && (form.touched || form.dirty)
+    return form.invalid && (form.touched || form.dirty);
   }
 
   validateAllFormFields(formGroup: FormGroup | FormArray) {
@@ -24,18 +22,21 @@ export class ValidationService {
       if (control instanceof FormControl) {
         control.markAsDirty();
         control.markAsTouched();
-        control.updateValueAndValidity({onlySelf: true});
+        control.updateValueAndValidity({ onlySelf: true });
       } else if (control instanceof FormGroup) {
         this.validateAllFormFields(control);
       } else if (control instanceof FormArray) {
         const formArray = control as FormArray;
         for (const arrayControl of formArray.controls) {
-          if (arrayControl instanceof FormGroup || arrayControl instanceof FormArray) {
+          if (
+            arrayControl instanceof FormGroup ||
+            arrayControl instanceof FormArray
+          ) {
             this.validateAllFormFields(arrayControl);
           } else {
             arrayControl.markAsDirty();
             arrayControl.markAsTouched();
-            arrayControl.updateValueAndValidity({onlySelf: true});
+            arrayControl.updateValueAndValidity({ onlySelf: true });
           }
         }
       }
@@ -43,7 +44,12 @@ export class ValidationService {
     return formGroupToValidate;
   }
 
-  validateFormAndSubmit(form: FormGroup<any>, updateCallback: () => void, createCallback: () => void, isUpdate: boolean) {
+  validateFormAndSubmit(
+    form: FormGroup<any>,
+    updateCallback: () => void,
+    createCallback: () => void,
+    isUpdate: boolean
+  ) {
     this.validateAllFormFields(form);
 
     if (form.valid) {

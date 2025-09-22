@@ -1,9 +1,10 @@
-@use "../../../assets/resourses/styles/vars";
-@use "../../../assets/resourses/styles/mixins";
-@use "../../../assets/resourses/styles/animations";
+@use '../../../assets/resourses/styles/vars';
+@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/animations';
 
 .inner-container {
-  background: url("../../../assets/resourses/imgs/background/iron-bank.jpg") no-repeat center;
+  background: url('../../../assets/resourses/imgs/background/iron-bank.jpg')
+    no-repeat center;
   background-size: cover;
   min-height: 100%;
   box-shadow: vars.$box-shadow;

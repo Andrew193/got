@@ -1,5 +1,5 @@
-@use "../../../assets/resourses/styles/mixins";
-@use "../../../assets/resourses/styles/vars";
+@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/vars';
 
 .user-bar {
   @include mixins.grad-color;

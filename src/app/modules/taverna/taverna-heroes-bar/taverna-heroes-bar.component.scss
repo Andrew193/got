@@ -1,5 +1,5 @@
-@use "../../../../assets/resourses/styles/vars";
-@use "../../../../assets/resourses/styles/mixins";
+@use '../../../../assets/resourses/styles/vars';
+@use '../../../../assets/resourses/styles/mixins';
 
 main {
   aside {
@@ -11,7 +11,8 @@ main {
     background: vars.$background-color-main;
   }
 
-  .card-title, h4 {
+  .card-title,
+  h4 {
     @include mixins.grad-color;
   }
 }

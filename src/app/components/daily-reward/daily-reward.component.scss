@@ -1,6 +1,6 @@
-@use "../../../assets/resourses/styles/mixins";
-@use "../../../assets/resourses/styles/vars";
-@use "../../../assets/resourses/styles/animations" as eff;
+@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/vars';
+@use '../../../assets/resourses/styles/animations' as eff;
 
 .hero {
   background-repeat: no-repeat !important;
@@ -20,10 +20,10 @@
     margin: 15px 0px;
     box-shadow: vars.$box-shadow;
     border-radius: 15px;
-    background: url("../../../assets/resourses/imgs/background/show_with_two_men.jpeg") no-repeat;
+    background: url('../../../assets/resourses/imgs/background/show_with_two_men.jpeg')
+      no-repeat;
     background-size: cover;
     height: 80%;
     overflow: auto;
   }
 }
-

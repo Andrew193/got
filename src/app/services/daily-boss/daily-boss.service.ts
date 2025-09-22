@@ -1,13 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BossReward} from "../../models/reward-based.model";
+import { Injectable } from '@angular/core';
+import { BossReward } from '../../models/reward-based.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DailyBossService {
-
-  constructor() {
-  }
+  constructor() {}
 
   bossReward: { [key: number]: BossReward } = {
     1: {
@@ -53,8 +51,8 @@ export class DailyBossService {
       gold: 1000,
       goldWin: 3000,
       goldDMG: 2000000,
-    }
-  }
+    },
+  };
 
   uppBoss(version: number) {
     const versions: { [key: number]: any } = {
@@ -82,8 +80,8 @@ export class DailyBossService {
         eq2Level: 200,
         eq3Level: 200,
         eq4Level: 200,
-      }
-    }
+      },
+    };
 
     return versions[version];
   }

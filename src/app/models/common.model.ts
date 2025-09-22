@@ -1,5 +1,5 @@
 export interface IdEntity {
-  id?: string,
+  id?: string;
 
-  [key: string]: any
+  [key: string]: any;
 }

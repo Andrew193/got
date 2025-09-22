@@ -2,9 +2,10 @@
 
 @if (coin) {
   <span class="fw-bold {{ coin.class }}">
-    <image [source]="coin.imgSrc"
-           [useFixSize]="useFixSize()"
-           [alt]="coin.alt"></image>
+    <image
+      [source]="coin.imgSrc"
+      [useFixSize]="useFixSize()"
+      [alt]="coin.alt"></image>
     {{ coin.amount | number }}
   </span>
 }

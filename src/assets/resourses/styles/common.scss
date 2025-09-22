@@ -1,4 +1,4 @@
-@use "./vars";
+@use './vars';
 
 $columns: 100;
 
@@ -67,12 +67,18 @@ a.fake-link {
 .banner {
   box-shadow: vars.$box-shadow;
   background-color: vars.$background-color-main;
-  width: calc(100% - (2 * (var(--bs-gutter-x) * .5)));
+  width: calc(100% - (2 * (var(--bs-gutter-x) * 0.5)));
   z-index: 1;
   align-content: space-evenly;
 
   .fade-black-bg {
-    background: radial-gradient(circle at center, rgb(0, 0, 0) 40%, rgba(0, 0, 0, 0.3) 65%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.2) 100%);
+    background: radial-gradient(
+      circle at center,
+      rgb(0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.3) 65%,
+      rgba(0, 0, 0, 0.3) 80%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
     padding: 5px;
   }
 }

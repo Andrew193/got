@@ -1,29 +1,30 @@
 @use '@angular/cdk';
 @use '@angular/material' as mat;
 @use '@angular/material/prebuilt-themes/deeppurple-amber.css';
-@use "assets/resourses/styles/hero";
-@use "assets/resourses/styles/collors";
-@use "assets/resourses/styles/vars";
-@use "assets/resourses/styles/mixins";
-@use "assets/resourses/styles/fixers";
-@use "assets/resourses/styles/skills";
-@use "assets/resourses/styles/fields";
-@use "assets/resourses/styles/common";
-@use "assets/resourses/styles/general-game-bed-styles";
-@use "assets/resourses/styles/pagination-override";
-@use "assets/resourses/styles/tablist";
-@use "assets/resourses/styles/tag-based-styles";
-@use "assets/resourses/styles/modal-override";
-@use "assets/resourses/styles/stores";
-@use "assets/resourses/styles/flips";
-@use "assets/resourses/styles/images";
+@use 'assets/resourses/styles/hero';
+@use 'assets/resourses/styles/collors';
+@use 'assets/resourses/styles/vars';
+@use 'assets/resourses/styles/mixins';
+@use 'assets/resourses/styles/fixers';
+@use 'assets/resourses/styles/skills';
+@use 'assets/resourses/styles/fields';
+@use 'assets/resourses/styles/common';
+@use 'assets/resourses/styles/general-game-bed-styles';
+@use 'assets/resourses/styles/pagination-override';
+@use 'assets/resourses/styles/tablist';
+@use 'assets/resourses/styles/tag-based-styles';
+@use 'assets/resourses/styles/modal-override';
+@use 'assets/resourses/styles/stores';
+@use 'assets/resourses/styles/flips';
+@use 'assets/resourses/styles/images';
 
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
 @use 'bootstrap/scss/bootstrap';
 
-html, body {
+html,
+body {
   height: 100%;
   background-color: black;
   color: white;
@@ -31,7 +32,7 @@ html, body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .caption {
@@ -162,7 +163,12 @@ body {
   --mdc-slider-hover-handle-color: #ffd700;
   --mdc-slider-active-track-color: #b8860b;
   --mdc-slider-inactive-track-color: rgba(184, 134, 11, 0.3);
-  --mdc-slider-with-tick-marks-inactive-container-color: rgba(184, 134, 11, 0.3);
+  --mdc-slider-with-tick-marks-inactive-container-color: rgba(
+    184,
+    134,
+    11,
+    0.3
+  );
   --mdc-slider-with-tick-marks-active-container-color: #b8860b;
   --mat-slider-focus-state-layer-color: rgba(184, 134, 11, 0.24);
 }

@@ -1,13 +1,9 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TavernaRoutingModule} from "./taverna-routing.module";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TavernaRoutingModule } from './taverna-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    TavernaRoutingModule
-  ]
+  imports: [CommonModule, TavernaRoutingModule],
 })
-export class TavernaModule {
-}
+export class TavernaModule {}

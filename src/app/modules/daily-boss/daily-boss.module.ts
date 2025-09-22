@@ -1,13 +1,9 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DailyBossRoutingModule} from "./daily-boss-routing.module";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DailyBossRoutingModule } from './daily-boss-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    DailyBossRoutingModule
-  ]
+  imports: [CommonModule, DailyBossRoutingModule],
 })
-export class DailyBossModule {
-}
+export class DailyBossModule {}

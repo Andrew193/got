@@ -1,50 +1,50 @@
-import {Skill} from "./skill.model";
-import {Effect} from "./effect.model";
-import {DisplayReward} from "../services/reward/reward.service";
-import {Coordinate} from "./field.model";
+import { Skill } from './skill.model';
+import { Effect } from './effect.model';
+import { DisplayReward } from '../services/reward/reward.service';
+import { Coordinate } from './field.model';
 
 export interface Unit extends Coordinate {
-  rank: number,
-  rarity: number,
-  inBattle?: boolean,
-  healer?: boolean,
-  onlyHealer?: boolean,
-  heroType: number,
-  eq1Level: number,
-  eq2Level: number,
-  eq3Level: number,
-  eq4Level: number,
-  level: number,
-  rankBoost: number,
-  healthIncrement: number,
-  attackIncrement: number,
-  defenceIncrement: number,
-  dmgReducedBy: number,
-  ignoredDebuffs: string[],
-  reducedDmgFromDebuffs: string[]
-  user: boolean,
-  imgSrc: string,
-  canMove: boolean
-  canCross: number,
-  maxCanCross: number,
-  canAttack: boolean,
-  attackRange: number,
-  description: string,
-  health: number,
-  maxHealth: number,
-  name: string,
-  attack: number,
-  defence: number,
-  rage: number,
-  willpower: number,
-  fullImgSrc?: string,
-  skills: Skill[],
-  effects: Effect[],
+  rank: number;
+  rarity: number;
+  inBattle?: boolean;
+  healer?: boolean;
+  onlyHealer?: boolean;
+  heroType: number;
+  eq1Level: number;
+  eq2Level: number;
+  eq3Level: number;
+  eq4Level: number;
+  level: number;
+  rankBoost: number;
+  healthIncrement: number;
+  attackIncrement: number;
+  defenceIncrement: number;
+  dmgReducedBy: number;
+  ignoredDebuffs: string[];
+  reducedDmgFromDebuffs: string[];
+  user: boolean;
+  imgSrc: string;
+  canMove: boolean;
+  canCross: number;
+  maxCanCross: number;
+  canAttack: boolean;
+  attackRange: number;
+  description: string;
+  health: number;
+  maxHealth: number;
+  name: string;
+  attack: number;
+  defence: number;
+  rage: number;
+  willpower: number;
+  fullImgSrc?: string;
+  skills: Skill[];
+  effects: Effect[];
 
-  [key: string]: any,
+  [key: string]: any;
 }
 
 export interface UnitWithReward extends Unit {
-  reward: DisplayReward,
-  inBattle: boolean,
+  reward: DisplayReward;
+  inBattle: boolean;
 }

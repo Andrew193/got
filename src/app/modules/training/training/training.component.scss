@@ -1,7 +1,8 @@
-@use "../../../../assets/resourses/styles/vars";
+@use '../../../../assets/resourses/styles/vars';
 
 .training-container {
-  background: url("../../../../assets/resourses/imgs/background/training.jpeg") no-repeat;
+  background: url('../../../../assets/resourses/imgs/background/training.jpeg')
+    no-repeat;
   background-size: cover;
   min-height: 100%;
   box-shadow: vars.$box-shadow;

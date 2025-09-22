@@ -1,24 +1,43 @@
 <div>
   <h3 class="text-center">Configure your training</h3>
   <div class="flex-row units-config-container">
-    <ng-container [ngTemplateOutlet]="unitsBar"
-                  [ngTemplateOutletContext]="{isUser:true, title: 'User Units'}">
+    <ng-container
+      [ngTemplateOutlet]="unitsBar"
+      [ngTemplateOutletContext]="{ isUser: true, title: 'User Units' }">
     </ng-container>
-    <ng-container [ngTemplateOutlet]="unitsBar"
-                  [ngTemplateOutletContext]="{isUser:false, title: 'AI Units'}">
+    <ng-container
+      [ngTemplateOutlet]="unitsBar"
+      [ngTemplateOutletContext]="{ isUser: false, title: 'AI Units' }">
     </ng-container>
   </div>
   <div class="d-flex ms-4 me-4">
-    <button class="btn btn-primary me-2" (click)="goToMainPage()">Back to Castle Black</button>
-    <button class="btn btn-danger" *ngIf="aiUnits.length && userUnits.length" (click)="openFight()">Fight</button>
+    <button class="btn btn-primary me-2" (click)="goToMainPage()">
+      Back to Castle Black
+    </button>
+    <button
+      class="btn btn-danger"
+      *ngIf="aiUnits.length && userUnits.length"
+      (click)="openFight()">
+      Fight
+    </button>
   </div>
 
   <div class="flex-row units-config-container" style="margin-top: 7px">
-    <ng-container [ngTemplateOutlet]="selectedUnitsBar"
-                  [ngTemplateOutletContext]="{units:userUnits, title: 'Selected User Units', user: true}">
+    <ng-container
+      [ngTemplateOutlet]="selectedUnitsBar"
+      [ngTemplateOutletContext]="{
+        units: userUnits,
+        title: 'Selected User Units',
+        user: true,
+      }">
     </ng-container>
-    <ng-container [ngTemplateOutlet]="selectedUnitsBar"
-                  [ngTemplateOutletContext]="{units:aiUnits, title: 'Selected AI Units', user: false}">
+    <ng-container
+      [ngTemplateOutlet]="selectedUnitsBar"
+      [ngTemplateOutletContext]="{
+        units: aiUnits,
+        title: 'Selected AI Units',
+        user: false,
+      }">
     </ng-container>
   </div>
 </div>
@@ -29,19 +48,21 @@
       [title]="title"
       [isUser]="isUser"
       [allHeroes]="allHeroes"
-      [addUserUnit]="addUserUnit"
-    ></heroes-select>
+      [addUserUnit]="addUserUnit"></heroes-select>
   </div>
 </ng-template>
 
-<ng-template #selectedUnitsBar let-units="units" let-title="title" let-user="user">
+<ng-template
+  #selectedUnitsBar
+  let-units="units"
+  let-title="title"
+  let-user="user">
   <div class="col-lg-6 col-md-12">
     <heroes-select-preview
       [units]="units"
       [title]="title"
       [user]="user"
       [toggleDescription]="toggleDescription"
-      [getDescriptionState]="getDescriptionState"
-    ></heroes-select-preview>
+      [getDescriptionState]="getDescriptionState"></heroes-select-preview>
   </div>
 </ng-template>

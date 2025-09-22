@@ -1,23 +1,29 @@
 <div class="d-flex justify-content-center heroes-container">
-  <div class="col-12 units-config-inner-container {{containerClass}}">
+  <div class="col-12 units-config-inner-container {{ containerClass }}">
     <h4 class="text-center">{{ title }}</h4>
     <div class="flex-row justify-content-evenly preview-selected-heroes">
-      <div *ngFor="let unit of units; let i = index; trackBy trackByUnit;">
+      <div *ngFor="let unit of units; let i = index; trackBy: trackByUnit">
         <div class="col-2 position-relative">
-          <img src="{{unit.imgSrc}}" alt="{{unit.name}}" [tooltip]="unit.name"
-               (click)="toggleDescription(user, i)"
-          >
+          <img
+            src="{{ unit.imgSrc }}"
+            alt="{{ unit.name }}"
+            [tooltip]="unit.name"
+            (click)="toggleDescription(user, i)" />
         </div>
         <div class="col-10 description-bar">
           @if (getDescriptionState(user, i)) {
             <div class="ps-3">{{ unit.description }}</div>
           } @else {
             <div class="d-flex justify-content-evenly">
-              <ng-container *ngFor="let skill of unit.skills; trackBy trackBySkill;">
+              <ng-container
+                *ngFor="let skill of unit.skills; trackBy: trackBySkill">
                 <div class="d-flex flex-column align-items-center">
                   <h5>{{ skill.name }}</h5>
-                  <img class="col-3 skill-preview-icon" [src]="skill.imgSrc" tooltip="{{skill.description}}"
-                       [alt]="skill.name"/>
+                  <img
+                    class="col-3 skill-preview-icon"
+                    [src]="skill.imgSrc"
+                    tooltip="{{ skill.description }}"
+                    [alt]="skill.name" />
                 </div>
               </ng-container>
             </div>

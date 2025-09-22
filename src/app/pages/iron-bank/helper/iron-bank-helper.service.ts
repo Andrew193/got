@@ -1,10 +1,14 @@
-import {inject, Injectable} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {NumbersService} from "../../../services/numbers/numbers.service";
+import { inject, Injectable } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { NumbersService } from '../../../services/numbers/numbers.service';
 
 type Cur = 'COOPER' | 'SILVER' | 'GOLD';
 
-interface CurMeta { valueInCooper: number; decimals: number; label: string; }
+interface CurMeta {
+  valueInCooper: number;
+  decimals: number;
+  label: string;
+}
 
 interface Quote {
   from: Cur;
@@ -15,7 +19,7 @@ interface Quote {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IronBankHelperService {
   readonly uiErrorsNames = {
@@ -23,25 +27,25 @@ export class IronBankHelperService {
     gold: 'Gold',
     cooper: 'Cooper',
     silver: 'Silver',
-    days: 'Duration'
-  }
+    days: 'Duration',
+  };
 
   readonly depositOptions = [3, 10, 25, 120, 365];
 
   private numberServices = inject(NumbersService);
 
   private readonly META: Record<Cur, CurMeta> = {
-    COOPER: { valueInCooper: 1,     decimals: 0, label: 'Cooper' },
-    SILVER: { valueInCooper: 6000,  decimals: 0, label: 'Silver' },
-    GOLD:   { valueInCooper: 12000, decimals: 0, label: 'Gold'   },
+    COOPER: { valueInCooper: 1, decimals: 0, label: 'Cooper' },
+    SILVER: { valueInCooper: 6000, decimals: 0, label: 'Silver' },
+    GOLD: { valueInCooper: 12000, decimals: 0, label: 'Gold' },
   };
   private readonly SPREAD = 0.99; // Interest
 
   readonly currencies: Cur[] = ['COOPER', 'SILVER', 'GOLD'];
 
   form = this.fb.group({
-    from:   ['COOPER' as Cur, Validators.required],
-    to:     ['GOLD'   as Cur, Validators.required],
+    from: ['COOPER' as Cur, Validators.required],
+    to: ['GOLD' as Cur, Validators.required],
     amount: [0, [Validators.required, Validators.min(1)]],
   });
 
@@ -65,16 +69,24 @@ export class IronBankHelperService {
       return { from, to, midRate: 1, rate: 1, spreadPct: 0 };
     }
     const vFrom = this.META[from].valueInCooper;
-    const vTo   = this.META[to].valueInCooper;
+    const vTo = this.META[to].valueInCooper;
 
     const midRate = vFrom / vTo;
-    const rate    = midRate * (1 - this.SPREAD);
+    const rate = midRate * (1 - this.SPREAD);
     return { from, to, midRate, rate, spreadPct: this.SPREAD };
   }
 
   private recalc(): void {
-    const { from, to, amount } = this.form.value as { from: Cur; to: Cur; amount: number };
-    if (!from || !to || !amount || amount <= 0) { this.result = 0; this.rateLabel = ''; return; }
+    const { from, to, amount } = this.form.value as {
+      from: Cur;
+      to: Cur;
+      amount: number;
+    };
+    if (!from || !to || !amount || amount <= 0) {
+      this.result = 0;
+      this.rateLabel = '';
+      return;
+    }
 
     const q = this.getQuote(from, to);
     const rawOut = amount * q.rate;

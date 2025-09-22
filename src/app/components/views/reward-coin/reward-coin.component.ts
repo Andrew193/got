@@ -1,14 +1,11 @@
-import {ChangeDetectionStrategy, Component, input} from '@angular/core';
-import {ImageComponent} from "../image/image.component";
-import {DecimalPipe} from "@angular/common";
-import {Coin} from "../../../models/reward-based.model";
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ImageComponent } from '../image/image.component';
+import { DecimalPipe } from '@angular/common';
+import { Coin } from '../../../models/reward-based.model';
 
 @Component({
   selector: 'app-reward-coin',
-  imports: [
-    ImageComponent,
-    DecimalPipe
-  ],
+  imports: [ImageComponent, DecimalPipe],
   templateUrl: './reward-coin.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,19 +1,19 @@
-import {Component} from '@angular/core';
-import {StatsComponent} from "../../../components/views/stats/stats.component";
-import {HeroesService} from "../../../services/heroes/heroes.service";
-import {Unit} from "../../../models/unit.model";
-import {SkillsRenderComponent} from "../../../components/views/skills-render/skills-render.component";
-import {DecimalPipe, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
-import {TabsModule} from "ngx-bootstrap/tabs";
-import {createDeepCopy, trackByLevel} from "../../../helpers";
-import {Router} from "@angular/router";
-import {HeroesSelectComponent} from "../../../components/heroes-select/heroes-select.component";
-import {DailyBossService} from "../../../services/daily-boss/daily-boss.service";
-import {HeroesSelectPreviewComponent} from "../../../components/heroes-select-preview/heroes-select-preview.component";
-import {frontRoutes} from "../../../constants";
+import { Component } from '@angular/core';
+import { StatsComponent } from '../../../components/views/stats/stats.component';
+import { HeroesService } from '../../../services/heroes/heroes.service';
+import { Unit } from '../../../models/unit.model';
+import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
+import { DecimalPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { createDeepCopy, trackByLevel } from '../../../helpers';
+import { Router } from '@angular/router';
+import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
+import { DailyBossService } from '../../../services/daily-boss/daily-boss.service';
+import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
+import { frontRoutes } from '../../../constants';
 
 @Component({
-    selector: 'app-daily-boss-lobby',
+  selector: 'app-daily-boss-lobby',
   imports: [
     StatsComponent,
     SkillsRenderComponent,
@@ -23,24 +23,26 @@ import {frontRoutes} from "../../../constants";
     HeroesSelectComponent,
     HeroesSelectPreviewComponent,
     NgIf,
-    DecimalPipe
+    DecimalPipe,
   ],
-    templateUrl: './daily-boss-lobby.component.html',
-    styleUrl: './daily-boss-lobby.component.scss'
+  templateUrl: './daily-boss-lobby.component.html',
+  styleUrl: './daily-boss-lobby.component.scss',
 })
 export class DailyBossLobbyComponent {
   selectedHero!: Unit;
   chosenUnits: Unit[] = [];
-  config: { level: number, heading: string }[] = [
-    {level: 1, heading: 'Super Easy'},
-    {level: 2, heading: 'Easy'},
-    {level: 3, heading: 'Medium'},
-    {level: 4, heading: 'Hard'}
+  config: { level: number; heading: string }[] = [
+    { level: 1, heading: 'Super Easy' },
+    { level: 2, heading: 'Easy' },
+    { level: 3, heading: 'Medium' },
+    { level: 4, heading: 'Hard' },
   ];
 
-  constructor(private heroesService: HeroesService,
-              private route: Router,
-              public dailyBossService: DailyBossService) {
+  constructor(
+    private heroesService: HeroesService,
+    private route: Router,
+    public dailyBossService: DailyBossService
+  ) {
     this.selectedHero = this.heroesService.getDailyBossVersion1();
   }
 
@@ -61,15 +63,23 @@ export class DailyBossLobbyComponent {
   }
 
   upBoss(version: number) {
-    return this.heroesService.getEquipmentForUnit(createDeepCopy({...this.selectedHero, ...this.dailyBossService.uppBoss(version)}))
+    return this.heroesService.getEquipmentForUnit(
+      createDeepCopy({
+        ...this.selectedHero,
+        ...this.dailyBossService.uppBoss(version),
+      })
+    );
   }
 
   openFight(bossLevel: number) {
-    this.route.navigate([frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, bossLevel], {
-      queryParams: {
-        units: this.chosenUnits.map((el) => el.name)
+    this.route.navigate(
+      [frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, bossLevel],
+      {
+        queryParams: {
+          units: this.chosenUnits.map(el => el.name),
+        },
       }
-    })
+    );
   }
 
   get allHeroes() {

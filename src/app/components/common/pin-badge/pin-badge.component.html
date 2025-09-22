@@ -7,16 +7,17 @@
     [style.--pb-bg]="background"
     [style.--pb-fg]="color"
     [style.--pb-shadow]="shadowColor">
-    <ng-container [ngTemplateOutlet]="text"/>
+    <ng-container [ngTemplateOutlet]="text" />
   </a>
 } @else {
-  <div class="pb-root"
-       [ngClass]="[variantClass, positionClass, pulse ? 'pb-pulse' : '']"
-       [attr.aria-label]="ariaLabel"
-       [style.--pb-bg]="background"
-       [style.--pb-fg]="color"
-       [style.--pb-shadow]="shadowColor">
-    <ng-container [ngTemplateOutlet]="text"/>
+  <div
+    class="pb-root"
+    [ngClass]="[variantClass, positionClass, pulse ? 'pb-pulse' : '']"
+    [attr.aria-label]="ariaLabel"
+    [style.--pb-bg]="background"
+    [style.--pb-fg]="color"
+    [style.--pb-shadow]="shadowColor">
+    <ng-container [ngTemplateOutlet]="text" />
   </div>
 }
 

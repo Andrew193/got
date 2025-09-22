@@ -1,12 +1,17 @@
-import {Component, Input} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {ControlValueAccessor, FormControl, FormGroup, FormsModule} from "@angular/forms";
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  FormsModule,
+} from '@angular/forms';
 
 @Component({
-    selector: 'app-base-form-control',
-    imports: [CommonModule, FormsModule],
-    templateUrl: './base-form-control.component.html',
-    styleUrl: './base-form-control.component.scss'
+  selector: 'app-base-form-control',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './base-form-control.component.html',
+  styleUrl: './base-form-control.component.scss',
 })
 export class BaseFormControlComponent implements ControlValueAccessor {
   @Input() label: string = '';
@@ -15,14 +20,12 @@ export class BaseFormControlComponent implements ControlValueAccessor {
 
   public control: FormControl = new FormControl('');
 
-  private onChange = (value: any) => {
-  };
-  private onTouched = () => {
-  };
+  private onChange = (value: any) => {};
+  private onTouched = () => {};
 
   writeValue(value: any): void {
     this.control.setValue(value);
-    setTimeout(() => this.onChange(value), 0)
+    setTimeout(() => this.onChange(value), 0);
   }
 
   registerOnChange(fn: any): void {

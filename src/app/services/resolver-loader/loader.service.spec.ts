@@ -1,6 +1,6 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { LoaderService } from './loader.service';
-import {Renderer2, RendererFactory2} from "@angular/core";
+import { Renderer2, RendererFactory2 } from '@angular/core';
 
 describe('LoaderService', () => {
   let loaderService: LoaderService;
@@ -8,21 +8,26 @@ describe('LoaderService', () => {
   let rendererSpy: jasmine.SpyObj<Renderer2>;
 
   beforeEach(() => {
-    rendererFactory2Spy = jasmine.createSpyObj('RendererFactory2', ['createRenderer']);
-    rendererSpy = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass']);
+    rendererFactory2Spy = jasmine.createSpyObj('RendererFactory2', [
+      'createRenderer',
+    ]);
+    rendererSpy = jasmine.createSpyObj('Renderer2', [
+      'addClass',
+      'removeClass',
+    ]);
 
     rendererSpy.addClass.and.callFake(() => {});
 
-    rendererSpy.removeClass.and.callFake(() => {})
+    rendererSpy.removeClass.and.callFake(() => {});
 
     rendererFactory2Spy.createRenderer.and.returnValue(rendererSpy);
 
     TestBed.configureTestingModule({
       providers: [
         LoaderService,
-        {provide: RendererFactory2, useValue: rendererFactory2Spy},
-      ]
-    })
+        { provide: RendererFactory2, useValue: rendererFactory2Spy },
+      ],
+    });
 
     loaderService = TestBed.inject(LoaderService);
 
@@ -30,7 +35,7 @@ describe('LoaderService', () => {
 
     rendererSpy.addClass.calls.reset();
     rendererSpy.removeClass.calls.reset();
-  })
+  });
 
   it('LoaderService should be created', () => {
     expect(loaderService).toBeTruthy();
@@ -52,5 +57,5 @@ describe('LoaderService', () => {
 
     expect(loaderService.isLoading()).toBeFalse();
     expect(rendererSpy.removeClass).toHaveBeenCalled();
-  }))
+  }));
 });

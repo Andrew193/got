@@ -1,18 +1,21 @@
-import {inject, Injectable} from '@angular/core';
-import {NotificationActivity, StepsReward} from "../../../../models/notification.model";
-import {Currency, User} from "../../../../services/users/users.interfaces";
-import {DayReward} from "../../../daily-reward/daily-reward.component";
-import {concatMap, map, Observable, of} from "rxjs";
-import {UsersService} from "../../../../services/users/users.service";
-import {NotificationActivities} from "./notification-constants";
-import {TODAY} from "../../../../constants";
-import {TimeService} from "../../../../services/time/time.service";
-import {BaseLoyaltyBonus} from "../../../../services/daily-reward/daily-reward-constants";
-import {NumbersService} from "../../../../services/numbers/numbers.service";
-import {Coin} from "../../../../models/reward-based.model";
+import { inject, Injectable } from '@angular/core';
+import {
+  NotificationActivity,
+  StepsReward,
+} from '../../../../models/notification.model';
+import { Currency, User } from '../../../../services/users/users.interfaces';
+import { DayReward } from '../../../daily-reward/daily-reward.component';
+import { concatMap, map, Observable, of } from 'rxjs';
+import { UsersService } from '../../../../services/users/users.service';
+import { NotificationActivities } from './notification-constants';
+import { TODAY } from '../../../../constants';
+import { TimeService } from '../../../../services/time/time.service';
+import { BaseLoyaltyBonus } from '../../../../services/daily-reward/daily-reward-constants';
+import { NumbersService } from '../../../../services/numbers/numbers.service';
+import { Coin } from '../../../../models/reward-based.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationHelperService {
   userService = inject(UsersService);
@@ -27,19 +30,20 @@ export class NotificationHelperService {
     2: '8 hours',
     3: '12 hours',
     4: '24 hours',
-  }
+  };
 
   private baseStepsRewardConfig: StepsReward = {
     time: 0,
-    claimedRewards: []
-  }
+    claimedRewards: [],
+  };
 
-  constructor() {
-  }
+  constructor() {}
 
   checkAvailableRewards(config: any) {
     const hours = this.timeService.convertToHours(config.time);
-    return Object.values(this.labels).map(label => +label.split(' ')[0]).filter(step => hours >= step && !config.claimedRewards.includes(step));
+    return Object.values(this.labels)
+      .map(label => +label.split(' ')[0])
+      .filter(step => hours >= step && !config.claimedRewards.includes(step));
   }
 
   configStepsRewardConfig(model: User): StepsReward {
@@ -52,7 +56,7 @@ export class NotificationHelperService {
   }
 
   getStepsRewardConfig() {
-    return {...this.baseStepsRewardConfig};
+    return { ...this.baseStepsRewardConfig };
   }
 
   getLabels() {
@@ -64,72 +68,104 @@ export class NotificationHelperService {
   }
 
   flipActivity(i: number) {
-    this.activities = this.activities.map((el, index) => index === i ? {...el, flipped: !el.flipped} : el);
+    this.activities = this.activities.map((el, index) =>
+      index === i ? { ...el, flipped: !el.flipped } : el
+    );
   }
 
   public claimed = (i: number) => {
     return !!this.baseStepsRewardConfig.claimedRewards[i];
-  }
+  };
 
   public rewardClass = (i: number) => {
-    return this.baseStepsRewardConfig.claimedRewards.length === i ? 'today' : '';
-  }
+    return this.baseStepsRewardConfig.claimedRewards.length === i
+      ? 'today'
+      : '';
+  };
 
   get canGetLoyaltyBonus() {
-    return this.userService.$user.pipe(map((user) => user ? user.online.lastLoyaltyBonus !== TODAY : false));
+    return this.userService.$user.pipe(
+      map(user => (user ? user.online.lastLoyaltyBonus !== TODAY : false))
+    );
   }
 
   loyaltyRewardBoostedBy(playedDays: number) {
-    return this.numbersService.roundToStep((1 + (playedDays || 0) / 35), 0.01)
+    return this.numbersService.roundToStep(1 + (playedDays || 0) / 35, 0.01);
   }
 
   public claimReward = (reward: DayReward, i: number) => {
-    const onlineTime = this.timeService.convertToHours(this.baseStepsRewardConfig.time);
+    const onlineTime = this.timeService.convertToHours(
+      this.baseStepsRewardConfig.time
+    );
     const labels = this.getLabels();
 
     const currentHour = +labels[i].split(' ')[0];
 
     if (onlineTime >= currentHour) {
-      const getReward = this.userService.updateCurrency({
-        cooper: reward.cooperCoin || 0,
-        silver: reward.silverCoin || 0,
-        gold: reward.goldCoin || 0
-      }, {returnObs: true}) as Observable<any>;
+      const getReward = this.userService.updateCurrency(
+        {
+          cooper: reward.cooperCoin || 0,
+          silver: reward.silverCoin || 0,
+          gold: reward.goldCoin || 0,
+        },
+        { returnObs: true }
+      ) as Observable<any>;
 
-      getReward.pipe(
-        concatMap(res =>
-          of(res).pipe(
-            concatMap(() => this.userService.updateOnline({claimed: currentHour}, true) as Observable<any>)
+      getReward
+        .pipe(
+          concatMap(res =>
+            of(res).pipe(
+              concatMap(
+                () =>
+                  this.userService.updateOnline(
+                    { claimed: currentHour },
+                    true
+                  ) as Observable<any>
+              )
+            )
           )
         )
-      ).subscribe();
+        .subscribe();
     }
-  }
+  };
 
   getLoyaltyBonus(reward: Coin[]) {
-    const totalReward: Currency = {cooper: 0, gold: 0, silver: 0};
-    reward.forEach((part) => {
+    const totalReward: Currency = { cooper: 0, gold: 0, silver: 0 };
+    reward.forEach(part => {
       const key = part.class as 'cooper' | 'silver' | 'gold';
       totalReward[key] += part.amount || 0;
-    })
+    });
 
-    const getReward = this.userService.updateCurrency(totalReward, {returnObs: true}) as Observable<any>;
+    const getReward = this.userService.updateCurrency(totalReward, {
+      returnObs: true,
+    }) as Observable<any>;
 
-    getReward.pipe(
-      concatMap(res =>
-        of(res).pipe(
-          concatMap(() => this.userService.updateOnline({lastLoyaltyBonus: TODAY}, true) as Observable<any>)
+    getReward
+      .pipe(
+        concatMap(res =>
+          of(res).pipe(
+            concatMap(
+              () =>
+                this.userService.updateOnline(
+                  { lastLoyaltyBonus: TODAY },
+                  true
+                ) as Observable<any>
+            )
+          )
         )
       )
-    ).subscribe();
+      .subscribe();
   }
 
   boostedLoyaltyBonus(playedDays: number) {
-    return BaseLoyaltyBonus.map((reward) => {
+    return BaseLoyaltyBonus.map(reward => {
       return {
         ...reward,
-        amount: this.numbersService.roundToStep(reward.amount * this.loyaltyRewardBoostedBy(playedDays), 1)
-      }
-    })
+        amount: this.numbersService.roundToStep(
+          reward.amount * this.loyaltyRewardBoostedBy(playedDays),
+          1
+        ),
+      };
+    });
   }
 }

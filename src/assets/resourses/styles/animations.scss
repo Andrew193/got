@@ -1,31 +1,43 @@
-@use "sass:meta";
+@use 'sass:meta';
 
 /* === Glow pulse === */
-@mixin glow-pulse($selector: "&", $name: glowPulse, $duration: 2s) {
+@mixin glow-pulse($selector: '&', $name: glowPulse, $duration: 2s) {
   animation: #{$name} $duration ease-in-out infinite;
 
   @keyframes #{$name} {
-    0%, 100% { box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.12), 0 8px 16px rgba(0,0,0,.25); }
-    50%      { box-shadow: 0 0 12px 4px rgba(255, 215, 0, 0.35), 0 12px 24px rgba(0,0,0,.45); }
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 2px rgba(255, 215, 0, 0.12),
+        0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+    50% {
+      box-shadow:
+        0 0 12px 4px rgba(255, 215, 0, 0.35),
+        0 12px 24px rgba(0, 0, 0, 0.45);
+    }
   }
 }
 
 /* === Shine sweep === */
 @mixin shine-sweep(
-  $selector: "&",
+  $selector: '&',
   $name: shineSweep,
-  $duration: .7s,
+  $duration: 0.7s,
   $ease: ease,
   $border-radius: 10px,
   $animation-delay: 0s
 ) {
   #{$selector}::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(75deg,
-      rgba(255,255,255,0) 30%,
-      rgba(255,255,255,.7) 50%,
-      rgba(255,255,255,0) 70%);
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      75deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.7) 50%,
+      rgba(255, 255, 255, 0) 70%
+    );
     transform: translateX(-120%) skewX(-20deg);
     animation: #{$name} $duration $ease forwards;
     animation-delay: $animation-delay;
@@ -34,15 +46,23 @@
     opacity: 0;
   }
   @keyframes #{$name} {
-    0%   { transform: translateX(-120%) skewX(-20deg); opacity: 1; }
-    80%  { opacity: 1; }
-    100% { transform: translateX(140%)  skewX(-20deg); opacity: 0; }
+    0% {
+      transform: translateX(-120%) skewX(-20deg);
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(140%) skewX(-20deg);
+      opacity: 0;
+    }
   }
 }
 
 /* === Swirl out === */
 @mixin swirl-out(
-  $selector: "&",
+  $selector: '&',
   $name: shineSweep,
   $duration: 1.2s,
   $ease: ease-out,
@@ -50,14 +70,20 @@
   $animation-delay: 0s
 ) {
   #{$selector}::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     border-radius: 50%;
     background: transparent;
     box-shadow:
-      0 0 #fff, 30px 20px #ffd, -20px 40px #fdf, -40px -30px #cdf,
-      60px -20px #fcf, -60px 30px #def, 20px -50px #ffe, -30px 60px #ddf;
+      0 0 #fff,
+      30px 20px #ffd,
+      -20px 40px #fdf,
+      -40px -30px #cdf,
+      60px -20px #fcf,
+      -60px 30px #def,
+      20px -50px #ffe,
+      -30px 60px #ddf;
     animation: #{$name} $duration $ease forwards;
     animation-delay: $animation-delay;
   }
@@ -82,24 +108,24 @@
 
 /* === Swirl particles === */
 @mixin swirl-particles(
-  $selector: "&",
+  $selector: '&',
   $name: shineSweep,
-  $duration: .7s,
+  $duration: 0.7s,
   $ease: ease,
   $border-radius: 10px,
   $animation-delay: 0.4s
 ) {
   #{$selector}::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: transparent;
     box-shadow:
-      0 0 6px 2px rgba(255,255,200,0.9),
-      40px -20px 8px rgba(200,200,255,0.7),
-      -30px 10px 10px rgba(180,255,255,0.6),
-      25px 30px 6px rgba(255,150,150,0.7),
-      -40px -25px 9px rgba(255,220,180,0.8);
+      0 0 6px 2px rgba(255, 255, 200, 0.9),
+      40px -20px 8px rgba(200, 200, 255, 0.7),
+      -30px 10px 10px rgba(180, 255, 255, 0.6),
+      25px 30px 6px rgba(255, 150, 150, 0.7),
+      -40px -25px 9px rgba(255, 220, 180, 0.8);
     border-radius: 20%;
     animation: #{$name} $duration $ease forwards;
     animation-delay: $animation-delay;
@@ -123,13 +149,17 @@
   }
 }
 
-@mixin no-shine($selector: "&") {
-  #{$selector}::after { display: none !important; }
+@mixin no-shine($selector: '&') {
+  #{$selector}::after {
+    display: none !important;
+  }
 }
 
-@mixin glow-pulse-border($selector: "&", $name: glowPulse, $duration: 2s) {
+@mixin glow-pulse-border($selector: '&', $name: glowPulse, $duration: 2s) {
   border: 2px solid rgba(255, 215, 0, 0.85);
-  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.15), 0 10px 20px rgba(0,0,0,.35);
+  box-shadow:
+    0 0 0 2px rgba(255, 215, 0, 0.15),
+    0 10px 20px rgba(0, 0, 0, 0.35);
 
   @include glow-pulse($selector, $name, $duration);
 }

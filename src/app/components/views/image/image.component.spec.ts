@@ -1,9 +1,8 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ImageComponent} from './image.component';
+import { ImageComponent } from './image.component';
 
 describe('ImageComponent', () => {
-
   it('should create', () => {
     expect(true).toBeTruthy();
   });

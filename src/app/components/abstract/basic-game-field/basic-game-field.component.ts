@@ -1,36 +1,48 @@
-import {ChangeDetectorRef, Component, inject} from '@angular/core';
-import {GameFieldService} from "../../../services/game-field/game-field.service";
-import {UnitService} from "../../../services/unit/unit.service";
-import {EffectsService} from "../../../services/effects/effects.service";
-import {GameService} from "../../../services/game-action/game.service";
-import {GameLoggerService} from "../../../services/game-logger/logger.service";
-import {Skill} from "../../../models/skill.model";
-import {Unit} from "../../../models/unit.model";
-import {createDeepCopy} from "../../../helpers";
-import {AbstractGameFieldComponent} from "../abstract-game-field/abstract-game-field.component";
-import {BATTLE_SPEED} from "../../../constants";
-import {Position, Tile, TilesToHighlight} from "../../../models/field.model";
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { GameFieldService } from '../../../services/game-field/game-field.service';
+import { UnitService } from '../../../services/unit/unit.service';
+import { EffectsService } from '../../../services/effects/effects.service';
+import { GameService } from '../../../services/game-action/game.service';
+import { GameLoggerService } from '../../../services/game-logger/logger.service';
+import { Skill } from '../../../models/skill.model';
+import { Unit } from '../../../models/unit.model';
+import { createDeepCopy } from '../../../helpers';
+import { AbstractGameFieldComponent } from '../abstract-game-field/abstract-game-field.component';
+import { BATTLE_SPEED } from '../../../constants';
+import { Position, Tile, TilesToHighlight } from '../../../models/field.model';
 
 @Component({
-    selector: 'basic-game-field',
-    template: '',
-    imports: []
+  selector: 'basic-game-field',
+  template: '',
+  imports: [],
 })
 export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent {
   cdRef = inject(ChangeDetectorRef);
 
-  constructor(private fieldService: GameFieldService,
-              private unitService: UnitService,
-              private eS: EffectsService,
-              private gameActionService: GameService,
-              private gameLoggerService: GameLoggerService) {
+  constructor(
+    private fieldService: GameFieldService,
+    private unitService: UnitService,
+    private eS: EffectsService,
+    private gameActionService: GameService,
+    private gameLoggerService: GameLoggerService
+  ) {
     super(fieldService, gameLoggerService, unitService, eS);
   }
 
   attack(skill: Skill) {
-    this.skillsInAttackBar = this.gameActionService.selectSkillsAndRecountCooldown(this.userUnits, this.selectedEntity as Unit);
-    const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.clickedEnemy);
-    const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
+    this.skillsInAttackBar =
+      this.gameActionService.selectSkillsAndRecountCooldown(
+        this.userUnits,
+        this.selectedEntity as Unit
+      );
+    const enemyIndex = this.unitService.findUnitIndex(
+      this.aiUnits,
+      this.clickedEnemy
+    );
+    const userIndex = this.unitService.findUnitIndex(
+      this.userUnits,
+      this.selectedEntity
+    );
     let user = this.userUnits[userIndex];
     const skillIndex = this.unitService.findSkillIndex(user.skills, skill);
     this.addBuffToUnit(this.userUnits, userIndex, skill);
@@ -43,34 +55,90 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       this.makeHealerMove(null, skill, user, this.userUnits);
     }
     if (!user.healer || (user.healer && !user.onlyHealer)) {
-      this.makeAttackMove(enemyIndex, this.eS.getBoostedParameterCover(user, user.effects) * skill.dmgM, this.eS.getBoostedParameterCover(this.aiUnits[enemyIndex], this.aiUnits[enemyIndex].effects), this.aiUnits, user, skill)
-      this.universalRangeAttack(skill, this.clickedEnemy as Unit, this.aiUnits, false, user)
+      this.makeAttackMove(
+        enemyIndex,
+        this.eS.getBoostedParameterCover(user, user.effects) * skill.dmgM,
+        this.eS.getBoostedParameterCover(
+          this.aiUnits[enemyIndex],
+          this.aiUnits[enemyIndex].effects
+        ),
+        this.aiUnits,
+        user,
+        skill
+      );
+      this.universalRangeAttack(
+        skill,
+        this.clickedEnemy as Unit,
+        this.aiUnits,
+        false,
+        user
+      );
     }
 
     user = this.userUnits[userIndex];
 
-    const skills = this.updateSkillsCooldown(createDeepCopy(user.skills), this.aiUnits, enemyIndex, skillIndex, skill, false, !(user.rage > this.aiUnits[enemyIndex].willpower));
-    this.userUnits[userIndex] = {...user, canAttack: false, canMove: false, skills: skills};
-    this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
+    const skills = this.updateSkillsCooldown(
+      createDeepCopy(user.skills),
+      this.aiUnits,
+      enemyIndex,
+      skillIndex,
+      skill,
+      false,
+      !(user.rage > this.aiUnits[enemyIndex].willpower)
+    );
+    this.userUnits[userIndex] = {
+      ...user,
+      canAttack: false,
+      canMove: false,
+      skills: skills,
+    };
+    this.gameActionService.checkCloseFight(
+      this.userUnits,
+      this.aiUnits,
+      this.gameResultsRedirect
+    );
     this.updateGridUnits([...this.aiUnits, ...this.userUnits]);
     this.dropEnemy();
     this.checkAiMoves();
   }
 
-  updateSkillsCooldown(originalSkills: Skill[], units: Unit[], unitIndex: number, skillIndex: number, skill: Skill, addTurn = false, ignoreEffect = false) {
+  updateSkillsCooldown(
+    originalSkills: Skill[],
+    units: Unit[],
+    unitIndex: number,
+    skillIndex: number,
+    skill: Skill,
+    addTurn = false,
+    ignoreEffect = false
+  ) {
     const skills = createDeepCopy(originalSkills);
     if (!ignoreEffect) {
       this.addEffectToUnit(units, unitIndex, skill);
     }
     skills[skillIndex] = {
       ...skills[skillIndex],
-      remainingCooldown: skills[skillIndex].cooldown ? addTurn ? skills[skillIndex].cooldown + 1 : skills[skillIndex].cooldown : 0
-    }
+      remainingCooldown: skills[skillIndex].cooldown
+        ? addTurn
+          ? skills[skillIndex].cooldown + 1
+          : skills[skillIndex].cooldown
+        : 0,
+    };
     return skills;
   }
 
-  addEffectToUnit(units: Unit[], unitIndex: number, skill: Skill, addRangeEffects = false) {
-    units[unitIndex] = this.unitService.addEffectToUnit(units, unitIndex, skill, addRangeEffects, this.eS.getEffectsWithIgnoreFilter)
+  addEffectToUnit(
+    units: Unit[],
+    unitIndex: number,
+    skill: Skill,
+    addRangeEffects = false
+  ) {
+    units[unitIndex] = this.unitService.addEffectToUnit(
+      units,
+      unitIndex,
+      skill,
+      addRangeEffects,
+      this.eS.getEffectsWithIgnoreFilter
+    );
   }
 
   addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill) {
@@ -78,14 +146,21 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   updateGridUnits(unitsArray: Unit[]) {
-    this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
+    this.gameConfig = this.unitService.updateGridUnits(
+      unitsArray,
+      this.gameConfig
+    );
   }
 
   dropEnemy() {
     this.dropEnemyState();
   }
 
-  highlightMakeMove(e: { entity: Unit, event?: MouseEvent, callback: (tiles: TilesToHighlight[]) => void }) {
+  highlightMakeMove(e: {
+    entity: Unit;
+    event?: MouseEvent;
+    callback: (tiles: TilesToHighlight[]) => void;
+  }) {
     // ORIGINAL LOGIC
     // highlightMakeMove(e: { entity: Unit, event?: MouseEvent, callback: (tiles: TilesToHighlight[]) => void }) {
     //   const {entity, event} = e;
@@ -196,9 +271,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     if (possibleTargetsInAttackRadius) {
       const canAttack = possibleTargetsInAttackRadius.some(
-        (target) =>
-          target.i === this.clickedEnemy?.x &&
-          target.j === this.clickedEnemy?.y
+        target =>
+          target.i === this.clickedEnemy?.x && target.j === this.clickedEnemy?.y
       );
       if (!canAttack) this.clickedEnemy = null;
     }
@@ -221,13 +295,24 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
       if (!entity?.canMove || !entity?.canCross) {
         const enemyMoves = this.possibleMoves
-          .map((move) => this.aiUnits.find((ai) => ai.x === move.i && ai.y === move.j)).filter(Boolean);
+          .map(move =>
+            this.aiUnits.find(ai => ai.x === move.i && ai.y === move.j)
+          )
+          .filter(Boolean);
         if (enemyMoves.length) {
           this.possibleMoves = enemyMoves
-            .map((enemy: any) => enemy.health ? this.unitService.getPositionFromCoordinate(enemy) : undefined).filter(Boolean) as Position[];
+            .map((enemy: any) =>
+              enemy.health
+                ? this.unitService.getPositionFromCoordinate(enemy)
+                : undefined
+            )
+            .filter(Boolean) as Position[];
         } else {
           this.possibleMoves = [];
-          const idx = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
+          const idx = this.unitService.findUnitIndex(
+            this.userUnits,
+            this.selectedEntity
+          );
           this.userUnits[idx] = {
             ...this.selectedEntity,
             x: entity.x,
@@ -239,7 +324,10 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         }
       }
 
-      this.highlightCells(this.possibleMoves, entity.user ? 'green-b' : 'red-b');
+      this.highlightCells(
+        this.possibleMoves,
+        entity.user ? 'green-b' : 'red-b'
+      );
     }
 
     if (this.showAttackBar) {
@@ -253,41 +341,87 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     //Original code:
     //     return this.showPossibleMoves(this.unitService.getPositionFromUnit(entity), entity?.canMove ? entity.canCross || 1 : entity.attackRange, !entity?.canMove);
     const canCross = this.gameActionService.getCanCross(entity);
-    return this.showPossibleMoves(this.unitService.getPositionFromCoordinate(entity), canCross, true)
-      .filter((position) => {
-        return this.fieldService.canReachPosition(this.fieldService.getGridFromField(this.gameConfig), {
+    return this.showPossibleMoves(
+      this.unitService.getPositionFromCoordinate(entity),
+      canCross,
+      true
+    ).filter(position => {
+      return this.fieldService.canReachPosition(
+        this.fieldService.getGridFromField(this.gameConfig),
+        {
           i: this.selectedEntity?.x || 0,
-          j: this.selectedEntity?.y || 0
-        }, position)
-      })
+          j: this.selectedEntity?.y || 0,
+        },
+        position
+      );
+    });
   }
 
   getEnemyWhenCannotMove(unit: Unit, arrayOfTargets: Unit[]) {
-    return this.getPossibleMoves(unit).find((move) => arrayOfTargets.some((aiUnit) => aiUnit.x === move.i && aiUnit.y === move.j && aiUnit.health > 0));
+    return this.getPossibleMoves(unit).find(move =>
+      arrayOfTargets.some(
+        aiUnit =>
+          aiUnit.x === move.i && aiUnit.y === move.j && aiUnit.health > 0
+      )
+    );
   }
 
   moveEntity(tile: Tile) {
     //Can not move AI units and dead units
-    this.ignoreMove = (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) || this.showAttackBar || tile.entity !== undefined
-    if (this.selectedEntity?.user && this.possibleMoves.length && !this.ignoreMove && !!this.possibleMoves.find((move) => move.i === tile.x && move.j === tile.y)) {
+    this.ignoreMove =
+      (this.selectedEntity?.x === tile.x && this.selectedEntity.y === tile.y) ||
+      this.showAttackBar ||
+      tile.entity !== undefined;
+    if (
+      this.selectedEntity?.user &&
+      this.possibleMoves.length &&
+      !this.ignoreMove &&
+      !!this.possibleMoves.find(move => move.i === tile.x && move.j === tile.y)
+    ) {
       //User's unit can not move (already made a move)
-      const userIndex = this.unitService.findUnitIndex(this.userUnits, this.selectedEntity);
-      this.userUnits[userIndex] = {...this.selectedEntity, x: tile.x, y: tile.y, canMove: false};
+      const userIndex = this.unitService.findUnitIndex(
+        this.userUnits,
+        this.selectedEntity
+      );
+      this.userUnits[userIndex] = {
+        ...this.selectedEntity,
+        x: tile.x,
+        y: tile.y,
+        canMove: false,
+      };
       //Look for targets to attack
-      let enemyWhenCannotMove = this.getEnemyWhenCannotMove(this.userUnits[userIndex], this.aiUnits)
+      let enemyWhenCannotMove = this.getEnemyWhenCannotMove(
+        this.userUnits[userIndex],
+        this.aiUnits
+      );
       if (enemyWhenCannotMove) {
-        const enemyIndex = this.unitService.findUnitIndex(this.aiUnits, this.unitService.getCoordinateFromPosition(enemyWhenCannotMove));
-        enemyWhenCannotMove = this.aiUnits[enemyIndex].health ? enemyWhenCannotMove : undefined;
+        const enemyIndex = this.unitService.findUnitIndex(
+          this.aiUnits,
+          this.unitService.getCoordinateFromPosition(enemyWhenCannotMove)
+        );
+        enemyWhenCannotMove = this.aiUnits[enemyIndex].health
+          ? enemyWhenCannotMove
+          : undefined;
       }
       if (!enemyWhenCannotMove) {
-        this.userUnits[userIndex] = this.gameActionService.recountCooldownForUnit({
-          ...this.userUnits[userIndex],
-          canAttack: false
-        })
+        this.userUnits[userIndex] =
+          this.gameActionService.recountCooldownForUnit({
+            ...this.userUnits[userIndex],
+            canAttack: false,
+          });
       }
 
-      this.updateGameFieldTile(tile.x, tile.y, createDeepCopy(this.userUnits[userIndex]))
-      this.updateGameFieldTile(this.selectedEntity?.x, this.selectedEntity?.y, undefined, true)
+      this.updateGameFieldTile(
+        tile.x,
+        tile.y,
+        createDeepCopy(this.userUnits[userIndex])
+      );
+      this.updateGameFieldTile(
+        this.selectedEntity?.x,
+        this.selectedEntity?.y,
+        undefined,
+        true
+      );
       this.selectedEntity = null;
     }
     this.selectedEntity = null;
@@ -296,7 +430,9 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   checkAiMoves(aiMove: boolean = true) {
-    const userFinishedTurn = this.userUnits.every((userHero) => (!userHero.canMove && !userHero.canAttack) || !userHero.health);
+    const userFinishedTurn = this.userUnits.every(
+      userHero => (!userHero.canMove && !userHero.canAttack) || !userHero.health
+    );
     if (userFinishedTurn && !this.gameActionService.isDead(this.aiUnits)) {
       this._turnCount.next(this.turnCount + 1);
       if (this.battleMode) {
@@ -305,7 +441,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         this.attackUser(aiMove);
       } else {
         this.turnUser = true;
-        this.finishAiTurn(true, [])
+        this.finishAiTurn(true, []);
       }
     }
   }
@@ -324,21 +460,24 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         return true;
       }
       return false;
-    }
+    };
 
     if (fastFight) {
       for (let i = 0; ; i++) {
-        if(tick()) break
+        if (tick()) break;
       }
     } else {
       const interval = setInterval(() => {
         tick() && clearInterval(interval);
-      }, BATTLE_SPEED)
+      }, BATTLE_SPEED);
     }
   }
 
   checkAutoFightEnd() {
-    return this.gameActionService.isDead(this.aiUnits) || this.gameActionService.isDead(this.userUnits);
+    return (
+      this.gameActionService.isDead(this.aiUnits) ||
+      this.gameActionService.isDead(this.userUnits)
+    );
   }
 
   getAiLeadingUnits(aiMove: boolean) {
@@ -349,7 +488,10 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     return this.gameActionService.getUserLeadingUnits.bind(this)(aiMove);
   }
 
-  finishAiTurn(aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
+  finishAiTurn(
+    aiMove: boolean,
+    usedAiSkills: { skill: Skill; unit: Unit; AI: Unit }[]
+  ) {
     // Original code:
     // finishAiTurn(aiMove: boolean, usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[]) {
     //   //Update AI and user units arrays (update on ui and grid)
@@ -387,7 +529,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     // Apply effects from used AI skills
     usedAiSkills.forEach(({ skill, unit, AI }) => {
       const targetIndex = userUnits.findIndex(
-        (u) => u.x === unit.x && u.y === unit.y
+        u => u.x === unit.x && u.y === unit.y
       );
       if (targetIndex !== -1 && AI.rage > userUnits[targetIndex].willpower) {
         this.addEffectToUnit(userUnits, targetIndex, skill);
@@ -406,16 +548,24 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       this.fieldService.getDefaultGameField()
     );
     this.turnUser = true;
-    this.gameActionService.checkCloseFight(userUnits, aiUnits, this.gameResultsRedirect);
+    this.gameActionService.checkCloseFight(
+      userUnits,
+      aiUnits,
+      this.gameResultsRedirect
+    );
   }
 
   attackUser(aiMove = true) {
-    const usedAiSkills: { skill: Skill, unit: Unit, AI: Unit }[] = [];
+    const usedAiSkills: { skill: Skill; unit: Unit; AI: Unit }[] = [];
     const aiUnits = this.getAiLeadingUnits(aiMove);
     const userUnits = this.getUserLeadingUnits(aiMove);
 
     const updateField = () => {
-      this.gameConfig = this.fieldService.getGameField(userUnits, aiUnits, this.fieldService.getDefaultGameField());
+      this.gameConfig = this.fieldService.getGameField(
+        userUnits,
+        aiUnits,
+        this.fieldService.getDefaultGameField()
+      );
     };
 
     const moveAiUnit = (index: number, aiUnit: Unit, userUnit: Unit) => {
@@ -424,9 +574,17 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       updateField();
       const path = this.fieldService.getShortestPathCover(
         this.fieldService.getGridFromField(this.gameConfig),
-        aiPos, userPos, true, false, true
+        aiPos,
+        userPos,
+        true,
+        false,
+        true
       );
-      const moveTo = this.gameActionService.getCanGetToPosition(aiUnit, path, userPos);
+      const moveTo = this.gameActionService.getCanGetToPosition(
+        aiUnit,
+        path,
+        userPos
+      );
 
       aiUnits[index] = {
         ...aiUnits[index],
@@ -445,7 +603,12 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       updateField();
     };
 
-    const performAttack = (aiUnit: Unit, userIndex: number, aiSkill: Skill, index: number) => {
+    const performAttack = (
+      aiUnit: Unit,
+      userIndex: number,
+      aiSkill: Skill,
+      index: number
+    ) => {
       this.addBuffToUnit(aiUnits, index, aiSkill);
       if (aiSkill.addBuffsBeforeAttack) {
         aiUnit = aiUnits[index];
@@ -457,10 +620,28 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
       if (!aiUnit.healer || (aiUnit.healer && !aiUnit.onlyHealer)) {
         const userTarget = userUnits[userIndex];
-        const dmg = this.eS.getBoostedParameterCover(aiUnit, aiUnit.effects) * aiSkill.dmgM;
-        const defence = this.eS.getBoostedParameterCover(userTarget, userTarget.effects);
-        this.makeAttackMove(userIndex, dmg, defence, userUnits, aiUnit, aiSkill);
-        this.universalRangeAttack(aiSkill, userTarget, userUnits, aiMove, aiUnit);
+        const dmg =
+          this.eS.getBoostedParameterCover(aiUnit, aiUnit.effects) *
+          aiSkill.dmgM;
+        const defence = this.eS.getBoostedParameterCover(
+          userTarget,
+          userTarget.effects
+        );
+        this.makeAttackMove(
+          userIndex,
+          dmg,
+          defence,
+          userUnits,
+          aiUnit,
+          aiSkill
+        );
+        this.universalRangeAttack(
+          aiSkill,
+          userTarget,
+          userUnits,
+          aiMove,
+          aiUnit
+        );
       }
 
       const updatedSkills = this.updateSkillsCooldown(
@@ -473,23 +654,36 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         true
       );
 
-      usedAiSkills.push({ skill: aiSkill, unit: userUnits[userIndex], AI: aiUnit });
+      usedAiSkills.push({
+        skill: aiSkill,
+        unit: userUnits[userIndex],
+        AI: aiUnit,
+      });
       updateAiAfterAttack(index, updatedSkills);
     };
 
     const makeAiMove = (aiUnit: Unit, index: number) => {
       if (!aiUnit.health || !aiUnit.canMove) return;
 
-      const orderedTargets = this.unitService.orderUnitsByDistance(aiUnit, userUnits) as Unit[];
+      const orderedTargets = this.unitService.orderUnitsByDistance(
+        aiUnit,
+        userUnits
+      ) as Unit[];
 
       for (const userUnit of orderedTargets) {
         if (!userUnit.health) continue;
 
         moveAiUnit(index, aiUnit, userUnit);
 
-        const enemyPosition = this.getEnemyWhenCannotMove(aiUnits[index], userUnits);
+        const enemyPosition = this.getEnemyWhenCannotMove(
+          aiUnits[index],
+          userUnits
+        );
         if (enemyPosition) {
-          const userIndex = this.unitService.findUnitIndex(userUnits, this.unitService.getCoordinateFromPosition(enemyPosition));
+          const userIndex = this.unitService.findUnitIndex(
+            userUnits,
+            this.unitService.getCoordinateFromPosition(enemyPosition)
+          );
           const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
           if (aiSkill) {
             performAttack(aiUnit, userIndex, aiSkill, index);
@@ -519,8 +713,17 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.finishAiTurn(aiMove, usedAiSkills);
   }
 
-  checkDebuffs(unit: Unit, decreaseRestoreCooldown = true, canRestoreHealth: boolean) {
-    const response = this.gameActionService.checkDebuffs(unit, decreaseRestoreCooldown, this.battleMode, canRestoreHealth);
+  checkDebuffs(
+    unit: Unit,
+    decreaseRestoreCooldown = true,
+    canRestoreHealth: boolean
+  ) {
+    const response = this.gameActionService.checkDebuffs(
+      unit,
+      decreaseRestoreCooldown,
+      this.battleMode,
+      canRestoreHealth
+    );
     unit = response.unit;
     this.log.push(...response.log);
     return unit;
@@ -531,11 +734,13 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   finishTurn() {
-    this.userUnits = this.userUnits.map((user) => this.gameActionService.recountCooldownForUnit({
-      ...user,
-      canMove: false,
-      canAttack: false
-    }))
+    this.userUnits = this.userUnits.map(user =>
+      this.gameActionService.recountCooldownForUnit({
+        ...user,
+        canMove: false,
+        canAttack: false,
+      })
+    );
     this.updateGridUnits(this.userUnits);
     this.checkAiMoves();
   }

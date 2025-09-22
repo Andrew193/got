@@ -8,11 +8,12 @@
           class="flip-items-inner-container col"
           [class.claimed]="card.flipped">
           <div class="flip-card">
-            <div class="card-front">
-              ?
-            </div>
+            <div class="card-front">?</div>
             <div class="card-back">
-              <image [alt]="card.name" [source]="card.src" [imageClass]="'card-image'"/>
+              <image
+                [alt]="card.name"
+                [source]="card.src"
+                [imageClass]="'card-image'" />
               <span>{{ card.amount | number }}</span>
             </div>
           </div>
@@ -26,17 +27,19 @@
     @if (showOpenButton()) {
       <button (click)="revealAll()">Open cards</button>
     } @else if (showTotalReward()) {
-      <div style="grid-template-columns: 1fr 3fr;" class="d-grid p-0 gap-2">
+      <div style="grid-template-columns: 1fr 3fr" class="d-grid p-0 gap-2">
         <p class="m-0 total-reward-title">Total reward:</p>
         <div class="row ps-2 pe-2 m-0 gap-2">
           @let _prize = cardsPrize();
 
           @for (el of _prize; track el[0]) {
-            <div
-              class="flip-items-inner-container claimed col">
+            <div class="flip-items-inner-container claimed col">
               <div class="flip-card">
                 <div class="card-back">
-                  <image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'card-image'"/>
+                  <image
+                    [alt]="el[0]"
+                    [source]="el[1]['src']"
+                    [imageClass]="'card-image'" />
                   <span>{{ el[1]['amount'] | number }}</span>
                 </div>
               </div>

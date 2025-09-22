@@ -1,14 +1,29 @@
 <main class="ms-4 me-4">
   <div class="flex-row main-content">
-    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 flex-row justify-content-between">
-      <div class="col-2 d-flex justify-content-center m-2" *ngFor="let hero of returnedArray; trackBy trackByUnit">
-        <div class="card hero-card d-flex align-items-center col-12" (click)="openHeroPreview(hero.name)">
-          <img class="card-img-top taverna" src="{{hero.fullImgSrc}}" alt="{{hero.name}}">
+    <div
+      class="col-xl-9 col-lg-9 col-md-12 col-sm-12 flex-row justify-content-between">
+      <div
+        class="col-2 d-flex justify-content-center m-2"
+        *ngFor="let hero of returnedArray; trackBy: trackByUnit">
+        <div
+          class="card hero-card d-flex align-items-center col-12"
+          (click)="openHeroPreview(hero.name)">
+          <img
+            class="card-img-top taverna"
+            src="{{ hero.fullImgSrc }}"
+            alt="{{ hero.name }}" />
           <div class="level">
             <div class="position-relative">
-              <img src="assets/resourses/imgs/rank/{{heroesService.getRank(hero.level)}}_r.png" alt="rank level"
-                   class="level_rank" [style]="{height: hero.level === 60 ? '60px' : ''}">
-              <span [style]="{left: hero.level > 10 ? '16px' : ''}">{{ hero.level }}</span>
+              <img
+                src="assets/resourses/imgs/rank/{{
+                  heroesService.getRank(hero.level)
+                }}_r.png"
+                alt="rank level"
+                class="level_rank"
+                [style]="{ height: hero.level === 60 ? '60px' : '' }" />
+              <span [style]="{ left: hero.level > 10 ? '16px' : '' }">{{
+                hero.level
+              }}</span>
             </div>
           </div>
           <rating [(ngModel)]="hero.rank" [max]="6" [readonly]="true"></rating>
@@ -20,23 +35,34 @@
         <div class="text-center filters">
           <h4>Filters</h4>
           <form [formGroup]="formGroup" class="ps-2 pe-2">
-            <mat-slide-toggle formControlName="showAll" [color]="'primary'" class="w-100 mb-2">Show All Heroes
+            <mat-slide-toggle
+              formControlName="showAll"
+              [color]="'primary'"
+              class="w-100 mb-2"
+              >Show All Heroes
             </mat-slide-toggle>
             <autocomplete-mat-input
               [form]="formGroup"
               [label]="'Unit Name'"
               [placeholder]="'Input hero name'"
               [filteredOptions]="filteredOptions"
-              formControlName="unitName"
-            ></autocomplete-mat-input>
+              formControlName="unitName"></autocomplete-mat-input>
           </form>
         </div>
       </aside>
     </div>
   </div>
-  <pagination [totalItems]="totalElements" (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage"
-              [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
-              [(ngModel)]="currentPage"
-  ></pagination>
-  <button class="btn btn-primary" (click)="backToMainPage()">Back to Castle Black</button>
+  <pagination
+    [totalItems]="totalElements"
+    (pageChanged)="pageChanged($event)"
+    [itemsPerPage]="itemsPerPage"
+    [boundaryLinks]="true"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+    [(ngModel)]="currentPage"></pagination>
+  <button class="btn btn-primary" (click)="backToMainPage()">
+    Back to Castle Black
+  </button>
 </main>

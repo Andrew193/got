@@ -1,12 +1,10 @@
-import {Component, inject, input, ViewEncapsulation} from '@angular/core';
-import {NotificationsService} from "../../services/notifications/notifications.service";
-import {AsyncPipe} from "@angular/common";
+import { Component, inject, input, ViewEncapsulation } from '@angular/core';
+import { NotificationsService } from '../../services/notifications/notifications.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-notification-marker',
-  imports: [
-    AsyncPipe
-  ],
+  imports: [AsyncPipe],
   templateUrl: './notification-marker.component.html',
   styleUrl: './notification-marker.component.scss',
   encapsulation: ViewEncapsulation.ShadowDom,
