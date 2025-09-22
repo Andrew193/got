@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
 import { UsersService } from '../../services/users/users.service';
 import { frontRoutes } from '../../constants';
+import { HeaderComponent } from '../../components/common/header/header.component';
 
 @Component({
   selector: 'app-site',
-  imports: [RouterOutlet, CommonModule, ModalWindowComponent],
+  imports: [RouterOutlet, CommonModule, ModalWindowComponent, HeaderComponent],
   templateUrl: './site.component.html',
   styleUrl: './site.component.scss',
 })

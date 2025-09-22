@@ -43,6 +43,20 @@ export const frontRoutes = {
   giftStore: 'gift-lands',
 };
 
+export const ALL_EFFECTS = {
+  burning: 'Горение',
+  freezing: 'Заморозка',
+  healthRestore: 'Восстановление',
+  defBreak: 'Разлом брони',
+  bleeding: 'Кровотечение',
+  poison: 'Отравление',
+  attackBuff: 'Бонус атаки',
+  defBuff: 'Бонус защиты',
+  attackBreak: 'Заржавелый Меч',
+  defDestroy: 'Коррозия брони',
+  root: 'Корень',
+};
+
 export const REWARD: RewardLootConstant = {
   cooper: { min: 10000, max: 40000 },
   gold: { min: 20, max: 50 },

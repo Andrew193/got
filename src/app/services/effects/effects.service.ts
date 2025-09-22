@@ -3,24 +3,14 @@ import { Unit } from '../../models/unit.model';
 import { Skill } from '../../models/skill.model';
 import { Effect } from '../../models/effect.model';
 import { heroType } from '../heroes/heroes.service';
+import { createDeepCopy } from '../../helpers';
+import { ALL_EFFECTS } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EffectsService {
-  effects = {
-    burning: 'Горение',
-    freezing: 'Заморозка',
-    healthRestore: 'Восстановление',
-    defBreak: 'Разлом брони',
-    bleeding: 'Кровотечение',
-    poison: 'Отравление',
-    attackBuff: 'Бонус атаки',
-    defBuff: 'Бонус защиты',
-    attackBreak: 'Заржавелый Меч',
-    defDestroy: 'Коррозия брони',
-    root: 'Корень',
-  };
+  effects = createDeepCopy(ALL_EFFECTS);
 
   effectsDescriptions: Record<string, string> = {
     [this.effects.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',

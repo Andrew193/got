@@ -16,14 +16,14 @@ import { LogRecord } from '../../models/logger.model';
   providedIn: 'root',
 })
 export class GameService {
-  gameResult = {
+  private gameResult = {
     headerMessage: '',
     headerClass: '',
     closeBtnLabel: '',
     callback: () => {},
   };
-  aiUnits: Unit[] = [];
-  userUnits: Unit[] = [];
+  private aiUnits: Unit[] = [];
+  private userUnits: Unit[] = [];
 
   constructor(
     private unitService: UnitService,
@@ -127,7 +127,7 @@ export class GameService {
     return unit;
   }
 
-  logRestoreHealth(logs: LogRecord[], skill: Skill, unit: Unit, restoredHealth: number) {
+  private logRestoreHealth(logs: LogRecord[], skill: Skill, unit: Unit, restoredHealth: number) {
     logs.push({
       info: true,
       imgSrc: skill.imgSrc,
@@ -135,7 +135,7 @@ export class GameService {
     });
   }
 
-  checkEffectsForHealthRestore(unit: Unit, logs: LogRecord[]) {
+  private checkEffectsForHealthRestore(unit: Unit, logs: LogRecord[]) {
     unit.effects.forEach(effect => {
       if (effect.type === this.eS.effects.healthRestore) {
         unit = this.restoreHealthForUnit(unit, effect, logs, {
@@ -145,7 +145,7 @@ export class GameService {
     });
   }
 
-  getReducedDmgForEffects(unit: Unit, dmg: number, debuff?: Effect) {
+  private getReducedDmgForEffects(unit: Unit, dmg: number, debuff?: Effect) {
     let isDmgReduced = false;
 
     if (debuff) {
@@ -315,7 +315,7 @@ export class GameService {
       : entity.attackRange;
   }
 
-  processEffects(unit: Unit, battleMode: boolean) {
+  private processEffects(unit: Unit, battleMode: boolean) {
     const log: LogRecord[] = [];
 
     unit.effects.forEach(effect => {

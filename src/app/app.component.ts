@@ -2,8 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import {
   GuardsCheckEnd,
   GuardsCheckStart,
-  NavigationCancel,
-  NavigationError,
   ResolveEnd,
   ResolveStart,
   Router,
@@ -30,12 +28,8 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(e => {
       if (e instanceof ResolveStart || e instanceof GuardsCheckStart) {
         this.loaderService.start();
-      } else if (
-        e instanceof ResolveEnd ||
-        e instanceof GuardsCheckEnd ||
-        e instanceof NavigationCancel ||
-        e instanceof NavigationError
-      ) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      } else if (e instanceof ResolveEnd || e instanceof GuardsCheckEnd) {
         this.loaderService.stop();
       }
     });

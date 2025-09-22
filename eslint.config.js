@@ -53,6 +53,6 @@ module.exports = tseslint.config(
     rules: {},
   },
   {
-    ignores: ['node_modules', 'dist', 'coverage', '.angular', '.idea', '.vscode'],
+    ignores: ['node_modules', 'dist', 'coverage', '.angular', '.idea', '.vscode', 'db.json'],
   },
 );

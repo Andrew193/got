@@ -106,7 +106,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dailyRewardService.claimDailyReward(
         {
           ...this.dailyRewardConfig,
-          day: this.dailyRewardConfig.day + 1,
+          day: this.dailyRewardConfig.day + 1 === 28 ? 0 : this.dailyRewardConfig.day + 1,
           totalDays: this.dailyRewardConfig.totalDays + 1,
           lastLogin: moment().format(DATE_FORMAT),
         },
