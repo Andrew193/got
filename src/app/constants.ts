@@ -21,10 +21,10 @@ export const getDiagonals = (checkDiagonals: boolean) => {
       {di: 1, dj: 1}    // Down-Right
     ]
     : [
-      {di: -1, dj: 0},
-      {di: 1, dj: 0},
-      {di: 0, dj: -1},
-      {di: 0, dj: 1}
+      {di: -1, dj: 0},  // Up
+      {di: 1, dj: 0},   // Down
+      {di: 0, dj: -1},  // Left
+      {di: 0, dj: 1}    // Right
     ];
 }
 
@@ -53,9 +53,9 @@ export const REWARD: RewardLootConstant = {
 export const fakeUser: User = {
   createdAt: 0,
   currency: {
-    gold: 0,
-    silver: 0,
-    cooper: 0
+    gold: 10,
+    silver: 100,
+    cooper: 1000
   },
   id: "1",
   login: 'rest',
@@ -64,5 +64,5 @@ export const fakeUser: User = {
     claimedRewards: [],
     lastLoyaltyBonus: ''
   },
-  password: 'test'
-};
+  password: 'fake'
+} as const;

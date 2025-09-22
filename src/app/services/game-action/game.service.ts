@@ -10,7 +10,7 @@ import {Effect} from "../../models/effect.model";
 import {GameLoggerService} from "../game-logger/logger.service";
 import {ModalStrategiesTypes} from "../../components/modal-window/modal-interfaces";
 import {Position} from "../../models/field.model";
-import {LogRecord} from "../../models/common.model";
+import {LogRecord} from "../../models/logger.model";
 
 @Injectable({
   providedIn: 'root',
@@ -207,7 +207,7 @@ export class GameService {
                 newHealth: null,
                 addDmg: additionalDmg,
                 battleMode: battleMode
-              }, !unit.user, effect, unit))
+              }, unit.user, effect, unit))
             }
             unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
           }
@@ -242,7 +242,7 @@ export class GameService {
           damage: null,
           newHealth: null,
           battleMode: battleMode
-        }, !unit.user, effect, unit, recountedUnit.message))
+        }, unit.user, effect, unit, recountedUnit.message))
       }
     })
 

@@ -78,8 +78,8 @@
             <div class="m-1">
               <ng-container *ngFor="let logRecord of log; trackBy trackByLogRecord">
                 <p class="log-record" *ngIf="logRecord.message" [ngClass]="{
-              'green-b': logRecord.isUser,
-              'red-b': !logRecord.isUser,
+              'red-b': logRecord.isUser,
+              'green-b': !logRecord.isUser,
               'entity-b': logRecord.info
               }">
                   <img src="{{logRecord.imgSrc}}" alt="Effect img"/>

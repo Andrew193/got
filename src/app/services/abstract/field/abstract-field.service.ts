@@ -27,10 +27,6 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
 
   abstract getDamage(unitConfig: { dmgTaker: Unit, attackDealer: Unit }, config: { attack: number }): number
 
-  getRandomInt(min: number, max: number) {
-    return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
-  }
-
   getFieldsInRadius(grid: Tile[][], location: Position, radius: number, diagonalCheck?: boolean): Position[] {
     const fields = [];
     const rows = grid.length;

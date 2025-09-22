@@ -7,7 +7,7 @@ import {GameLoggerService} from "../../../services/game-logger/logger.service";
 import {UnitService} from "../../../services/unit/unit.service";
 import {EffectsService} from "../../../services/effects/effects.service";
 import {GameFieldVars, Position, Tile, TilesToHighlight} from "../../../models/field.model";
-import {LogRecord} from "../../../models/common.model";
+import {LogRecord} from "../../../models/logger.model";
 
 export interface GameField {
   gameField: Tile[][];
@@ -107,13 +107,8 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
         damage,
         newHealth: null,
         battleMode: this.battleMode
-      }, attackDealer.user, skill, dmgTaker[enemyIndex]));
+      }, dmgTaker[enemyIndex].user, skill, dmgTaker[enemyIndex]));
       dmgTaker[enemyIndex] = {...dmgTaker[enemyIndex], health: newHealth};
-      this.log.push(this.gameLoggerS.logEvent({
-        damage: 0,
-        newHealth,
-        battleMode: this.battleMode
-      }, attackDealer.user, skill, dmgTaker[enemyIndex]));
     }
   }
 

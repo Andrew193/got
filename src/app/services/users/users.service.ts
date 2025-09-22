@@ -1,5 +1,4 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, map, tap} from "rxjs";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {Router} from "@angular/router";
@@ -12,7 +11,7 @@ import {CurrencyDifComponent} from "../../components/modal-window/currency/curre
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class UsersService extends ApiService<User> {
   private _snackBar = inject(MatSnackBar);
 
   private url = "/users";
@@ -20,11 +19,9 @@ export class UsersService {
   private user = new BehaviorSubject<User | null>(null);
   $user = this.user.asObservable();
 
-  apiService = inject(ApiService<User>);
-
-  constructor(private http: HttpClient,
-              private router: Router,
+  constructor(private router: Router,
               private localStorage: LocalStorageService) {
+    super();
   }
 
   basicUser(user: Partial<User>): User {
@@ -74,7 +71,7 @@ export class UsersService {
   updateCurrency(newCurrency: Currency, config: {returnObs?: boolean, hardSet?: boolean} = {returnObs: false, hardSet: false}) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
-    return this.apiService.putPostCover({
+    return this.putPostCover({
         ...user, currency: {
           gold:  newCurrency.gold + (config.hardSet ? 0 : user.currency.gold),
           silver: newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
@@ -149,7 +146,7 @@ export class UsersService {
       }
     }
 
-    return this.apiService.putPostCover(data,
+    return this.putPostCover(data,
       {
         url: this.url,
         callback: (response) => {

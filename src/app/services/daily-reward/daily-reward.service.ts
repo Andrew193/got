@@ -29,11 +29,11 @@ export class DailyRewardService extends ApiService<DailyReward> {
   private url = "/dailyReward";
 
   getConfig(callback: (config: DailyReward, userId: string) => void) {
-    this.http.get<DailyReward[]>(this.url, {
+    return this.http.get<DailyReward[]>(this.url, {
       params: {
         userId: this.userId
       }
-    }).pipe(this.basicResponseTapParser(callback)).subscribe();
+    }).pipe(this.basicResponseTapParser(callback))
   }
 
   claimDailyReward(reward: DailyReward, callback: (newConfig: IdEntity) => void) {

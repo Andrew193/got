@@ -10,11 +10,11 @@ export class GiftService extends ApiService<GiftConfig> {
   private url = "/giftTrip";
 
   getConfig(callback: (config: GiftConfig, userId: string) => void) {
-    this.http.get<GiftConfig[]>(this.url, {
+    return this.http.get<GiftConfig[]>(this.url, {
       params: {
         userId: this.userId
       }
-    }).pipe(this.basicResponseTapParser(callback)).subscribe();
+    }).pipe(this.basicResponseTapParser(callback))
   }
 
   claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {

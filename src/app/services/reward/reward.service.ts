@@ -67,7 +67,7 @@ export class RewardService {
 
   getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
   getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
-  getReward(amountOfRewards: number = 1, items: Reward[]) {
+  getReward(amountOfRewards: number = 1, items: Reward[]): DisplayReward | DisplayReward[] {
     let rewards: DisplayReward[] = [];
     for (let i = 0; i < amountOfRewards; i++) {
       rewards = [...rewards, this.getLoot(items)];

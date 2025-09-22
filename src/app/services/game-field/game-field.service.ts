@@ -1,15 +1,18 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {AbstractFieldService} from "../abstract/field/abstract-field.service";
 import {GameService} from "../game-action/game.service";
 import {Skill} from "../../models/skill.model";
 import {Unit} from "../../models/unit.model";
 import {getDiagonals} from "../../constants";
 import {Position} from "../../models/field.model";
+import {NumbersService} from "../numbers/numbers.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameFieldService extends AbstractFieldService {
+  private numberService = inject(NumbersService);
+
   constructor(private gameActionService: GameService) {
     super();
   }
@@ -24,14 +27,14 @@ export class GameFieldService extends AbstractFieldService {
     const fixedAttack = this.gameActionService.getFixedAttack(config.attack, unitConfig.attackDealer);
     const blockedDamage = fixedDefence * 0.4;
     if (blockedDamage - 200 > fixedAttack) {
-      return +(100 + this.getRandomInt(10, 70)).toFixed(0);
+      return +(100 + this.numberService.getRandomInt(10, 70)).toFixed(0);
     } else {
       const fixedDmg = !!unitConfig.dmgTaker.dmgReducedBy ? (fixedAttack - blockedDamage) - ((fixedAttack - blockedDamage) * unitConfig.dmgTaker.dmgReducedBy) : fixedAttack - blockedDamage
-      return +(fixedDmg + this.getRandomInt(30, 100)).toFixed(0);
+      return +(fixedDmg + this.numberService.getRandomInt(30, 100)).toFixed(0);
     }
   }
 
-  getShortestPathCover(grid: string | any[], start: Position, end: Position, removeStart = false, removeEnd = false, checkDiagonals = false) {
+  getShortestPathCover(grid: number[][], start: Position, end: Position, removeStart = false, removeEnd = false, checkDiagonals = false) {
     const path = this.shortestPath(grid, start, end, checkDiagonals);
     if (removeStart) {
       return path.filter((position) => position.j !== start.j || position.i !== start.i)
@@ -84,7 +87,7 @@ export class GameFieldService extends AbstractFieldService {
     return false; // Target cannot be reached
   }
 
-  shortestPath(grid: string | any[], start: Position, end: Position, checkDiagonals = false): Position[] {
+  private shortestPath(grid: any[], start: Position, end: Position, checkDiagonals = false): Position[] {
     const rows = grid.length;
     const cols = grid[0].length;
     const queue = [{position: start, path: [start]}];

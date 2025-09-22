@@ -19,4 +19,8 @@ export class NumbersService {
   getNumberInRange(min: number, max: number) {
     return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
   }
+
+  getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
+  }
 }

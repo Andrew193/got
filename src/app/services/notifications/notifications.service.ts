@@ -39,7 +39,7 @@ export class NotificationsService {
         if(config.lastLogin !== TODAY) {
           this.notificationsValue(el.type, true);
         }
-      });
+      }).subscribe();
     })
 
     this.showPossibleActivities();

@@ -3,7 +3,7 @@ import {fakeAsync, TestBed, tick} from "@angular/core/testing";
 import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {concat, concatAll, delay, from, map, Observable, of, throwError, toArray, withLatestFrom} from "rxjs";
 import {Router} from "@angular/router";
-import {frontRoutes, USER_TOKEN} from "../../constants";
+import {fakeUser, frontRoutes, USER_TOKEN} from "../../constants";
 import {LocalStorageService} from "../localStorage/local-storage.service";
 import {Currency, User} from "./users.interfaces";
 import {Online} from "../online/online.service";
@@ -15,22 +15,6 @@ describe('UsersService', () => {
   let localStorageSpy: jasmine.SpyObj<LocalStorageService>;
 
   const userBase = {login: 'test', password: 'test'};
-  const fakeUser: User = {
-    createdAt: 0,
-    currency: {
-      gold: 10,
-      silver: 100,
-      cooper: 1000
-    },
-    id: "1",
-    login: 'fake',
-    online: {
-      onlineTime: 0,
-      claimedRewards: [],
-      lastLoyaltyBonus: ''
-    },
-    password: 'fake'
-  }
 
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put']);
