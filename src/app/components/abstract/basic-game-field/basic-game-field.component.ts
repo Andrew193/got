@@ -12,7 +12,7 @@ import { BATTLE_SPEED } from '../../../constants';
 import { Position, Tile, TilesToHighlight } from '../../../models/field.model';
 
 @Component({
-  selector: 'basic-game-field',
+  selector: 'app-basic-game-field',
   template: '',
   imports: [],
 })
@@ -429,7 +429,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.checkAiMoves();
   }
 
-  checkAiMoves(aiMove: boolean = true) {
+  checkAiMoves(aiMove = true) {
     const userFinishedTurn = this.userUnits.every(
       userHero => (!userHero.canMove && !userHero.canAttack) || !userHero.health
     );

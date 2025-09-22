@@ -21,7 +21,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     );
   };
 
-  function setHeaders(req: HttpRequest<unknown>, token: string = 'test token') {
+  function setHeaders(req: HttpRequest<unknown>, token = 'test token') {
     return req.clone({
       setHeaders: {
         Authorization: `Basic ${token}`,

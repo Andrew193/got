@@ -12,7 +12,7 @@ import { trackByIndex } from '../../helpers';
 import { ImageComponent } from '../views/image/image.component';
 
 @Component({
-  selector: 'display-reward',
+  selector: 'app-display-reward',
   imports: [CommonModule, ImageComponent],
   templateUrl: './display-reward.component.html',
   styleUrl: './display-reward.component.scss',

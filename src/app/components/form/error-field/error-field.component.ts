@@ -3,7 +3,7 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'error-field',
+  selector: 'app-error-field',
   imports: [CommonModule],
   templateUrl: './error-field.component.html',
   styleUrl: './error-field.component.scss',

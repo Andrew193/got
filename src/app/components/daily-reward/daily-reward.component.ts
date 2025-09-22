@@ -40,7 +40,7 @@ export interface DayReward {
 }
 
 @Component({
-  selector: 'daily-reward',
+  selector: 'app-daily-reward',
   imports: [
     CommonModule,
     ModalModule,
@@ -59,7 +59,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   notificationService = inject(NotificationsService);
   destroyRef = inject(DestroyRef);
-  isHeroPreview: boolean = false;
+  isHeroPreview = false;
   rewardHero: Unit;
   month: DayReward[] = [];
   dailyRewardConfig: DailyReward = {

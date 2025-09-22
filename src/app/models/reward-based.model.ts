@@ -36,12 +36,10 @@ export type RewardKeysForLoot = Extract<
   'cooper' | 'silver' | 'gold' | 'shards'
 >;
 
-export type RewardLootConstant = {
-  [P in RewardKeysForLoot]: {
-    min: number;
-    max: number;
-  };
-};
+export type RewardLootConstant = Record<
+  RewardKeysForLoot,
+  { min: number; max: number }
+>;
 
 export type CoinNames = Lowercase<
   Extract<RewardValues, 'Cooper' | 'Silver' | 'Gold'>

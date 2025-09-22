@@ -2,7 +2,7 @@ import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { HeroesService } from '../../services/heroes/heroes.service';
 
 @Directive({
-  selector: '[contextMenuTriggerFor]',
+  selector: '[appContextMenuTriggerFor]',
   standalone: true,
 })
 export class ContextMenuTriggerDirective implements OnInit {

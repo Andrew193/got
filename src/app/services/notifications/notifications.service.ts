@@ -28,7 +28,7 @@ export class NotificationsService {
   );
 
   private notifications: BehaviorSubject<Map<string, boolean>> =
-    new BehaviorSubject(this.initNotificationConfig);
+    new BehaviorSubject<Map<string, boolean>>(this.initNotificationConfig);
   readonly $notifications = this.notifications.asObservable();
 
   init() {

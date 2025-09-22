@@ -22,7 +22,7 @@ export class EffectsService {
     root: 'Корень',
   };
 
-  effectsDescriptions: { [key: string]: string } = {
+  effectsDescriptions: Record<string, string> = {
     [this.effects.burning]:
       'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
     [this.effects.freezing]:

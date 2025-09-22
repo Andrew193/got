@@ -39,15 +39,15 @@ export abstract class AbstractGameFieldComponent
 {
   @Input() userUnits: Unit[] = [];
   @Input() aiUnits: Unit[] = [];
-  @Input() battleMode: boolean = true;
-  autoFight: boolean = false;
+  @Input() battleMode = true;
+  autoFight = false;
 
   @Input() gameResultsRedirect: (realAiUnits: Unit[]) => void = () => {};
   log: LogRecord[] = [];
   turnUser = true;
-  turnCount: number = 0;
-  maxTurnCount: number = 20;
-  _turnCount: BehaviorSubject<number> = new BehaviorSubject(1);
+  turnCount = 0;
+  maxTurnCount = 20;
+  _turnCount: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   showAttackBar = false;
   skillsInAttackBar: Skill[] = [];
 
@@ -91,7 +91,7 @@ export abstract class AbstractGameFieldComponent
   showPossibleMoves(
     location: Position,
     radius: number,
-    diagCheck: boolean = false
+    diagCheck = false
   ) {
     return this.abstractFieldS.getFieldsInRadius(
       this.gameConfig,
@@ -140,15 +140,17 @@ export abstract class AbstractGameFieldComponent
           )
         )
         .filter(e => !!e) as Unit[];
-      for (let i = 0; i < enemiesInRange.length; i++) {
+
+      for (const enemyInRange of enemiesInRange) {
         const enemyIndex = this.unitS.findUnitIndex(
           enemiesArray,
-          enemiesInRange[i]
+          enemyInRange
         );
+
         this.makeAttackMove(
           enemyIndex,
           this.effectsS.getBoostedParameterCover(attacker, attacker.effects) *
-            (skill.attackInRangeM || 0),
+          (skill.attackInRangeM || 0),
           this.effectsS.getBoostedParameterCover(
             enemiesArray[enemyIndex],
             enemiesArray[enemyIndex].effects
@@ -157,6 +159,7 @@ export abstract class AbstractGameFieldComponent
           attacker,
           skill
         );
+
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
           this.addEffectToUnit(
             enemiesArray,
@@ -183,7 +186,7 @@ export abstract class AbstractGameFieldComponent
     );
 
     if (dmgTaker[enemyIndex].health) {
-      let newHealth = this.effectsS.getHealthAfterDmg(
+      const newHealth = this.effectsS.getHealthAfterDmg(
         dmgTaker[enemyIndex].health,
         damage
       );
@@ -257,7 +260,7 @@ export abstract class AbstractGameFieldComponent
     i: any,
     j: any,
     entity: Unit | undefined = undefined,
-    active: boolean = false
+    active = false
   ) {
     this.gameConfig[i][j] = {
       ...this.gameConfig[i][j],

@@ -6,14 +6,14 @@ import { OutsideClickDirective } from '../../directives/outside-click/outside-cl
 import { Coordinate, Tile, TilesToHighlight } from '../../models/field.model';
 
 @Component({
-  selector: 'basic-game-board',
+  selector: 'app-basic-game-board',
   imports: [CommonModule, OutsideClickDirective],
   templateUrl: './basic-game-board.component.html',
   styleUrl: './basic-game-board.component.scss',
 })
 export class BasicGameBoardComponent {
   @Input() gameConfig: any[][] = [];
-  @Input() battleMode: boolean = true;
+  @Input() battleMode = true;
   @Output() moveEntity = new EventEmitter();
   @Output() highlightMakeMove = new EventEmitter();
 

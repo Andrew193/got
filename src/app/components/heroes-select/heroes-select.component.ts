@@ -3,20 +3,20 @@ import { NgForOf, NgIf } from '@angular/common';
 import { Unit } from '../../models/unit.model';
 
 @Component({
-  selector: 'heroes-select',
+  selector: 'app-heroes-select',
   imports: [NgForOf, NgIf],
   templateUrl: './heroes-select.component.html',
   styleUrl: './heroes-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroesSelectComponent {
-  @Input() title: string = '';
+  @Input() title = '';
   @Input() containerClass = '';
   @Input() allHeroes: Unit[] = [];
-  @Input() isUser: boolean = false;
+  @Input() isUser = false;
   @Input() addUserUnit: (unit: Unit, isUser?: boolean) => boolean = () => true;
-  leftUnits: Map<string, string> = new Map();
-  rightUnits: Map<string, string> = new Map();
+  leftUnits: Map<string, string> = new Map<string, string>();
+  rightUnits: Map<string, string> = new Map<string, string>();
 
   public trackByUnit = (index: number, unit: Unit) => {
     return unit.name + this.checkSelected(unit, this.isUser);

@@ -48,8 +48,9 @@ export class HeroesService extends ContentService {
   }
 
   highlightEffects(text: string) {
-    for (let i = 0; i < this.eS.effectsToHighlight.length; i++) {
-      const effect = this.eS.effectsToHighlight[i];
+    const effects = this.eS.effectsToHighlight;
+
+    for (const effect of effects) {
       text = text.replaceAll(effect, `<span${effect}</span`);
     }
 
@@ -64,8 +65,7 @@ export class HeroesService extends ContentService {
     const result = [];
     const effects = this.getEffectsToHighlight();
 
-    for (let i = 0; i < effects.length; i++) {
-      const effect = effects[i];
+    for (const effect of effects) {
       if (text.includes(effect)) {
         result.push(`${effect} - ${this.getEffectsDescription(effect)}`);
       }

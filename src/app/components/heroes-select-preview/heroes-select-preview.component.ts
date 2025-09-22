@@ -5,16 +5,16 @@ import { Unit } from '../../models/unit.model';
 import { trackBySkill, trackByUnit } from '../../helpers';
 
 @Component({
-  selector: 'heroes-select-preview',
+  selector: 'app-heroes-select-preview',
   imports: [NgForOf, TooltipModule],
   templateUrl: './heroes-select-preview.component.html',
   styleUrl: './heroes-select-preview.component.scss',
 })
 export class HeroesSelectPreviewComponent {
   @Input() units: Unit[] = [];
-  @Input() title: string = '';
+  @Input() title = '';
   @Input() containerClass = '';
-  @Input() user: boolean = false;
+  @Input() user = false;
   @Input() toggleDescription: (user: boolean, index: number) => void = (
     user,
     index

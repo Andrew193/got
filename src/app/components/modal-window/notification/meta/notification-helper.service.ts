@@ -24,7 +24,7 @@ export class NotificationHelperService {
 
   private activities: NotificationActivity[] = NotificationActivities;
 
-  private labels: { [key: number]: string } = {
+  private labels: Record<number, string> = {
     0: '2 hours',
     1: '4 hours',
     2: '8 hours',
@@ -36,8 +36,6 @@ export class NotificationHelperService {
     time: 0,
     claimedRewards: [],
   };
-
-  constructor() {}
 
   checkAvailableRewards(config: any) {
     const hours = this.timeService.convertToHours(config.time);

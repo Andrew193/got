@@ -7,7 +7,7 @@ import { UsersService } from '../../../services/users/users.service';
 import { User } from '../../../services/users/users.interfaces';
 
 @Component({
-  selector: 'header',
+  selector: 'app-header',
   imports: [PopoverModule, DecimalPipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

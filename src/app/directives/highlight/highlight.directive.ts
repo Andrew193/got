@@ -17,8 +17,8 @@ export class HighlightDirective {
     private render: Renderer2
   ) {}
 
-  @Input() defaultColor: string = 'yellow';
-  @Input('appHighlight') highlightColor: string = '';
+  @Input() defaultColor = 'yellow';
+  @Input('appHighlight') highlightColor = '';
 
   @HostListener('mouseenter') onMouseEnter() {
     this.highlight(this.highlightColor || this.defaultColor);

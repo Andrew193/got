@@ -94,12 +94,12 @@ export class RewardService {
     const rand = Math.random();
     const suitableRewards = [];
 
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    for (const item of items) {
       if (rand <= item.probability) {
         suitableRewards.push(item);
       }
     }
+
     const sortedRewards = suitableRewards.sort(
       (a, b) => b.probability - a.probability
     );

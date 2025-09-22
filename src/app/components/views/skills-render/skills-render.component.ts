@@ -7,7 +7,7 @@ import { EffectsHighlighterComponent } from '../../common/effects-highlighter/ef
 import { ImageComponent } from '../image/image.component';
 
 @Component({
-  selector: 'skills-render',
+  selector: 'app-skills-render',
   imports: [NgForOf, EffectsHighlighterComponent, ImageComponent],
   templateUrl: './skills-render.component.html',
   styleUrl: './skills-render.component.scss',

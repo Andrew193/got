@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import {
   FormsModule,
   NG_VALUE_ACCESSOR,
@@ -15,7 +15,7 @@ import { BaseSelectFormControlComponent } from '../../abstract/abstract-control/
 import { trackByStringContent } from '../../../helpers';
 
 @Component({
-  selector: 'autocomplete-mat-input',
+  selector: 'app-autocomplete-mat-input',
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -40,13 +40,11 @@ import { trackByStringContent } from '../../../helpers';
 })
 export class AutocompleteMatInputComponent
   extends BaseSelectFormControlComponent
-  implements AfterViewInit
 {
   constructor() {
     super();
   }
 
-  ngAfterViewInit(): void {}
 
   protected readonly trackByStringContent = trackByStringContent;
 }

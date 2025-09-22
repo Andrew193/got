@@ -11,7 +11,7 @@ import { GameFieldComponent } from '../game-field/game-field.component';
 import { Unit } from '../../models/unit.model';
 
 @Component({
-  selector: 'game-entry-point',
+  selector: 'app-game-entry-point',
   imports: [GameFieldComponent],
   templateUrl: './game-entry-point.component.html',
   styleUrl: './game-entry-point.component.scss',

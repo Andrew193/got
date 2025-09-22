@@ -14,8 +14,8 @@ import {
   styleUrl: './base-form-control.component.scss',
 })
 export class BaseFormControlComponent implements ControlValueAccessor {
-  @Input() label: string = '';
-  @Input() placeholder: string = 'Placeholder';
+  @Input() label = '';
+  @Input() placeholder = 'Placeholder';
   @Input() form!: FormGroup;
 
   public control: FormControl = new FormControl('');

@@ -18,7 +18,7 @@ import {
 } from './modal-interfaces';
 
 @Component({
-  selector: 'modal-window',
+  selector: 'app-modal-window',
   imports: [CommonModule, DynamicHostComponent],
   providers: [BsModalService],
   templateUrl: './modal-window.component.html',

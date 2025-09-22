@@ -15,7 +15,7 @@ import { BasicGameFieldComponent } from '../abstract/basic-game-field/basic-game
 import { trackByEffect, trackBySkill, trackByUnit } from '../../helpers';
 
 @Component({
-  selector: 'game-field',
+  selector: 'app-game-field',
   imports: [
     CommonModule,
     PopoverModule,

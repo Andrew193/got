@@ -105,10 +105,11 @@ export class GameService {
         unit.skills.forEach(skill => {
           if (skill.passive && skill.restoreSkill) {
             const buffs = skill.buffs || [];
-            for (let i = 0; i < buffs.length; i++) {
+
+            for (const buff of buffs) {
               units[index] = this.restoreHealthForUnit(
                 unit,
-                buffs[i],
+                buff,
                 logs,
                 skill
               );

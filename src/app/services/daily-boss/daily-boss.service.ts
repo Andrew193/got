@@ -5,7 +5,7 @@ import { BossReward } from '../../models/reward-based.model';
   providedIn: 'root',
 })
 export class DailyBossService {
-  bossReward: { [key: number]: BossReward } = {
+  bossReward: Record<number, BossReward> = {
     1: {
       cooper: 10000,
       cooperWin: 100000,
@@ -53,7 +53,7 @@ export class DailyBossService {
   };
 
   uppBoss(version: number) {
-    const versions: { [key: number]: any } = {
+    const versions: Record<number, any> = {
       1: {},
       2: {
         level: 20,

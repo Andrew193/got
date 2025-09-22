@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'image',
+  selector: 'app-image',
   imports: [CommonModule],
   templateUrl: './image.component.html',
   styleUrl: './image.component.scss',
@@ -10,10 +10,10 @@ import { CommonModule } from '@angular/common';
 export class ImageComponent {
   @Input({ required: true }) source!: string;
   @Input({ required: true }) alt!: string;
-  @Input() useFixSize: boolean = false;
-  @Input() imageClass: string = '';
+  @Input() useFixSize = false;
+  @Input() imageClass = '';
 
-  loading: boolean = true;
+  loading = true;
 
   onLoad() {
     this.loading = false;

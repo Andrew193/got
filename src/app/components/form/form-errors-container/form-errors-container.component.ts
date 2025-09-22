@@ -6,7 +6,7 @@ import { ErrorFieldComponent } from '../error-field/error-field.component';
 import { trackByIndex } from '../../../helpers';
 
 @Component({
-  selector: 'form-errors-container',
+  selector: 'app-form-errors-container',
   imports: [CommonModule, FormsModule, ErrorFieldComponent],
   templateUrl: './form-errors-container.component.html',
   styleUrl: './form-errors-container.component.scss',
@@ -68,7 +68,7 @@ export class FormErrorsContainerComponent implements OnInit {
     const addError = (
       form: FormGroup,
       key: string,
-      uiErrorsNames: { [key: string]: any },
+      uiErrorsNames: Record<string, any>,
       i?: number
     ) => {
       // @ts-ignore

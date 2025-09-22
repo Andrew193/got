@@ -25,7 +25,7 @@ export class EffectsHighlighterComponent {
       return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    let _text = this.text();
+    const _text = this.text();
     const effects = this.heroService.getEffectsToHighlight();
 
     if (!_text || !effects || (Array.isArray(effects) && !effects.length))
