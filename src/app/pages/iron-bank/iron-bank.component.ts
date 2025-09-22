@@ -49,11 +49,9 @@ export class IronBankComponent implements OnInit {
   rewardService = inject(RewardService);
 
   ngOnInit() {
-    this.userService.$user
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(_ => {
-        _ && (this.user = _);
-      });
+    this.userService.$user.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(_ => {
+      _ && (this.user = _);
+    });
   }
 
   getUserCurrencyInCoins() {
@@ -80,9 +78,7 @@ export class IronBankComponent implements OnInit {
         (from === 'SILVER' ? amount : 0) +
         (to === 'SILVER' ? newCurrency : 0),
       gold:
-        currentCurrency.gold -
-        (from === 'GOLD' ? amount : 0) +
-        (to === 'GOLD' ? newCurrency : 0),
+        currentCurrency.gold - (from === 'GOLD' ? amount : 0) + (to === 'GOLD' ? newCurrency : 0),
     };
 
     this.userService.updateCurrency(afterMinus, { hardSet: true });

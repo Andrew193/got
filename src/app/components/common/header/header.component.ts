@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private usersService: UsersService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
   ) {}
 
   ngOnInit() {

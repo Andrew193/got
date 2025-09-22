@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { HeroesService } from '../../../services/heroes/heroes.service';
 import { MatTooltip } from '@angular/material/tooltip';
 
@@ -28,12 +22,9 @@ export class EffectsHighlighterComponent {
     const _text = this.text();
     const effects = this.heroService.getEffectsToHighlight();
 
-    if (!_text || !effects || (Array.isArray(effects) && !effects.length))
-      return [];
+    if (!_text || !effects || (Array.isArray(effects) && !effects.length)) return [];
 
-    const words = (Array.isArray(effects) ? effects : [effects])
-      .filter(Boolean)
-      .map(escapeRegex);
+    const words = (Array.isArray(effects) ? effects : [effects]).filter(Boolean).map(escapeRegex);
 
     if (!words.length) return [];
 
@@ -49,6 +40,7 @@ export class EffectsHighlighterComponent {
 
     for (const match of _text.matchAll(re)) {
       const idx = match.index ?? 0;
+
       if (idx > last) out.push({ text: _text.slice(last, idx), hint: false });
       out.push({
         text: match[0],

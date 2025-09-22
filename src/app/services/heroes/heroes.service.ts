@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { EffectsService } from '../effects/effects.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Unit } from '../../models/unit.model';
-import {
-  ContentService,
-  ContentTypes,
-} from '../abstract/content/content-service.service';
+import { ContentService, ContentTypes } from '../abstract/content/content-service.service';
 
 interface UnitConfig {
   level: number;
@@ -34,7 +31,7 @@ export enum rarity {
 export class HeroesService extends ContentService {
   constructor(
     private eS: EffectsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {
     super();
   }
@@ -55,9 +52,7 @@ export class HeroesService extends ContentService {
     }
 
     return this.sanitizer.bypassSecurityTrustHtml(
-      text
-        .replaceAll('<span', "<span class='highlight-effect'>")
-        .replaceAll('</span', '</span>')
+      text.replaceAll('<span', "<span class='highlight-effect'>").replaceAll('</span', '</span>'),
     );
   }
 
@@ -70,6 +65,7 @@ export class HeroesService extends ContentService {
         result.push(`${effect} - ${this.getEffectsDescription(effect)}`);
       }
     }
+
     return result;
   }
 
@@ -113,8 +109,7 @@ export class HeroesService extends ContentService {
       rage: 45,
       willpower: 25,
       imgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png',
+      fullImgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png',
       name: 'Дейнерис Таргариен ( Леди Драконьего Камня )',
       description:
         'По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет её совершать великие военные подвиги.',
@@ -141,8 +136,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Дракарис',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/lds/skills/UI_ActiveAbility_Dracarys.jpeg',
+          imgSrc: '../../../assets/resourses/imgs/heroes/lds/skills/UI_ActiveAbility_Dracarys.jpeg',
           dmgM: 2.9,
           cooldown: 3,
           remainingCooldown: 0,
@@ -221,10 +215,8 @@ export class HeroesService extends ContentService {
       maxHealth: 15837,
       rage: 25,
       willpower: 50,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_Avatar_Unit_21.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_Avatar_Unit_21.png',
+      fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png',
       name: 'Рыцарь Таргариенов',
       description:
         'Всесторонний воин Таргариенов из Королевских земель, этот рыцарь превосходен как в нападении, так и в защите.',
@@ -321,8 +313,7 @@ export class HeroesService extends ContentService {
       maxHealth: 5837,
       rage: 15,
       willpower: 10,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png',
       name: 'Белый Волк',
@@ -331,8 +322,7 @@ export class HeroesService extends ContentService {
       skills: [
         {
           name: 'Укус зверя',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png',
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
@@ -344,8 +334,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Рваная рана',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_def_attack.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_def_attack.png',
           dmgM: 1.2,
           cooldown: 3,
           remainingCooldown: 0,
@@ -383,17 +372,14 @@ export class HeroesService extends ContentService {
       maxHealth: 9737,
       rage: 0,
       willpower: 70,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png',
+      fullImgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png',
       name: 'Жрец',
       description: 'Жрец за стеной.',
       skills: [
         {
           name: 'Перевязка ран',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/healer-w/skills/health_restore_buff.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/skills/health_restore_buff.png',
           dmgM: 0.15,
           healM: 0.1,
           cooldown: 0,
@@ -406,8 +392,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Великое исцеление',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/healer-w/skills/healer_2skill.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/skills/healer_2skill.png',
           dmgM: 1,
           healM: 0.25,
           cooldown: 5,
@@ -463,8 +448,7 @@ export class HeroesService extends ContentService {
       maxHealth: 4837,
       rage: 0,
       willpower: 0,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png',
       name: 'Бурый Волк',
@@ -472,14 +456,12 @@ export class HeroesService extends ContentService {
       skills: [
         {
           name: 'Укус',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png',
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
-          description:
-            'Наносит противнику урон в размере 100% от показателя атаки.',
+          description: 'Наносит противнику урон в размере 100% от показателя атаки.',
         },
       ],
       effects: [],
@@ -512,13 +494,11 @@ export class HeroesService extends ContentService {
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Icon_Avatar_FullBody_Wildling_02_IceRiverHunters.png',
       name: 'Охотник ледяной реки',
-      description:
-        'Молодой охотник из земель за стеной. Ледяная река - его место охоты.',
+      description: 'Молодой охотник из земель за стеной. Ледяная река - его место охоты.',
       skills: [
         {
           name: 'Ледяная стрела',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/iceriver_hunter/skills/iceriver_h_c_s.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/iceriver_hunter/skills/iceriver_h_c_s.png',
           dmgM: 2.1,
           cooldown: 0,
           remainingCooldown: 0,
@@ -540,11 +520,7 @@ export class HeroesService extends ContentService {
       rarity: rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.1,
-      ignoredDebuffs: [
-        this.effects.poison,
-        this.effects.freezing,
-        this.effects.root,
-      ],
+      ignoredDebuffs: [this.effects.poison, this.effects.freezing, this.effects.root],
       reducedDmgFromDebuffs: [this.effects.bleeding],
       dmgReducedBy: 0,
       canCross: 2,
@@ -558,18 +534,14 @@ export class HeroesService extends ContentService {
       maxHealth: 19169,
       rage: 35,
       willpower: 30,
-      imgSrc:
-        'assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png',
-      fullImgSrc:
-        'assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png',
+      imgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png',
+      fullImgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png',
       name: 'Релина Сноу',
-      description:
-        'Релина Сноу это воительница Зачарованного Леса. Умелый и хитрый боец.',
+      description: 'Релина Сноу это воительница Зачарованного Леса. Умелый и хитрый боец.',
       skills: [
         {
           name: 'Капкан',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a1.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a1.png',
           dmgM: 1.9,
           cooldown: 0,
           remainingCooldown: 0,
@@ -593,8 +565,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Засада',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a2.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a2.png',
           dmgM: 1.5,
           cooldown: 2,
           remainingCooldown: 0,
@@ -616,8 +587,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Воительница',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_p.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_p.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
@@ -672,8 +642,7 @@ export class HeroesService extends ContentService {
       skills: [
         {
           name: 'Токсичный выстрел',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_c_skill.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_c_skill.png',
           dmgM: 1.5,
           cooldown: 0,
           remainingCooldown: 0,
@@ -685,8 +654,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Ловушка',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_a_skill.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_a_skill.png',
           dmgM: 2,
           cooldown: 3,
           remainingCooldown: 0,
@@ -708,8 +676,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Вольный человек',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
@@ -747,18 +714,15 @@ export class HeroesService extends ContentService {
       maxHealth: 33837,
       rage: 60,
       willpower: 15,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png',
+      fullImgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
       name: 'Гигант',
       description:
         'Невероятно сильный враг. Мифическое существо из сказаний. Его шкуру почти невозможно пробить оружием, но он уязвим к ослаблениям.',
       skills: [
         {
           name: 'Могучий удар',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/giant/skills/giant_c_skill.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/giant/skills/giant_c_skill.png',
           dmgM: 3,
           cooldown: 0,
           remainingCooldown: 0,
@@ -771,8 +735,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Крошитель',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/giant/skills/giant_active_skill.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/giant/skills/giant_active_skill.png',
           dmgM: 5,
           cooldown: 6,
           remainingCooldown: 0,
@@ -826,8 +789,7 @@ export class HeroesService extends ContentService {
       maxHealth: 19937,
       rage: 125,
       willpower: 150,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png',
       name: 'Король Ночи',
@@ -836,8 +798,7 @@ export class HeroesService extends ContentService {
       skills: [
         {
           name: 'Ветер Севера',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_c_s.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_c_s.png',
           dmgM: 2.4,
           cooldown: 0,
           remainingCooldown: 0,
@@ -856,8 +817,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Сковывающий холод',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_a_s.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_a_s.png',
           dmgM: 4.2,
           cooldown: 3,
           remainingCooldown: 0,
@@ -886,8 +846,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Король Ночи',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
@@ -931,8 +890,7 @@ export class HeroesService extends ContentService {
       maxHealth: 15937,
       rage: 105,
       willpower: 120,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker1.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker1.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker2.png',
       name: 'Генерал Ходок',
@@ -941,8 +899,7 @@ export class HeroesService extends ContentService {
       skills: [
         {
           name: 'Морозный Ветер',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_c_s.jpg',
+          imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_c_s.jpg',
           dmgM: 2.7,
           cooldown: 0,
           remainingCooldown: 0,
@@ -958,8 +915,7 @@ export class HeroesService extends ContentService {
         },
         {
           name: 'Белый Ходок',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
@@ -1003,8 +959,7 @@ export class HeroesService extends ContentService {
       maxHealth: 11937,
       rage: 75,
       willpower: 95,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker2.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker2.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker3.png',
       name: 'Капитан Ходок',
@@ -1013,20 +968,17 @@ export class HeroesService extends ContentService {
       skills: [
         {
           name: 'Морозный удар',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/white_walker/skills/white_walker_c_s.jpg',
+          imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/white_walker_c_s.jpg',
           dmgM: 1.9,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [],
           inRangeDebuffs: [],
-          description:
-            'Наносит противнику урон в размере 190% от показателя атаки.',
+          description: 'Наносит противнику урон в размере 190% от показателя атаки.',
         },
         {
           name: 'Белый Ходок',
-          imgSrc:
-            '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
+          imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
@@ -1072,10 +1024,8 @@ export class HeroesService extends ContentService {
       maxHealth: 12837,
       rage: 25,
       willpower: 25,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/jon_king/UI_Avatar_Unit_JonKingNorth.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png',
+      imgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_Avatar_Unit_JonKingNorth.png',
+      fullImgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png',
       name: 'Джон Сноу ( Король Севера )',
       description:
         'Сильный, настоящий лидер, бесчисленные победы Джона Сноу на поле боя заставили его сверстников признать его королем Севера.',
@@ -1173,10 +1123,8 @@ export class HeroesService extends ContentService {
       maxHealth: 39237,
       rage: 145,
       willpower: 50,
-      imgSrc:
-        '../../../assets/resourses/imgs/boss/v1/UI_Avatar_Unit_GromyrtheFlame.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/boss/v1/UI_Boss_CutIn_Pic_1.png',
+      imgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Avatar_Unit_GromyrtheFlame.png',
+      fullImgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Boss_CutIn_Pic_1.png',
       name: 'Громирт Пламя',
       description: '',
       skills: [
@@ -1259,14 +1207,9 @@ export class HeroesService extends ContentService {
       defence: +(unit.defence + unit.defenceIncrement * unit.level).toFixed(0),
       health: +(unit.health + unit.healthIncrement * unit.level).toFixed(0),
       rage: +(unit.rage + (unit.level > 1 ? 2 * unit.level : 0)).toFixed(0),
-      willpower: +(
-        unit.willpower + (unit.level > 1 ? 2 * unit.level : 0)
-      ).toFixed(0),
+      willpower: +(unit.willpower + (unit.level > 1 ? 2 * unit.level : 0)).toFixed(0),
       dmgReducedBy: +(
-        +(
-          unit.dmgReducedBy * 100 +
-          (unit.level > 1 ? 0.5 : 0) * unit.level
-        ).toFixed(0) / 100
+        +(unit.dmgReducedBy * 100 + (unit.level > 1 ? 0.5 : 0) * unit.level).toFixed(0) / 100
       ).toFixed(2),
     };
 
@@ -1281,45 +1224,21 @@ export class HeroesService extends ContentService {
     }
 
     //Eq 1
-    leveledUnit.attack += +(
-      leveledUnit.attackIncrement * leveledUnit.eq1Level
-    ).toFixed(0);
-    leveledUnit.defence += +(
-      leveledUnit.defenceIncrement * leveledUnit.eq1Level
-    ).toFixed(0);
-    leveledUnit.health += +(
-      leveledUnit.healthIncrement * leveledUnit.eq1Level
-    ).toFixed(0);
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq1Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq1Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq1Level).toFixed(0);
     //Eq 2
-    leveledUnit.attack += +(
-      leveledUnit.attackIncrement * leveledUnit.eq2Level
-    ).toFixed(0);
-    leveledUnit.defence += +(
-      leveledUnit.defenceIncrement * leveledUnit.eq2Level
-    ).toFixed(0);
-    leveledUnit.health += +(
-      leveledUnit.healthIncrement * leveledUnit.eq2Level
-    ).toFixed(0);
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq2Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq2Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq2Level).toFixed(0);
     //Eq 3
-    leveledUnit.attack += +(
-      leveledUnit.attackIncrement * leveledUnit.eq3Level
-    ).toFixed(0);
-    leveledUnit.defence += +(
-      leveledUnit.defenceIncrement * leveledUnit.eq3Level
-    ).toFixed(0);
-    leveledUnit.health += +(
-      leveledUnit.healthIncrement * leveledUnit.eq3Level
-    ).toFixed(0);
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq3Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq3Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq3Level).toFixed(0);
     //Eq 4
-    leveledUnit.attack += +(
-      leveledUnit.attackIncrement * leveledUnit.eq4Level
-    ).toFixed(0);
-    leveledUnit.defence += +(
-      leveledUnit.defenceIncrement * leveledUnit.eq4Level
-    ).toFixed(0);
-    leveledUnit.health += +(
-      leveledUnit.healthIncrement * leveledUnit.eq4Level
-    ).toFixed(0);
+    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq4Level).toFixed(0);
+    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq4Level).toFixed(0);
+    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq4Level).toFixed(0);
 
     leveledUnit.maxHealth = leveledUnit.health;
 
@@ -1343,12 +1262,14 @@ export class HeroesService extends ContentService {
       this.getPriest(),
       this.getDailyBossVersion1(),
     ];
+
     return units.map(unit => this.getEquipmentForUnit(unit));
   }
 
   getUnitByName(name: string, config?: UnitConfig) {
     const allUnits = this.getAllHeroes();
     const userUnit = allUnits.filter(unit => unit.name === name)[0];
+
     return this.getEquipmentForUnit({ ...userUnit, ...(config || {}) });
   }
 
@@ -1372,6 +1293,7 @@ export class HeroesService extends ContentService {
     if (contentType === ContentTypes.USER_UNITS) {
       return this.getAllHeroes();
     }
+
     return [];
   }
 }

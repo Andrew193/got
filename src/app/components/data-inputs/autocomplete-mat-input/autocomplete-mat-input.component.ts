@@ -1,15 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
-import {
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import {
-  MatAutocomplete,
-  MatAutocompleteTrigger,
-  MatOption,
-} from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { BaseSelectFormControlComponent } from '../../abstract/abstract-control/base-select-form-control/base-select-form-control.component';
 import { trackByStringContent } from '../../../helpers';
@@ -38,13 +30,10 @@ import { trackByStringContent } from '../../../helpers';
     },
   ],
 })
-export class AutocompleteMatInputComponent
-  extends BaseSelectFormControlComponent
-{
+export class AutocompleteMatInputComponent extends BaseSelectFormControlComponent {
   constructor() {
     super();
   }
-
 
   protected readonly trackByStringContent = trackByStringContent;
 }

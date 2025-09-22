@@ -1,8 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  NotificationActivity,
-  StepsReward,
-} from '../../../../models/notification.model';
+import { NotificationActivity, StepsReward } from '../../../../models/notification.model';
 import { Currency, User } from '../../../../services/users/users.interfaces';
 import { DayReward } from '../../../daily-reward/daily-reward.component';
 import { concatMap, map, Observable, of } from 'rxjs';
@@ -39,6 +36,7 @@ export class NotificationHelperService {
 
   checkAvailableRewards(config: any) {
     const hours = this.timeService.convertToHours(config.time);
+
     return Object.values(this.labels)
       .map(label => +label.split(' ')[0])
       .filter(step => hours >= step && !config.claimedRewards.includes(step));
@@ -67,7 +65,7 @@ export class NotificationHelperService {
 
   flipActivity(i: number) {
     this.activities = this.activities.map((el, index) =>
-      index === i ? { ...el, flipped: !el.flipped } : el
+      index === i ? { ...el, flipped: !el.flipped } : el,
     );
   }
 
@@ -76,14 +74,12 @@ export class NotificationHelperService {
   };
 
   public rewardClass = (i: number) => {
-    return this.baseStepsRewardConfig.claimedRewards.length === i
-      ? 'today'
-      : '';
+    return this.baseStepsRewardConfig.claimedRewards.length === i ? 'today' : '';
   };
 
   get canGetLoyaltyBonus() {
     return this.userService.$user.pipe(
-      map(user => (user ? user.online.lastLoyaltyBonus !== TODAY : false))
+      map(user => (user ? user.online.lastLoyaltyBonus !== TODAY : false)),
     );
   }
 
@@ -92,9 +88,7 @@ export class NotificationHelperService {
   }
 
   public claimReward = (reward: DayReward, i: number) => {
-    const onlineTime = this.timeService.convertToHours(
-      this.baseStepsRewardConfig.time
-    );
+    const onlineTime = this.timeService.convertToHours(this.baseStepsRewardConfig.time);
     const labels = this.getLabels();
 
     const currentHour = +labels[i].split(' ')[0];
@@ -106,7 +100,7 @@ export class NotificationHelperService {
           silver: reward.silverCoin || 0,
           gold: reward.goldCoin || 0,
         },
-        { returnObs: true }
+        { returnObs: true },
       ) as Observable<any>;
 
       getReward
@@ -115,13 +109,10 @@ export class NotificationHelperService {
             of(res).pipe(
               concatMap(
                 () =>
-                  this.userService.updateOnline(
-                    { claimed: currentHour },
-                    true
-                  ) as Observable<any>
-              )
-            )
-          )
+                  this.userService.updateOnline({ claimed: currentHour }, true) as Observable<any>,
+              ),
+            ),
+          ),
         )
         .subscribe();
     }
@@ -129,8 +120,10 @@ export class NotificationHelperService {
 
   getLoyaltyBonus(reward: Coin[]) {
     const totalReward: Currency = { cooper: 0, gold: 0, silver: 0 };
+
     reward.forEach(part => {
       const key = part.class as 'cooper' | 'silver' | 'gold';
+
       totalReward[key] += part.amount || 0;
     });
 
@@ -144,13 +137,10 @@ export class NotificationHelperService {
           of(res).pipe(
             concatMap(
               () =>
-                this.userService.updateOnline(
-                  { lastLoyaltyBonus: TODAY },
-                  true
-                ) as Observable<any>
-            )
-          )
-        )
+                this.userService.updateOnline({ lastLoyaltyBonus: TODAY }, true) as Observable<any>,
+            ),
+          ),
+        ),
       )
       .subscribe();
   }
@@ -161,7 +151,7 @@ export class NotificationHelperService {
         ...reward,
         amount: this.numbersService.roundToStep(
           reward.amount * this.loyaltyRewardBoostedBy(playedDays),
-          1
+          1,
         ),
       };
     });

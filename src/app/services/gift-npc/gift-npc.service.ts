@@ -33,7 +33,7 @@ export class GiftNpcService implements RewardComponentInterface {
 
   constructor(
     private heroService: HeroesService,
-    public rewardService: RewardService
+    public rewardService: RewardService,
   ) {}
 
   getSpecialGiftReward() {
@@ -50,9 +50,11 @@ export class GiftNpcService implements RewardComponentInterface {
     while (true) {
       const i = this.numberService.getNumberInRange(0, 6);
       const j = this.numberService.getNumberInRange(0, 9);
+
       if (i !== 0 && j !== 0) {
         if (npc.findIndex(npc => npc.x === i && npc.y === j) === -1) {
           const reward = this.rewardService.getReward(1, this.items);
+
           npc.push({
             ...this.getNPC(reward.name),
             reward: reward,
@@ -67,6 +69,7 @@ export class GiftNpcService implements RewardComponentInterface {
         break;
       }
     }
+
     return npc;
   }
 
@@ -124,8 +127,7 @@ export class GiftNpcService implements RewardComponentInterface {
           cooldown: 2,
           remainingCooldown: 0,
           debuffs: [],
-          description:
-            'Открывает сундуки и собирает предметы, а также наносит существенный урон.',
+          description: 'Открывает сундуки и собирает предметы, а также наносит существенный урон.',
         },
       ],
       effects: [],
@@ -162,9 +164,7 @@ export class GiftNpcService implements RewardComponentInterface {
       imgSrc: '../../../assets/resourses/imgs/icons/chest.png',
       fullImgSrc: '../../../assets/resourses/imgs/icons/chest.png',
       name: name || 'Chest',
-      description:
-        description ||
-        'Сундук со случайной наградой. Был давно потерян в этих краях.',
+      description: description || 'Сундук со случайной наградой. Был давно потерян в этих краях.',
       skills: [],
       effects: [],
     };

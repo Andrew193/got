@@ -2,8 +2,7 @@
 @use '../../../../assets/resourses/styles/animations' as eff;
 
 .inner-container {
-  background: url('../../../../assets/resourses/imgs/background/wall.jpeg')
-    no-repeat center;
+  background: url('../../../../assets/resourses/imgs/background/wall.jpeg') no-repeat center;
   background-size: cover;
   min-height: 100%;
   box-shadow: vars.$box-shadow;

@@ -8,13 +8,8 @@ describe('LoaderService', () => {
   let rendererSpy: jasmine.SpyObj<Renderer2>;
 
   beforeEach(() => {
-    rendererFactory2Spy = jasmine.createSpyObj('RendererFactory2', [
-      'createRenderer',
-    ]);
-    rendererSpy = jasmine.createSpyObj('Renderer2', [
-      'addClass',
-      'removeClass',
-    ]);
+    rendererFactory2Spy = jasmine.createSpyObj('RendererFactory2', ['createRenderer']);
+    rendererSpy = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass']);
 
     rendererSpy.addClass.and.callFake(() => {});
 
@@ -23,10 +18,7 @@ describe('LoaderService', () => {
     rendererFactory2Spy.createRenderer.and.returnValue(rendererSpy);
 
     TestBed.configureTestingModule({
-      providers: [
-        LoaderService,
-        { provide: RendererFactory2, useValue: rendererFactory2Spy },
-      ],
+      providers: [LoaderService, { provide: RendererFactory2, useValue: rendererFactory2Spy }],
     });
 
     loaderService = TestBed.inject(LoaderService);

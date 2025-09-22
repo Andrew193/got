@@ -17,9 +17,7 @@ export class LoaderService {
   readonly isLoading = computed(() => this.activeCount() > 0);
 
   private readonly doc = inject(DOCUMENT);
-  private readonly renderer: Renderer2 = inject(
-    RendererFactory2
-  ).createRenderer(null, null);
+  private readonly renderer: Renderer2 = inject(RendererFactory2).createRenderer(null, null);
 
   start() {
     this.activeCount.update(n => n + 1);

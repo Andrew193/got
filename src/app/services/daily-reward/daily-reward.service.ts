@@ -15,6 +15,7 @@ export class DailyRewardService extends ApiService<DailyReward> {
 
   rewardCoins = (reward: DayReward, day: number) => {
     const coins = [];
+
     if (reward.cooperCoin)
       coins.push({
         class: 'cooper',
@@ -58,9 +59,8 @@ export class DailyRewardService extends ApiService<DailyReward> {
         amount: reward.heroShard,
       });
 
-    this.daysCoins.has(day)
-      ? this.daysCoins.get(day)
-      : this.daysCoins.set(day, coins);
+    this.daysCoins.has(day) ? this.daysCoins.get(day) : this.daysCoins.set(day, coins);
+
     return this.daysCoins.get(day);
   };
 
@@ -76,10 +76,7 @@ export class DailyRewardService extends ApiService<DailyReward> {
       .pipe(this.basicResponseTapParser(callback));
   }
 
-  claimDailyReward(
-    reward: DailyReward,
-    callback: (newConfig: IdEntity) => void
-  ) {
+  claimDailyReward(reward: DailyReward, callback: (newConfig: IdEntity) => void) {
     this.putPostCover(reward, { url: this.url, callback });
   }
 
@@ -112,9 +109,7 @@ export class DailyRewardService extends ApiService<DailyReward> {
         silverCoin: r.silverCoin
           ? this.numbersService.roundToStep(r.silverCoin * m, 10)
           : undefined,
-        goldCoin: r.goldCoin
-          ? this.numbersService.roundToStep(r.goldCoin * m, 5)
-          : undefined,
+        goldCoin: r.goldCoin ? this.numbersService.roundToStep(r.goldCoin * m, 5) : undefined,
         summonScroll: r.summonScroll,
         summonCard: r.summonCard,
         heroShard: r.heroShard,
@@ -124,9 +119,11 @@ export class DailyRewardService extends ApiService<DailyReward> {
   monthReward(totalDays: number): DayReward[] {
     const rewards: DayReward[] = [];
     const total = totalDays || 1;
+
     for (let week = 0; week < 4; week++) {
       rewards.push(...this.getWeekReward(week, total));
     }
+
     return rewards;
   }
 }

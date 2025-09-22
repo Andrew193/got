@@ -16,8 +16,7 @@ describe('HeroesService', () => {
         healthRestore: 'Восстановление',
       },
       effectsDescriptions: {
-        Горение:
-          'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
+        Горение: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
         Заморозка: 'Герой заморожен и может пройти только 1 клетку за ход.',
       },
       effectsMap: {
@@ -35,24 +34,16 @@ describe('HeroesService', () => {
       },
     });
 
-    effectsMock.getEffect.and.callFake(
-      (effectType: string, turns = 2, count?: number) => {
-        if (count) {
-          return new Array(count)
-            .fill(0)
-            .map(() => effectsMock.effectsMap['Горение'](turns));
-        }
-        return effectsMock.effectsMap[effectType]
-          ? [effectsMock.effectsMap[effectType](turns)]
-          : [];
+    effectsMock.getEffect.and.callFake((effectType: string, turns = 2, count?: number) => {
+      if (count) {
+        return new Array(count).fill(0).map(() => effectsMock.effectsMap['Горение'](turns));
       }
-    );
+
+      return effectsMock.effectsMap[effectType] ? [effectsMock.effectsMap[effectType](turns)] : [];
+    });
 
     TestBed.configureTestingModule({
-      providers: [
-        HeroesService,
-        { provide: EffectsService, useValue: effectsMock },
-      ],
+      providers: [HeroesService, { provide: EffectsService, useValue: effectsMock }],
     });
     service = TestBed.inject(HeroesService);
   });
@@ -69,23 +60,22 @@ describe('HeroesService', () => {
         burning: 'Горение',
         freezing: 'Заморозка',
         healthRestore: 'Восстановление',
-      })
+      }),
     );
   });
 
   it('HeroesService returns effects to highlight', () => {
     const effectsToHighlight = service.getEffectsToHighlight();
 
-    expect(effectsToHighlight).toEqual(
-      jasmine.arrayContaining(['Горение', 'Заморозка'])
-    );
+    expect(effectsToHighlight).toEqual(jasmine.arrayContaining(['Горение', 'Заморозка']));
   });
 
   it('HeroesService gives correct effect description', () => {
     const burningEffect = service.effects.burning;
     const description = service.getEffectsDescription(burningEffect);
+
     expect(description).toEqual(
-      'Наносит противнику урон в размере 10% от его здоровья каждый ход.'
+      'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
     );
   });
 
@@ -107,9 +97,7 @@ describe('HeroesService', () => {
   it('HeroesService returns a hero', () => {
     const ladyOfDragonStone = service.getLadyOfDragonStone();
 
-    expect(ladyOfDragonStone.name).toEqual(
-      'Дейнерис Таргариен ( Леди Драконьего Камня )'
-    );
+    expect(ladyOfDragonStone.name).toEqual('Дейнерис Таргариен ( Леди Драконьего Камня )');
   });
 
   it('HeroesService returns a hero', () => {

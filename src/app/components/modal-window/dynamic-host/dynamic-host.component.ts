@@ -1,10 +1,4 @@
-import {
-  Component,
-  input,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ExtendedModalConfig, ModalStrategy } from '../modal-interfaces';
 
 @Component({

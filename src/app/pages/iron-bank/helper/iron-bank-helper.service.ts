@@ -68,11 +68,13 @@ export class IronBankHelperService {
     if (from === to) {
       return { from, to, midRate: 1, rate: 1, spreadPct: 0 };
     }
+
     const vFrom = this.META[from].valueInCooper;
     const vTo = this.META[to].valueInCooper;
 
     const midRate = vFrom / vTo;
     const rate = midRate * (1 - this.SPREAD);
+
     return { from, to, midRate, rate, spreadPct: this.SPREAD };
   }
 
@@ -82,26 +84,32 @@ export class IronBankHelperService {
       to: Cur;
       amount: number;
     };
+
     if (!from || !to || !amount || amount <= 0) {
       this.result = 0;
       this.rateLabel = '';
+
       return;
     }
 
     const q = this.getQuote(from, to);
     const rawOut = amount * q.rate;
+
     this.result = this.numberServices.roundDown(rawOut, this.META[to].decimals);
 
     const midTxt = q.midRate.toFixed(4);
     const rateTxt = q.rate.toFixed(4);
     const spreadTxt = (q.spreadPct * 100).toFixed(2);
+
     this.rateLabel = `1 ${this.META[from].label} = ${rateTxt} ${this.META[to].label} (mid ${midTxt}, spread ${spreadTxt}%)`;
   }
 
   onFromChanged() {
     const from = this.form.controls.from.value as Cur;
+
     if (from === this.form.controls.to.value) {
       const next = this.currencies.find(c => c !== from)!;
+
       this.form.controls.to.setValue(next as Cur);
     }
   }

@@ -15,14 +15,8 @@ export class HeroesSelectPreviewComponent {
   @Input() title = '';
   @Input() containerClass = '';
   @Input() user = false;
-  @Input() toggleDescription: (user: boolean, index: number) => void = (
-    user,
-    index
-  ) => {};
-  @Input() getDescriptionState: (user: boolean, index: number) => boolean = (
-    user,
-    index
-  ) => false;
+  @Input() toggleDescription: (user: boolean, index: number) => void = (user, index) => {};
+  @Input() getDescriptionState: (user: boolean, index: number) => boolean = (user, index) => false;
 
   protected readonly trackBySkill = trackBySkill;
   protected readonly trackByUnit = trackByUnit;

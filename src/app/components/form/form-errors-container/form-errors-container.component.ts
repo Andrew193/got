@@ -30,6 +30,7 @@ export class FormErrorsContainerComponent implements OnInit {
   public checkErrors = () => {
     this.requiredErrors = [];
     const errors = this.getFormValidationErrors();
+
     this.updateErrors(errors);
 
     this.errors = errors;
@@ -38,47 +39,40 @@ export class FormErrorsContainerComponent implements OnInit {
   getFormValidationErrors(formGroup?: FormGroup, i?: number) {
     let errors: any[] = [];
     const getValidationErrorsRecursionCover = (innerIndex?: number) => {
-      Object.entries(formGroup?.controls || this.form.controls).forEach(
-        ([key, control]) => {
-          if (control instanceof FormArray) {
-            const formArray = control as FormArray;
-            for (const arrayControl of formArray.controls) {
-              const index = formArray.controls.indexOf(arrayControl);
-              errors = [
-                ...errors,
-                ...this.getFormValidationErrors(
-                  arrayControl as FormGroup,
-                  index
-                ),
-              ];
-            }
-          } else if (control instanceof FormGroup) {
-            errors = [...errors, ...this.getFormValidationErrors(control, i)];
+      Object.entries(formGroup?.controls || this.form.controls).forEach(([key, control]) => {
+        if (control instanceof FormArray) {
+          const formArray = control as FormArray;
+
+          for (const arrayControl of formArray.controls) {
+            const index = formArray.controls.indexOf(arrayControl);
+
+            errors = [...errors, ...this.getFormValidationErrors(arrayControl as FormGroup, index)];
           }
-          addError(
-            formGroup || this.form,
-            key,
-            this.uiErrorsNames,
-            i || innerIndex
-          );
+        } else if (control instanceof FormGroup) {
+          errors = [...errors, ...this.getFormValidationErrors(control, i)];
         }
-      );
+
+        addError(formGroup || this.form, key, this.uiErrorsNames, i || innerIndex);
+      });
     };
 
     const addError = (
       form: FormGroup,
       key: string,
       uiErrorsNames: Record<string, any>,
-      i?: number
+      i?: number,
     ) => {
       // @ts-ignore
       const controlErrors = form.get(key).errors;
+
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach(() => {
           const formControl = form.get(key);
+
           if (formControl?.touched && formControl?.errors?.['required']) {
             this.requiredErrors.push(formControl);
           }
+
           errors.push({
             meta: formControl,
             name: uiErrorsNames[key] || uiErrorsNames[key + 'Label'],
@@ -87,14 +81,15 @@ export class FormErrorsContainerComponent implements OnInit {
         });
       }
     };
+
     getValidationErrorsRecursionCover(i);
+
     return errors;
   }
 
   updateErrors(errors: any) {
-    const hideErrors = errors.every(
-      (error: any) => error.meta.touched === false
-    );
+    const hideErrors = errors.every((error: any) => error.meta.touched === false);
+
     if (!errors.length || hideErrors) {
       this.showErrors = false;
     } else {

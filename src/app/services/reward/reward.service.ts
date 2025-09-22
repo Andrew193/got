@@ -62,31 +62,21 @@ export class RewardService {
 
   convertUserCurrencyToCoin(currency: Currency): Coin[] {
     return [
-      this.getCoin(
-        currency.gold,
-        this.rewardNames.gold.toLowerCase() as CoinNames
-      ),
-      this.getCoin(
-        currency.silver,
-        this.rewardNames.silver.toLowerCase() as CoinNames
-      ),
-      this.getCoin(
-        currency.cooper,
-        this.rewardNames.cooper.toLowerCase() as CoinNames
-      ),
+      this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames),
+      this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames),
+      this.getCoin(currency.cooper, this.rewardNames.cooper.toLowerCase() as CoinNames),
     ];
   }
 
   getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
   getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
-  getReward(
-    amountOfRewards = 1,
-    items: Reward[]
-  ): DisplayReward | DisplayReward[] {
+  getReward(amountOfRewards = 1, items: Reward[]): DisplayReward | DisplayReward[] {
     let rewards: DisplayReward[] = [];
+
     for (let i = 0; i < amountOfRewards; i++) {
       rewards = [...rewards, this.getLoot(items)];
     }
+
     return amountOfRewards === 1 ? rewards[0] : rewards;
   }
 
@@ -100,9 +90,8 @@ export class RewardService {
       }
     }
 
-    const sortedRewards = suitableRewards.sort(
-      (a, b) => b.probability - a.probability
-    );
+    const sortedRewards = suitableRewards.sort((a, b) => b.probability - a.probability);
+
     return sortedRewards[sortedRewards.length - 1] || items[0];
   }
 
@@ -120,14 +109,12 @@ export class RewardService {
     ) {
       return this.getDisplayRewardBase(
         item,
-        this.numberService.getNumberInRange(loot.min, loot.max)
+        this.numberService.getNumberInRange(loot.min, loot.max),
       );
     } else if (item.name === this.rewardNames.shards) {
       const heroes = this.heroService.getAllHeroes();
-      const heroIndex = this.numberService.getNumberInRange(
-        0,
-        heroes.length - 1
-      );
+      const heroIndex = this.numberService.getNumberInRange(0, heroes.length - 1);
+
       return {
         amount: this.numberService.getNumberInRange(loot.min, loot.max),
         name: item.name,
@@ -142,6 +129,7 @@ export class RewardService {
         flipped: false,
       };
     }
+
     return { amount: 1, src: '', name: item.name, flipped: false };
   }
 

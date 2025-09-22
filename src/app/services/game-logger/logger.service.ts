@@ -13,12 +13,13 @@ export class GameLoggerService {
     isUser: boolean,
     skill: Skill | Effect,
     unit: Unit,
-    message?: string
+    message?: string,
   ): LogRecord {
     const logMsg = (mgs: string) => {
       if (!props.battleMode) {
         mgs = `${!isUser ? 'Player' : 'Bot'} ${unit.name} (${unit.x + 1})(${unit.y + 1}) has been opened/collected!`;
       }
+
       return {
         isUser: isUser,
         imgSrc: skill.imgSrc,
@@ -31,19 +32,21 @@ export class GameLoggerService {
     } else {
       if (props.addDmg) {
         return logMsg(
-          `${isUser ? 'Player' : 'Bot'} ${unit.name} received ${props.addDmg}. ! additional DMG from debuff ${(skill as Effect).type}`
+          `${isUser ? 'Player' : 'Bot'} ${unit.name} received ${props.addDmg}. ! additional DMG from debuff ${(skill as Effect).type}`,
         );
       }
+
       if (props.damage) {
         return logMsg(
           message ||
-            `${isUser ? 'Player' : 'Bot'} ${unit.name} (${unit.x + 1})(${unit.y + 1}) received ${props.damage}. DMG!`
+            `${isUser ? 'Player' : 'Bot'} ${unit.name} (${unit.x + 1})(${unit.y + 1}) received ${props.damage}. DMG!`,
         );
       }
+
       if (props.newHealth === 0 && props.battleMode) {
         return logMsg(
           message ||
-            `${isUser ? 'Player' : 'Bot'} ${unit.name} (${unit.x + 1})(${unit.y + 1}) went to the seven!`
+            `${isUser ? 'Player' : 'Bot'} ${unit.name} (${unit.x + 1})(${unit.y + 1}) went to the seven!`,
         );
       }
     }

@@ -34,8 +34,6 @@ export class HeroesSelectComponent {
   }
 
   public checkSelected = (unit: Unit, user = true) => {
-    return user
-      ? this.leftUnits.has(unit.name)
-      : this.rightUnits.has(unit.name);
+    return user ? this.leftUnits.has(unit.name) : this.rightUnits.has(unit.name);
   };
 }

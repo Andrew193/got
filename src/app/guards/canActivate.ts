@@ -14,31 +14,27 @@ import {
 })
 class PermissionsService {
   notificationService = inject(NotificationsService);
-  notifications = toSignal(this.notificationService.$notifications) as Signal<
-    Map<string, boolean>
-  >;
+  notifications = toSignal(this.notificationService.$notifications) as Signal<Map<string, boolean>>;
 
   constructor(
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
   ) {}
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean> | boolean {
     return this.usersService.doesUserExist().pipe(
       map(doesUserExist => {
         return doesUserExist || this.router.createUrlTree([frontRoutes.login]);
-      })
+      }),
     );
   }
 
-  canActivateGift():
-    | Observable<boolean | UrlTree>
-    | Promise<boolean>
-    | boolean {
+  canActivateGift(): Observable<boolean | UrlTree> | Promise<boolean> | boolean {
     const canActivate = this.notificationService.getNotification(
       NotificationType.gift_store,
-      this.notifications()
+      this.notifications(),
     );
+
     return of(canActivate || this.router.createUrlTree([frontRoutes.base]));
   }
 }

@@ -18,27 +18,22 @@ export class GameFieldService extends AbstractFieldService {
   }
 
   chooseAiSkill(skills: Skill[]): Skill {
-    const possibleActiveSkill = skills.find(
-      skill => skill.cooldown && !skill.remainingCooldown
-    );
-    return (
-      possibleActiveSkill || (skills.find(skill => !skill.cooldown) as Skill)
-    );
+    const possibleActiveSkill = skills.find(skill => skill.cooldown && !skill.remainingCooldown);
+
+    return possibleActiveSkill || (skills.find(skill => !skill.cooldown) as Skill);
   }
 
-  getDamage(
-    unitConfig: { dmgTaker: Unit; attackDealer: Unit },
-    config: { attack: number }
-  ) {
+  getDamage(unitConfig: { dmgTaker: Unit; attackDealer: Unit }, config: { attack: number }) {
     const fixedDefence = this.gameActionService.getFixedDefence(
       unitConfig.dmgTaker.defence,
-      unitConfig.dmgTaker
+      unitConfig.dmgTaker,
     );
     const fixedAttack = this.gameActionService.getFixedAttack(
       config.attack,
-      unitConfig.attackDealer
+      unitConfig.attackDealer,
     );
     const blockedDamage = fixedDefence * 0.4;
+
     if (blockedDamage - 200 > fixedAttack) {
       return +(100 + this.numberService.getRandomInt(10, 70)).toFixed(0);
     } else {
@@ -47,6 +42,7 @@ export class GameFieldService extends AbstractFieldService {
           blockedDamage -
           (fixedAttack - blockedDamage) * unitConfig.dmgTaker.dmgReducedBy
         : fixedAttack - blockedDamage;
+
       return +(fixedDmg + this.numberService.getRandomInt(30, 100)).toFixed(0);
     }
   }
@@ -57,19 +53,18 @@ export class GameFieldService extends AbstractFieldService {
     end: Position,
     removeStart = false,
     removeEnd = false,
-    checkDiagonals = false
+    checkDiagonals = false,
   ) {
     const path = this.shortestPath(grid, start, end, checkDiagonals);
+
     if (removeStart) {
-      return path.filter(
-        position => position.j !== start.j || position.i !== start.i
-      );
+      return path.filter(position => position.j !== start.j || position.i !== start.i);
     }
+
     if (removeEnd) {
-      return path.filter(
-        position => position.i !== end.i || position.j !== end.j
-      );
+      return path.filter(position => position.i !== end.i || position.j !== end.j);
     }
+
     return path;
   }
 
@@ -103,13 +98,12 @@ export class GameFieldService extends AbstractFieldService {
         // Ensure the new position is within bounds and not blocked or visited
         if (newI >= 0 && newI < rows && newJ >= 0 && newJ < cols) {
           if (
-            (grid[newI][newJ] === 0 ||
-              (newI === target.i && newJ === target.j)) &&
+            (grid[newI][newJ] === 0 || (newI === target.i && newJ === target.j)) &&
             !visited.has(
               positionKey({
                 i: newI,
                 j: newJ,
-              })
+              }),
             )
           ) {
             queue.push({ i: newI, j: newJ });
@@ -125,7 +119,7 @@ export class GameFieldService extends AbstractFieldService {
     grid: any[],
     start: Position,
     end: Position,
-    checkDiagonals = false
+    checkDiagonals = false,
   ): Position[] {
     const rows = grid.length;
     const cols = grid[0].length;
@@ -140,8 +134,7 @@ export class GameFieldService extends AbstractFieldService {
     while (queue.length > 0) {
       // @ts-expect-error
       const { position, path } = queue.shift();
-      const distanceToEnd =
-        Math.abs(position.i - end.i) + Math.abs(position.j - end.j);
+      const distanceToEnd = Math.abs(position.i - end.i) + Math.abs(position.j - end.j);
 
       if (distanceToEnd < minDistance) {
         closestPosition = position;
@@ -165,6 +158,7 @@ export class GameFieldService extends AbstractFieldService {
           !visited.has(`${i},${j}`)
         ) {
           const newPath = [...path, { i, j }];
+
           queue.push({ position: { i, j }, path: newPath });
           visited.add(`${i},${j}`);
         }

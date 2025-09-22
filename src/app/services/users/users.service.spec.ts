@@ -1,10 +1,6 @@
 import { UsersService } from './users.service';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import {
   concat,
   concatAll,
@@ -41,7 +37,7 @@ describe('UsersService', () => {
         names: {
           user: 'user',
         },
-      }
+      },
     );
 
     localStorageSpy.getItem.and.callFake(key => {
@@ -95,8 +91,8 @@ describe('UsersService', () => {
           new HttpErrorResponse({
             status: 500,
             statusText: 'Can not create a user',
-          })
-      ).pipe(delay(1000))
+          }),
+      ).pipe(delay(1000)),
     );
 
     userService.createUser({}).subscribe({
@@ -123,14 +119,14 @@ describe('UsersService', () => {
           login: response[0] || null,
           _user: response[1],
         };
-      })
+      }),
     );
 
     login$.subscribe(response => {
       //Login check
       expect(httpClientSpy.get).toHaveBeenCalledWith(
         jasmine.any(String),
-        jasmine.objectContaining({ params: jasmine.objectContaining(userBase) })
+        jasmine.objectContaining({ params: jasmine.objectContaining(userBase) }),
       );
       expect(response.login).toEqual(user);
 
@@ -143,9 +139,7 @@ describe('UsersService', () => {
 
   it('UsersService can not login a user', done => {
     httpClientSpy.get.and.returnValue(
-      throwError(
-        () => new HttpErrorResponse({ status: 401, statusText: 'Login error' })
-      )
+      throwError(() => new HttpErrorResponse({ status: 401, statusText: 'Login error' })),
     );
 
     userService.login({}).subscribe({
@@ -181,9 +175,7 @@ describe('UsersService', () => {
       cooper: 100,
     };
 
-    httpClientSpy.put.and.callFake(
-      (url: string, body: User) => of(body) as any
-    );
+    httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
 
     const add$ = userService.updateCurrency(newCurrency, {
       returnObs: true,
@@ -198,15 +190,9 @@ describe('UsersService', () => {
       .subscribe({
         next: ([add, reset]) => {
           //Check add
-          expect(add.currency.cooper).toBe(
-            fakeUser.currency.cooper + newCurrency.cooper
-          );
-          expect(add.currency.silver).toBe(
-            fakeUser.currency.silver + newCurrency.silver
-          );
-          expect(add.currency.gold).toBe(
-            fakeUser.currency.gold + newCurrency.gold
-          );
+          expect(add.currency.cooper).toBe(fakeUser.currency.cooper + newCurrency.cooper);
+          expect(add.currency.silver).toBe(fakeUser.currency.silver + newCurrency.silver);
+          expect(add.currency.gold).toBe(fakeUser.currency.gold + newCurrency.gold);
 
           //Check reset
           expect(reset.currency.cooper).toBe(newCurrency.cooper);
@@ -227,17 +213,12 @@ describe('UsersService', () => {
       time: 600,
     };
 
-    httpClientSpy.put.and.callFake(
-      (url: string, body: User) => of(body) as any
-    );
+    httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
 
-    const onOnlineEmpty$ = userService.updateOnline(
-      newOnline,
-      true
-    ) as Observable<User>;
+    const onOnlineEmpty$ = userService.updateOnline(newOnline, true) as Observable<User>;
     const onOnline600$ = userService.updateOnline(
       { ...newOnline, claimed: 23 },
-      true
+      true,
     ) as Observable<User>;
 
     const array = [onOnlineEmpty$, onOnline600$] as const;

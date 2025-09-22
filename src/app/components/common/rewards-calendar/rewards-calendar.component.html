@@ -6,14 +6,10 @@
 @let _chainMode = chainMode();
 
 <div class="flex-row" [class.chainMode]="_chainMode">
-  <ng-container
-    *ngFor="let reward of _rewardPool; let i = index; trackBy: trackByIndex">
+  <ng-container *ngFor="let reward of _rewardPool; let i = index; trackBy: trackByIndex">
     @let coins = _rewardCoins(reward, i);
 
-    <div
-      class="p-1 day"
-      [class.claimed]="_claimed(i) && !_chainMode"
-      [class.col]="_chainMode">
+    <div class="p-1 day" [class.claimed]="_claimed(i) && !_chainMode" [class.col]="_chainMode">
       <div
         class="reward d-flex flex-column p-2 {{ _rewardClass(i) }}"
         [class.claimed]="_claimed(i) && _chainMode"

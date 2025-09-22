@@ -2,8 +2,7 @@
 @use '../../../assets/resourses/styles/mixins';
 
 .inner-container {
-  background: url('../../../assets/resourses/imgs/background/gift.jpg')
-    no-repeat;
+  background: url('../../../assets/resourses/imgs/background/gift.jpg') no-repeat;
   background-size: cover;
   min-height: 100%;
   box-shadow: vars.$box-shadow;

@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 type Variant = 'badge' | 'ribbon';
@@ -49,6 +44,7 @@ export class PinBadgeComponent {
   get displayText(): string {
     if (this.text) return this.text;
     const pref = this.percent != null ? `+${this.percent}%` : '';
+
     return this.cta ? `${pref} ${this.cta}`.trim() : pref || '';
   }
 

@@ -1,21 +1,10 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalWindowService } from '../../services/modal/modal-window.service';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DynamicHostComponent } from './dynamic-host/dynamic-host.component';
-import {
-  ModalConfig,
-  ModalStrategies,
-  ModalStrategy,
-} from './modal-interfaces';
+import { ModalConfig, ModalStrategies, ModalStrategy } from './modal-interfaces';
 
 @Component({
   selector: 'app-modal-window',

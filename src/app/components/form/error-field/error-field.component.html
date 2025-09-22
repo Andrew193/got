@@ -9,14 +9,12 @@
     {{ fieldName }} is required. {{ fieldAdditionalText }}
   </p>
   <p *ngIf="fieldMinLength" class="error margin-unset">
-    {{ fieldName }} must be at least
-    {{ fieldMinLength?.requiredLength }} characters long. Current length is
-    {{ fieldMinLength?.actualLength }}. {{ fieldAdditionalText }}
+    {{ fieldName }} must be at least {{ fieldMinLength?.requiredLength }} characters long. Current
+    length is {{ fieldMinLength?.actualLength }}. {{ fieldAdditionalText }}
   </p>
   <p *ngIf="fieldMaxLength" class="error margin-unset">
-    {{ fieldName }} must be less than
-    {{ fieldMaxLength?.requiredLength }} characters long. Current length is
-    {{ fieldMaxLength?.actualLength }}. {{ fieldAdditionalText }}
+    {{ fieldName }} must be less than {{ fieldMaxLength?.requiredLength }} characters long. Current
+    length is {{ fieldMaxLength?.actualLength }}. {{ fieldAdditionalText }}
   </p>
   <p *ngIf="fieldMin" class="error margin-unset">
     {{ fieldName }} cannot be less than {{ fieldMin?.min }}. Current value is

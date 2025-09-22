@@ -5,9 +5,7 @@
       (click)="onMoveEntity(tile)"
       class="col tile data-i-{{ tile.x }} data-j-{{
         tile.y
-      }} d-flex align-items-center justify-content-center {{
-        getTileHighlightClass(tile)
-      }}"
+      }} d-flex align-items-center justify-content-center {{ getTileHighlightClass(tile) }}"
       [ngClass]="{
         'ai-heroes': !tile?.entity?.user,
         'user-heroes': tile?.entity?.user,

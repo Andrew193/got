@@ -22,6 +22,7 @@ export class BasePaginationComponent {
 
   private getInitContent() {
     const elements = this.contentService.getContent();
+
     this.totalElements = elements.length;
     this.contentArray = elements;
     this.returnedArray = this.contentArray.slice(0, this.itemsPerPage);
@@ -30,6 +31,7 @@ export class BasePaginationComponent {
   pageChanged($event: PageChangedEvent) {
     const startItem = ($event.page - 1) * $event.itemsPerPage;
     const endItem = $event.page * $event.itemsPerPage;
+
     this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 }

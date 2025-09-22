@@ -46,11 +46,7 @@
   }
 
   .flip-items-inner-container.claimed .card-back {
-    @include eff.shine-sweep(
-      $name: shineSweep-dr,
-      $duration: 2.6s,
-      $animation-delay: 1s
-    );
+    @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.6s, $animation-delay: 1s);
   }
 
   .flip-card.no-shine {

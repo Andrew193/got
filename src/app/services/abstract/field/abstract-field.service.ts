@@ -7,40 +7,36 @@ import { GameFieldVars, Position, Tile } from '../../../models/field.model';
 @Injectable({
   providedIn: 'root',
 })
-export abstract class AbstractFieldService
-  extends GameFieldVars
-  implements Partial<GameField>
-{
+export abstract class AbstractFieldService extends GameFieldVars implements Partial<GameField> {
   getGridFromField(field: Tile[][]): number[][] {
     const grid: number[][] = [];
+
     for (let i = 0; i < 7; i++) {
       grid[i] = [] as number[];
       for (let j = 0; j < 10; j++) {
         grid[i].push(field[i][j].active && !field[i][j].entity ? 0 : 1);
       }
     }
+
     return grid;
   }
 
   populateGameFieldWithUnits(userUnits: Unit[], aiUnits: Unit[]) {
-    this.gameConfig = this.getGameField(
-      userUnits,
-      aiUnits,
-      this.getDefaultGameField()
-    );
+    this.gameConfig = this.getGameField(userUnits, aiUnits, this.getDefaultGameField());
+
     return this.gameConfig;
   }
 
   abstract getDamage(
     unitConfig: { dmgTaker: Unit; attackDealer: Unit },
-    config: { attack: number }
+    config: { attack: number },
   ): number;
 
   getFieldsInRadius(
     grid: Tile[][],
     location: Position,
     radius: number,
-    diagonalCheck?: boolean
+    diagonalCheck?: boolean,
   ): Position[] {
     const fields = [];
     const rows = grid.length;
@@ -83,20 +79,18 @@ export abstract class AbstractFieldService
     for (let i = 0; i < 7; i++) {
       this.gameField[i] = [];
       const innerArray = [];
+
       for (let j = 0; j < 10; j++) {
         innerArray.push({ x: i, y: j, active: true });
       }
+
       this.gameField[i] = innerArray;
     }
+
     return this.gameField;
   }
 
-  getGameField(
-    userUnits: Unit[],
-    aiUnits: Unit[],
-    gameField: Tile[][],
-    objects: Tile[] = []
-  ) {
+  getGameField(userUnits: Unit[], aiUnits: Unit[], gameField: Tile[][], objects: Tile[] = []) {
     const field = createDeepCopy(gameField);
     //const unplayableObjects = [{x:0, y:1},{x:1, y:1},{x:2, y:1},{x:3, y:1},{x:4, y:1},{x:5, y:1}, {x:6, y:1}]
 

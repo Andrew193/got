@@ -40,12 +40,7 @@ describe('GameLoggerService', () => {
   });
 
   it('GameLoggerService should return empty config', () => {
-    const result = gameLoggerService.logEvent(
-      emptyLogConfig,
-      false,
-      skill,
-      testUnit
-    );
+    const result = gameLoggerService.logEvent(emptyLogConfig, false, skill, testUnit);
 
     expect(result).toEqual({ message: '', isUser: false, imgSrc: '' });
   });
@@ -57,20 +52,14 @@ describe('GameLoggerService', () => {
       false,
       skill,
       testUnit,
-      message
+      message,
     );
 
     expect(result.message).toEqual(message);
   });
 
   it('GameLoggerService should return not battle message', () => {
-    const result = gameLoggerService.logEvent(
-      emptyLogConfig,
-      false,
-      skill,
-      testUnit,
-      'Test'
-    );
+    const result = gameLoggerService.logEvent(emptyLogConfig, false, skill, testUnit, 'Test');
 
     expect(result.message).toContain('has been opened/collected!');
   });
@@ -80,11 +69,11 @@ describe('GameLoggerService', () => {
       { ...emptyLogConfig, addDmg: 100, battleMode: true },
       true,
       skill,
-      testUnit
+      testUnit,
     );
 
     expect(result.message).toBe(
-      `Player ${testUnit.name} received 100. ! additional DMG from debuff undefined`
+      `Player ${testUnit.name} received 100. ! additional DMG from debuff undefined`,
     );
   });
 
@@ -93,11 +82,11 @@ describe('GameLoggerService', () => {
       { ...emptyLogConfig, damage: 100, battleMode: true },
       false,
       skill,
-      testUnit
+      testUnit,
     );
 
     expect(result.message).toBe(
-      `Bot ${testUnit.name} (${testUnit.x + 1})(${testUnit.y + 1}) received 100. DMG!`
+      `Bot ${testUnit.name} (${testUnit.x + 1})(${testUnit.y + 1}) received 100. DMG!`,
     );
   });
 
@@ -106,11 +95,11 @@ describe('GameLoggerService', () => {
       { ...emptyLogConfig, newHealth: 0, battleMode: true },
       false,
       skill,
-      testUnit
+      testUnit,
     );
 
     expect(result.message).toBe(
-      `Bot ${testUnit.name} (${testUnit.x + 1})(${testUnit.y + 1}) went to the seven!`
+      `Bot ${testUnit.name} (${testUnit.x + 1})(${testUnit.y + 1}) went to the seven!`,
     );
   });
 });

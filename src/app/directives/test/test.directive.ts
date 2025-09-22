@@ -1,10 +1,4 @@
-import {
-  Directive,
-  effect,
-  input,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, effect, input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
   selector: '[appRepeat]',
@@ -17,7 +11,7 @@ export class TestDirective {
 
   constructor(
     private tpl: TemplateRef<any>,
-    private vcr: ViewContainerRef
+    private vcr: ViewContainerRef,
   ) {
     effect(() => {
       this.render(this.appRepeat() || 0, this.text() || '', this.tail() || '');

@@ -34,8 +34,5 @@ export const ModalStrategies: Record<number, ModalStrategy> = {
 };
 
 export interface ModalStrategy {
-  render(
-    vc: ViewContainerRef,
-    modalConfig: ExtendedModalConfig
-  ): ComponentRef<any>;
+  render(vc: ViewContainerRef, modalConfig: ExtendedModalConfig): ComponentRef<any>;
 }

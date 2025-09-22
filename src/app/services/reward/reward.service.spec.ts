@@ -52,10 +52,7 @@ describe('RewardService', () => {
     heroServiceSpy = jasmine.createSpyObj('HeroesService', ['getAllHeroes']);
 
     TestBed.configureTestingModule({
-      providers: [
-        RewardService,
-        { provide: HeroesService, useValue: heroServiceSpy },
-      ],
+      providers: [RewardService, { provide: HeroesService, useValue: heroServiceSpy }],
     });
 
     rewardService = TestBed.inject(RewardService);
@@ -77,8 +74,7 @@ describe('RewardService', () => {
     const rewardNames = Object.values(rewardService.rewardNames);
 
     const correctSignature = rewardLoot.every(loot => {
-      const correctMinMax =
-        loot.min >= 0 && loot.min <= loot.max && loot.max >= loot.min;
+      const correctMinMax = loot.min >= 0 && loot.min <= loot.max && loot.max >= loot.min;
 
       return correctMinMax && rewardNames.includes(loot.name);
     });

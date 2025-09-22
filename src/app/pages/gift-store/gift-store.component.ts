@@ -1,10 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GameEntryPointComponent } from '../../components/game-entry-point/game-entry-point.component';
 import { GiftNpcService } from '../../services/gift-npc/gift-npc.service';
-import {
-  DisplayReward,
-  RewardService,
-} from '../../services/reward/reward.service';
+import { DisplayReward, RewardService } from '../../services/reward/reward.service';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { Router, RouterLink } from '@angular/router';
 import { GiftService } from '../../services/gift/gift.service';
@@ -44,7 +41,7 @@ export class GiftStoreComponent implements OnInit {
     private giftService: GiftService,
     private usersService: UsersService,
     private rewardService: RewardService,
-    private router: Router
+    private router: Router,
   ) {
     this.init();
   }
@@ -77,6 +74,7 @@ export class GiftStoreComponent implements OnInit {
       }))
       .forEach(el => {
         const elType = this.rewardService.getReward(1, this.items);
+
         this.aiUnits.push(
           elType.name === 'Special 0'
             ? {
@@ -86,7 +84,7 @@ export class GiftStoreComponent implements OnInit {
                 reward: this.npcService.getSpecialGiftReward(),
                 inBattle: true,
               }
-            : el
+            : el,
         );
       });
   }
@@ -102,15 +100,11 @@ export class GiftStoreComponent implements OnInit {
       .filter(el => el?.name === 'Chest')
       .map(() => this.npcService.getChestReward());
     const otherRewards = this.loot.filter(el => el?.name !== 'Chest');
-    const allRewards = [...chestsReward, ...otherRewards].filter(
-      el => !!el
-    ) as DisplayReward[];
+    const allRewards = [...chestsReward, ...otherRewards].filter(el => !!el) as DisplayReward[];
 
     allRewards.forEach(el => {
-      const name = (el.name[0].toLowerCase() + el.name.slice(1)) as
-        | 'gold'
-        | 'silver'
-        | 'cooper';
+      const name = (el.name[0].toLowerCase() + el.name.slice(1)) as 'gold' | 'silver' | 'cooper';
+
       reward[name] = reward[name] + el.amount;
     });
 
@@ -128,22 +122,17 @@ export class GiftStoreComponent implements OnInit {
                 lastLogin: moment().format(DATE_FORMAT),
               },
               () => {
-                this.notificationService.notificationsValue(
-                  NotificationType.gift_store,
-                  false
-                );
+                this.notificationService.notificationsValue(NotificationType.gift_store, false);
                 this.router.navigateByUrl('/');
-              }
+              },
             );
           },
-        })
+        }),
       )
       .subscribe();
   }
 
   public gameResultsRedirect = (realAiUnits: Unit[]) => {
-    this.loot = this.aiUnits.map((el, index) =>
-      !realAiUnits[index].health ? el.reward : null
-    );
+    this.loot = this.aiUnits.map((el, index) => (!realAiUnits[index].health ? el.reward : null));
   };
 }

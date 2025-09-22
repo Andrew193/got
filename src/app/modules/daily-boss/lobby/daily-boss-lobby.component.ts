@@ -41,7 +41,7 @@ export class DailyBossLobbyComponent {
   constructor(
     private heroesService: HeroesService,
     private route: Router,
-    public dailyBossService: DailyBossService
+    public dailyBossService: DailyBossService,
   ) {
     this.selectedHero = this.heroesService.getDailyBossVersion1();
   }
@@ -51,9 +51,11 @@ export class DailyBossLobbyComponent {
 
     if (index === -1 && this.chosenUnits.length < 5) {
       this.chosenUnits = [...this.chosenUnits, unit];
+
       return true;
     } else {
       this.chosenUnits = this.chosenUnits.filter((_, i) => i !== index);
+
       return false;
     }
   };
@@ -67,19 +69,16 @@ export class DailyBossLobbyComponent {
       createDeepCopy({
         ...this.selectedHero,
         ...this.dailyBossService.uppBoss(version),
-      })
+      }),
     );
   }
 
   openFight(bossLevel: number) {
-    this.route.navigate(
-      [frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, bossLevel],
-      {
-        queryParams: {
-          units: this.chosenUnits.map(el => el.name),
-        },
-      }
-    );
+    this.route.navigate([frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, bossLevel], {
+      queryParams: {
+        units: this.chosenUnits.map(el => el.name),
+      },
+    });
   }
 
   get allHeroes() {

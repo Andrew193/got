@@ -24,11 +24,12 @@ export class NotificationsService {
     Object.entries({
       [NotificationType.daily_reward]: false,
       [NotificationType.gift_store]: false,
-    })
+    }),
   );
 
-  private notifications: BehaviorSubject<Map<string, boolean>> =
-    new BehaviorSubject<Map<string, boolean>>(this.initNotificationConfig);
+  private notifications: BehaviorSubject<Map<string, boolean>> = new BehaviorSubject<
+    Map<string, boolean>
+  >(this.initNotificationConfig);
   readonly $notifications = this.notifications.asObservable();
 
   init() {
@@ -53,10 +54,12 @@ export class NotificationsService {
   notificationsValue(key?: number, value?: boolean) {
     if (key !== undefined && value !== undefined) {
       const nValue = this.notificationsValue();
+
       nValue.set(key.toString(), value);
 
       this.notifications.next(structuredClone(nValue));
     }
+
     return this.notifications.getValue();
   }
 

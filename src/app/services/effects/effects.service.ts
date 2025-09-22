@@ -23,16 +23,12 @@ export class EffectsService {
   };
 
   effectsDescriptions: Record<string, string> = {
-    [this.effects.burning]:
-      'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
-    [this.effects.freezing]:
-      'Герой заморожен и может пройти только 1 клетку за ход.',
+    [this.effects.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
+    [this.effects.freezing]: 'Герой заморожен и может пройти только 1 клетку за ход.',
     [this.effects.healthRestore]: 'Восстановливает 5% здоровья каждый ход.',
     [this.effects.defBreak]: 'Защита героя снижается на 50 ед. за ход.',
-    [this.effects.bleeding]:
-      'Наносит противнику урон в размере 5% от его здоровья каждый ход.',
-    [this.effects.poison]:
-      'Наносит противнику урон в размере 7.5% от его здоровья каждый ход.',
+    [this.effects.bleeding]: 'Наносит противнику урон в размере 5% от его здоровья каждый ход.',
+    [this.effects.poison]: 'Наносит противнику урон в размере 7.5% от его здоровья каждый ход.',
     [this.effects.attackBuff]: 'Увеличивает атаку героя на 50%.',
     [this.effects.defBuff]: 'Увеличивает защиту героя на 50%.',
     [this.effects.attackBreak]: 'Уменьшает атаку героя на 50%.',
@@ -48,24 +44,24 @@ export class EffectsService {
 
   getMobilityStatsBasedOnEffect(effect: Effect, unit: Unit) {
     let message = '';
+
     if (effect.type === this.effects.freezing) {
       unit.canCross = 1;
-      message += unit.health
-        ? `Герой заморожен и может пройти только 1 клетку за ход.`
-        : '';
+      message += unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
     }
+
     if (effect.type === this.effects.root) {
       unit.canCross = 0;
-      message += unit.health
-        ? `Герой скован корнями и не может двигаться.`
-        : '';
+      message += unit.health ? `Герой скован корнями и не может двигаться.` : '';
     }
+
     return { unit, message: message };
   }
 
   recountStatsBasedOnEffect(effect: Effect, unit: Unit) {
     const result = this.getMobilityStatsBasedOnEffect(effect, unit);
     let message = result.message;
+
     unit = result.unit;
 
     if (effect.type === this.effects.defDestroy && effect.defBreak) {
@@ -74,23 +70,18 @@ export class EffectsService {
         ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}.`
         : '';
     }
+
     return { unit, message: message };
   }
 
-  restoreStatsAfterEffect(
-    effect: Effect,
-    config: { unit: Unit; message: string }
-  ) {
+  restoreStatsAfterEffect(effect: Effect, config: { unit: Unit; message: string }) {
     let message = '';
-    if (
-      effect.type === this.effects.freezing ||
-      effect.type === this.effects.root
-    ) {
+
+    if (effect.type === this.effects.freezing || effect.type === this.effects.root) {
       config.unit.canCross = config.unit.maxCanCross;
-      message = config.unit.health
-        ? `Герой ${config.unit.name} восстановил мобильность!`
-        : '';
+      message = config.unit.health ? `Герой ${config.unit.name} восстановил мобильность!` : '';
     }
+
     return { unit: config.unit, message: message ? message : config.message };
   }
 
@@ -101,28 +92,27 @@ export class EffectsService {
     }[effect.type];
   }
 
-  getEffectsWithIgnoreFilter(
-    unit: Unit,
-    skill: Skill,
-    addRangeEffects = false
-  ) {
-    const debuffsToSet = (
-      addRangeEffects ? skill.inRangeDebuffs : skill.debuffs
-    )?.filter(debuff => !unit.ignoredDebuffs.includes(debuff.type));
+  getEffectsWithIgnoreFilter(unit: Unit, skill: Skill, addRangeEffects = false) {
+    const debuffsToSet = (addRangeEffects ? skill.inRangeDebuffs : skill.debuffs)?.filter(
+      debuff => !unit.ignoredDebuffs.includes(debuff.type),
+    );
+
     return [...unit.effects, ...(debuffsToSet || [])];
   }
 
   getBoostedParameterCover(unit: Unit, effects: Effect[]) {
     const isAttackHero = unit.heroType === heroType.ATTACK;
+
     return this.getBoostedParameter(
       isAttackHero ? unit.attack : unit.defence,
       effects,
-      isAttackHero ? this.effects.attackBuff : this.effects.defBuff
+      isAttackHero ? this.effects.attackBuff : this.effects.defBuff,
     );
   }
 
   getBoostedParameter(parameter: number, effects: Effect[], type: string) {
     const effect = effects.find(effect => effect.type === type);
+
     return parameter * (effect?.m || 1);
   }
 
@@ -140,17 +130,15 @@ export class EffectsService {
 
   getEffect(effectType: string, turns = 2, count?: number) {
     if (count) {
-      return new Array(count)
-        .fill(0)
-        .map(() => this.effectsMap[effectType](turns));
+      return new Array(count).fill(0).map(() => this.effectsMap[effectType](turns));
     }
+
     return [this.effectsMap[effectType](turns)];
   }
 
   effectsMap: Record<string, (turns: number) => Effect> = {
     [this.effects.burning]: (turns: number) => this.getBurning(turns),
-    [this.effects.healthRestore]: (turns: number) =>
-      this.getHealthRestore(turns),
+    [this.effects.healthRestore]: (turns: number) => this.getHealthRestore(turns),
     [this.effects.freezing]: (turns: number) => this.getFreezing(turns),
     [this.effects.root]: (turns: number) => this.getRoot(turns),
     [this.effects.defDestroy]: (turns: number) => this.getDefenceDestroy(turns),

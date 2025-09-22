@@ -10,12 +10,7 @@ import { frontRoutes } from '../../../constants';
 
 @Component({
   selector: 'app-training-config',
-  imports: [
-    CommonModule,
-    TooltipModule,
-    HeroesSelectPreviewComponent,
-    HeroesSelectComponent,
-  ],
+  imports: [CommonModule, TooltipModule, HeroesSelectPreviewComponent, HeroesSelectComponent],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +23,7 @@ export class TrainingConfigComponent {
 
   constructor(
     private heroesService: HeroesService,
-    private route: Router
+    private route: Router,
   ) {}
 
   getDescKey(user = true) {
@@ -47,19 +42,24 @@ export class TrainingConfigComponent {
 
     if (index === -1 && currentUnits.length < 5) {
       const updatedUnits = [...currentUnits, unit];
+
       this[unitKey] = updatedUnits;
       this[descKey] = updatedUnits.map(() => false);
+
       return true;
     } else {
       const updatedUnits = currentUnits.filter((_, i) => i !== index);
+
       this[unitKey] = updatedUnits;
       this[descKey] = updatedUnits.map(() => false);
+
       return false;
     }
   };
 
   public toggleDescription = (user: boolean, index: number) => {
     const descKey = this.getDescKey(user);
+
     this[descKey][index] = !this[descKey][index];
   };
 
@@ -83,15 +83,12 @@ export class TrainingConfigComponent {
       y: 8,
       user: false,
     }));
-    this.route.navigateByUrl(
-      frontRoutes.training + '/' + frontRoutes.trainingBattle,
-      {
-        state: {
-          userUnits: this.userUnits,
-          aiUnits: this.aiUnits,
-        },
-      }
-    );
+    this.route.navigateByUrl(frontRoutes.training + '/' + frontRoutes.trainingBattle, {
+      state: {
+        userUnits: this.userUnits,
+        aiUnits: this.aiUnits,
+      },
+    });
   }
 
   goToMainPage() {

@@ -37,9 +37,8 @@ export class BasicGameBoardComponent {
   }
 
   getTileHighlightClass(tile: Coordinate) {
-    const tileFromArray = this.tilesToHighlight.find(
-      el => el.i === tile.x && el.j === tile.y
-    );
+    const tileFromArray = this.tilesToHighlight.find(el => el.i === tile.x && el.j === tile.y);
+
     return tileFromArray?.highlightedClass || '';
   }
 
@@ -49,6 +48,7 @@ export class BasicGameBoardComponent {
 
   showActionButtonCondition(tile: Tile, type: string) {
     const entity = (tile as Tile).entity as Unit;
+
     return this.battleMode
       ? entity[type] &&
           !!entity.health &&

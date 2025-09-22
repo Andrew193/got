@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Unit } from '../../../models/unit.model';
@@ -12,12 +6,7 @@ import { Skill } from '../../../models/skill.model';
 import { GameLoggerService } from '../../../services/game-logger/logger.service';
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
-import {
-  GameFieldVars,
-  Position,
-  Tile,
-  TilesToHighlight,
-} from '../../../models/field.model';
+import { GameFieldVars, Position, Tile, TilesToHighlight } from '../../../models/field.model';
 import { LogRecord } from '../../../models/logger.model';
 
 export interface GameField {
@@ -60,7 +49,7 @@ export abstract class AbstractGameFieldComponent
     private abstractFieldS: AbstractFieldService,
     private gameLoggerS: GameLoggerService,
     private unitS: UnitService,
-    private effectsS: EffectsService
+    private effectsS: EffectsService,
   ) {
     super();
     this._turnCount.subscribe(newTurn => {
@@ -74,38 +63,27 @@ export abstract class AbstractGameFieldComponent
     if (newUserUnit) {
       this.userUnits = [...newUserUnit];
     }
+
     if (newAiUnit) {
       this.aiUnits = [...newAiUnit];
     }
 
-    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(
-      this.userUnits,
-      this.aiUnits
-    );
+    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
   }
 
   trackByLogRecord(index: number, log: LogRecord) {
     return log.message;
   }
 
-  showPossibleMoves(
-    location: Position,
-    radius: number,
-    diagCheck = false
-  ) {
-    return this.abstractFieldS.getFieldsInRadius(
-      this.gameConfig,
-      location,
-      radius,
-      diagCheck
-    );
+  showPossibleMoves(location: Position, radius: number, diagCheck = false) {
+    return this.abstractFieldS.getFieldsInRadius(this.gameConfig, location, radius, diagCheck);
   }
 
   abstract addEffectToUnit(
     units: Unit[],
     unitIndex: number,
     skill: Skill,
-    addRangeEffects: boolean
+    addRangeEffects: boolean,
   ): void;
 
   abstract addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill): void;
@@ -115,7 +93,7 @@ export abstract class AbstractGameFieldComponent
   abstract checkDebuffs(
     unit: Unit,
     decreaseRestoreCooldown: boolean,
-    canRestoreHealth: boolean
+    canRestoreHealth: boolean,
   ): Unit;
 
   universalRangeAttack(
@@ -123,50 +101,41 @@ export abstract class AbstractGameFieldComponent
     clickedEnemy: Unit,
     enemiesArray: Unit[],
     userCheck: boolean,
-    attacker: Unit
+    attacker: Unit,
   ) {
     if (skill.attackInRange) {
       const tilesInRange = this.abstractFieldS.getFieldsInRadius(
         this.gameConfig,
         this.unitS.getPositionFromCoordinate(clickedEnemy as Unit),
         skill.attackRange as number,
-        true
+        true,
       );
       const enemiesInRange: Unit[] = tilesInRange
         .map(tile =>
           enemiesArray.find(
-            unit =>
-              unit.x === tile.i && unit.y === tile.j && unit.user === userCheck
-          )
+            unit => unit.x === tile.i && unit.y === tile.j && unit.user === userCheck,
+          ),
         )
         .filter(e => !!e) as Unit[];
 
       for (const enemyInRange of enemiesInRange) {
-        const enemyIndex = this.unitS.findUnitIndex(
-          enemiesArray,
-          enemyInRange
-        );
+        const enemyIndex = this.unitS.findUnitIndex(enemiesArray, enemyInRange);
 
         this.makeAttackMove(
           enemyIndex,
           this.effectsS.getBoostedParameterCover(attacker, attacker.effects) *
-          (skill.attackInRangeM || 0),
+            (skill.attackInRangeM || 0),
           this.effectsS.getBoostedParameterCover(
             enemiesArray[enemyIndex],
-            enemiesArray[enemyIndex].effects
+            enemiesArray[enemyIndex].effects,
           ),
           enemiesArray,
           attacker,
-          skill
+          skill,
         );
 
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
-          this.addEffectToUnit(
-            enemiesArray,
-            enemyIndex,
-            skill,
-            !!skill.inRangeDebuffs
-          );
+          this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs);
         }
       }
     }
@@ -178,18 +147,16 @@ export abstract class AbstractGameFieldComponent
     defence: number,
     dmgTaker: Unit[],
     attackDealer: Unit,
-    skill: Skill
+    skill: Skill,
   ) {
     const damage = this.abstractFieldS.getDamage(
       { dmgTaker: dmgTaker[enemyIndex], attackDealer },
-      { attack }
+      { attack },
     );
 
     if (dmgTaker[enemyIndex].health) {
-      const newHealth = this.effectsS.getHealthAfterDmg(
-        dmgTaker[enemyIndex].health,
-        damage
-      );
+      const newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
+
       this.log.push(
         this.gameLoggerS.logEvent(
           {
@@ -199,19 +166,14 @@ export abstract class AbstractGameFieldComponent
           },
           dmgTaker[enemyIndex].user,
           skill,
-          dmgTaker[enemyIndex]
-        )
+          dmgTaker[enemyIndex],
+        ),
       );
       dmgTaker[enemyIndex] = { ...dmgTaker[enemyIndex], health: newHealth };
     }
   }
 
-  makeHealerMove(
-    targetIndex: number | null,
-    skill: Skill,
-    healer: Unit,
-    units: Unit[]
-  ) {
+  makeHealerMove(targetIndex: number | null, skill: Skill, healer: Unit, units: Unit[]) {
     const healedHealth = healer.maxHealth * (skill.healM as number);
 
     const getNewHealth = (unit: Unit) => {
@@ -237,10 +199,7 @@ export abstract class AbstractGameFieldComponent
     this.showAttackBar = false;
   }
 
-  highlightCellsInnerFunction(
-    path: Position[],
-    className: string
-  ): TilesToHighlight[] {
+  highlightCellsInnerFunction(path: Position[], className: string): TilesToHighlight[] {
     const tilesToHighlight: TilesToHighlight[] = [];
 
     path.forEach(point => {
@@ -256,12 +215,7 @@ export abstract class AbstractGameFieldComponent
     return tilesToHighlight;
   }
 
-  updateGameFieldTile(
-    i: any,
-    j: any,
-    entity: Unit | undefined = undefined,
-    active = false
-  ) {
+  updateGameFieldTile(i: any, j: any, entity: Unit | undefined = undefined, active = false) {
     this.gameConfig[i][j] = {
       ...this.gameConfig[i][j],
       entity: entity,
@@ -273,18 +227,16 @@ export abstract class AbstractGameFieldComponent
     if (clickedTile.user) {
       return null;
     }
+
     const enemyClicked = this.possibleMoves.find(
-      possibleTile =>
-        possibleTile.i === clickedTile.x && possibleTile.j === clickedTile.y
+      possibleTile => possibleTile.i === clickedTile.x && possibleTile.j === clickedTile.y,
     );
+
     return enemyClicked ? clickedTile : null;
   }
 
   ngOnInit(): void {
-    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(
-      this.userUnits,
-      this.aiUnits
-    );
+    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
   }
 
   ngOnDestroy() {

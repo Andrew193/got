@@ -30,6 +30,7 @@ describe('ValidationService', () => {
     });
 
     let invalid = validationService.isFormInvalid(formGroup, callbackSpy);
+
     expect(callbackSpy).toHaveBeenCalled();
     expect(invalid).toBeFalse();
 
@@ -45,22 +46,11 @@ describe('ValidationService', () => {
 
     const nameCtrl = formGroup.get('testName') as FormControl;
     const errCtrl = formGroup.get('error') as FormControl;
-    const arrayElementCtrl = (formGroup.get('array') as FormArray).controls.at(
-      0
-    ) as FormControl;
+    const arrayElementCtrl = (formGroup.get('array') as FormArray).controls.at(0) as FormControl;
 
-    const nameUvvSpy = spyOn(
-      nameCtrl,
-      'updateValueAndValidity'
-    ).and.callThrough();
-    const errUvvSpy = spyOn(
-      errCtrl,
-      'updateValueAndValidity'
-    ).and.callThrough();
-    const arrayElementCtrlSpy = spyOn(
-      arrayElementCtrl,
-      'updateValueAndValidity'
-    ).and.callThrough();
+    const nameUvvSpy = spyOn(nameCtrl, 'updateValueAndValidity').and.callThrough();
+    const errUvvSpy = spyOn(errCtrl, 'updateValueAndValidity').and.callThrough();
+    const arrayElementCtrlSpy = spyOn(arrayElementCtrl, 'updateValueAndValidity').and.callThrough();
 
     const result = validationService.validateAllFormFields(formGroup);
 
@@ -90,12 +80,7 @@ describe('ValidationService', () => {
     const updateCallbackSpy = jasmine.createSpy('updateCallback');
     const createCallbackSpy = jasmine.createSpy('createCallback');
 
-    validationService.validateFormAndSubmit(
-      formGroup,
-      updateCallbackSpy,
-      createCallbackSpy,
-      true
-    );
+    validationService.validateFormAndSubmit(formGroup, updateCallbackSpy, createCallbackSpy, true);
 
     //The Form is invalid. Nothing happens
     expect(updateCallbackSpy).not.toHaveBeenCalled();
@@ -112,15 +97,10 @@ describe('ValidationService', () => {
       {
         error: '12',
       },
-      { emitEvent: true }
+      { emitEvent: true },
     );
 
-    validationService.validateFormAndSubmit(
-      formGroup,
-      updateCallbackSpy,
-      createCallbackSpy,
-      true
-    );
+    validationService.validateFormAndSubmit(formGroup, updateCallbackSpy, createCallbackSpy, true);
 
     expect(formGroup.disabled).toBeTrue();
     expect(updateCallbackSpy).toHaveBeenCalled();
@@ -135,16 +115,11 @@ describe('ValidationService', () => {
       {
         error: '12',
       },
-      { emitEvent: true }
+      { emitEvent: true },
     );
 
     //The form is valid. Check creation
-    validationService.validateFormAndSubmit(
-      formGroup,
-      updateCallbackSpy,
-      createCallbackSpy,
-      false
-    );
+    validationService.validateFormAndSubmit(formGroup, updateCallbackSpy, createCallbackSpy, false);
 
     expect(formGroup.disabled).toBeTrue();
     expect(createCallbackSpy).toHaveBeenCalled();

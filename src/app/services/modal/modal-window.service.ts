@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {
-  ModalConfig,
-  ModalStrategiesTypes,
-} from '../../components/modal-window/modal-interfaces';
+import { ModalConfig, ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +16,7 @@ export class ModalWindowService {
       strategy: ModalStrategiesTypes.base,
     },
   };
-  private _modalConfig: BehaviorSubject<ModalConfig> =
-    new BehaviorSubject<ModalConfig>(this.init);
+  private _modalConfig: BehaviorSubject<ModalConfig> = new BehaviorSubject<ModalConfig>(this.init);
   modalConfig$ = this._modalConfig.asObservable();
 
   openModal(modalConfig: ModalConfig) {
@@ -41,7 +37,7 @@ export class ModalWindowService {
       strategy: number;
       component?: any;
       modalRootClass?: string;
-    }
+    },
   ): ModalConfig {
     return {
       headerClass: headerClass,

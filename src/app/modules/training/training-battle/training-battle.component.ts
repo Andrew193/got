@@ -19,14 +19,16 @@ export class TrainingBattleComponent {
 
   constructor(
     private route: Router,
-    private modalService: ModalWindowService
+    private modalService: ModalWindowService,
   ) {
     const navigation = this.route.getCurrentNavigation();
+
     if (navigation) {
       const config = navigation.extras.state as {
         aiUnits: Unit[] | undefined;
         userUnits: Unit[] | undefined;
       } | null;
+
       if (config?.aiUnits && config.userUnits) {
         this.aiUnits = config.aiUnits;
         this.userUnits = config.userUnits;
@@ -41,16 +43,11 @@ export class TrainingBattleComponent {
   redirectToTraining() {
     setTimeout(() => {
       this.modalService.openModal(
-        this.modalService.getModalConfig(
-          'red-b',
-          'Something went wrong',
-          'Ok',
-          {
-            callback: this.victoryRedirect,
-            open: true,
-            strategy: ModalStrategiesTypes.base,
-          }
-        )
+        this.modalService.getModalConfig('red-b', 'Something went wrong', 'Ok', {
+          callback: this.victoryRedirect,
+          open: true,
+          strategy: ModalStrategiesTypes.base,
+        }),
       );
     }, 300);
   }

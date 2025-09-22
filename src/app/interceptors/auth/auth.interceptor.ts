@@ -15,9 +15,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             setHeaders: {
               Authorization: `Basic ${newToken}`,
             },
-          })
+          }),
         );
-      })
+      }),
     );
   };
 
@@ -38,6 +38,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       return throwError(() => new Error(error.message));
-    })
+    }),
   );
 };

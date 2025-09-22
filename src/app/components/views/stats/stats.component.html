@@ -1,9 +1,6 @@
 <div class="d-grid p-0 gap-2" style="grid-template-columns: 1fr 11fr">
   <div style="width: 100px; min-width: 100px">
-    <img
-      alt="reward avatar"
-      class="reward-avatar"
-      [src]="selectedHero.imgSrc" />
+    <img alt="reward avatar" class="reward-avatar" [src]="selectedHero.imgSrc" />
   </div>
   <div class="stats flex-column w-auto">
     <div style="font-weight: bold" class="flex-row">
@@ -57,8 +54,7 @@
         <span>{{ (selectedHero.dmgReducedBy * 100).toFixed(0) }}%</span>
       </p>
       <span class="flex-grow-1 d-block text-start"
-        >Absorption affects the amount of pure damage absorbed (stacks with
-        defense).</span
+        >Absorption affects the amount of pure damage absorbed (stacks with defense).</span
       >
     </div>
     <div style="font-weight: bold" class="flex-row">

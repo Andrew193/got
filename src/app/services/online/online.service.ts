@@ -38,11 +38,8 @@ export class OnlineService {
       .pipe(
         switchMap(
           () =>
-            this.userService.updateOnline(
-              { time: TIME.tenMinuteSeconds },
-              true
-            ) as Observable<any>
-        )
+            this.userService.updateOnline({ time: TIME.tenMinuteSeconds }, true) as Observable<any>,
+        ),
       )
       .subscribe();
   }
@@ -58,6 +55,7 @@ export class OnlineService {
 
   private incrementLocalBuffer(seconds: number) {
     const current = this.localBuffer;
+
     this.ls.setItem(this.ls.names.localOnlineBuffer, String(current + seconds));
   }
 

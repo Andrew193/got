@@ -1,8 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  MAT_SNACK_BAR_DATA,
-  MatSnackBarRef,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Coin } from '../../../../models/reward-based.model';
 import { RewardService } from '../../../../services/reward/reward.service';
 import { RewardCoinComponent } from '../../../views/reward-coin/reward-coin.component';
@@ -30,9 +27,7 @@ export class CurrencyDifComponent {
     this.newCoins = this.rewardService.convertUserCurrencyToCoin(this.data.new);
 
     this.oldCoins.forEach(oldCoin => {
-      const newCoin = this.newCoins.find(
-        newCoin => newCoin.class === oldCoin.class
-      ) as Coin;
+      const newCoin = this.newCoins.find(newCoin => newCoin.class === oldCoin.class) as Coin;
 
       this.differenceInCoins = [
         ...this.differenceInCoins,

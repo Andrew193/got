@@ -16,24 +16,20 @@ export class UnitService {
   recountSkillsCooldown = (skills: Skill[]) =>
     skills.map(skill => ({
       ...skill,
-      remainingCooldown:
-        skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0,
+      remainingCooldown: skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0,
     }));
 
   findSkillIndex(skills: Skill[], selectedSkill: Skill) {
     return skills.findIndex(
-      skill =>
-        skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name
+      skill => skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name,
     );
   }
 
-  orderUnitsByDistance(
-    start: Coordinate,
-    positions: Coordinate[]
-  ): Coordinate[] {
+  orderUnitsByDistance(start: Coordinate, positions: Coordinate[]): Coordinate[] {
     return positions.sort((a, b) => {
       const distanceA = Math.abs(a.x - start.x) + Math.abs(a.y - start.y);
       const distanceB = Math.abs(b.x - start.x) + Math.abs(b.y - start.y);
+
       return distanceA - distanceB;
     });
   }
@@ -57,43 +53,41 @@ export class UnitService {
     unitIndex: number,
     skill: Skill,
     addRangeEffects = false,
-    getEffectsWithIgnoreFilter: (
-      unit: Unit,
-      skill: Skill,
-      addRangeEffects: boolean
-    ) => Effect[]
+    getEffectsWithIgnoreFilter: (unit: Unit, skill: Skill, addRangeEffects: boolean) => Effect[],
   ) {
     const unitsCopy = createDeepCopy(units);
+
     unitsCopy[unitIndex] = {
       ...unitsCopy[unitIndex],
-      effects: getEffectsWithIgnoreFilter(
-        unitsCopy[unitIndex],
-        skill,
-        addRangeEffects
-      ),
+      effects: getEffectsWithIgnoreFilter(unitsCopy[unitIndex], skill, addRangeEffects),
     };
+
     return unitsCopy[unitIndex];
   }
 
   addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill) {
     const unitsCopy = createDeepCopy(units);
+
     if (skill?.buffs?.length) {
       unitsCopy[unitIndex] = {
         ...unitsCopy[unitIndex],
         effects: [...unitsCopy[unitIndex].effects, ...(skill.buffs || [])],
       };
     }
+
     return unitsCopy[unitIndex];
   }
 
   updateGridUnits(unitsArray: Unit[], gameConfig: Tile[][]) {
     const gameConfigCopy = createDeepCopy(gameConfig);
+
     unitsArray.forEach(unit => {
       gameConfigCopy[unit.x][unit.y] = {
         ...gameConfigCopy[unit.x][unit.y],
         entity: unit,
       };
     });
+
     return gameConfigCopy;
   }
 }

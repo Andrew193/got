@@ -1,9 +1,5 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
-import {
-  ExtendedModalConfig,
-  HasFooterHost,
-  ModalStrategy,
-} from '../../modal-interfaces';
+import { ExtendedModalConfig, HasFooterHost, ModalStrategy } from '../../modal-interfaces';
 
 @Component({
   imports: [],
@@ -15,11 +11,7 @@ class ComponentModalStrategyFooter {
 }
 
 function hasFooterHost(instance: any): instance is HasFooterHost {
-  return (
-    instance &&
-    'footerHost' in instance &&
-    instance.footerHost instanceof ViewContainerRef
-  );
+  return instance && 'footerHost' in instance && instance.footerHost instanceof ViewContainerRef;
 }
 
 export class ComponentModalStrategy implements ModalStrategy {
@@ -30,12 +22,14 @@ export class ComponentModalStrategy implements ModalStrategy {
 
     if (hasFooterHost(componentRef.instance)) {
       const footerVc = componentRef.instance.footerHost;
+
       footerRef = footerVc.createComponent(ComponentModalStrategyFooter);
     } else {
       footerRef = vc.createComponent(ComponentModalStrategyFooter);
     }
 
     footerRef.setInput('close', modalConfig.close);
+
     return componentRef;
   }
 }

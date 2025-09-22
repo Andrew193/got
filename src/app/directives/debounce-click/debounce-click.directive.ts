@@ -1,10 +1,4 @@
-import {
-  Directive,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
+import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -19,9 +13,7 @@ export class DebounceClickDirective {
   private clicks = new Subject();
 
   constructor() {
-    this.clicks
-      .pipe(debounceTime(this.debounceTime))
-      .subscribe(e => this.debounceClick.emit(e));
+    this.clicks.pipe(debounceTime(this.debounceTime)).subscribe(e => this.debounceClick.emit(e));
   }
 
   @HostListener('click', ['$event'])

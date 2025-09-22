@@ -12,7 +12,7 @@ export class ContextMenuTriggerDirective implements OnInit {
   constructor(
     private el: ElementRef,
     private render2: Renderer2,
-    private heroService: HeroesService
+    private heroService: HeroesService,
   ) {}
 
   public ngOnInit(): void {
@@ -21,9 +21,8 @@ export class ContextMenuTriggerDirective implements OnInit {
       this.removeTip();
 
       const tipContainer = this.render2.createElement('div') as HTMLDivElement;
-      tipContainer.innerText = this.heroService
-        .getEffectsFromString(this.text)
-        .join(',');
+
+      tipContainer.innerText = this.heroService.getEffectsFromString(this.text).join(',');
       this.tipRef = tipContainer;
       this.render2.appendChild(this.el.nativeElement, tipContainer);
     });

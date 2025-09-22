@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ImageComponent } from '../../views/image/image.component';
 import { RewardsCalendarComponent } from '../../common/rewards-calendar/rewards-calendar.component';
 import { DayReward } from '../../daily-reward/daily-reward.component';
@@ -20,13 +13,7 @@ import { TimeService } from '../../../services/time/time.service';
 
 @Component({
   selector: 'app-notification',
-  imports: [
-    ImageComponent,
-    RewardsCalendarComponent,
-    RewardCoinComponent,
-    AsyncPipe,
-    DecimalPipe,
-  ],
+  imports: [ImageComponent, RewardsCalendarComponent, RewardCoinComponent, AsyncPipe, DecimalPipe],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
 })
@@ -47,11 +34,8 @@ export class NotificationComponent implements OnInit, HasFooterHost {
   }
 
   ngOnInit(): void {
-    this.helper.userService.$user
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(model => {
-        model &&
-          (this.stepsRewardConfig = this.helper.configStepsRewardConfig(model));
-      });
+    this.helper.userService.$user.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(model => {
+      model && (this.stepsRewardConfig = this.helper.configStepsRewardConfig(model));
+    });
   }
 }

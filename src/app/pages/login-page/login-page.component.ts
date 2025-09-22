@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation/validation.service';
 import { CommonModule } from '@angular/common';
 import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
@@ -32,17 +27,11 @@ export class LoginPageComponent implements OnInit {
     private usersService: UsersService,
     private localStorageService: LocalStorageService,
     private router: Router,
-    private validationService: ValidationService
+    private validationService: ValidationService,
   ) {
     this.form = new FormGroup({
-      login: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-      ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-      ]),
+      login: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(4)]),
     });
   }
 
@@ -71,7 +60,7 @@ export class LoginPageComponent implements OnInit {
           })
           .subscribe();
       },
-      !this.createUser
+      !this.createUser,
     );
   }
 

@@ -103,10 +103,7 @@ describe('UnitService', () => {
       { x: 3, y: 3 },
     ];
 
-    const orderedPoints = unitService.orderUnitsByDistance(
-      { x: 0, y: 0 },
-      Points
-    );
+    const orderedPoints = unitService.orderUnitsByDistance({ x: 0, y: 0 }, Points);
 
     expect(orderedPoints).toEqual([
       { x: 1, y: 3 },
@@ -117,8 +114,7 @@ describe('UnitService', () => {
 
   it('UnitService should convert Coordinate to Position', () => {
     const coordinate: Coordinate = { x: 1, y: 3 };
-    const positionFromCoordinate =
-      unitService.getPositionFromCoordinate(coordinate);
+    const positionFromCoordinate = unitService.getPositionFromCoordinate(coordinate);
 
     expect(positionFromCoordinate.i).toBe(coordinate.x);
     expect(positionFromCoordinate.j).toBe(coordinate.y);
@@ -126,8 +122,7 @@ describe('UnitService', () => {
 
   it('UnitService should convert Position to Coordinate', () => {
     const position: Position = { i: 1, j: 3 };
-    const coordinateFromPosition =
-      unitService.getCoordinateFromPosition(position);
+    const coordinateFromPosition = unitService.getCoordinateFromPosition(position);
 
     expect(coordinateFromPosition.x).toBe(position.i);
     expect(coordinateFromPosition.y).toBe(position.j);
@@ -141,9 +136,7 @@ describe('UnitService', () => {
       imgSrc: '',
       name: 'Test',
       remainingCooldown: 0,
-      debuffs: [
-        ...effectsService.getEffect(effectsService.effects.burning, 2, 3),
-      ],
+      debuffs: [...effectsService.getEffect(effectsService.effects.burning, 2, 3)],
     };
 
     const getEffectsWithIgnoreFilterSpy = jasmine
@@ -155,13 +148,13 @@ describe('UnitService', () => {
       0,
       testSkill,
       false,
-      getEffectsWithIgnoreFilterSpy
+      getEffectsWithIgnoreFilterSpy,
     );
 
     expect(getEffectsWithIgnoreFilterSpy).toHaveBeenCalledWith(
       jasmine.objectContaining(units[0]),
       jasmine.objectContaining(testSkill),
-      false
+      false,
     );
 
     expect(updatedUnit.effects.length).toBe(3);
@@ -175,18 +168,14 @@ describe('UnitService', () => {
       imgSrc: '',
       name: 'Test',
       remainingCooldown: 0,
-      buffs: [
-        ...effectsService.getEffect(effectsService.effects.healthRestore, 2, 1),
-      ],
+      buffs: [...effectsService.getEffect(effectsService.effects.healthRestore, 2, 1)],
     };
 
     let updatedUnit = unitService.addBuffToUnit(units, 0, testSkill);
 
     expect(updatedUnit.effects.length).toBe(1);
 
-    testSkill.buffs = [
-      ...effectsService.getEffect(effectsService.effects.defBuff, 2, 1),
-    ];
+    testSkill.buffs = [...effectsService.getEffect(effectsService.effects.defBuff, 2, 1)];
 
     updatedUnit = unitService.addBuffToUnit([updatedUnit], 0, testSkill);
     const buffsNames = updatedUnit.effects.map(e => e.type);

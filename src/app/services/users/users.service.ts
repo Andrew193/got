@@ -21,7 +21,7 @@ export class UsersService extends ApiService<User> {
 
   constructor(
     private router: Router,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
   ) {
     super();
   }
@@ -48,7 +48,7 @@ export class UsersService extends ApiService<User> {
         next: user => {
           callback(user);
         },
-      })
+      }),
     );
   }
 
@@ -69,7 +69,7 @@ export class UsersService extends ApiService<User> {
           error: () => {
             this.router.navigate([frontRoutes.login]);
           },
-        })
+        }),
       );
   }
 
@@ -78,7 +78,7 @@ export class UsersService extends ApiService<User> {
     config: { returnObs?: boolean; hardSet?: boolean } = {
       returnObs: false,
       hardSet: false,
-    }
+    },
   ) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
@@ -87,10 +87,8 @@ export class UsersService extends ApiService<User> {
         ...user,
         currency: {
           gold: newCurrency.gold + (config.hardSet ? 0 : user.currency.gold),
-          silver:
-            newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
-          cooper:
-            newCurrency.cooper + (config.hardSet ? 0 : user.currency.cooper),
+          silver: newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
+          cooper: newCurrency.cooper + (config.hardSet ? 0 : user.currency.cooper),
         },
       },
       {
@@ -109,12 +107,13 @@ export class UsersService extends ApiService<User> {
           });
         },
         returnObs: config.returnObs,
-      }
+      },
     );
   }
 
   doesUserExist() {
     const user = this.localStorage.getItem(USER_TOKEN) as User | undefined;
+
     return this.http
       .get<any>(this.url, {
         params: {
@@ -125,21 +124,20 @@ export class UsersService extends ApiService<User> {
       })
       .pipe(
         map(response => {
-          if (
-            response.status === 200 &&
-            (response.body[0] as User).id === user?.id
-          ) {
+          if (response.status === 200 && (response.body[0] as User).id === user?.id) {
             this.localStorage.setItem(USER_TOKEN, response.body[0]);
             this.user.next(response.body[0] as User);
+
             return true;
           }
+
           return false;
         }),
         tap({
           error: () => {
             this.router.navigate([frontRoutes.login]);
           },
-        })
+        }),
       );
   }
 
@@ -154,7 +152,7 @@ export class UsersService extends ApiService<User> {
 
   updateOnline(
     config: { time?: number; claimed?: number; lastLoyaltyBonus?: string },
-    returnObs = false
+    returnObs = false,
   ) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
@@ -183,9 +181,7 @@ export class UsersService extends ApiService<User> {
                   : [...user.online.claimedRewards, config.claimed.toString()],
             }
           : {}),
-        ...(config.lastLoyaltyBonus
-          ? { lastLoyaltyBonus: config.lastLoyaltyBonus }
-          : {}),
+        ...(config.lastLoyaltyBonus ? { lastLoyaltyBonus: config.lastLoyaltyBonus } : {}),
       },
     };
 

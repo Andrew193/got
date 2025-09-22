@@ -90,6 +90,7 @@ describe('NumbersService', () => {
 
     for (let i = 0; i < 10; i++) {
       const index = i || 1;
+
       number = numbersService.getNumberInRange(10 * index, 100 * index);
       expect(number).toBeLessThanOrEqual(100 * index);
       expect(number).toBeGreaterThanOrEqual(10 * index);

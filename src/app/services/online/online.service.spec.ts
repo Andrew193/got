@@ -1,10 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { OnlineService } from './online.service';
-import {
-  FakeLocalStorage,
-  LocalStorageService,
-} from '../localStorage/local-storage.service';
+import { FakeLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { UsersService } from '../users/users.service';
 import { of } from 'rxjs';
 import { createDeepCopy } from '../../helpers';
@@ -65,7 +62,7 @@ describe('OnlineService', () => {
     tick(TIME.oneMinuteMilliseconds * 9);
     expect(userServiceSpy.updateOnline).toHaveBeenCalledWith(
       jasmine.objectContaining({ time: 600 }),
-      true
+      true,
     );
   }));
 });

@@ -1,8 +1,4 @@
-import {
-  DisplayReward,
-  Reward,
-  RewardNames,
-} from '../services/reward/reward.service';
+import { DisplayReward, Reward, RewardNames } from '../services/reward/reward.service';
 import { IdEntity } from './common.model';
 
 export interface DailyReward extends IdEntity {
@@ -31,19 +27,11 @@ export interface BossReward {
 
 export type RewardValues = RewardNames[keyof RewardNames];
 export type RewardKeys = keyof RewardNames;
-export type RewardKeysForLoot = Extract<
-  RewardKeys,
-  'cooper' | 'silver' | 'gold' | 'shards'
->;
+export type RewardKeysForLoot = Extract<RewardKeys, 'cooper' | 'silver' | 'gold' | 'shards'>;
 
-export type RewardLootConstant = Record<
-  RewardKeysForLoot,
-  { min: number; max: number }
->;
+export type RewardLootConstant = Record<RewardKeysForLoot, { min: number; max: number }>;
 
-export type CoinNames = Lowercase<
-  Extract<RewardValues, 'Cooper' | 'Silver' | 'Gold'>
->;
+export type CoinNames = Lowercase<Extract<RewardValues, 'Cooper' | 'Silver' | 'Gold'>>;
 
 export interface Coin {
   class: CoinNames;

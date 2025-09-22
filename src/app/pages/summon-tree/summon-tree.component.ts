@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  DisplayReward,
-  RewardService,
-} from '../../services/reward/reward.service';
+import { DisplayReward, RewardService } from '../../services/reward/reward.service';
 import { Router } from '@angular/router';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { ImageComponent } from '../../components/views/image/image.component';
@@ -19,7 +16,7 @@ import { RewardComponentInterface } from '../../models/reward-based.model';
 export class SummonTreeComponent implements RewardComponentInterface {
   constructor(
     public rewardService: RewardService,
-    private route: Router
+    private route: Router,
   ) {}
 
   rewards: DisplayReward[] = [];
@@ -33,9 +30,7 @@ export class SummonTreeComponent implements RewardComponentInterface {
 
   getReward(amountOfRewards = 1) {
     console.log([...this.rewardService.getReward(amountOfRewards, this.items)]);
-    this.rewards = [
-      ...this.rewardService.getReward(amountOfRewards, this.items),
-    ];
+    this.rewards = [...this.rewardService.getReward(amountOfRewards, this.items)];
   }
 
   goToMainPage() {

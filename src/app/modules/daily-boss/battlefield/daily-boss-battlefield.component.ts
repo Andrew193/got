@@ -19,7 +19,7 @@ export class DailyBossBattlefieldComponent {
   constructor(
     private route: ActivatedRoute,
     private dailyBossService: DailyBossService,
-    private heroesService: HeroesService
+    private heroesService: HeroesService,
   ) {
     this.route.params.subscribe(value => {
       this.aiUnits.push(
@@ -27,7 +27,7 @@ export class DailyBossBattlefieldComponent {
           ...this.heroesService.getDailyBossVersion1(),
           user: false,
           ...this.dailyBossService.uppBoss(value['bossLevel']),
-        })
+        }),
       );
     });
     this.route.queryParams.subscribe(value => {

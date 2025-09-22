@@ -9,11 +9,13 @@ export class ValidationService {
     if (callback) {
       callback();
     }
+
     return form.invalid && (form.touched || form.dirty);
   }
 
   validateAllFormFields(formGroup: FormGroup | FormArray) {
     const formGroupToValidate = formGroup;
+
     Object.keys(formGroupToValidate.controls).forEach(field => {
       const control = formGroupToValidate.get(field);
 
@@ -25,11 +27,9 @@ export class ValidationService {
         this.validateAllFormFields(control);
       } else if (control instanceof FormArray) {
         const formArray = control as FormArray;
+
         for (const arrayControl of formArray.controls) {
-          if (
-            arrayControl instanceof FormGroup ||
-            arrayControl instanceof FormArray
-          ) {
+          if (arrayControl instanceof FormGroup || arrayControl instanceof FormArray) {
             this.validateAllFormFields(arrayControl);
           } else {
             arrayControl.markAsDirty();
@@ -39,6 +39,7 @@ export class ValidationService {
         }
       }
     });
+
     return formGroupToValidate;
   }
 
@@ -46,7 +47,7 @@ export class ValidationService {
     form: FormGroup<any>,
     updateCallback: () => void,
     createCallback: () => void,
-    isUpdate: boolean
+    isUpdate: boolean,
   ) {
     this.validateAllFormFields(form);
 

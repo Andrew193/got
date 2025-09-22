@@ -9,13 +9,11 @@ const importPlugin = require('eslint-plugin-import');
 module.exports = tseslint.config(
   {
     files: ['**/*.ts'],
-    extends: [
-      ...tseslint.configs.stylistic,
-    ],
+    extends: [...tseslint.configs.stylistic],
     plugins: {
       '@angular-eslint': ngPlugin,
       'unused-imports': unusedImports,
-      'import': importPlugin,
+      import: importPlugin,
     },
     rules: {
       '@angular-eslint/directive-selector': [
@@ -33,39 +31,28 @@ module.exports = tseslint.config(
       //Lines
       'padding-line-between-statements': [
         'error',
-        // пустая строка перед return
         { blankLine: 'always', prev: '*', next: 'return' },
-
-        // пустая строка после группы переменных
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
-        // но НЕ между соседними объявлениями переменных
-        { blankLine: 'any',    prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
-
-        // пустая строка после импортов
+        { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
         { blankLine: 'always', prev: 'import', next: '*' },
-        // но НЕ между самими импортами
-        { blankLine: 'any',    prev: 'import', next: 'import' },
-
-        // пустая строка перед объявлениями функций и классов
+        { blankLine: 'any', prev: 'import', next: 'import' },
         { blankLine: 'always', prev: '*', next: ['function', 'class'] },
-
-        // пустая строка после блоков (if/for/while/try и т.п.)
         { blankLine: 'always', prev: 'block-like', next: '*' },
       ],
       'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 1 }],
       'import/newline-after-import': 'error',
     },
   },
-
   // ---- Angular HTML templates ----
   {
     files: ['**/*.html'],
-    extends: [
-      ...angular.configs.templateRecommended,
-    ],
+    extends: [...angular.configs.templateRecommended],
     plugins: {
       '@angular-eslint/template': ngTemplatePlugin,
     },
     rules: {},
-  }
+  },
+  {
+    ignores: ['node_modules', 'dist', 'coverage', '.angular', '.idea', '.vscode'],
+  },
 );

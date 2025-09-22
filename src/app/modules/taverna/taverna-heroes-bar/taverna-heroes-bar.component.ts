@@ -3,12 +3,7 @@ import { HeroesService } from '../../../services/heroes/heroes.service';
 import { CommonModule } from '@angular/common';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,17 +32,14 @@ import { trackByUnit } from '../../../helpers';
   templateUrl: './taverna-heroes-bar.component.html',
   styleUrl: './taverna-heroes-bar.component.scss',
 })
-export class TavernaHeroesBarComponent
-  extends BasePaginationComponent
-  implements OnInit
-{
+export class TavernaHeroesBarComponent extends BasePaginationComponent implements OnInit {
   formGroup;
   options: string[] = [];
   filteredOptions: Observable<string[]>;
 
   constructor(
     public heroesService: HeroesService,
-    private router: Router
+    private router: Router,
   ) {
     super(heroesService);
     this.formGroup = new FormGroup({
@@ -57,7 +49,7 @@ export class TavernaHeroesBarComponent
 
     this.filteredOptions = this.formGroup.get('unitName')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map(value => this._filter(value || '')),
     );
 
     this.formGroup.get('unitName')!.valueChanges.subscribe(newName => {
@@ -68,13 +60,12 @@ export class TavernaHeroesBarComponent
           page: this.currentPage,
         });
       };
+
       if (!newName) {
         openFirstPage();
       } else {
         openFirstPage();
-        this.returnedArray = this.contentArray.filter(
-          item => item.name === newName
-        );
+        this.returnedArray = this.contentArray.filter(item => item.name === newName);
       }
     });
   }
@@ -82,9 +73,7 @@ export class TavernaHeroesBarComponent
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   ngOnInit(): void {
@@ -92,14 +81,11 @@ export class TavernaHeroesBarComponent
   }
 
   openHeroPreview(name: string) {
-    this.router.navigate(
-      [[frontRoutes.taverna, frontRoutes.preview].join('/')],
-      {
-        queryParams: {
-          name,
-        },
-      }
-    );
+    this.router.navigate([[frontRoutes.taverna, frontRoutes.preview].join('/')], {
+      queryParams: {
+        name,
+      },
+    });
   }
 
   backToMainPage() {

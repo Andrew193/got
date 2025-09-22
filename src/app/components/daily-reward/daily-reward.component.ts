@@ -74,18 +74,15 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     public heroService: HeroesService,
     protected dailyRewardService: DailyRewardService,
     public usersService: UsersService,
-    private render2: Renderer2
+    private render2: Renderer2,
   ) {
     this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
-    this.month = this.dailyRewardService.monthReward(
-      this.dailyRewardConfig.totalDays || 1
-    );
+    this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays || 1);
     document.body.style.overflow = 'hidden';
   }
 
   claimed = (i: number) => i + 1 <= (this.dailyRewardConfig.day || 0);
-  rewardClass = (i: number) =>
-    +this.dailyRewardConfig.day === i ? 'today' : '';
+  rewardClass = (i: number) => (+this.dailyRewardConfig.day === i ? 'today' : '');
 
   showHeroPreview() {
     this.isHeroPreview = !this.isHeroPreview;
@@ -94,18 +91,14 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.rewardHero = this.heroService.getPriest();
 
-    this.dailyRewardService._data
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(config => {
-        console.log(config);
-        this.dailyRewardConfig = {
-          ...(config || this.dailyRewardConfig),
-          userId: config.userId,
-        };
-        this.month = this.dailyRewardService.monthReward(
-          this.dailyRewardConfig.totalDays || 1
-        );
-      });
+    this.dailyRewardService._data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => {
+      console.log(config);
+      this.dailyRewardConfig = {
+        ...(config || this.dailyRewardConfig),
+        userId: config.userId,
+      };
+      this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays || 1);
+    });
   }
 
   claimReward = (reward: DayReward) => {
@@ -124,11 +117,8 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
             gold: reward.goldCoin || 0,
           });
           this.dailyRewardConfig = newConfig as DailyReward;
-          this.notificationService.notificationsValue(
-            NotificationType.daily_reward,
-            false
-          );
-        }
+          this.notificationService.notificationsValue(NotificationType.daily_reward, false);
+        },
       );
     }
   };
@@ -137,7 +127,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.render2.setStyle(
       this.heroInFrame.nativeElement,
       'background',
-      `url(${this.rewardHero?.fullImgSrc})`
+      `url(${this.rewardHero?.fullImgSrc})`,
     );
   }
 

@@ -11,13 +11,7 @@ import { frontRoutes } from '../../constants';
 
 @Component({
   selector: 'app-hero-preview',
-  imports: [
-    RatingModule,
-    FormsModule,
-    CommonModule,
-    StatsComponent,
-    SkillsRenderComponent,
-  ],
+  imports: [RatingModule, FormsModule, CommonModule, StatsComponent, SkillsRenderComponent],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss',
 })
@@ -35,7 +29,7 @@ export class HeroPreviewComponent implements OnInit {
   constructor(
     public heroService: HeroesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.selectedHero = this.heroService.getNightKing();
   }

@@ -1,10 +1,7 @@
 import { GiftService } from './gift.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
-import {
-  FakeLocalStorage,
-  LocalStorageService,
-} from '../localStorage/local-storage.service';
+import { FakeLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { GiftConfig } from '../../models/gift.model';
 import { of } from 'rxjs';
 import { fakeUser } from '../../constants';
@@ -23,11 +20,9 @@ describe('GiftService', () => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put']);
 
     httpClientSpy.get.and.returnValue(of([giftConfig]));
-    httpClientSpy.post.and.callFake(
-      (url: string, body: Partial<User>) => {
-        return of(body) as any;
-      }
-    );
+    httpClientSpy.post.and.callFake((url: string, body: Partial<User>) => {
+      return of(body) as any;
+    });
     httpClientSpy.put.and.returnValue(of(fakeUser));
 
     TestBed.configureTestingModule({
@@ -51,13 +46,11 @@ describe('GiftService', () => {
 
     jasmine.clock().mockDate(date);
 
-    const callbackSpy = jasmine
-      .createSpy('callback')
-      .and.callFake((response: User) => {
-        expect(response.createdAt).toEqual(jasmine.any(Number));
-        expect(response.createdAt).toBeTruthy();
-        done();
-      });
+    const callbackSpy = jasmine.createSpy('callback').and.callFake((response: User) => {
+      expect(response.createdAt).toEqual(jasmine.any(Number));
+      expect(response.createdAt).toBeTruthy();
+      done();
+    });
 
     const now = Date.now();
 

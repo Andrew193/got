@@ -29,33 +29,29 @@ export class GameService {
     private unitService: UnitService,
     private eS: EffectsService,
     private gameLoggerService: GameLoggerService,
-    private modalWindowService: ModalWindowService
+    private modalWindowService: ModalWindowService,
   ) {}
 
   getFixedDefence(defence: number, unit: Unit) {
-    const defReducedEffect = unit.effects.find(
-      effect => effect.type === this.eS.effects.defBreak
-    );
-    return defReducedEffect
-      ? defence * this.eS.getMultForEffect(defReducedEffect)
-      : defence;
+    const defReducedEffect = unit.effects.find(effect => effect.type === this.eS.effects.defBreak);
+
+    return defReducedEffect ? defence * this.eS.getMultForEffect(defReducedEffect) : defence;
   }
 
   getCanGetToPosition(
     aiUnit: Unit,
     shortestPathToUserUnit: Position[],
-    userUnitPosition: Position
+    userUnitPosition: Position,
   ) {
     const canCrossLimit = aiUnit.canCross === 0 ? 1 : aiUnit.canCross;
-    const isWithinCanCrossLimit =
-      shortestPathToUserUnit.length > canCrossLimit - 1;
+    const isWithinCanCrossLimit = shortestPathToUserUnit.length > canCrossLimit - 1;
     const isAtAttackRange = aiUnit.attackRange >= shortestPathToUserUnit.length;
     const isAttackRangeOrCannotCross =
-      aiUnit.attackRange > shortestPathToUserUnit.length ||
-      aiUnit.canCross === 0;
+      aiUnit.attackRange > shortestPathToUserUnit.length || aiUnit.canCross === 0;
 
     // Simplified decision logic
     let canGetToUnit;
+
     if (isWithinCanCrossLimit && !isAtAttackRange) {
       canGetToUnit =
         aiUnit.canCross === 0
@@ -75,14 +71,17 @@ export class GameService {
       }
     } else {
       const canCross = this.getCanCross(aiUnit);
+
       canGetToUnit =
         canCross === 0
           ? this.unitService.getPositionFromCoordinate(aiUnit)
           : shortestPathToUserUnit[canCross - 1] || shortestPathToUserUnit[0];
     }
+
     if (userUnitPosition && !shortestPathToUserUnit.length) {
       canGetToUnit = this.unitService.getPositionFromCoordinate(aiUnit);
     }
+
     return canGetToUnit;
   }
 
@@ -92,27 +91,22 @@ export class GameService {
         ? effect.type === this.eS.effects.attackBreak
         : effect.type === this.eS.effects.defBreak;
     });
-    return attackReducedEffect
-      ? attack * this.eS.getMultForEffect(attackReducedEffect)
-      : attack;
+
+    return attackReducedEffect ? attack * this.eS.getMultForEffect(attackReducedEffect) : attack;
   }
 
   //Check buffs ( health restore )
   checkPassiveSkills(units: Unit[], logs: LogRecord[]) {
     for (let index = 0; index < units.length; index++) {
       const unit = units[index];
+
       if (unit.health) {
         unit.skills.forEach(skill => {
           if (skill.passive && skill.restoreSkill) {
             const buffs = skill.buffs || [];
 
             for (const buff of buffs) {
-              units[index] = this.restoreHealthForUnit(
-                unit,
-                buff,
-                logs,
-                skill
-              );
+              units[index] = this.restoreHealthForUnit(unit, buff, logs, skill);
             }
           } else if (skill.passive && skill.buffs) {
             skill.buffs.forEach(buff => {
@@ -124,30 +118,16 @@ export class GameService {
     }
   }
 
-  restoreHealthForUnit(
-    unit: Unit,
-    buff: Effect,
-    logs: LogRecord[],
-    skill: Skill
-  ) {
-    const restoredHealth = this.eS.getNumberForCommonEffects(
-      unit.maxHealth,
-      buff.m
-    );
+  restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: Skill) {
+    const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
+
     this.logRestoreHealth(logs, skill, unit, restoredHealth);
-    unit.health = this.eS.getHealthAfterRestore(
-      unit.health + restoredHealth,
-      unit.maxHealth
-    );
+    unit.health = this.eS.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth);
+
     return unit;
   }
 
-  logRestoreHealth(
-    logs: LogRecord[],
-    skill: Skill,
-    unit: Unit,
-    restoredHealth: number
-  ) {
+  logRestoreHealth(logs: LogRecord[], skill: Skill, unit: Unit, restoredHealth: number) {
     logs.push({
       info: true,
       imgSrc: skill.imgSrc,
@@ -167,54 +147,50 @@ export class GameService {
 
   getReducedDmgForEffects(unit: Unit, dmg: number, debuff?: Effect) {
     let isDmgReduced = false;
+
     if (debuff) {
       isDmgReduced = unit.reducedDmgFromDebuffs.includes(debuff.type);
     }
+
     const dmgAfterReductionByPassiveSkills = unit.dmgReducedBy
       ? dmg - dmg * unit.dmgReducedBy
       : dmg;
+
     return +(
       isDmgReduced
-        ? dmgAfterReductionByPassiveSkills -
-          dmgAfterReductionByPassiveSkills * 0.25
+        ? dmgAfterReductionByPassiveSkills - dmgAfterReductionByPassiveSkills * 0.25
         : dmgAfterReductionByPassiveSkills
     ).toFixed(0);
   }
 
   //Shows skills in attack bar ( user units ) and decreases cooldonws by 1 for used skills
-  selectSkillsAndRecountCooldown(
-    units: Unit[],
-    selectedUnit: Unit,
-    recountCooldown = true
-  ) {
+  selectSkillsAndRecountCooldown(units: Unit[], selectedUnit: Unit, recountCooldown = true) {
     const unitIndex = this.unitService.findUnitIndex(units, selectedUnit);
     let skills: Skill[] = createDeepCopy(selectedUnit?.skills as Skill[]);
+
     if (recountCooldown) {
       skills = this.unitService.recountSkillsCooldown(skills);
     }
+
     units[unitIndex] = { ...units[unitIndex], skills: skills };
+
     return skills;
   }
 
   recountCooldownForUnit(unit: Unit) {
     return {
       ...unit,
-      skills: this.unitService.recountSkillsCooldown(
-        createDeepCopy(unit.skills)
-      ),
+      skills: this.unitService.recountSkillsCooldown(createDeepCopy(unit.skills)),
     };
   }
 
-  checkCloseFight(
-    userUnits: Unit[],
-    aiUnits: Unit[],
-    callback: (realAiUnits: any) => void
-  ) {
+  checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: (realAiUnits: any) => void) {
     const realUserUnits = userUnits[0].user ? userUnits : aiUnits;
     const realAiUnits = !aiUnits[0].user ? aiUnits : userUnits;
 
     const allUserUnitsDead = this.isDead(realUserUnits);
     const allAiUnitsDead = this.isDead(realAiUnits);
+
     if (allUserUnitsDead || allAiUnitsDead) {
       this.gameResult = {
         headerClass: allUserUnitsDead ? 'red-b' : 'green-b',
@@ -235,7 +211,7 @@ export class GameService {
             callback(realAiUnits);
           },
           strategy: ModalStrategiesTypes.base,
-        }
+        },
       );
 
       this.modalWindowService.openModal(config);
@@ -250,7 +226,7 @@ export class GameService {
     unit: Unit,
     decreaseRestoreCooldown = true,
     battleMode: boolean,
-    canRestoreHealth: boolean
+    canRestoreHealth: boolean,
   ) {
     let unitCopy: Unit = createDeepCopy(unit);
 
@@ -258,14 +234,13 @@ export class GameService {
       unitCopy,
       decreaseRestoreCooldown,
       battleMode,
-      canRestoreHealth
+      canRestoreHealth,
     );
+
     unitCopy = unitWithUpdatedCooldown.unit;
 
-    const processEffectsResult = this.processEffects(
-      createDeepCopy(unitCopy),
-      battleMode
-    );
+    const processEffectsResult = this.processEffects(createDeepCopy(unitCopy), battleMode);
+
     unitCopy = processEffectsResult.unit;
     unitCopy.effects = unitCopy.effects.filter(debuff => !!debuff.duration);
 
@@ -279,18 +254,17 @@ export class GameService {
     unit: Unit,
     decreaseRestoreCooldown: boolean,
     battleMode: boolean,
-    checkHealthRestore = false
+    checkHealthRestore = false,
   ) {
     const log: LogRecord[] = [];
+
     unit.effects.forEach((effect: Effect, i, array) => {
       if (effect.duration > 0) {
         if (effect.restore) {
           if (checkHealthRestore) {
             array[i] = {
               ...effect,
-              duration: decreaseRestoreCooldown
-                ? effect.duration - 1
-                : effect.duration,
+              duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration,
             };
             this.checkEffectsForHealthRestore(unit, log);
           }
@@ -300,8 +274,9 @@ export class GameService {
             const additionalDmg = this.getReducedDmgForEffects(
               unit,
               this.eS.getDebuffDmg(effect.type, unit.health, effect.m),
-              effect
+              effect,
             );
+
             if (additionalDmg) {
               log.push(
                 this.gameLoggerService.logEvent(
@@ -313,25 +288,23 @@ export class GameService {
                   },
                   unit.user,
                   effect,
-                  unit
-                )
+                  unit,
+                ),
               );
             }
+
             unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
           }
         }
       }
     });
+
     return { log, unit };
   }
 
   getCanCross(entity: Unit) {
-    const isFrozen = entity.effects.findIndex(
-      effect => effect.type === this.eS.effects.freezing
-    );
-    const isRooted = entity.effects.findIndex(
-      effect => effect.type === this.eS.effects.root
-    );
+    const isFrozen = entity.effects.findIndex(effect => effect.type === this.eS.effects.freezing);
+    const isRooted = entity.effects.findIndex(effect => effect.type === this.eS.effects.root);
 
     return entity?.canMove
       ? isRooted !== -1
@@ -347,6 +320,7 @@ export class GameService {
 
     unit.effects.forEach(effect => {
       let recountedUnit = this.eS.recountStatsBasedOnEffect(effect, unit);
+
       recountedUnit = !effect.duration
         ? this.eS.restoreStatsAfterEffect(effect, recountedUnit)
         : recountedUnit;
@@ -362,8 +336,8 @@ export class GameService {
             unit.user,
             effect,
             unit,
-            recountedUnit.message
-          )
+            recountedUnit.message,
+          ),
         );
       }
     });
@@ -390,15 +364,11 @@ export class GameService {
     units: Unit[],
     battleMode: boolean,
     makeAiMove: (aiUnit: Unit, index: number) => void,
-    logs: LogRecord[]
+    logs: LogRecord[],
   ) {
     let aiUnit = units[index];
-    const response = this.checkDebuffs(
-      createDeepCopy(aiUnit),
-      true,
-      battleMode,
-      true
-    );
+    const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode, true);
+
     units[index] = response.unit;
     logs.push(...response.log);
     aiUnit = units[index];

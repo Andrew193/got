@@ -24,7 +24,7 @@ export class ApiService<T> {
 
   protected putPostCover(
     entity: IdEntity,
-    meta: { url: string; callback: (res: T) => void; returnObs?: boolean }
+    meta: { url: string; callback: (res: T) => void; returnObs?: boolean },
   ) {
     const process = {
       next: (response: T) => {
@@ -43,16 +43,16 @@ export class ApiService<T> {
         : this.http.put<T>(url, entity).pipe(tap(process)).subscribe();
     } else {
       const withDate = { ...entity, createdAt: Date.now() };
+
       delete (withDate as any).id;
+
       return meta.returnObs
         ? this.http.post<T>(url, withDate).pipe(tap(process))
         : this.http.post<T>(url, withDate).pipe(tap(process)).subscribe();
     }
   }
 
-  protected basicResponseTapParser(
-    callback: (config: T, userId: string) => void
-  ) {
+  protected basicResponseTapParser(callback: (config: T, userId: string) => void) {
     return tap({
       next: (response: T[]) => {
         this.data.next(response[0]);
@@ -66,6 +66,7 @@ export class ApiService<T> {
 
   private getUserId() {
     const user = this.localStorageService.getItem(USER_TOKEN) as User;
+
     return user.id;
   }
 }

@@ -70,7 +70,7 @@ describe('GameFieldService', () => {
         dmgM: 100,
         name: jasmine.any(String),
         cooldown: 3,
-      })
+      }),
     );
 
     //Now chooses from the head.
@@ -82,7 +82,7 @@ describe('GameFieldService', () => {
         dmgM: 10,
         name: jasmine.any(String),
         cooldown: 0,
-      })
+      }),
     );
   });
 
@@ -96,12 +96,9 @@ describe('GameFieldService', () => {
 
     expect(gameActionServiceSpy.getFixedDefence).toHaveBeenCalledWith(
       units.dmgTaker.defence,
-      units.dmgTaker
+      units.dmgTaker,
     );
-    expect(gameActionServiceSpy.getFixedAttack).toHaveBeenCalledWith(
-      10,
-      units.attackDealer
-    );
+    expect(gameActionServiceSpy.getFixedAttack).toHaveBeenCalledWith(10, units.attackDealer);
     expect(damage).toBeLessThanOrEqual(300);
 
     //Add attack
@@ -117,28 +114,16 @@ describe('GameFieldService', () => {
 
     for (let i = 0; i < 5; i++) {
       const temp = new Array(5).fill(0);
+
       grid.push(temp);
     }
 
-    let result = gameFieldService.getShortestPathCover(
-      grid,
-      start,
-      end,
-      true,
-      true
-    );
+    let result = gameFieldService.getShortestPathCover(grid, start, end, true, true);
 
     expect(result.length).toBe(8);
 
     //Shorten the way
-    result = gameFieldService.getShortestPathCover(
-      grid,
-      start,
-      end,
-      true,
-      true,
-      true
-    );
+    result = gameFieldService.getShortestPathCover(grid, start, end, true, true, true);
 
     expect(result.length).toBe(4);
   });

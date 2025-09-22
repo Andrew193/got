@@ -20,7 +20,7 @@ export class PreloadingStrategyService implements PreloadingStrategy {
     const fakeCheck = () => {
       return this.user.pipe(
         filter(value => !!value),
-        take(1)
+        take(1),
       );
     };
 
@@ -31,7 +31,7 @@ export class PreloadingStrategyService implements PreloadingStrategy {
         const userConfig = mockConfig[key === 'rest' ? key : 'empty'];
 
         return userConfig.includes(route.path || '') ? load() : of(null);
-      })
+      }),
     );
   }
 }

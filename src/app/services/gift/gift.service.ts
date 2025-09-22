@@ -19,10 +19,7 @@ export class GiftService extends ApiService<GiftConfig> {
       .pipe(this.basicResponseTapParser(callback));
   }
 
-  claimGiftReward(
-    giftConfig: GiftConfig,
-    callback: (newConfig: IdEntity) => void
-  ) {
+  claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {
     this.putPostCover(giftConfig, { url: this.url, callback });
   }
 }

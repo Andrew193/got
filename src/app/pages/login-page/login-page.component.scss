@@ -2,8 +2,7 @@
 @use '../../../assets/resourses/styles/mixins';
 
 .login-container {
-  background: url('../../../assets/resourses/imgs/background/summon_tree.jpg')
-    no-repeat;
+  background: url('../../../assets/resourses/imgs/background/summon_tree.jpg') no-repeat;
   background-size: cover;
   height: 100%;
   box-shadow: vars.$box-shadow;

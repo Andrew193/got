@@ -35,15 +35,9 @@ export class GameFieldComponent extends BasicGameFieldComponent {
     unitService: UnitService,
     effectsService: EffectsService,
     gameActionService: GameService,
-    gameLoggerService: GameLoggerService
+    gameLoggerService: GameLoggerService,
   ) {
-    super(
-      fieldService,
-      unitService,
-      effectsService,
-      gameActionService,
-      gameLoggerService
-    );
+    super(fieldService, unitService, effectsService, gameActionService, gameLoggerService);
   }
 
   protected readonly trackBySkill = trackBySkill;

@@ -37,9 +37,7 @@ describe('TimeService', () => {
     let diff = timeService.getTotalPlaytime(createdAt);
 
     //No difference
-    expect([diff.diffInDays, diff.diffInHours, diff.diffInMinutes]).toEqual([
-      0, 0, 0,
-    ]);
+    expect([diff.diffInDays, diff.diffInHours, diff.diffInMinutes]).toEqual([0, 0, 0]);
 
     //Tick time 1 hour
     jasmine.clock().tick(60 * 60 * 1000);

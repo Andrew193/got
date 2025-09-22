@@ -14,11 +14,9 @@ describe('GiftNpcService', () => {
       'getFreeTrapper',
       'getBasicUserConfig',
     ]);
-    rewardServiceSpy = jasmine.createSpyObj(
-      'RewardService',
-      ['getReward', 'getBasicUserConfig'],
-      { rewardNames: basicRewardNames }
-    );
+    rewardServiceSpy = jasmine.createSpyObj('RewardService', ['getReward', 'getBasicUserConfig'], {
+      rewardNames: basicRewardNames,
+    });
 
     TestBed.configureTestingModule({
       providers: [
@@ -44,13 +42,10 @@ describe('GiftNpcService', () => {
       jasmine.objectContaining({
         name: jasmine.any(String),
         probability: jasmine.any(Number),
-      })
+      }),
     );
 
-    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(
-      jasmine.any(Number),
-      array
-    );
+    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(jasmine.any(Number), array);
   });
 
   it('GiftNpcService should open a chest', () => {
@@ -60,12 +55,9 @@ describe('GiftNpcService', () => {
       jasmine.objectContaining({
         name: jasmine.any(String),
         probability: jasmine.any(Number),
-      })
+      }),
     );
 
-    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(
-      jasmine.any(Number),
-      array
-    );
+    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(jasmine.any(Number), array);
   });
 });

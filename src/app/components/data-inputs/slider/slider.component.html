@@ -8,10 +8,7 @@
 </mat-slider>
 
 <div class="tick-labels">
-  <span
-    *ngFor="let v of _options; index as i"
-    class="tick"
-    [style.left.%]="(i / max) * 100">
+  <span *ngFor="let v of _options; index as i" class="tick" [style.left.%]="(i / max) * 100">
     {{ v }}
   </span>
 </div>

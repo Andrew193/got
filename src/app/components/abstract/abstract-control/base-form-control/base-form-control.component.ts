@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  FormGroup,
-  FormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormGroup, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-base-form-control',
