@@ -9,8 +9,6 @@ import { Effect } from '../../models/effect.model';
   providedIn: 'root',
 })
 export class UnitService {
-  constructor() {}
-
   findUnitIndex(units: Unit[], unit: Partial<Unit> | null) {
     return units.findIndex(enemy => enemy.x === unit?.x && enemy.y === unit?.y);
   }

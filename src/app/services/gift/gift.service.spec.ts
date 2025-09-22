@@ -24,7 +24,7 @@ describe('GiftService', () => {
 
     httpClientSpy.get.and.returnValue(of([giftConfig]));
     httpClientSpy.post.and.callFake(
-      (url: string, body: Partial<User>, options?: any) => {
+      (url: string, body: Partial<User>) => {
         return of(body) as any;
       }
     );

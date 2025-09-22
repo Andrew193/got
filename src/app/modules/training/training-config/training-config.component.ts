@@ -9,7 +9,7 @@ import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-
 import { frontRoutes } from '../../../constants';
 
 @Component({
-  selector: 'training-config',
+  selector: 'app-training-config',
   imports: [
     CommonModule,
     TooltipModule,

@@ -23,8 +23,6 @@ export class ModalWindowService {
     new BehaviorSubject<ModalConfig>(this.init);
   modalConfig$ = this._modalConfig.asObservable();
 
-  constructor() {}
-
   openModal(modalConfig: ModalConfig) {
     this._modalConfig.next(modalConfig);
   }

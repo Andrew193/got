@@ -1,5 +1,5 @@
 import { TimeService } from './time.service';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 describe('TimeService', () => {
   let timeService: TimeService;
@@ -29,7 +29,7 @@ describe('TimeService', () => {
   it('TimeService should give difference', () => {
     jasmine.clock().install();
 
-    let now = new Date(Date.UTC(2024, 0, 1, 0, 0, 0));
+    const now = new Date(Date.UTC(2024, 0, 1, 0, 0, 0));
 
     jasmine.clock().mockDate(now);
 

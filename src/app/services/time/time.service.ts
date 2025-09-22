@@ -5,8 +5,6 @@ import moment from 'moment';
   providedIn: 'root',
 })
 export class TimeService {
-  constructor() {}
-
   convertToHours(time: number) {
     return Math.floor(time / 3600);
   }

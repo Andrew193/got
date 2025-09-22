@@ -8,7 +8,5 @@ export enum ContentTypes {
   providedIn: 'root',
 })
 export abstract class ContentService {
-  constructor() {}
-
   abstract getContent(): any[];
 }

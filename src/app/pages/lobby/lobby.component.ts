@@ -1,19 +1,9 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  computed,
   effect,
-  ElementRef,
-  forwardRef,
-  inject,
-  InjectionToken,
-  input,
-  linkedSignal,
   model,
-  signal,
-  untracked,
   viewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -25,56 +15,10 @@ import { NotificationType } from '../../services/notifications/notifications.ser
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import {
-  ControlValueAccessor,
-  FormControl,
-  FormGroup,
   FormsModule,
-  NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
-import {
-  auditTime,
-  BehaviorSubject,
-  catchError,
-  combineLatest,
-  concat,
-  debounce,
-  delay,
-  distinct,
-  distinctUntilChanged,
-  EMPTY,
-  exhaustMap,
-  filter,
-  finalize,
-  forkJoin,
-  from,
-  fromEvent,
-  interval,
-  map,
-  mapTo,
-  merge,
-  mergeMap,
-  of,
-  pluck,
-  reduce,
-  sampleTime,
-  shareReplay,
-  startWith,
-  Subject,
-  switchAll,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-  throttleTime,
-  throwError,
-  timer,
-  toArray,
-  withLatestFrom,
-  zip,
-} from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+
 import { HighlightDirective } from '../../directives/highlight/highlight.directive';
 import { TestDirective } from '../../directives/test/test.directive';
 

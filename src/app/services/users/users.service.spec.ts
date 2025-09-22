@@ -284,7 +284,7 @@ describe('UsersService', () => {
         : (of(response).pipe(delay(400)) as any);
     });
 
-    let doesUserExist: boolean = false;
+    let doesUserExist = false;
 
     //Correct user
     userService.doesUserExist().subscribe(v => (doesUserExist = v));

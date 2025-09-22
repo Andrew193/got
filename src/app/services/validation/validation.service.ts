@@ -5,8 +5,6 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
   providedIn: 'root',
 })
 export class ValidationService {
-  constructor() {}
-
   isFormInvalid(form: FormGroup, callback: () => void) {
     if (callback) {
       callback();

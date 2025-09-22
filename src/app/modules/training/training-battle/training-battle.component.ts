@@ -8,7 +8,7 @@ import { frontRoutes } from '../../../constants';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
 
 @Component({
-  selector: 'training-battle',
+  selector: 'app-training-battle',
   imports: [CommonModule, GameEntryPointComponent],
   templateUrl: './training-battle.component.html',
   styleUrl: './training-battle.component.scss',

@@ -87,8 +87,8 @@ describe('ValidationService', () => {
   });
 
   it('ValidationService should validate and submit form. Default', () => {
-    const updateCallbackSpy = jasmine.createSpy('updateCallback', () => {});
-    const createCallbackSpy = jasmine.createSpy('createCallback', () => {});
+    const updateCallbackSpy = jasmine.createSpy('updateCallback');
+    const createCallbackSpy = jasmine.createSpy('createCallback');
 
     validationService.validateFormAndSubmit(
       formGroup,
@@ -104,8 +104,8 @@ describe('ValidationService', () => {
   });
 
   it('ValidationService should validate and submit form. Update', () => {
-    const updateCallbackSpy = jasmine.createSpy('updateCallback', () => {});
-    const createCallbackSpy = jasmine.createSpy('createCallback', () => {});
+    const updateCallbackSpy = jasmine.createSpy('updateCallback');
+    const createCallbackSpy = jasmine.createSpy('createCallback');
 
     //The form is valid. Check update
     formGroup.patchValue(
@@ -127,8 +127,8 @@ describe('ValidationService', () => {
   });
 
   it('ValidationService should validate and submit form. Create', () => {
-    const updateCallbackSpy = jasmine.createSpy('updateCallback', () => {});
-    const createCallbackSpy = jasmine.createSpy('createCallback', () => {});
+    const updateCallbackSpy = jasmine.createSpy('updateCallback');
+    const createCallbackSpy = jasmine.createSpy('createCallback');
 
     //The form is valid. Check update
     formGroup.patchValue(

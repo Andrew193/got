@@ -138,7 +138,7 @@ export class EffectsService {
     return +(int * m).toFixed(0);
   }
 
-  getEffect(effectType: string, turns: number = 2, count?: number) {
+  getEffect(effectType: string, turns = 2, count?: number) {
     if (count) {
       return new Array(count)
         .fill(0)

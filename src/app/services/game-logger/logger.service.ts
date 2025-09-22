@@ -8,8 +8,6 @@ import { LogConfig, LogRecord } from '../../models/logger.model';
   providedIn: 'root',
 })
 export class GameLoggerService {
-  constructor() {}
-
   logEvent(
     props: LogConfig,
     isUser: boolean,

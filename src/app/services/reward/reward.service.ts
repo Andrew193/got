@@ -80,7 +80,7 @@ export class RewardService {
   getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
   getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
   getReward(
-    amountOfRewards: number = 1,
+    amountOfRewards = 1,
     items: Reward[]
   ): DisplayReward | DisplayReward[] {
     let rewards: DisplayReward[] = [];

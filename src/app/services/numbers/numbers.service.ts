@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class NumbersService {
-  constructor() {}
-
   roundToStep(v: number, step = 100): number {
     return Math.round(v / step) * step;
   }

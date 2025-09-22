@@ -18,8 +18,6 @@ export class OnlineService {
   private localStorageService = inject(LocalStorageService);
   private tickCounter = 0;
 
-  constructor() {}
-
   trackOnlineTimer() {
     //Add untracked time to online
     this.flushTimerHelper();

@@ -42,7 +42,7 @@ export class GameFieldService extends AbstractFieldService {
     if (blockedDamage - 200 > fixedAttack) {
       return +(100 + this.numberService.getRandomInt(10, 70)).toFixed(0);
     } else {
-      const fixedDmg = !!unitConfig.dmgTaker.dmgReducedBy
+      const fixedDmg = unitConfig.dmgTaker.dmgReducedBy
         ? fixedAttack -
           blockedDamage -
           (fixedAttack - blockedDamage) * unitConfig.dmgTaker.dmgReducedBy
@@ -138,7 +138,7 @@ export class GameFieldService extends AbstractFieldService {
     let minDistance = Infinity;
 
     while (queue.length > 0) {
-      // @ts-ignore
+      // @ts-expect-error
       const { position, path } = queue.shift();
       const distanceToEnd =
         Math.abs(position.i - end.i) + Math.abs(position.j - end.j);

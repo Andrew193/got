@@ -12,11 +12,10 @@ export abstract class AbstractFieldService
   implements Partial<GameField>
 {
   getGridFromField(field: Tile[][]): number[][] {
-    const grid = [];
+    const grid: number[][] = [];
     for (let i = 0; i < 7; i++) {
-      grid[i] = [];
+      grid[i] = [] as number[];
       for (let j = 0; j < 10; j++) {
-        // @ts-ignore
         grid[i].push(field[i][j].active && !field[i][j].entity ? 0 : 1);
       }
     }

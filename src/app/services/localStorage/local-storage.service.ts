@@ -5,7 +5,8 @@ import { fakeUser } from '../../constants';
 function isJsonString(jsonString: string) {
   try {
     JSON.parse(jsonString);
-  } catch (e) {
+  } catch (error) {
+    console.log(error);
     return false;
   }
   return true;

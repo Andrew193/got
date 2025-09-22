@@ -36,7 +36,7 @@ export class GameService {
     const defReducedEffect = unit.effects.find(
       effect => effect.type === this.eS.effects.defBreak
     );
-    return !!defReducedEffect
+    return defReducedEffect
       ? defence * this.eS.getMultForEffect(defReducedEffect)
       : defence;
   }
@@ -92,7 +92,7 @@ export class GameService {
         ? effect.type === this.eS.effects.attackBreak
         : effect.type === this.eS.effects.defBreak;
     });
-    return !!attackReducedEffect
+    return attackReducedEffect
       ? attack * this.eS.getMultForEffect(attackReducedEffect)
       : attack;
   }
@@ -169,7 +169,7 @@ export class GameService {
     if (debuff) {
       isDmgReduced = unit.reducedDmgFromDebuffs.includes(debuff.type);
     }
-    const dmgAfterReductionByPassiveSkills = !!unit.dmgReducedBy
+    const dmgAfterReductionByPassiveSkills = unit.dmgReducedBy
       ? dmg - dmg * unit.dmgReducedBy
       : dmg;
     return +(

@@ -5,8 +5,6 @@ import { BossReward } from '../../models/reward-based.model';
   providedIn: 'root',
 })
 export class DailyBossService {
-  constructor() {}
-
   bossReward: { [key: number]: BossReward } = {
     1: {
       cooper: 10000,

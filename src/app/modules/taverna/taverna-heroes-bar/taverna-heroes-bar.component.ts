@@ -21,7 +21,7 @@ import { frontRoutes } from '../../../constants';
 import { trackByUnit } from '../../../helpers';
 
 @Component({
-  selector: 'taverna-heroes-bar',
+  selector: 'app-taverna-heroes-bar',
   imports: [
     CommonModule,
     PaginationModule,

@@ -36,7 +36,7 @@ describe('HeroesService', () => {
     });
 
     effectsMock.getEffect.and.callFake(
-      (effectType: string, turns: number = 2, count?: number) => {
+      (effectType: string, turns = 2, count?: number) => {
         if (count) {
           return new Array(count)
             .fill(0)
