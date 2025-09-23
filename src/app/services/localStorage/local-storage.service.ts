@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { fakeUser } from '../../constants';
 
 function isJsonString(jsonString: string) {
   try {
@@ -14,31 +13,12 @@ function isJsonString(jsonString: string) {
   return true;
 }
 
-class BasicLocalStorage {
+export class BasicLocalStorage {
   prefix = 'got_';
   names = {
     user: 'user',
     localOnlineBuffer: 'localOnlineBuffer',
   };
-}
-
-export class FakeLocalStorage extends BasicLocalStorage {
-  store: Map<string, string | Record<string, any>> = new Map<string, string | Record<string, any>>([
-    ['localOnlineBuffer', '600'],
-    [this.names.user, fakeUser],
-  ]);
-
-  getItem(key: string) {
-    return this.store.get(key) || '';
-  }
-
-  setItem(key: string, value: string | Record<string, any>) {
-    this.store.set(key, value);
-  }
-
-  removeItem(key: string) {
-    this.store.delete(key);
-  }
 }
 
 @Injectable({

@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { RewardLootConstant } from './models/reward-based.model';
-import { User } from './services/users/users.interfaces';
 
 export const DATE_FORMAT = 'MM/DD/YYYY';
 export const BATTLE_SPEED = 500;
@@ -55,7 +54,11 @@ export const ALL_EFFECTS = {
   attackBreak: 'Заржавелый Меч',
   defDestroy: 'Коррозия брони',
   root: 'Корень',
-};
+} as const;
+
+export type Effects = typeof ALL_EFFECTS;
+export type EffectsKey = keyof Effects;
+export type EffectsValues = Effects[EffectsKey];
 
 export const REWARD: RewardLootConstant = {
   cooper: { min: 10000, max: 40000 },
@@ -63,20 +66,3 @@ export const REWARD: RewardLootConstant = {
   shards: { min: 1, max: 10 },
   silver: { min: 50, max: 250 },
 };
-
-export const fakeUser: User = {
-  createdAt: 0,
-  currency: {
-    gold: 10,
-    silver: 100,
-    cooper: 1000,
-  },
-  id: '1',
-  login: 'rest',
-  online: {
-    onlineTime: 0,
-    claimedRewards: [],
-    lastLoyaltyBonus: '',
-  },
-  password: 'fake',
-} as const;

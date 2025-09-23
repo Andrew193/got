@@ -7,35 +7,70 @@ import { HeroesService } from '../heroes/heroes.service';
 import { Unit } from '../../models/unit.model';
 import { Position } from '../../models/field.model';
 import { LogRecord } from '../../models/logger.model';
+import { ModalWindowService } from '../modal/modal-window.service';
+import { getEffectFake, getFakeEffectMap } from '../../test-related';
 
 describe('GameService', () => {
   let gameService: GameService;
   let effectServiceSpy: jasmine.SpyObj<EffectsService>;
   let heroesService: HeroesService;
   let testUnit: Unit;
-  const realEffectService = new EffectsService();
+  let modalWindowServiceSpy: jasmine.SpyObj<ModalWindowService>;
 
   beforeEach(() => {
-    effectServiceSpy = jasmine.createSpyObj(
-      'EffectsService',
-      ['getMultForEffect', 'getNumberForCommonEffects', 'getHealthAfterRestore', 'getEffect'],
-      {
-        effects: createDeepCopy(ALL_EFFECTS),
+    modalWindowServiceSpy = jasmine.createSpyObj('ModalWindowService', [
+      'getModalConfig',
+      'openModal',
+    ]);
+    modalWindowServiceSpy.getModalConfig.and.callFake(
+      (headerClass = '', headerMessage = '', closeBtnLabel = '', config) => {
+        return {
+          headerClass,
+          headerMessage,
+          closeBtnLabel,
+          config,
+        };
       },
     );
 
+    effectServiceSpy = jasmine.createSpyObj(
+      'EffectsService',
+      [
+        'getMultForEffect',
+        'getNumberForCommonEffects',
+        'getHealthAfterRestore',
+        'getEffect',
+        'recountStatsBasedOnEffect',
+        'getDebuffDmg',
+        'getHealthAfterDmg',
+      ],
+      {
+        effects: createDeepCopy(ALL_EFFECTS),
+        effectsMap: getFakeEffectMap(),
+      },
+    );
+
+    effectServiceSpy.getHealthAfterDmg.and.callFake((health, dmg) => {
+      return Math.round(Math.max(health - dmg, 0));
+    });
+    effectServiceSpy.getDebuffDmg.and.returnValue(10);
     effectServiceSpy.getMultForEffect.and.returnValue(1);
+    effectServiceSpy.recountStatsBasedOnEffect.and.callFake((effect, unit) => {
+      return { unit, message: 'test' };
+    });
     effectServiceSpy.getNumberForCommonEffects.and.returnValue(1);
     effectServiceSpy.getHealthAfterRestore.and.callFake(health => health);
-    effectServiceSpy.getEffect.and.callFake((effectType, turns, count) => {
-      return realEffectService.getEffect(effectType, turns, count);
-    });
+
+    const getEffect = getEffectFake(effectServiceSpy.effectsMap);
+
+    effectServiceSpy.getEffect.and.callFake(getEffect);
 
     TestBed.configureTestingModule({
       providers: [
         GameService,
         HeroesService,
         { provide: EffectsService, useValue: effectServiceSpy },
+        { provide: ModalWindowService, useValue: modalWindowServiceSpy },
       ],
     });
 
@@ -130,5 +165,61 @@ describe('GameService', () => {
     skills = gameService.selectSkillsAndRecountCooldown([testUnit], testUnit, true);
 
     expect(testUnit.skills[1].remainingCooldown - 1).toEqual(skills[1].remainingCooldown);
+  });
+
+  it('GameService should close a fight', () => {
+    const callbackSpy = jasmine.createSpy('callback');
+
+    gameService.checkCloseFight([testUnit], [testUnit], callbackSpy);
+
+    //Nothing happens
+    expect(callbackSpy).not.toHaveBeenCalled();
+    expect(modalWindowServiceSpy.openModal).not.toHaveBeenCalled();
+
+    //User looses
+    gameService.checkCloseFight([{ ...testUnit, health: 0 }], [testUnit], callbackSpy);
+    expect(modalWindowServiceSpy.openModal).toHaveBeenCalledWith({
+      headerClass: 'red-b',
+      headerMessage: 'Вы проиграли',
+      closeBtnLabel: 'Попробовать позже',
+      config: jasmine.any(Object),
+    });
+
+    //AI looses
+    gameService.checkCloseFight(
+      [{ ...testUnit, user: true }],
+      [{ ...testUnit, health: 0, user: false }],
+      callbackSpy,
+    );
+    expect(modalWindowServiceSpy.openModal).toHaveBeenCalledWith({
+      headerClass: 'green-b',
+      headerMessage: 'Вы победили',
+      closeBtnLabel: 'Отлично',
+      config: jasmine.any(Object),
+    });
+  });
+
+  it('GameService should check debuffs/effects', () => {
+    let result = gameService.checkDebuffs(testUnit, true, true, true);
+
+    //Restore health
+    expect(result.log.length).toBe(2);
+    expect(result.unit.health).toBe(testUnit.health + 1);
+
+    //Do not update health
+    result = gameService.checkDebuffs(testUnit, true, true, false);
+    expect(result.log.length).toBe(1);
+    expect(result.unit.health).toBe(testUnit.health);
+
+    //Get DMG from a debuff
+    const poison = effectServiceSpy.getEffect(effectServiceSpy.effects.poison);
+
+    result = gameService.checkDebuffs(
+      { ...testUnit, effects: [poison], dmgReducedBy: 0 },
+      true,
+      true,
+      false,
+    );
+    expect(result.unit.health).toBe(testUnit.health - 10);
   });
 });

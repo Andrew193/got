@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { HeroesService } from './heroes.service';
 import { EffectsService } from '../effects/effects.service';
+import { getEffectFake, getFakeEffectMap } from '../../test-related';
+import { createDeepCopy } from '../../helpers';
+import { ALL_EFFECTS } from '../../constants';
 
 describe('HeroesService', () => {
   let service: HeroesService;
@@ -10,37 +13,17 @@ describe('HeroesService', () => {
   beforeEach(() => {
     effectsMock = jasmine.createSpyObj('EffectsService', ['getEffect'], {
       effectsToHighlight: ['Горение', 'Заморозка'],
-      effects: {
-        burning: 'Горение',
-        freezing: 'Заморозка',
-        healthRestore: 'Восстановление',
-      },
+      effects: createDeepCopy(ALL_EFFECTS),
       effectsDescriptions: {
         Горение: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
         Заморозка: 'Герой заморожен и может пройти только 1 клетку за ход.',
       },
-      effectsMap: {
-        ['Горение']: (turns: number) => turns,
-        ['Заморозка']: (turns: number) => turns,
-        ['Восстановление']: (turns: number) => turns,
-        ['Разлом брони']: (turns: number) => turns,
-        ['Кровотечение']: (turns: number) => turns,
-        ['Отравление']: (turns: number) => turns,
-        ['Бонус атаки']: (turns: number) => turns,
-        ['Бонус защиты']: (turns: number) => turns,
-        ['Заржавелый Меч']: (turns: number) => turns,
-        ['Коррозия брони']: (turns: number) => turns,
-        ['Корень']: (turns: number) => turns,
-      },
+      effectsMap: getFakeEffectMap(),
     });
 
-    effectsMock.getEffect.and.callFake((effectType: string, turns = 2, count?: number) => {
-      if (count) {
-        return new Array(count).fill(0).map(() => effectsMock.effectsMap['Горение'](turns));
-      }
+    const getEffect = getEffectFake(effectsMock.effectsMap);
 
-      return effectsMock.effectsMap[effectType] ? [effectsMock.effectsMap[effectType](turns)] : [];
-    });
+    effectsMock.getEffect.and.callFake(getEffect);
 
     TestBed.configureTestingModule({
       providers: [HeroesService, { provide: EffectsService, useValue: effectsMock }],

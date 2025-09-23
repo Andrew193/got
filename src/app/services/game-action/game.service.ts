@@ -6,7 +6,7 @@ import { UnitService } from '../unit/unit.service';
 import { heroType } from '../heroes/heroes.service';
 import { Unit } from '../../models/unit.model';
 import { Skill } from '../../models/skill.model';
-import { Effect } from '../../models/effect.model';
+import { Effect, EffectForMult } from '../../models/effect.model';
 import { GameLoggerService } from '../game-logger/logger.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
 import { Position } from '../../models/field.model';
@@ -33,7 +33,9 @@ export class GameService {
   ) {}
 
   getFixedDefence(defence: number, unit: Unit) {
-    const defReducedEffect = unit.effects.find(effect => effect.type === this.eS.effects.defBreak);
+    const defReducedEffect = unit.effects.find(
+      (effect): effect is EffectForMult => effect.type === this.eS.effects.defBreak,
+    );
 
     return defReducedEffect ? defence * this.eS.getMultForEffect(defReducedEffect) : defence;
   }
@@ -86,7 +88,7 @@ export class GameService {
   }
 
   getFixedAttack(attack: number, unit: Unit) {
-    const attackReducedEffect = unit.effects.find(effect => {
+    const attackReducedEffect = unit.effects.find((effect): effect is EffectForMult => {
       return unit.heroType === heroType.ATTACK
         ? effect.type === this.eS.effects.attackBreak
         : effect.type === this.eS.effects.defBreak;

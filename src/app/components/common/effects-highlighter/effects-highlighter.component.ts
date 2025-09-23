@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { HeroesService } from '../../../services/heroes/heroes.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { EffectsValues } from '../../../constants';
 
 @Component({
   selector: 'app-effects-highlighter',
@@ -45,7 +46,7 @@ export class EffectsHighlighterComponent {
       out.push({
         text: match[0],
         hint: true,
-        desc: this.heroService.getEffectsDescription(match[0]),
+        desc: this.heroService.getEffectsDescription(match[0] as EffectsValues),
       });
       last = idx + match[0].length;
     }

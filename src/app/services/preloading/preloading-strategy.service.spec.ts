@@ -3,8 +3,9 @@ import { PreloadingStrategyService } from './preloading-strategy.service';
 import { UsersService } from '../users/users.service';
 import { concat, of, toArray } from 'rxjs';
 import { Route } from '@angular/router';
-import { fakeUser, frontRoutes } from '../../constants';
+import { frontRoutes } from '../../constants';
 import { createDeepCopy } from '../../helpers';
+import { fakeUser } from '../../test-related';
 
 describe('PreloadingStrategyService', () => {
   let preloadingStrategyService: PreloadingStrategyService;

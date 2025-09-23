@@ -14,10 +14,11 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { Router } from '@angular/router';
-import { fakeUser, frontRoutes, USER_TOKEN } from '../../constants';
+import { frontRoutes, USER_TOKEN } from '../../constants';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Currency, User } from './users.interfaces';
 import { Online } from '../online/online.service';
+import { fakeUser } from '../../test-related';
 
 describe('UsersService', () => {
   let userService: UsersService;

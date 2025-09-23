@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Unit } from '../../models/unit.model';
 import { Skill } from '../../models/skill.model';
-import { Effect } from '../../models/effect.model';
+import { Effect, EffectForMult } from '../../models/effect.model';
 import { heroType } from '../heroes/heroes.service';
 import { createDeepCopy } from '../../helpers';
-import { ALL_EFFECTS } from '../../constants';
+import { ALL_EFFECTS, Effects, EffectsValues } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EffectsService {
-  effects = createDeepCopy(ALL_EFFECTS);
+  effects: Effects = createDeepCopy(ALL_EFFECTS);
 
-  effectsDescriptions: Record<string, string> = {
+  effectsDescriptions: Record<EffectsValues, string> = {
     [this.effects.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
     [this.effects.freezing]: 'Герой заморожен и может пройти только 1 клетку за ход.',
     [this.effects.healthRestore]: 'Восстановливает 5% здоровья каждый ход.',
@@ -75,11 +75,13 @@ export class EffectsService {
     return { unit: config.unit, message: message ? message : config.message };
   }
 
-  getMultForEffect(effect: Effect) {
-    return {
+  getMultForEffect(effect: EffectForMult) {
+    const map = {
       [this.effects.defBreak]: this.getDefBreak().m,
       [this.effects.attackBreak]: this.getAttackBreak().m,
-    }[effect.type];
+    } as const satisfies Record<EffectForMult['type'], number>;
+
+    return map[effect.type];
   }
 
   getEffectsWithIgnoreFilter(unit: Unit, skill: Skill, addRangeEffects = false) {
@@ -100,33 +102,35 @@ export class EffectsService {
     );
   }
 
-  getBoostedParameter(parameter: number, effects: Effect[], type: string) {
+  getBoostedParameter(parameter: number, effects: Effect[], type: EffectsValues) {
     const effect = effects.find(effect => effect.type === type);
 
     return parameter * (effect?.m || 1);
   }
 
   getHealthAfterDmg(health: number, dmg: number) {
-    return +(health - dmg > 0 ? health - dmg : 0).toFixed(0);
+    return Math.round(health - dmg > 0 ? health - dmg : 0);
   }
 
   getHealthAfterRestore(health: number, maxHealth: number) {
-    return +(health > maxHealth ? maxHealth : health).toFixed(0);
+    return Math.round(Math.min(health, maxHealth));
   }
 
   getNumberForCommonEffects(int: number, m: number) {
     return +(int * m).toFixed(0);
   }
 
-  getEffect(effectType: string, turns = 2, count?: number) {
-    if (count) {
+  getEffect(effectType: EffectsValues, turns?: number, count?: 0): Effect;
+  getEffect(effectType: EffectsValues, turns: number, count: number): Effect[];
+  getEffect(effectType: EffectsValues, turns = 2, count = 0): Effect | Effect[] {
+    if (count > 0) {
       return new Array(count).fill(0).map(() => this.effectsMap[effectType](turns));
     }
 
-    return [this.effectsMap[effectType](turns)];
+    return this.effectsMap[effectType](turns);
   }
 
-  effectsMap: Record<string, (turns: number) => Effect> = {
+  effectsMap: Record<EffectsValues, (turns: number) => Effect> = {
     [this.effects.burning]: (turns: number) => this.getBurning(turns),
     [this.effects.healthRestore]: (turns: number) => this.getHealthRestore(turns),
     [this.effects.freezing]: (turns: number) => this.getFreezing(turns),
@@ -245,8 +249,8 @@ export class EffectsService {
     };
   }
 
-  getDebuffDmg(name: string, int: number, m: number): number {
-    return {
+  getDebuffDmg(name: EffectsValues, int: number, m: number): number {
+    const map: Record<EffectsValues, number> = {
       [this.effects.burning]: this.getNumberForCommonEffects(int, m),
       [this.effects.freezing]: this.getNumberForCommonEffects(int, m),
       [this.effects.root]: this.getNumberForCommonEffects(int, m),
@@ -254,6 +258,12 @@ export class EffectsService {
       [this.effects.bleeding]: this.getNumberForCommonEffects(int, m),
       [this.effects.poison]: this.getNumberForCommonEffects(int, m),
       [this.effects.healthRestore]: this.getNumberForCommonEffects(int, m),
-    }[name] as number;
+      [this.effects.defBreak]: 1,
+      [this.effects.attackBuff]: 1,
+      [this.effects.defBuff]: 1,
+      [this.effects.attackBreak]: 1,
+    };
+
+    return map[name];
   }
 }

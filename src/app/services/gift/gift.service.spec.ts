@@ -1,12 +1,12 @@
 import { GiftService } from './gift.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
-import { FakeLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
+import { LocalStorageService } from '../localStorage/local-storage.service';
 import { GiftConfig } from '../../models/gift.model';
 import { of } from 'rxjs';
-import { fakeUser } from '../../constants';
 import { User } from '../users/users.interfaces';
 import { TIME } from '../online/online.contrants';
+import { FakeLocalStorage, fakeUser } from '../../test-related';
 
 describe('GiftService', () => {
   let giftService: GiftService;
