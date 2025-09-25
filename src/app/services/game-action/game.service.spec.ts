@@ -222,4 +222,18 @@ describe('GameService', () => {
     );
     expect(result.unit.health).toBe(testUnit.health - 10);
   });
+
+  it('GameService should restore health and log it', () => {
+    const logs: LogRecord[] = [];
+    const restoreBuff = effectServiceSpy.getEffect(effectServiceSpy.effects.healthRestore);
+
+    const unit = createDeepCopy({ ...testUnit, health: 1000 }) as Unit;
+
+    const lastHealth = unit.health;
+
+    const result = gameService.restoreHealthForUnit(unit, restoreBuff, logs, { imgSrc: 'src' });
+
+    expect(result.health).toBe(lastHealth + 1);
+    expect(logs.length).toBe(1);
+  });
 });

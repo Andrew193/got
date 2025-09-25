@@ -40,7 +40,7 @@
       <aside class="col-lg-12 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">
         <div class="col-lg-12 col-sm-12 p-2 mb-3 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
-          <div class="d-flex flex-wrap gap-1">
+          <div class="flex-row gap-1">
             <ng-container
               [ngTemplateOutlet]="itemTemplate"
               [ngTemplateOutletContext]="{ name: 'eq1' }"></ng-container>
@@ -62,14 +62,14 @@
 </div>
 
 <ng-template #itemTemplate let-name="name">
-  <div class="col-lg-6 col-sm-12 row">
-    <div class="col-6 d-flex">
+  <div class="col row m-0">
+    <div class="col d-flex">
       <div style="min-width: 83px">
         <img [src]="'assets/resourses/imgs/eq/' + name + '.png'" [alt]="name" />
       </div>
       <p class="ps-2">{{ itemDescriptions[name] }}</p>
     </div>
-    <div class="col-6 flex-row eq-stats mb-0">
+    <div class="col-12 flex-row eq-stats mb-0">
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
         <div class="col-12">
           <div class="flex-row ps-2 mb-0">

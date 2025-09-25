@@ -48,7 +48,7 @@ export class NotificationsService {
         .subscribe();
     });
 
-    //this.showPossibleActivities();
+    this.showPossibleActivities();
   }
 
   notificationsValue(key?: number, value?: boolean) {

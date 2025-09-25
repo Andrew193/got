@@ -5,7 +5,7 @@ import { EffectsService } from '../effects/effects.service';
 import { UnitService } from '../unit/unit.service';
 import { heroType } from '../heroes/heroes.service';
 import { Unit } from '../../models/unit.model';
-import { Skill } from '../../models/skill.model';
+import { Skill, SkillSrc } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
 import { GameLoggerService } from '../game-logger/logger.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
@@ -120,7 +120,7 @@ export class GameService {
     }
   }
 
-  restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: Skill) {
+  restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: SkillSrc) {
     const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
 
     this.logRestoreHealth(logs, skill, unit, restoredHealth);
@@ -129,7 +129,7 @@ export class GameService {
     return unit;
   }
 
-  private logRestoreHealth(logs: LogRecord[], skill: Skill, unit: Unit, restoredHealth: number) {
+  private logRestoreHealth(logs: LogRecord[], skill: SkillSrc, unit: Unit, restoredHealth: number) {
     logs.push({
       info: true,
       imgSrc: skill.imgSrc,
@@ -142,7 +142,7 @@ export class GameService {
       if (effect.type === this.eS.effects.healthRestore) {
         unit = this.restoreHealthForUnit(unit, effect, logs, {
           imgSrc: effect.imgSrc,
-        } as Skill);
+        });
       }
     });
   }

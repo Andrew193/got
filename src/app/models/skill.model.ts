@@ -1,7 +1,6 @@
 import { Effect } from './effect.model';
 
-export interface Skill {
-  imgSrc: string;
+export interface Skill extends SkillSrc {
   dmgM: number;
   healM?: number;
   debuffs?: Effect[];
@@ -19,4 +18,8 @@ export interface Skill {
   description: string;
   healAll?: boolean;
   heal?: boolean;
+}
+
+export interface SkillSrc {
+  imgSrc: string;
 }
