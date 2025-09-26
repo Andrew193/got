@@ -1,12 +1,16 @@
 @use './vars';
 
+@mixin c-v-gray {
+  background-color: gray !important;
+}
+
 .disabled {
   cursor: not-allowed;
   pointer-events: none;
-  background-color: gray !important;
+  @include c-v-gray;
 
   img {
-    background-color: gray !important;
+    @include c-v-gray;
   }
 }
 

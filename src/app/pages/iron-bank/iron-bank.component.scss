@@ -4,11 +4,7 @@
 
 .inner-container {
   background: url('../../../assets/resourses/imgs/background/iron-bank.jpg') no-repeat center;
-  background-size: cover;
-  min-height: 100%;
-  box-shadow: vars.$box-shadow;
-  position: relative;
-  padding-top: 1px;
+  @include mixins.page-container;
 
   p {
     color: white;

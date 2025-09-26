@@ -15,7 +15,6 @@ import { NotificationType } from '../../services/notifications/notifications.ser
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { HighlightDirective } from '../../directives/highlight/highlight.directive';
 import { TestDirective } from '../../directives/test/test.directive';
 

@@ -21,7 +21,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-@use 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap-grid';
 
 html,
 body {
@@ -66,8 +66,7 @@ body {
   }
 
   p {
-    display: flex;
-    align-items: center;
+    @include mixins.d-f-a-c;
     margin: 5px;
     justify-content: center;
 
@@ -98,9 +97,8 @@ body {
 }
 
 .form-inline {
-  display: flex;
+  @include mixins.d-f-a-c;
   flex-flow: row nowrap;
-  align-items: center;
   width: 100%;
   flex-wrap: wrap;
 
@@ -128,6 +126,19 @@ body {
 //Angular material override
 
 :root {
+  @include mat.slider-overrides(
+    (
+      handle-color: #b8860b,
+      focus-handle-color: #daa520,
+      hover-handle-color: #ffd700,
+      active-track-color: #b8860b,
+      inactive-track-color: rgba(184, 134, 11, 0.3),
+      with-tick-marks-inactive-container-color: rgba(184, 134, 11, 0.3),
+      with-tick-marks-active-container-color: #b8860b,
+      focus-state-layer-color: rgba(184, 134, 11, 0.24),
+    )
+  );
+
   .card {
     --bs-card-spacer-y: 3px;
     --bs-card-spacer-x: 3px;
@@ -157,15 +168,4 @@ body {
 .nav-item .active {
   box-shadow: vars.$box-shadow;
   border: none !important;
-}
-
-.mdc-slider {
-  --mdc-slider-handle-color: #b8860b;
-  --mdc-slider-focus-handle-color: #daa520;
-  --mdc-slider-hover-handle-color: #ffd700;
-  --mdc-slider-active-track-color: #b8860b;
-  --mdc-slider-inactive-track-color: rgba(184, 134, 11, 0.3);
-  --mdc-slider-with-tick-marks-inactive-container-color: rgba(184, 134, 11, 0.3);
-  --mdc-slider-with-tick-marks-active-container-color: #b8860b;
-  --mat-slider-focus-state-layer-color: rgba(184, 134, 11, 0.24);
 }

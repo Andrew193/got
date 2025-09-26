@@ -3,17 +3,11 @@
 
 .login-container {
   background: url('../../../assets/resourses/imgs/background/summon_tree.jpg') no-repeat;
-  background-size: cover;
-  height: 100%;
-  box-shadow: vars.$box-shadow;
-  position: relative;
-  padding-top: 1px;
+  @include mixins.page-container;
 
   main {
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include mixins.d-f-a-c-j-c;
 
     form {
       border-radius: 15px;

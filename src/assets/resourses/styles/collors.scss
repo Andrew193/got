@@ -1,40 +1,62 @@
 @use './vars';
+@use 'sass:map';
 
-.cooper {
-  color: #ffb47e !important;
-}
+$all-colors: (
+  // coins
+  cooper: (
+      prop: color,
+      value: #ffb47e,
+    ),
+  silver: (
+    prop: color,
+    value: #c0c0c0ff,
+  ),
+  gold: (
+    prop: color,
+    value: #ffd700ff,
+  ),
+  // b-colors
+  red-b: (
+      prop: background,
+      value: vars.$light-red,
+    ),
+  green-b: (
+    prop: background,
+    value: vars.$light-green,
+  ),
+  entity-b: (
+    prop: background,
+    value: vars.$light-gray,
+  ),
+  // items
+  summon-scroll: (
+      prop: color,
+      value: #70ff70ff,
+    ),
+  health-color: (
+    prop: color,
+    value: #70ff70ff,
+  ),
+  summon-card: (
+    prop: color,
+    value: #6ee9f6,
+  ),
+  defence-color: (
+    prop: color,
+    value: #6ee9f6,
+  ),
+  hero-shard: (
+    prop: color,
+    value: #ff9393ff,
+  ),
+  attack-color: (
+    prop: color,
+    value: #ff9393ff,
+  )
+);
 
-.silver {
-  color: silver !important;
-}
-
-.gold {
-  color: gold !important;
-}
-
-.red-b {
-  background: vars.$light-red;
-}
-
-.green-b {
-  background: vars.$light-green;
-}
-
-.entity-b {
-  background: vars.$light-gray;
-}
-
-.summon-scroll,
-.health-color {
-  color: #70ff70ff;
-}
-
-.summon-card,
-.defence-color {
-  color: #6ee9f6;
-}
-
-.hero-shard,
-.attack-color {
-  color: #ff9393ff;
+@each $name, $config in $all-colors {
+  .#{$name + ''} {
+    #{map.get($config, prop)}: map.get($config, value) !important;
+  }
 }

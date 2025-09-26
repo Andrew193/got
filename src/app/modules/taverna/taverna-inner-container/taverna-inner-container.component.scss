@@ -3,11 +3,7 @@
 
 .taverna-inner-container {
   background: url('../../../../assets/resourses/imgs/background/taverna-3.jpg') no-repeat;
-  background-size: cover;
-  min-height: 100%;
-  box-shadow: vars.$box-shadow;
-  position: relative;
-  padding-top: 1px;
+  @include mixins.page-container;
 
   h3 {
     @include mixins.grad-color;

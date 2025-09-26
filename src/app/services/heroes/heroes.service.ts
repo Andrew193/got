@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { EffectsService } from '../effects/effects.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Unit } from '../../models/unit.model';
 import { ContentService, ContentTypes } from '../abstract/content/content-service.service';
 import { EffectsValues } from '../../constants';
@@ -30,10 +29,7 @@ export enum rarity {
   providedIn: 'root',
 })
 export class HeroesService extends ContentService {
-  constructor(
-    private eS: EffectsService,
-    private sanitizer: DomSanitizer,
-  ) {
+  constructor(private eS: EffectsService) {
     super();
   }
 
@@ -43,18 +39,6 @@ export class HeroesService extends ContentService {
 
   getEffectsDescription(effect: EffectsValues) {
     return this.eS.effectsDescriptions[effect];
-  }
-
-  highlightEffects(text: string) {
-    const effects = this.eS.effectsToHighlight;
-
-    for (const effect of effects) {
-      text = text.replaceAll(effect, `<span${effect}</span`);
-    }
-
-    return this.sanitizer.bypassSecurityTrustHtml(
-      text.replaceAll('<span', "<span class='highlight-effect'>").replaceAll('</span', '</span>'),
-    );
   }
 
   getEffectsFromString(text: string) {

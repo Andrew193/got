@@ -11,7 +11,6 @@ import { ModalStrategiesTypes } from '../../../components/modal-window/modal-int
   selector: 'app-training-battle',
   imports: [CommonModule, GameEntryPointComponent],
   templateUrl: './training-battle.component.html',
-  styleUrl: './training-battle.component.scss',
 })
 export class TrainingBattleComponent {
   aiUnits: Unit[] = [];

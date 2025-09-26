@@ -9,11 +9,8 @@
 }
 
 .modal-70 {
-  .modal-content {
+  .modal-content,
+  .modal-content app-dynamic-modal-host {
     height: 100%;
-
-    app-dynamic-modal-host {
-      height: 100%;
-    }
   }
 }

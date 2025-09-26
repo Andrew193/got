@@ -1,11 +1,11 @@
 @use './vars';
+@use './mixins';
 
 .hero-in-frame {
   position: absolute;
   z-index: 101;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+  @include mixins.h-100-w-100;
   filter: drop-shadow(2px 4px 6px rgba(255, 0, 255, 0.6));
 }
 

@@ -1,16 +1,15 @@
+@use './mixins';
+
 .skills-bar {
   flex-direction: column;
 }
 
 .skill-disabled {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  @include mixins.h-100-w-100;
+  @include mixins.d-f-a-c-j-c;
   background: rgba(0, 0, 0, 0.4392156863);
   border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: not-allowed;
   max-height: 70px;
   max-width: 70px;

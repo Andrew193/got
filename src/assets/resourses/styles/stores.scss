@@ -21,8 +21,7 @@
 
     > div {
       cursor: pointer;
-      display: flex;
-      align-items: center;
+      @include mixins.d-f-a-c;
       height: inherit;
       flex: 1;
       flex-basis: 15%;
@@ -38,8 +37,7 @@
         background: vars.$background-color-main;
         box-shadow: vars.$box-shadow;
         color: white;
-        height: 100%;
-        width: 100%;
+        @include mixins.h-100-w-100;
         background-image: url('/assets/resourses/imgs/background/crack.png');
         background-size: cover;
         background-position: center;

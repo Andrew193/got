@@ -35,16 +35,12 @@
   box-shadow: vars.$red-box-shadow;
 }
 
-.ai-heroes {
-  img {
-    background-color: vars.$light-red;
-  }
+.ai-heroes img {
+  background-color: vars.$light-red;
 }
 
-.user-heroes {
-  img {
-    background-color: vars.$light-green;
-  }
+.user-heroes img {
+  background-color: vars.$light-green;
 }
 
 .block {

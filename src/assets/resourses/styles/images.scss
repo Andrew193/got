@@ -1,17 +1,15 @@
+$i-sizes: 75, 150;
+
 .image {
   object-fit: scale-down;
 }
 
-.image-75 {
-  height: 75px;
-  width: 75px;
-  @extend .image;
-}
-
-.image-150 {
-  height: 150px;
-  width: 150px;
-  @extend .image;
+@each $size in $i-sizes {
+  .image-#{$size} {
+    height: #{$size}px;
+    width: #{$size}px;
+    @extend .image;
+  }
 }
 
 .image-350-h {

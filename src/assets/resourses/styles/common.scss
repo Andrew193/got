@@ -1,10 +1,23 @@
 @use './vars';
+@use 'sass:math';
 
 $columns: 100;
 
 @for $i from 1 through $columns {
   .w-#{$i} {
-    width: (1% * $i);
+    width: math.percentage(calc($i / 100));
+  }
+  .w-#{$i}-i {
+    width: math.percentage(calc($i / 100)) !important;
+  }
+}
+
+@for $i from 1 through $columns {
+  #w-#{$i} {
+    width: math.percentage(calc($i / 100));
+  }
+  #w-#{$i}-i {
+    width: math.percentage(calc($i / 100)) !important;
   }
 }
 
@@ -15,32 +28,11 @@ $columns: 100;
 }
 
 @for $i from 1 through $columns {
-  .w-#{$i}-i {
-    width: (1% * $i) !important;
-  }
-}
-
-@for $i from 1 through $columns {
-  #w-#{$i} {
-    width: (1% * $i);
-  }
-}
-
-@for $i from 1 through $columns {
-  #w-#{$i}-i {
-    width: (1% * $i) !important;
-  }
-}
-
-@for $i from 1 through $columns {
   .h-#{$i} {
-    height: (1% * $i);
+    height: math.percentage(calc($i / 100));
   }
-}
-
-@for $i from 1 through $columns {
   .h-#{$i}-i {
-    height: (1% * $i) !important;
+    height: math.percentage(calc($i / 100)) !important;
   }
 }
 

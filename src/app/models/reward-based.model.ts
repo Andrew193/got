@@ -13,21 +13,15 @@ export interface RewardComponentInterface {
   rewards: DisplayReward[];
 }
 
-export interface BossReward {
-  cooper: number;
-  cooperWin: number;
-  cooperDMG: number;
-  silver: number;
-  silverWin: number;
-  silverDMG: number;
-  gold: number;
-  goldWin: number;
-  goldDMG: number;
-}
+type BossRewardCurrency = 'cooper' | 'silver' | 'gold';
+
+type Converter<K extends string> = Record<K | `${K}Win` | `${K}DMG`, number>;
+
+export type BossReward = Converter<BossRewardCurrency>;
 
 export type RewardValues = RewardNames[keyof RewardNames];
 export type RewardKeys = keyof RewardNames;
-export type RewardKeysForLoot = Extract<RewardKeys, 'cooper' | 'silver' | 'gold' | 'shards'>;
+export type RewardKeysForLoot = Extract<RewardKeys, BossRewardCurrency | 'shards'>;
 
 export type RewardLootConstant = Record<RewardKeysForLoot, { min: number; max: number }>;
 

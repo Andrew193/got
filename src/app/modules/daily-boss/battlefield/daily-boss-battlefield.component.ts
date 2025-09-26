@@ -10,7 +10,6 @@ import { DailyBossService } from '../../../services/daily-boss/daily-boss.servic
   selector: 'app-battlefield',
   imports: [CommonModule, GameEntryPointComponent],
   templateUrl: './daily-boss-battlefield.component.html',
-  styleUrl: './daily-boss-battlefield.component.scss',
 })
 export class DailyBossBattlefieldComponent {
   aiUnits: Unit[] = [];

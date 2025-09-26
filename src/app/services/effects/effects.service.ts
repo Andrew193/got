@@ -26,8 +26,6 @@ export class EffectsService {
     [this.effects.root]: 'Герой скован корнями и не может двигаться.',
   };
 
-  constructor() {}
-
   get effectsToHighlight() {
     return Object.values(this.effects);
   }
