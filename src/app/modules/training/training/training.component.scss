@@ -2,7 +2,7 @@
 @use '../../../../assets/resourses/styles/mixins';
 
 .training-container {
-  background: url('../../../../assets/resourses/imgs/background/training.jpeg') no-repeat;
+  background: url('../../../../assets/resourses/imgs/background/training.webp') no-repeat;
   @include mixins.page-container;
   color: white;
 }

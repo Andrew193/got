@@ -2,7 +2,7 @@
 @use '../../../../assets/resourses/styles/mixins';
 
 .taverna-inner-container {
-  background: url('../../../../assets/resourses/imgs/background/taverna-3.jpg') no-repeat;
+  background: url('../../../../assets/resourses/imgs/background/taverna-3.webp') no-repeat;
   @include mixins.page-container;
 
   h3 {

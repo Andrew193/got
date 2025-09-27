@@ -1,4 +1,6 @@
-<img *ngIf="loading" src="/assets/loader.png" alt="loading" class="loader" />
+@if (loading) {
+  <img src="/assets/loader.png" alt="loading" class="loader" />
+}
 <img
   [hidden]="loading"
   [ngClass]="{

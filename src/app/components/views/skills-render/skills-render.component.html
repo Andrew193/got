@@ -1,9 +1,11 @@
 <div class="skills-container p-2">
   <p class="text-center fw-bold mb-0">Skills</p>
-  <div *ngFor="let skill of selectedHero.skills; trackBy: trackBySkill">
-    <div class="flex-row flex-nowrap">
-      <app-image [source]="skill.imgSrc" [alt]="skill.name" />
-      <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
+  @for (skill of selectedHero.skills; track skill.imgSrc + $index) {
+    <div>
+      <div class="flex-row flex-nowrap">
+        <app-image [source]="skill.imgSrc" [alt]="skill.name" />
+        <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
+      </div>
     </div>
-  </div>
+  }
 </div>

@@ -1,47 +1,9 @@
 @use '../../../assets/resourses/styles/vars';
+@use '../../../assets/resourses/styles/mixins';
 
 .heroes-container {
   background-color: vars.$background-color-main;
-
-  .units-config-inner-container {
-    background-color: vars.$background-color-main-hover;
-    box-shadow: vars.$box-shadow;
-    border-radius: 5px;
-
-    img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      box-shadow: vars.$box-shadow;
-      cursor: pointer;
-      transition: background-color ease 0.3s;
-      object-fit: contain;
-
-      &:hover {
-        background-color: vars.$background-color-main-hover;
-      }
-
-      &.selected {
-        background-color: vars.$light-green;
-      }
-
-      &.selected-enemy {
-        background-color: vars.$light-red;
-      }
-    }
-  }
-
-  > div {
-    padding: 10px;
-
-    h4 {
-      margin: unset;
-    }
-
-    &:first-of-type {
-      border-right: 1px solid black;
-    }
-  }
+  @include mixins.units-container-config;
 }
 
 .preview-selected-heroes {
@@ -56,7 +18,7 @@
   > div {
     margin-bottom: 5px;
     display: flex;
-    border: 1px solid black;
+    border: vars.$border-1-black;
     padding: 3px;
     border-radius: 3px;
     box-shadow: vars.$box-shadow;

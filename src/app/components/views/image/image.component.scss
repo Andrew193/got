@@ -1,15 +1,13 @@
 @use '../../../../assets/resourses/styles/animations' as eff;
-
-.loader {
-  width: 100%;
-  height: 100%;
-  max-height: 30px;
-  max-width: 30px;
-
-  @include eff.rotate();
-}
+@use '../../../../assets/resourses/styles/mixins';
 
 .fix-size {
   max-height: 30px;
   max-width: 30px;
+}
+
+.loader {
+  @include mixins.h-100-w-100;
+  @extend .fix-size;
+  @include eff.rotate();
 }

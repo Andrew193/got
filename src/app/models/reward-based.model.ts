@@ -15,9 +15,10 @@ export interface RewardComponentInterface {
 
 type BossRewardCurrency = 'cooper' | 'silver' | 'gold';
 
-type Converter<K extends string> = Record<K | `${K}Win` | `${K}DMG`, number>;
-
-export type BossReward = Converter<BossRewardCurrency>;
+export type BossReward = Record<
+  BossRewardCurrency | `${BossRewardCurrency}Win` | `${BossRewardCurrency}DMG`,
+  number
+>;
 
 export type RewardValues = RewardNames[keyof RewardNames];
 export type RewardKeys = keyof RewardNames;
@@ -25,7 +26,7 @@ export type RewardKeysForLoot = Extract<RewardKeys, BossRewardCurrency | 'shards
 
 export type RewardLootConstant = Record<RewardKeysForLoot, { min: number; max: number }>;
 
-export type CoinNames = Lowercase<Extract<RewardValues, 'Cooper' | 'Silver' | 'Gold'>>;
+export type CoinNames = Lowercase<Extract<RewardValues, Capitalize<BossRewardCurrency>>>;
 
 export interface Coin {
   class: CoinNames;

@@ -23,14 +23,16 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 7800,
-        "claimedRewards": ["2"],
+        "onlineTime": 12120,
+        "claimedRewards": [
+          "2"
+        ],
         "lastLoyaltyBonus": "09/26/2025"
       },
       "currency": {
-        "gold": 12597,
-        "silver": 28130,
-        "cooper": 24277363
+        "gold": 12708,
+        "silver": 28461,
+        "cooper": 24430854
       },
       "createdAt": 1756640349588
     }
@@ -46,9 +48,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 4,
-      "totalDays": 33,
-      "lastLogin": "09/26/2025"
+      "day": 5,
+      "totalDays": 34,
+      "lastLogin": "09/27/2025"
     }
   ],
   "giftTrip": [
@@ -60,7 +62,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "09/26/2025"
+      "lastLogin": "09/27/2025"
     }
   ]
 }
