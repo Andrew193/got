@@ -46,19 +46,33 @@ export const ALL_EFFECTS = {
   burning: 'Горение',
   freezing: 'Заморозка',
   healthRestore: 'Восстановление',
-  defBreak: 'Разлом брони',
   bleeding: 'Кровотечение',
   poison: 'Отравление',
   attackBuff: 'Бонус атаки',
-  defBuff: 'Бонус защиты',
   attackBreak: 'Заржавелый Меч',
+  defBuff: 'Бонус защиты',
   defDestroy: 'Коррозия брони',
+  defBreak: 'Разлом брони',
   root: 'Корень',
 } as const;
 
 export type Effects = typeof ALL_EFFECTS;
 export type EffectsKey = keyof Effects;
 export type EffectsValues = Effects[EffectsKey];
+
+export const ALL_EFFECTS_MULTIPLIERS: Record<EffectsValues, number> = {
+  [ALL_EFFECTS.healthRestore]: 0.05,
+  [ALL_EFFECTS.burning]: 0.1,
+  [ALL_EFFECTS.freezing]: 1,
+  [ALL_EFFECTS.root]: 0,
+  [ALL_EFFECTS.defDestroy]: -50,
+  [ALL_EFFECTS.poison]: 0.075,
+  [ALL_EFFECTS.bleeding]: 0.05,
+  [ALL_EFFECTS.defBreak]: 0.5,
+  [ALL_EFFECTS.attackBreak]: 0.5,
+  [ALL_EFFECTS.attackBuff]: 1.5,
+  [ALL_EFFECTS.defBuff]: 1.5,
+} as const;
 
 export const REWARD: RewardLootConstant = {
   cooper: { min: 10000, max: 40000 },

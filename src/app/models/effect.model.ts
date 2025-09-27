@@ -7,7 +7,7 @@ export interface Effect {
   m: number;
   restore?: boolean;
   passive?: boolean;
-  defBreak?: number;
+  defDestroy?: number;
 }
 
 export type EffectForMult = Omit<Effect, 'type'> & {

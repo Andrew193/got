@@ -1,29 +1,37 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Unit } from '../../models/unit.model';
 import { Skill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
 import { heroType } from '../heroes/heroes.service';
 import { createDeepCopy } from '../../helpers';
-import { ALL_EFFECTS, Effects, EffectsValues } from '../../constants';
+import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS, Effects, EffectsValues } from '../../constants';
+import { NumbersService } from '../numbers/numbers.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EffectsService {
+  private numberService = inject(NumbersService);
+
   effects: Effects = createDeepCopy(ALL_EFFECTS);
 
   effectsDescriptions: Record<EffectsValues, string> = {
-    [this.effects.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
-    [this.effects.freezing]: 'Герой заморожен и может пройти только 1 клетку за ход.',
+    //Buffs
     [this.effects.healthRestore]: 'Восстановливает 5% здоровья каждый ход.',
-    [this.effects.defBreak]: 'Защита героя снижается на 50 ед. за ход.',
+    //Debuffs
+    [this.effects.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
     [this.effects.bleeding]: 'Наносит противнику урон в размере 5% от его здоровья каждый ход.',
     [this.effects.poison]: 'Наносит противнику урон в размере 7.5% от его здоровья каждый ход.',
-    [this.effects.attackBuff]: 'Увеличивает атаку героя на 50%.',
-    [this.effects.defBuff]: 'Увеличивает защиту героя на 50%.',
-    [this.effects.attackBreak]: 'Уменьшает атаку героя на 50%.',
-    [this.effects.defDestroy]: 'Уменьшает защиту героя на 50%.',
+    //Mobility
+    [this.effects.freezing]: 'Герой заморожен и может пройти только 1 клетку за ход.',
     [this.effects.root]: 'Герой скован корнями и не может двигаться.',
+    //Attack
+    [this.effects.attackBuff]: 'Увеличивает атаку героя на 50%.',
+    [this.effects.attackBreak]: 'Уменьшает атаку героя на 50%.',
+    //Deff
+    [this.effects.defBuff]: 'Увеличивает защиту героя на 50%.',
+    [this.effects.defBreak]: 'Уменьшает защиту героя на 50%.',
+    [this.effects.defDestroy]: 'Защита героя снижается на 50 ед. за ход.',
   };
 
   get effectsToHighlight() {
@@ -32,18 +40,16 @@ export class EffectsService {
 
   getMobilityStatsBasedOnEffect(effect: Effect, unit: Unit) {
     let message = '';
+    const mobility: string[] = [this.effects.freezing, this.effects.root];
 
-    if (effect.type === this.effects.freezing) {
-      unit.canCross = 1;
-      message += unit.health ? `Герой заморожен и может пройти только 1 клетку за ход.` : '';
+    const unitCopy = createDeepCopy(unit);
+
+    if (mobility.includes(effect.type)) {
+      unitCopy.canCross = effect.m;
+      message += unitCopy.health ? this.effectsDescriptions[effect.type] : '';
     }
 
-    if (effect.type === this.effects.root) {
-      unit.canCross = 0;
-      message += unit.health ? `Герой скован корнями и не может двигаться.` : '';
-    }
-
-    return { unit, message: message };
+    return { unit: unitCopy, message: message };
   }
 
   recountStatsBasedOnEffect(effect: Effect, unit: Unit) {
@@ -52,10 +58,10 @@ export class EffectsService {
 
     unit = result.unit;
 
-    if (effect.type === this.effects.defDestroy && effect.defBreak) {
-      unit.defence += effect.defBreak;
+    if (effect.type === this.effects.defDestroy && effect.defDestroy) {
+      unit.defence += effect.defDestroy;
       message += unit.health
-        ? `Защита героя ${unit.name} была снижена на ${effect.defBreak} ед. из-за штрафа ${effect.type}.`
+        ? `Защита героя ${unit.name} была снижена на ${effect.defDestroy} ед. из-за штрафа ${effect.type}.`
         : '';
     }
 
@@ -100,10 +106,10 @@ export class EffectsService {
     );
   }
 
-  getBoostedParameter(parameter: number, effects: Effect[], type: EffectsValues) {
+  private getBoostedParameter(parameter: number, effects: Effect[], type: EffectsValues) {
     const effect = effects.find(effect => effect.type === type);
 
-    return parameter * (effect?.m || 1);
+    return this.numberService.getRoundMin(parameter * (effect?.m || 1));
   }
 
   getHealthAfterDmg(health: number, dmg: number) {
@@ -111,11 +117,11 @@ export class EffectsService {
   }
 
   getHealthAfterRestore(health: number, maxHealth: number) {
-    return Math.round(Math.min(health, maxHealth));
+    return this.numberService.getRoundMin(health, maxHealth);
   }
 
   getNumberForCommonEffects(int: number, m: number) {
-    return +(int * m).toFixed(0);
+    return this.numberService.toFixed(int * m);
   }
 
   getEffect(effectType: EffectsValues, turns?: number, count?: 0): Effect;
@@ -129,17 +135,22 @@ export class EffectsService {
   }
 
   effectsMap: Record<EffectsValues, (turns: number) => Effect> = {
-    [this.effects.burning]: (turns: number) => this.getBurning(turns),
+    //Buffs
     [this.effects.healthRestore]: (turns: number) => this.getHealthRestore(turns),
+    //Mobility
     [this.effects.freezing]: (turns: number) => this.getFreezing(turns),
     [this.effects.root]: (turns: number) => this.getRoot(turns),
-    [this.effects.defDestroy]: (turns: number) => this.getDefenceDestroy(turns),
+    //Debuffs
+    [this.effects.burning]: (turns: number) => this.getBurning(turns),
     [this.effects.poison]: (turns: number) => this.getPoison(turns),
     [this.effects.bleeding]: (turns: number) => this.getBleeding(turns),
+    //Deff
     [this.effects.defBreak]: (turns: number) => this.getDefBreak(turns),
+    [this.effects.defDestroy]: (turns: number) => this.getDefenceDestroy(turns),
+    [this.effects.defBuff]: (turns: number) => this.getDefBuff(turns),
+    //Attack
     [this.effects.attackBreak]: (turns: number) => this.getAttackBreak(turns),
     [this.effects.attackBuff]: (turns: number) => this.getAttackBuff(turns),
-    [this.effects.defBuff]: (turns: number) => this.getDefBuff(turns),
   };
 
   private getHealthRestore(turns = 1): Effect {
@@ -147,7 +158,7 @@ export class EffectsService {
       imgSrc: '../../../assets/resourses/imgs/buffs/health_restore_buff.png',
       type: this.effects.healthRestore,
       duration: turns,
-      m: 0.05,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.healthRestore],
       restore: true,
     };
   }
@@ -157,7 +168,7 @@ export class EffectsService {
       imgSrc: '../../../assets/resourses/imgs/debuffs/burning.png',
       type: this.effects.burning,
       duration: turns,
-      m: 0.1,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.burning],
     };
   }
 
@@ -166,7 +177,7 @@ export class EffectsService {
       imgSrc: '../../../assets/resourses/imgs/debuffs/freezing_debuff.png',
       type: this.effects.freezing,
       duration: turns,
-      m: 0,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.freezing],
     };
   }
 
@@ -175,7 +186,7 @@ export class EffectsService {
       imgSrc: '../../../assets/resourses/imgs/debuffs/root.png',
       type: this.effects.root,
       duration: turns,
-      m: 0,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.root],
     };
   }
 
@@ -185,7 +196,7 @@ export class EffectsService {
       type: this.effects.defDestroy,
       duration: turns,
       m: 0,
-      defBreak: -50,
+      defDestroy: ALL_EFFECTS_MULTIPLIERS[this.effects.defDestroy],
     };
   }
 
@@ -194,7 +205,7 @@ export class EffectsService {
       imgSrc: '../../../assets/resourses/imgs/debuffs/poison.png',
       type: this.effects.poison,
       duration: turns,
-      m: 0.075,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.poison],
     };
   }
 
@@ -203,7 +214,7 @@ export class EffectsService {
       imgSrc: '../../../assets/resourses/imgs/debuffs/bleeding.png',
       type: this.effects.bleeding,
       duration: turns,
-      m: 0.05,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.bleeding],
     };
   }
 
@@ -213,7 +224,7 @@ export class EffectsService {
       type: this.effects.defBreak,
       duration: turns,
       passive: true,
-      m: 0.5,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.defBreak],
     };
   }
 
@@ -223,7 +234,7 @@ export class EffectsService {
       type: this.effects.attackBreak,
       duration: turns,
       passive: true,
-      m: 0.5,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.attackBreak],
     };
   }
 
@@ -233,7 +244,7 @@ export class EffectsService {
       type: this.effects.attackBuff,
       duration: turns,
       passive: true,
-      m: 1.5,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.attackBuff],
     };
   }
 
@@ -243,22 +254,27 @@ export class EffectsService {
       type: this.effects.defBuff,
       duration: turns,
       passive: true,
-      m: 1.5,
+      m: ALL_EFFECTS_MULTIPLIERS[this.effects.defBuff],
     };
   }
 
   getDebuffDmg(name: EffectsValues, int: number, m: number): number {
     const map: Record<EffectsValues, number> = {
+      //Buffs
+      [this.effects.healthRestore]: this.getNumberForCommonEffects(int, m),
+      //Debuffs
       [this.effects.burning]: this.getNumberForCommonEffects(int, m),
-      [this.effects.freezing]: this.getNumberForCommonEffects(int, m),
-      [this.effects.root]: this.getNumberForCommonEffects(int, m),
-      [this.effects.defDestroy]: this.getNumberForCommonEffects(int, m),
       [this.effects.bleeding]: this.getNumberForCommonEffects(int, m),
       [this.effects.poison]: this.getNumberForCommonEffects(int, m),
-      [this.effects.healthRestore]: this.getNumberForCommonEffects(int, m),
+      //Mobility
+      [this.effects.freezing]: this.getNumberForCommonEffects(int, m),
+      [this.effects.root]: this.getNumberForCommonEffects(int, m),
+      //Defence
       [this.effects.defBreak]: 1,
-      [this.effects.attackBuff]: 1,
       [this.effects.defBuff]: 1,
+      [this.effects.defDestroy]: this.getNumberForCommonEffects(int, m),
+      //Attack
+      [this.effects.attackBuff]: 1,
       [this.effects.attackBreak]: 1,
     };
 

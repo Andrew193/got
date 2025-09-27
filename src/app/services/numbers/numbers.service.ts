@@ -21,4 +21,12 @@ export class NumbersService {
   getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
   }
+
+  getRoundMin(...numbers: number[]) {
+    return Math.round(Math.min(...numbers));
+  }
+
+  toFixed(number: number, digits = 0) {
+    return Number(number.toFixed(digits));
+  }
 }

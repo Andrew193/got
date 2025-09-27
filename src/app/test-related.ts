@@ -1,30 +1,31 @@
 import { Effect } from './models/effect.model';
 import { User } from './services/users/users.interfaces';
 import { BasicLocalStorage } from './services/localStorage/local-storage.service';
-import { EffectsValues } from './constants';
+import { ALL_EFFECTS, EffectsValues } from './constants';
 
 const makeFakeEffect = (type: EffectsValues, turns: number): Effect =>
   ({
     type,
     duration: turns,
-    restore: type === 'Восстановление',
+    restore: type === ALL_EFFECTS.healthRestore,
     m: 10,
   }) as Effect;
 
 export function getFakeEffectMap() {
   return {
-    ['Горение']: (turns: number) => makeFakeEffect('Горение', turns),
-    ['Заморозка']: (turns: number) => makeFakeEffect('Заморозка', turns),
-    ['Восстановление']: (turns: number) => makeFakeEffect('Восстановление', turns),
-    ['Разлом брони']: (turns: number) => makeFakeEffect('Разлом брони', turns),
-    ['Кровотечение']: (turns: number) => makeFakeEffect('Кровотечение', turns),
-    ['Отравление']: (turns: number) => makeFakeEffect('Отравление', turns),
-    ['Бонус атаки']: (turns: number) => makeFakeEffect('Бонус атаки', turns),
-    ['Бонус защиты']: (turns: number) => makeFakeEffect('Бонус защиты', turns),
-    ['Заржавелый Меч']: (turns: number) => makeFakeEffect('Заржавелый Меч', turns),
-    ['Коррозия брони']: (turns: number) => makeFakeEffect('Коррозия брони', turns),
-    ['Корень']: (turns: number) => makeFakeEffect('Корень', turns),
-  } as Record<EffectsValues, (turns: number) => Effect>;
+    [ALL_EFFECTS.burning]: (turns: number) => makeFakeEffect(ALL_EFFECTS.burning, turns),
+    [ALL_EFFECTS.freezing]: (turns: number) => makeFakeEffect(ALL_EFFECTS.freezing, turns),
+    [ALL_EFFECTS.healthRestore]: (turns: number) =>
+      makeFakeEffect(ALL_EFFECTS.healthRestore, turns),
+    [ALL_EFFECTS.defBreak]: (turns: number) => makeFakeEffect(ALL_EFFECTS.defBreak, turns),
+    [ALL_EFFECTS.bleeding]: (turns: number) => makeFakeEffect(ALL_EFFECTS.bleeding, turns),
+    [ALL_EFFECTS.poison]: (turns: number) => makeFakeEffect(ALL_EFFECTS.poison, turns),
+    [ALL_EFFECTS.attackBuff]: (turns: number) => makeFakeEffect(ALL_EFFECTS.attackBuff, turns),
+    [ALL_EFFECTS.defBuff]: (turns: number) => makeFakeEffect(ALL_EFFECTS.defBuff, turns),
+    [ALL_EFFECTS.attackBreak]: (turns: number) => makeFakeEffect(ALL_EFFECTS.attackBreak, turns),
+    [ALL_EFFECTS.defDestroy]: (turns: number) => makeFakeEffect(ALL_EFFECTS.defDestroy, turns),
+    [ALL_EFFECTS.root]: (turns: number) => makeFakeEffect(ALL_EFFECTS.root, turns),
+  } satisfies Record<EffectsValues, (turns: number) => Effect>;
 }
 
 export function getEffectFake(effectsMap: ReturnType<typeof getFakeEffectMap>) {
