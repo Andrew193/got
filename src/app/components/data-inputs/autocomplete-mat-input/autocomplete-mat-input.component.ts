@@ -31,9 +31,5 @@ import { trackByStringContent } from '../../../helpers';
   ],
 })
 export class AutocompleteMatInputComponent extends BaseSelectFormControlComponent {
-  constructor() {
-    super();
-  }
-
   protected readonly trackByStringContent = trackByStringContent;
 }

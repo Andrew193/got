@@ -10,8 +10,4 @@ import { BaseFormControlComponent } from '../base-form-control/base-form-control
 })
 export class BaseSelectFormControlComponent extends BaseFormControlComponent {
   @Input() filteredOptions: Observable<string[]> = new Observable<string[]>();
-
-  constructor() {
-    super();
-  }
 }

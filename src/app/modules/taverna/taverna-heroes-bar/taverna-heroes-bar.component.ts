@@ -44,7 +44,7 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent implement
     super(heroesService);
     this.formGroup = new FormGroup({
       showAll: new FormControl(true),
-      unitName: new FormControl(''),
+      unitName: new FormControl('test'),
     });
 
     this.filteredOptions = this.formGroup.get('unitName')!.valueChanges.pipe(

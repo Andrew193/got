@@ -20,7 +20,7 @@ export class BaseFormControlComponent implements ControlValueAccessor {
 
   writeValue(value: any): void {
     this.control.setValue(value);
-    setTimeout(() => this.onChange(value), 0);
+    this.onChange(value);
   }
 
   registerOnChange(fn: any): void {
