@@ -14,6 +14,9 @@ function isJsonString(jsonString: string) {
 }
 
 export class BasicLocalStorage {
+  updateLocalStorage = new BehaviorSubject(new Date().getMilliseconds());
+  updateLocalStorage$ = this.updateLocalStorage.asObservable();
+
   prefix = 'got_';
   names = {
     user: 'user',
@@ -25,9 +28,6 @@ export class BasicLocalStorage {
   providedIn: 'root',
 })
 export class LocalStorageService extends BasicLocalStorage {
-  updateLocalStorage = new BehaviorSubject(new Date().getMilliseconds());
-  updateLocalStorage$ = this.updateLocalStorage.asObservable();
-
   getItem(key: string) {
     const item = localStorage.getItem(this.getToken(key));
 
