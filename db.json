@@ -23,12 +23,8 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 47100,
-        "claimedRewards": [
-          "2",
-          "4",
-          "8"
-        ],
+        "onlineTime": 52860,
+        "claimedRewards": ["2", "4", "8"],
         "lastLoyaltyBonus": "09/27/2025"
       },
       "currency": {

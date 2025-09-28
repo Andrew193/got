@@ -5,10 +5,9 @@ import { DisplayReward, RewardService } from '../../services/reward/reward.servi
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { Router, RouterLink } from '@angular/router';
 import { GiftService } from '../../services/gift/gift.service';
-import moment from 'moment/moment';
 import { Unit, UnitWithReward } from '../../models/unit.model';
 import { Observable, tap } from 'rxjs';
-import { DATE_FORMAT } from '../../constants';
+import { TODAY } from '../../constants';
 import {
   NotificationsService,
   NotificationType,
@@ -119,7 +118,7 @@ export class GiftStoreComponent implements OnInit {
             this.giftService.claimGiftReward(
               {
                 ...this.giftConfig,
-                lastLogin: moment().format(DATE_FORMAT),
+                lastLogin: TODAY,
               },
               () => {
                 this.notificationService.notificationsValue(NotificationType.gift_store, false);

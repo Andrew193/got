@@ -30,6 +30,7 @@ export class NotificationsService {
   private notifications: BehaviorSubject<Map<string, boolean>> = new BehaviorSubject<
     Map<string, boolean>
   >(this.initNotificationConfig);
+
   readonly $notifications = this.notifications.asObservable();
 
   init() {
@@ -51,7 +52,7 @@ export class NotificationsService {
     this.showPossibleActivities();
   }
 
-  notificationsValue(key?: number, value?: boolean) {
+  notificationsValue(key?: NotificationType, value?: boolean) {
     if (key !== undefined && value !== undefined) {
       const nValue = this.notificationsValue();
 
@@ -63,7 +64,7 @@ export class NotificationsService {
     return this.notifications.getValue();
   }
 
-  getNotification(key: number, notificationMap: Map<string, boolean>) {
+  getNotification(key: NotificationType, notificationMap: Map<string, boolean>) {
     return notificationMap.get(key.toString());
   }
 

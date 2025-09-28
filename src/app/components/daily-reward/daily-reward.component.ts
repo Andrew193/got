@@ -16,11 +16,10 @@ import { OutsideClickDirective } from '../../directives/outside-click/outside-cl
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { StatsComponent } from '../views/stats/stats.component';
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
-import moment from 'moment';
 import { Unit } from '../../models/unit.model';
 import { UsersService } from '../../services/users/users.service';
-import { trackByIndex, trackBySkill } from '../../helpers';
-import { DATE_FORMAT } from '../../constants';
+import { trackBySkill } from '../../helpers';
+import { TODAY } from '../../constants';
 import {
   NotificationsService,
   NotificationType,
@@ -92,7 +91,6 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rewardHero = this.heroService.getPriest();
 
     this.dailyRewardService._data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => {
-      console.log(config);
       this.dailyRewardConfig = {
         ...(config || this.dailyRewardConfig),
         userId: config.userId,
@@ -102,13 +100,13 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   claimReward = (reward: DayReward) => {
-    if (this.dailyRewardConfig.lastLogin !== moment().format(DATE_FORMAT)) {
+    if (this.dailyRewardConfig.lastLogin !== TODAY) {
       this.dailyRewardService.claimDailyReward(
         {
           ...this.dailyRewardConfig,
           day: this.dailyRewardConfig.day + 1 === 28 ? 0 : this.dailyRewardConfig.day + 1,
           totalDays: this.dailyRewardConfig.totalDays + 1,
-          lastLogin: moment().format(DATE_FORMAT),
+          lastLogin: TODAY,
         },
         newConfig => {
           this.usersService.updateCurrency({
@@ -136,5 +134,4 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected readonly trackBySkill = trackBySkill;
-  protected readonly trackByIndex = trackByIndex;
 }
