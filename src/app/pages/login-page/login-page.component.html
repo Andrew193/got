@@ -2,7 +2,7 @@
   <main class="container">
     <form class="flex-row m-5" [formGroup]="form">
       <div class="col-12 p-3">
-        <h4 class="text-center" (click)="switchMode()">
+        <h4 class="text-center mode-switcher" (click)="switchMode()">
           {{ createUser ? 'Sign up' : 'Sign in' }}
         </h4>
         <div class="form-group">
@@ -25,7 +25,9 @@
             placeholder="Password"
             formControlName="password" />
         </div>
-        <button type="submit" class="btn btn-primary mt-2 mb-2" (click)="submit()">Submit</button>
+        <button type="submit" class="btn btn-primary mt-2 mb-2 login-btn" (click)="submit()">
+          Submit
+        </button>
         <app-form-errors-container
           [form]="form"
           [uiErrorsNames]="onUIFieldsName"></app-form-errors-container>

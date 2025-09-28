@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, switchMap, timer } from 'rxjs';
 import { UsersService } from '../users/users.service';
-import { LocalStorageService } from '../localStorage/local-storage.service';
+import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { TIME } from './online.contrants';
 
 export type Online = {
@@ -28,7 +28,7 @@ export class OnlineService {
       this.tickCounter++;
 
       if (this.tickCounter === 10) {
-        this.ls.setItem(this.ls.names.localOnlineBuffer, '0');
+        this.ls.setItem(BasicLocalStorage.names.localOnlineBuffer, '0');
         this.tickCounter = 0;
       }
     }, TIME.oneMinuteMilliseconds);
@@ -49,18 +49,18 @@ export class OnlineService {
 
     if (stored > 0) {
       this.userService.updateOnline({ time: stored });
-      this.ls.setItem(this.ls.names.localOnlineBuffer, '0');
+      this.ls.setItem(BasicLocalStorage.names.localOnlineBuffer, '0');
     }
   }
 
   private incrementLocalBuffer(seconds: number) {
     const current = this.localBuffer;
 
-    this.ls.setItem(this.ls.names.localOnlineBuffer, String(current + seconds));
+    this.ls.setItem(BasicLocalStorage.names.localOnlineBuffer, String(current + seconds));
   }
 
   get localBuffer() {
-    return Number(this.ls.getItem(this.ls.names.localOnlineBuffer) || '0');
+    return Number(this.ls.getItem(BasicLocalStorage.names.localOnlineBuffer) || '0');
   }
 
   private get ls() {

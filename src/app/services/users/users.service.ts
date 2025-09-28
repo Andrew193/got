@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, tap } from 'rxjs';
-import { LocalStorageService } from '../localStorage/local-storage.service';
+import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { Router } from '@angular/router';
 import { ApiService } from '../abstract/api/api.service';
 import { frontRoutes, USER_TOKEN } from '../../constants';
@@ -94,7 +94,7 @@ export class UsersService extends ApiService<User> {
       {
         url: this.url,
         callback: response => {
-          this.localStorage.setItem(this.localStorage.names.user, response);
+          this.localStorage.setItem(BasicLocalStorage.names.user, response);
           this.user.next(response);
           this._snackBar.openFromComponent(CurrencyDifComponent, {
             horizontalPosition: 'end',
@@ -188,7 +188,7 @@ export class UsersService extends ApiService<User> {
     return this.putPostCover(data, {
       url: this.url,
       callback: response => {
-        this.localStorage.setItem(this.localStorage.names.user, response);
+        this.localStorage.setItem(BasicLocalStorage.names.user, response);
         this.user.next(response as User);
       },
       returnObs: returnObs,

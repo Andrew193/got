@@ -1,6 +1,9 @@
 import { Effect } from './models/effect.model';
 import { User } from './services/users/users.interfaces';
-import { BasicLocalStorage } from './services/localStorage/local-storage.service';
+import {
+  BasicLocalStorage,
+  BasicLocalStorageNamesKeys,
+} from './services/localStorage/local-storage.service';
 import { ALL_EFFECTS, EffectsValues } from './constants';
 
 const makeFakeEffect = (type: EffectsValues, turns: number): Effect =>
@@ -62,18 +65,18 @@ export const fakeUser: User = {
 export class FakeLocalStorage extends BasicLocalStorage {
   store: Map<string, string | Record<string, any>> = new Map<string, string | Record<string, any>>([
     ['localOnlineBuffer', '600'],
-    [this.names.user, fakeUser],
+    [BasicLocalStorage.names.user, fakeUser],
   ]);
 
-  getItem(key: string) {
+  getItem(key: BasicLocalStorageNamesKeys) {
     return this.store.get(key) || '';
   }
 
-  setItem(key: string, value: string | Record<string, any>) {
+  setItem(key: BasicLocalStorageNamesKeys, value: string | Record<string, any>) {
     this.store.set(key, value);
   }
 
-  removeItem(key: string) {
+  removeItem(key: BasicLocalStorageNamesKeys) {
     this.store.delete(key);
   }
 }
