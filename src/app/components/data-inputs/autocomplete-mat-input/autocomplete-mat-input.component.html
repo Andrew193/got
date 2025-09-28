@@ -1,3 +1,5 @@
+@let options = filteredOptions | async;
+
 <form [formGroup]="form">
   <mat-form-field class="w-100">
     <mat-label>{{ label }}</mat-label>
@@ -8,11 +10,11 @@
       [matAutocomplete]="auto"
       [placeholder]="placeholder" />
     <mat-autocomplete autoActiveFirstOption="true" #auto="matAutocomplete">
-      <mat-option
-        *ngFor="let option of filteredOptions | async; trackBy: trackByStringContent"
-        [value]="option">
-        {{ option }}
-      </mat-option>
+      @for (option of options; track $index + option) {
+        <mat-option [value]="option">
+          {{ option }}
+        </mat-option>
+      }
     </mat-autocomplete>
   </mat-form-field>
 </form>

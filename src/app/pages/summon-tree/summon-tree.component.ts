@@ -29,8 +29,10 @@ export class SummonTreeComponent implements RewardComponentInterface {
   ];
 
   getReward(amountOfRewards = 1) {
-    console.log([...this.rewardService.getReward(amountOfRewards, this.items)]);
-    this.rewards = [...this.rewardService.getReward(amountOfRewards, this.items)];
+    this.rewards =
+      amountOfRewards === 1
+        ? [this.rewardService.getReward(1, this.items)]
+        : this.rewardService.getReward(10, this.items);
   }
 
   goToMainPage() {

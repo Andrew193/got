@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DisplayReward } from '../../services/reward/reward.service';
-import { trackByIndex } from '../../helpers';
 import { ImageComponent } from '../views/image/image.component';
 
 @Component({
@@ -34,8 +33,6 @@ export class DisplayRewardComponent {
         }
       });
 
-    console.log(Object.entries(total));
-
     return Object.entries(total);
   });
 
@@ -50,8 +47,6 @@ export class DisplayRewardComponent {
       .filter(e => !!e)
       .every(e => e?.flipped === true);
   });
-
-  protected readonly trackByIndex = trackByIndex;
 
   async revealAll() {
     for (let i = 0; i < this.rewards().length; i++) {

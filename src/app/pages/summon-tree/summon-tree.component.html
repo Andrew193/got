@@ -14,12 +14,16 @@
         </h4>
         <div class="d-flex align-items-center justify-content-evenly roll-container">
           <button class="btn btn-success silver" (click)="getReward()">
-            <img alt="silver coin" src="../../../assets/resourses/imgs/silver.png" />300
+            <app-image
+              source="../../../assets/resourses/imgs/silver.png"
+              alt="silver coin"
+              [useFixSize]="true" />300
           </button>
           <button class="btn btn-success silver" (click)="getReward(10)">
-            <img alt="silver coin" src="../../../assets/resourses/imgs/silver.png" />{{
-              2700 | number
-            }}
+            <app-image
+              source="../../../assets/resourses/imgs/silver.png"
+              alt="silver coin"
+              [useFixSize]="true" />{{ 2700 | number }}
           </button>
         </div>
       </div>

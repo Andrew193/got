@@ -23,10 +23,6 @@ export function trackByUnit(index: number, unit: Unit) {
   return unit.name + unit.user;
 }
 
-export function trackByStringContent(index: number, content: string) {
-  return content + index;
-}
-
 export function trackByRoute(index: number, route: route) {
   return route.name + index;
 }

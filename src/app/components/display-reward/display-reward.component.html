@@ -2,7 +2,7 @@
 
 @if (_cards.length) {
   <div class="summon-container flip-items-container row gap-2 m-2">
-    @for (card of _cards; track trackByIndex($index)) {
+    @for (card of _cards; track $index) {
       @if (card) {
         <div class="flip-items-inner-container col" [class.claimed]="card.flipped">
           <div class="flip-card">
