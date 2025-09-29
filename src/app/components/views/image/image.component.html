@@ -1,12 +1,17 @@
+@let scr = source();
+@let _alt = alt();
+@let _class = imageClass();
+@let fixSize = useFixSize();
+
 @if (loading) {
   <img src="/assets/loader.png" alt="loading" class="loader" />
 }
 <img
   [hidden]="loading"
   [ngClass]="{
-    'fix-size': useFixSize,
+    'fix-size': fixSize,
   }"
-  [class]="imageClass"
-  [alt]="alt"
+  [class]="_class"
+  [alt]="_alt"
   (load)="onLoad()"
-  [src]="source" />
+  [src]="scr" />

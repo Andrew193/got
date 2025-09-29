@@ -61,6 +61,8 @@ export class RewardService {
   constructor(private heroService: HeroesService) {}
 
   convertUserCurrencyToCoin(currency: Currency): Coin[] {
+    debugger;
+
     return [
       this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames),
       this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames),
@@ -134,6 +136,8 @@ export class RewardService {
   }
 
   private getCoin(amount: number, name: CoinNames): Coin {
+    debugger;
+
     return {
       alt: name,
       amount: amount,

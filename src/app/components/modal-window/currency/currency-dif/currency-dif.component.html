@@ -1,7 +1,7 @@
 <div class="m-0 gap-2 container">
   <div>
     <p class="m-0">You had:</p>
-    <div class="ps-2">
+    <div class="ps-2 old">
       @for (reward of oldCoins; track reward.class) {
         <app-reward-coin [coinConfig]="reward"></app-reward-coin>
       }
@@ -9,7 +9,7 @@
   </div>
   <div>
     <p class="m-0">You have:</p>
-    <div class="ps-2">
+    <div class="ps-2 new">
       @for (reward of newCoins; track reward.class) {
         <app-reward-coin [coinConfig]="reward"></app-reward-coin>
       }
@@ -17,7 +17,7 @@
   </div>
   <div>
     <p class="m-0">Difference:</p>
-    <div class="ps-2">
+    <div class="ps-2 difference">
       @for (reward of differenceInCoins; track reward.class) {
         <app-reward-coin [coinConfig]="reward"></app-reward-coin>
       }

@@ -23,9 +23,11 @@ export class CurrencyDifComponent {
   protected differenceInCoins: Coin[] = [];
 
   constructor() {
+    debugger;
     this.oldCoins = this.rewardService.convertUserCurrencyToCoin(this.data.old);
     this.newCoins = this.rewardService.convertUserCurrencyToCoin(this.data.new);
 
+    console.log(this.oldCoins, this.newCoins);
     this.oldCoins.forEach(oldCoin => {
       const newCoin = this.newCoins.find(newCoin => newCoin.class === oldCoin.class) as Coin;
 

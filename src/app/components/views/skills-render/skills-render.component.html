@@ -1,11 +1,11 @@
+@let hero = selectedHero();
+
 <div class="skills-container p-2">
   <p class="text-center fw-bold mb-0">Skills</p>
-  @for (skill of selectedHero.skills; track skill.imgSrc + $index) {
-    <div>
-      <div class="flex-row flex-nowrap">
-        <app-image [source]="skill.imgSrc" [alt]="skill.name" />
-        <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
-      </div>
+  @for (skill of hero.skills; track skill.name + $index) {
+    <div class="flex-row flex-nowrap skill-container">
+      <app-image [source]="skill.imgSrc" [alt]="skill.name" />
+      <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
     </div>
   }
 </div>

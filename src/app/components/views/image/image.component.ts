@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -6,12 +6,13 @@ import { NgClass } from '@angular/common';
   imports: [NgClass],
   templateUrl: './image.component.html',
   styleUrl: './image.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent {
-  @Input({ required: true }) source!: string;
-  @Input({ required: true }) alt!: string;
-  @Input() useFixSize = false;
-  @Input() imageClass = '';
+  source = input.required<string>();
+  alt = input.required<string>();
+  useFixSize = input(false);
+  imageClass = input('');
 
   loading = true;
 
