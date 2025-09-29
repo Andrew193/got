@@ -1,12 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Unit } from '../../../models/unit.model';
 
 @Component({
   selector: 'app-stats',
-  imports: [],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatsComponent {
-  @Input() selectedHero!: Unit;
+  selectedHero = input.required<Unit>();
 }

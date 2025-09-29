@@ -75,7 +75,7 @@
         <tabset>
           <tab [heading]="battleMode ? 'My heroes' : 'Rangers'" id="tab1">
             <div class="heroes user-heroes m-1">
-              @for (hero of userUnits; track hero.name + hero.user) {
+              @for (hero of userUnits; track hero.name + hero.x + hero.y) {
                 <ng-container
                   [ngTemplateOutlet]="asideUnits"
                   [ngTemplateOutletContext]="{
@@ -87,7 +87,7 @@
           </tab>
           <tab [heading]="battleMode ? 'Enemies' : 'Loot'">
             <div class="heroes ai-heroes m-1">
-              @for (hero of aiUnits; track hero.name + hero.user) {
+              @for (hero of aiUnits; track hero.name + hero.x + hero.y) {
                 <ng-container
                   [ngTemplateOutlet]="asideUnits"
                   [ngTemplateOutletContext]="{
@@ -243,7 +243,7 @@
 </ng-template>
 
 <ng-template #usersTopBar let-units="units">
-  @for (hero of units; track hero.name + hero.user) {
+  @for (hero of units; track hero.name + hero.x + hero.y + $index) {
     @if (hero.inBattle || hero.inBattle === undefined) {
       <img
         [src]="hero.imgSrc"

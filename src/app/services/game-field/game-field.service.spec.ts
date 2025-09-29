@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { GameFieldService } from './game-field.service';
 import { GameService } from '../game-action/game.service';
 import { Skill } from '../../models/skill.model';
@@ -88,8 +87,8 @@ describe('GameFieldService', () => {
 
   it('GameFieldService should return damage', () => {
     const units = {
-      dmgTaker: heroesService.getBrownWolf(),
-      attackDealer: heroesService.getGiant(),
+      dmgTaker: heroesService.getTileUnit(heroesService.getBrownWolf()),
+      attackDealer: heroesService.getTileUnit(heroesService.getGiant()),
     };
 
     let damage = gameFieldService.getDamage(units, { attack: 10 });

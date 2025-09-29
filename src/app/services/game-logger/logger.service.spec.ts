@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { GameLoggerService } from './logger.service';
 import { LogConfig } from '../../models/logger.model';
 import { Skill } from '../../models/skill.model';
-import { Unit } from '../../models/unit.model';
 import { HeroesService } from '../heroes/heroes.service';
+import { TileUnit } from '../../models/field.model';
 
 describe('GameLoggerService', () => {
   let gameLoggerService: GameLoggerService;
@@ -22,7 +22,7 @@ describe('GameLoggerService', () => {
     newHealth: null,
     battleMode: false,
   };
-  let testUnit: Unit;
+  let testUnit: TileUnit;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,7 +32,7 @@ describe('GameLoggerService', () => {
     gameLoggerService = TestBed.inject(GameLoggerService);
     heroesService = TestBed.inject(HeroesService);
 
-    testUnit = heroesService.getBrownWolf();
+    testUnit = heroesService.getTileUnit(heroesService.getBrownWolf());
   });
 
   it('GameLoggerService should be created', () => {

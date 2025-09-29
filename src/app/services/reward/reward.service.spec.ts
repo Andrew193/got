@@ -56,7 +56,18 @@ describe('RewardService', () => {
     });
 
     rewardService = TestBed.inject(RewardService);
-    heroServiceSpy.getAllHeroes.and.returnValue(units);
+
+    function getAllHeroes(returnNames?: false): Unit[];
+    function getAllHeroes(returnNames?: true): string[];
+    function getAllHeroes(returnNames = false): Unit[] | string[] {
+      if (returnNames) {
+        return units.map(el => el.name);
+      }
+
+      return units;
+    }
+
+    heroServiceSpy.getAllHeroes.and.callFake(getAllHeroes);
   });
 
   it('RewardService should be created', () => {

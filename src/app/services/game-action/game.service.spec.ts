@@ -4,8 +4,7 @@ import { EffectsService } from '../effects/effects.service';
 import { createDeepCopy } from '../../helpers';
 import { ALL_EFFECTS } from '../../constants';
 import { HeroesService } from '../heroes/heroes.service';
-import { Unit } from '../../models/unit.model';
-import { Position } from '../../models/field.model';
+import { Position, TileUnit } from '../../models/field.model';
 import { LogRecord } from '../../models/logger.model';
 import { ModalWindowService } from '../modal/modal-window.service';
 import { getEffectFake, getFakeEffectMap } from '../../test-related';
@@ -14,7 +13,7 @@ describe('GameService', () => {
   let gameService: GameService;
   let effectServiceSpy: jasmine.SpyObj<EffectsService>;
   let heroesService: HeroesService;
-  let testUnit: Unit;
+  let testUnit: TileUnit;
   let modalWindowServiceSpy: jasmine.SpyObj<ModalWindowService>;
 
   beforeEach(() => {
@@ -77,7 +76,7 @@ describe('GameService', () => {
     gameService = TestBed.inject(GameService);
     heroesService = TestBed.inject(HeroesService);
 
-    testUnit = heroesService.getLadyOfDragonStone();
+    testUnit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
   });
 
   it('GameService should be created', () => {
@@ -136,7 +135,7 @@ describe('GameService', () => {
   it('GameService should check passive skills', () => {
     const logs: LogRecord[] = [];
 
-    testUnit = heroesService.getLadyOfDragonStone();
+    testUnit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
     testUnit = { ...testUnit, health: 1000 };
 
     effectServiceSpy.getNumberForCommonEffects.and.returnValue(10);
@@ -227,7 +226,7 @@ describe('GameService', () => {
     const logs: LogRecord[] = [];
     const restoreBuff = effectServiceSpy.getEffect(effectServiceSpy.effects.healthRestore);
 
-    const unit = createDeepCopy({ ...testUnit, health: 1000 }) as Unit;
+    const unit = createDeepCopy({ ...testUnit, health: 1000 });
 
     const lastHealth = unit.health;
 

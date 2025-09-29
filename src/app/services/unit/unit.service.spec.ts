@@ -1,17 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { UnitService } from './unit.service';
-import { Unit } from '../../models/unit.model';
 import { EffectsService } from '../effects/effects.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HeroesService } from '../heroes/heroes.service';
 import { Skill } from '../../models/skill.model';
-import { Coordinate, Position, Tile } from '../../models/field.model';
+import { Coordinate, Position, Tile, TileUnit } from '../../models/field.model';
 
 describe('UnitService', () => {
   let unitService: UnitService;
   let heroService: HeroesService;
   let effectsService: EffectsService;
-  let units: Unit[];
+  let units: TileUnit[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -23,13 +22,13 @@ describe('UnitService', () => {
     effectsService = TestBed.inject(EffectsService);
 
     units = [
-      { ...heroService.getGiant(), x: 1, y: 1 },
+      { ...heroService.getTileUnit(heroService.getGiant()), x: 1, y: 1 },
       {
-        ...heroService.getLadyOfDragonStone(),
+        ...heroService.getTileUnit(heroService.getLadyOfDragonStone()),
         x: 0,
         y: 0,
       },
-      { ...heroService.getBrownWolf(), x: 2, y: 4 },
+      { ...heroService.getTileUnit(heroService.getBrownWolf()), x: 2, y: 4 },
     ];
   });
 

@@ -2,13 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { EffectsService } from './effects.service';
 import { Effect } from '../../models/effect.model';
 import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS } from '../../constants';
-import { Unit } from '../../models/unit.model';
 import { HeroesService } from '../heroes/heroes.service';
+import { TileUnit } from '../../models/field.model';
 
 describe('EffectsService', () => {
   let effectsService: EffectsService;
-  let heroService: HeroesService;
-  let unit: Unit;
+  let heroesService: HeroesService;
+  let unit: TileUnit;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,9 +16,9 @@ describe('EffectsService', () => {
     });
 
     effectsService = TestBed.inject(EffectsService);
-    heroService = TestBed.inject(HeroesService);
+    heroesService = TestBed.inject(HeroesService);
 
-    unit = heroService.getLadyOfDragonStone();
+    unit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
   });
 
   it('EffectsService should be created', () => {
