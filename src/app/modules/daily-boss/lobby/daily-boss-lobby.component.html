@@ -64,18 +64,19 @@
     </div>
     <div class="col-lg-12 col-sm-12 d-flex flex-wrap">
       <div class="col-lg-6 col-sm-12">
-        <!--        <app-heroes-select-->
-        <!--          [allHeroes]="allHeroes"-->
-        <!--          [isUser]="true"-->
-        <!--          [containerClass]="'border-radius-none border-end-0'"-->
-        <!--          [addUserUnit]="addUserUnit"></app-heroes-select>-->
+        <app-heroes-select
+          [allHeroes]="allUnitsForSelect"
+          [isUser]="true"
+          [containerClass]="'border-radius-none border-end-0'"
+          [addUserUnit]="addUserUnit"></app-heroes-select>
       </div>
       <div class="col-lg-6 col-sm-12">
-        <app-heroes-select-preview
-          *ngIf="chosenUnits.length"
-          [units]="chosenUnits"
-          [containerClass]="'border-radius-none border-end-0'"
-          [user]="true"></app-heroes-select-preview>
+        @if (chosenUnits.length) {
+          <app-heroes-select-preview
+            [units]="chosenUnits"
+            [containerClass]="'border-radius-none border-end-0'"
+            [user]="true"></app-heroes-select-preview>
+        }
       </div>
     </div>
     <div class="mt-2">

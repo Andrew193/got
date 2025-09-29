@@ -1,7 +1,11 @@
+@let _ai = aiUnits();
+@let _user = userUnits();
+@let mode = battleMode();
+
 <app-game-field
-  [aiUnits]="aiUnits()"
-  [userUnits]="userUnits()"
-  [battleMode]="battleMode()"
+  [aiUnits]="_ai"
+  [userUnits]="_user"
+  [battleMode]="mode"
   [gameResultsRedirect]="gameResultsRedirect">
   <ng-container ngProjectAs="bottom-navigation">
     <ng-content select="bottom-navigation"></ng-content>

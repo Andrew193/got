@@ -3,6 +3,7 @@ import { EffectsService } from '../effects/effects.service';
 import { PreviewUnit, Unit } from '../../models/unit.model';
 import { ContentService, ContentTypes } from '../abstract/content/content-service.service';
 import { EffectsValues } from '../../constants';
+import { TileUnit } from '../../models/field.model';
 
 interface UnitConfig {
   level: number;
@@ -1264,6 +1265,36 @@ export class HeroesService extends ContentService {
         imgSrc: skil.imgSrc,
         description: skil.description,
       })),
+    };
+  }
+
+  getTileUnit(unit: Unit): TileUnit {
+    return {
+      onlyHealer: unit.onlyHealer || false,
+      rage: unit.rage,
+      attack: unit.attack,
+      attackRange: unit.attackRange,
+      canAttack: unit.canAttack,
+      canCross: unit.canCross,
+      canMove: unit.canMove,
+      defence: unit.defence,
+      dmgReducedBy: unit.dmgReducedBy,
+      effects: unit.effects,
+      healer: unit.healer || false,
+      health: unit.health,
+      heroType: unit.heroType,
+      ignoredDebuffs: unit.ignoredDebuffs,
+      imgSrc: unit.imgSrc,
+      inBattle: unit.inBattle || false,
+      maxCanCross: unit.canCross,
+      maxHealth: unit.maxHealth,
+      name: unit.name,
+      reducedDmgFromDebuffs: unit.reducedDmgFromDebuffs,
+      skills: unit.skills,
+      user: unit.user,
+      willpower: unit.willpower,
+      x: unit.x,
+      y: unit.y,
     };
   }
 

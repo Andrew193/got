@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { StatsComponent } from '../../../components/views/stats/stats.component';
 import { HeroesService } from '../../../services/heroes/heroes.service';
-import { Unit } from '../../../models/unit.model';
+import { PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
-import { DecimalPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DecimalPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { createDeepCopy, trackByLevel } from '../../../helpers';
 import { Router } from '@angular/router';
@@ -22,15 +22,17 @@ import { frontRoutes } from '../../../constants';
     NgTemplateOutlet,
     HeroesSelectComponent,
     HeroesSelectPreviewComponent,
-    NgIf,
     DecimalPipe,
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
 })
 export class DailyBossLobbyComponent {
+  allUnits: Unit[] = [];
+  allUnitsForSelect: SelectableUnit[] = [];
+
   selectedHero!: Unit;
-  chosenUnits: Unit[] = [];
+  chosenUnits: PreviewUnit[] = [];
   config: { level: number; heading: string }[] = [
     { level: 1, heading: 'Super Easy' },
     { level: 2, heading: 'Easy' },
@@ -43,14 +45,17 @@ export class DailyBossLobbyComponent {
     private route: Router,
     public dailyBossService: DailyBossService,
   ) {
+    this.allUnits = this.heroesService.getAllHeroes();
+    this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
+
     this.selectedHero = this.heroesService.getDailyBossVersion1();
   }
 
-  public addUserUnit = (unit: Unit): boolean => {
+  public addUserUnit = (unit: SelectableUnit): boolean => {
     const index = this.chosenUnits.findIndex(el => el.name === unit.name);
 
     if (index === -1 && this.chosenUnits.length < 5) {
-      this.chosenUnits = [...this.chosenUnits, unit];
+      this.chosenUnits = [...this.chosenUnits, this.heroesService.getPreviewUnit(unit.name)];
 
       return true;
     } else {
@@ -79,10 +84,6 @@ export class DailyBossLobbyComponent {
         units: this.chosenUnits.map(el => el.name),
       },
     });
-  }
-
-  get allHeroes() {
-    return this.heroesService.getAllHeroes();
   }
 
   protected readonly trackByLevel = trackByLevel;

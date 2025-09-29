@@ -9,12 +9,17 @@ import {
 } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
-import { Unit } from '../../../models/unit.model';
-import { Skill } from '../../../models/skill.model';
+import { Skill, TileUnitSkill } from '../../../models/skill.model';
 import { GameLoggerService } from '../../../services/game-logger/logger.service';
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
-import { GameFieldVars, Position, Tile, TilesToHighlight } from '../../../models/field.model';
+import {
+  GameFieldVars,
+  Position,
+  Tile,
+  TilesToHighlight,
+  TileUnit,
+} from '../../../models/field.model';
 import { LogRecord } from '../../../models/logger.model';
 
 export interface GameField {
@@ -22,6 +27,8 @@ export interface GameField {
   gameConfig: any[][];
   possibleMoves: Position[];
 }
+
+type TopBarUnitConfig = Pick<TileUnit, 'inBattle' | 'imgSrc' | 'health' | 'name' | 'user'>;
 
 @Component({
   selector: 'app-abstract-game-field',
@@ -34,27 +41,30 @@ export abstract class AbstractGameFieldComponent
   extends GameFieldVars
   implements OnInit, OnDestroy, OnChanges
 {
-  @Input() userUnits: Unit[] = [];
-  @Input() aiUnits: Unit[] = [];
+  @Input() userUnits: TileUnit[] = [];
+  @Input() aiUnits: TileUnit[] = [];
   @Input() battleMode = true;
+  @Input() gameResultsRedirect: (realAiUnits: TileUnit[]) => void = () => {};
+
   autoFight = false;
+  usersTopBarConfig: { units: TopBarUnitConfig[] } = { units: [] };
+  aiTopBarConfig: { units: TopBarUnitConfig[] } = { units: [] };
 
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
   }
 
-  @Input() gameResultsRedirect: (realAiUnits: Unit[]) => void = () => {};
   log: LogRecord[] = [];
   turnUser = true;
   turnCount = 0;
   maxTurnCount = 20;
   _turnCount: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   showAttackBar = false;
-  skillsInAttackBar: Skill[] = [];
+  skillsInAttackBar: TileUnitSkill[] = [];
 
   ignoreMove = false;
-  clickedEnemy: Unit | null = null;
-  selectedEntity: Unit | null = null;
+  clickedEnemy: TileUnit | null = null;
+  selectedEntity: TileUnit | null = null;
   possibleAttackMoves: Position[] = [];
 
   constructor(
@@ -69,7 +79,7 @@ export abstract class AbstractGameFieldComponent
     });
   }
 
-  recreateGameConfig(newUserUnit: Unit[], newAiUnit: Unit[]) {
+  recreateGameConfig(newUserUnit: TileUnit[], newAiUnit: TileUnit[]) {
     this.ngOnDestroy();
 
     if (newUserUnit) {
@@ -81,10 +91,29 @@ export abstract class AbstractGameFieldComponent
     }
 
     this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
+    //Init top bar
+    this.createTopBar();
   }
 
-  trackByLogRecord(index: number, log: LogRecord) {
-    return log.message;
+  shouldRenderAction(hero: TileUnit, type: 'canMove' | 'canAttack') {
+    return this.battleMode && (hero.inBattle || hero.inBattle === undefined)
+      ? this.battleMode
+      : hero.user
+        ? hero[type] && hero.health
+        : hero.user;
+  }
+
+  createTopBar() {
+    const convert = (el: TileUnit) => ({
+      imgSrc: el.imgSrc,
+      inBattle: el.inBattle,
+      name: el.name,
+      health: el.health,
+      user: el.user,
+    });
+
+    this.usersTopBarConfig = { units: this.userUnits.map(convert) };
+    this.aiTopBarConfig = { units: this.aiUnits.map(convert) };
   }
 
   showPossibleMoves(location: Position, radius: number, diagCheck = false) {
@@ -92,43 +121,43 @@ export abstract class AbstractGameFieldComponent
   }
 
   abstract addEffectToUnit(
-    units: Unit[],
+    units: TileUnit[],
     unitIndex: number,
-    skill: Skill,
+    skill: TileUnitSkill,
     addRangeEffects: boolean,
   ): void;
 
-  abstract addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill): void;
+  abstract addBuffToUnit(units: TileUnit[], unitIndex: number, skill: Skill): void;
 
   abstract attack(skill: Skill): void;
 
   abstract checkDebuffs(
-    unit: Unit,
+    unit: TileUnit,
     decreaseRestoreCooldown: boolean,
     canRestoreHealth: boolean,
-  ): Unit;
+  ): TileUnit;
 
   universalRangeAttack(
-    skill: Skill,
-    clickedEnemy: Unit,
-    enemiesArray: Unit[],
+    skill: TileUnitSkill,
+    clickedEnemy: TileUnit,
+    enemiesArray: TileUnit[],
     userCheck: boolean,
-    attacker: Unit,
+    attacker: TileUnit,
   ) {
     if (skill.attackInRange) {
       const tilesInRange = this.abstractFieldS.getFieldsInRadius(
         this.gameConfig,
-        this.unitS.getPositionFromCoordinate(clickedEnemy as Unit),
+        this.unitS.getPositionFromCoordinate(clickedEnemy as TileUnit),
         skill.attackRange as number,
         true,
       );
-      const enemiesInRange: Unit[] = tilesInRange
+      const enemiesInRange: TileUnit[] = tilesInRange
         .map(tile =>
           enemiesArray.find(
             unit => unit.x === tile.i && unit.y === tile.j && unit.user === userCheck,
           ),
         )
-        .filter(e => !!e) as Unit[];
+        .filter(e => !!e) as TileUnit[];
 
       for (const enemyInRange of enemiesInRange) {
         const enemyIndex = this.unitS.findUnitIndex(enemiesArray, enemyInRange);
@@ -157,9 +186,9 @@ export abstract class AbstractGameFieldComponent
     enemyIndex: number,
     attack: number,
     defence: number,
-    dmgTaker: Unit[],
-    attackDealer: Unit,
-    skill: Skill,
+    dmgTaker: TileUnit[],
+    attackDealer: TileUnit,
+    skill: TileUnitSkill,
   ) {
     const damage = this.abstractFieldS.getDamage(
       { dmgTaker: dmgTaker[enemyIndex], attackDealer },
@@ -185,10 +214,15 @@ export abstract class AbstractGameFieldComponent
     }
   }
 
-  makeHealerMove(targetIndex: number | null, skill: Skill, healer: Unit, units: Unit[]) {
+  makeHealerMove(
+    targetIndex: number | null,
+    skill: TileUnitSkill,
+    healer: TileUnit,
+    units: TileUnit[],
+  ) {
     const healedHealth = healer.maxHealth * (skill.healM as number);
 
-    const getNewHealth = (unit: Unit) => {
+    const getNewHealth = (unit: TileUnit) => {
       return unit.health + healedHealth > unit.maxHealth
         ? unit.maxHealth
         : unit.health + healedHealth;
@@ -227,7 +261,7 @@ export abstract class AbstractGameFieldComponent
     return tilesToHighlight;
   }
 
-  updateGameFieldTile(i: any, j: any, entity: Unit | undefined = undefined, active = false) {
+  updateGameFieldTile(i: any, j: any, entity: TileUnit | undefined = undefined, active = false) {
     this.gameConfig[i][j] = {
       ...this.gameConfig[i][j],
       entity: entity,
@@ -235,7 +269,7 @@ export abstract class AbstractGameFieldComponent
     };
   }
 
-  checkAndShowAttackBar(clickedTile: Unit) {
+  checkAndShowAttackBar(clickedTile: TileUnit) {
     if (clickedTile.user) {
       return null;
     }

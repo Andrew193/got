@@ -36,6 +36,10 @@ export class GiftNpcService implements RewardComponentInterface {
     public rewardService: RewardService,
   ) {}
 
+  convertToTileUnit(unit: Unit) {
+    return this.heroService.getTileUnit(unit);
+  }
+
   getSpecialGiftReward() {
     return this.rewardService.getReward(1, this.specialGiftItems);
   }

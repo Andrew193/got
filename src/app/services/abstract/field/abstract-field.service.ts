@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameField } from '../../../components/abstract/abstract-game-field/abstract-game-field.component';
 import { createDeepCopy } from '../../../helpers';
-import { Unit } from '../../../models/unit.model';
-import { GameFieldVars, Position, Tile } from '../../../models/field.model';
+import { GameFieldVars, Position, Tile, TileUnit } from '../../../models/field.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,14 +20,14 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     return grid;
   }
 
-  populateGameFieldWithUnits(userUnits: Unit[], aiUnits: Unit[]) {
+  populateGameFieldWithUnits(userUnits: TileUnit[], aiUnits: TileUnit[]) {
     this.gameConfig = this.getGameField(userUnits, aiUnits, this.getDefaultGameField());
 
     return this.gameConfig;
   }
 
   abstract getDamage(
-    unitConfig: { dmgTaker: Unit; attackDealer: Unit },
+    unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit },
     config: { attack: number },
   ): number;
 
@@ -90,7 +89,12 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     return this.gameField;
   }
 
-  getGameField(userUnits: Unit[], aiUnits: Unit[], gameField: Tile[][], objects: Tile[] = []) {
+  getGameField(
+    userUnits: TileUnit[],
+    aiUnits: TileUnit[],
+    gameField: Tile[][],
+    objects: Tile[] = [],
+  ) {
     const field = createDeepCopy(gameField);
     //const unplayableObjects = [{x:0, y:1},{x:1, y:1},{x:2, y:1},{x:3, y:1},{x:4, y:1},{x:5, y:1}, {x:6, y:1}]
 
@@ -110,14 +114,14 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
       field[ai.x][ai.y] = {
         ...field[ai.x][ai.y],
         active: false,
-        entity: {} as Unit,
+        entity: {} as TileUnit,
       };
     });
 
     return field;
   }
 
-  resetMoveAndAttack(unitArray: Unit[] | Unit[][], setValue = true) {
+  resetMoveAndAttack(unitArray: TileUnit[] | TileUnit[][], setValue = true) {
     unitArray.forEach((aiUnit, index) => {
       if (Array.isArray(aiUnit)) {
         this.resetMoveAndAttack(aiUnit, setValue);

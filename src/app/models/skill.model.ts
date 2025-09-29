@@ -23,3 +23,24 @@ export interface Skill extends SkillSrc {
 export interface SkillSrc {
   imgSrc: string;
 }
+
+export type TileUnitSkill = Pick<
+  Skill,
+  | 'remainingCooldown'
+  | 'name'
+  | 'passive'
+  | 'restoreSkill'
+  | 'buffs'
+  | 'imgSrc'
+  | 'inRangeDebuffs'
+  | 'debuffs'
+  | 'addBuffsBeforeAttack'
+  | 'healAll'
+  | 'cooldown'
+  | 'healM'
+  | 'dmgM'
+  | 'attackInRange'
+  | 'attackRange'
+  | 'attackInRangeM'
+  | 'description'
+>;

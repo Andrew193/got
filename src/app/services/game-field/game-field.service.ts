@@ -1,10 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { AbstractFieldService } from '../abstract/field/abstract-field.service';
 import { GameService } from '../game-action/game.service';
-import { Skill } from '../../models/skill.model';
-import { Unit } from '../../models/unit.model';
+import { Skill, TileUnitSkill } from '../../models/skill.model';
 import { getDiagonals } from '../../constants';
-import { Position } from '../../models/field.model';
+import { Position, TileUnit } from '../../models/field.model';
 import { NumbersService } from '../numbers/numbers.service';
 
 @Injectable({
@@ -17,13 +16,16 @@ export class GameFieldService extends AbstractFieldService {
     super();
   }
 
-  chooseAiSkill(skills: Skill[]): Skill {
+  chooseAiSkill(skills: TileUnitSkill[]): TileUnitSkill {
     const possibleActiveSkill = skills.find(skill => skill.cooldown && !skill.remainingCooldown);
 
     return possibleActiveSkill || (skills.find(skill => !skill.cooldown) as Skill);
   }
 
-  getDamage(unitConfig: { dmgTaker: Unit; attackDealer: Unit }, config: { attack: number }) {
+  getDamage(
+    unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit },
+    config: { attack: number },
+  ) {
     const fixedDefence = this.gameActionService.getFixedDefence(
       unitConfig.dmgTaker.defence,
       unitConfig.dmgTaker,

@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
 import { createDeepCopy } from '../../helpers';
-import { Unit } from '../../models/unit.model';
-import { Skill } from '../../models/skill.model';
-import { Coordinate, Position, Tile } from '../../models/field.model';
+import { TileUnitSkill } from '../../models/skill.model';
+import { Coordinate, Position, Tile, TileUnit } from '../../models/field.model';
 import { Effect } from '../../models/effect.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UnitService {
-  findUnitIndex(units: Unit[], unit: Partial<Unit> | null) {
+  findUnitIndex(units: TileUnit[], unit: Partial<TileUnit> | null) {
     return units.findIndex(enemy => enemy.x === unit?.x && enemy.y === unit?.y);
   }
 
-  recountSkillsCooldown = (skills: Skill[]) =>
+  recountSkillsCooldown = (skills: TileUnitSkill[]) =>
     skills.map(skill => ({
       ...skill,
       remainingCooldown: skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0,
     }));
 
-  findSkillIndex(skills: Skill[], selectedSkill: Skill) {
+  findSkillIndex(skills: TileUnitSkill[], selectedSkill: TileUnitSkill) {
     return skills.findIndex(
       skill => skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name,
     );
@@ -49,11 +48,15 @@ export class UnitService {
   }
 
   addEffectToUnit(
-    units: Unit[],
+    units: TileUnit[],
     unitIndex: number,
-    skill: Skill,
+    skill: TileUnitSkill,
     addRangeEffects = false,
-    getEffectsWithIgnoreFilter: (unit: Unit, skill: Skill, addRangeEffects: boolean) => Effect[],
+    getEffectsWithIgnoreFilter: (
+      unit: TileUnit,
+      skill: TileUnitSkill,
+      addRangeEffects: boolean,
+    ) => Effect[],
   ) {
     const unitsCopy = createDeepCopy(units);
 
@@ -65,7 +68,7 @@ export class UnitService {
     return unitsCopy[unitIndex];
   }
 
-  addBuffToUnit(units: Unit[], unitIndex: number, skill: Skill) {
+  addBuffToUnit(units: TileUnit[], unitIndex: number, skill: TileUnitSkill) {
     const unitsCopy = createDeepCopy(units);
 
     if (skill?.buffs?.length) {
@@ -78,7 +81,7 @@ export class UnitService {
     return unitsCopy[unitIndex];
   }
 
-  updateGridUnits(unitsArray: Unit[], gameConfig: Tile[][]) {
+  updateGridUnits(unitsArray: TileUnit[], gameConfig: Tile[][]) {
     const gameConfigCopy = createDeepCopy(gameConfig);
 
     unitsArray.forEach(unit => {

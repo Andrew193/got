@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { Unit } from '../../models/unit.model';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
-import { Coordinate, Tile, TilesToHighlight } from '../../models/field.model';
+import { Coordinate, Tile, TilesToHighlight, TileUnit } from '../../models/field.model';
 
 @Component({
   selector: 'app-basic-game-board',
@@ -17,7 +16,7 @@ export class BasicGameBoardComponent {
 
   @Output() moveEntity = new EventEmitter<Tile>();
   @Output() highlightMakeMove = new EventEmitter<{
-    entity: Unit;
+    entity: TileUnit;
     event: MouseEvent;
     callback: (v: TilesToHighlight[]) => void;
   }>();
@@ -29,7 +28,7 @@ export class BasicGameBoardComponent {
     this.setTilesToHighlight([]);
   }
 
-  onHighlightMakeMove(entity: Unit, event: MouseEvent) {
+  onHighlightMakeMove(entity: TileUnit, event: MouseEvent) {
     this.highlightMakeMove.emit({
       entity,
       event,
@@ -46,8 +45,8 @@ export class BasicGameBoardComponent {
     return this.highlightMap.get(`${tile.x}:${tile.y}`) === cls;
   }
 
-  showActionButtonCondition(tile: Tile, type: string) {
-    const entity = (tile as Tile).entity as Unit;
+  showActionButtonCondition(tile: Tile, type: keyof TileUnit) {
+    const entity = (tile as Tile).entity as TileUnit;
 
     return this.battleMode
       ? entity[type] &&

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Skill } from '../../models/skill.model';
+import { TileUnitSkill } from '../../models/skill.model';
 import { Effect } from '../../models/effect.model';
-import { Unit } from '../../models/unit.model';
 import { LogConfig, LogRecord } from '../../models/logger.model';
+import { TileUnit } from '../../models/field.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +11,8 @@ export class GameLoggerService {
   logEvent(
     props: LogConfig,
     isUser: boolean,
-    skill: Skill | Effect,
-    unit: Unit,
+    skill: TileUnitSkill | Effect,
+    unit: TileUnit,
     message?: string,
   ): LogRecord {
     const logMsg = (mgs: string) => {

@@ -4,12 +4,11 @@ import { ModalWindowService } from '../modal/modal-window.service';
 import { EffectsService } from '../effects/effects.service';
 import { UnitService } from '../unit/unit.service';
 import { heroType } from '../heroes/heroes.service';
-import { Unit } from '../../models/unit.model';
-import { Skill, SkillSrc } from '../../models/skill.model';
+import { Skill, SkillSrc, TileUnitSkill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
 import { GameLoggerService } from '../game-logger/logger.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
-import { Position } from '../../models/field.model';
+import { Position, TileUnit } from '../../models/field.model';
 import { LogRecord } from '../../models/logger.model';
 
 @Injectable({
@@ -22,8 +21,8 @@ export class GameService {
     closeBtnLabel: '',
     callback: () => {},
   };
-  private aiUnits: Unit[] = [];
-  private userUnits: Unit[] = [];
+  private aiUnits: TileUnit[] = [];
+  private userUnits: TileUnit[] = [];
 
   constructor(
     private unitService: UnitService,
@@ -32,7 +31,7 @@ export class GameService {
     private modalWindowService: ModalWindowService,
   ) {}
 
-  getFixedDefence(defence: number, unit: Unit) {
+  getFixedDefence(defence: number, unit: TileUnit) {
     const defReducedEffect = unit.effects.find(
       (effect): effect is EffectForMult => effect.type === this.eS.effects.defBreak,
     );
@@ -41,7 +40,7 @@ export class GameService {
   }
 
   getCanGetToPosition(
-    aiUnit: Unit,
+    aiUnit: TileUnit,
     shortestPathToUserUnit: Position[],
     userUnitPosition: Position,
   ) {
@@ -87,7 +86,7 @@ export class GameService {
     return canGetToUnit;
   }
 
-  getFixedAttack(attack: number, unit: Unit) {
+  getFixedAttack(attack: number, unit: TileUnit) {
     const attackReducedEffect = unit.effects.find((effect): effect is EffectForMult => {
       return unit.heroType === heroType.ATTACK
         ? effect.type === this.eS.effects.attackBreak
@@ -98,7 +97,7 @@ export class GameService {
   }
 
   //Check buffs ( health restore )
-  checkPassiveSkills(units: Unit[], logs: LogRecord[]) {
+  checkPassiveSkills(units: TileUnit[], logs: LogRecord[]) {
     for (let index = 0; index < units.length; index++) {
       const unit = units[index];
 
@@ -120,7 +119,7 @@ export class GameService {
     }
   }
 
-  restoreHealthForUnit(unit: Unit, buff: Effect, logs: LogRecord[], skill: SkillSrc) {
+  restoreHealthForUnit(unit: TileUnit, buff: Effect, logs: LogRecord[], skill: SkillSrc) {
     const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
 
     this.logRestoreHealth(logs, skill, unit, restoredHealth);
@@ -129,7 +128,12 @@ export class GameService {
     return unit;
   }
 
-  private logRestoreHealth(logs: LogRecord[], skill: SkillSrc, unit: Unit, restoredHealth: number) {
+  private logRestoreHealth(
+    logs: LogRecord[],
+    skill: SkillSrc,
+    unit: TileUnit,
+    restoredHealth: number,
+  ) {
     logs.push({
       info: true,
       imgSrc: skill.imgSrc,
@@ -137,7 +141,7 @@ export class GameService {
     });
   }
 
-  private checkEffectsForHealthRestore(unit: Unit, logs: LogRecord[]) {
+  private checkEffectsForHealthRestore(unit: TileUnit, logs: LogRecord[]) {
     unit.effects.forEach(effect => {
       if (effect.type === this.eS.effects.healthRestore) {
         unit = this.restoreHealthForUnit(unit, effect, logs, {
@@ -147,7 +151,7 @@ export class GameService {
     });
   }
 
-  private getReducedDmgForEffects(unit: Unit, dmg: number, debuff?: Effect) {
+  private getReducedDmgForEffects(unit: TileUnit, dmg: number, debuff?: Effect) {
     let isDmgReduced = false;
 
     if (debuff) {
@@ -166,9 +170,13 @@ export class GameService {
   }
 
   //Shows skills in attack bar ( user units ) and decreases cooldonws by 1 for used skills
-  selectSkillsAndRecountCooldown(units: Unit[], selectedUnit: Unit, recountCooldown = true) {
+  selectSkillsAndRecountCooldown(
+    units: TileUnit[],
+    selectedUnit: TileUnit,
+    recountCooldown = true,
+  ) {
     const unitIndex = this.unitService.findUnitIndex(units, selectedUnit);
-    let skills: Skill[] = createDeepCopy(selectedUnit?.skills as Skill[]);
+    let skills: TileUnitSkill[] = createDeepCopy(selectedUnit?.skills as Skill[]);
 
     if (recountCooldown) {
       skills = this.unitService.recountSkillsCooldown(skills);
@@ -179,14 +187,18 @@ export class GameService {
     return skills;
   }
 
-  recountCooldownForUnit(unit: Unit) {
+  recountCooldownForUnit(unit: TileUnit) {
     return {
       ...unit,
-      skills: this.unitService.recountSkillsCooldown(createDeepCopy(unit.skills)),
+      skills: this.unitService.recountSkillsCooldown(unit.skills),
     };
   }
 
-  checkCloseFight(userUnits: Unit[], aiUnits: Unit[], callback: (realAiUnits: any) => void) {
+  checkCloseFight(
+    userUnits: TileUnit[],
+    aiUnits: TileUnit[],
+    callback: (realAiUnits: any) => void,
+  ) {
     const realUserUnits = userUnits[0].user ? userUnits : aiUnits;
     const realAiUnits = !aiUnits[0].user ? aiUnits : userUnits;
 
@@ -220,17 +232,17 @@ export class GameService {
     }
   }
 
-  isDead(units: Unit[]) {
+  isDead(units: TileUnit[]) {
     return units.every(userUnit => !userUnit.health);
   }
 
   checkDebuffs(
-    unit: Unit,
+    unit: TileUnit,
     decreaseRestoreCooldown = true,
     battleMode: boolean,
     canRestoreHealth: boolean,
   ) {
-    let unitCopy: Unit = createDeepCopy(unit);
+    let unitCopy: TileUnit = createDeepCopy(unit);
 
     const unitWithUpdatedCooldown = this.updateEffectDuration(
       unitCopy,
@@ -253,7 +265,7 @@ export class GameService {
   }
 
   private updateEffectDuration(
-    unit: Unit,
+    unit: TileUnit,
     decreaseRestoreCooldown: boolean,
     battleMode: boolean,
     checkHealthRestore = false,
@@ -304,7 +316,7 @@ export class GameService {
     return { log, unit };
   }
 
-  getCanCross(entity: Unit) {
+  getCanCross(entity: TileUnit) {
     const isFrozen = entity.effects.findIndex(effect => effect.type === this.eS.effects.freezing);
     const isRooted = entity.effects.findIndex(effect => effect.type === this.eS.effects.root);
 
@@ -317,7 +329,7 @@ export class GameService {
       : entity.attackRange;
   }
 
-  private processEffects(unit: Unit, battleMode: boolean) {
+  private processEffects(unit: TileUnit, battleMode: boolean) {
     const log: LogRecord[] = [];
 
     unit.effects.forEach(effect => {
@@ -363,9 +375,9 @@ export class GameService {
    */
   aiUnitAttack(
     index: number,
-    units: Unit[],
+    units: TileUnit[],
     battleMode: boolean,
-    makeAiMove: (aiUnit: Unit, index: number) => void,
+    makeAiMove: (aiUnit: TileUnit, index: number) => void,
     logs: LogRecord[],
   ) {
     let aiUnit = units[index];

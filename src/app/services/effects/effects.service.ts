@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Unit } from '../../models/unit.model';
-import { Skill } from '../../models/skill.model';
+import { TileUnitSkill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
 import { heroType } from '../heroes/heroes.service';
 import { createDeepCopy } from '../../helpers';
 import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS, Effects, EffectsValues } from '../../constants';
 import { NumbersService } from '../numbers/numbers.service';
+import { TileUnit } from '../../models/field.model';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +38,7 @@ export class EffectsService {
     return Object.values(this.effects);
   }
 
-  getMobilityStatsBasedOnEffect(effect: Effect, unit: Unit) {
+  getMobilityStatsBasedOnEffect(effect: Effect, unit: TileUnit) {
     let message = '';
     const mobility: string[] = [this.effects.freezing, this.effects.root];
 
@@ -52,7 +52,7 @@ export class EffectsService {
     return { unit: unitCopy, message: message };
   }
 
-  recountStatsBasedOnEffect(effect: Effect, unit: Unit) {
+  recountStatsBasedOnEffect(effect: Effect, unit: TileUnit) {
     const result = this.getMobilityStatsBasedOnEffect(effect, unit);
     let message = result.message;
 
@@ -68,7 +68,7 @@ export class EffectsService {
     return { unit, message: message };
   }
 
-  restoreStatsAfterEffect(effect: Effect, config: { unit: Unit; message: string }) {
+  restoreStatsAfterEffect(effect: Effect, config: { unit: TileUnit; message: string }) {
     let message = '';
 
     if (effect.type === this.effects.freezing || effect.type === this.effects.root) {
@@ -88,7 +88,7 @@ export class EffectsService {
     return map[effect.type];
   }
 
-  getEffectsWithIgnoreFilter(unit: Unit, skill: Skill, addRangeEffects = false) {
+  getEffectsWithIgnoreFilter(unit: TileUnit, skill: TileUnitSkill, addRangeEffects = false) {
     const debuffsToSet = (addRangeEffects ? skill.inRangeDebuffs : skill.debuffs)?.filter(
       debuff => !unit.ignoredDebuffs.includes(debuff.type),
     );
@@ -96,7 +96,7 @@ export class EffectsService {
     return [...unit.effects, ...(debuffsToSet || [])];
   }
 
-  getBoostedParameterCover(unit: Unit, effects: Effect[]) {
+  getBoostedParameterCover(unit: TileUnit, effects: Effect[]) {
     const isAttackHero = unit.heroType === heroType.ATTACK;
 
     return this.getBoostedParameter(

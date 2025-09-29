@@ -11,8 +11,8 @@ import { UnitService } from '../../services/unit/unit.service';
 import { BasicGameBoardComponent } from '../basic-game-board/basic-game-board.component';
 import { GameLoggerService } from '../../services/game-logger/logger.service';
 import { BasicGameFieldComponent } from '../abstract/basic-game-field/basic-game-field.component';
-import { trackByEffect, trackBySkill, trackByUnit } from '../../helpers';
-import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { trackBySkill } from '../../helpers';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-game-field',
@@ -25,8 +25,6 @@ import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
     BasicGameBoardComponent,
     NgClass,
     NgTemplateOutlet,
-    NgForOf,
-    NgIf,
   ],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss',
@@ -44,6 +42,4 @@ export class GameFieldComponent extends BasicGameFieldComponent {
   }
 
   protected readonly trackBySkill = trackBySkill;
-  protected readonly trackByUnit = trackByUnit;
-  protected readonly trackByEffect = trackByEffect;
 }

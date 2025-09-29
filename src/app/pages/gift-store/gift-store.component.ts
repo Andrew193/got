@@ -5,7 +5,6 @@ import { DisplayReward, RewardService } from '../../services/reward/reward.servi
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { Router, RouterLink } from '@angular/router';
 import { GiftService } from '../../services/gift/gift.service';
-import { Unit, UnitWithReward } from '../../models/unit.model';
 import { Observable, tap } from 'rxjs';
 import { TODAY } from '../../constants';
 import {
@@ -15,6 +14,7 @@ import {
 import { GiftConfig } from '../../models/gift.model';
 import { UsersService } from '../../services/users/users.service';
 import { Currency } from '../../services/users/users.interfaces';
+import { TileUnit, TileUnitWithReward } from '../../models/field.model';
 
 @Component({
   selector: 'app-gift-store',
@@ -26,8 +26,8 @@ export class GiftStoreComponent implements OnInit {
   notificationService = inject(NotificationsService);
 
   loot: (DisplayReward | null)[] = [];
-  aiUnits: UnitWithReward[] = [];
-  userUnits: Unit[] = [];
+  aiUnits: TileUnitWithReward[] = [];
+  userUnits: TileUnit[] = [];
   private giftConfig!: GiftConfig;
 
   items = [
@@ -53,12 +53,12 @@ export class GiftStoreComponent implements OnInit {
 
   init() {
     this.userUnits = [
-      {
+      this.npcService.convertToTileUnit({
         ...this.npcService.getUserForNPC(),
         x: 0,
         y: 0,
         inBattle: true,
-      },
+      }),
     ];
     this.aiUnits = [];
 
@@ -69,6 +69,8 @@ export class GiftStoreComponent implements OnInit {
         imgSrc: el.reward.src,
         user: false,
         canMove: false,
+        healer: el.healer || false,
+        onlyHealer: el.onlyHealer || false,
       }))
       .map(el => {
         const elType = this.rewardService.getReward(1, this.items);
@@ -81,6 +83,8 @@ export class GiftStoreComponent implements OnInit {
               reward: this.npcService.getSpecialGiftReward(),
               inBattle: true,
               user: false,
+              healer: el.healer || false,
+              onlyHealer: el.onlyHealer || false,
             }
           : el;
       });
@@ -129,7 +133,7 @@ export class GiftStoreComponent implements OnInit {
       .subscribe();
   }
 
-  public gameResultsRedirect = (realAiUnits: Unit[]) => {
+  public gameResultsRedirect = (realAiUnits: TileUnitWithReward[] | TileUnit[]) => {
     this.loot = this.aiUnits.map((el, index) => (!realAiUnits[index].health ? el.reward : null));
   };
 }

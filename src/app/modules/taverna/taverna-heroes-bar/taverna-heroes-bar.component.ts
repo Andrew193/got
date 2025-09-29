@@ -12,7 +12,7 @@ import { map, Observable, startWith } from 'rxjs';
 import { AutocompleteMatInputComponent } from '../../../components/data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
 import { BasePaginationComponent } from '../../../components/abstract/base-pagination/base-pagination.component';
 import { frontRoutes } from '../../../constants';
-import { trackByUnit } from '../../../helpers';
+import { trackByFullUnit } from '../../../helpers';
 import { NgForOf } from '@angular/common';
 
 @Component({
@@ -92,5 +92,5 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent implement
     this.router.navigate([frontRoutes.base]);
   }
 
-  protected readonly trackByUnit = trackByUnit;
+  protected readonly trackByFullUnit = trackByFullUnit;
 }
