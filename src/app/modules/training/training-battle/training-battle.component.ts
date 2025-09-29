@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { Unit } from '../../../models/unit.model';
 import { Router } from '@angular/router';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
-import { CommonModule } from '@angular/common';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
 import { frontRoutes } from '../../../constants';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
 
 @Component({
   selector: 'app-training-battle',
-  imports: [CommonModule, GameEntryPointComponent],
+  imports: [GameEntryPointComponent],
   templateUrl: './training-battle.component.html',
 })
 export class TrainingBattleComponent {

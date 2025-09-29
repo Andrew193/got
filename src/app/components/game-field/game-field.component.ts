@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GameFieldService } from '../../services/game-field/game-field.service';
-import { CommonModule } from '@angular/common';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
@@ -13,17 +12,21 @@ import { BasicGameBoardComponent } from '../basic-game-board/basic-game-board.co
 import { GameLoggerService } from '../../services/game-logger/logger.service';
 import { BasicGameFieldComponent } from '../abstract/basic-game-field/basic-game-field.component';
 import { trackByEffect, trackBySkill, trackByUnit } from '../../helpers';
+import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-game-field',
   imports: [
-    CommonModule,
     PopoverModule,
     TabsModule,
     ProgressbarModule,
     AccordionModule,
     TooltipModule,
     BasicGameBoardComponent,
+    NgClass,
+    NgTemplateOutlet,
+    NgForOf,
+    NgIf,
   ],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss',

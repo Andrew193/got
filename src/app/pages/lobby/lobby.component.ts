@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DailyRewardComponent } from '../../components/daily-reward/daily-reward.component';
-import { CommonModule } from '@angular/common';
 import { frontRoutes } from '../../constants';
 import { trackByRoute } from '../../helpers';
 import { NotificationType } from '../../services/notifications/notifications.service';
@@ -17,6 +16,7 @@ import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../directives/highlight/highlight.directive';
 import { TestDirective } from '../../directives/test/test.directive';
+import { NgTemplateOutlet } from '@angular/common';
 
 export interface route {
   name: string;
@@ -55,7 +55,6 @@ export class UserComponent {
   selector: 'app-lobby',
   imports: [
     DailyRewardComponent,
-    CommonModule,
     RouterModule,
     NotificationMarkerComponent,
     ImageComponent,
@@ -63,6 +62,7 @@ export class UserComponent {
     FormsModule,
     HighlightDirective,
     TestDirective,
+    NgTemplateOutlet,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation/validation.service';
-import { CommonModule } from '@angular/common';
 import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
@@ -11,7 +10,7 @@ import { User } from '../../services/users/users.interfaces';
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule, CommonModule, FormErrorsContainerComponent],
+  imports: [ReactiveFormsModule, FormErrorsContainerComponent],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })

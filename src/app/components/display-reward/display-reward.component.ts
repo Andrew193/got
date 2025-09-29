@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, model } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DisplayReward } from '../../services/reward/reward.service';
 import { ImageComponent } from '../views/image/image.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-display-reward',
-  imports: [CommonModule, ImageComponent],
+  imports: [ImageComponent, DecimalPipe],
   templateUrl: './display-reward.component.html',
   styleUrl: './display-reward.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -48,3 +48,9 @@ export interface UnitWithReward extends Unit {
   reward: DisplayReward;
   inBattle: boolean;
 }
+
+export type SelectableUnit = Pick<Unit, 'name' | 'imgSrc'>;
+export type PreviewUnit = SelectableUnit & {
+  description: Unit['description'];
+  skills: Pick<Skill, 'imgSrc' | 'name' | 'description'>[];
+};

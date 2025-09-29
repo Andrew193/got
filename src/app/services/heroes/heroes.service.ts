@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EffectsService } from '../effects/effects.service';
-import { Unit } from '../../models/unit.model';
+import { PreviewUnit, Unit } from '../../models/unit.model';
 import { ContentService, ContentTypes } from '../abstract/content/content-service.service';
 import { EffectsValues } from '../../constants';
 
@@ -1227,7 +1227,9 @@ export class HeroesService extends ContentService {
     return leveledUnit;
   }
 
-  getAllHeroes() {
+  getAllHeroes(returnNames?: false): Unit[];
+  getAllHeroes(returnNames?: true): string[];
+  getAllHeroes(returnNames = false): Unit[] | string[] {
     const units = [
       this.getIceRiverHunter(),
       this.getJonKing(),
@@ -1245,7 +1247,24 @@ export class HeroesService extends ContentService {
       this.getDailyBossVersion1(),
     ];
 
-    return units.map(unit => this.getEquipmentForUnit(unit));
+    return returnNames
+      ? units.map(unit => unit.name)
+      : units.map(unit => this.getEquipmentForUnit(unit));
+  }
+
+  getPreviewUnit(unitName: string): PreviewUnit {
+    const unit = this.getUnitByName(unitName);
+
+    return {
+      description: unit.description,
+      imgSrc: unit.imgSrc,
+      name: unit.name,
+      skills: unit.skills.map(skil => ({
+        name: skil.name,
+        imgSrc: skil.imgSrc,
+        description: skil.description,
+      })),
+    };
   }
 
   getUnitByName(name: string, config?: UnitConfig) {

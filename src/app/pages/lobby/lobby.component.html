@@ -7,18 +7,18 @@
   <main class="row mt-4">
     <aside class="col-sm-12 col-md-6 shadow-none">
       <ul class="nav flex-column list-group">
-        <li
-          class="nav-item list-group-item"
-          *ngFor="let route of pageRoutes; trackBy: trackByRoute">
-          <a [routerLink]="route.url" class="list-group-item">
-            <span>
-              <app-image
-                [source]="'assets/resourses/imgs/nav_icons/' + route.src"
-                [alt]="route.name"></app-image>
-              {{ route.name }}
-            </span>
-          </a>
-        </li>
+        @for (route of pageRoutes; track route.name + $index) {
+          <li class="nav-item list-group-item">
+            <a [routerLink]="route.url" class="list-group-item">
+              <span>
+                <app-image
+                  [source]="'assets/resourses/imgs/nav_icons/' + route.src"
+                  [alt]="route.name"></app-image>
+                {{ route.name }}
+              </span>
+            </a>
+          </li>
+        }
       </ul>
     </aside>
 
@@ -57,4 +57,6 @@
   </div>
 </ng-template>
 
-<app-daily-reward *ngIf="isShowDailyReward" [closePopup]="closePopup"></app-daily-reward>
+@if (isShowDailyReward) {
+  <app-daily-reward [closePopup]="closePopup"></app-daily-reward>
+}

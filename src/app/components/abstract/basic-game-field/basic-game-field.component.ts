@@ -219,7 +219,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     //
     //   e.callback(this.tilesToHighlight);
     // }
-    const { entity, event } = e;
+    const entity = structuredClone(e.entity);
+    const event = e.event;
 
     if (this.showAttackBar) this.dropEnemy();
 

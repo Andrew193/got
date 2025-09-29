@@ -1,13 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ValidationService } from '../../../services/validation/validation.service';
 import { FormArray, FormGroup, FormsModule } from '@angular/forms';
 import { ErrorFieldComponent } from '../error-field/error-field.component';
-import { trackByIndex } from '../../../helpers';
 
 @Component({
   selector: 'app-form-errors-container',
-  imports: [CommonModule, FormsModule, ErrorFieldComponent],
+  imports: [FormsModule, ErrorFieldComponent],
   templateUrl: './form-errors-container.component.html',
   styleUrl: './form-errors-container.component.scss',
 })
@@ -22,7 +20,7 @@ export class FormErrorsContainerComponent implements OnInit {
   constructor(public validationService: ValidationService) {}
 
   ngOnInit(): void {
-    this.form.valueChanges.subscribe(value => {
+    this.form.valueChanges.subscribe(() => {
       this.checkErrors();
     });
   }
@@ -100,6 +98,4 @@ export class FormErrorsContainerComponent implements OnInit {
   get isRequiredErrors() {
     return this.requiredErrors.length;
   }
-
-  protected readonly trackByIndex = trackByIndex;
 }

@@ -1,19 +1,22 @@
+@let options = units();
+@let _user = user();
+
 <div class="d-flex justify-content-center heroes-container">
-  <div class="col-12 units-config-inner-container {{ containerClass }}">
-    <h4 class="text-center">{{ title }}</h4>
+  <div class="col-12 units-config-inner-container {{ containerClass() }}">
+    <h4 class="text-center">{{ title() }}</h4>
     <div class="flex-row justify-content-evenly preview-selected-heroes">
-      @for (unit of units; let i = $index; track unit.name + unit.user) {
+      @for (unit of options; let i = $index; track unit.name) {
         <div>
           <div class="col-auto position-relative cursor-pointer">
             <app-image
-              (click)="toggleDescription(user, i)"
+              (click)="toggleDescription(_user, i)"
               [tooltip]="unit.name"
               imageClass="image-100"
               [alt]="unit.name"
               [source]="unit.imgSrc" />
           </div>
           <div class="col description-bar">
-            @if (getDescriptionState(user, i)) {
+            @if (getDescriptionState(_user, i)) {
               <div class="ps-3">{{ unit.description }}</div>
             } @else {
               <div class="d-flex justify-content-around">

@@ -28,7 +28,7 @@ export class GiftStoreComponent implements OnInit {
   loot: (DisplayReward | null)[] = [];
   aiUnits: UnitWithReward[] = [];
   userUnits: Unit[] = [];
-  giftConfig!: GiftConfig;
+  private giftConfig!: GiftConfig;
 
   items = [
     { name: this.rewardService.rewardNames.special1, probability: 0.9 },
@@ -47,23 +47,22 @@ export class GiftStoreComponent implements OnInit {
 
   ngOnInit(): void {
     this.giftService._data.subscribe(config => {
-      this.giftConfig = { ...(config || {}), userId: config.userId };
+      this.giftConfig = structuredClone({ ...(config || {}), userId: config.userId });
     });
   }
 
   init() {
-    this.userUnits = [];
+    this.userUnits = [
+      {
+        ...this.npcService.getUserForNPC(),
+        x: 0,
+        y: 0,
+        inBattle: true,
+      },
+    ];
     this.aiUnits = [];
 
-    this.userUnits.push({
-      ...this.npcService.getUserForNPC(),
-      attackRange: 1,
-      x: 0,
-      y: 0,
-      inBattle: true,
-    });
-
-    this.npcService
+    this.aiUnits = this.npcService
       .getGiftNPC()
       .map(el => ({
         ...el,
@@ -71,20 +70,19 @@ export class GiftStoreComponent implements OnInit {
         user: false,
         canMove: false,
       }))
-      .forEach(el => {
+      .map(el => {
         const elType = this.rewardService.getReward(1, this.items);
 
-        this.aiUnits.push(
-          elType.name === 'Special 0'
-            ? {
-                ...this.npcService.getWildling(),
-                x: el.x,
-                y: el.y,
-                reward: this.npcService.getSpecialGiftReward(),
-                inBattle: true,
-              }
-            : el,
-        );
+        return elType.name === 'Special 0'
+          ? {
+              ...this.npcService.getWildling(),
+              x: el.x,
+              y: el.y,
+              reward: this.npcService.getSpecialGiftReward(),
+              inBattle: true,
+              user: false,
+            }
+          : el;
       });
   }
 

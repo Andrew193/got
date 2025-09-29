@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-image',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './image.component.html',
   styleUrl: './image.component.scss',
 })

@@ -9,7 +9,6 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { HeroesService } from '../../services/heroes/heroes.service';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
@@ -18,7 +17,6 @@ import { StatsComponent } from '../views/stats/stats.component';
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
 import { Unit } from '../../models/unit.model';
 import { UsersService } from '../../services/users/users.service';
-import { trackBySkill } from '../../helpers';
 import { TODAY } from '../../constants';
 import {
   NotificationsService,
@@ -41,7 +39,6 @@ export interface DayReward {
 @Component({
   selector: 'app-daily-reward',
   imports: [
-    CommonModule,
     ModalModule,
     OutsideClickDirective,
     TooltipModule,
@@ -132,6 +129,4 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     document.body.style.overflow = 'auto';
   }
-
-  protected readonly trackBySkill = trackBySkill;
 }

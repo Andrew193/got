@@ -91,10 +91,12 @@
         </div>
       </div>
     </div>
-    <div *ngIf="200 - selectedHero[name + 'Level'] > 0">
-      <div class="m-0-auto mt-2" style="width: 100px">
-        <button class="btn btn-success">Upgrade</button>
+    @if (200 - selectedHero[name + 'Level'] > 0) {
+      <div>
+        <div class="m-0-auto mt-2" style="width: 100px">
+          <button class="btn btn-success">Upgrade</button>
+        </div>
       </div>
-    </div>
+    }
   </div>
 </ng-template>

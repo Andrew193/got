@@ -1,30 +1,47 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Unit } from '../../../models/unit.model';
+import { PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
 import { HeroesService } from '../../../services/heroes/heroes.service';
 import { Router } from '@angular/router';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
 import { frontRoutes } from '../../../constants';
+import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-training-config',
-  imports: [CommonModule, TooltipModule, HeroesSelectPreviewComponent, HeroesSelectComponent],
+  imports: [
+    TooltipModule,
+    HeroesSelectPreviewComponent,
+    HeroesSelectComponent,
+    NgTemplateOutlet,
+    JsonPipe,
+  ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrainingConfigComponent {
-  aiUnits: Unit[] = [];
-  userUnits: Unit[] = [];
+  aiUnits: PreviewUnit[] = [];
+  userUnits: PreviewUnit[] = [];
+
+  allUnits: Unit[] = [];
+  allUnitsForSelect: SelectableUnit[] = [];
   aiUnitsDescriptions: boolean[] = [];
   userUnitsDescriptions: boolean[] = [];
+
+  userBarCtx = { isUser: true, title: 'User Units' };
+  aiBarCtx = { isUser: false, title: 'AI Units' };
+  userSelCtx = { user: true, title: 'Selected User Units', units: this.userUnits };
+  aiSelCtx = { user: false, title: 'Selected AI Units', units: this.aiUnits };
 
   constructor(
     private heroesService: HeroesService,
     private route: Router,
-  ) {}
+  ) {
+    this.allUnits = this.heroesService.getAllHeroes();
+    this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
+  }
 
   getDescKey(user = true) {
     return user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions';
@@ -34,60 +51,66 @@ export class TrainingConfigComponent {
     return user ? 'userUnits' : 'aiUnits';
   }
 
-  public addUserUnit = (unit: Unit, user = true): boolean => {
+  public addUserUnit = (unit: SelectableUnit, user = true): boolean => {
     const unitKey = this.getUnitKey(user);
     const descKey = this.getDescKey(user);
+
     const currentUnits = this[unitKey];
     const index = currentUnits.findIndex(el => el.name === unit.name);
 
-    if (index === -1 && currentUnits.length < 5) {
-      const updatedUnits = [...currentUnits, unit];
-
+    const update = (updatedUnits: PreviewUnit[], toReturn: boolean) => {
       this[unitKey] = updatedUnits;
       this[descKey] = updatedUnits.map(() => false);
 
-      return true;
-    } else {
-      const updatedUnits = currentUnits.filter((_, i) => i !== index);
+      return toReturn;
+    };
 
-      this[unitKey] = updatedUnits;
-      this[descKey] = updatedUnits.map(() => false);
+    const addNew = index === -1 && currentUnits.length < 5;
 
-      return false;
-    }
+    queueMicrotask(() => {
+      if (user) {
+        this.userSelCtx = { ...this.userSelCtx, units: this.userUnits };
+      } else {
+        this.aiSelCtx = { ...this.aiSelCtx, units: this.aiUnits };
+      }
+    });
+
+    return update(
+      addNew
+        ? [...currentUnits, this.heroesService.getPreviewUnit(unit.name)]
+        : currentUnits.filter((_, i) => i !== index),
+      addNew,
+    );
   };
 
   public toggleDescription = (user: boolean, index: number) => {
     const descKey = this.getDescKey(user);
+    const next = [...this[descKey]];
 
-    this[descKey][index] = !this[descKey][index];
+    next[index] = !next[index];
+
+    this[descKey] = next;
   };
 
   public getDescriptionState = (user: boolean, index: number) => {
     return this[this.getDescKey(user)][index];
   };
 
-  get allHeroes() {
+  getAllHeroes() {
     return this.heroesService.getAllHeroes();
   }
 
   openFight() {
-    this.userUnits = this.userUnits.map((unit, index) => ({
-      ...unit,
-      x: 2 + index,
-      y: 1,
-    }));
-    this.aiUnits = this.aiUnits.map((unit, index) => ({
-      ...unit,
-      x: 2 + index,
-      y: 8,
-      user: false,
-    }));
+    const getUnits = (getUser: boolean) => {
+      return this.allUnits
+        .filter(unit => {
+          return this[this.getUnitKey(getUser)].findIndex(v => v.name === unit.name) !== -1;
+        })
+        .map((el, i) => ({ ...el, x: 2 + i, y: getUser ? 1 : 8, user: getUser }));
+    };
+
     this.route.navigateByUrl(frontRoutes.training + '/' + frontRoutes.trainingBattle, {
-      state: {
-        userUnits: this.userUnits,
-        aiUnits: this.aiUnits,
-      },
+      state: { userUnits: getUnits(true), aiUnits: getUnits(false) },
     });
   }
 

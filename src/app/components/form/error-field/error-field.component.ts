@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-error-field',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './error-field.component.html',
   styleUrl: './error-field.component.scss',
 })

@@ -3,15 +3,15 @@ import { HeroesService } from '../../services/heroes/heroes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { StatsComponent } from '../views/stats/stats.component';
 import { Unit } from '../../models/unit.model';
 import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
 import { frontRoutes } from '../../constants';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-hero-preview',
-  imports: [RatingModule, FormsModule, CommonModule, StatsComponent, SkillsRenderComponent],
+  imports: [RatingModule, FormsModule, StatsComponent, SkillsRenderComponent, NgTemplateOutlet],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss',
 })

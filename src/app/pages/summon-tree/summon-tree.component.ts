@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DisplayReward, RewardService } from '../../services/reward/reward.service';
 import { Router } from '@angular/router';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import { frontRoutes } from '../../constants';
 import { RewardComponentInterface } from '../../models/reward-based.model';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-summon-tree',
-  imports: [CommonModule, DisplayRewardComponent, ImageComponent],
+  imports: [DisplayRewardComponent, ImageComponent, DecimalPipe],
   templateUrl: './summon-tree.component.html',
   styleUrl: './summon-tree.component.scss',
 })

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Unit } from '../../../models/unit.model';
@@ -24,12 +32,16 @@ export interface GameField {
 })
 export abstract class AbstractGameFieldComponent
   extends GameFieldVars
-  implements OnInit, OnDestroy
+  implements OnInit, OnDestroy, OnChanges
 {
   @Input() userUnits: Unit[] = [];
   @Input() aiUnits: Unit[] = [];
   @Input() battleMode = true;
   autoFight = false;
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+  }
 
   @Input() gameResultsRedirect: (realAiUnits: Unit[]) => void = () => {};
   log: LogRecord[] = [];

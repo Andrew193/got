@@ -1,22 +1,25 @@
+@let options = allHeroes();
+@let _isUser = isUser();
+
 <div class="d-flex justify-content-center heroes-select-container">
-  <div class="col-12 units-config-inner-container {{ containerClass }}">
-    <h4 class="text-center">{{ title }}</h4>
+  <div class="col-12 units-config-inner-container {{ containerClass() }}">
+    <h4 class="text-center">{{ title() }}</h4>
     <div class="flex-row justify-content-evenly">
-      <div
-        *ngFor="let unit of allHeroes; trackBy: trackByUnit"
-        class="m-1"
-        (click)="unitClick(unit)">
-        <img
-          src="{{ unit.imgSrc }}"
-          alt="{{ unit.name }}"
-          *ngIf="isUser"
-          [class.selected]="checkSelected(unit)" />
-        <img
-          src="{{ unit.imgSrc }}"
-          alt="{{ unit.name }}"
-          *ngIf="!isUser"
-          [class.selected-enemy]="checkSelected(unit, false)" />
-      </div>
+      @for (unit of options; track unit.name) {
+        <div class="m-1" (click)="unitClick(unit)">
+          @if (_isUser) {
+            <img
+              [src]="unit.imgSrc"
+              [alt]="unit.name"
+              [class.selected]="checkSelected(unit.name)" />
+          } @else {
+            <img
+              [src]="unit.imgSrc"
+              [alt]="unit.name"
+              [class.selected-enemy]="checkSelected(unit.name, false)" />
+          }
+        </div>
+      }
     </div>
   </div>
 </div>

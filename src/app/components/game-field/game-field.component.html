@@ -223,9 +223,11 @@
                 *ngFor="let skill of hero.skills; trackBy: trackBySkill"
                 tooltip="{{ skill.description }}">
                 <img alt="skill" src="{{ skill.imgSrc }}" />
-                <div class="skill-disabled" *ngIf="skill.remainingCooldown || skill.passive">
-                  <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
-                </div>
+                @if (skill.remainingCooldown || skill.passive) {
+                  <div class="skill-disabled">
+                    <i aria-hidden="true">{{ skill.passive ? 'P' : skill.remainingCooldown }}</i>
+                  </div>
+                }
               </div>
             </div>
           </div>
@@ -238,12 +240,13 @@
 
 <ng-template #usersTopBar let-units="units">
   <ng-container *ngFor="let hero of units; trackBy: trackByUnit">
-    <img
-      src="{{ hero.imgSrc }}"
-      alt="hero"
-      class="game-field-img"
-      *ngIf="hero.inBattle || hero.inBattle === undefined"
-      [ngClass]="{ disabled: !hero.health }"
-      tooltip="Жизнь: {{ hero.health }}" />
+    @if (hero.inBattle || hero.inBattle === undefined) {
+      <img
+        [src]="hero.imgSrc"
+        alt="hero"
+        class="game-field-img"
+        [ngClass]="{ disabled: !hero.health }"
+        tooltip="Жизнь: {{ hero.health }}" />
+    }
   </ng-container>
 </ng-template>

@@ -8,14 +8,13 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { NotificationsService } from './services/notifications/notifications.service';
 import { OnlineService } from './services/online/online.service';
 import { LoaderService } from './services/resolver-loader/loader.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

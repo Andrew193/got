@@ -16,15 +16,14 @@ describe('LobbyComponent', () => {
   let notificationsServiceSpy: jasmine.SpyObj<NotificationsService>;
   let dailyRewardServiceSpy: jasmine.SpyObj<DailyRewardService>;
   let usersServiceSpy: jasmine.SpyObj<UsersService>;
+  const dailyReward: DailyReward = {
+    day: 1,
+    lastLogin: '',
+    totalDays: 0,
+    userId: '1',
+  };
 
   beforeEach(async () => {
-    const dailyReward: DailyReward = {
-      day: 1,
-      lastLogin: '',
-      totalDays: 0,
-      userId: '1',
-    };
-
     usersServiceSpy = jasmine.createSpyObj('UsersService', ['updateCurrency']);
 
     dailyRewardServiceSpy = jasmine.createSpyObj(

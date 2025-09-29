@@ -1,27 +1,32 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { Unit } from '../../models/unit.model';
-import { trackByIndex } from '../../helpers';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
 import { Coordinate, Tile, TilesToHighlight } from '../../models/field.model';
 
 @Component({
   selector: 'app-basic-game-board',
-  imports: [CommonModule, OutsideClickDirective],
+  imports: [OutsideClickDirective, NgClass],
   templateUrl: './basic-game-board.component.html',
   styleUrl: './basic-game-board.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicGameBoardComponent {
-  @Input() gameConfig: any[][] = [];
+  @Input() gameConfig: Tile[][] = [];
   @Input() battleMode = true;
-  @Output() moveEntity = new EventEmitter();
-  @Output() highlightMakeMove = new EventEmitter();
 
-  private tilesToHighlight: TilesToHighlight[] = [];
+  @Output() moveEntity = new EventEmitter<Tile>();
+  @Output() highlightMakeMove = new EventEmitter<{
+    entity: Unit;
+    event: MouseEvent;
+    callback: (v: TilesToHighlight[]) => void;
+  }>();
+
+  private highlightMap = new Map<string, string>();
 
   onMoveEntity(tile: Tile) {
-    this.tilesToHighlight = [];
     this.moveEntity.emit(tile);
+    this.setTilesToHighlight([]);
   }
 
   onHighlightMakeMove(entity: Unit, event: MouseEvent) {
@@ -32,19 +37,14 @@ export class BasicGameBoardComponent {
     });
   }
 
-  setTilesToHighlight(tilesToHighlight: TilesToHighlight[]) {
-    this.tilesToHighlight = tilesToHighlight;
+  setTilesToHighlight(list: TilesToHighlight[]) {
+    this.highlightMap.clear();
+    for (const t of list) this.highlightMap.set(`${t.i}:${t.j}`, t.highlightedClass);
   }
 
-  getTileHighlightClass(tile: Coordinate) {
-    const tileFromArray = this.tilesToHighlight.find(el => el.i === tile.x && el.j === tile.y);
-
-    return tileFromArray?.highlightedClass || '';
+  isHighlighted(tile: Coordinate, cls: string): boolean {
+    return this.highlightMap.get(`${tile.x}:${tile.y}`) === cls;
   }
-
-  public trackByCoordinates = (index: number, tile: Tile) => {
-    return tile?.x + '-' + tile?.y;
-  };
 
   showActionButtonCondition(tile: Tile, type: string) {
     const entity = (tile as Tile).entity as Unit;
@@ -55,6 +55,4 @@ export class BasicGameBoardComponent {
           (entity?.inBattle === true || entity?.inBattle === undefined)
       : entity.user;
   }
-
-  protected readonly trackByIndex = trackByIndex;
 }

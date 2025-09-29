@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ActivatedRoute } from '@angular/router';
 import { Unit } from '../../../models/unit.model';
@@ -8,7 +7,7 @@ import { DailyBossService } from '../../../services/daily-boss/daily-boss.servic
 
 @Component({
   selector: 'app-battlefield',
-  imports: [CommonModule, GameEntryPointComponent],
+  imports: [GameEntryPointComponent],
   templateUrl: './daily-boss-battlefield.component.html',
 })
 export class DailyBossBattlefieldComponent {

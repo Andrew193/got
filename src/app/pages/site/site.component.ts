@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
 import { UsersService } from '../../services/users/users.service';
 import { frontRoutes } from '../../constants';
@@ -8,7 +7,7 @@ import { HeaderComponent } from '../../components/common/header/header.component
 
 @Component({
   selector: 'app-site',
-  imports: [RouterOutlet, CommonModule, ModalWindowComponent, HeaderComponent],
+  imports: [RouterOutlet, ModalWindowComponent, HeaderComponent],
   templateUrl: './site.component.html',
   styleUrl: './site.component.scss',
 })

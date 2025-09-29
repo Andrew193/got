@@ -1,14 +1,16 @@
-<div
-  *ngIf="
-    (validationService.isFormInvalid(form, checkErrors) && showErrors) ||
-    (errors.length && form.touched && showErrors)
-  "
-  class="alert alert-danger">
-  <span>Please, fix following error(s): </span>
-  <ul class="pl-30 mt-10">
-    <ng-container *ngFor="let error of errors; let i = index; trackBy: trackByIndex">
-      <li *ngIf="isRequiredErrors && i === 0">Fields marked with an asterisk (*) are required.</li>
-      <app-error-field [fieldToValidate]="error"></app-error-field>
-    </ng-container>
-  </ul>
-</div>
+@if (
+  (validationService.isFormInvalid(form, checkErrors) && showErrors) ||
+  (errors.length && form.touched && showErrors)
+) {
+  <div class="alert alert-danger">
+    <span>Please, fix following error(s): </span>
+    <ul class="pl-30 mt-10">
+      @for (error of errors; track $index) {
+        @if (isRequiredErrors && $index === 0) {
+          <li>Fields marked with an asterisk (*) are required.</li>
+        }
+        <app-error-field [fieldToValidate]="error"></app-error-field>
+      }
+    </ul>
+  </div>
+}

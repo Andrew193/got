@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HeroesService } from '../../../services/heroes/heroes.service';
-import { CommonModule } from '@angular/common';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,11 +13,11 @@ import { AutocompleteMatInputComponent } from '../../../components/data-inputs/a
 import { BasePaginationComponent } from '../../../components/abstract/base-pagination/base-pagination.component';
 import { frontRoutes } from '../../../constants';
 import { trackByUnit } from '../../../helpers';
+import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-taverna-heroes-bar',
   imports: [
-    CommonModule,
     PaginationModule,
     RatingModule,
     FormsModule,
@@ -28,6 +27,7 @@ import { trackByUnit } from '../../../helpers';
     MatInputModule,
     MatAutocompleteModule,
     AutocompleteMatInputComponent,
+    NgForOf,
   ],
   templateUrl: './taverna-heroes-bar.component.html',
   styleUrl: './taverna-heroes-bar.component.scss',
