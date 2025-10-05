@@ -8,10 +8,11 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { trackByLevel } from '../../../helpers';
 import { Router } from '@angular/router';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
-import { DailyBossService } from '../../../services/daily-boss/daily-boss.service';
+import { BossDifficulty, DailyBossService } from '../../../services/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
 import { frontRoutes } from '../../../constants';
 import { TileUnit } from '../../../models/field.model';
+import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-based.model';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -35,11 +36,11 @@ export class DailyBossLobbyComponent {
   selectedHero!: Unit;
   selectedTileHero!: TileUnit;
   chosenUnits: PreviewUnit[] = [];
-  config: { level: number; heading: string }[] = [
-    { level: 1, heading: 'Super Easy' },
-    { level: 2, heading: 'Easy' },
-    { level: 3, heading: 'Medium' },
-    { level: 4, heading: 'Hard' },
+  config: { level: BossDifficulty; heading: string }[] = [
+    { level: BossDifficulty.easy, heading: 'Super Easy' },
+    { level: BossDifficulty.normal, heading: 'Easy' },
+    { level: BossDifficulty.hard, heading: 'Medium' },
+    { level: BossDifficulty.very_hard, heading: 'Hard' },
   ];
 
   constructor(
@@ -68,8 +69,29 @@ export class DailyBossLobbyComponent {
     }
   };
 
-  get bossReward() {
-    return this.dailyBossService.bossReward;
+  bossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
+    const reward = this.dailyBossService.bossReward[level];
+
+    return [
+      {
+        base: reward.cooper,
+        win: reward.cooperWin,
+        dmg: reward.cooperDMG,
+        alias: 'cooper',
+      },
+      {
+        base: reward.silver,
+        win: reward.silverWin,
+        dmg: reward.silverDMG,
+        alias: 'silver',
+      },
+      {
+        base: reward.gold,
+        win: reward.goldWin,
+        dmg: reward.goldDMG,
+        alias: 'gold',
+      },
+    ];
   }
 
   upBoss(version: number) {

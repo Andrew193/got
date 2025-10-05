@@ -99,7 +99,7 @@
           </tab>
           <tab [heading]="battleMode ? 'Battle history' : 'History'" class="history-tab">
             <div class="m-1">
-              @for (logRecord of log; track logRecord.message) {
+              @for (logRecord of log; track logRecord.message + logRecord.isUser + $index) {
                 @if (logRecord.message) {
                   <p
                     class="log-record"

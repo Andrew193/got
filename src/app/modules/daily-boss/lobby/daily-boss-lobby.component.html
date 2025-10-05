@@ -3,64 +3,53 @@
     <app-stats [selectedHero]="selectedHero"></app-stats>
   </div>
   <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
-    <app-skills-render [selectedHero]="selectedTileHero"></app-skills-render>
+    <app-skills-render [selectedHero]="selectedTileHero" [showLabel]="false"></app-skills-render>
   </div>
 </div>
-<div>
-  <h4>Choose Difficulty</h4>
-  <div class="pb-2">
-    <tabset>
-      <tab
-        *ngFor="let boss of config; trackBy: trackByLevel"
-        [heading]="boss.heading"
-        id="{{ boss.heading }}">
-        <ng-container
-          [ngTemplateOutlet]="bossTemplate"
-          [ngTemplateOutletContext]="{ bossLevel: boss.level }"></ng-container>
-      </tab>
-    </tabset>
-  </div>
+<div class="pb-2">
+  <tabset>
+    <tab
+      *ngFor="let boss of config; trackBy: trackByLevel"
+      [heading]="boss.heading"
+      id="{{ boss.heading }}">
+      <ng-container
+        [ngTemplateOutlet]="bossTemplate"
+        [ngTemplateOutletContext]="{ bossLevel: boss.level }"></ng-container>
+    </tab>
+  </tabset>
 </div>
 
 <ng-template #bossTemplate let-bossLevel="bossLevel">
   <div class="p-3">
-    <div class="col-lg-12 col-sm-12 d-flex flex-wrap">
-      <app-stats [selectedHero]="upBoss(bossLevel)" class="col-lg-6 col-sm-12"></app-stats>
-      <div class="col-lg-6 col-sm-12 skills-container p-2 mb-2 mt-1">
-        <h5 class="text-center">Reward</h5>
-        <div class="d-flex rewards-bar">
-          <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="reward" />
-          <div class="ps-2">
-            <p class="mb-0">
-              <span class="cooper"
-                >{{ bossReward[bossLevel].cooper | number }} (+
-                {{ bossReward[bossLevel].cooperWin | number }} kill reward )</span
-              >
-              <img src="assets/resourses/imgs/cooper.png" alt="reward" /> for every
-              <span class="highlight-effect">{{ bossReward[bossLevel].cooperDMG | number }}</span>
-              DMG.
-            </p>
-            <p class="mb-0">
-              <span class="silver"
-                >{{ bossReward[bossLevel].silver | number }} (+
-                {{ bossReward[bossLevel].silverWin | number }} kill reward )</span
-              >
-              <img src="assets/resourses/imgs/silver.png" alt="reward" /> for every
-              <span class="highlight-effect">{{ bossReward[bossLevel].silverDMG | number }}</span>
-              DMG.
-            </p>
-            <p class="mb-0">
-              <span class="gold"
-                >{{ bossReward[bossLevel].gold | number }} (+
-                {{ bossReward[bossLevel].goldWin | number }} kill reward )</span
-              >
-              <img src="assets/resourses/imgs/gold.png" alt="reward" /> for every
-              <span class="highlight-effect">{{ bossReward[bossLevel].goldDMG | number }}</span>
-              DMG.
-            </p>
+    <div class="col-12">
+      <app-stats [selectedHero]="upBoss(bossLevel)" [tableMode]="true">
+        @let bossConfig = bossReward(bossLevel);
+
+        <div class="skills-container ps-2 pe-2">
+          <div class="d-flex rewards-bar h-100 align-items-center">
+            <img
+              [src]="'assets/resourses/imgs/icons/silver_chest.jpeg'"
+              alt="silver_chest"
+              height="125px" />
+            <div class="ps-2">
+              @for (bossConfigReward of bossConfig; track $index) {
+                <p class="mb-0">
+                  <span [class]="bossConfigReward.alias">
+                    {{ bossConfigReward.base | number }} (+{{ bossConfigReward.win | number }} kill
+                    reward )
+                  </span>
+                  <img
+                    [src]="`assets/resourses/imgs/${bossConfigReward.alias}.png`"
+                    [alt]="bossConfigReward.alias" />
+                  for every
+                  <span class="highlight-effect">{{ bossConfigReward.dmg | number }}</span>
+                  DMG.
+                </p>
+              }
+            </div>
           </div>
         </div>
-      </div>
+      </app-stats>
     </div>
     <div class="col-lg-12 col-sm-12 d-flex flex-wrap">
       <div class="col-lg-6 col-sm-12">

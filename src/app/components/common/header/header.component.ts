@@ -5,6 +5,7 @@ import { DecimalPipe } from '@angular/common';
 import { USER_TOKEN } from '../../../constants';
 import { UsersService } from '../../../services/users/users.service';
 import { User } from '../../../services/users/users.interfaces';
+import { BossRewardCurrency } from '../../../models/reward-based.model';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,25 @@ export class HeaderComponent implements OnInit {
 
   get currency() {
     return this.user.currency;
+  }
+
+  getDisplayCurrency(): Record<'alias' | 'amount', BossRewardCurrency | number>[] {
+    const currency = this.currency;
+
+    return [
+      {
+        alias: 'cooper',
+        amount: currency.cooper,
+      },
+      {
+        alias: 'silver',
+        amount: currency.silver,
+      },
+      {
+        alias: 'gold',
+        amount: currency.gold,
+      },
+    ];
   }
 
   logOut() {

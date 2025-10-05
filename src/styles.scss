@@ -78,6 +78,22 @@ body {
   span {
     height: fit-content;
   }
+
+  &.stats-table {
+    min-width: unset;
+    justify-content: space-evenly;
+
+    .flex-row {
+      margin-bottom: unset;
+    }
+
+    p {
+      &.d-inline {
+        flex-basis: auto;
+        align-self: center;
+      }
+    }
+  }
 }
 
 .app-loading {

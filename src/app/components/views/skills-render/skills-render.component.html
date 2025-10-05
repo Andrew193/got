@@ -1,7 +1,10 @@
 @let hero = selectedHero();
+@let _showLabel = showLabel();
 
-<div class="skills-container p-2">
-  <p class="text-center fw-bold mb-0">Skills</p>
+<div class="skills-container ps-2 pe-2">
+  @if (_showLabel) {
+    <p class="text-center fw-bold mb-0">Skills</p>
+  }
   @for (skill of hero.skills; track skill.name + $index) {
     <div class="flex-row flex-nowrap skill-container">
       <app-image [source]="skill.imgSrc" [alt]="skill.name" />

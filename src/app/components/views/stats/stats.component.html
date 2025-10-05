@@ -1,72 +1,93 @@
 @let _selectedHero = selectedHero();
+@let _tableMode = tableMode();
 
-<div class="d-grid p-0 gap-2" style="grid-template-columns: 1fr 11fr">
+<div class="p-0 gap-2 flex-row">
   <div style="width: 100px; min-width: 100px">
     <img alt="reward avatar" class="reward-avatar" [src]="_selectedHero.imgSrc" />
   </div>
-  <div class="stats flex-column w-auto">
+  <div
+    class="stats flex-column w-auto"
+    [ngClass]="{
+      'stats-table': _tableMode,
+      'flex-column': !_tableMode,
+    }">
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
         <img src="../../../../assets/resourses/imgs/icons/attack_icon.png" />
         <span class="attack">{{ _selectedHero.attack }}</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        The attack affects the damage dealt by this hero.
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          The attack affects the damage dealt by this hero.
+        </span>
+      }
     </div>
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
         <img src="../../../../assets/resourses/imgs/icons/def_icon.png" />
         <span class="defence">{{ _selectedHero.defence }}</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        Defense affects the amount of damage absorbed.
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          Defense affects the amount of damage absorbed.
+        </span>
+      }
     </div>
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
         <img src="../../../../assets/resourses/imgs/icons/health_icon.png" />
         <span class="health">{{ _selectedHero.health }}</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        Health affects the survivability of this hero in battle.
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          Health affects the survivability of this hero in battle.
+        </span>
+      }
     </div>
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
         <img src="../../../../assets/resourses/imgs/icons/f_power.png" />
         <span class="rage">{{ _selectedHero.rage }}</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        Rage affects the ability to impose a penalty on the enemy.
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          Rage affects the ability to impose a penalty on the enemy.
+        </span>
+      }
     </div>
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
         <img src="../../../../assets/resourses/imgs/icons/anti_f_power.png" />
         <span class="willpower">{{ _selectedHero.willpower }}</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        Will power affects the ability to resist penalties.
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          Will power affects the ability to resist penalties.
+        </span>
+      }
     </div>
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
         <img src="../../../../assets/resourses/imgs/icons/dmg_red.png" />
         <span class="dmgReducedBy">{{ (_selectedHero.dmgReducedBy * 100).toFixed(0) }}%</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        Absorption affects the amount of pure damage absorbed (stacks with defense).
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          Absorption affects the amount of pure damage absorbed (stacks with defense).
+        </span>
+      }
     </div>
     <div style="font-weight: bold" class="flex-row">
       <p class="d-inline m-0">
-        <img src="../../../../assets/resourses/imgs/icons/move_icon.png" />
+        <img [src]="'../../../../assets/resourses/imgs/icons/move_icon.png'" />
         <span class="canCross">{{ _selectedHero.canCross }}</span>
       </p>
-      <span class="flex-grow-1 d-block text-start">
-        Mobility affects the number of cells a hero can move in a turn.
-      </span>
+      @if (!_tableMode) {
+        <span class="flex-grow-1 d-block text-start">
+          Mobility affects the number of cells a hero can move in a turn.
+        </span>
+      }
     </div>
   </div>
+  <ng-content />
 </div>
