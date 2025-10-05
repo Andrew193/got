@@ -58,7 +58,7 @@ export interface Tile extends Coordinate {
 
 export class GameFieldVars {
   gameField: Tile[][] = [];
-  gameConfig: any[][] = [];
+  gameConfig: Tile[][] = [];
   tilesToHighlight: TilesToHighlight[] = [];
   possibleMoves: Position[] = [];
 }

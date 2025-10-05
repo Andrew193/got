@@ -4,17 +4,15 @@ import { Unit } from '../../../models/unit.model';
 import { ContentService } from '../../../services/abstract/content/content-service.service';
 
 @Component({
-  selector: 'app-base-pagination',
-  imports: [],
   templateUrl: './base-pagination.component.html',
   styleUrl: './base-pagination.component.scss',
 })
 export class BasePaginationComponent {
-  totalElements = 0;
-  currentPage = 1;
-  itemsPerPage = 5;
-  returnedArray: Unit[] = [];
-  contentArray: Unit[] = [];
+  protected totalElements = 0;
+  protected currentPage = 1;
+  protected itemsPerPage = 5;
+  protected returnedArray: Unit[] = [];
+  protected contentArray: Unit[] = [];
 
   constructor(private contentService: ContentService) {
     this.getInitContent();
@@ -28,7 +26,7 @@ export class BasePaginationComponent {
     this.returnedArray = this.contentArray.slice(0, this.itemsPerPage);
   }
 
-  pageChanged($event: PageChangedEvent) {
+  protected pageChanged($event: PageChangedEvent) {
     const startItem = ($event.page - 1) * $event.itemsPerPage;
     const endItem = $event.page * $event.itemsPerPage;
 

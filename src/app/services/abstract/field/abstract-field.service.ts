@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { GameField } from '../../../components/abstract/abstract-game-field/abstract-game-field.component';
-import { createDeepCopy } from '../../../helpers';
 import { GameFieldVars, Position, Tile, TileUnit } from '../../../models/field.model';
 
 @Injectable({
@@ -75,16 +74,20 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
   }
 
   getDefaultGameField() {
+    const tempGameField: Tile[][] = [];
+
     for (let i = 0; i < 7; i++) {
-      this.gameField[i] = [];
+      tempGameField[i] = [];
       const innerArray = [];
 
       for (let j = 0; j < 10; j++) {
         innerArray.push({ x: i, y: j, active: true });
       }
 
-      this.gameField[i] = innerArray;
+      tempGameField[i] = innerArray;
     }
+
+    this.gameField = tempGameField;
 
     return this.gameField;
   }
@@ -95,30 +98,29 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     gameField: Tile[][],
     objects: Tile[] = [],
   ) {
-    const field = createDeepCopy(gameField);
-    //const unplayableObjects = [{x:0, y:1},{x:1, y:1},{x:2, y:1},{x:3, y:1},{x:4, y:1},{x:5, y:1}, {x:6, y:1}]
+    //const unplayableObjects = [{x:0, y:2},{x:1, y:2},{x:2, y:2},{x:3, y:2},{x:4, y:2},{x:5, y:2}]
 
     userUnits.forEach(user => {
-      field[user.x][user.y] = {
-        ...field[user.x][user.y],
+      gameField[user.x][user.y] = {
+        ...gameField[user.x][user.y],
         active: false,
         entity: user,
       };
     });
 
     aiUnits.forEach(ai => {
-      field[ai.x][ai.y] = { ...field[ai.x][ai.y], active: false, entity: ai };
+      gameField[ai.x][ai.y] = { ...gameField[ai.x][ai.y], active: false, entity: ai };
     });
 
     objects.forEach(ai => {
-      field[ai.x][ai.y] = {
-        ...field[ai.x][ai.y],
+      gameField[ai.x][ai.y] = {
+        ...gameField[ai.x][ai.y],
         active: false,
         entity: {} as TileUnit,
       };
     });
 
-    return field;
+    return gameField;
   }
 
   resetMoveAndAttack(unitArray: TileUnit[] | TileUnit[][], setValue = true) {
