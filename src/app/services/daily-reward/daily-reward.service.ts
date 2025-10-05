@@ -66,7 +66,7 @@ export class DailyRewardService extends ApiService<DailyReward> {
 
   private url = '/dailyReward';
 
-  getConfig(callback: (config: DailyReward, userId: string) => void) {
+  getConfig(callback: (config: DailyReward) => void) {
     return this.http
       .get<DailyReward[]>(this.url, {
         params: {
@@ -77,7 +77,7 @@ export class DailyRewardService extends ApiService<DailyReward> {
   }
 
   claimDailyReward(reward: DailyReward, callback: (newConfig: IdEntity) => void) {
-    this.putPostCover(reward, { url: this.url, callback });
+    this.putPostCover(reward, { url: this.url, callback, returnObs: false });
   }
 
   private baseWeek(dayM = 1): DayReward[] {

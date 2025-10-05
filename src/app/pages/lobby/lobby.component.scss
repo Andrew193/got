@@ -1,6 +1,18 @@
 @use '../../../assets/resourses/styles/vars';
 @use '../../../assets/resourses/styles/mixins';
 
+.viewport {
+  height: 400px;
+  width: 300px;
+  border: 1px solid #ccc;
+}
+.item {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
 .lobby-container {
   background: url('../../../assets/resourses/imgs/lobby-back.jpeg') no-repeat;
   @include mixins.page-container;

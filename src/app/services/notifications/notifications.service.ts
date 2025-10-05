@@ -6,6 +6,7 @@ import { ModalWindowService } from '../modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
 import { NotificationComponent } from '../../components/modal-window/notification/notification.component';
 import { TODAY } from '../../constants';
+import { NotificationConfigMap } from '../../models/notification.model';
 
 export enum NotificationType {
   daily_reward,
@@ -20,16 +21,12 @@ export class NotificationsService {
   private giftService = inject(GiftService);
   private modalWindowService = inject(ModalWindowService);
 
-  private initNotificationConfig = new Map(
-    Object.entries({
-      [NotificationType.daily_reward]: false,
-      [NotificationType.gift_store]: false,
-    }),
-  );
+  private initNotificationConfig = new Map()
+    .set(NotificationType.daily_reward, false)
+    .set(NotificationType.gift_store, false);
 
-  private notifications: BehaviorSubject<Map<string, boolean>> = new BehaviorSubject<
-    Map<string, boolean>
-  >(this.initNotificationConfig);
+  private notifications: BehaviorSubject<NotificationConfigMap> =
+    new BehaviorSubject<NotificationConfigMap>(this.initNotificationConfig);
 
   readonly $notifications = this.notifications.asObservable();
 
@@ -56,7 +53,7 @@ export class NotificationsService {
     if (key !== undefined && value !== undefined) {
       const nValue = this.notificationsValue();
 
-      nValue.set(key.toString(), value);
+      nValue.set(key, value);
 
       this.notifications.next(structuredClone(nValue));
     }
@@ -64,8 +61,8 @@ export class NotificationsService {
     return this.notifications.getValue();
   }
 
-  getNotification(key: NotificationType, notificationMap: Map<string, boolean>) {
-    return notificationMap.get(key.toString());
+  getNotification(key: NotificationType, notificationMap: NotificationConfigMap | undefined) {
+    return notificationMap ? notificationMap.get(key) : false;
   }
 
   private showPossibleActivities() {

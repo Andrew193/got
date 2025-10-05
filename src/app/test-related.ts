@@ -5,6 +5,13 @@ import {
   BasicLocalStorageNamesKeys,
 } from './services/localStorage/local-storage.service';
 import { ALL_EFFECTS, EffectsValues } from './constants';
+import { Injectable } from '@angular/core';
+import { ApiService } from './services/abstract/api/api.service';
+import { IdEntity } from './models/common.model';
+import { Observable, Subscription } from 'rxjs';
+import { PutPostMetaOf } from './models/api.model';
+
+//Effects
 
 const makeFakeEffect = (type: EffectsValues, turns: number): Effect =>
   ({
@@ -45,6 +52,8 @@ export function getEffectFake(effectsMap: ReturnType<typeof getFakeEffectMap>) {
   return getEffect;
 }
 
+//User
+
 export const fakeUser: User = {
   createdAt: 0,
   currency: {
@@ -62,6 +71,8 @@ export const fakeUser: User = {
   password: 'fake',
 } as const;
 
+//Local Storage
+
 export class FakeLocalStorage extends BasicLocalStorage {
   store: Map<string, string | Record<string, any>> = new Map<string, string | Record<string, any>>([
     ['localOnlineBuffer', '600'],
@@ -78,5 +89,17 @@ export class FakeLocalStorage extends BasicLocalStorage {
 
   removeItem(key: BasicLocalStorageNamesKeys) {
     this.store.delete(key);
+  }
+}
+
+//Test api service
+
+@Injectable()
+export class TestApiService<T> extends ApiService<T> {
+  public save<R extends boolean>(
+    entity: IdEntity,
+    meta: PutPostMetaOf<T, R>,
+  ): R extends true ? Observable<T | T[]> : Subscription {
+    return this.putPostCover(entity, meta) as any;
   }
 }

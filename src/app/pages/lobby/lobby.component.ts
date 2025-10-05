@@ -1,15 +1,18 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  contentChildren,
   effect,
+  input,
   model,
+  OnInit,
   viewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DailyRewardComponent } from '../../components/daily-reward/daily-reward.component';
 import { frontRoutes } from '../../constants';
-import { trackByRoute } from '../../helpers';
 import { NotificationType } from '../../services/notifications/notifications.service';
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
@@ -17,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../directives/highlight/highlight.directive';
 import { TestDirective } from '../../directives/test/test.directive';
 import { NgTemplateOutlet } from '@angular/common';
+import { NumbersService, NumbersService2 } from '../../services/numbers/numbers.service';
 
 export interface route {
   name: string;
@@ -25,16 +29,62 @@ export interface route {
 }
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-test-2',
+  template: ` <div style="background-color: #750000">Test 3 {{ test() }}</div> `,
+  imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  exportAs: 'test',
+})
+export class Test2Component implements OnInit {
+  test = input('');
+
+  constructor() {}
+
+  ngOnInit() {
+    console.log(this.test());
+  }
+}
+
+@Component({
+  selector: 'app-test',
   template: `
-    <div>Test</div>
+    <div style="background-color: #750000">
+      Test 2
+      <ng-content />
+    </div>
+  `,
+  imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TestComponent {
+  constructor() {}
+}
+
+@Component({
+  selector: 'app-user',
+  providers: [
+    {
+      provide: NumbersService2,
+      useExisting: NumbersService,
+    },
+  ],
+  template: `
+    <div style="background-color: #70ff70">
+      Test
+      <ng-content />
+    </div>
     <input [(ngModel)]="value" />
   `,
   imports: [FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserComponent {
+export class UserComponent implements AfterContentInit {
   test = model.required<{ test: string }>();
+  content = contentChildren('secondC', { descendants: true });
+
+  ngAfterContentInit() {
+    console.log(this.content());
+  }
 
   get value() {
     return this.test().test;
@@ -124,8 +174,6 @@ export class LobbyComponent implements AfterViewInit {
   public closePopup = () => {
     this.showDailyReward();
   };
-
-  protected readonly trackByRoute = trackByRoute;
 
   activities = [
     {

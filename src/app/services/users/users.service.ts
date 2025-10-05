@@ -106,7 +106,7 @@ export class UsersService extends ApiService<User> {
             },
           });
         },
-        returnObs: config.returnObs,
+        returnObs: config.returnObs || false,
       },
     );
   }

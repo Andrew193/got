@@ -1,15 +1,18 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { LocalStorageService } from '../../localStorage/local-storage.service';
 import { IdEntity } from '../../../models/common.model';
 import { USER_TOKEN } from '../../../constants';
 import { User } from '../../users/users.interfaces';
+import { PutPostMetaOf } from '../../../models/api.model';
+
+type TapParser<T> = (config: T) => void;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService<T> {
+export abstract class ApiService<T> {
   protected data = new BehaviorSubject<T>({} as T);
   _data = this.data.asObservable();
 
@@ -22,41 +25,34 @@ export class ApiService<T> {
     this.userId = this.getUserId();
   }
 
-  protected putPostCover(
+  protected putPostCover<R extends boolean>(
     entity: IdEntity,
-    meta: { url: string; callback: (res: T) => void; returnObs?: boolean },
-  ) {
-    const process = {
-      next: (response: T) => {
-        this.data.next(response);
-        meta.callback(response);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    };
-    const url = entity.id ? meta.url + `/${entity.id}` : meta.url;
+    meta: PutPostMetaOf<T, R>,
+  ): typeof meta.returnObs extends true ? Observable<T | T[]> : Subscription {
+    const url = entity.id ? `${meta.url}/${entity.id}` : meta.url;
+    const body = entity.id
+      ? entity
+      : (() => {
+          const withDate = { ...entity, createdAt: Date.now() };
 
-    if (entity.id) {
-      return meta.returnObs
-        ? this.http.put<T>(url, entity).pipe(tap(process))
-        : this.http.put<T>(url, entity).pipe(tap(process)).subscribe();
-    } else {
-      const withDate = { ...entity, createdAt: Date.now() };
+          delete withDate.id;
 
-      delete (withDate as any).id;
+          return withDate;
+        })();
 
-      return meta.returnObs
-        ? this.http.post<T>(url, withDate).pipe(tap(process))
-        : this.http.post<T>(url, withDate).pipe(tap(process)).subscribe();
-    }
+    const req$ = entity.id ? this.http.put<T>(url, body) : this.http.post<T>(url, body);
+    const parsed$ = req$.pipe(this.basicResponseTapParser(meta.callback));
+
+    return (meta.returnObs ? parsed$ : parsed$.subscribe()) as any;
   }
 
-  protected basicResponseTapParser(callback: (config: T, userId: string) => void) {
+  protected basicResponseTapParser(callback: TapParser<T>) {
     return tap({
-      next: (response: T[]) => {
-        this.data.next(response[0]);
-        callback(response[0], this.userId);
+      next: (response: T[] | T) => {
+        const toReturn = Array.isArray(response) ? response[0] : response;
+
+        this.data.next(toReturn);
+        callback(toReturn);
       },
       error: error => {
         console.log(error);

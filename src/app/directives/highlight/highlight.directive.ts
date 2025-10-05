@@ -1,4 +1,12 @@
-import { Directive, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  output,
+  Renderer2,
+} from '@angular/core';
 
 @Directive({
   selector: '[appHighlight]',
@@ -9,9 +17,19 @@ export class HighlightDirective {
     private el: ElementRef,
     private render: Renderer2,
   ) {}
+  id!: ReturnType<typeof setTimeout>;
 
   @Input() defaultColor = 'yellow';
   @Input('appHighlight') highlightColor = '';
+  event = output<string>();
+
+  @HostListener('click') onClick() {
+    this.id && clearTimeout(this.id);
+
+    this.id = setTimeout(() => {
+      this.event.emit('test');
+    }, 2000);
+  }
 
   @HostListener('mouseenter') onMouseEnter() {
     this.highlight(this.highlightColor || this.defaultColor);

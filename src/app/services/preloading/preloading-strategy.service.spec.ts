@@ -49,7 +49,7 @@ describe('PreloadingStrategyService', () => {
       .pipe(toArray())
       .subscribe(([ok, notOk]) => {
         expect(ok).toBeTrue();
-        expect(notOk).toBeNull();
+        expect(notOk).toBeUndefined();
         done();
       });
   });

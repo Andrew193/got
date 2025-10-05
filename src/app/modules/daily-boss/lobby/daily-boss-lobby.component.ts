@@ -5,12 +5,13 @@ import { PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { DecimalPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { createDeepCopy, trackByLevel } from '../../../helpers';
+import { trackByLevel } from '../../../helpers';
 import { Router } from '@angular/router';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
 import { DailyBossService } from '../../../services/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
 import { frontRoutes } from '../../../constants';
+import { TileUnit } from '../../../models/field.model';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -32,6 +33,7 @@ export class DailyBossLobbyComponent {
   allUnitsForSelect: SelectableUnit[] = [];
 
   selectedHero!: Unit;
+  selectedTileHero!: TileUnit;
   chosenUnits: PreviewUnit[] = [];
   config: { level: number; heading: string }[] = [
     { level: 1, heading: 'Super Easy' },
@@ -49,6 +51,7 @@ export class DailyBossLobbyComponent {
     this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
 
     this.selectedHero = this.heroesService.getDailyBossVersion1();
+    this.selectedTileHero = this.heroesService.getTileUnit(this.selectedHero);
   }
 
   public addUserUnit = (unit: SelectableUnit): boolean => {
@@ -70,12 +73,10 @@ export class DailyBossLobbyComponent {
   }
 
   upBoss(version: number) {
-    return this.heroesService.getEquipmentForUnit(
-      createDeepCopy({
-        ...this.selectedHero,
-        ...this.dailyBossService.uppBoss(version),
-      }),
-    );
+    return this.heroesService.getEquipmentForUnit({
+      ...this.selectedHero,
+      ...this.dailyBossService.uppBoss(version),
+    });
   }
 
   openFight(bossLevel: number) {

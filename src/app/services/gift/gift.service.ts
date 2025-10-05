@@ -9,7 +9,7 @@ import { IdEntity } from '../../models/common.model';
 export class GiftService extends ApiService<GiftConfig> {
   private url = '/giftTrip';
 
-  getConfig(callback: (config: GiftConfig, userId: string) => void) {
+  getConfig(callback: (config: GiftConfig) => void) {
     return this.http
       .get<GiftConfig[]>(this.url, {
         params: {
@@ -20,6 +20,6 @@ export class GiftService extends ApiService<GiftConfig> {
   }
 
   claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {
-    this.putPostCover(giftConfig, { url: this.url, callback });
+    this.putPostCover(giftConfig, { url: this.url, callback, returnObs: false });
   }
 }

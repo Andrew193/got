@@ -1,3 +1,5 @@
+import { NotificationType } from '../services/notifications/notifications.service';
+
 export interface StepsReward {
   time: number;
   claimedRewards: string[];
@@ -12,3 +14,5 @@ export interface NotificationActivity {
   };
   desc: string;
 }
+
+export type NotificationConfigMap = Map<NotificationType, boolean>;

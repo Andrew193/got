@@ -7,4 +7,6 @@ import { TavernaHeroesBarComponent } from '../taverna-heroes-bar/taverna-heroes-
   templateUrl: './taverna-inner-container.component.html',
   styleUrl: './taverna-inner-container.component.scss',
 })
-export class TavernaInnerContainerComponent {}
+export class TavernaInnerContainerComponent {
+  constructor() {}
+}

@@ -42,7 +42,7 @@ describe('LobbyComponent', () => {
       $notifications: of(new Map()),
     });
     notificationsServiceSpy.getNotification.and.callFake((key, notificationMap) => {
-      return notificationMap.get(key.toString());
+      return notificationMap ? notificationMap.get(key) : false;
     });
 
     await TestBed.configureTestingModule({

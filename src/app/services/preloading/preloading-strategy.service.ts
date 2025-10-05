@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { PreloadingStrategy, Route } from '@angular/router';
-import { filter, Observable, of, switchMap, take } from 'rxjs';
+import { EMPTY, filter, Observable, switchMap, take } from 'rxjs';
 import { UsersService } from '../users/users.service';
 import { frontRoutes } from '../../constants';
 
@@ -12,6 +12,7 @@ export class PreloadingStrategyService implements PreloadingStrategy {
   private readonly user = this.userService.$user;
 
   preload(route: Route, load: () => Observable<any>): Observable<any> {
+    debugger;
     const mockConfig = {
       rest: [frontRoutes.taverna],
       empty: [] as string[],
@@ -30,7 +31,7 @@ export class PreloadingStrategyService implements PreloadingStrategy {
 
         const userConfig = mockConfig[key === 'rest' ? key : 'empty'];
 
-        return userConfig.includes(route.path || '') ? load() : of(null);
+        return userConfig.includes(route.path || '') ? load() : EMPTY;
       }),
     );
   }

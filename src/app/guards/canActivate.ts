@@ -1,5 +1,5 @@
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
-import { inject, Injectable, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { UsersService } from '../services/users/users.service';
 import { frontRoutes } from '../constants';
@@ -14,7 +14,7 @@ import {
 })
 class PermissionsService {
   notificationService = inject(NotificationsService);
-  notifications = toSignal(this.notificationService.$notifications) as Signal<Map<string, boolean>>;
+  notifications = toSignal(this.notificationService.$notifications);
 
   constructor(
     private usersService: UsersService,

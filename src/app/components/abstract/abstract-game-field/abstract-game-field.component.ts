@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Skill, TileUnitSkill } from '../../../models/skill.model';
@@ -39,7 +31,7 @@ type TopBarUnitConfig = Pick<TileUnit, 'inBattle' | 'imgSrc' | 'health' | 'name'
 })
 export abstract class AbstractGameFieldComponent
   extends GameFieldVars
-  implements OnInit, OnDestroy, OnChanges
+  implements OnInit, OnDestroy
 {
   @Input() userUnits: TileUnit[] = [];
   @Input() aiUnits: TileUnit[] = [];
@@ -49,10 +41,6 @@ export abstract class AbstractGameFieldComponent
   autoFight = false;
   usersTopBarConfig: { units: TopBarUnitConfig[] } = { units: [] };
   aiTopBarConfig: { units: TopBarUnitConfig[] } = { units: [] };
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
 
   log: LogRecord[] = [];
   turnUser = true;

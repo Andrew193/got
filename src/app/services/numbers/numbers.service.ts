@@ -30,3 +30,34 @@ export class NumbersService {
     return Number(number.toFixed(digits));
   }
 }
+
+@Injectable()
+export class NumbersService2 {
+  roundToStep(v: number, step = 100): number {
+    return Math.round(v / step) * step;
+  }
+
+  roundDown(value: number, decimals: number): number {
+    const f = Math.pow(10, decimals);
+
+    return Math.floor(value * f) / f;
+  }
+
+  getNumberInRange(min: number, max: number) {
+    console.log('2');
+
+    return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
+  }
+
+  getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
+  }
+
+  getRoundMin(...numbers: number[]) {
+    return Math.round(Math.min(...numbers));
+  }
+
+  toFixed(number: number, digits = 0) {
+    return Number(number.toFixed(digits));
+  }
+}

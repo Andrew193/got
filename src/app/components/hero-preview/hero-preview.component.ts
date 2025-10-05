@@ -8,6 +8,7 @@ import { Unit } from '../../models/unit.model';
 import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
 import { frontRoutes } from '../../constants';
 import { NgTemplateOutlet } from '@angular/common';
+import { TileUnit } from '../../models/field.model';
 
 @Component({
   selector: 'app-hero-preview',
@@ -17,7 +18,8 @@ import { NgTemplateOutlet } from '@angular/common';
 })
 export class HeroPreviewComponent implements OnInit {
   name = '';
-  selectedHero: Unit;
+  selectedHero!: Unit;
+  selectedTileHero!: TileUnit;
 
   itemDescriptions: Record<string, string> = {
     eq1: 'The breastplate is a very important piece of armor for any warrior.',
@@ -30,11 +32,11 @@ export class HeroPreviewComponent implements OnInit {
     public heroService: HeroesService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {
-    this.selectedHero = this.heroService.getNightKing();
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(console.log);
+
     this.route.queryParams.subscribe(params => {
       this.name = params['name'];
       this.selectedHero = this.heroService.getUnitByName(this.name, {
@@ -45,6 +47,8 @@ export class HeroPreviewComponent implements OnInit {
         eq3Level: 1,
         eq4Level: 1,
       });
+
+      this.selectedTileHero = this.heroService.getTileUnit(this.selectedHero);
     });
   }
 
