@@ -13,7 +13,7 @@ export interface RewardComponentInterface {
   rewards: DisplayReward[];
 }
 
-export type BossRewardCurrency = 'cooper' | 'silver' | 'gold';
+export type BossRewardCurrency = 'copper' | 'silver' | 'gold';
 
 export type BossRewardsConfig<T extends BossRewardCurrency> = {
   [P in T]: Record<'base' | 'win' | 'dmg', number> & Record<'alias', P>;

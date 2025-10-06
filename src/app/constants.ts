@@ -6,6 +6,7 @@ export const BATTLE_SPEED = 500;
 export const USER_TOKEN = 'user';
 export const TODAY = moment().format(DATE_FORMAT);
 export const GIFT_STORE_NPC_AMOUNT = 10;
+export const STEP_DEFAULT_ORDER = 100;
 
 export const getDiagonals = (checkDiagonals: boolean) => {
   return checkDiagonals
@@ -75,7 +76,7 @@ export const ALL_EFFECTS_MULTIPLIERS: Record<EffectsValues, number> = {
 } as const;
 
 export const REWARD: RewardLootConstant = {
-  cooper: { min: 10000, max: 40000 },
+  copper: { min: 10000, max: 40000 },
   gold: { min: 20, max: 50 },
   shards: { min: 1, max: 10 },
   silver: { min: 50, max: 250 },

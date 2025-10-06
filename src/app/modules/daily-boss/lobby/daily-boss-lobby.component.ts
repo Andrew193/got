@@ -71,27 +71,14 @@ export class DailyBossLobbyComponent {
 
   bossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
     const reward = this.dailyBossService.bossReward[level];
+    const coins: BossRewardCurrency[] = ['copper', 'silver', 'gold'];
 
-    return [
-      {
-        base: reward.cooper,
-        win: reward.cooperWin,
-        dmg: reward.cooperDMG,
-        alias: 'cooper',
-      },
-      {
-        base: reward.silver,
-        win: reward.silverWin,
-        dmg: reward.silverDMG,
-        alias: 'silver',
-      },
-      {
-        base: reward.gold,
-        win: reward.goldWin,
-        dmg: reward.goldDMG,
-        alias: 'gold',
-      },
-    ];
+    return coins.map(type => ({
+      base: reward[type],
+      win: reward[`${type}Win`],
+      dmg: reward[`${type}DMG`],
+      alias: type,
+    }));
   }
 
   upBoss(version: number) {

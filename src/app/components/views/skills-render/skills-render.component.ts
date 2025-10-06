@@ -12,4 +12,5 @@ import { TileUnit } from '../../../models/field.model';
 export class SkillsRenderComponent {
   selectedHero = input.required<TileUnit>();
   showLabel = input(true);
+  showSkillName = input(false);
 }

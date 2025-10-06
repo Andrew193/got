@@ -13,12 +13,12 @@ describe('CurrencyDifComponent', () => {
   const oldCoins: Currency = {
     gold: 10,
     silver: 100,
-    cooper: 1000,
+    copper: 1000,
   };
   const newCoins: Currency = {
     gold: 10,
     silver: 100,
-    cooper: 1000,
+    copper: 1000,
   };
 
   beforeEach(async () => {
@@ -77,7 +77,7 @@ describe('CurrencyDifComponent', () => {
     const newCoinsAmount = newElements.map(el => el.amount).sort();
     const oldCoinsAmount = oldElements.map(el => el.amount).sort();
 
-    expect(newCoinsAmount).toEqual([newCoins.gold, newCoins.silver, newCoins.cooper].sort());
-    expect(oldCoinsAmount).toEqual([oldCoins.gold, oldCoins.silver, oldCoins.cooper].sort());
+    expect(newCoinsAmount).toEqual([newCoins.gold, newCoins.silver, newCoins.copper].sort());
+    expect(oldCoinsAmount).toEqual([oldCoins.gold, oldCoins.silver, oldCoins.copper].sort());
   });
 });

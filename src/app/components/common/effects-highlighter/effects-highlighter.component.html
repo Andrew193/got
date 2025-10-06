@@ -1,4 +1,5 @@
 <div>
+  <ng-content />
   <p class="d-inline-block">
     @for (word of formatedText(); track word.hint + word.text + $index) {
       @if (word.hint) {

@@ -1,6 +1,4 @@
-@let _showLoader = loaderService.isLoading();
-
-@if (_showLoader) {
+@if (isLoading$) {
   <div class="loader-back d-flex justify-content-center align-items-center">
     <img src="/assets/loader.png" alt="loading" class="loader" />
   </div>

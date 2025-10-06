@@ -29,7 +29,7 @@ describe('SummonTreeComponent', () => {
     rewardServiceSpy.getReward.and.callFake(amountOfRewards => {
       const result: DisplayReward[] = new Array(amountOfRewards)
         .fill({
-          name: 'Cooper',
+          name: 'Copper',
           amount: 0,
           src: '',
           flipped: false,

@@ -10,6 +10,8 @@ import { frontRoutes } from '../../constants';
 import { NgTemplateOutlet } from '@angular/common';
 import { TileUnit } from '../../models/field.model';
 
+type EqName = 'eq1' | 'eq2' | 'eq3' | 'eq4';
+
 @Component({
   selector: 'app-hero-preview',
   imports: [RatingModule, FormsModule, StatsComponent, SkillsRenderComponent, NgTemplateOutlet],
@@ -21,7 +23,7 @@ export class HeroPreviewComponent implements OnInit {
   selectedHero!: Unit;
   selectedTileHero!: TileUnit;
 
-  itemDescriptions: Record<string, string> = {
+  itemDescriptions: Record<EqName, string> = {
     eq1: 'The breastplate is a very important piece of armor for any warrior.',
     eq2: "Scrags are a very important piece of armor for any warrior. You can't fight much with bare feet.",
     eq3: 'An amulet is a very important piece of armor for any warrior. Fortitude and faith are very important.',
@@ -35,8 +37,6 @@ export class HeroPreviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(console.log);
-
     this.route.queryParams.subscribe(params => {
       this.name = params['name'];
       this.selectedHero = this.heroService.getUnitByName(this.name, {
@@ -54,5 +54,22 @@ export class HeroPreviewComponent implements OnInit {
 
   backToTavern() {
     this.router.navigate([frontRoutes.taverna]);
+  }
+
+  getLevelByName(name: EqName) {
+    const h = this.selectedHero;
+
+    return (
+      {
+        eq1: h.eq1Level,
+        eq2: h.eq2Level,
+        eq3: h.eq3Level,
+        eq4: h.eq4Level,
+      } satisfies Record<EqName, number>
+    )[name];
+  }
+
+  getItemDescription(name: EqName) {
+    return this.itemDescriptions[name];
   }
 }

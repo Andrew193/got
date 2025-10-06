@@ -173,7 +173,7 @@ describe('UsersService', () => {
     const newCurrency: Currency = {
       gold: 100,
       silver: 100,
-      cooper: 100,
+      copper: 100,
     };
 
     httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
@@ -191,12 +191,12 @@ describe('UsersService', () => {
       .subscribe({
         next: ([add, reset]) => {
           //Check add
-          expect(add.currency.cooper).toBe(fakeUser.currency.cooper + newCurrency.cooper);
+          expect(add.currency.copper).toBe(fakeUser.currency.copper + newCurrency.copper);
           expect(add.currency.silver).toBe(fakeUser.currency.silver + newCurrency.silver);
           expect(add.currency.gold).toBe(fakeUser.currency.gold + newCurrency.gold);
 
           //Check reset
-          expect(reset.currency.cooper).toBe(newCurrency.cooper);
+          expect(reset.currency.copper).toBe(newCurrency.copper);
           expect(reset.currency.silver).toBe(newCurrency.silver);
           expect(reset.currency.gold).toBe(newCurrency.gold);
           done();

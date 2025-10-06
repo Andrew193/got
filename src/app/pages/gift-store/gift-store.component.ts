@@ -94,7 +94,7 @@ export class GiftStoreComponent implements OnInit {
     const reward: Currency = {
       gold: 0,
       silver: 0,
-      cooper: 0,
+      copper: 0,
     };
 
     const chestsReward = this.loot
@@ -104,7 +104,7 @@ export class GiftStoreComponent implements OnInit {
     const allRewards = [...chestsReward, ...otherRewards].filter(el => !!el) as DisplayReward[];
 
     allRewards.forEach(el => {
-      const name = (el.name[0].toLowerCase() + el.name.slice(1)) as 'gold' | 'silver' | 'cooper';
+      const name = (el.name[0].toLowerCase() + el.name.slice(1)) as 'gold' | 'silver' | 'copper';
 
       reward[name] = reward[name] + el.amount;
     });

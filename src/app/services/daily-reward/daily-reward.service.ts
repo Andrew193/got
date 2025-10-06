@@ -16,12 +16,12 @@ export class DailyRewardService extends ApiService<DailyReward> {
   rewardCoins = (reward: DayReward, day: number) => {
     const coins = [];
 
-    if (reward.cooperCoin)
+    if (reward.copperCoin)
       coins.push({
-        class: 'cooper',
-        imgSrc: 'assets/resourses/imgs/cooper.png',
-        alt: 'cooperCoin',
-        amount: reward.cooperCoin,
+        class: 'copper',
+        imgSrc: 'assets/resourses/imgs/copper.png',
+        alt: 'copperCoin',
+        amount: reward.copperCoin,
       });
     if (reward.silverCoin)
       coins.push({
@@ -82,13 +82,13 @@ export class DailyRewardService extends ApiService<DailyReward> {
 
   private baseWeek(dayM = 1): DayReward[] {
     return [
-      { cooperCoin: 10000 * dayM },
-      { cooperCoin: 15000 * dayM },
-      { cooperCoin: 20000 * dayM, silverCoin: 150 * dayM },
-      { cooperCoin: 25000 * dayM, goldCoin: 75 * dayM },
-      { cooperCoin: 35000 * dayM, summonCard: 1 * dayM },
-      { cooperCoin: 45000 * dayM, summonScroll: 1 * dayM },
-      { cooperCoin: 55000 * dayM, heroShard: 25 },
+      { copperCoin: 10000 * dayM },
+      { copperCoin: 15000 * dayM },
+      { copperCoin: 20000 * dayM, silverCoin: 150 * dayM },
+      { copperCoin: 25000 * dayM, goldCoin: 75 * dayM },
+      { copperCoin: 35000 * dayM, summonCard: 1 * dayM },
+      { copperCoin: 45000 * dayM, summonScroll: 1 * dayM },
+      { copperCoin: 55000 * dayM, heroShard: 25 },
     ];
   }
 
@@ -103,8 +103,8 @@ export class DailyRewardService extends ApiService<DailyReward> {
     return this.baseWeek(1)
       .slice(0, totalDays)
       .map(r => ({
-        cooperCoin: r.cooperCoin
-          ? this.numbersService.roundToStep(r.cooperCoin * m, 1000)
+        copperCoin: r.copperCoin
+          ? this.numbersService.roundToStep(r.copperCoin * m, 1000)
           : undefined,
         silverCoin: r.silverCoin
           ? this.numbersService.roundToStep(r.silverCoin * m, 10)

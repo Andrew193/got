@@ -13,7 +13,7 @@ export class GiftNpcService implements RewardComponentInterface {
   numberService = inject(NumbersService);
 
   items: Reward[] = [
-    { name: this.rewardService.rewardNames.cooper, probability: 0.7 },
+    { name: this.rewardService.rewardNames.copper, probability: 0.7 },
     { name: this.rewardService.rewardNames.chest, probability: 0.3 },
   ];
 
@@ -25,7 +25,7 @@ export class GiftNpcService implements RewardComponentInterface {
 
   chestItems: Reward[] = [
     { name: this.rewardService.rewardNames.gold, probability: 0.4 },
-    { name: this.rewardService.rewardNames.cooper, probability: 0.2 },
+    { name: this.rewardService.rewardNames.copper, probability: 0.2 },
     { name: this.rewardService.rewardNames.silver, probability: 0.4 },
   ];
 

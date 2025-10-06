@@ -40,8 +40,6 @@ export interface Unit extends Coordinate {
   fullImgSrc?: string;
   skills: Skill[];
   effects: Effect[];
-
-  [key: string]: any;
 }
 
 export interface UnitWithReward extends Unit {

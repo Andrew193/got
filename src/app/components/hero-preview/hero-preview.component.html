@@ -1,17 +1,17 @@
 <div class="preview-container">
-  <div class="m-5">
+  <div class="m-2">
     <div class="text-center">
       <h3>{{ name }}</h3>
     </div>
     <div class="flex-row main-content">
-      <div class="col-lg-4 col-sm-12 p-2 mb-3">
+      <div class="col-lg-4 col-sm-12 p-2">
         <div
           class="card hero-card d-flex m-0-auto align-items-center col-12"
           style="max-height: 75vh">
           <img
             class="card-img-top taverna"
-            src="{{ selectedHero.fullImgSrc }}"
-            alt="{{ selectedHero.name }}" />
+            [src]="selectedHero.fullImgSrc"
+            [alt]="selectedHero.name" />
           <div class="level">
             <div class="position-relative">
               <img
@@ -31,14 +31,16 @@
             [style]="{ position: 'absolute', bottom: 0 }"></rating>
         </div>
       </div>
-      <aside class="col-lg-8 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">
+      <aside class="col-lg-8 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-0">
         <div class="col-lg-12 col-sm-12 p-2 d-flex flex-column justify-content-evenly">
           <app-stats [selectedHero]="selectedHero"></app-stats>
-          <app-skills-render [selectedHero]="selectedTileHero"></app-skills-render>
+          <app-skills-render
+            [selectedHero]="selectedTileHero"
+            [showSkillName]="true"></app-skills-render>
         </div>
       </aside>
-      <aside class="col-lg-12 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-3">
-        <div class="col-lg-12 col-sm-12 p-2 mb-3 eq-container">
+      <aside class="col-lg-12 col-sm-12 p-2 flex-row stats-bar justify-content-between mb-0">
+        <div class="col-lg-12 col-sm-12 p-2 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
           <div class="flex-row gap-1">
             <ng-container
@@ -62,40 +64,41 @@
 </div>
 
 <ng-template #itemTemplate let-name="name">
-  <div class="col row m-0">
-    <div class="col d-flex">
-      <div style="min-width: 83px">
+  @let desc = getItemDescription(name);
+  @let level = getLevelByName(name);
+
+  <div class="col row m-0 align-items-stretch flex-column justify-content-between">
+    <div class="flex-row">
+      <div class="col-auto">
         <img [src]="'assets/resourses/imgs/eq/' + name + '.png'" [alt]="name" />
       </div>
-      <p class="ps-2">{{ itemDescriptions[name] }}</p>
+      <p class="ps-2 col">{{ desc }}</p>
     </div>
-    <div class="col-12 flex-row eq-stats mb-0">
+    <div class="flex-row eq-stats mb-0">
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
         <div class="col-12">
           <div class="flex-row ps-2 mb-0">
             <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack" />
-            <span>{{ selectedHero[name + 'Level'] * selectedHero.attackIncrement }}</span>
+            <span>{{ level * selectedHero.attackIncrement }}</span>
             <span>(+{{ selectedHero.attackIncrement }})</span>
           </div>
           <div class="flex-row ps-2 mb-0">
             <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence" />
-            <span>{{ selectedHero[name + 'Level'] * selectedHero.defenceIncrement }}</span>
+            <span>{{ level * selectedHero.defenceIncrement }}</span>
             <span>+({{ selectedHero.defenceIncrement }})</span>
           </div>
           <div class="flex-row ps-2 mb-0">
             <img src="assets/resourses/imgs/icons/health_icon.png" alt="health" />
-            <span>{{ selectedHero[name + 'Level'] * selectedHero.healthIncrement }}</span>
+            <span>{{ level * selectedHero.healthIncrement }}</span>
             <span>(+{{ selectedHero.healthIncrement }})</span>
           </div>
-          <p class="text-center mb-2 fw-bold">{{ selectedHero[name + 'Level'] }}/200</p>
+          <p class="text-center mb-2 fw-bold">{{ level }}/200</p>
         </div>
       </div>
     </div>
-    @if (200 - selectedHero[name + 'Level'] > 0) {
-      <div>
-        <div class="m-0-auto mt-2" style="width: 100px">
-          <button class="btn btn-success">Upgrade</button>
-        </div>
+    @if (200 - level > 0) {
+      <div class="m-0-auto mt-2 text-center" style="height: fit-content">
+        <button class="btn btn-success">Upgrade</button>
       </div>
     }
   </div>

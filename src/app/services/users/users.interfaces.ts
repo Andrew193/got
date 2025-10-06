@@ -1,7 +1,7 @@
 export interface Currency {
   gold: number;
   silver: number;
-  cooper: number;
+  copper: number;
 }
 
 export interface Online {

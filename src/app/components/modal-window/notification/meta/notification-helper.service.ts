@@ -96,7 +96,7 @@ export class NotificationHelperService {
     if (onlineTime >= currentHour) {
       const getReward = this.userService.updateCurrency(
         {
-          cooper: reward.cooperCoin || 0,
+          copper: reward.copperCoin || 0,
           silver: reward.silverCoin || 0,
           gold: reward.goldCoin || 0,
         },
@@ -119,10 +119,10 @@ export class NotificationHelperService {
   };
 
   getLoyaltyBonus(reward: Coin[]) {
-    const totalReward: Currency = { cooper: 0, gold: 0, silver: 0 };
+    const totalReward: Currency = { copper: 0, gold: 0, silver: 0 };
 
     reward.forEach(part => {
-      const key = part.class as 'cooper' | 'silver' | 'gold';
+      const key = part.class as 'copper' | 'silver' | 'gold';
 
       totalReward[key] += part.amount || 0;
     });

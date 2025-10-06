@@ -5,7 +5,7 @@
 @let result = helper.result;
 @let from = model.value.from;
 @let coins = getUserCurrencyInCoins();
-@let key = from?.toLowerCase() || 'cooper';
+@let key = from?.toLowerCase() || 'copper';
 
 {{ depositModel.value | json }}
 
@@ -93,9 +93,9 @@
           <div class="row m-0 gap-2">
             <div class="col p-0">
               <app-number-input
-                [max]="getMax(user, 'cooper')"
-                [label]="'Cooper: '"
-                [controlName]="'cooper'">
+                [max]="getMax(user, 'copper')"
+                [label]="'Copper: '"
+                [controlName]="'copper'">
               </app-number-input>
             </div>
             <div class="col p-0">

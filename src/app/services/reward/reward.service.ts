@@ -24,7 +24,7 @@ export type RewardLoot = {
 };
 
 export type RewardNames = {
-  cooper: 'Cooper';
+  copper: 'Copper';
   silver: 'Silver';
   shards: 'Shards';
   gold: 'Gold';
@@ -34,7 +34,7 @@ export type RewardNames = {
 };
 
 export const basicRewardNames: RewardNames = {
-  cooper: 'Cooper',
+  copper: 'Copper',
   silver: 'Silver',
   shards: 'Shards',
   gold: 'Gold',
@@ -52,7 +52,7 @@ export class RewardService {
   readonly rewardNames: RewardNames = basicRewardNames;
 
   readonly rewardLoot: RewardLoot[] = [
-    { name: this.rewardNames.cooper, ...REWARD.cooper },
+    { name: this.rewardNames.copper, ...REWARD.copper },
     { name: this.rewardNames.silver, ...REWARD.silver },
     { name: this.rewardNames.shards, ...REWARD.shards },
     { name: this.rewardNames.gold, ...REWARD.gold },
@@ -64,7 +64,7 @@ export class RewardService {
     return [
       this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames),
       this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames),
-      this.getCoin(currency.cooper, this.rewardNames.cooper.toLowerCase() as CoinNames),
+      this.getCoin(currency.copper, this.rewardNames.copper.toLowerCase() as CoinNames),
     ];
   }
 
@@ -103,7 +103,7 @@ export class RewardService {
     const loot = this.rewardLoot.filter(reward => reward.name === item.name)[0];
 
     if (
-      item.name === this.rewardNames.cooper ||
+      item.name === this.rewardNames.copper ||
       item.name === this.rewardNames.silver ||
       item.name === this.rewardNames.gold
     ) {

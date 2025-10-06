@@ -59,7 +59,7 @@ export class IronBankComponent implements OnInit {
   }
 
   getMax(user: User, key: string) {
-    return user.currency[key as 'cooper' | 'silver' | 'gold'];
+    return user.currency[key as 'copper' | 'silver' | 'gold'];
   }
 
   exchangeCurrency(newCurrency: number) {
@@ -69,10 +69,10 @@ export class IronBankComponent implements OnInit {
     const currentCurrency = this.user.currency;
 
     const afterMinus = {
-      cooper:
-        currentCurrency.cooper -
-        (from === 'COOPER' ? amount : 0) +
-        (to === 'COOPER' ? newCurrency : 0),
+      copper:
+        currentCurrency.copper -
+        (from === 'COPPER' ? amount : 0) +
+        (to === 'COPPER' ? newCurrency : 0),
       silver:
         currentCurrency.silver -
         (from === 'SILVER' ? amount : 0) +

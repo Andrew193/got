@@ -1,15 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import {
-  GuardsCheckEnd,
-  GuardsCheckStart,
-  NavigationCancel,
-  ResolveEnd,
-  ResolveStart,
-  Router,
-  RouterOutlet,
-} from '@angular/router';
-import { NotificationsService } from './services/notifications/notifications.service';
-import { OnlineService } from './services/online/online.service';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { LoaderService } from './services/resolver-loader/loader.service';
 
 @Component({
@@ -18,29 +8,7 @@ import { LoaderService } from './services/resolver-loader/loader.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
-  notificationsService = inject(NotificationsService);
-  online = inject(OnlineService);
+export class AppComponent {
   loaderService = inject(LoaderService);
-  router = inject(Router);
-
-  constructor() {
-    this.router.events.subscribe(e => {
-      if (e instanceof ResolveStart || e instanceof GuardsCheckStart) {
-        this.loaderService.start();
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      } else if (
-        e instanceof ResolveEnd ||
-        e instanceof GuardsCheckEnd ||
-        e instanceof NavigationCancel
-      ) {
-        this.loaderService.stop();
-      }
-    });
-  }
-
-  ngOnInit() {
-    this.notificationsService.init();
-    this.online.trackOnlineTimer();
-  }
+  isLoading$ = this.loaderService.isLoading();
 }

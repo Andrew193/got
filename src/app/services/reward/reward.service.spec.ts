@@ -94,24 +94,24 @@ describe('RewardService', () => {
   });
 
   it('RewardService should convert currency to coin', () => {
-    const currency: Currency = { cooper: 100, gold: 10, silver: 1 };
+    const currency: Currency = { copper: 100, gold: 10, silver: 1 };
 
     const coins = rewardService.convertUserCurrencyToCoin(currency);
 
     expect(coins.length).toBe(3);
 
-    const [gold, silver, cooper] = coins;
+    const [gold, silver, copper] = coins;
 
     expect(gold.amount).toBe(10);
     expect(silver.amount).toBe(1);
-    expect(cooper.amount).toBe(100);
+    expect(copper.amount).toBe(100);
   });
 
   it('RewardService should give reward', () => {
     const rewards: Reward[] = [
       {
         probability: 1,
-        name: 'Cooper',
+        name: 'Copper',
       },
     ];
 
@@ -124,7 +124,7 @@ describe('RewardService', () => {
     const rewards: Reward[] = [
       {
         probability: 0,
-        name: 'Cooper',
+        name: 'Copper',
       },
       {
         probability: 1,
@@ -140,14 +140,14 @@ describe('RewardService', () => {
     rewards[1].probability = 0;
     openedBox = rewardService.openBox(rewards);
 
-    expect(openedBox.name).toBe('Cooper');
+    expect(openedBox.name).toBe('Copper');
   });
 
   it('RewardService should return loot', () => {
     const rewards: Reward[] = [
       {
         probability: 0.01,
-        name: 'Cooper',
+        name: 'Copper',
       },
       {
         probability: 1,

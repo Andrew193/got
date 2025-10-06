@@ -1,8 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, switchMap, timer } from 'rxjs';
+import { Observable, of, switchMap, timer } from 'rxjs';
 import { UsersService } from '../users/users.service';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { TIME } from './online.contrants';
+import { InitInterface } from '../../models/interfaces/init.interface';
+import { InitTaskObs } from '../../models/init.model';
 
 export type Online = {
   time: number;
@@ -13,35 +15,44 @@ export type Online = {
 @Injectable({
   providedIn: 'root',
 })
-export class OnlineService {
+export class OnlineService implements InitInterface {
   private userService = inject(UsersService);
   private localStorageService = inject(LocalStorageService);
   private tickCounter = 0;
 
-  trackOnlineTimer() {
-    //Add untracked time to online
-    this.flushTimerHelper();
+  init() {
+    try {
+      //Add untracked time to online
+      this.flushTimerHelper();
 
-    //Track time for flushTimerHelper
-    setInterval(() => {
-      this.incrementLocalBuffer(TIME.oneMinuteSeconds);
-      this.tickCounter++;
+      //Track time for flushTimerHelper
+      setInterval(() => {
+        this.incrementLocalBuffer(TIME.oneMinuteSeconds);
+        this.tickCounter++;
 
-      if (this.tickCounter === 10) {
-        this.ls.setItem(BasicLocalStorage.names.localOnlineBuffer, '0');
-        this.tickCounter = 0;
-      }
-    }, TIME.oneMinuteMilliseconds);
+        if (this.tickCounter === 10) {
+          this.ls.setItem(BasicLocalStorage.names.localOnlineBuffer, '0');
+          this.tickCounter = 0;
+        }
+      }, TIME.oneMinuteMilliseconds);
 
-    //Add 10 minutes to online time
-    timer(TIME.tenMinutesMilliseconds, TIME.tenMinutesMilliseconds)
-      .pipe(
-        switchMap(
-          () =>
-            this.userService.updateOnline({ time: TIME.tenMinuteSeconds }, true) as Observable<any>,
-        ),
-      )
-      .subscribe();
+      //Add 10 minutes to online time
+      timer(TIME.tenMinutesMilliseconds, TIME.tenMinutesMilliseconds)
+        .pipe(
+          switchMap(
+            () =>
+              this.userService.updateOnline(
+                { time: TIME.tenMinuteSeconds },
+                true,
+              ) as Observable<any>,
+          ),
+        )
+        .subscribe();
+
+      return of({ ok: true, message: 'Online has been inited' } satisfies InitTaskObs);
+    } catch (e) {
+      return of({ ok: false, message: 'Failed to init online' } satisfies InitTaskObs);
+    }
   }
 
   private flushTimerHelper() {

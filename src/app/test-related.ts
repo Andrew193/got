@@ -59,7 +59,7 @@ export const fakeUser: User = {
   currency: {
     gold: 10,
     silver: 100,
-    cooper: 1000,
+    copper: 1000,
   },
   id: '1',
   login: 'rest',

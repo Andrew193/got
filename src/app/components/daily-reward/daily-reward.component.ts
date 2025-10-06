@@ -28,7 +28,7 @@ import { EffectsHighlighterComponent } from '../common/effects-highlighter/effec
 import { DailyReward } from '../../models/reward-based.model';
 
 export interface DayReward {
-  cooperCoin: number;
+  copperCoin: number;
   silverCoin?: number;
   goldCoin?: number;
   summonScroll?: number;
@@ -107,7 +107,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         newConfig => {
           this.usersService.updateCurrency({
-            cooper: reward.cooperCoin || 0,
+            copper: reward.copperCoin || 0,
             silver: reward.silverCoin || 0,
             gold: reward.goldCoin || 0,
           });

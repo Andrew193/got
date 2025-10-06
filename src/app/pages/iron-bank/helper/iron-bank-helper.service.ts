@@ -2,10 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NumbersService } from '../../../services/numbers/numbers.service';
 
-type Cur = 'COOPER' | 'SILVER' | 'GOLD';
+type Cur = 'COPPER' | 'SILVER' | 'GOLD';
 
 interface CurMeta {
-  valueInCooper: number;
+  valueInCopper: number;
   decimals: number;
   label: string;
 }
@@ -25,7 +25,7 @@ export class IronBankHelperService {
   readonly uiErrorsNames = {
     amount: 'Amount',
     gold: 'Gold',
-    cooper: 'Cooper',
+    copper: 'Copper',
     silver: 'Silver',
     days: 'Duration',
   };
@@ -35,13 +35,13 @@ export class IronBankHelperService {
   private numberServices = inject(NumbersService);
 
   private readonly META: Record<Cur, CurMeta> = {
-    COOPER: { valueInCooper: 1, decimals: 0, label: 'Cooper' },
-    SILVER: { valueInCooper: 6000, decimals: 0, label: 'Silver' },
-    GOLD: { valueInCooper: 12000, decimals: 0, label: 'Gold' },
+    COPPER: { valueInCopper: 1, decimals: 0, label: 'Copper' },
+    SILVER: { valueInCopper: 6000, decimals: 0, label: 'Silver' },
+    GOLD: { valueInCopper: 12000, decimals: 0, label: 'Gold' },
   };
   private readonly SPREAD = 0.99; // Interest
 
-  readonly currencies: Cur[] = ['COOPER', 'SILVER', 'GOLD'];
+  readonly currencies: Cur[] = ['COPPER', 'SILVER', 'GOLD'];
 
   form = this.fb.group({
     from: ['COOPER' as Cur, Validators.required],
@@ -69,8 +69,8 @@ export class IronBankHelperService {
       return { from, to, midRate: 1, rate: 1, spreadPct: 0 };
     }
 
-    const vFrom = this.META[from].valueInCooper;
-    const vTo = this.META[to].valueInCooper;
+    const vFrom = this.META[from].valueInCopper;
+    const vTo = this.META[to].valueInCopper;
 
     const midRate = vFrom / vTo;
     const rate = midRate * (1 - this.SPREAD);

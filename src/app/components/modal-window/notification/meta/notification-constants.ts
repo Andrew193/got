@@ -8,7 +8,7 @@ export const NotificationActivities: NotificationActivity[] = [
       src: './assets/resourses/imgs/icons/food.png',
       alt: 'gift_store',
     },
-    desc: 'You can get cooper, gold, silver and chests!!!',
+    desc: 'You can get copper, gold, silver and chests!!!',
   },
   {
     name: 'Daily reward',

@@ -38,8 +38,8 @@ export class HeaderComponent implements OnInit {
 
     return [
       {
-        alias: 'cooper',
-        amount: currency.cooper,
+        alias: 'copper',
+        amount: currency.copper,
       },
       {
         alias: 'silver',

@@ -39,7 +39,7 @@ describe('OnlineService', () => {
     expect(buffer).toBe(TIME.tenMinuteSeconds);
 
     //2) Login (Send data to backend)
-    onlineService.trackOnlineTimer();
+    onlineService.init();
 
     //Add buffer to the online time
     expect(userServiceSpy.updateOnline).toHaveBeenCalledWith({ time: buffer });

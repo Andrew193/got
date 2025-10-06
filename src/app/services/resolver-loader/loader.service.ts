@@ -8,13 +8,25 @@ import {
   RendererFactory2,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import {
+  GuardsCheckEnd,
+  GuardsCheckStart,
+  NavigationCancel,
+  ResolveEnd,
+  ResolveStart,
+  Router,
+} from '@angular/router';
+import { InitInterface } from '../../models/interfaces/init.interface';
+import { of } from 'rxjs';
+import { InitTaskObs } from '../../models/init.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoaderService {
+export class LoaderService implements InitInterface {
   private readonly activeCount = signal(0);
   readonly isLoading = computed(() => this.activeCount() > 0);
+  private router = inject(Router);
 
   private readonly doc = inject(DOCUMENT);
   private readonly renderer: Renderer2 = inject(RendererFactory2).createRenderer(null, null);
@@ -36,5 +48,26 @@ export class LoaderService {
         this.renderer.removeClass(body, 'app-loading');
       }
     });
+  }
+
+  init() {
+    try {
+      this.router.events.subscribe(e => {
+        if (e instanceof ResolveStart || e instanceof GuardsCheckStart) {
+          this.start();
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        } else if (
+          e instanceof ResolveEnd ||
+          e instanceof GuardsCheckEnd ||
+          e instanceof NavigationCancel
+        ) {
+          this.stop();
+        }
+      });
+
+      return of({ ok: true, message: 'Loader has been inited' } satisfies InitTaskObs);
+    } catch (e) {
+      return of({ ok: false, message: 'Failed to init loader' } satisfies InitTaskObs);
+    }
   }
 }

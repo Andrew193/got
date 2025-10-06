@@ -37,7 +37,7 @@ export class UsersService extends ApiService<User> {
       currency: {
         gold: 300,
         silver: 1000,
-        cooper: 15000,
+        copper: 15000,
       },
     } as User;
   }
@@ -88,7 +88,7 @@ export class UsersService extends ApiService<User> {
         currency: {
           gold: newCurrency.gold + (config.hardSet ? 0 : user.currency.gold),
           silver: newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
-          cooper: newCurrency.cooper + (config.hardSet ? 0 : user.currency.cooper),
+          copper: newCurrency.copper + (config.hardSet ? 0 : user.currency.copper),
         },
       },
       {

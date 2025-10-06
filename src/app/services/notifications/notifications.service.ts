@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { DailyRewardService } from '../daily-reward/daily-reward.service';
 import { GiftService } from '../gift/gift.service';
 import { ModalWindowService } from '../modal/modal-window.service';
@@ -7,6 +7,8 @@ import { ModalStrategiesTypes } from '../../components/modal-window/modal-interf
 import { NotificationComponent } from '../../components/modal-window/notification/notification.component';
 import { TODAY } from '../../constants';
 import { NotificationConfigMap } from '../../models/notification.model';
+import { InitInterface } from '../../models/interfaces/init.interface';
+import { InitTaskObs } from '../../models/init.model';
 
 export enum NotificationType {
   daily_reward,
@@ -16,7 +18,7 @@ export enum NotificationType {
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationsService {
+export class NotificationsService implements InitInterface {
   private dailyRewardService = inject(DailyRewardService);
   private giftService = inject(GiftService);
   private modalWindowService = inject(ModalWindowService);
@@ -31,22 +33,28 @@ export class NotificationsService {
   readonly $notifications = this.notifications.asObservable();
 
   init() {
-    const services = [
-      { api: this.dailyRewardService, type: NotificationType.daily_reward },
-      { api: this.giftService, type: NotificationType.gift_store },
-    ];
+    try {
+      const services = [
+        { api: this.dailyRewardService, type: NotificationType.daily_reward },
+        { api: this.giftService, type: NotificationType.gift_store },
+      ];
 
-    services.forEach(el => {
-      el.api
-        .getConfig(config => {
-          if (config.lastLogin !== TODAY) {
-            this.notificationsValue(el.type, true);
-          }
-        })
-        .subscribe();
-    });
+      services.forEach(el => {
+        el.api
+          .getConfig(config => {
+            if (config.lastLogin !== TODAY) {
+              this.notificationsValue(el.type, true);
+            }
+          })
+          .subscribe();
+      });
 
-    this.showPossibleActivities();
+      //this.showPossibleActivities();
+
+      return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
+    } catch (e) {
+      return of({ ok: false, message: 'Failed to init notifications' } satisfies InitTaskObs);
+    }
   }
 
   notificationsValue(key?: NotificationType, value?: boolean) {

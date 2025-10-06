@@ -2,9 +2,9 @@ import { Coin } from '../../models/reward-based.model';
 
 export const BaseLoyaltyBonus: Coin[] = [
   {
-    class: 'cooper',
-    imgSrc: 'assets/resourses/imgs/cooper.png',
-    alt: 'cooperCoin',
+    class: 'copper',
+    imgSrc: 'assets/resourses/imgs/copper.png',
+    alt: 'copperCoin',
     amount: 15000,
   },
   {

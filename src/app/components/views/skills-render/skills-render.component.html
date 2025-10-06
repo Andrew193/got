@@ -1,5 +1,6 @@
 @let hero = selectedHero();
 @let _showLabel = showLabel();
+@let _showSkillName = showSkillName();
 
 <div class="skills-container ps-2 pe-2">
   @if (_showLabel) {
@@ -8,7 +9,9 @@
   @for (skill of hero.skills; track skill.name + $index) {
     <div class="flex-row flex-nowrap skill-container">
       <app-image [source]="skill.imgSrc" [alt]="skill.name" />
-      <app-effects-highlighter [text]="skill.description"></app-effects-highlighter>
+      <app-effects-highlighter [text]="skill.description">
+        <b>{{ _showSkillName ? skill.name : '' }}</b>
+      </app-effects-highlighter>
     </div>
   }
 </div>

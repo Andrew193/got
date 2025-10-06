@@ -8,3 +8,9 @@
   border: var.$border-1-black;
   padding: 5px;
 }
+
+.stat-p-container {
+  display: inline-flex;
+  flex-basis: 100px;
+  justify-content: flex-start;
+}
