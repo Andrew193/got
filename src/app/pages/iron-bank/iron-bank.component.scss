@@ -1,10 +1,8 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
-@use '../../../assets/resourses/styles/animations';
+@use '../../../assets/resourses/styles/index' as index;
 
 .inner-container {
   background: url('../../../assets/resourses/imgs/background/iron-bank.jpg') no-repeat center;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
 
   p {
     color: white;
@@ -16,11 +14,11 @@
   }
 
   h4 {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
     font-size: 20px;
   }
 
   aside {
-    @include animations.glow-pulse-border();
+    @include index.anim-glow-pulse-border();
   }
 }

@@ -1,21 +1,22 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/index' as index;
 
 .inner-container {
   background: url('../../../assets/resourses/imgs/background/gift.jpg') no-repeat;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
 
   h3 {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
   }
 }
 
 .harvest-container {
   padding: 15px;
+
+  @include index.mixin-got-btn;
 }
 
 .reward-bar {
   min-height: 100px;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   border-radius: 5px;
 }

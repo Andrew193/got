@@ -85,9 +85,9 @@
           <p class="text">
             You can get an additional bonus for staying in the Night Watch for:
             <b style="color: darkred">{{ played.diffInDays }}</b> day(s). Reward:
-            <b style="color: darkred"
-              >{{ helper.loyaltyRewardBoostedBy(played.diffInDays) * 100 | number }}%</b
-            >
+            <b style="color: darkred">
+              {{ helper.loyaltyRewardBoostedBy(played.diffInDays) * 100 | number }}%
+            </b>
           </p>
           <div>
             @let boostedLoyaltyBonus = helper.boostedLoyaltyBonus(played.diffInDays);
@@ -96,7 +96,7 @@
             }
           </div>
           @if (canGetLoyaltyBonus) {
-            <button class="btn btn-primary" (click)="helper.getLoyaltyBonus(boostedLoyaltyBonus)">
+            <button class="got-toggle" (click)="helper.getLoyaltyBonus(boostedLoyaltyBonus)">
               Claim reward
             </button>
           } @else {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -43,10 +44,10 @@ export class ValidationService {
     return formGroupToValidate;
   }
 
-  validateFormAndSubmit(
+  validateFormAndSubmit<T>(
     form: FormGroup<any>,
-    updateCallback: () => void,
-    createCallback: () => void,
+    updateCallback: Observable<(T | undefined)[]>,
+    createCallback: Observable<T>,
     isUpdate: boolean,
   ) {
     this.validateAllFormFields(form);
@@ -54,9 +55,9 @@ export class ValidationService {
     if (form.valid) {
       form.disable();
       if (isUpdate) {
-        updateCallback();
+        updateCallback.subscribe();
       } else {
-        createCallback();
+        createCallback.subscribe();
       }
     }
   }

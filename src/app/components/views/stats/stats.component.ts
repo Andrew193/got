@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Unit } from '../../../models/unit.model';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 type AllowedStatKey = Extract<
   keyof Unit,
@@ -19,11 +20,12 @@ type StatRow = {
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgClass, NgTemplateOutlet, FormsModule],
 })
 export class StatsComponent {
   selectedHero = input.required<Unit>();
   tableMode = input(false);
+  statsContainerClass = input('');
 
   stats = computed<StatRow[]>(() => {
     const h = this.selectedHero();

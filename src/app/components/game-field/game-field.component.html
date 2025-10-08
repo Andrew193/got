@@ -32,14 +32,14 @@
     </div>
   }
   <main class="flex-row justify-content-between">
-    <div class="col-md-12 col-lg-12 col-xl-8">
+    <div class="col-12">
       <app-basic-game-board
         [gameConfig]="gameConfig"
         [battleMode]="battleMode"
         (moveEntity)="moveEntity($event)"
         (highlightMakeMove)="highlightMakeMove($event)"></app-basic-game-board>
     </div>
-    <aside class="col-xl-3 col-lg-12 col-md-12 d-flex flex-column mb-3">
+    <aside class="col-12 d-flex flex-column mb-3">
       @if (skillsInAttackBar.length) {
         <div class="meta-aside mb-3 flex-row justify-content-evenly p-1">
           @for (skill of skillsInAttackBar; track skill.name + $index) {
@@ -50,7 +50,7 @@
                   <div
                     class="position-relative"
                     style="margin: 0 auto; width: fit-content"
-                    [tooltip]="skill.description">
+                    [matTooltip]="skill.description">
                     <img
                       [alt]="skill.name"
                       [src]="skill.imgSrc"
@@ -72,8 +72,11 @@
         </div>
       }
       <div class="meta-aside">
-        <tabset>
-          <tab [heading]="battleMode ? 'My heroes' : 'Rangers'" id="tab1">
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              {{ battleMode ? 'My heroes' : 'Rangers' }}
+            </ng-template>
             <div class="heroes user-heroes m-1">
               @for (hero of userUnits; track hero.name + hero.x + hero.y) {
                 <ng-container
@@ -84,9 +87,12 @@
                   }"></ng-container>
               }
             </div>
-          </tab>
-          <tab [heading]="battleMode ? 'Enemies' : 'Loot'">
-            <div class="heroes ai-heroes m-1">
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              {{ battleMode ? 'Enemies' : 'Loot' }}
+            </ng-template>
+            <div class="heroes user-heroes m-1">
               @for (hero of aiUnits; track hero.name + hero.x + hero.y) {
                 <ng-container
                   [ngTemplateOutlet]="asideUnits"
@@ -96,9 +102,12 @@
                   }"></ng-container>
               }
             </div>
-          </tab>
-          <tab [heading]="battleMode ? 'Battle history' : 'History'" class="history-tab">
-            <div class="m-1">
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              {{ battleMode ? 'Battle history' : 'History' }}
+            </ng-template>
+            <div class="heroes user-heroes m-1">
               @for (logRecord of log; track logRecord.message + logRecord.isUser + $index) {
                 @if (logRecord.message) {
                   <p
@@ -114,15 +123,15 @@
                 }
               }
             </div>
-          </tab>
-        </tabset>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </aside>
   </main>
-  <div class="d-flex">
+  <div class="d-flex actions">
     @if (!autoFight) {
-      <button class="btn btn-success" (click)="startAutoFight(false)">Auto Play</button>
-      <button class="btn btn-success ms-1" (click)="startAutoFight(false, true)">
+      <button class="got-toggle got-toggle-green" (click)="startAutoFight(false)">Auto Play</button>
+      <button class="ms-1 got-toggle got-toggle-green" (click)="startAutoFight(false, true)">
         Skip one turn
       </button>
     }
@@ -131,11 +140,9 @@
 </div>
 
 <ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
-  <accordion class="mb-2">
-    <accordion-group>
-      <div
-        class="btn btn-link btn-block flex-column d-flex w-100 p-1 shadow-none"
-        accordion-heading>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <div class="flex-column d-flex w-100 p-1 shadow-none">
         <div class="flex-row">
           <div class="col-auto p-0">
             <div class="position-relative m-0-auto" style="width: fit-content">
@@ -162,21 +169,19 @@
             </div>
           </div>
           <div class="col p-0">
-            <div class="col-12 aside-hero-tab-header">
-              <h4>{{ hero.name }}</h4>
+            <div class="aside-hero-tab-header">
+              <h4 class="color-white text-center">{{ hero.name }}</h4>
               @let showProgressBar =
                 battleMode
                   ? battleMode && (hero.inBattle === true || hero.inBattle === undefined)
                   : hero.user;
 
               @if (showProgressBar) {
-                <progressbar
-                  [max]="hero.maxHealth"
-                  [value]="hero.health"
-                  [type]="progressbarClass"
-                  [striped]="true"
-                  [animate]="true">
-                </progressbar>
+                <mat-progress-bar
+                  class="example-margin"
+                  [mode]="'determinate'"
+                  [value]="(hero.health * 100) / hero.maxHealth">
+                </mat-progress-bar>
               }
             </div>
           </div>
@@ -186,41 +191,44 @@
           <div class="effects-container mt-1">
             @for (effect of hero.effects; track effect.type + $index) {
               <div class="position-relative">
-                <img [src]="effect.imgSrc" [tooltip]="effect.type" [alt]="effect.type" />
+                <img [src]="effect.imgSrc" [matTooltip]="effect.type" [alt]="effect.type" />
                 <span>{{ effect.duration }}</span>
               </div>
             }
           </div>
         }
       </div>
-
+    </mat-expansion-panel-header>
+    <div>
       @let showHeroesConfig =
         battleMode && (hero.inBattle === true || hero.inBattle === undefined)
           ? battleMode
           : hero.user;
 
       @if (showHeroesConfig) {
-        <div class="flex-row justify-content-between">
-          <div class="col-12 stats">
-            <p>
-              <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon" />
-              <span class="d-block">{{ hero.maxHealth }}</span>
-            </p>
-            <p>
-              <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack icon" />
-              <span class="d-block">{{ hero.attack }}</span>
-            </p>
-            <p>
-              <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence icon" />
-              <span class="d-block">{{ hero.defence }}</span>
-            </p>
+        <div class="flex-row justify-content-between color-white">
+          <div class="col-12 stats justify-content-between">
+            <div class="d-flex justify-content-evenly">
+              <p>
+                <img src="assets/resourses/imgs/icons/health_icon.png" alt="health icon" />
+                <span class="d-block">{{ hero.maxHealth }}</span>
+              </p>
+              <p>
+                <img src="assets/resourses/imgs/icons/attack_icon.png" alt="attack icon" />
+                <span class="d-block">{{ hero.attack }}</span>
+              </p>
+              <p>
+                <img src="assets/resourses/imgs/icons/def_icon.png" alt="defence icon" />
+                <span class="d-block">{{ hero.defence }}</span>
+              </p>
+            </div>
+            <p>{{ hero.health ? 'Health: ' + hero.health : '' }}</p>
           </div>
           <div class="col-12 row" style="margin: unset">
             <div class="stats h-100 w-100 skills-bar">
-              <p>{{ hero.health ? 'Health: ' + hero.health : '' }}</p>
               <div class="flex-row skills-container justify-content-evenly">
                 @for (skill of hero.skills; track skill.name + $index) {
-                  <div class="position-relative" tooltip="{{ skill.description }}">
+                  <div class="position-relative" [matTooltip]="skill.description">
                     <img alt="skill" [src]="skill.imgSrc" />
                     @if (skill.remainingCooldown || skill.passive) {
                       <div class="skill-disabled">
@@ -238,8 +246,8 @@
       } @else {
         {{ hero.description }}
       }
-    </accordion-group>
-  </accordion>
+    </div>
+  </mat-expansion-panel>
 </ng-template>
 
 <ng-template #usersTopBar let-units="units">
@@ -250,7 +258,7 @@
         alt="hero"
         class="game-field-img"
         [ngClass]="{ disabled: !hero.health }"
-        tooltip="Health: {{ hero.health }}" />
+        [matTooltip]="`Health: {{ hero.health }}`" />
     }
   }
 </ng-template>

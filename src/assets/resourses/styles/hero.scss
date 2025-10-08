@@ -1,19 +1,18 @@
-@use './vars';
-@use './mixins';
+@use './index' as index;
 
 .hero-in-frame {
   position: absolute;
   z-index: 101;
   bottom: 0;
-  @include mixins.h-100-w-100;
+  @include index.mixin-h-100-w-100;
   filter: drop-shadow(2px 4px 6px rgba(255, 0, 255, 0.6));
 }
 
 .hero-card {
   cursor: pointer;
   text-align: center;
-  background: vars.$background-color-main;
-  box-shadow: vars.$box-shadow;
+  background: index.$var-background-color-main;
+  box-shadow: index.$var-box-shadow;
   color: white !important;
   transition: background-color ease 0.5s;
   position: relative;
@@ -35,11 +34,11 @@
   }
 
   img {
-    @include mixins.h-100-w-100;
+    @include index.mixin-h-100-w-100;
     object-fit: cover;
   }
 
   &:hover {
-    background: vars.$background-color-main-hover !important;
+    background: index.$var-background-color-main-hover !important;
   }
 }

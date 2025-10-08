@@ -1,5 +1,4 @@
-@use './mixins';
-@use './vars';
+@use './index' as index;
 
 .tile {
   min-height: 100px;
@@ -18,8 +17,8 @@
 }
 
 .game-field-img {
-  @include mixins.avatar;
-  box-shadow: vars.$box-shadow;
+  @include index.mixin-avatar;
+  box-shadow: index.$var-box-shadow;
   padding: 5px;
 }
 
@@ -27,20 +26,20 @@
   position: absolute;
   top: 0;
   right: 3px;
-  @include mixins.grad-color;
+  @include index.mixin-grad-color;
 }
 
 .entity-b.ai-heroes.green-b:not(.disabled) {
   border-color: #ff6c6c;
-  box-shadow: vars.$red-box-shadow;
+  box-shadow: index.$var-red-box-shadow;
 }
 
 .ai-heroes img {
-  background-color: vars.$light-red;
+  background-color: index.$var-light-red;
 }
 
 .user-heroes img {
-  background-color: vars.$light-green;
+  background-color: index.$var-light-green;
 }
 
 .block {
@@ -65,8 +64,8 @@
 }
 
 .game-board {
-  box-shadow: vars.$box-shadow;
-  background-color: vars.$background-color-main;
+  box-shadow: index.$var-box-shadow;
+  background-color: index.$var-background-color-main;
   padding: 10px;
   border-radius: 5px;
 }

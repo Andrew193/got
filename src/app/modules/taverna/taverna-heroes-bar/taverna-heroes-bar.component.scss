@@ -1,19 +1,29 @@
-@use '../../../../assets/resourses/styles/vars';
-@use '../../../../assets/resourses/styles/mixins';
+@use '../../../../assets/resourses/styles/index' as index;
+
+.card-img-top.taverna {
+  max-height: 370px;
+  object-fit: contain;
+}
+
+.main-content {
+  height: 400px;
+}
 
 main {
+  @include index.mixin-got-btn;
+
   aside {
-    background: vars.$background-color-main;
-    box-shadow: vars.$box-shadow;
+    background: index.$var-background-color-main;
+    box-shadow: index.$var-box-shadow;
   }
 
   .card {
-    background: vars.$background-color-main;
+    background: index.$var-background-color-main;
   }
 
   .card-title,
   h4 {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
   }
 }
 

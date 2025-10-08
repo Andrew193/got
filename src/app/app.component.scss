@@ -1,4 +1,4 @@
-@use '../assets/resourses/styles/animations' as eff;
+@use '../assets/resourses/styles/index' as index;
 
 .loader-back {
   position: absolute;
@@ -11,6 +11,6 @@
 
   img {
     width: 20%;
-    @include eff.rotate();
+    @include index.anim-rotate();
   }
 }

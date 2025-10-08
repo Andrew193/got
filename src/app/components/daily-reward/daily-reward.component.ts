@@ -9,10 +9,8 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { HeroesService } from '../../services/heroes/heroes.service';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { StatsComponent } from '../views/stats/stats.component';
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
 import { Unit } from '../../models/unit.model';
@@ -24,8 +22,9 @@ import {
 } from '../../services/notifications/notifications.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RewardsCalendarComponent } from '../common/rewards-calendar/rewards-calendar.component';
-import { EffectsHighlighterComponent } from '../common/effects-highlighter/effects-highlighter.component';
 import { DailyReward } from '../../models/reward-based.model';
+import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
+import { TileUnit } from '../../models/field.model';
 
 export interface DayReward {
   copperCoin: number;
@@ -38,14 +37,7 @@ export interface DayReward {
 
 @Component({
   selector: 'app-daily-reward',
-  imports: [
-    ModalModule,
-    OutsideClickDirective,
-    TooltipModule,
-    StatsComponent,
-    RewardsCalendarComponent,
-    EffectsHighlighterComponent,
-  ],
+  imports: [OutsideClickDirective, StatsComponent, RewardsCalendarComponent, SkillsRenderComponent],
   templateUrl: './daily-reward.component.html',
   styleUrl: './daily-reward.component.scss',
 })
@@ -56,7 +48,8 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   notificationService = inject(NotificationsService);
   destroyRef = inject(DestroyRef);
   isHeroPreview = false;
-  rewardHero: Unit;
+  rewardHero!: Unit;
+  tileRewardHero!: TileUnit;
   month: DayReward[] = [];
   dailyRewardConfig: DailyReward = {
     id: '',
@@ -72,7 +65,6 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     public usersService: UsersService,
     private render2: Renderer2,
   ) {
-    this.rewardHero = this.heroService.getBasicUserConfig() as Unit;
     this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays || 1);
     document.body.style.overflow = 'hidden';
   }
@@ -86,6 +78,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.rewardHero = this.heroService.getPriest();
+    this.tileRewardHero = this.heroService.getTileUnit(this.rewardHero);
 
     this.dailyRewardService._data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => {
       this.dailyRewardConfig = {

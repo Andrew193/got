@@ -44,14 +44,14 @@ export class IronBankHelperService {
   readonly currencies: Cur[] = ['COPPER', 'SILVER', 'GOLD'];
 
   form = this.fb.group({
-    from: ['COOPER' as Cur, Validators.required],
+    from: ['COPPER' as Cur, Validators.required],
     to: ['GOLD' as Cur, Validators.required],
     amount: [0, [Validators.required, Validators.min(1)]],
   });
 
   depositForm = this.fb.group({
     days: [0, [Validators.required]],
-    cooper: [0, []],
+    copper: [0, []],
     silver: [0, []],
     gold: [0, []],
   });

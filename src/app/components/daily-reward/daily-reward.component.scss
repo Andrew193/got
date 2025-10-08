@@ -1,6 +1,4 @@
-@use '../../../assets/resourses/styles/mixins';
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/animations' as eff;
+@use '../../../assets/resourses/styles/index' as index;
 
 .hero {
   background-repeat: no-repeat !important;
@@ -18,8 +16,8 @@
 
   .inner-container {
     margin: 15px 0px;
-    box-shadow: vars.$box-shadow;
-    border-radius: 15px;
+    box-shadow: index.$var-box-shadow;
+    border-radius: 5px;
     background: url('../../../assets/resourses/imgs/background/show_with_two_men.jpeg') no-repeat;
     background-size: cover;
     height: 80%;

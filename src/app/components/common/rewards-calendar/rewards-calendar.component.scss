@@ -1,14 +1,12 @@
-@use '../../../../assets/resourses/styles/mixins';
-@use '../../../../assets/resourses/styles/vars';
-@use '../../../../assets/resourses/styles/animations' as eff;
+@use '../../../../assets/resourses/styles/index' as index;
 
 .reward {
   min-height: 120px;
   background-color: rgb(255, 241, 241);
-  border: 1px solid #f8b163;
+  border: index.$var-border-2-bronze;
   cursor: pointer;
   border-radius: 5px;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   transition: all ease 0.4s;
   pointer-events: none;
   height: 100%;
@@ -30,7 +28,7 @@
   box-shadow:
     0 0 0 2px rgba(255, 215, 0, 0.15),
     0 10px 20px rgba(0, 0, 0, 0.35);
-  @include eff.glow-pulse($selector: &, $name: glowPulse-dr, $duration: 2s);
+  @include index.anim-glow-pulse($selector: &, $name: glowPulse-dr, $duration: 2s);
 }
 
 .day:not(.col) {
@@ -77,25 +75,24 @@
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .flip-front {
-  background: linear-gradient(135deg, #2b2f3a, #1a1d24);
+  background: linear-gradient(135deg, index.$var-metal-dark-2, index.$var-metal-dark-1);
   color: #eee;
 }
+
 .flip-back {
-  background: linear-gradient(145deg, #d3ffd1, #f5e9c5);
-  transform: rotateY(180deg);
-  color: #222;
+  @include index.mixin-back-card-color;
 }
 
 .day.claimed .reward {
-  @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.7s);
+  @include index.anim-shine-sweep($name: shineSweep-dr, $duration: 2.7s);
 }
 
 .reward.no-shine {
-  @include eff.no-shine();
+  @include index.anim-no-shine();
 }
 
 .chainMode {
@@ -107,7 +104,7 @@
   .reward {
     background: transparent;
     padding: unset !important;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 
   .flip-wrap {
@@ -130,7 +127,7 @@
   }
 
   .reward.claimed .flip-wrap {
-    @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.7s);
+    @include index.anim-shine-sweep($name: shineSweep-dr, $duration: 2.7s);
   }
 }
 
@@ -138,5 +135,16 @@
   .reward {
     max-height: 85px !important;
     min-height: 85px !important;
+  }
+
+  .day:not(.col) {
+    flex: 1;
+    flex-basis: 25%;
+  }
+
+  ::ng-deep {
+    .image-cover {
+      display: none;
+    }
   }
 }

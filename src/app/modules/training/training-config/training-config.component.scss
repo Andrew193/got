@@ -1,7 +1,6 @@
-@use '../../../../assets/resourses/styles/vars';
-@use '../../../../assets/resourses/styles/mixins';
+@use '../../../../assets/resourses/styles/index' as index;
 
 .units-config-container {
-  background-color: vars.$background-color-main;
-  @include mixins.units-container-config;
+  background-color: index.$var-background-color-main;
+  @include index.mixin-units-container-config;
 }

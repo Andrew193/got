@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DisplayReward, RewardService } from '../../services/reward/reward.service';
-import { Router } from '@angular/router';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { ImageComponent } from '../../components/views/image/image.component';
-import { frontRoutes } from '../../constants';
 import { RewardComponentInterface } from '../../models/reward-based.model';
 import { DecimalPipe } from '@angular/common';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-summon-tree',
@@ -14,10 +13,9 @@ import { DecimalPipe } from '@angular/common';
   styleUrl: './summon-tree.component.scss',
 })
 export class SummonTreeComponent implements RewardComponentInterface {
-  constructor(
-    public rewardService: RewardService,
-    private route: Router,
-  ) {}
+  nav = inject(NavigationService);
+
+  constructor(public rewardService: RewardService) {}
 
   rewards: DisplayReward[] = [];
 
@@ -36,6 +34,6 @@ export class SummonTreeComponent implements RewardComponentInterface {
   }
 
   goToMainPage() {
-    this.route.navigate([frontRoutes.base]);
+    this.nav.goToMainPage();
   }
 }

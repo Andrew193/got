@@ -1,0 +1,13 @@
+.star {
+  padding: 0;
+}
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+  --mdc-icon-button-state-layer-size: 20px;
+}
+
+.rating-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}

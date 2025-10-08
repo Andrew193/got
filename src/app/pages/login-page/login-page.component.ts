@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation/validation.service';
 import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
-import { Router } from '@angular/router';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
-import { frontRoutes, USER_TOKEN } from '../../constants';
+import { USER_TOKEN } from '../../constants';
 import { UsersService } from '../../services/users/users.service';
-import { User } from '../../services/users/users.interfaces';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-login-page',
@@ -15,6 +14,8 @@ import { User } from '../../services/users/users.interfaces';
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent implements OnInit {
+  nav = inject(NavigationService);
+
   form;
   createUser = false;
   onUIFieldsName = {
@@ -25,7 +26,6 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private localStorageService: LocalStorageService,
-    private router: Router,
     private validationService: ValidationService,
   ) {
     this.form = new FormGroup({
@@ -38,34 +38,24 @@ export class LoginPageComponent implements OnInit {
     this.createUser = !this.createUser;
   }
 
+  processing<T>(user: T) {
+    this.form.enable();
+    this.localStorageService.setItem(USER_TOKEN, user);
+    this.nav.goToMainPage();
+  }
+
   submit() {
     this.validationService.validateFormAndSubmit(
       this.form,
-      () => {
-        this.usersService
-          .login(this.form.value as User, user => {
-            this.form.enable();
-            this.localStorageService.setItem(USER_TOKEN, user);
-            this.router.navigate([frontRoutes.base]);
-          })
-          .subscribe();
-      },
-      () => {
-        this.usersService
-          .createUser(this.form.value, (user: User) => {
-            this.form.enable();
-            this.localStorageService.setItem(USER_TOKEN, user);
-            this.router.navigate([frontRoutes.base]);
-          })
-          .subscribe();
-      },
+      this.usersService.login(this.form.value, this.processing.bind(this)),
+      this.usersService.createUser(this.form.value, this.processing.bind(this)),
       !this.createUser,
     );
   }
 
   ngOnInit(): void {
     if (this.usersService.isAuth()) {
-      this.router.navigate([frontRoutes.base]);
+      this.nav.goToMainPage();
     }
   }
 }

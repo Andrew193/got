@@ -1,11 +1,10 @@
-@use '../../../../assets/resourses/styles/vars';
-@use '../../../../assets/resourses/styles/mixins';
+@use '../../../../assets/resourses/styles/index' as index;
 
 .taverna-inner-container {
   background: url('../../../../assets/resourses/imgs/background/taverna-3.webp') no-repeat;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
 
   h3 {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
   }
 }

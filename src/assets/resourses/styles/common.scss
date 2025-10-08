@@ -1,4 +1,4 @@
-@use './vars';
+@use './index' as index;
 @use 'sass:math';
 
 $columns: 100;
@@ -48,17 +48,21 @@ $columns: 100;
 }
 
 a.fake-link {
-  color: white !important;
-  text-decoration: none !important;
+  color: white;
+  text-decoration: none;
 }
 
 .summon-background {
-  object-fit: contain;
+  height: 300px;
+  width: 100%;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
 }
 
 .banner {
-  box-shadow: vars.$box-shadow;
-  background-color: vars.$background-color-main;
+  box-shadow: index.$var-box-shadow;
+  background-color: index.$var-background-color-main;
   width: calc(100% - (2 * (var(--bs-gutter-x) * 0.5)));
   z-index: 1;
   align-content: space-evenly;
@@ -73,4 +77,8 @@ a.fake-link {
     );
     padding: 5px;
   }
+}
+
+.color-white {
+  color: white;
 }

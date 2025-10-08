@@ -1,4 +1,4 @@
-@use './vars';
+@use './index' as index;
 @use 'sass:map';
 
 $all-colors: (
@@ -18,15 +18,15 @@ $all-colors: (
   // b-colors
   red-b: (
       prop: background,
-      value: vars.$light-red,
+      value: index.$var-light-red,
     ),
   green-b: (
     prop: background,
-    value: vars.$light-green,
+    value: index.$var-light-green,
   ),
   entity-b: (
     prop: background,
-    value: vars.$light-gray,
+    value: index.$var-light-gray,
   ),
   // items
   summon-scroll: (
@@ -38,6 +38,10 @@ $all-colors: (
     value: #70ff70ff,
   ),
   summon-card: (
+    prop: color,
+    value: #6ee9f6,
+  ),
+  shards: (
     prop: color,
     value: #6ee9f6,
   ),

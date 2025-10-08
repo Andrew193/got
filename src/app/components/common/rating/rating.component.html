@@ -1,0 +1,11 @@
+@let _color = color();
+
+<div class="rating-container">
+  @for (ratingId of ratingArr; track ratingId) {
+    <button mat-icon-button [color]="_color" [id]="'star_' + $index" class="star">
+      <mat-icon>
+        {{ showIcon($index) }}
+      </mat-icon>
+    </button>
+  }
+</div>

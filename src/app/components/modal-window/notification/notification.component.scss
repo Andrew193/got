@@ -1,13 +1,14 @@
-@use '../../../../assets/resourses/styles/vars';
-@use '../../../../assets/resourses/styles/animations' as eff;
+@use '../../../../assets/resourses/styles/index' as index;
 
 .inner-container {
   background: url('../../../../assets/resourses/imgs/background/wall.webp') no-repeat center;
   background-size: cover;
   min-height: 100%;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   position: relative;
   padding-top: 1px;
+
+  @include index.mixin-got-btn;
 }
 
 .card-title {
@@ -44,8 +45,8 @@ aside {
     animation-delay: 1.5s;
   }
 
-  @include eff.swirl-particles($name: swirl-particles-dr);
-  @include eff.swirl-out($name: swirl-out-dr);
+  @include index.anim-swirl-particles($name: swirl-particles-dr);
+  @include index.anim-swirl-out($name: swirl-out-dr);
 }
 
 .online-time {

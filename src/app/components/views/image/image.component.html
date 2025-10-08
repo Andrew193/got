@@ -1,17 +1,30 @@
 @let scr = source();
+@let _backgroundImageUrl = backgroundImageUrl();
+
 @let _alt = alt();
 @let _class = imageClass();
 @let fixSize = useFixSize();
+@let _renderAsBackground = renderAsBackground();
 
-@if (loading) {
-  <img src="/assets/loader.png" alt="loading" class="loader" />
+@if (_renderAsBackground) {
+  <div
+    [ngClass]="{
+      'fix-size': fixSize,
+      'background-image': true,
+    }"
+    [ngStyle]="{ background: _backgroundImageUrl, width: '100px', height: '100px' }"
+    [class]="_class"></div>
+} @else {
+  @if (loading) {
+    <img src="/assets/loader.png" alt="loading" class="loader" />
+  }
+  <img
+    [hidden]="loading"
+    [ngClass]="{
+      'fix-size': fixSize,
+    }"
+    [class]="_class"
+    [alt]="_alt"
+    (load)="onLoad()"
+    [src]="scr" />
 }
-<img
-  [hidden]="loading"
-  [ngClass]="{
-    'fix-size': fixSize,
-  }"
-  [class]="_class"
-  [alt]="_alt"
-  (load)="onLoad()"
-  [src]="scr" />

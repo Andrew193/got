@@ -11,14 +11,14 @@
         [userUnits]="userUnits"
         [battleMode]="true">
         <ng-container ngProjectAs="bottom-navigation">
-          <button class="btn btn-danger ms-1" (click)="init()">
+          <button class="ms-1 got-toggle got-toggle-red" (click)="init()">
             Refresh field (load new rewards)
           </button>
-          <button class="btn btn-primary ms-1">
+          <button class="got-toggle ms-1">
             <a routerLink="/" class="fake-link">Back to Castle Black</a>
           </button>
           @if (loot.length) {
-            <button class="btn btn-success ms-1" (click)="collectAndLeave()">
+            <button class="got-toggle got-toggle-green ms-1" (click)="collectAndLeave()">
               Collect loot and leave
             </button>
           }

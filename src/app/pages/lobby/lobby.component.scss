@@ -1,5 +1,4 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/index' as index;
 
 .viewport {
   height: 400px;
@@ -15,16 +14,16 @@
 
 .lobby-container {
   background: url('../../../assets/resourses/imgs/lobby-back.jpeg') no-repeat;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
 }
 
 aside {
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   border-radius: 5px;
   height: fit-content;
 
   ul {
-    box-shadow: vars.$box-shadow;
+    box-shadow: index.$var-box-shadow;
   }
 
   li {
@@ -37,7 +36,7 @@ aside {
       background: rgba(0, 0, 0, 0.56);
 
       a {
-        @include mixins.grad-color;
+        @include index.mixin-grad-color;
       }
     }
 

@@ -1,7 +1,7 @@
-@use './vars';
+@use './index' as index;
 
 .page-item:not(.active) {
   a {
-    background-color: vars.$background-color-main !important;
+    background-color: index.$var-background-color-main !important;
   }
 }

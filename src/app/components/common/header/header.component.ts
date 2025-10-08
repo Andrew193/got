@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { DecimalPipe } from '@angular/common';
 import { USER_TOKEN } from '../../../constants';
 import { UsersService } from '../../../services/users/users.service';
 import { User } from '../../../services/users/users.interfaces';
 import { BossRewardCurrency } from '../../../models/reward-based.model';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
-  imports: [PopoverModule, DecimalPipe],
+  imports: [DecimalPipe, MatMenu, MatMenuItem, MatMenuTrigger],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

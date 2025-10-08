@@ -12,7 +12,6 @@ export class PreloadingStrategyService implements PreloadingStrategy {
   private readonly user = this.userService.$user;
 
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    debugger;
     const mockConfig = {
       rest: [frontRoutes.taverna],
       empty: [] as string[],

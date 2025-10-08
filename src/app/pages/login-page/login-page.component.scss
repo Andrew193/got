@@ -1,20 +1,24 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/index' as index;
 
 .login-container {
   background: url('../../../assets/resourses/imgs/background/summon_tree.jpg') no-repeat;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
+  @include index.mixin-got-btn;
 
   main {
     height: 100%;
-    @include mixins.d-f-a-c-j-c;
+    @include index.mixin-d-f-a-c-j-c;
 
     form {
       border-radius: 15px;
-      box-shadow: vars.$box-shadow;
+      box-shadow: index.$var-box-shadow;
       min-height: 400px;
       width: 100%;
-      background: vars.$background-color-main;
+      background: index.$var-background-color-main;
     }
+  }
+
+  .login-btn {
+    padding: 5px 15px;
   }
 }

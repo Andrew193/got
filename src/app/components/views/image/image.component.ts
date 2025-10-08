@@ -1,18 +1,21 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-image',
-  imports: [NgClass],
+  imports: [NgClass, NgStyle],
   templateUrl: './image.component.html',
   styleUrl: './image.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent {
   source = input.required<string>();
+  backgroundImageUrl = computed(() => `url(${this.source()})`);
+
   alt = input.required<string>();
   useFixSize = input(false);
   imageClass = input('');
+  renderAsBackground = input(false);
 
   loading = true;
 

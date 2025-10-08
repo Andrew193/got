@@ -3,10 +3,10 @@ import { Unit } from '../../../models/unit.model';
 import { Router } from '@angular/router';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
-import { frontRoutes } from '../../../constants';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
 import { TileUnit } from '../../../models/field.model';
 import { HeroesService } from '../../../services/heroes/heroes.service';
+import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-training-battle',
@@ -14,16 +14,17 @@ import { HeroesService } from '../../../services/heroes/heroes.service';
   templateUrl: './training-battle.component.html',
 })
 export class TrainingBattleComponent {
+  nav = inject(NavigationService);
   heroesService = inject(HeroesService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
 
   constructor(
-    private route: Router,
+    private router: Router,
     private modalService: ModalWindowService,
   ) {
-    const navigation = this.route.getCurrentNavigation();
+    const navigation = this.router.getCurrentNavigation();
 
     if (navigation) {
       const config = navigation.extras.state as {
@@ -61,6 +62,6 @@ export class TrainingBattleComponent {
   }
 
   public victoryRedirect = () => {
-    this.route.navigate([frontRoutes.training]);
+    this.nav.goToTraining();
   };
 }

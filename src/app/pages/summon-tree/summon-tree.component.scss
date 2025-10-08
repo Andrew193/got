@@ -1,23 +1,47 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/index' as index;
 
 .inner-container {
   background: url('../../../assets/resourses/imgs/background/summon-tree-component.png') no-repeat
     center;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
 
   h4 {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
     font-size: 20px;
   }
+
+  @include index.mixin-got-btn;
 }
 
 .summon-container {
-  box-shadow: vars.$box-shadow-out;
+  box-shadow: index.$var-box-shadow-out;
   margin-top: 50px;
   padding: 10px;
-  border-radius: 5px;
-  background: #808080ad;
+  border-radius: 10px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  .summon-background {
+    background: url('../../../assets/resourses/imgs/background/summon1.webp') center/cover no-repeat;
+    border-radius: inherit;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: conic-gradient(
+      transparent,
+      index.$var-deep-golden,
+      index.$var-deep-golden,
+      index.$var-deep-golden
+    );
+    filter: blur(1.3rem);
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
 
   img {
     border-radius: 10px;

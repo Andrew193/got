@@ -1,9 +1,4 @@
 <div class="lobby-container container-fluid">
-  <button appHighlight="green" testColor="black" #directive="appHighlight">click</button>
-  <div *appRepeat="5; text: 'Привет'; let i; let m = message; let t = tail">
-    #{{ i }} — {{ m }} - {{ t }}
-  </div>
-
   <main class="row mt-4">
     <aside class="col-sm-12 col-md-6 shadow-none">
       <ul class="nav flex-column list-group">
@@ -58,5 +53,5 @@
 </ng-template>
 
 @if (isShowDailyReward) {
-  <app-daily-reward [closePopup]="closePopup"></app-daily-reward>
+  <app-daily-reward [closePopup]="showDailyReward"></app-daily-reward>
 }

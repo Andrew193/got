@@ -1,5 +1,4 @@
-@use '../../../../assets/resourses/styles/mixins';
-@use '../../../../assets/resourses/styles/vars';
+@use '../../../../assets/resourses/styles/index' as index;
 
 .header-avatar-popper {
   min-width: 210px;
@@ -15,7 +14,7 @@ nav {
   margin-bottom: unset;
   background-size: cover;
   background: url('../../../../assets/resourses/imgs/small-forest.jpeg') no-repeat top;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
 
   span {
     height: fit-content;
@@ -36,7 +35,7 @@ nav {
 }
 
 .user-header-avatar {
-  @include mixins.avatar;
+  @include index.mixin-avatar;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
   cursor: pointer;
   transition: 0.3s;

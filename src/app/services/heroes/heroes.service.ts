@@ -159,7 +159,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
           buffs: [this.eS.getEffect(this.effects.healthRestore, 1)],
           passive: true,
           restoreSkill: true,
@@ -239,7 +238,6 @@ export class HeroesService extends ContentService {
             this.eS.getEffect(this.effects.healthRestore, 1),
           ],
           addBuffsBeforeAttack: false,
-          debuffs: [],
           inRangeDebuffs: [this.eS.getEffect(this.effects.defBreak)],
           description:
             'Наносит целевому врагу урон в размере 130% от показателя атаки. Наносит 130% от атаки врагам в радиусе 2 клеток и накладывает на них штраф ' +
@@ -257,8 +255,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
           passive: true,
           restoreSkill: true,
           description:
@@ -372,7 +368,6 @@ export class HeroesService extends ContentService {
           remainingCooldown: 0,
           healAll: true,
           heal: true,
-          debuffs: [],
           description:
             'Наносит противнику урон в размере 15% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 10% от своего максимального здоровья.',
         },
@@ -388,7 +383,6 @@ export class HeroesService extends ContentService {
           attackInRangeM: 0.9,
           healAll: true,
           heal: true,
-          debuffs: [],
           description:
             'Наносит противнику урон в размере 100% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 25% от своего максимального здоровья.' +
             ' Наносит 90% от атаки врагам в радиусе 3 клеток.',
@@ -399,8 +393,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
           passive: true,
           restoreSkill: true,
           description:
@@ -446,7 +438,6 @@ export class HeroesService extends ContentService {
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
           description: 'Наносит противнику урон в размере 100% от показателя атаки.',
         },
       ],
@@ -559,8 +550,6 @@ export class HeroesService extends ContentService {
             this.eS.getEffect(this.effects.bleeding),
             this.eS.getEffect(this.effects.defBreak),
           ],
-          buffs: [],
-          inRangeDebuffs: [],
           description:
             'Наносит противнику урон в размере 150% от показателя атаки, накладывает на врага штрафы: ' +
             this.effects.bleeding +
@@ -574,8 +563,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
           passive: true,
           description:
             'Этот герой получает на 25% меньше урона от штрафа ' +
@@ -648,8 +635,6 @@ export class HeroesService extends ContentService {
             this.eS.getEffect(this.effects.bleeding),
             this.eS.getEffect(this.effects.defBreak),
           ],
-          buffs: [],
-          inRangeDebuffs: [],
           description:
             'Наносит противнику урон в размере 200% от показателя атаки, накладывает на врага штрафы: ' +
             this.effects.bleeding +
@@ -663,8 +648,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
           passive: true,
           description:
             'Этот герой получает на 25% меньше урона от штрафа ' +
@@ -710,7 +693,6 @@ export class HeroesService extends ContentService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.eS.getEffect(this.effects.attackBreak)],
-          inRangeDebuffs: [],
           description:
             'Наносит противнику урон в размере 300% от показателя атаки и накладывает на него штраф ' +
             this.effects.attackBreak +
@@ -725,7 +707,6 @@ export class HeroesService extends ContentService {
           buffs: [this.eS.getEffect(this.effects.attackBuff)],
           addBuffsBeforeAttack: false,
           debuffs: [this.eS.getEffect(this.effects.defBreak)],
-          inRangeDebuffs: [],
           description:
             'Наносит врагу урон в размере 500% от показателя атаки, накладывает на него штраф ' +
             this.effects.defBreak +
@@ -739,8 +720,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
           passive: true,
           restoreSkill: true,
           description:
@@ -833,7 +812,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
           buffs: [this.eS.getEffect(this.effects.attackBuff, 1)],
           passive: true,
           description:
@@ -890,7 +868,6 @@ export class HeroesService extends ContentService {
           attackRange: 20,
           attackInRangeM: 1.4,
           debuffs: [this.eS.getEffect(this.effects.defBreak, 1)],
-          inRangeDebuffs: [],
           description:
             'Наносит противнику урон в размере 270% от показателя атаки и накладывает на него штраф ' +
             this.effects.defBreak +
@@ -902,7 +879,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
           buffs: [this.eS.getEffect(this.effects.defBuff, 1)],
           passive: true,
           description:
@@ -955,8 +931,6 @@ export class HeroesService extends ContentService {
           dmgM: 1.9,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          inRangeDebuffs: [],
           description: 'Наносит противнику урон в размере 190% от показателя атаки.',
         },
         {
@@ -965,7 +939,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
           buffs: [
             this.eS.getEffect(this.effects.defBuff),
             this.eS.getEffect(this.effects.attackBuff),
@@ -1023,8 +996,6 @@ export class HeroesService extends ContentService {
           attackInRange: true,
           attackRange: 1.1,
           attackInRangeM: 1,
-          debuffs: [],
-          inRangeDebuffs: [],
           description:
             'Наносит противнику урон в размере 200% от показателя атаки и 110% от атаки врагам в радиусе 1 клетки.',
         },
@@ -1038,7 +1009,6 @@ export class HeroesService extends ContentService {
           attackInRange: true,
           attackRange: 1,
           attackInRangeM: 2.5,
-          buffs: [],
           debuffs: [
             this.eS.getEffect(this.effects.defBreak, 3),
             this.eS.getEffect(this.effects.bleeding, 3),
@@ -1063,7 +1033,6 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
           buffs: [this.eS.getEffect(this.effects.attackBuff, 1)],
           passive: true,
           description:
@@ -1166,8 +1135,7 @@ export class HeroesService extends ContentService {
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
-          debuffs: [],
-          buffs: [],
+          passive: true,
           description:
             'Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафа' +
             this.effects.bleeding +
@@ -1235,6 +1203,7 @@ export class HeroesService extends ContentService {
       this.getIceRiverHunter(),
       this.getJonKing(),
       this.getWhiteWalkerCapitan(),
+      this.getLadyOfDragonStone(),
       this.getWhiteWalkerGeneral(),
       this.getNightKing(),
       this.getGiant(),
@@ -1242,7 +1211,6 @@ export class HeroesService extends ContentService {
       this.getBrownWolf(),
       this.getWhiteWolf(),
       this.getTargaryenKnight(),
-      this.getLadyOfDragonStone(),
       this.getRelinaShow(),
       this.getPriest(),
       this.getDailyBossVersion1(),
@@ -1260,10 +1228,11 @@ export class HeroesService extends ContentService {
       description: unit.description,
       imgSrc: unit.imgSrc,
       name: unit.name,
-      skills: unit.skills.map(skil => ({
-        name: skil.name,
-        imgSrc: skil.imgSrc,
-        description: skil.description,
+      skills: unit.skills.map(skill => ({
+        name: skill.name,
+        imgSrc: skill.imgSrc,
+        description: skill.description,
+        passive: skill.passive,
       })),
     };
   }

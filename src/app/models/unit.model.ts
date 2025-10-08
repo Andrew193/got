@@ -50,5 +50,5 @@ export interface UnitWithReward extends Unit {
 export type SelectableUnit = Pick<Unit, 'name' | 'imgSrc'>;
 export type PreviewUnit = SelectableUnit & {
   description: Unit['description'];
-  skills: Pick<Skill, 'imgSrc' | 'name' | 'description'>[];
+  skills: Pick<Skill, 'imgSrc' | 'name' | 'description' | 'passive'>[];
 };

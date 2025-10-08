@@ -41,6 +41,7 @@ export const frontRoutes = {
   login: 'login',
   summonTree: 'summon-tree',
   giftStore: 'gift-lands',
+  root: '/',
 };
 
 export const ALL_EFFECTS = {

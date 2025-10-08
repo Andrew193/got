@@ -1,65 +1,70 @@
-<div class="row ms-2 me-2 mb-2" style="gap: 5px">
-  <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
-    <app-stats [selectedHero]="selectedHero"></app-stats>
+<div class="page-container">
+  <div class="row ms-2 me-2 mb-2" style="gap: 5px">
+    <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
+      <app-stats [selectedHero]="selectedHero"></app-stats>
+    </div>
+    <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
+      <app-skills-render
+        [selectedHero]="selectedTileHero"
+        [showLabel]="false"
+        [showSkillName]="true"></app-skills-render>
+    </div>
   </div>
-  <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
-    <app-skills-render [selectedHero]="selectedTileHero" [showLabel]="false"></app-skills-render>
+  <div class="pb-2">
+    <mat-tab-group>
+      @for (boss of config; track boss.level) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            {{ boss.heading }}
+          </ng-template>
+          <ng-container
+            [ngTemplateOutlet]="bossTemplate"
+            [ngTemplateOutletContext]="{ bossLevel: boss.level }"></ng-container>
+        </mat-tab>
+      }
+    </mat-tab-group>
   </div>
-</div>
-<div class="pb-2">
-  <tabset>
-    <tab
-      *ngFor="let boss of config; trackBy: trackByLevel"
-      [heading]="boss.heading"
-      id="{{ boss.heading }}">
-      <ng-container
-        [ngTemplateOutlet]="bossTemplate"
-        [ngTemplateOutletContext]="{ bossLevel: boss.level }"></ng-container>
-    </tab>
-  </tabset>
-</div>
 
-<ng-template #bossTemplate let-bossLevel="bossLevel">
-  <div class="p-3">
-    <div class="col-12">
-      <app-stats [selectedHero]="upBoss(bossLevel)" [tableMode]="true">
-        @let bossConfig = bossReward(bossLevel);
+  <ng-template #bossTemplate let-bossLevel="bossLevel">
+    <div class="p-3">
+      <div class="col-12">
+        <app-stats [selectedHero]="upBoss(bossLevel)" [tableMode]="true">
+          @let bossConfig = bossReward(bossLevel);
 
-        <div class="skills-container ps-2 pe-2">
-          <div class="d-flex rewards-bar h-100 align-items-center">
-            <img
-              [src]="'assets/resourses/imgs/icons/silver_chest.jpeg'"
-              alt="silver_chest"
-              height="125px" />
-            <div class="ps-2">
-              @for (bossConfigReward of bossConfig; track $index) {
-                <p class="mb-0">
-                  <span [class]="bossConfigReward.alias">
-                    {{ bossConfigReward.base | number }} (+{{ bossConfigReward.win | number }} kill
-                    reward )
-                  </span>
-                  <img
-                    [src]="`assets/resourses/imgs/${bossConfigReward.alias}.png`"
-                    [alt]="bossConfigReward.alias" />
-                  for every
-                  <span class="highlight-effect">{{ bossConfigReward.dmg | number }}</span>
-                  DMG.
-                </p>
-              }
+          <div class="skills-container ps-2 pe-2">
+            <div class="d-flex rewards-bar h-100 align-items-center">
+              <img
+                [src]="'assets/resourses/imgs/icons/silver_chest.jpeg'"
+                alt="silver_chest"
+                height="125px" />
+              <div class="ps-2">
+                @for (bossConfigReward of bossConfig; track $index) {
+                  <p class="mb-0">
+                    <span [class]="bossConfigReward.alias">
+                      {{ bossConfigReward.base | number }} (+{{
+                        bossConfigReward.win | number
+                      }}
+                      kill reward )
+                    </span>
+                    <img
+                      [src]="`assets/resourses/imgs/${bossConfigReward.alias}.png`"
+                      [alt]="bossConfigReward.alias" />
+                    for every
+                    <span class="highlight-effect">{{ bossConfigReward.dmg | number }}</span>
+                    DMG.
+                  </p>
+                }
+              </div>
             </div>
           </div>
-        </div>
-      </app-stats>
-    </div>
-    <div class="col-lg-12 col-sm-12 d-flex flex-wrap">
-      <div class="col-lg-6 col-sm-12">
+        </app-stats>
+      </div>
+      <div class="flex-wrap">
         <app-heroes-select
           [allHeroes]="allUnitsForSelect"
           [isUser]="true"
           [containerClass]="'border-radius-none border-end-0'"
           [addUserUnit]="addUserUnit"></app-heroes-select>
-      </div>
-      <div class="col-lg-6 col-sm-12">
         @if (chosenUnits.length) {
           <app-heroes-select-preview
             [units]="chosenUnits"
@@ -67,9 +72,18 @@
             [user]="true"></app-heroes-select-preview>
         }
       </div>
+      <div class="row mt-2 g-2">
+        <div class="col-8">
+          <button class="w-100 got-toggle got-toggle-green" (click)="goToMainPage()">
+            Back to Castle Back
+          </button>
+        </div>
+        <div class="col-4">
+          <button class="w-100 got-toggle got-toggle-red" (click)="openFight(bossLevel)">
+            Fight
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="mt-2">
-      <button class="btn btn-danger d-block w-100" (click)="openFight(bossLevel)">Fight</button>
-    </div>
-  </div>
-</ng-template>
+  </ng-template>
+</div>

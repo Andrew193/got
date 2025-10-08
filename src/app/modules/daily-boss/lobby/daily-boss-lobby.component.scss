@@ -1,3 +1,5 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
 .rewards-bar {
   > div img {
     width: 35px;
@@ -5,5 +7,15 @@
     object-fit: cover;
     margin-right: 3px;
     margin-left: 3px;
+  }
+}
+
+.page-container {
+  @include index.mixin-got-btn;
+}
+
+::ng-deep {
+  @include index.anim-border-glow(dynamic-border) {
+    height: fit-content;
   }
 }

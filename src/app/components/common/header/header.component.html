@@ -5,9 +5,7 @@
     class="user-header-avatar navbar-brand"
     [src]="'./assets/resourses/imgs/UI_Avatar_Unit_Alvar.png'"
     alt="avatar"
-    [popover]="popTemplate"
-    [outsideClick]="true"
-    [placement]="'bottom'" />
+    [matMenuTriggerFor]="menu" />
   <div class="d-flex currency-bar align-items-center">
     @for (coin of coins; track coin.alias) {
       <div class="d-flex align-items-center">
@@ -21,8 +19,8 @@
   </div>
 </nav>
 
-<ng-template #popTemplate>
-  <ul class="list-group header-avatar-popper">
+<mat-menu #menu="matMenu">
+  <ul class="list-group header-avatar-popper" mat-menu-item>
     <li class="list-group-item cursor-pointer" (click)="logOut()">Log out</li>
   </ul>
-</ng-template>
+</mat-menu>

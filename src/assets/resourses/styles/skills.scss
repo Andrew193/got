@@ -1,15 +1,15 @@
-@use './mixins';
+@use './index' as index;
 
 .skills-bar {
   flex-direction: column;
 }
 
 .skill-disabled {
-  position: absolute;
-  @include mixins.h-100-w-100;
-  @include mixins.d-f-a-c-j-c;
+  position: absolute !important;
+  @include index.mixin-h-100-w-100;
+  @include index.mixin-d-f-a-c-j-c;
   background: rgba(0, 0, 0, 0.4392156863);
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: not-allowed;
   max-height: 70px;
   max-width: 70px;
@@ -27,7 +27,6 @@
   img {
     width: 100px;
     height: 100px;
-    margin-right: 10px;
     object-fit: cover;
   }
 }

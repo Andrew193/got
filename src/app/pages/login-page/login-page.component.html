@@ -1,10 +1,10 @@
 <div class="login-container">
   <main class="container">
     <form class="flex-row m-5" [formGroup]="form">
-      <div class="col-12 p-3">
-        <h4 class="text-center mode-switcher" (click)="switchMode()">
-          {{ createUser ? 'Sign up' : 'Sign in' }}
-        </h4>
+      <section class="col-12 p-3">
+        <div class="text-center got-toggle" (click)="switchMode()">
+          <span>{{ createUser ? 'Sign up' : 'Sign in' }}</span>
+        </div>
         <div class="form-group">
           <label for="login">Login</label>
           <input
@@ -25,13 +25,16 @@
             placeholder="Password"
             formControlName="password" />
         </div>
-        <button type="submit" class="btn btn-primary mt-2 mb-2 login-btn" (click)="submit()">
+        <button
+          type="submit"
+          class="btn btn-primary mt-2 mb-2 got-toggle login-btn"
+          (click)="submit()">
           Submit
         </button>
         <app-form-errors-container
           [form]="form"
           [uiErrorsNames]="onUIFieldsName"></app-form-errors-container>
-      </div>
+      </section>
     </form>
   </main>
 </div>

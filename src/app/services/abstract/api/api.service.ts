@@ -48,11 +48,13 @@ export abstract class ApiService<T> {
 
   protected basicResponseTapParser(callback: TapParser<T>) {
     return tap({
-      next: (response: T[] | T) => {
+      next: (response: T[] | T | undefined) => {
         const toReturn = Array.isArray(response) ? response[0] : response;
 
-        this.data.next(toReturn);
-        callback(toReturn);
+        if (toReturn) {
+          this.data.next(toReturn);
+          callback(toReturn);
+        }
       },
       error: error => {
         console.log(error);

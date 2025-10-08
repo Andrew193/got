@@ -1,7 +1,7 @@
 @let _cards = cards();
 
 @if (_cards.length) {
-  <div class="summon-container flip-items-container row gap-2 m-2">
+  <div class="summon-container flip-items-container row gap-2 m-2 color-white">
     @for (card of _cards; track $index) {
       @if (card) {
         <div class="flip-items-inner-container col" [class.claimed]="card.flipped">
@@ -9,7 +9,9 @@
             <div class="card-front">?</div>
             <div class="card-back">
               <app-image [alt]="card.name" [source]="card.src" [imageClass]="'card-image'" />
-              <span>{{ card.amount | number }}</span>
+              <span [class]="card.name.toLowerCase()" class="ignore">{{
+                card.amount | number
+              }}</span>
             </div>
           </div>
         </div>
@@ -32,7 +34,9 @@
               <div class="flip-card">
                 <div class="card-back">
                   <app-image [alt]="el[0]" [source]="el[1]['src']" [imageClass]="'card-image'" />
-                  <span>{{ el[1]['amount'] | number }}</span>
+                  <span [class]="el[0].toLowerCase()" class="ignore">{{
+                    el[1]['amount'] | number
+                  }}</span>
                 </div>
               </div>
             </div>

@@ -3,8 +3,7 @@
 @use '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @use 'assets/resourses/styles/hero';
 @use 'assets/resourses/styles/collors';
-@use 'assets/resourses/styles/vars';
-@use 'assets/resourses/styles/mixins';
+@use 'assets/resourses/styles/index' as index;
 @use 'assets/resourses/styles/fixers';
 @use 'assets/resourses/styles/skills';
 @use 'assets/resourses/styles/fields';
@@ -28,6 +27,9 @@ body {
   height: 100%;
   background-color: black;
   color: white;
+
+  scrollbar-color: index.$var-metal-dark-1 index.$var-metal-dark-2;
+  scrollbar-width: thin;
 }
 
 body {
@@ -36,7 +38,7 @@ body {
 }
 
 .caption {
-  @include mixins.grad-color;
+  @include index.mixin-grad-color;
   width: 100%;
 }
 
@@ -49,8 +51,8 @@ body {
 }
 
 .stats {
-  box-shadow: vars.$box-shadow;
-  background-color: vars.$background-color-main;
+  box-shadow: index.$var-box-shadow;
+  background-color: index.$var-background-color-main;
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -63,10 +65,11 @@ body {
     height: 30px;
     width: 30px;
     background-color: transparent !important;
+    margin-right: 2px;
   }
 
   p {
-    @include mixins.d-f-a-c;
+    @include index.mixin-d-f-a-c;
     margin: 5px;
     justify-content: center;
 
@@ -106,14 +109,14 @@ body {
   position: absolute;
   cursor: pointer;
   bottom: 0;
-  width: 80%;
-  left: 14%;
+  width: 100%;
+  left: 5%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
 }
 
 .form-inline {
-  @include mixins.d-f-a-c;
+  @include index.mixin-d-f-a-c;
   flex-flow: row nowrap;
   width: 100%;
   flex-wrap: wrap;
@@ -131,7 +134,7 @@ body {
 
 @media (max-width: 1024px) {
   .glow-box {
-    left: 10%;
+    left: 0%;
     height: 95%;
   }
   #hero-in-frame {
@@ -141,19 +144,89 @@ body {
 
 //Angular material override
 
+.mat-mdc-tab-group {
+  @include mat.tabs-overrides(
+    (
+      active-focus-label-text-color: inherit,
+    )
+  );
+}
+
+.mat-mdc-tab-body-wrapper {
+  border-left: index.$var-border-2-bronze;
+  border-right: index.$var-border-2-bronze;
+  border-bottom: index.$var-border-2-bronze;
+
+  background-color: index.$var-metal-dark-1;
+}
+
+.mat-mdc-progress-bar {
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-height: 15px,
+      track-height: 15px,
+      active-indicator-color: index.$var-light-green,
+      track-color: index.$var-light-red,
+    )
+  );
+}
+
+.mat-mdc-dialog-surface {
+  overflow-y: unset !important;
+}
+
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+  @include mat.dialog-overrides(
+    (
+      container-max-width: 90%,
+      container-min-width: 50%,
+    )
+  );
+}
+
+.mat-mdc-dialog-container {
+  max-height: unset !important;
+  max-width: unset !important;
+}
+
 :root {
   @include mat.slider-overrides(
     (
-      handle-color: #b8860b,
+      handle-color: index.$var-basic-golden,
       focus-handle-color: #daa520,
       hover-handle-color: #ffd700,
-      active-track-color: #b8860b,
-      inactive-track-color: rgba(184, 134, 11, 0.3),
-      with-tick-marks-inactive-container-color: rgba(184, 134, 11, 0.3),
-      with-tick-marks-active-container-color: #b8860b,
-      focus-state-layer-color: rgba(184, 134, 11, 0.24),
+      active-track-color: index.$var-basic-golden,
+      inactive-track-color: index.$var-deep-golden,
+      with-tick-marks-inactive-container-color: index.$var-deep-golden,
+      with-tick-marks-active-container-color: index.$var-basic-golden,
+      focus-state-layer-color: index.$var-deep-golden,
     )
   );
+
+  @include mat.expansion-overrides(
+    (
+      header-expanded-state-height: auto,
+      header-collapsed-state-height: auto,
+      container-background-color: index.$var-deep-golden,
+    )
+  );
+
+  @include mat.paginator-overrides(
+    (
+      container-text-color: index.$var-bronze,
+      disabled-icon-color: index.$var-deep-golden,
+      enabled-icon-color: index.$var-bronze,
+      container-background-color: index.$var-metal-dark-1,
+    )
+  );
+
+  .mat-expansion-panel-body {
+    padding: 10px;
+  }
+
+  .mat-content.mat-content-hide-toggle {
+    margin-right: 0;
+  }
 
   .card {
     --bs-card-spacer-y: 3px;
@@ -182,6 +255,6 @@ body {
 }
 
 .nav-item .active {
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   border: none !important;
 }

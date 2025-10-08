@@ -1,9 +1,8 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/index' as index;
 
 .heroes-container {
-  background-color: vars.$background-color-main;
-  @include mixins.units-container-config;
+  background-color: index.$var-background-color-main;
+  @include index.mixin-units-container-config;
 }
 
 .preview-selected-heroes {
@@ -18,10 +17,10 @@
   > div {
     margin-bottom: 5px;
     display: flex;
-    border: vars.$border-1-black;
+    border: index.$var-border-1-black;
     padding: 3px;
     border-radius: 3px;
-    box-shadow: vars.$box-shadow;
+    box-shadow: index.$var-box-shadow;
 
     &:last-of-type {
       margin-bottom: 0px;
@@ -30,6 +29,8 @@
 
   .description-bar {
     padding-left: 5px;
+
+    @include index.anim-border-glow(skill-disabled);
   }
 
   .hero-name {

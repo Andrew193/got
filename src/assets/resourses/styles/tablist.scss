@@ -1,3 +1,6 @@
+@use './index' as index;
+@use '@angular/material' as mat;
+
 .nav-tabs {
   a.active {
     font-weight: bold;
@@ -20,4 +23,36 @@
 
 .tab-pane {
   background: #8080808f;
+}
+
+.mat-mdc-tab-labels {
+  @include index.mixin-got-btn(mat-mdc-tab);
+
+  .mat-mdc-tab {
+    border-radius: unset;
+
+    &:not(:last-of-type) {
+      border-right: unset;
+    }
+
+    &:active {
+      transform: unset;
+    }
+
+    &:hover {
+      box-shadow: unset;
+    }
+
+    .mdc-tab__content {
+      display: block;
+      height: auto;
+
+      .mdc-tab__text-label {
+        height: 100%;
+        line-height: unset;
+        display: flex;
+        color: inherit;
+      }
+    }
+  }
 }

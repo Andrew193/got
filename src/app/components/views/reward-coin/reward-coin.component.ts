@@ -12,4 +12,5 @@ import { Coin } from '../../../models/reward-based.model';
 export class RewardCoinComponent {
   useFixSize = input<boolean>(false);
   coinConfig = input.required<Coin>();
+  imageContainerClass = input('');
 }

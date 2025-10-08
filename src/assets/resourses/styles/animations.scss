@@ -1,4 +1,160 @@
 @use 'sass:meta';
+@use './vars' as var;
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@mixin border-glow($selector: dynamic-border, $name: spin, $duration: 3s) {
+  .#{$selector} {
+    position: relative;
+    @content;
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      border-radius: inherit;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      padding: 2px;
+      background: conic-gradient(
+        from var(--angle),
+        transparent,
+        var.$deep-golden,
+        var.$basic-golden,
+        var.$bronze,
+        var.$gold,
+        var.$deep-golden,
+        var.$basic-golden,
+        var.$gold,
+        var.$deep-golden
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: $duration $name ease-in infinite;
+    }
+  }
+
+  @keyframes #{$name} {
+    0% {
+      --angle: 0deg;
+    }
+    100% {
+      --angle: 360deg;
+    }
+  }
+}
+
+@mixin flame-pulse($selector: '&', $name: flamePulse, $duration: 2.2s) {
+  left: 50%;
+  top: -18px;
+  transform: translateX(-50%);
+  width: 140%;
+  height: 56px;
+
+  background:
+    radial-gradient(40px 20px at 50% 85%, rgba(255, 160, 60, 0.55), transparent 70%),
+    radial-gradient(20px 40px at 5% 15%, rgba(205, 154, 93, 0.65), transparent 60%),
+    radial-gradient(50px 42px at 25% 60%, rgba(255, 120, 50, 0.35), transparent 20%),
+    radial-gradient(50px 42px at 5% 60%, rgba(255, 120, 50, 0.35), transparent 30%),
+    radial-gradient(50px 42px at 10% 30%, rgba(255, 120, 50, 0.35), transparent 0%),
+    radial-gradient(8px 14px at 5% 15%, rgba(205, 154, 93, 0.65), transparent 70%),
+    radial-gradient(8px 14px at 35% 90%, rgba(255, 170, 70, 0.65), transparent 50%),
+    radial-gradient(28px 14px at 45% 90%, rgba(250, 177, 92, 0.65), transparent 60%),
+    radial-gradient(56px 14px at 75% 90%, rgba(202, 138, 62, 0.65), transparent 70%),
+    radial-gradient(22px 12px at 65% 92%, rgba(255, 190, 90, 0.55), transparent 70%),
+    radial-gradient(22px 12px at 85% 82%, rgba(255, 190, 90, 0.55), transparent 70%),
+    radial-gradient(120px 42px at 50% 100%, rgba(255, 120, 50, 0.35), transparent 70%);
+
+  filter: blur(6px) saturate(120%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+
+  animation: #{$name} $duration ease-in-out infinite;
+
+  @keyframes #{$name} {
+    0% {
+      transform: translateX(-50%) translateY(0) scale(1);
+      filter: blur(6px) saturate(120%);
+    }
+    25% {
+      transform: translateX(-50%) translateY(-2px) scale(1.04);
+      filter: blur(7px) saturate(130%);
+    }
+    50% {
+      transform: translateX(-50%) translateY(-3px) scale(1.02);
+      filter: blur(6px) saturate(120%);
+    }
+    75% {
+      transform: translateX(-50%) translateY(-1px) scale(1.06);
+      filter: blur(8px) saturate(140%);
+    }
+    100% {
+      transform: translateX(-50%) translateY(0) scale(1);
+      filter: blur(6px) saturate(120%);
+    }
+  }
+}
+
+@mixin smoke-rise($selector: '&', $name: smokeRise, $duration: 3.6s) {
+  left: 50%;
+  top: -32px;
+  transform: translateX(-50%);
+  width: 150%;
+  height: 90px;
+
+  /* «клубы дыма» */
+  background:
+    radial-gradient(60px 24px at 0% 10%, rgba(230, 43, 43, 0.51), transparent 100%),
+    radial-gradient(60px 24px at 10% 20%, rgba(230, 43, 43, 0.47), transparent 100%),
+    radial-gradient(60px 24px at 20% 30%, rgba(230, 43, 43, 0.5), transparent 100%),
+    radial-gradient(60px 24px at 30% 40%, rgb(230, 43, 43), transparent 100%),
+    radial-gradient(60px 24px at 40% 50%, rgba(230, 43, 43, 0.53), transparent 100%),
+    radial-gradient(60px 24px at 50% 60%, rgba(230, 43, 43, 0.59), transparent 100%),
+    radial-gradient(60px 24px at 40% 80%, rgba(80, 79, 79, 0.71), transparent 100%),
+    radial-gradient(70px 28px at 60% 85%, rgba(136, 136, 136, 0.65), transparent 100%),
+    radial-gradient(70px 28px at 60% 70%, rgba(136, 136, 136, 0.63), transparent 100%),
+    radial-gradient(70px 28px at 70% 80%, rgba(136, 136, 136, 0.67), transparent 100%),
+    radial-gradient(70px 28px at 80% 90%, rgba(136, 136, 136, 0.61), transparent 100%),
+    radial-gradient(70px 28px at 90% 100%, rgba(136, 136, 136, 0.6), transparent 100%),
+    radial-gradient(90px 34px at 50% 95%, rgba(110, 110, 110, 0.62), transparent 100%);
+
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0;
+
+  animation: #{$name} $duration ease-in-out infinite;
+
+  @keyframes #{$name} {
+    0% {
+      transform: translateX(-50%) translateY(8px) scale(1);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.22;
+    }
+    50% {
+      transform: translateX(-50%) translateY(-6px) scale(1.06);
+      opacity: 0.28;
+    }
+    80% {
+      opacity: 0.16;
+    }
+    100% {
+      transform: translateX(-50%) translateY(-16px) scale(1.12);
+      opacity: 0;
+    }
+  }
+}
 
 /* === Glow pulse === */
 @mixin glow-pulse($selector: '&', $name: glowPulse, $duration: 2s) {

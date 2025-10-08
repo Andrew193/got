@@ -10,7 +10,7 @@
           <div class="col-auto position-relative cursor-pointer">
             <app-image
               (click)="toggleDescription(_user, i)"
-              [tooltip]="unit.name"
+              [matTooltip]="unit.name"
               imageClass="image-100"
               [alt]="unit.name"
               [source]="unit.imgSrc" />
@@ -21,13 +21,23 @@
             } @else {
               <div class="d-flex justify-content-around">
                 @for (skill of unit.skills; track skill.imgSrc + $index) {
-                  <div class="d-flex flex-column align-items-center">
-                    <h5>{{ skill.name }}</h5>
-                    <app-image
-                      [tooltip]="skill.description"
-                      imageClass="image-100 skill-preview-icon cursor-pointer"
-                      [alt]="skill.name"
-                      [source]="skill.imgSrc" />
+                  <div>
+                    <h5 class="text-center">{{ skill.name }}</h5>
+                    <div
+                      class="position-relative"
+                      style="margin: 0 auto; width: fit-content"
+                      [matTooltip]="skill.description">
+                      <img
+                        [alt]="skill.name"
+                        [src]="skill.imgSrc"
+                        class="image-100 skill-preview-icon cursor-pointer" />
+
+                      @if (skill.passive) {
+                        <div class="skill-disabled" style="top: 0px; left: 0px">
+                          <i aria-hidden="true">P</i>
+                        </div>
+                      }
+                    </div>
                   </div>
                 }
               </div>

@@ -1,27 +1,21 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
 import { HeroesService } from '../../../services/heroes/heroes.service';
-import { Router } from '@angular/router';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
-import { frontRoutes } from '../../../constants';
-import { JsonPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
+import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-training-config',
-  imports: [
-    TooltipModule,
-    HeroesSelectPreviewComponent,
-    HeroesSelectComponent,
-    NgTemplateOutlet,
-    JsonPipe,
-  ],
+  imports: [HeroesSelectPreviewComponent, HeroesSelectComponent, NgTemplateOutlet],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrainingConfigComponent {
+  nav = inject(NavigationService);
+
   aiUnits: PreviewUnit[] = [];
   userUnits: PreviewUnit[] = [];
 
@@ -35,10 +29,7 @@ export class TrainingConfigComponent {
   userSelCtx = { user: true, title: 'Selected User Units', units: this.userUnits };
   aiSelCtx = { user: false, title: 'Selected AI Units', units: this.aiUnits };
 
-  constructor(
-    private heroesService: HeroesService,
-    private route: Router,
-  ) {
+  constructor(private heroesService: HeroesService) {
     this.allUnits = this.heroesService.getAllHeroes();
     this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
   }
@@ -96,10 +87,6 @@ export class TrainingConfigComponent {
     return this[this.getDescKey(user)][index];
   };
 
-  getAllHeroes() {
-    return this.heroesService.getAllHeroes();
-  }
-
   openFight() {
     const getUnits = (getUser: boolean) => {
       return this.allUnits
@@ -109,12 +96,10 @@ export class TrainingConfigComponent {
         .map((el, i) => ({ ...el, x: 2 + i, y: getUser ? 1 : 8, user: getUser }));
     };
 
-    this.route.navigateByUrl(frontRoutes.training + '/' + frontRoutes.trainingBattle, {
-      state: { userUnits: getUnits(true), aiUnits: getUnits(false) },
-    });
+    this.nav.goToTrainingBattle({ userUnits: getUnits(true), aiUnits: getUnits(false) });
   }
 
   goToMainPage() {
-    this.route.navigate([frontRoutes.base]);
+    this.nav.goToMainPage();
   }
 }

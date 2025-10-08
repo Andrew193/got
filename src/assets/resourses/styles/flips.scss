@@ -1,9 +1,7 @@
-@use './vars';
-@use './mixins';
-@use './animations' as eff;
+@use './index' as index;
 
 .flip-items-container {
-  background-color: vars.$background-color-main;
+  background-color: index.$var-background-color-main;
   padding: 10px;
   border-radius: 5px;
   display: flex;
@@ -29,7 +27,7 @@
 
   .flip-card {
     position: relative;
-    @include mixins.h-100-w-100;
+    @include index.mixin-h-100-w-100;
     transform-style: preserve-3d;
     border-radius: 5px;
 
@@ -45,19 +43,19 @@
   }
 
   .flip-items-inner-container.claimed .card-back {
-    @include eff.shine-sweep($name: shineSweep-dr, $duration: 2.6s, $animation-delay: 1s);
+    @include index.anim-shine-sweep($name: shineSweep-dr, $duration: 2.6s, $animation-delay: 1s);
   }
 
   .flip-card.no-shine {
-    @include eff.no-shine();
+    @include index.anim-no-shine();
   }
 
   .card-front,
   .card-back {
     position: absolute;
-    @include mixins.h-100-w-100;
+    @include index.mixin-h-100-w-100;
     backface-visibility: hidden;
-    @include mixins.d-f-a-c-j-c;
+    @include index.mixin-d-f-a-c-j-c;
     flex-direction: column;
     font-weight: bold;
     background: white;
@@ -72,9 +70,7 @@
   }
 
   .card-back {
-    background: linear-gradient(145deg, #d3ffd1, #f5e9c5);
-    transform: rotateY(180deg);
-    color: #222;
+    @include index.mixin-back-card-color;
 
     .card-image {
       width: 60px;
@@ -82,7 +78,7 @@
       margin-bottom: 8px;
     }
 
-    span {
+    span:not(.ignore) {
       color: #111;
       text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
     }

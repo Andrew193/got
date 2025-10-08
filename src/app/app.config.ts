@@ -1,4 +1,9 @@
-import { ApplicationConfig, inject, provideAppInitializer } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import { provideRouter, withPreloading } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -13,6 +18,7 @@ import { OnlineService } from './services/online/online.service';
 import { InitInterface } from './models/interfaces/init.interface';
 import { concatAll, firstValueFrom, from } from 'rxjs';
 import { STEP_DEFAULT_ORDER } from './constants';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -49,6 +55,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     INIT_STEPS_PROVIDERS,
     provideAppInitializer(AppInitializerFunction),
+    importProvidersFrom(MatDialogModule),
     provideRouter(routes, withPreloading(PreloadingStrategyService)),
     provideHttpClient(withInterceptors([authInterceptor, loggerInterceptor])),
     provideAnimationsAsync(),

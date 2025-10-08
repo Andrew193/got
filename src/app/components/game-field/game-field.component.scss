@@ -1,8 +1,11 @@
-@use '../../../assets/resourses/styles/mixins';
-@use '../../../assets/resourses/styles/vars';
+@use '../../../assets/resourses/styles/index' as index;
 
 .user-bar {
-  @include mixins.grad-color;
+  @include index.mixin-grad-color;
+}
+
+.actions {
+  @include index.mixin-got-btn;
 }
 
 .heroes {
@@ -40,6 +43,8 @@
   margin-bottom: unset;
   width: auto;
 
+  @include index.anim-border-glow(skill-disabled);
+
   p {
     margin-bottom: 1px;
   }
@@ -65,10 +70,17 @@
 .log-record {
   padding: 5px;
   margin-bottom: 5px;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   border-radius: 5px;
   width: 100% !important;
   opacity: 1 !important;
+
+  img {
+    background: transparent;
+    width: 60px;
+    height: 60px;
+    margin-right: 5px;
+  }
 }
 
 .aside-hero-tab-header {
@@ -79,8 +91,8 @@
 }
 
 .meta-aside {
-  box-shadow: vars.$box-shadow;
-  background-color: vars.$background-color-main;
+  box-shadow: index.$var-box-shadow;
+  background-color: index.$var-background-color-main;
   border-radius: 0;
 }
 
@@ -117,7 +129,7 @@
   }
 
   > div {
-    box-shadow: vars.$box-shadow-out;
+    box-shadow: index.$var-box-shadow-out;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
     height: 50px;
@@ -128,7 +140,7 @@
       border-bottom-left-radius: 50px;
       border-bottom-right-radius: 50px;
       height: 100%;
-      box-shadow: vars.$red-box-shadow;
+      box-shadow: index.$var-box-shadow;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -1,10 +1,13 @@
-@use '../../../assets/resourses/styles/vars';
-@use '../../../assets/resourses/styles/mixins';
+@use '../../../assets/resourses/styles/index' as index;
+
+.card-img-top.taverna {
+  object-fit: contain;
+}
 
 .eq-container {
   .eq-stats > div > div {
-    background: vars.$background-color-main;
-    box-shadow: vars.$box-shadow;
+    background: index.$var-background-color-main;
+    box-shadow: index.$var-box-shadow;
     height: 100%;
   }
 
@@ -26,11 +29,13 @@
   background: url('../../../assets/resourses/imgs/background/taverna-2.webp') no-repeat;
   background-size: cover;
   min-height: 100%;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   position: relative;
   padding-top: 1px;
 
   overflow: auto;
+
+  @include index.mixin-got-btn;
 
   .main-content {
     > div,
@@ -42,17 +47,17 @@
   }
 
   .stats-bar > div {
-    background: vars.$background-color-main;
-    box-shadow: vars.$box-shadow-out;
+    background: index.$var-background-color-main;
+    box-shadow: index.$var-box-shadow-out;
     border-radius: 15px;
   }
 
   .card {
-    background: vars.$background-color-main;
+    background: index.$var-background-color-main;
     height: 100%;
   }
 
   h3 {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
   }
 }

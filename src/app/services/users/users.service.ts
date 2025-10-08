@@ -1,17 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, tap } from 'rxjs';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
-import { Router } from '@angular/router';
 import { ApiService } from '../abstract/api/api.service';
-import { frontRoutes, USER_TOKEN } from '../../constants';
+import { USER_TOKEN } from '../../constants';
 import { Currency, User } from './users.interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrencyDifComponent } from '../../components/modal-window/currency/currency-dif/currency-dif.component';
+import { NavigationService } from '../facades/navigation/navigation.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService extends ApiService<User> {
+  nav = inject(NavigationService);
   private _snackBar = inject(MatSnackBar);
 
   private url = '/users';
@@ -19,10 +20,7 @@ export class UsersService extends ApiService<User> {
   private user = new BehaviorSubject<User | null>(null);
   $user = this.user.asObservable();
 
-  constructor(
-    private router: Router,
-    private localStorage: LocalStorageService,
-  ) {
+  constructor(private localStorage: LocalStorageService) {
     super();
   }
 
@@ -42,7 +40,7 @@ export class UsersService extends ApiService<User> {
     } as User;
   }
 
-  createUser(user: Partial<User>, callback = (user: User) => {}) {
+  createUser<F extends (user: User) => void>(user: Partial<User>, callback: F) {
     return this.http.post<User>(this.url, this.basicUser(user)).pipe(
       tap({
         next: user => {
@@ -52,7 +50,7 @@ export class UsersService extends ApiService<User> {
     );
   }
 
-  login(user: Partial<User>, callback = (user: Partial<User> | []) => {}) {
+  login<F extends (user: User) => void>(user: Partial<User>, callback: F) {
     return this.http
       .get<Partial<User[]>>(this.url, {
         params: {
@@ -63,11 +61,13 @@ export class UsersService extends ApiService<User> {
       .pipe(
         tap({
           next: user => {
-            callback(user[0] || []);
-            this.user.next(user[0] as User);
+            if (user[0]) {
+              callback(user[0]);
+              this.user.next(user[0]);
+            }
           },
           error: () => {
-            this.router.navigate([frontRoutes.login]);
+            this.nav.goToLogin();
           },
         }),
       );
@@ -135,7 +135,7 @@ export class UsersService extends ApiService<User> {
         }),
         tap({
           error: () => {
-            this.router.navigate([frontRoutes.login]);
+            this.nav.goToLogin();
           },
         }),
       );
@@ -147,7 +147,7 @@ export class UsersService extends ApiService<User> {
 
   logout() {
     this.localStorage.removeItem(USER_TOKEN);
-    this.router.navigate([frontRoutes.login]);
+    this.nav.goToLogin();
   }
 
   updateOnline(

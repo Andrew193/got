@@ -1,8 +1,11 @@
 @let coin = coinConfig();
+@let _imageContainerClass = imageContainerClass();
 
 @if (coin) {
   <span class="fw-bold {{ coin.class }}">
-    <app-image [source]="coin.imgSrc" [useFixSize]="useFixSize()" [alt]="coin.alt"></app-image>
+    <span [class]="_imageContainerClass">
+      <app-image [source]="coin.imgSrc" [useFixSize]="useFixSize()" [alt]="coin.alt"></app-image>
+    </span>
     {{ coin.amount | number }}
   </span>
 }

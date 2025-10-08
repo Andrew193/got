@@ -1,13 +1,15 @@
 @let _selectedHero = selectedHero();
 @let _tableMode = tableMode();
 @let _stats = stats();
+@let _statsContainerClass = statsContainerClass();
 
-<div class="p-0 gap-2 flex-row">
-  <div style="width: 100px; min-width: 100px">
+<div class="p-0 gap-2 flex-row stats-container">
+  <div style="width: 133px; min-width: 133px" class="reward-avatar-container">
     <img alt="Boss avatar" class="reward-avatar" [src]="_selectedHero.imgSrc" />
+    <ng-content select="reward-avatar-container" />
   </div>
   <div
-    class="stats flex-column w-auto"
+    class="stats flex-column w-auto {{ _statsContainerClass }}"
     [ngClass]="{
       'stats-table': _tableMode,
       'flex-column': !_tableMode,

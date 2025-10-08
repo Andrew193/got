@@ -3,6 +3,11 @@ import { DisplayReward } from '../../services/reward/reward.service';
 import { ImageComponent } from '../views/image/image.component';
 import { DecimalPipe } from '@angular/common';
 
+type InnerTotal = {
+  src: string;
+  amount: number;
+};
+
 @Component({
   selector: 'app-display-reward',
   imports: [ImageComponent, DecimalPipe],
@@ -15,7 +20,7 @@ export class DisplayRewardComponent {
 
   cards = computed(() => this.rewards());
   cardsPrize = computed(() => {
-    const total: Record<string, Record<any, any>> = {};
+    const total: Record<string, InnerTotal> = {};
 
     this.rewards()
       .filter(e => !!e)

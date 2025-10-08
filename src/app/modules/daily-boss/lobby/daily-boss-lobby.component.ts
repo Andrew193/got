@@ -1,35 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { StatsComponent } from '../../../components/views/stats/stats.component';
 import { HeroesService } from '../../../services/heroes/heroes.service';
 import { PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
-import { DecimalPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { trackByLevel } from '../../../helpers';
-import { Router } from '@angular/router';
+import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
 import { BossDifficulty, DailyBossService } from '../../../services/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
-import { frontRoutes } from '../../../constants';
 import { TileUnit } from '../../../models/field.model';
 import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-based.model';
+import { NavigationService } from '../../../services/facades/navigation/navigation.service';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-daily-boss-lobby',
   imports: [
     StatsComponent,
     SkillsRenderComponent,
-    NgForOf,
-    TabsModule,
     NgTemplateOutlet,
     HeroesSelectComponent,
     HeroesSelectPreviewComponent,
     DecimalPipe,
+    MatTabGroup,
+    MatTab,
+    MatTabLabel,
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
 })
 export class DailyBossLobbyComponent {
+  nav = inject(NavigationService);
+
   allUnits: Unit[] = [];
   allUnitsForSelect: SelectableUnit[] = [];
 
@@ -45,7 +46,6 @@ export class DailyBossLobbyComponent {
 
   constructor(
     private heroesService: HeroesService,
-    private route: Router,
     public dailyBossService: DailyBossService,
   ) {
     this.allUnits = this.heroesService.getAllHeroes();
@@ -89,12 +89,13 @@ export class DailyBossLobbyComponent {
   }
 
   openFight(bossLevel: number) {
-    this.route.navigate([frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, bossLevel], {
-      queryParams: {
-        units: this.chosenUnits.map(el => el.name),
-      },
-    });
+    this.nav.goToDailyBossBattle(
+      bossLevel,
+      this.chosenUnits.map(el => el.name),
+    );
   }
 
-  protected readonly trackByLevel = trackByLevel;
+  goToMainPage() {
+    this.nav.goToMainPage();
+  }
 }

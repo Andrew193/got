@@ -1,4 +1,4 @@
-@use './vars';
+@use './index' as index;
 
 @mixin c-v-gray {
   background-color: gray !important;
@@ -30,7 +30,7 @@
   height: 70px !important;
   width: 70px !important;
   border-radius: 5px;
-  box-shadow: vars.$box-shadow-out;
+  box-shadow: index.$var-box-shadow-out;
 }
 
 .bs-rating-star {

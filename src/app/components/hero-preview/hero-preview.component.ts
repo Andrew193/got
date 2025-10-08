@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HeroesService } from '../../services/heroes/heroes.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RatingModule } from 'ngx-bootstrap/rating';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StatsComponent } from '../views/stats/stats.component';
 import { Unit } from '../../models/unit.model';
 import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
-import { frontRoutes } from '../../constants';
 import { NgTemplateOutlet } from '@angular/common';
 import { TileUnit } from '../../models/field.model';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { RatingComponent } from '../common/rating/rating.component';
 
 type EqName = 'eq1' | 'eq2' | 'eq3' | 'eq4';
 
 @Component({
   selector: 'app-hero-preview',
-  imports: [RatingModule, FormsModule, StatsComponent, SkillsRenderComponent, NgTemplateOutlet],
+  imports: [FormsModule, StatsComponent, SkillsRenderComponent, NgTemplateOutlet, RatingComponent],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss',
 })
 export class HeroPreviewComponent implements OnInit {
+  nav = inject(NavigationService);
+
   name = '';
   selectedHero!: Unit;
   selectedTileHero!: TileUnit;
@@ -32,7 +34,6 @@ export class HeroPreviewComponent implements OnInit {
 
   constructor(
     public heroService: HeroesService,
-    private router: Router,
     private route: ActivatedRoute,
   ) {}
 
@@ -53,7 +54,7 @@ export class HeroPreviewComponent implements OnInit {
   }
 
   backToTavern() {
-    this.router.navigate([frontRoutes.taverna]);
+    this.nav.goToTaverna();
   }
 
   getLevelByName(name: EqName) {

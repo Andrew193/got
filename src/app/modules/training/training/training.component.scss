@@ -1,8 +1,8 @@
-@use '../../../../assets/resourses/styles/vars';
-@use '../../../../assets/resourses/styles/mixins';
+@use '../../../../assets/resourses/styles/index' as index;
 
 .training-container {
   background: url('../../../../assets/resourses/imgs/background/training.webp') no-repeat;
-  @include mixins.page-container;
+  @include index.mixin-page-container;
   color: white;
+  padding: 5px;
 }

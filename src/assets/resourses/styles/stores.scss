@@ -1,14 +1,13 @@
-@use './vars';
-@use './mixins';
+@use './index' as index;
 
 .stores {
   background: #00000070;
   background-size: cover;
-  box-shadow: vars.$box-shadow;
+  box-shadow: index.$var-box-shadow;
   border-radius: 5px;
 
   .store-title {
-    @include mixins.grad-color;
+    @include index.mixin-grad-color;
     vertical-align: middle;
     line-height: 30px;
     height: 30px;
@@ -21,23 +20,23 @@
 
     > div {
       cursor: pointer;
-      @include mixins.d-f-a-c;
+      @include index.mixin-d-f-a-c;
       height: inherit;
       flex: 1;
       flex-basis: 15%;
 
       &:not(.no-text-highlight):hover {
         span {
-          @include mixins.grad-color;
+          @include index.mixin-grad-color;
         }
       }
 
       .card {
         text-align: center;
-        background: vars.$background-color-main;
-        box-shadow: vars.$box-shadow;
+        background: index.$var-background-color-main;
+        box-shadow: index.$var-box-shadow;
         color: white;
-        @include mixins.h-100-w-100;
+        @include index.mixin-h-100-w-100;
         background-image: url('/assets/resourses/imgs/background/crack.png');
         background-size: cover;
         background-position: center;

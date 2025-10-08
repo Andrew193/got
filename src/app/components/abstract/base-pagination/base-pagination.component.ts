@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Unit } from '../../../models/unit.model';
 import { ContentService } from '../../../services/abstract/content/content-service.service';
 
@@ -9,7 +8,7 @@ import { ContentService } from '../../../services/abstract/content/content-servi
 })
 export class BasePaginationComponent {
   protected totalElements = 0;
-  protected currentPage = 1;
+  protected currentPage = 0;
   protected itemsPerPage = 5;
   protected returnedArray: Unit[] = [];
   protected contentArray: Unit[] = [];
@@ -26,9 +25,9 @@ export class BasePaginationComponent {
     this.returnedArray = this.contentArray.slice(0, this.itemsPerPage);
   }
 
-  protected pageChanged($event: PageChangedEvent) {
-    const startItem = ($event.page - 1) * $event.itemsPerPage;
-    const endItem = $event.page * $event.itemsPerPage;
+  protected pageChanged(event: { pageIndex: number; pageSize: number }) {
+    const startItem = event.pageIndex * event.pageSize;
+    const endItem = startItem + event.pageSize;
 
     this.returnedArray = this.contentArray.slice(startItem, endItem);
   }

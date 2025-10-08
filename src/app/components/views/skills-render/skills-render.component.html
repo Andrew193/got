@@ -1,6 +1,8 @@
 @let hero = selectedHero();
 @let _showLabel = showLabel();
 @let _showSkillName = showSkillName();
+@let _showAsBackground = showAsBackground();
+@let _imageCoverClass = imageCoverClass();
 
 <div class="skills-container ps-2 pe-2">
   @if (_showLabel) {
@@ -8,9 +10,23 @@
   }
   @for (skill of hero.skills; track skill.name + $index) {
     <div class="flex-row flex-nowrap skill-container">
-      <app-image [source]="skill.imgSrc" [alt]="skill.name" />
+      <div
+        [class]="_imageCoverClass"
+        style="margin-right: 10px"
+        [ngClass]="{
+          'dynamic-border': skill.passive,
+        }">
+        <app-image
+          [source]="skill.imgSrc"
+          [alt]="skill.name"
+          [renderAsBackground]="_showAsBackground" />
+      </div>
       <app-effects-highlighter [text]="skill.description">
-        <b>{{ _showSkillName ? skill.name : '' }}</b>
+        <p class="mb-1">
+          <b class="defence-color"
+            >{{ _showSkillName ? skill.name : '' }} {{ skill.passive ? '( P )' : '' }}</b
+          >
+        </p>
       </app-effects-highlighter>
     </div>
   }

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PreviewUnit } from '../../models/unit.model';
 import { ImageComponent } from '../views/image/image.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-heroes-select-preview',
-  imports: [TooltipModule, ImageComponent],
+  imports: [ImageComponent, MatTooltip],
   templateUrl: './heroes-select-preview.component.html',
   styleUrl: './heroes-select-preview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

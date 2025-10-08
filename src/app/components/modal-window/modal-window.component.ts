@@ -1,25 +1,25 @@
 import { Component, DestroyRef, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalWindowService } from '../../services/modal/modal-window.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DynamicHostComponent } from './dynamic-host/dynamic-host.component';
 import { ModalConfig, ModalStrategies, ModalStrategy } from './modal-interfaces';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modal-window',
   imports: [DynamicHostComponent],
-  providers: [BsModalService],
   templateUrl: './modal-window.component.html',
   styleUrl: './modal-window.component.scss',
 })
 export class ModalWindowComponent implements OnInit {
+  dialog = inject(MatDialog);
+  dialogRef!: ReturnType<typeof this.dialog.open>;
+
   @ViewChild('template', { static: true }) modalTemplate: any;
 
   modalWindowService = inject(ModalWindowService);
   destroyRef = inject(DestroyRef);
-  modalService = inject(BsModalService);
 
-  modalRef?: BsModalRef;
   strategy!: ModalStrategy;
 
   initConfig: ModalConfig = { ...this.modalWindowService.init };
@@ -35,16 +35,19 @@ export class ModalWindowComponent implements OnInit {
           this.openModal(this.modalTemplate);
         } else {
           this.modalConfig = this.initConfig;
-          this.modalService.hide(this.modalRef?.id);
         }
       });
   }
 
   openModal(template: TemplateRef<void>) {
-    this.modalRef = this.modalService.show(template, {
-      ignoreBackdropClick: true,
-      class: `modal-lg ${this.modalConfig.config.modalRootClass || ''}`,
+    this.dialogRef = this.dialog.open(template, {
+      disableClose: true,
+      position: {
+        top: '50px',
+      },
     });
+
+    this.dialogRef.afterClosed().subscribe();
   }
 
   get contextConfig() {
@@ -56,7 +59,7 @@ export class ModalWindowComponent implements OnInit {
 
   public close = () => {
     this.modalConfig.config.callback();
-    this.modalRef?.hide();
+    this.dialogRef.close();
     this.modalWindowService.dropModal();
   };
 }

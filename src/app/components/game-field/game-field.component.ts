@@ -1,10 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GameFieldService } from '../../services/game-field/game-field.service';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { GameService } from '../../services/game-action/game.service';
 import { EffectsService } from '../../services/effects/effects.service';
 import { UnitService } from '../../services/unit/unit.service';
@@ -13,18 +8,24 @@ import { GameLoggerService } from '../../services/game-logger/logger.service';
 import { BasicGameFieldComponent } from '../abstract/basic-game-field/basic-game-field.component';
 import { trackBySkill } from '../../helpers';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
+import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-game-field',
   imports: [
-    PopoverModule,
-    TabsModule,
-    ProgressbarModule,
-    AccordionModule,
-    TooltipModule,
     BasicGameBoardComponent,
     NgClass,
     NgTemplateOutlet,
+    MatTab,
+    MatTabGroup,
+    MatTabLabel,
+    MatExpansionPanelHeader,
+    MatExpansionPanel,
+    MatTooltip,
+    MatProgressBar,
   ],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss',

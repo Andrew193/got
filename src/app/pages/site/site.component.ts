@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
 import { UsersService } from '../../services/users/users.service';
-import { frontRoutes } from '../../constants';
 import { HeaderComponent } from '../../components/common/header/header.component';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-site',
@@ -12,14 +12,13 @@ import { HeaderComponent } from '../../components/common/header/header.component
   styleUrl: './site.component.scss',
 })
 export class SiteComponent implements OnInit {
-  constructor(
-    private usersService: UsersService,
-    private route: Router,
-  ) {}
+  nav = inject(NavigationService);
+
+  constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
     if (!this.usersService.isAuth()) {
-      this.route.navigate([frontRoutes.login]);
+      this.nav.goToLogin();
     }
   }
 }

@@ -49,7 +49,7 @@ export class NotificationsService implements InitInterface {
           .subscribe();
       });
 
-      //this.showPossibleActivities();
+      this.showPossibleActivities();
 
       return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
     } catch (e) {
@@ -79,7 +79,6 @@ export class NotificationsService implements InitInterface {
       callback: () => {},
       strategy: ModalStrategiesTypes.component,
       component: NotificationComponent,
-      modalRootClass: 'modal-70 container',
     });
 
     this.modalWindowService.openModal(config);
