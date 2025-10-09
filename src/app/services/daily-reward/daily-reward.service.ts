@@ -4,11 +4,16 @@ import { DayReward } from '../../components/daily-reward/daily-reward.component'
 import { DailyReward } from '../../models/reward-based.model';
 import { IdEntity } from '../../models/common.model';
 import { NumbersService } from '../numbers/numbers.service';
+import { API_ENDPOINTS } from '../../constants';
+import { ConfigInterface } from '../../models/interfaces/config.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DailyRewardService extends ApiService<DailyReward> {
+export class DailyRewardService
+  extends ApiService<DailyReward>
+  implements ConfigInterface<DailyReward>
+{
   numbersService = inject(NumbersService);
 
   daysCoins = new Map<number, any[]>();
@@ -64,7 +69,7 @@ export class DailyRewardService extends ApiService<DailyReward> {
     return this.daysCoins.get(day);
   };
 
-  private url = '/dailyReward';
+  private url = `/${API_ENDPOINTS.daily}`;
 
   getConfig(callback: (config: DailyReward) => void) {
     return this.http

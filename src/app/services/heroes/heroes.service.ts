@@ -96,7 +96,7 @@ export class HeroesService extends ContentService {
       willpower: 25,
       imgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png',
-      name: 'Дейнерис Таргариен ( Леди Драконьего Камня )',
+      name: 'Daenerys Targaryen (Lady of Dragonstone)',
       description:
         'По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет её совершать великие военные подвиги.',
       skills: [
@@ -202,7 +202,7 @@ export class HeroesService extends ContentService {
       willpower: 50,
       imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_Avatar_Unit_21.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png',
-      name: 'Рыцарь Таргариенов',
+      name: 'Targaryen Knight',
       description:
         'Всесторонний воин Таргариенов из Королевских земель, этот рыцарь превосходен как в нападении, так и в защите.',
       skills: [
@@ -298,7 +298,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png',
-      name: 'Белый Волк',
+      name: 'White Wolf',
       description:
         'Альфа стаи за стеной. Вселяет ужас в сердца людей и наносит ужасные раны в гневе.',
       skills: [
@@ -356,7 +356,7 @@ export class HeroesService extends ContentService {
       willpower: 70,
       imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png',
-      name: 'Жрец',
+      name: 'Priest',
       description: 'Жрец за стеной.',
       skills: [
         {
@@ -429,7 +429,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png',
-      name: 'Бурый Волк',
+      name: 'Brown Wolf',
       description: 'Волк стаи за стеной.',
       skills: [
         {
@@ -470,7 +470,7 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Avatar_Unit_IceRiverHunters.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Icon_Avatar_FullBody_Wildling_02_IceRiverHunters.png',
-      name: 'Охотник ледяной реки',
+      name: 'Ice River Hunter',
       description: 'Молодой охотник из земель за стеной. Ледяная река - его место охоты.',
       skills: [
         {
@@ -513,7 +513,7 @@ export class HeroesService extends ContentService {
       willpower: 30,
       imgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png',
       fullImgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png',
-      name: 'Релина Сноу',
+      name: 'Relina Snow',
       description: 'Релина Сноу это воительница Зачарованного Леса. Умелый и хитрый боец.',
       skills: [
         {
@@ -606,7 +606,7 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
-      name: 'Лучник Вольного Народа',
+      name: 'Archer of the Free Folk',
       description:
         'Лучник вольного народа изучал мастерство убийства с рождения. Он мастерски владеет природными ядами и умеет ставить капканы на животных и людей.',
       skills: [
@@ -682,7 +682,7 @@ export class HeroesService extends ContentService {
       willpower: 15,
       imgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
-      name: 'Гигант',
+      name: 'Giant',
       description:
         'Невероятно сильный враг. Мифическое существо из сказаний. Его шкуру почти невозможно пробить оружием, но он уязвим к ослаблениям.',
       skills: [
@@ -754,7 +754,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png',
-      name: 'Король Ночи',
+      name: 'Night King',
       description:
         'Ужасный враг. Сильнейший из белых ходоков и король Края Вечной Зимы. Создан для защиты живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
       skills: [
@@ -854,7 +854,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker1.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker2.png',
-      name: 'Генерал Ходок',
+      name: 'General Walker',
       description:
         'Ужасный враг. Сильный белый ходок и командир армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
       skills: [
@@ -921,7 +921,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker2.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker3.png',
-      name: 'Капитан Ходок',
+      name: 'Captain Walker',
       description:
         'Ужасный враг. Слабейший белый ходок и капитан армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
       skills: [
@@ -982,7 +982,7 @@ export class HeroesService extends ContentService {
       willpower: 25,
       imgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_Avatar_Unit_JonKingNorth.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png',
-      name: 'Джон Сноу ( Король Севера )',
+      name: 'Jon Snow (King in the North)',
       description:
         'Сильный, настоящий лидер, бесчисленные победы Джона Сноу на поле боя заставили его сверстников признать его королем Севера.',
       skills: [
@@ -1077,7 +1077,7 @@ export class HeroesService extends ContentService {
       willpower: 50,
       imgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Avatar_Unit_GromyrtheFlame.png',
       fullImgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Boss_CutIn_Pic_1.png',
-      name: 'Громирт Пламя',
+      name: 'Gromirt Flame',
       description: '',
       skills: [
         {

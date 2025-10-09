@@ -9,10 +9,14 @@ import { TODAY } from '../../constants';
 import { NotificationConfigMap } from '../../models/notification.model';
 import { InitInterface } from '../../models/interfaces/init.interface';
 import { InitTaskObs } from '../../models/init.model';
+import { ConfigInterface } from '../../models/interfaces/config.interface';
+import { GetConfig } from '../../models/common.model';
+import { CurrencyService } from '../users/currency/currency.service';
 
 export enum NotificationType {
   daily_reward,
   gift_store,
+  deposit,
 }
 
 @Injectable({
@@ -21,6 +25,8 @@ export enum NotificationType {
 export class NotificationsService implements InitInterface {
   private dailyRewardService = inject(DailyRewardService);
   private giftService = inject(GiftService);
+  private currencyService = inject(CurrencyService);
+
   private modalWindowService = inject(ModalWindowService);
 
   private initNotificationConfig = new Map()
@@ -34,15 +40,18 @@ export class NotificationsService implements InitInterface {
 
   init() {
     try {
-      const services = [
+      const services: { api: ConfigInterface<GetConfig>; type: NotificationType }[] = [
         { api: this.dailyRewardService, type: NotificationType.daily_reward },
         { api: this.giftService, type: NotificationType.gift_store },
+        { api: this.currencyService, type: NotificationType.deposit },
       ];
 
       services.forEach(el => {
         el.api
           .getConfig(config => {
-            if (config.lastLogin !== TODAY) {
+            if (config['lastLogin'] && config['lastLogin'] !== TODAY) {
+              this.notificationsValue(el.type, true);
+            } else if (config['depositDay']) {
               this.notificationsValue(el.type, true);
             }
           })

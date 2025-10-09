@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { PreloadingStrategy, Route } from '@angular/router';
 import { EMPTY, filter, Observable, switchMap, take } from 'rxjs';
 import { UsersService } from '../users/users.service';
-import { frontRoutes } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ export class PreloadingStrategyService implements PreloadingStrategy {
 
   preload(route: Route, load: () => Observable<any>): Observable<any> {
     const mockConfig = {
-      rest: [frontRoutes.taverna],
+      rest: [] as string[],
       empty: [] as string[],
     };
 

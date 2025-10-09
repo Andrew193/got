@@ -23,36 +23,22 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 56280,
+        "onlineTime": 75180,
         "claimedRewards": [
           "2",
           "4",
           "8",
           "12"
         ],
-        "lastLoyaltyBonus": "10/08/2025"
+        "lastLoyaltyBonus": "10/09/2025"
       },
       "currency": {
-        "gold": 17567,
-        "silver": 39867,
-        "copper": 32774463
+        "gold": 17671,
+        "silver": 40998,
+        "copper": 33110128
       },
-      "createdAt": 1756640349588
-    },
-    {
-      "id": "2203",
-      "login": "rest",
-      "password": "rest",
-      "online": {
-        "onlineTime": 0,
-        "claimedRewards": [],
-        "lastLoyaltyBonus": ""
-      },
-      "currency": {
-        "gold": 300,
-        "silver": 1000,
-        "copper": 15000
-      }
+      "createdAt": 1756640349588,
+      "depositId": "61ec"
     }
   ],
   "dailyReward": [
@@ -66,9 +52,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 16,
-      "totalDays": 45,
-      "lastLogin": "10/08/2025"
+      "day": 17,
+      "totalDays": 46,
+      "lastLogin": "10/09/2025"
     }
   ],
   "giftTrip": [
@@ -80,7 +66,18 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "10/08/2025"
+      "lastLogin": "10/09/2025"
+    }
+  ],
+  "deposits": [
+    {
+      "id": "61ec",
+      "copper": 0,
+      "day": 0,
+      "duration": 0,
+      "gold": 0,
+      "silver": 0,
+      "userId": "e046"
     }
   ]
 }

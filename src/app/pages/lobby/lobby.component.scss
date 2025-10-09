@@ -27,7 +27,7 @@ aside {
   }
 
   li {
-    background: #00000070;
+    background: index.$var-background-color-main;
     color: white;
     transition: all ease 0.5s;
     cursor: pointer;

@@ -7,32 +7,34 @@
   <div class="footer-cover">
     <ng-template #footerHost></ng-template>
   </div>
-  <div class="row store-row">
-    <h2 class="col-12 text-center mt-2 mb-0 store-title modal-title">
-      Welcome back. Check these activities out!!!
-    </h2>
+  <h2 class="col-12 text-center mt-2 mb-0 store-title modal-title">
+    Welcome back. Check these activities out!!!
+  </h2>
 
+  <div class="row g-2 store-row ms-1 me-1">
     @for (activity of activities; track activity.name) {
-      <div
-        [class.claimed]="activity.flipped"
-        class="position-relative p-0 flip-items-inner-container"
-        style="height: 150px">
-        <div class="flip-card" (click)="helper.flipActivity($index)">
-          <div class="card-front">
-            <div class="card">
-              <app-image
-                [source]="activity.poster.src"
-                [imageClass]="'image-150'"
-                [alt]="activity.poster.alt" />
+      <div class="col">
+        <div
+          [class.claimed]="activity.flipped"
+          class="position-relative w-100 p-0 flip-items-inner-container"
+          style="height: 150px">
+          <div class="flip-card" (click)="helper.flipActivity($index)">
+            <div class="card-front">
+              <div class="card-tile w-100">
+                <app-image
+                  [source]="activity.poster.src"
+                  [imageClass]="'image-150'"
+                  [alt]="activity.poster.alt" />
+              </div>
+              <div class="position-absolute card-title banner">
+                <p class="text-center fade-black-bg w-100 mb-0">
+                  {{ activity.name }}
+                </p>
+              </div>
             </div>
-            <div class="position-absolute card-title banner">
-              <p class="text-center fade-black-bg w-100 mb-0">
-                {{ activity.name }}
-              </p>
+            <div class="card-back">
+              <p class="p-1 w-100">{{ activity.desc }}</p>
             </div>
-          </div>
-          <div class="card-back">
-            <p class="p-1 w-100">{{ activity.desc }}</p>
           </div>
         </div>
       </div>

@@ -1,28 +1,28 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { ApiService } from '../abstract/api/api.service';
-import { USER_TOKEN } from '../../constants';
+import { API_ENDPOINTS, USER_TOKEN } from '../../constants';
 import { Currency, User } from './users.interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrencyDifComponent } from '../../components/modal-window/currency/currency-dif/currency-dif.component';
 import { NavigationService } from '../facades/navigation/navigation.service';
+import { CurrencyService } from './currency/currency.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService extends ApiService<User> {
+  currencyService = inject(CurrencyService);
   nav = inject(NavigationService);
+  localStorage = inject(LocalStorageService);
+
   private _snackBar = inject(MatSnackBar);
 
-  private url = '/users';
+  private url = `/${API_ENDPOINTS.users}`;
 
   private user = new BehaviorSubject<User | null>(null);
   $user = this.user.asObservable();
-
-  constructor(private localStorage: LocalStorageService) {
-    super();
-  }
 
   basicUser(user: Partial<User>): User {
     return {
@@ -41,7 +41,29 @@ export class UsersService extends ApiService<User> {
   }
 
   createUser<F extends (user: User) => void>(user: Partial<User>, callback: F) {
-    return this.http.post<User>(this.url, this.basicUser(user)).pipe(
+    return this.putPostCover(this.basicUser(user), {
+      returnObs: true,
+      url: this.url,
+      callback: callback,
+    }).pipe(
+      map(value => (Array.isArray(value) ? value[0] : value)),
+      switchMap(user =>
+        this.currencyService
+          .initDepositForNewUser(user.id)
+          .pipe(
+            switchMap(value =>
+              this.putPostCover(
+                { ...user, depositId: value.id || '' },
+                {
+                  returnObs: true,
+                  url: this.url,
+                  callback: () => {},
+                },
+              ),
+            ),
+          )
+          .pipe(map(response => (Array.isArray(response) ? response[0] : response))),
+      ),
       tap({
         next: user => {
           callback(user);

@@ -1,6 +1,19 @@
 <main class="ms-4 me-4">
-  <div class="row main-content">
-    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 row p-0 m-0 g-3">
+  <div class="p-0">
+    <aside class="m-2">
+      <div class="text-center filters">
+        <form [formGroup]="formGroup" class="p-2">
+          <app-autocomplete-mat-input
+            [label]="'Hero Name'"
+            [placeholder]="'I summon...'"
+            [filteredOptions]="filteredOptions"
+            formControlName="unitName"></app-autocomplete-mat-input>
+        </form>
+      </div>
+    </aside>
+  </div>
+  <div class="main-content">
+    <div class="row p-0 m-0 g-2 heroes">
       @for (hero of returnedArray; track hero.name) {
         <div class="col mt-0">
           <div
@@ -21,21 +34,12 @@
           </div>
         </div>
       }
-    </div>
 
-    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 p-0">
-      <aside class="m-2">
-        <div class="text-center filters">
-          <form [formGroup]="formGroup" class="ps-2 pe-2">
-            <app-autocomplete-mat-input
-              [form]="formGroup"
-              [label]="'Unit Name'"
-              [placeholder]="'Input hero name'"
-              [filteredOptions]="filteredOptions"
-              formControlName="unitName"></app-autocomplete-mat-input>
-          </form>
+      @if (!returnedArray.length) {
+        <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+          <mat-spinner />
         </div>
-      </aside>
+      }
     </div>
   </div>
   <mat-paginator

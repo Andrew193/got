@@ -190,6 +190,52 @@ body {
 }
 
 :root {
+  @include mat.progress-spinner-overrides(
+    (
+      active-indicator-color: index.$var-gold,
+    )
+  );
+
+  @include mat.select-overrides(
+    (
+      panel-background-color: index.$var-metal-dark-2,
+      enabled-trigger-text-color: index.$var-gold,
+      focused-arrow-color: index.$var-deep-golden,
+    )
+  );
+
+  @include mat.option-overrides(
+    (
+      label-text-color: index.$var-basic-golden,
+      selected-state-label-text-color: index.$var-gold,
+    )
+  );
+
+  @include mat.autocomplete-overrides(
+    (
+      background-color: index.$var-metal-dark-2,
+      container-elevation-shadow: index.$var-box-shadow-out,
+    )
+  );
+
+  mat-form-field {
+    border: index.$var-border-2-bronze;
+    border-radius: 5px;
+  }
+
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: index.$var-metal-dark-2,
+      filled-caret-color: index.$var-bronze,
+      filled-label-text-color: index.$var-basic-golden,
+      filled-hover-label-text-color: index.$var-basic-golden,
+      filled-focus-label-text-color: index.$var-basic-golden,
+      filled-input-text-placeholder-color: index.$var-deep-golden,
+      filled-input-text-color: index.$var-gold,
+      filled-focus-active-indicator-color: index.$var-metal-dark-2,
+    )
+  );
+
   @include mat.slider-overrides(
     (
       handle-color: index.$var-basic-golden,
@@ -220,37 +266,18 @@ body {
     )
   );
 
+  @include mat.slider-overrides(
+    (
+      hover-state-layer-color: index.$var-deep-golden,
+    )
+  );
+
   .mat-expansion-panel-body {
     padding: 10px;
   }
 
   .mat-content.mat-content-hide-toggle {
     margin-right: 0;
-  }
-
-  .card {
-    --bs-card-spacer-y: 3px;
-    --bs-card-spacer-x: 3px;
-  }
-
-  .nav-tabs {
-    --bs-border-radius: 0px;
-  }
-
-  .nav-link {
-    --bs-nav-link-padding-y: 5px;
-    --bs-nav-link-padding-x: 5px;
-    --bs-nav-tabs-border-radius: 0px;
-    background: white;
-  }
-
-  .card-title {
-    --bs-card-title-spacer-y: 2px;
-  }
-
-  .list-group-item {
-    --bs-list-group-item-padding-y: 4px;
-    --bs-list-group-item-padding-x: 4px;
   }
 }
 

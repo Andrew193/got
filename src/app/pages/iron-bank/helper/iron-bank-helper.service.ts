@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NumbersService } from '../../../services/numbers/numbers.service';
+import { Currency } from '../../../services/users/users.interfaces';
 
 type Cur = 'COPPER' | 'SILVER' | 'GOLD';
 
@@ -28,6 +29,8 @@ export class IronBankHelperService {
     copper: 'Copper',
     silver: 'Silver',
     days: 'Duration',
+    from: 'From',
+    to: 'To',
   };
 
   readonly depositOptions = [3, 10, 25, 120, 365];
@@ -43,17 +46,23 @@ export class IronBankHelperService {
 
   readonly currencies: Cur[] = ['COPPER', 'SILVER', 'GOLD'];
 
-  form = this.fb.group({
-    from: ['COPPER' as Cur, Validators.required],
-    to: ['GOLD' as Cur, Validators.required],
-    amount: [0, [Validators.required, Validators.min(1)]],
+  form = new FormGroup({
+    from: new FormControl('COPPER' as Cur, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    to: new FormControl('GOLD' as Cur, { nonNullable: true, validators: [Validators.required] }),
+    amount: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(1)],
+    }),
   });
 
-  depositForm = this.fb.group({
-    days: [0, [Validators.required]],
-    copper: [0, []],
-    silver: [0, []],
-    gold: [0, []],
+  depositForm = new FormGroup({
+    days: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
+    copper: new FormControl(0, { nonNullable: true }),
+    silver: new FormControl(0, { nonNullable: true }),
+    gold: new FormControl(0, { nonNullable: true }),
   });
 
   rateLabel = '';
@@ -104,17 +113,28 @@ export class IronBankHelperService {
     this.rateLabel = `1 ${this.META[from].label} = ${rateTxt} ${this.META[to].label} (mid ${midTxt}, spread ${spreadTxt}%)`;
   }
 
-  onFromChanged() {
-    const from = this.form.controls.from.value as Cur;
-
-    if (from === this.form.controls.to.value) {
-      const next = this.currencies.find(c => c !== from)!;
-
-      this.form.controls.to.setValue(next as Cur);
-    }
-  }
-
   allowedToOptions(from: Cur | null): Cur[] {
     return from ? this.currencies.filter(c => c !== from) : [];
+  }
+
+  getCurrencyForExchange(currentCurrency: Currency, newCurrency: number) {
+    const amount = this.form.value.amount || 0;
+    const from = this.form.value.from;
+    const to = this.form.value.to;
+
+    this.form.reset();
+
+    return {
+      copper:
+        currentCurrency.copper -
+        (from === 'COPPER' ? amount : 0) +
+        (to === 'COPPER' ? newCurrency : 0),
+      silver:
+        currentCurrency.silver -
+        (from === 'SILVER' ? amount : 0) +
+        (to === 'SILVER' ? newCurrency : 0),
+      gold:
+        currentCurrency.gold - (from === 'GOLD' ? amount : 0) + (to === 'GOLD' ? newCurrency : 0),
+    };
   }
 }

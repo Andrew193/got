@@ -13,17 +13,29 @@
     height: 30px;
   }
 
+  @mixin card-tile-mixin {
+    text-align: center;
+    background: index.$var-background-color-main;
+    box-shadow: index.$var-box-shadow;
+    color: white;
+    background-image: url('/assets/resourses/imgs/background/crack.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: inherit;
+    max-height: 100%;
+  }
+
   .store-row {
-    gap: 5px;
-    flex-wrap: wrap;
-    margin: 10px;
+    .card-tile {
+      @include card-tile-mixin;
+    }
 
     > div {
       cursor: pointer;
       @include index.mixin-d-f-a-c;
       height: inherit;
-      flex: 1;
-      flex-basis: 15%;
+      border-radius: 5px;
+      flex-direction: column;
 
       &:not(.no-text-highlight):hover {
         span {
@@ -31,15 +43,8 @@
         }
       }
 
-      .card {
-        text-align: center;
-        background: index.$var-background-color-main;
-        box-shadow: index.$var-box-shadow;
-        color: white;
-        @include index.mixin-h-100-w-100;
-        background-image: url('/assets/resourses/imgs/background/crack.png');
-        background-size: cover;
-        background-position: center;
+      &.card-tile {
+        @include card-tile-mixin;
       }
 
       span {

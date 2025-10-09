@@ -3,6 +3,7 @@
 .inner-container {
   background: url('../../../assets/resourses/imgs/background/iron-bank.jpg') no-repeat center;
   @include index.mixin-page-container;
+  @include index.mixin-got-btn;
 
   p {
     color: white;

@@ -6,7 +6,13 @@
 }
 
 .main-content {
-  height: 400px;
+  .heroes {
+    height: 400px;
+    max-height: 400px;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
 }
 
 main {
@@ -30,17 +36,5 @@ main {
 .filters {
   label {
     color: white !important;
-  }
-}
-
-@media (max-width: 968px) {
-  .main-content {
-    > div:first-of-type {
-      order: 2;
-    }
-
-    > div:last-of-type {
-      order: 1;
-    }
   }
 }

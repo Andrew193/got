@@ -1,6 +1,12 @@
+@use '../../../assets/resourses/styles/index' as index;
+
 .total-reward-title {
   line-height: 100px;
   text-align: center;
   font-weight: 500;
   font-size: 25px;
+}
+
+.summon-container {
+  @include index.mixin-got-btn;
 }

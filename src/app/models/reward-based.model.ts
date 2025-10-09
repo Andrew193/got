@@ -1,11 +1,10 @@
 import { DisplayReward, Reward, RewardNames } from '../services/reward/reward.service';
-import { IdEntity } from './common.model';
+import { IdEntity, LastLogin } from './common.model';
 
-export interface DailyReward extends IdEntity {
+export interface DailyReward extends IdEntity, LastLogin {
   userId: string;
   day: number;
   totalDays: number;
-  lastLogin: string;
 }
 
 export interface RewardComponentInterface {

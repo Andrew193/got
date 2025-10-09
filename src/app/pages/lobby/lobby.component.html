@@ -1,5 +1,5 @@
 <div class="lobby-container container-fluid">
-  <main class="row mt-4">
+  <main class="row mt-4 g-2">
     <aside class="col-sm-12 col-md-6 shadow-none">
       <ul class="nav flex-column list-group">
         @for (route of pageRoutes; track route.name + $index) {
@@ -19,9 +19,9 @@
 
     <div class="col-sm-12 col-md-6">
       <div class="stores h-100">
-        <p class="col-12 text-center mt-2 mb-0 store-title">Магазины и Награды</p>
+        <p class="col-12 text-center mt-2 mb-0 store-title">Shops and Rewards</p>
         <nav class="flex-row justify-content-between">
-          <div class="flex-row store-row">
+          <div class="row g-2 store-row ms-1 me-1">
             @for (activity of activities; track activity.name) {
               <ng-container
                 [ngTemplateOutlet]="storeTemplate"
@@ -40,8 +40,8 @@
   let-src="src"
   let-click="click"
   let-notification="notification">
-  <div class="justify-content-center" (click)="click ? click() : true">
-    <div class="card d-flex align-items-center position-relative">
+  <div class="col-3" (click)="click ? click() : true">
+    <div class="w-100 h-100 pt-2 pb-2 position-relative card-tile">
       <app-image
         [source]="'./assets/resourses/imgs/' + src + '.png'"
         [alt]="name"

@@ -22,7 +22,7 @@
       }
     }
     @if (showOpenButton()) {
-      <button (click)="revealAll()">Open cards</button>
+      <button (click)="revealAll()" class="got-toggle">Open cards</button>
     } @else if (showTotalReward()) {
       <div style="grid-template-columns: 1fr 3fr" class="d-grid p-0 gap-2">
         <p class="m-0 total-reward-title">Total reward:</p>

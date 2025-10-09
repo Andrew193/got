@@ -39,6 +39,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   processing<T>(user: T) {
+    debugger;
     this.form.enable();
     this.localStorageService.setItem(USER_TOKEN, user);
     this.nav.goToMainPage();

@@ -18,13 +18,12 @@ export class BaseFormControlComponent implements ControlValueAccessor {
   private onTouched = () => {};
 
   writeValue(value: any): void {
-    this.control.setValue(value);
-    this.onChange(value);
+    this.control.setValue(value, { emitEvent: false });
   }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-    this.control.valueChanges.subscribe(this.onChange);
+    this.control.valueChanges.subscribe(v => this.onChange(v));
   }
 
   registerOnTouched(fn: any): void {

@@ -1,6 +1,5 @@
-import { IdEntity } from './common.model';
+import { IdEntity, LastLogin } from './common.model';
 
-export interface GiftConfig extends IdEntity {
+export interface GiftConfig extends IdEntity, LastLogin {
   userId: string;
-  lastLogin: string;
 }

@@ -8,10 +8,17 @@ import { BasePaginationComponent } from '../../../components/abstract/base-pagin
 import { frontRoutes } from '../../../constants';
 import { MatPaginator } from '@angular/material/paginator';
 import { RatingComponent } from '../../../components/common/rating/rating.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-taverna-heroes-bar',
-  imports: [MatPaginator, AutocompleteMatInputComponent, ReactiveFormsModule, RatingComponent],
+  imports: [
+    MatPaginator,
+    AutocompleteMatInputComponent,
+    ReactiveFormsModule,
+    RatingComponent,
+    MatProgressSpinner,
+  ],
   templateUrl: './taverna-heroes-bar.component.html',
   styleUrl: './taverna-heroes-bar.component.scss',
 })

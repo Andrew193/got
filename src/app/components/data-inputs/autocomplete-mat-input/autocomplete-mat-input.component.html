@@ -1,20 +1,18 @@
 @let options = filteredOptions | async;
 
-<form [formGroup]="form">
-  <mat-form-field class="w-100">
-    <mat-label>{{ label }}</mat-label>
-    <input
-      type="text"
-      [formControl]="control"
-      matInput
-      [matAutocomplete]="auto"
-      [placeholder]="placeholder" />
-    <mat-autocomplete autoActiveFirstOption="true" #auto="matAutocomplete">
-      @for (option of options; track $index + option) {
-        <mat-option [value]="option">
-          {{ option }}
-        </mat-option>
-      }
-    </mat-autocomplete>
-  </mat-form-field>
-</form>
+<mat-form-field class="w-100">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    type="text"
+    [placeholder]="placeholder"
+    matInput
+    [formControl]="control"
+    [matAutocomplete]="auto" />
+  <mat-autocomplete #auto="matAutocomplete">
+    @for (option of options; track option) {
+      <mat-option [value]="option">
+        {{ option }}
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

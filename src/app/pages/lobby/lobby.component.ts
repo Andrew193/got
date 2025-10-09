@@ -172,7 +172,12 @@ export class LobbyComponent implements AfterViewInit {
       click: this.showDailyReward.bind(this.nav),
       notification: NotificationType.daily_reward,
     },
-    { name: 'Iron Bank', src: 'gold', click: this.nav.goToIronBank.bind(this.nav) },
+    {
+      name: 'Iron Bank',
+      src: 'gold',
+      click: this.nav.goToIronBank.bind(this.nav),
+      notification: NotificationType.deposit,
+    },
     { name: 'Craftsmen', src: 'silver' },
     {
       name: 'Daily Boss',

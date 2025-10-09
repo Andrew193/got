@@ -37,15 +37,6 @@
 
   @include index.mixin-got-btn;
 
-  .main-content {
-    > div,
-    aside {
-    }
-
-    aside > div {
-    }
-  }
-
   .stats-bar > div {
     background: index.$var-background-color-main;
     box-shadow: index.$var-box-shadow-out;

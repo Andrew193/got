@@ -10,127 +10,136 @@
 {{ depositModel.value | json }}
 
 <div class="inner-container">
-  <main class="row gap-4 m-0 p-2">
-    <aside class="col-12 col-md stores">
-      <div class="row m-0 mt-2 store-row">
-        <h4 class="w-100 text-center">Exchanger</h4>
+  <main class="row g-4 m-0">
+    <div class="col-12 col-md">
+      <aside class="stores w-100 h-100">
+        <div class="flex-row store-row p-2">
+          <h4 class="w-100 text-center mb-0">Exchanger</h4>
 
-        <div class="no-text-highlight cursor-unset">
-          <p class="m-0">You have:</p>
-          <div class="ps-2">
-            @for (reward of coins; track reward.class) {
-              <app-reward-coin [coinConfig]="reward"></app-reward-coin>
-            }
+          <div class="no-text-highlight w-100 mt-2 cursor-unset">
+            <p class="m-0">You have:</p>
+            <div class="ps-2">
+              @for (reward of coins; track reward.class) {
+                <app-reward-coin [coinConfig]="reward"></app-reward-coin>
+              }
+            </div>
           </div>
+
+          <form [formGroup]="model" class="row gap-4 m-0 p-0 w-100">
+            <div class="col p-0">
+              <mat-form-field class="w-100">
+                <mat-label>From</mat-label>
+                <mat-select formControlName="from">
+                  @for (c of helper.currencies; track c) {
+                    <mat-option [value]="c">{{ c }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col p-0">
+              <mat-form-field class="w-100">
+                <mat-label>To</mat-label>
+                <mat-select formControlName="to">
+                  @for (c of helper.allowedToOptions(model.controls.from.value); track c) {
+                    <mat-option [value]="c">{{ c }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col p-0">
+              <mat-form-field class="w-100">
+                <mat-label>Amount (From)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  [max]="getMax(user, key)"
+                  formControlName="amount" />
+              </mat-form-field>
+            </div>
+
+            <div class="col p-0">
+              <div class="alert alert-primary w-100">
+                You get: <b>{{ result | number }}</b>
+              </div>
+            </div>
+          </form>
+
+          @if (rateLabel) {
+            <p class="form-text">{{ rateLabel }}</p>
+          }
+
+          @if (model.valid && result > 0) {
+            <button mat-fab extended class="mb-2" (click)="exchangeCurrency(result)">
+              <mat-icon>currency_exchange</mat-icon>
+              Exchange
+            </button>
+          } @else {
+            <app-form-errors-container
+              [form]="model"
+              [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
+          }
         </div>
+      </aside>
+    </div>
 
-        <form [formGroup]="model" class="row gap-4 m-0 p-0 w-100">
-          <div class="col p-0">
-            <mat-form-field class="w-100">
-              <mat-label>From</mat-label>
-              <mat-select formControlName="from">
-                @for (c of helper.currencies; track c) {
-                  <mat-option [value]="c">{{ c }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
+    <div class="col-12 col-md">
+      <aside class="stores w-100 h-100">
+        <div class="flex-row store-row p-2">
+          <h4 class="w-100 text-center m-0">Deposit</h4>
 
-          <div class="col p-0">
-            <mat-form-field class="w-100">
-              <mat-label>To</mat-label>
-              <mat-select formControlName="to">
-                @for (c of helper.allowedToOptions(model.controls.from.value); track c) {
-                  <mat-option [value]="c">{{ c }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <div class="col p-0">
-            <mat-form-field class="w-100">
-              <mat-label>Amount (From)</mat-label>
-              <input
-                matInput
-                type="number"
-                min="1"
-                [max]="getMax(user, key)"
-                formControlName="amount" />
-            </mat-form-field>
-          </div>
-
-          <div class="col p-0">
-            <div class="alert alert-primary w-100">
-              You get: <b>{{ result | number }}</b>
+          <form [formGroup]="depositModel" class="w-100">
+            <div class="row m-0 g-2">
+              <span class="col-2 mb-0 deposit-label color-white">Duration:</span>
+              <div class="col-10">
+                <app-slider [controlName]="'days'" [options]="helper.depositOptions" />
+              </div>
             </div>
-          </div>
-        </form>
 
-        @if (rateLabel) {
-          <p class="form-text">{{ rateLabel }}</p>
-        }
+            <div class="row m-0 gap-2">
+              <div class="col p-0">
+                <app-number-input
+                  [max]="getMax(user, 'copper')"
+                  [label]="'Copper: '"
+                  [controlName]="'copper'">
+                </app-number-input>
+              </div>
+              <div class="col p-0">
+                <app-number-input
+                  [max]="getMax(user, 'silver')"
+                  [label]="'Silver: '"
+                  [controlName]="'silver'">
+                </app-number-input>
+              </div>
+              <div class="col p-0">
+                <app-number-input
+                  [max]="getMax(user, 'gold')"
+                  [label]="'Gold: '"
+                  [controlName]="'gold'">
+                </app-number-input>
+              </div>
+            </div>
+          </form>
 
-        @if (model.valid && result > 0) {
-          <button mat-fab extended class="mb-2" (click)="exchangeCurrency(result)">
-            <mat-icon>currency_exchange</mat-icon>
-            Exchange
-          </button>
-        } @else {
-          <app-form-errors-container
-            [form]="model"
-            [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
-        }
-      </div>
-    </aside>
-    <aside class="col-12 col-md stores">
-      <div class="flex-row store-row">
-        <h4 class="w-100 text-center">Deposit</h4>
-        <form [formGroup]="depositModel" class="w-100">
-          <div class="row">
-            <p class="col-2 mb-0 deposit-label">Duration:</p>
-            <app-slider class="col-10" [controlName]="'days'" [options]="helper.depositOptions" />
-          </div>
-          <div class="row m-0 gap-2">
-            <div class="col p-0">
-              <app-number-input
-                [max]="getMax(user, 'copper')"
-                [label]="'Copper: '"
-                [controlName]="'copper'">
-              </app-number-input>
-            </div>
-            <div class="col p-0">
-              <app-number-input
-                [max]="getMax(user, 'silver')"
-                [label]="'Silver: '"
-                [controlName]="'silver'">
-              </app-number-input>
-            </div>
-            <div class="col p-0">
-              <app-number-input
-                [max]="getMax(user, 'gold')"
-                [label]="'Gold: '"
-                [controlName]="'gold'">
-              </app-number-input>
-            </div>
-          </div>
-        </form>
+          @if (depositModel.valid) {
+            <button mat-fab extended class="mb-2 mt-2" (click)="exchangeCurrency(result)">
+              <mat-icon>currency_exchange</mat-icon>
+              Deposit
+            </button>
+          } @else {
+            <app-form-errors-container
+              class="w-100"
+              [form]="depositModel"
+              [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
+          }
+        </div>
+      </aside>
+    </div>
 
-        @if (depositModel.valid) {
-          <button mat-fab extended class="mb-2" (click)="exchangeCurrency(result)">
-            <mat-icon>currency_exchange</mat-icon>
-            Deposit
-          </button>
-        } @else {
-          <app-form-errors-container
-            class="w-100"
-            [form]="depositModel"
-            [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
-        }
-      </div>
-    </aside>
+    <button class="got-toggle">
+      <a routerLink="/" class="fake-link">Back to Castle Black</a>
+    </button>
   </main>
-
-  <button class="btn btn-primary ms-1">
-    <a routerLink="/" class="fake-link">Back to Castle Black</a>
-  </button>
 </div>

@@ -31,9 +31,9 @@ import { NumberInputComponent } from '../../components/data-inputs/number-input/
     RewardCoinComponent,
     FormErrorsContainerComponent,
     MatButtonModule,
-    MatIconModule,
     SliderComponent,
     JsonPipe,
+    MatIconModule,
     NumberInputComponent,
   ],
   templateUrl: './iron-bank.component.html',
@@ -63,24 +63,9 @@ export class IronBankComponent implements OnInit {
   }
 
   exchangeCurrency(newCurrency: number) {
-    const amount = this.helper.form.value.amount || 0;
-    const from = this.helper.form.value.from;
-    const to = this.helper.form.value.to;
-    const currentCurrency = this.user.currency;
-
-    const afterMinus = {
-      copper:
-        currentCurrency.copper -
-        (from === 'COPPER' ? amount : 0) +
-        (to === 'COPPER' ? newCurrency : 0),
-      silver:
-        currentCurrency.silver -
-        (from === 'SILVER' ? amount : 0) +
-        (to === 'SILVER' ? newCurrency : 0),
-      gold:
-        currentCurrency.gold - (from === 'GOLD' ? amount : 0) + (to === 'GOLD' ? newCurrency : 0),
-    };
-
-    this.userService.updateCurrency(afterMinus, { hardSet: true });
+    this.userService.updateCurrency(
+      this.helper.getCurrencyForExchange(this.user.currency, newCurrency),
+      { hardSet: true },
+    );
   }
 }

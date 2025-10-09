@@ -1,6 +1,13 @@
 import moment from 'moment';
 import { RewardLootConstant } from './models/reward-based.model';
 
+export const API_ENDPOINTS = {
+  gift: 'giftTrip',
+  daily: 'dailyReward',
+  users: 'users',
+  deposits: 'deposits',
+};
+
 export const DATE_FORMAT = 'MM/DD/YYYY';
 export const BATTLE_SPEED = 500;
 export const USER_TOKEN = 'user';

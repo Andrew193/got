@@ -41,9 +41,7 @@
                 @for (bossConfigReward of bossConfig; track $index) {
                   <p class="mb-0">
                     <span [class]="bossConfigReward.alias">
-                      {{ bossConfigReward.base | number }} (+{{
-                        bossConfigReward.win | number
-                      }}
+                      {{ bossConfigReward.base | number }} (+{{ bossConfigReward.win | number }}
                       kill reward )
                     </span>
                     <img

@@ -10,5 +10,9 @@
   "/users": {
     "target": "http://localhost:4567",
     "secure": false
+  },
+  "/deposits": {
+    "target": "http://localhost:4567",
+    "secure": false
   }
 }
