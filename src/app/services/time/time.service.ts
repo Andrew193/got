@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
+import { DATE_FORMAT } from '../../constants';
+import { TIME } from '../online/online.contrants';
 
 @Injectable({
   providedIn: 'root',
@@ -11,20 +13,57 @@ export class TimeService {
 
   getTotalPlaytime(createdAt: number) {
     const createdMoment = moment(createdAt);
-
     const now = moment();
-    const diffInDays = now.diff(createdMoment, 'days');
-    const diffInHours = now.diff(createdMoment, 'hours');
-    const diffInMinutes = now.diff(createdMoment, 'minutes');
+
+    const toReturn = this.getDiff(createdMoment, now);
 
     // console.log("Created at:", createdMoment.format("YYYY-MM-DD HH:mm:ss"));
     // console.log("Now:", now.format("YYYY-MM-DD HH:mm:ss"));
-    // console.log("Difference:", diffInDays, "days,", diffInHours, "hours,", diffInMinutes, "minutes");
+    // console.log("Difference:", toReturn.diffInDays, "days,", toReturn.diffInHours, "hours,", toReturn.diffInMinutes, "minutes");
+
+    return toReturn;
+  }
+
+  format(date: number | moment.Moment) {
+    return moment(date).format(DATE_FORMAT);
+  }
+
+  getDiff(date1: number | moment.Moment, date2: number | moment.Moment) {
+    const date1Moment = moment(date1);
+    const date2Moment = moment(date2);
+
+    const diffInDays = date2Moment.diff(date1Moment, 'days');
+    const diffInHours = date2Moment.diff(date1Moment, 'hours');
+    const diffInMinutes = date2Moment.diff(date1Moment, 'minutes');
 
     return {
       diffInDays,
       diffInHours,
       diffInMinutes,
     };
+  }
+
+  getRemainingTime(start: number, days: number) {
+    const now = Date.now();
+
+    const target = start + days * TIME.msInDay;
+
+    const remaining = target - now;
+
+    if (remaining <= 0) {
+      return 0;
+    } else {
+      const hours = Math.floor(remaining / (1000 * 60 * 60));
+      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / TIME.oneMinuteMilliseconds);
+      const seconds = Math.floor((remaining % TIME.oneMinuteMilliseconds) / 1000);
+
+      //console.log(`Осталось: ${hours} ч ${minutes} мин ${seconds} сек`);
+
+      return {
+        hours,
+        minutes,
+        seconds,
+      };
+    }
   }
 }

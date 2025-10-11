@@ -1,0 +1,15 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
+.hint-container {
+  border: index.$var-border-2-bronze;
+  background: index.$var-background-color-main;
+  border-radius: 5px;
+}
+
+.equal.wifi_protected_setup {
+  mat-icon {
+    @include index.anim-rotate(rotating, infinite, 1s);
+  }
+}
+
+@include index.anim-border-glow(equal);

@@ -13,7 +13,7 @@ import { ViewProviderComponent } from '../../abstract/abstract-control/view-prov
   styleUrl: './slider.component.scss',
 })
 export class SliderComponent extends ViewProviderComponent {
-  readonly options = input.required<number[]>();
+  readonly options = input.required<number[] | readonly number[]>();
 
   formatLabel = (idx: number | null) => (idx == null ? '' : String(this.options()[idx]));
 }

@@ -1,15 +1,20 @@
 @let model = helper.form;
-@let depositModel = helper.depositForm;
 
 @let rateLabel = helper.rateLabel;
 @let result = helper.result;
-@let from = model.value.from;
 @let coins = getUserCurrencyInCoins();
-@let key = from?.toLowerCase() || 'copper';
+@let _key = key;
+@let depositAvailable = depositFacade.depositAvailable | async;
 
-{{ depositModel.value | json }}
+<div class="inner-container position-relative">
+  @if (!depositAvailable) {
+    <div class="d-flex justify-content-end p-1">
+      <button mat-fab class="deposit-notificator" (click)="showCurrentDeposit()">
+        <mat-icon>currency_exchange</mat-icon>
+      </button>
+    </div>
+  }
 
-<div class="inner-container">
   <main class="row g-4 m-0">
     <div class="col-12 col-md">
       <aside class="stores w-100 h-100">
@@ -49,15 +54,11 @@
             </div>
 
             <div class="col p-0">
-              <mat-form-field class="w-100">
-                <mat-label>Amount (From)</mat-label>
-                <input
-                  matInput
-                  type="number"
-                  min="1"
-                  [max]="getMax(user, key)"
-                  formControlName="amount" />
-              </mat-form-field>
+              <app-number-input
+                [max]="getMax(user, _key)"
+                [label]="'Amount (From) '"
+                [controlName]="'amount'">
+              </app-number-input>
             </div>
 
             <div class="col p-0">
@@ -78,6 +79,7 @@
             </button>
           } @else {
             <app-form-errors-container
+              class="w-100"
               [form]="model"
               [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
           }
@@ -87,59 +89,25 @@
 
     <div class="col-12 col-md">
       <aside class="stores w-100 h-100">
-        <div class="flex-row store-row p-2">
-          <h4 class="w-100 text-center m-0">Deposit</h4>
-
-          <form [formGroup]="depositModel" class="w-100">
-            <div class="row m-0 g-2">
-              <span class="col-2 mb-0 deposit-label color-white">Duration:</span>
-              <div class="col-10">
-                <app-slider [controlName]="'days'" [options]="helper.depositOptions" />
-              </div>
-            </div>
-
-            <div class="row m-0 gap-2">
-              <div class="col p-0">
-                <app-number-input
-                  [max]="getMax(user, 'copper')"
-                  [label]="'Copper: '"
-                  [controlName]="'copper'">
-                </app-number-input>
-              </div>
-              <div class="col p-0">
-                <app-number-input
-                  [max]="getMax(user, 'silver')"
-                  [label]="'Silver: '"
-                  [controlName]="'silver'">
-                </app-number-input>
-              </div>
-              <div class="col p-0">
-                <app-number-input
-                  [max]="getMax(user, 'gold')"
-                  [label]="'Gold: '"
-                  [controlName]="'gold'">
-                </app-number-input>
-              </div>
-            </div>
-          </form>
-
-          @if (depositModel.valid) {
-            <button mat-fab extended class="mb-2 mt-2" (click)="exchangeCurrency(result)">
-              <mat-icon>currency_exchange</mat-icon>
-              Deposit
-            </button>
-          } @else {
-            <app-form-errors-container
-              class="w-100"
-              [form]="depositModel"
-              [uiErrorsNames]="helper.uiErrorsNames"></app-form-errors-container>
-          }
-        </div>
+        <fieldset [disabled]="!depositAvailable" class="h-100">
+          <app-deposit
+            [(form)]="depositForm"
+            [copperMax]="getMax(user, 'copper')"
+            [silverMax]="getMax(user, 'silver')"
+            [goldMax]="getMax(user, 'gold')"
+            [depositOptions]="depositOptions"
+            [uiErrorsNames]="uiErrorsNames"
+            (depositCurrency)="depositCurrency()">
+            @if (!depositAvailable) {
+              <p class="text-center w-100 mb-0">You can not have more than one deposit.</p>
+            }
+          </app-deposit>
+        </fieldset>
       </aside>
     </div>
 
-    <button class="got-toggle">
-      <a routerLink="/" class="fake-link">Back to Castle Black</a>
-    </button>
+    <div class="ps-2 pe-2">
+      <button class="got-toggle w-100" (click)="goToMainPage()">Back to Castle Black</button>
+    </div>
   </main>
 </div>

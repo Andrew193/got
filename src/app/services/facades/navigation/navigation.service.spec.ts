@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { NavigationService } from './navigation.service';
 
-describe('NavigationService', () => {
+describe('CurrencyService', () => {
   let service: NavigationService;
 
   beforeEach(() => {

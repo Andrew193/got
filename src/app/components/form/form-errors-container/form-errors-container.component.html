@@ -9,6 +9,7 @@
         @if (isRequiredErrors && $index === 0) {
           <li>Fields marked with an asterisk (*) are required.</li>
         }
+
         <app-error-field [fieldToValidate]="error"></app-error-field>
       }
     </ul>

@@ -8,12 +8,12 @@ import { StepsReward } from '../../../models/notification.model';
 import { NotificationHelperService } from './meta/notification-helper.service';
 import { HasFooterHost } from '../modal-interfaces';
 import { RewardCoinComponent } from '../../views/reward-coin/reward-coin.component';
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, PercentPipe } from '@angular/common';
 import { TimeService } from '../../../services/time/time.service';
 
 @Component({
   selector: 'app-notification',
-  imports: [ImageComponent, RewardsCalendarComponent, RewardCoinComponent, AsyncPipe, DecimalPipe],
+  imports: [ImageComponent, RewardsCalendarComponent, RewardCoinComponent, AsyncPipe, PercentPipe],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
 })

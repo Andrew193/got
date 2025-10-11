@@ -5,6 +5,9 @@
 
 @if (showErrors) {
   <div class="error-label">
+    @if (fieldCustomError) {
+      <p class="error margin-unset">{{ fieldName }}: {{ field?.errors?.['error'] }}.</p>
+    }
     @if (fieldRequired) {
       <p class="error margin-unset">{{ fieldName }} is required. {{ fieldAdditionalText }}</p>
     }

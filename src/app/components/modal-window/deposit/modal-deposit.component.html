@@ -1,0 +1,58 @@
+@let _ratesCoins = getRatesCoins();
+@let _deposit = deposit | async;
+
+<div class="inner-container stores flip-items-container d-block">
+  <div class="footer-cover">
+    <ng-template #footerHost></ng-template>
+  </div>
+
+  @if (_deposit) {
+    @let _remainingDepositTime =
+      remainingDepositTime(_deposit.depositDay, _deposit.duration || _data.days);
+
+    <h2 class="col-12 text-center mt-2 mb-0 store-title modal-title">
+      Your deposit is successful!!!
+    </h2>
+
+    <div class="row g-2 ms-1 me-1">
+      <p class="col-12 text-center banner mb-0 mt-2 modal-title color-white p-2">
+        Your current rate is:
+      </p>
+      <app-deposit-hint
+        [hintContainerClass]="'opacity-9'"
+        [convertToPercentage]="true"
+        [renderRates]="false"
+        [coins]="_ratesCoins" />
+
+      <mat-divider class="mt-2"></mat-divider>
+      <p class="col-12 text-center banner mb-0 mt-2 modal-title color-white p-2">
+        Deposit information:
+      </p>
+      <mat-divider class="mt-2"></mat-divider>
+
+      <app-deposit-hint
+        [hintContainerClass]="'opacity-9'"
+        (newCoins)="setNewCoins($event)"
+        [coins]="getCoins()"
+        [rates]="rates"
+        [differenceMode]="differenceMode(_remainingDepositTime === 0)" />
+
+      <div class="color-white no-text-highlight row m-0 p-0 mt-2">
+        <span class="col-lg-6 col-md-12 text-center">
+          Your deposit will last for: <b>{{ _deposit.duration || _data.days }}</b> days.
+        </span>
+        <span class="col-lg-6 col-md-12 text-center">
+          You submitted your deposit: <b>{{ getDepositDay(_deposit.depositDay) }}</b>
+        </span>
+        <span class="col-12 text-center">
+          @if (_remainingDepositTime !== 0) {
+            You can collect you money in: <b>{{ _remainingDepositTime.hours }}</b> hours.
+            <button class="got-toggle-green got-toggle" (click)="getDeposit()">Collect</button>
+          } @else {
+            <button class="got-toggle-green got-toggle" (click)="getDeposit()">Collect</button>
+          }
+        </span>
+      </div>
+    </div>
+  }
+</div>

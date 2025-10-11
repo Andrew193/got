@@ -19,18 +19,28 @@
 
 aside {
   box-shadow: index.$var-box-shadow;
-  border-radius: 5px;
   height: fit-content;
 
-  ul {
+  mat-list {
     box-shadow: index.$var-box-shadow;
+    border-radius: 5px;
   }
 
-  li {
+  mat-list-item {
     background: index.$var-background-color-main;
     color: white;
     transition: all ease 0.5s;
     cursor: pointer;
+
+    &:first-of-type {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    &:last-of-type {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
 
     &:hover {
       background: rgba(0, 0, 0, 0.56);

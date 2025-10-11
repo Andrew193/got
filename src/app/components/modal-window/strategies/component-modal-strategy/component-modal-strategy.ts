@@ -1,5 +1,6 @@
-import { Component, Input, ViewContainerRef } from '@angular/core';
+import { Component, Injector, Input, ViewContainerRef } from '@angular/core';
 import { ExtendedModalConfig, HasFooterHost, ModalStrategy } from '../../modal-interfaces';
+import { provideDynamicData } from '../../../../models/tokens';
 
 @Component({
   imports: [],
@@ -14,10 +15,17 @@ function hasFooterHost(instance: any): instance is HasFooterHost {
   return instance && 'footerHost' in instance && instance.footerHost instanceof ViewContainerRef;
 }
 
-export class ComponentModalStrategy implements ModalStrategy {
-  render(vc: ViewContainerRef, modalConfig: ExtendedModalConfig) {
+export class ComponentModalStrategy<T> implements ModalStrategy {
+  render(vc: ViewContainerRef, modalConfig: ExtendedModalConfig<T>) {
+    const customInjector = Injector.create({
+      providers: [provideDynamicData<T>(modalConfig.config.data as T)],
+      parent: vc.injector,
+    });
+
     // @ts-ignore
-    const componentRef = vc.createComponent(modalConfig.config.component);
+    const componentRef = vc.createComponent(modalConfig.config.component, {
+      injector: customInjector,
+    });
     let footerRef;
 
     if (hasFooterHost(componentRef.instance)) {

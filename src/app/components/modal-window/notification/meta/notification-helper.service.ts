@@ -10,6 +10,7 @@ import { TimeService } from '../../../../services/time/time.service';
 import { BaseLoyaltyBonus } from '../../../../services/daily-reward/daily-reward-constants';
 import { NumbersService } from '../../../../services/numbers/numbers.service';
 import { Coin } from '../../../../models/reward-based.model';
+import { Cur } from '../../../../models/iron-bank.model';
 
 @Injectable({
   providedIn: 'root',
@@ -122,7 +123,7 @@ export class NotificationHelperService {
     const totalReward: Currency = { copper: 0, gold: 0, silver: 0 };
 
     reward.forEach(part => {
-      const key = part.class as 'copper' | 'silver' | 'gold';
+      const key = part.class as Lowercase<Cur>;
 
       totalReward[key] += part.amount || 0;
     });

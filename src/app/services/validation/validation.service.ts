@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -60,5 +67,34 @@ export class ValidationService {
         createCallback.subscribe();
       }
     }
+  }
+
+  depositFormValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const value = formGroup.getRawValue() as {
+        copper: number;
+        silver: number;
+        gold: number;
+        days?: number;
+      };
+
+      delete value.days;
+
+      const ok = Object.values(value).some(el => el > 0);
+
+      return ok ? null : { error: 'Choose your deposit. Cooper, silver or gold must be filled.' };
+    };
+  }
+
+  zeroOrMin(min: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const v = Number(control.value ?? 0);
+
+      if (Number.isNaN(v)) return { required: true };
+
+      if (v < 0) return { required: true };
+
+      return v === 0 || v >= min ? null : { min: { min, actual: v } };
+    };
   }
 }

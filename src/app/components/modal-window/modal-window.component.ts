@@ -58,7 +58,7 @@ export class ModalWindowComponent implements OnInit {
   }
 
   public close = () => {
-    this.modalConfig.config.callback();
+    this.modalConfig.config.callback?.();
     this.dialogRef.close();
     this.modalWindowService.dropModal();
   };

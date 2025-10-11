@@ -28,7 +28,7 @@ export abstract class ApiService<T> {
   protected putPostCover<R extends boolean, E extends IdEntity>(
     entity: E,
     meta: PutPostMetaOf<T, R>,
-  ): typeof meta.returnObs extends true ? Observable<T | T[]> : Subscription {
+  ): R extends true ? Observable<T | T[]> : Subscription {
     const url = entity.id ? `${meta.url}/${entity.id}` : meta.url;
     const body = entity.id
       ? entity
@@ -60,6 +60,10 @@ export abstract class ApiService<T> {
         console.log(error);
       },
     });
+  }
+
+  getStaticData() {
+    return this.data.getValue();
   }
 
   private getUserId() {

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgClass, NgStyle } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-image',
-  imports: [NgClass, NgStyle],
+  imports: [NgClass, NgStyle, MatProgressSpinner],
   templateUrl: './image.component.html',
   styleUrl: './image.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

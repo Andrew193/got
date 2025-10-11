@@ -4,3 +4,5 @@
   background-color: index.$var-background-color-main;
   @include index.mixin-units-container-config;
 }
+
+@include index.mixin-got-btn;

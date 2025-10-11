@@ -1,7 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ValidationService } from '../../../services/validation/validation.service';
-import { FormArray, FormGroup, FormsModule } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, FormsModule } from '@angular/forms';
 import { ErrorFieldComponent } from '../error-field/error-field.component';
+
+export type UiError = {
+  meta: AbstractControl | null;
+  name: string;
+  htmlName?: string;
+  additionalText?: string;
+};
 
 @Component({
   selector: 'app-form-errors-container',
@@ -15,7 +22,7 @@ export class FormErrorsContainerComponent implements OnInit {
 
   requiredErrors: any[] = [];
   showErrors = false;
-  errors: any[] = [];
+  errors: UiError[] = [];
 
   constructor(public validationService: ValidationService) {}
 
@@ -27,17 +34,18 @@ export class FormErrorsContainerComponent implements OnInit {
 
   public checkErrors = () => {
     this.requiredErrors = [];
-    const errors = this.getFormValidationErrors();
+    const errors = this.getFormValidationErrors(this.form);
 
     this.updateErrors(errors);
 
     this.errors = errors;
   };
 
-  getFormValidationErrors(formGroup?: FormGroup, i?: number) {
-    let errors: any[] = [];
+  getFormValidationErrors(formGroup: FormGroup, i?: number) {
+    let errors: UiError[] = [];
+
     const getValidationErrorsRecursionCover = (innerIndex?: number) => {
-      Object.entries(formGroup?.controls || this.form.controls).forEach(([key, control]) => {
+      Object.entries(formGroup.controls).forEach(([key, control]) => {
         if (control instanceof FormArray) {
           const formArray = control as FormArray;
 
@@ -80,7 +88,18 @@ export class FormErrorsContainerComponent implements OnInit {
       }
     };
 
+    const addFormErrors = () => {
+      if (Object.keys(this.form.errors || {}).length) {
+        errors.push({
+          meta: this.form,
+          name: 'Form',
+          additionalText: '',
+        });
+      }
+    };
+
     getValidationErrorsRecursionCover(i);
+    addFormErrors();
 
     return errors;
   }

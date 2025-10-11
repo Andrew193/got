@@ -1,28 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NumbersService } from '../../../services/numbers/numbers.service';
 import { Currency } from '../../../services/users/users.interfaces';
-
-type Cur = 'COPPER' | 'SILVER' | 'GOLD';
-
-interface CurMeta {
-  valueInCopper: number;
-  decimals: number;
-  label: string;
-}
-
-interface Quote {
-  from: Cur;
-  to: Cur;
-  midRate: number;
-  rate: number;
-  spreadPct: number;
-}
+import { Cur, CurMeta, Quote } from '../../../models/iron-bank.model';
+import { IronBankDepositHelperService } from './deposit-helper.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IronBankHelperService {
+  deposit = inject(IronBankDepositHelperService);
+  private numberServices = inject(NumbersService);
+
   readonly uiErrorsNames = {
     amount: 'Amount',
     gold: 'Gold',
@@ -32,10 +21,6 @@ export class IronBankHelperService {
     from: 'From',
     to: 'To',
   };
-
-  readonly depositOptions = [3, 10, 25, 120, 365];
-
-  private numberServices = inject(NumbersService);
 
   private readonly META: Record<Cur, CurMeta> = {
     COPPER: { valueInCopper: 1, decimals: 0, label: 'Copper' },
@@ -58,17 +43,10 @@ export class IronBankHelperService {
     }),
   });
 
-  depositForm = new FormGroup({
-    days: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
-    copper: new FormControl(0, { nonNullable: true }),
-    silver: new FormControl(0, { nonNullable: true }),
-    gold: new FormControl(0, { nonNullable: true }),
-  });
-
   rateLabel = '';
   result = 0;
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.form.valueChanges.subscribe(() => this.recalc());
     this.recalc();
   }
@@ -136,5 +114,13 @@ export class IronBankHelperService {
       gold:
         currentCurrency.gold - (from === 'GOLD' ? amount : 0) + (to === 'GOLD' ? newCurrency : 0),
     };
+  }
+
+  depositOptions() {
+    return this.deposit.depositOptions;
+  }
+
+  depositForm() {
+    return this.deposit.depositForm;
   }
 }

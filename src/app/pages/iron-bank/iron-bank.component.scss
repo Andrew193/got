@@ -4,14 +4,11 @@
   background: url('../../../assets/resourses/imgs/background/iron-bank.jpg') no-repeat center;
   @include index.mixin-page-container;
   @include index.mixin-got-btn;
+  @include index.anim-border-glow(deposit-notificator);
 
   p {
     color: white;
     font-weight: bold;
-  }
-
-  .deposit-label {
-    line-height: 46px;
   }
 
   h4 {

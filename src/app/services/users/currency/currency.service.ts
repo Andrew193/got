@@ -4,11 +4,12 @@ import { Currency, DepositCurrency } from '../users.interfaces';
 import { API_ENDPOINTS } from '../../../constants';
 import { ConfigInterface } from '../../../models/interfaces/config.interface';
 import { CurrencyHelperService } from './helper/currency-helper.service';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CurrencyService
+export class DepositService
   extends ApiService<DepositCurrency>
   implements ConfigInterface<DepositCurrency>
 {
@@ -27,7 +28,7 @@ export class CurrencyService
     const newDeposit = this.helper.makeNewDeposit(deposit, days);
 
     return this.putPostCover(
-      { ...newDeposit, id: this.data.getValue().id },
+      { ...newDeposit, id: this.data.getValue().id, userId: this.userId },
       {
         returnObs: true,
         url: this.url,
@@ -35,6 +36,25 @@ export class CurrencyService
           console.log(res);
         },
       },
+    );
+  }
+
+  withdrawDeposit() {
+    const deposit = this.data.getValue();
+
+    return this.putPostCover(
+      { ...this.helper.initialDepositCurrency, id: deposit.id, userId: this.userId },
+      {
+        returnObs: true,
+        url: this.url,
+        callback: () => {},
+      },
+    ).pipe(
+      map(() => {
+        console.log(deposit);
+
+        return deposit;
+      }),
     );
   }
 

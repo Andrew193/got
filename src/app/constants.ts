@@ -8,6 +8,12 @@ export const API_ENDPOINTS = {
   deposits: 'deposits',
 };
 
+export const CURRENCY_NAMES = {
+  gold: 'gold',
+  silver: 'silver',
+  copper: 'copper',
+} as const;
+
 export const DATE_FORMAT = 'MM/DD/YYYY';
 export const BATTLE_SPEED = 500;
 export const USER_TOKEN = 'user';

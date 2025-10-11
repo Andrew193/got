@@ -1,4 +1,6 @@
 @let coin = coinConfig();
+@let _convertToPercentage = convertToPercentage();
+
 @let _imageContainerClass = imageContainerClass();
 
 @if (coin) {
@@ -6,6 +8,11 @@
     <span [class]="_imageContainerClass">
       <app-image [source]="coin.imgSrc" [useFixSize]="useFixSize()" [alt]="coin.alt"></app-image>
     </span>
-    {{ coin.amount | number }}
+    @if (_convertToPercentage) {
+      {{ coin.amount | percent }}
+    } @else {
+      {{ coin.amount | number }}
+    }
+    <ng-content select="description" />
   </span>
 }

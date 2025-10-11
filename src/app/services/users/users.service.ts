@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { ApiService } from '../abstract/api/api.service';
 import { API_ENDPOINTS, USER_TOKEN } from '../../constants';
@@ -7,13 +7,13 @@ import { Currency, User } from './users.interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrencyDifComponent } from '../../components/modal-window/currency/currency-dif/currency-dif.component';
 import { NavigationService } from '../facades/navigation/navigation.service';
-import { CurrencyService } from './currency/currency.service';
+import { DepositService } from './currency/currency.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService extends ApiService<User> {
-  currencyService = inject(CurrencyService);
+  depositService = inject(DepositService);
   nav = inject(NavigationService);
   localStorage = inject(LocalStorageService);
 
@@ -48,7 +48,7 @@ export class UsersService extends ApiService<User> {
     }).pipe(
       map(value => (Array.isArray(value) ? value[0] : value)),
       switchMap(user =>
-        this.currencyService
+        this.depositService
           .initDepositForNewUser(user.id)
           .pipe(
             switchMap(value =>
@@ -95,42 +95,40 @@ export class UsersService extends ApiService<User> {
       );
   }
 
-  updateCurrency(
+  updateCurrency<R extends boolean = false>(
     newCurrency: Currency,
-    config: { returnObs?: boolean; hardSet?: boolean } = {
-      returnObs: false,
+    config: { returnObs?: R; hardSet?: boolean } = {
+      returnObs: false as R,
       hardSet: false,
     },
-  ) {
+  ): R extends true ? Observable<User | User[]> : Subscription {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
-    return this.putPostCover(
-      {
-        ...user,
-        currency: {
-          gold: newCurrency.gold + (config.hardSet ? 0 : user.currency.gold),
-          silver: newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
-          copper: newCurrency.copper + (config.hardSet ? 0 : user.currency.copper),
-        },
+    const payload: User = {
+      ...user,
+      currency: {
+        gold: newCurrency.gold + (config.hardSet ? 0 : user.currency.gold),
+        silver: newCurrency.silver + (config.hardSet ? 0 : user.currency.silver),
+        copper: newCurrency.copper + (config.hardSet ? 0 : user.currency.copper),
       },
-      {
-        url: this.url,
-        callback: response => {
-          this.localStorage.setItem(BasicLocalStorage.names.user, response);
-          this.user.next(response);
-          this._snackBar.openFromComponent(CurrencyDifComponent, {
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-            duration: 5000,
-            data: {
-              old: user.currency,
-              new: response.currency,
-            },
-          });
-        },
-        returnObs: config.returnObs || false,
+    };
+
+    const returnObs = (config.returnObs ?? false) as R;
+
+    return this.putPostCover<R, User>(payload, {
+      url: this.url,
+      callback: (response: User) => {
+        this.localStorage.setItem(BasicLocalStorage.names.user, response);
+        this.user.next(response);
+        this._snackBar.openFromComponent(CurrencyDifComponent, {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 5000,
+          data: { old: user.currency, new: response.currency },
+        });
       },
-    );
+      returnObs,
+    });
   }
 
   doesUserExist() {

@@ -88,7 +88,7 @@
             You can get an additional bonus for staying in the Night Watch for:
             <b style="color: darkred">{{ played.diffInDays }}</b> day(s). Reward:
             <b style="color: darkred">
-              {{ helper.loyaltyRewardBoostedBy(played.diffInDays) * 100 | number }}%
+              {{ helper.loyaltyRewardBoostedBy(played.diffInDays) | percent }}
             </b>
           </p>
           <div>

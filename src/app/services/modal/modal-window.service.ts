@@ -27,18 +27,19 @@ export class ModalWindowService {
     this._modalConfig.next(this.init);
   }
 
-  getModalConfig(
+  getModalConfig<T>(
     headerClass = '',
     headerMessage = '',
     closeBtnLabel = '',
     config: {
       open: boolean;
-      callback: () => void;
+      callback?: () => void;
       strategy: number;
       component?: any;
       modalRootClass?: string;
+      data?: T;
     },
-  ): ModalConfig {
+  ): ModalConfig<T> {
     return {
       headerClass: headerClass,
       headerMessage: headerMessage,
@@ -49,6 +50,7 @@ export class ModalWindowService {
         strategy: config.strategy,
         component: config.component,
         modalRootClass: config.modalRootClass,
+        data: config.data,
       },
     };
   }

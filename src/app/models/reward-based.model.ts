@@ -1,5 +1,6 @@
 import { DisplayReward, Reward, RewardNames } from '../services/reward/reward.service';
 import { IdEntity, LastLogin } from './common.model';
+import { Cur } from './iron-bank.model';
 
 export interface DailyReward extends IdEntity, LastLogin {
   userId: string;
@@ -12,7 +13,7 @@ export interface RewardComponentInterface {
   rewards: DisplayReward[];
 }
 
-export type BossRewardCurrency = 'copper' | 'silver' | 'gold';
+export type BossRewardCurrency = Lowercase<Cur>;
 
 export type BossRewardsConfig<T extends BossRewardCurrency> = {
   [P in T]: Record<'base' | 'win' | 'dmg', number> & Record<'alias', P>;

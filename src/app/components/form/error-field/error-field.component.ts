@@ -1,28 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { UiError } from '../form-errors-container/form-errors-container.component';
 
 @Component({
   selector: 'app-error-field',
-  imports: [],
   templateUrl: './error-field.component.html',
   styleUrl: './error-field.component.scss',
 })
 export class ErrorFieldComponent {
-  @Input() fieldToValidate: {
-    meta: AbstractControl<any, any> | null;
-    name: string;
-    htmlName?: string;
-    additionalText?: string;
-  };
-
-  constructor() {
-    this.fieldToValidate = {
-      meta: new FormControl(null),
-      name: 'start',
-      htmlName: '',
-      additionalText: '',
-    };
-  }
+  @Input({ required: true }) fieldToValidate!: UiError;
 
   get field() {
     return this.fieldToValidate.meta;
@@ -46,6 +31,10 @@ export class ErrorFieldComponent {
 
   get fieldRequired() {
     return this.field?.errors?.['required'];
+  }
+
+  get fieldCustomError() {
+    return this.field?.errors?.['error'];
   }
 
   get fieldMin() {

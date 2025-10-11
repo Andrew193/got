@@ -321,12 +321,12 @@
 }
 
 /* === Rotate === */
-@mixin rotate($name: rotating, $duration: infinite) {
-  -webkit-animation: $name 2s linear $duration;
-  -moz-animation: $name 2s linear $duration;
-  -ms-animation: $name 2s linear $duration;
-  -o-animation: $name 2s linear $duration;
-  animation: $name 2s linear $duration;
+@mixin rotate($name: rotating, $duration: infinite, $spead: 2s) {
+  -webkit-animation: $name $spead linear $duration;
+  -moz-animation: $name $spead linear $duration;
+  -ms-animation: $name $spead linear $duration;
+  -o-animation: $name $spead linear $duration;
+  animation: $name $spead linear $duration;
 
   @-webkit-keyframes #{$name} {
     from {

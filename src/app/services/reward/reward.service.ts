@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HeroesService } from '../heroes/heroes.service';
 import { NumbersService } from '../numbers/numbers.service';
-import { Currency } from '../users/users.interfaces';
-import { Coin, CoinNames, RewardValues } from '../../models/reward-based.model';
+import { RewardValues } from '../../models/reward-based.model';
 import { REWARD } from '../../constants';
 
 export type Reward = {
@@ -59,14 +58,6 @@ export class RewardService {
   ];
 
   constructor(private heroService: HeroesService) {}
-
-  convertUserCurrencyToCoin(currency: Currency): Coin[] {
-    return [
-      this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames),
-      this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames),
-      this.getCoin(currency.copper, this.rewardNames.copper.toLowerCase() as CoinNames),
-    ];
-  }
 
   getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
   getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
@@ -131,15 +122,6 @@ export class RewardService {
     }
 
     return { amount: 1, src: '', name: item.name, flipped: false };
-  }
-
-  private getCoin(amount: number, name: CoinNames): Coin {
-    return {
-      alt: name,
-      amount: amount,
-      class: name,
-      imgSrc: `assets/resourses/imgs/${name}.png`,
-    };
   }
 
   private getDisplayRewardBase(item: Reward, amount: number) {

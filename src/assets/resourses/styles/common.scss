@@ -3,6 +3,12 @@
 
 $columns: 100;
 
+@for $i from 1 through 10 {
+  .opacity-#{$i} {
+    opacity: $i * 0.1;
+  }
+}
+
 @for $i from 1 through $columns {
   .w-#{$i} {
     width: math.percentage(calc($i / 100));
@@ -66,6 +72,8 @@ a.fake-link {
   width: calc(100% - (2 * (var(--bs-gutter-x) * 0.5)));
   z-index: 1;
   align-content: space-evenly;
+  border-top: index.$var-border-2-bronze;
+  border-bottom: index.$var-border-2-bronze;
 
   .fade-black-bg {
     background: radial-gradient(

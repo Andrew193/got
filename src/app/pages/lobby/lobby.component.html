@@ -1,20 +1,24 @@
 <div class="lobby-container container-fluid">
   <main class="row mt-4 g-2">
     <aside class="col-sm-12 col-md-6 shadow-none">
-      <ul class="nav flex-column list-group">
-        @for (route of pageRoutes; track route.name + $index) {
-          <li class="nav-item list-group-item">
-            <a [routerLink]="route.url" class="list-group-item">
-              <span>
+      <mat-list class="pt-0 pb-0">
+        @for (route of pageRoutes; track route.name) {
+          <mat-list-item>
+            <a [routerLink]="route.url" class="list-group-item" mat-line>
+              <span class="d-flex">
                 <app-image
                   [source]="'assets/resourses/imgs/nav_icons/' + route.src"
                   [alt]="route.name"></app-image>
                 {{ route.name }}
               </span>
             </a>
-          </li>
+            @if (!$last) {
+              <mat-divider [inset]="true"></mat-divider>
+            }
+          </mat-list-item>
         }
-      </ul>
+        <mat-divider></mat-divider>
+      </mat-list>
     </aside>
 
     <div class="col-sm-12 col-md-6">
@@ -46,7 +50,7 @@
         [source]="'./assets/resourses/imgs/' + src + '.png'"
         [alt]="name"
         imageClass="card-img-top image-75" />
-      <span class="card-title">{{ name }}</span>
+      <span class="card-title banner">{{ name }}</span>
       <app-notification-marker [notificationType]="notification" />
     </div>
   </div>

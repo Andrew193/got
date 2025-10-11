@@ -3,4 +3,5 @@ export const TIME = {
   tenMinutesMilliseconds: 600000,
   oneMinuteSeconds: 60,
   tenMinuteSeconds: 600,
+  msInDay: 24 * 60 * 60 * 1000,
 };

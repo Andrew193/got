@@ -7,9 +7,9 @@
     </ng-container>
   </div>
   <div class="d-flex ms-4 me-4">
-    <button class="btn btn-primary me-2" (click)="goToMainPage()">Back to Castle Black</button>
+    <button class="me-2 got-toggle" (click)="goToMainPage()">Back to Castle Black</button>
     @if (aiUnits.length && userUnits.length) {
-      <button class="btn btn-danger" (click)="openFight()">Fight</button>
+      <button class="got-toggle got-toggle-red" (click)="openFight()">Fight</button>
     }
   </div>
 

@@ -11,7 +11,7 @@ import { InitInterface } from '../../models/interfaces/init.interface';
 import { InitTaskObs } from '../../models/init.model';
 import { ConfigInterface } from '../../models/interfaces/config.interface';
 import { GetConfig } from '../../models/common.model';
-import { CurrencyService } from '../users/currency/currency.service';
+import { DepositService } from '../users/currency/currency.service';
 
 export enum NotificationType {
   daily_reward,
@@ -25,7 +25,7 @@ export enum NotificationType {
 export class NotificationsService implements InitInterface {
   private dailyRewardService = inject(DailyRewardService);
   private giftService = inject(GiftService);
-  private currencyService = inject(CurrencyService);
+  private depositService = inject(DepositService);
 
   private modalWindowService = inject(ModalWindowService);
 
@@ -43,7 +43,7 @@ export class NotificationsService implements InitInterface {
       const services: { api: ConfigInterface<GetConfig>; type: NotificationType }[] = [
         { api: this.dailyRewardService, type: NotificationType.daily_reward },
         { api: this.giftService, type: NotificationType.gift_store },
-        { api: this.currencyService, type: NotificationType.deposit },
+        { api: this.depositService, type: NotificationType.deposit },
       ];
 
       services.forEach(el => {
@@ -58,7 +58,7 @@ export class NotificationsService implements InitInterface {
           .subscribe();
       });
 
-      this.showPossibleActivities();
+      //this.showPossibleActivities();
 
       return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
     } catch (e) {

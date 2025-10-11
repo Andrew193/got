@@ -16,7 +16,9 @@
     [class]="_class"></div>
 } @else {
   @if (loading) {
-    <img src="/assets/loader.png" alt="loading" class="loader" />
+    <div class="d-flex justify-content-center align-items-center">
+      <mat-spinner class="loader"></mat-spinner>
+    </div>
   }
   <img
     [hidden]="loading"

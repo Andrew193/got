@@ -1,0 +1,51 @@
+@let _form = form();
+@let _copperMax = copperMax();
+@let _silverMax = silverMax();
+@let _goldMax = goldMax();
+@let _depositOptions = depositOptions();
+@let _uiErrorsNames = uiErrorsNames();
+
+<div class="flex-row store-row p-2">
+  <h4 class="w-100 text-center m-0">Deposit</h4>
+
+  <form [formGroup]="_form" class="w-100">
+    <div class="row m-0 g-2">
+      <span class="col-2 mb-0 deposit-label color-white">Duration:</span>
+      <div class="col-10">
+        <app-slider [controlName]="'days'" [options]="_depositOptions" />
+      </div>
+    </div>
+
+    <div class="row m-0 gap-2">
+      <div class="col p-0">
+        <app-number-input [max]="_copperMax" [label]="'Copper: '" [controlName]="'copper'">
+        </app-number-input>
+      </div>
+      <div class="col p-0">
+        <app-number-input [max]="_silverMax" [label]="'Silver: '" [controlName]="'silver'">
+        </app-number-input>
+      </div>
+      <div class="col p-0">
+        <app-number-input [max]="_goldMax" [label]="'Gold: '" [controlName]="'gold'">
+        </app-number-input>
+      </div>
+    </div>
+  </form>
+
+  @if (_form.valid) {
+    <section class="w-100">
+      <app-deposit-hint [renderRates]="true" [rates]="rates" [coins]="getCoins()" />
+      <button mat-fab extended class="mb-2 mt-2" (click)="depositCurrency.emit(true)">
+        <mat-icon>currency_exchange</mat-icon>
+        Deposit
+      </button>
+    </section>
+  } @else {
+    <app-form-errors-container
+      class="w-100 mt-2"
+      [form]="_form"
+      [uiErrorsNames]="_uiErrorsNames"></app-form-errors-container>
+  }
+
+  <ng-content />
+</div>

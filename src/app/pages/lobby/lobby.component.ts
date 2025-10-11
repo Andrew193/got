@@ -22,6 +22,8 @@ import { HighlightDirective } from '../../directives/highlight/highlight.directi
 import { NgTemplateOutlet } from '@angular/common';
 import { NumbersService, NumbersService2 } from '../../services/numbers/numbers.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { MatDivider, MatList, MatListItem } from '@angular/material/list';
+import { MatLine } from '@angular/material/core';
 
 export type Route = {
   name: string;
@@ -117,6 +119,10 @@ export class UserComponent implements AfterContentInit {
     ImageComponent,
     NgTemplateOutlet,
     RouterLink,
+    MatList,
+    MatListItem,
+    MatDivider,
+    MatLine,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',

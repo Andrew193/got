@@ -35,6 +35,12 @@
     box-shadow:
       0 0 0 2px rgba(255, 215, 0, 0.15),
       0 10px 20px rgba(0, 0, 0, 0.35);
+
+    &:has(.banner):hover {
+      p {
+        @include index.mixin-grad-color;
+      }
+    }
   }
 
   .flip-items-inner-container.claimed .flip-card {

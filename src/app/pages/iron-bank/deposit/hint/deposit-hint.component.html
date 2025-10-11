@@ -1,0 +1,64 @@
+@let vm =
+  {
+    coins: coins(),
+    boostedCoins: boostedCoins(),
+    hasDifference: hasDifference(),
+    convertToPercentage: convertToPercentage(),
+    renderRates: renderRates(),
+    rates: rates(),
+    hintClass: hintContainerClass(),
+    mode: differenceMode(),
+    modes: modes,
+  };
+
+@if (vm.hasDifference) {
+  <section class="row g-2">
+    <div class="col-lg-5 col-md-12">
+      <div class="hint-container p-2 d-flex justify-content-evenly" [ngClass]="vm.hintClass">
+        @for (reward of vm.coins; track reward.class) {
+          <app-reward-coin [coinConfig]="reward" />
+        }
+      </div>
+    </div>
+
+    <div class="col-lg-2 col-md-12 d-flex justify-content-center align-items-center">
+      @switch (vm.mode) {
+        @case (vm.modes.arrow) {
+          <button mat-fab aria-label="Equal" class="d-none d-lg-block equal" [ngClass]="vm.mode">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+          <button mat-fab aria-label="Equal" class="d-md-block d-lg-none equal" [ngClass]="vm.mode">
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+        }
+        @case (vm.modes.hourglass) {
+          <button mat-fab aria-label="Equal" class="equal" [ngClass]="vm.mode">
+            <mat-icon>{{ vm.mode }}</mat-icon>
+          </button>
+        }
+      }
+    </div>
+
+    <div class="col-lg-5 col-md-12">
+      <div class="hint-container p-2 d-flex justify-content-evenly" [ngClass]="vm.hintClass">
+        @for (reward of vm.boostedCoins ?? []; track reward.class) {
+          <app-reward-coin [coinConfig]="reward" />
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <div class="hint-container mt-2 p-2" [ngClass]="vm.hintClass">
+    <div class="d-flex justify-content-evenly align-items-center">
+      @for (reward of vm.coins; track reward.class) {
+        <app-reward-coin [coinConfig]="reward" [convertToPercentage]="vm.convertToPercentage">
+          <span ngProjectAs="description">
+            @if (vm.renderRates) {
+              ({{ vm.rates[reward.class] | percent }})
+            }
+          </span>
+        </app-reward-coin>
+      }
+    </div>
+  </div>
+}

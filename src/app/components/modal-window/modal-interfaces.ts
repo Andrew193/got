@@ -6,20 +6,21 @@ export interface HasFooterHost {
   footerHost: ViewContainerRef;
 }
 
-export interface ModalConfig {
+export interface ModalConfig<T = unknown> {
   headerClass: string;
   headerMessage: string;
   closeBtnLabel: string;
   config: {
     open: boolean;
-    callback: () => void;
+    callback?: () => void;
     strategy: number;
     modalRootClass?: string;
     component?: HasFooterHost;
+    data?: T;
   };
 }
 
-export interface ExtendedModalConfig extends ModalConfig {
+export interface ExtendedModalConfig<T = unknown> extends ModalConfig<T> {
   close: () => void;
 }
 
