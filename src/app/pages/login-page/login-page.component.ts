@@ -6,15 +6,24 @@ import { LocalStorageService } from '../../services/localStorage/local-storage.s
 import { USER_TOKEN } from '../../constants';
 import { UsersService } from '../../services/users/users.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { TextInputComponent } from '../../components/data-inputs/text-input/text-input.component';
+import { LoginFacadeService } from '../../services/facades/login/login.service';
+import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule, FormErrorsContainerComponent],
+  imports: [
+    ReactiveFormsModule,
+    FormErrorsContainerComponent,
+    TextInputComponent,
+    ModalWindowComponent,
+  ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent implements OnInit {
   nav = inject(NavigationService);
+  facade = inject(LoginFacadeService);
 
   form;
   createUser = false;
@@ -46,17 +55,25 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit() {
+    if (this.createUser) {
+      this.facade.openAdventureBegins(this.submitInnerFunction);
+    } else {
+      this.facade.openAdventureBegins(this.submitInnerFunction);
+    }
+  }
+
+  submitInnerFunction = () => {
     this.validationService.validateFormAndSubmit(
       this.form,
       this.usersService.login(this.form.value, this.processing.bind(this)),
       this.usersService.createUser(this.form.value, this.processing.bind(this)),
       !this.createUser,
     );
-  }
+  };
 
   ngOnInit(): void {
     if (this.usersService.isAuth()) {
-      this.nav.goToMainPage();
+      // this.nav.goToMainPage();
     }
   }
 }

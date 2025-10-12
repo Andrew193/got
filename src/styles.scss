@@ -213,7 +213,23 @@ html .mat-mdc-fab.mat-accent {
   );
 }
 
+mat-bottom-sheet-container {
+  border: index.$var-border-2-bronze;
+}
+
+.cdk-overlay-pane:has(mat-bottom-sheet-container) {
+  position: absolute !important;
+  top: 10%;
+  height: 80%;
+}
+
 :root {
+  @include mat.bottom-sheet-overrides(
+    (
+      container-background-color: index.$var-background-color-main,
+    )
+  );
+
   @include mat.progress-spinner-overrides(
     (
       active-indicator-color: index.$var-gold,

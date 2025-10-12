@@ -5,25 +5,11 @@
         <div class="text-center got-toggle" (click)="switchMode()">
           <span>{{ createUser ? 'Sign up' : 'Sign in' }}</span>
         </div>
-        <div class="form-group">
-          <label for="login">Login</label>
-          <input
-            type="text"
-            class="form-control"
-            id="login"
-            aria-describedby="login"
-            placeholder="Login"
-            formControlName="login" />
+        <div class="mt-2">
+          <app-text-input [label]="'Login'" [controlName]="'login'" />
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="text"
-            class="form-control"
-            id="password"
-            aria-describedby="password"
-            placeholder="Password"
-            formControlName="password" />
+        <div class="mt-2">
+          <app-text-input [label]="'Password'" [type]="'password'" [controlName]="'password'" />
         </div>
         <button
           type="submit"
@@ -38,3 +24,4 @@
     </form>
   </main>
 </div>
+<app-modal-window></app-modal-window>

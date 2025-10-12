@@ -90,3 +90,16 @@ a.fake-link {
 .color-white {
   color: white;
 }
+
+.text-justify {
+  text-align: justify;
+}
+
+.oath {
+  margin: 12px;
+  padding: 10px 12px;
+  border-left: 3px solid rgba(120, 160, 255, 0.35);
+  background: rgba(160, 190, 255, 0.06);
+  border-radius: 4px;
+  font-style: italic;
+}

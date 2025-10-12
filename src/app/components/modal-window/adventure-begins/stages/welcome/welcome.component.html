@@ -1,0 +1,53 @@
+<div class="welcome">
+  <header class="welcome__header color-white">
+    <div class="welcome__crest" aria-hidden="true">❄</div>
+    <div>
+      <h2>Welcome to the Watch</h2>
+      <p class="muted">
+        The North calls. The thin line on the Wall is held by those who swore an oath—and now you
+        are among them.
+      </p>
+    </div>
+  </header>
+
+  <mat-tab-group animationDuration="300ms" (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Introduction">
+      <div class="tab color-white p-2">
+        <h3>Why are you here?</h3>
+        <p>
+          In the north, there is eternal darkness and cold winds. The Night's Watch is the shield
+          that protects the realms of men. You join the ranks of those who stand on the Wall, patrol
+          abandoned fortresses, and love order more than warm hearths.
+        </p>
+      </div>
+    </mat-tab>
+    <mat-tab label="How it works">
+      <div class="tab color-white p-2">
+        <h3>Your first step</h3>
+        <p>
+          Immediately after this window, you'll choose your first hero—the leader of a small squad.
+          Each has their own specialization, skill tree, and starting equipment.
+        </p>
+      </div>
+    </mat-tab>
+    <mat-tab label="What's next?">
+      <div class="tab color-white p-2">
+        <h3>It's time to say the oath</h3>
+        <p class="oath">
+          "Night gathers, and my watch begins. It will not end until I die. I will take no wife, no
+          lands, no father to children. I will wear no crown, nor seek glory. I will live and die at
+          my post. I am a sword in the darkness, I am a watchman on the Wall, I am the fire that
+          drives away the cold, I am the light that brings dawn, I am the horn that wakes the
+          sleeping, I am the shield that guards the realm of men. I pledge my life and honor to the
+          Night's Watch this night, and all that will come."
+        </p>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <footer class="welcome__footer">
+    @if (showNextSceneButton) {
+      <button (click)="stopScene()" class="got-toggle">Next state</button>
+    }
+  </footer>
+</div>

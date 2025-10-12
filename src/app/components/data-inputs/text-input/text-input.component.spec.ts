@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NumberInputComponent } from './number-input.component';
+import { TextInputComponent } from './text-input.component';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,7 +10,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, NumberInputComponent],
+  imports: [ReactiveFormsModule, TextInputComponent],
   template: `
     <form [formGroup]="form">
       <app-number-input controlName="test" label="Test label" />

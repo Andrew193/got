@@ -1290,6 +1290,10 @@ export class HeroesService extends ContentService {
     };
   }
 
+  getInitialHeroes() {
+    return [this.getWhiteWolf(), this.getIceRiverHunter()];
+  }
+
   getContent(contentType = ContentTypes.USER_UNITS) {
     if (contentType === ContentTypes.USER_UNITS) {
       return this.getAllHeroes();

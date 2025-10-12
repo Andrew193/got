@@ -1,0 +1,39 @@
+<div class="inner-container">
+  <fieldset class="p-2 h-100" [disabled]="inProgress">
+    <div class="footer-cover">
+      <ng-template #footerHost></ng-template>
+    </div>
+
+    <div class="row justify-content-center m-0 p-2">
+      <div class="col-9">
+        <section class="position-relative p-2 d-flex">
+          <img
+            src="../../../../assets/resourses/imgs/heroes/alvar/UI_HeroFull_Alvar_1.png"
+            class="h-100 ms-4" />
+          <div class="ps-2">
+            <h4>Welcome to the North.</h4>
+
+            <p>
+              I see the storm hasn't spared you, but you've made it—and that's more than many can
+              say. There are no easy days here. Frost, wind, and darkness—these are your new
+              companions.
+            </p>
+
+            <p>
+              From this moment on, you are part of the Watch. Not heroes, not prisoners, and not
+              soldiers. Simply those who stand on the Wall so that others can sleep peacefully.
+              Rest, warm up, and get your gear from the quartermaster. Training begins tomorrow. In
+              the meantime… look at the Wall. It's higher than it looks from the shore.
+            </p>
+          </div>
+        </section>
+      </div>
+      <p class="p-2 m-2 color-white text-justify">
+        As a brother of the Night's Watch, you will be able to defend the kingdoms from external
+        threats. Here, you will also receive forgiveness for all your sins, and most importantly,
+        this is a wonderful opportunity for an adventure that will last a lifetime.
+      </p>
+      <button (click)="playSequences()" class="mt-2 got-toggle">Go to the Castle Black</button>
+    </div>
+  </fieldset>
+</div>

@@ -7,7 +7,7 @@ import { FormControl, FormGroupDirective } from '@angular/forms';
 })
 export class ViewProviderComponent {
   controlName = input.required<string>();
-  label = input<string>('');
+  label = input<string>('Label');
 
   private parent = inject(FormGroupDirective, { host: true });
 

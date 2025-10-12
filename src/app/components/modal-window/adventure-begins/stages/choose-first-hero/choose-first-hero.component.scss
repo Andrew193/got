@@ -1,0 +1,11 @@
+@use '../../../../../../assets/resourses/styles/index' as index;
+
+.inner-container {
+  padding: 16px 16px 12px;
+
+  @include index.mixin-got-btn;
+
+  .tip {
+    @include index.mixin-grad-color;
+  }
+}

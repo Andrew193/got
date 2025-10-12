@@ -1,0 +1,40 @@
+@let _selectedHero = getSelectedHero();
+
+<div class="inner-container">
+  <p class="color-white">
+    Everyone comes here with their own fears and hopes. But only those who know what they can do
+    best survive.
+  </p>
+  <p class="color-white oath">
+    Choose your place in the Night Watch. Right now, you can recruit one hero. Choose wisely. The
+    easiest choice isn't always the right one.
+  </p>
+
+  <div class="flex-wrap">
+    <app-heroes-select
+      [allHeroes]="allUnitsForSelect"
+      [isUser]="true"
+      [containerClass]="'border-radius-none border-end-0'"
+      [addUserUnit]="addUserUnit"></app-heroes-select>
+    @if (chosenUnits.length) {
+      <app-heroes-select-preview
+        [units]="chosenUnits"
+        [containerClass]="'border-radius-none border-end-0 color-white'"
+        [user]="true"></app-heroes-select-preview>
+
+      @if (_selectedHero) {
+        <div class="mt-2">
+          <app-stats
+            [selectedHero]="_selectedHero"
+            [statsContainerClass]="'color-white'"></app-stats>
+        </div>
+      }
+    }
+  </div>
+
+  @if (chosenUnits.length) {
+    <button (click)="stopScene()" class="got-toggle mt-2 w-100">I am Sure</button>
+  } @else {
+    <p class="tip mt-2">Your real adventure will begin right after you choose your first hero.</p>
+  }
+</div>
