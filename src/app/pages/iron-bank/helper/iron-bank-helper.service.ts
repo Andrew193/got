@@ -1,16 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NumbersService } from '../../../services/numbers/numbers.service';
-import { Currency } from '../../../services/users/users.interfaces';
-import { Cur, CurMeta, Quote } from '../../../models/iron-bank.model';
+import { Cur } from '../../../models/iron-bank.model';
 import { IronBankDepositHelperService } from './deposit-helper.service';
+import { IronBankExchangerHelperService } from './exchanger-helper.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IronBankHelperService {
   deposit = inject(IronBankDepositHelperService);
-  private numberServices = inject(NumbersService);
+  exchanger = inject(IronBankExchangerHelperService);
 
   readonly uiErrorsNames = {
     amount: 'Amount',
@@ -22,98 +20,8 @@ export class IronBankHelperService {
     to: 'To',
   };
 
-  private readonly META: Record<Cur, CurMeta> = {
-    COPPER: { valueInCopper: 1, decimals: 0, label: 'Copper' },
-    SILVER: { valueInCopper: 6000, decimals: 0, label: 'Silver' },
-    GOLD: { valueInCopper: 12000, decimals: 0, label: 'Gold' },
-  };
-  private readonly SPREAD = 0.99; // Interest
-
-  readonly currencies: Cur[] = ['COPPER', 'SILVER', 'GOLD'];
-
-  form = new FormGroup({
-    from: new FormControl('COPPER' as Cur, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    to: new FormControl('GOLD' as Cur, { nonNullable: true, validators: [Validators.required] }),
-    amount: new FormControl(0, {
-      nonNullable: true,
-      validators: [Validators.required, Validators.min(1)],
-    }),
-  });
-
-  rateLabel = '';
-  result = 0;
-
   constructor() {
-    this.form.valueChanges.subscribe(() => this.recalc());
-    this.recalc();
-  }
-
-  private getQuote(from: Cur, to: Cur): Quote {
-    if (from === to) {
-      return { from, to, midRate: 1, rate: 1, spreadPct: 0 };
-    }
-
-    const vFrom = this.META[from].valueInCopper;
-    const vTo = this.META[to].valueInCopper;
-
-    const midRate = vFrom / vTo;
-    const rate = midRate * (1 - this.SPREAD);
-
-    return { from, to, midRate, rate, spreadPct: this.SPREAD };
-  }
-
-  private recalc(): void {
-    const { from, to, amount } = this.form.value as {
-      from: Cur;
-      to: Cur;
-      amount: number;
-    };
-
-    if (!from || !to || !amount || amount <= 0) {
-      this.result = 0;
-      this.rateLabel = '';
-
-      return;
-    }
-
-    const q = this.getQuote(from, to);
-    const rawOut = amount * q.rate;
-
-    this.result = this.numberServices.roundDown(rawOut, this.META[to].decimals);
-
-    const midTxt = q.midRate.toFixed(4);
-    const rateTxt = q.rate.toFixed(4);
-    const spreadTxt = (q.spreadPct * 100).toFixed(2);
-
-    this.rateLabel = `1 ${this.META[from].label} = ${rateTxt} ${this.META[to].label} (mid ${midTxt}, spread ${spreadTxt}%)`;
-  }
-
-  allowedToOptions(from: Cur | null): Cur[] {
-    return from ? this.currencies.filter(c => c !== from) : [];
-  }
-
-  getCurrencyForExchange(currentCurrency: Currency, newCurrency: number) {
-    const amount = this.form.value.amount || 0;
-    const from = this.form.value.from;
-    const to = this.form.value.to;
-
-    this.form.reset();
-
-    return {
-      copper:
-        currentCurrency.copper -
-        (from === 'COPPER' ? amount : 0) +
-        (to === 'COPPER' ? newCurrency : 0),
-      silver:
-        currentCurrency.silver -
-        (from === 'SILVER' ? amount : 0) +
-        (to === 'SILVER' ? newCurrency : 0),
-      gold:
-        currentCurrency.gold - (from === 'GOLD' ? amount : 0) + (to === 'GOLD' ? newCurrency : 0),
-    };
+    this.exchanger.init();
   }
 
   depositOptions() {
@@ -121,6 +29,22 @@ export class IronBankHelperService {
   }
 
   depositForm() {
-    return this.deposit.depositForm;
+    return this.deposit.form;
   }
+
+  exchangerForm() {
+    return this.exchanger.form;
+  }
+
+  exchangerResult() {
+    return this.exchanger.result;
+  }
+
+  exchangerRateLabel() {
+    return this.exchanger.rateLabel;
+  }
+
+  exchangerAllowedToOptions = (from: Cur | null) => {
+    return this.exchanger.allowedToOptions(from);
+  };
 }

@@ -1,0 +1,72 @@
+@let _form = form();
+@let _coins = coins();
+@let _currencies = currencies();
+@let _rateLabel = rateLabel();
+@let _result = result();
+@let _amountMax = amountMax();
+@let _allowedToOptions = allowedToOptions();
+@let _uiErrorsNames = uiErrorsNames();
+
+<div class="flex-row store-row p-2">
+  <h4 class="w-100 text-center mb-0">Exchanger</h4>
+
+  <div class="no-text-highlight w-100 mt-2 cursor-unset">
+    <p class="m-0 color-white">You have:</p>
+    <div class="ps-2">
+      @for (reward of _coins; track reward.class) {
+        <app-reward-coin [coinConfig]="reward"></app-reward-coin>
+      }
+    </div>
+  </div>
+
+  <form [formGroup]="_form" class="row gap-4 m-0 p-0 w-100">
+    <div class="col p-0">
+      <mat-form-field class="w-100">
+        <mat-label>From</mat-label>
+        <mat-select formControlName="from">
+          @for (c of _currencies; track c) {
+            <mat-option [value]="c">{{ c }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col p-0">
+      <mat-form-field class="w-100">
+        <mat-label>To</mat-label>
+        <mat-select formControlName="to">
+          @for (c of _allowedToOptions(_form.controls.from.value); track c) {
+            <mat-option [value]="c">{{ c }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col p-0">
+      <app-number-input [max]="_amountMax" [label]="'Amount (From) '" [controlName]="'amount'">
+      </app-number-input>
+    </div>
+
+    <div class="col p-0">
+      <div class="alert alert-primary w-100">
+        You get: <b>{{ _result | number }}</b>
+      </div>
+    </div>
+  </form>
+
+  @if (_rateLabel) {
+    <p class="form-text">{{ _rateLabel }}</p>
+  }
+
+  @if (_form.valid && _result > 0) {
+    <button mat-fab extended class="mb-2" (click)="exchangeCurrency.emit(_result)">
+      <mat-icon>currency_exchange</mat-icon>
+      Exchange
+    </button>
+  } @else {
+    <app-form-errors-container
+      class="w-100"
+      [form]="_form"
+      [uiErrorsNames]="_uiErrorsNames"></app-form-errors-container>
+  }
+</div>

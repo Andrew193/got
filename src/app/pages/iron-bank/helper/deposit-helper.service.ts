@@ -15,7 +15,7 @@ export class IronBankDepositHelperService {
   currencyHelperService = inject(CurrencyHelperService);
   private validation = inject(ValidationService);
 
-  depositForm = new FormGroup<DepositForm>(
+  form = new FormGroup<DepositForm>(
     {
       days: new FormControl(0, {
         nonNullable: true,
@@ -63,22 +63,16 @@ export class IronBankDepositHelperService {
 
   getRates(days = 0): Currency {
     return {
-      [CURRENCY_NAMES.copper]: this.getRate(
-        CURRENCY_NAMES.copper,
-        this.depositForm.value.days || days,
-      ),
-      [CURRENCY_NAMES.silver]: this.getRate(
-        CURRENCY_NAMES.silver,
-        this.depositForm.value.days || days,
-      ),
-      [CURRENCY_NAMES.gold]: this.getRate(CURRENCY_NAMES.gold, this.depositForm.value.days || days),
+      [CURRENCY_NAMES.copper]: this.getRate(CURRENCY_NAMES.copper, this.form.value.days || days),
+      [CURRENCY_NAMES.silver]: this.getRate(CURRENCY_NAMES.silver, this.form.value.days || days),
+      [CURRENCY_NAMES.gold]: this.getRate(CURRENCY_NAMES.gold, this.form.value.days || days),
     };
   }
 
   getDepositConfig(currency?: Currency, days?: number): DepositConfig {
     return {
-      currency: this.currencyHelperService.getSaveCurrency(currency || this.depositForm.value),
-      days: days || this.depositOptions[this.depositForm.value.days || 0],
+      currency: this.currencyHelperService.getSaveCurrency(currency || this.form.value),
+      days: days || this.depositOptions[this.form.value.days || 0],
     };
   }
 

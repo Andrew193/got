@@ -1,41 +1,29 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { IronBankHelperService } from './helper/iron-bank-helper.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/input';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/autocomplete';
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { UsersService } from '../../services/users/users.service';
 import { User } from '../../services/users/users.interfaces';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RewardCoinComponent } from '../../components/views/reward-coin/reward-coin.component';
-import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DepositComponent } from './deposit/deposit.component';
-import { Cur } from '../../models/iron-bank.model';
-import { NumberInputComponent } from '../../components/data-inputs/number-input/number-input.component';
+import { AllowedToOptions, Cur } from '../../models/iron-bank.model';
 import { CurrencyHelperService } from '../../services/users/currency/helper/currency-helper.service';
 import { DepositFacadeService } from '../../services/facades/deposit/deposit.service';
 import { finalize } from 'rxjs';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { ExchangerComponent } from './exchanger/exchanger.component';
 
 @Component({
   selector: 'app-iron-bank',
   imports: [
     ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption,
-    DecimalPipe,
-    RewardCoinComponent,
-    FormErrorsContainerComponent,
     MatButtonModule,
     MatIconModule,
     DepositComponent,
     AsyncPipe,
-    NumberInputComponent,
+    ExchangerComponent,
   ],
   templateUrl: './iron-bank.component.html',
   styleUrl: './iron-bank.component.scss',
@@ -52,6 +40,12 @@ export class IronBankComponent implements OnInit {
   currencyHelperService = inject(CurrencyHelperService);
 
   depositForm = this.helper.depositForm();
+  exchangerForm = this.helper.exchangerForm();
+
+  rateLabel = this.helper.exchangerRateLabel();
+  result = this.helper.exchangerResult();
+  exchangerAllowedToOptions: AllowedToOptions = this.helper.exchangerAllowedToOptions;
+  currencies = this.helper.exchanger.currencies;
 
   ngOnInit() {
     this.userService.$user.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(_ => {
@@ -64,12 +58,12 @@ export class IronBankComponent implements OnInit {
   }
 
   getMax(user: User, key: Lowercase<Cur>) {
-    return user.currency[key];
+    return user ? user.currency[key] : 0;
   }
 
   exchangeCurrency(newCurrency: number) {
     this.userService.updateCurrency(
-      this.helper.getCurrencyForExchange(this.user.currency, newCurrency),
+      this.helper.exchanger.getCurrencyForExchange(this.user.currency, newCurrency),
       { hardSet: true },
     );
   }
@@ -101,7 +95,7 @@ export class IronBankComponent implements OnInit {
   }
 
   get key() {
-    return (this.helper.form.value.from?.toLowerCase() || 'copper') as Lowercase<Cur>;
+    return (this.exchangerForm.value.from?.toLowerCase() || 'copper') as Lowercase<Cur>;
   }
 
   goToMainPage() {

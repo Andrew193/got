@@ -6,16 +6,6 @@
   @include index.mixin-got-btn;
   @include index.anim-border-glow(deposit-notificator);
 
-  p {
-    color: white;
-    font-weight: bold;
-  }
-
-  h4 {
-    @include index.mixin-grad-color;
-    font-size: 20px;
-  }
-
   aside {
     @include index.anim-glow-pulse-border();
   }

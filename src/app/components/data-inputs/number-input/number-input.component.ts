@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, OnInit } from '@angular/core';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import {
   ControlContainer,
   FormGroupDirective,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ViewProviderComponent } from '../../abstract/abstract-control/view-provider/view-provider.component';
@@ -16,20 +17,25 @@ import { ViewProviderComponent } from '../../abstract/abstract-control/view-prov
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './number-input.component.scss',
 })
-export class NumberInputComponent extends ViewProviderComponent {
+export class NumberInputComponent extends ViewProviderComponent implements OnInit {
   max = input<number>(999999);
+  private baseValidators: ValidatorFn[] = [];
 
   constructor() {
     super();
+
     effect(() => {
       const m = this.max();
+      const maxValidator = Validators.max(m);
 
-      const existing = this.control.validator ? [this.control.validator] : [];
-      const composed = Validators.compose([...existing, Validators.max(m)]);
-
-      this.control.setValidators(composed);
-
+      this.control.setValidators([...this.baseValidators, maxValidator]);
       this.control.updateValueAndValidity({ emitEvent: false });
     });
+  }
+
+  ngOnInit() {
+    const initial = this.control.validator;
+
+    this.baseValidators = initial ? [initial] : [];
   }
 }
