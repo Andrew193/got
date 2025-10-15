@@ -29,6 +29,7 @@ export class ModalWindowComponent implements OnInit {
     this.modalWindowService.modalConfig$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(newConfig => {
+        console.log(newConfig);
         if (newConfig.config.open) {
           this.strategy = ModalStrategies[newConfig.config.strategy];
           this.modalConfig = newConfig;

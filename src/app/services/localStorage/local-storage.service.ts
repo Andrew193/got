@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { USER_TOKEN } from '../../constants';
 
 function isJsonString(jsonString: string) {
   try {
@@ -19,7 +20,7 @@ export class BasicLocalStorage {
 
   prefix = 'got_';
   static names = {
-    user: 'user',
+    [USER_TOKEN]: USER_TOKEN,
     localOnlineBuffer: 'localOnlineBuffer',
   } as const;
 }

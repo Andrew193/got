@@ -29,6 +29,7 @@ export class LoginPageComponent implements OnInit {
   nav = inject(NavigationService);
   facade = inject(LoginFacadeService);
   private snackBar = inject(MatSnackBar);
+  showModalComponent = false;
 
   form;
   createUser = false;
@@ -50,6 +51,7 @@ export class LoginPageComponent implements OnInit {
 
   switchMode() {
     this.createUser = !this.createUser;
+    this.showModalComponent = true;
   }
 
   processing<T>(data: T) {
@@ -57,16 +59,22 @@ export class LoginPageComponent implements OnInit {
       this.form.enable();
       this.snackBar.open(data.message, '', SNACKBAR_CONFIG);
     } else {
-      this.localStorageService.setItem(USER_TOKEN, data);
+      this.showModalComponent = false;
 
-      AppInitializerFunction(this.steps).finally(() => {
-        this.form.enable();
-        this.nav.goToMainPage();
-      });
+      setTimeout(() => {
+        this.localStorageService.setItem(USER_TOKEN, data);
+
+        AppInitializerFunction(this.steps).finally(() => {
+          this.form.enable();
+          this.nav.goToMainPage();
+        });
+      }, 0);
     }
   }
 
   submit() {
+    this.showModalComponent = true;
+
     if (this.createUser) {
       this.facade.openAdventureBegins(this.submitInnerFunction);
     } else {

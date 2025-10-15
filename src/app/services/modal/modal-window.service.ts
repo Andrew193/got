@@ -6,6 +6,7 @@ import { ModalConfig, ModalStrategiesTypes } from '../../components/modal-window
   providedIn: 'root',
 })
 export class ModalWindowService {
+  static frozen = false;
   init: ModalConfig = {
     headerMessage: '',
     headerClass: '',
@@ -20,7 +21,9 @@ export class ModalWindowService {
   modalConfig$ = this._modalConfig.asObservable();
 
   openModal(modalConfig: ModalConfig) {
-    this._modalConfig.next(modalConfig);
+    if (!ModalWindowService.frozen) {
+      this._modalConfig.next(modalConfig);
+    }
   }
 
   dropModal() {
