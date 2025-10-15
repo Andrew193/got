@@ -1,11 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { SceneComponent } from '../../../../../models/interfaces/scenes/scene.interface';
+import {
+  SceneComponent,
+  SceneContext,
+} from '../../../../../models/interfaces/scenes/scene.interface';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { BasicHeroSelectComponent } from '../../../../abstract/basic-hero-select/basic-hero-select.component';
 import { HeroesSelectComponent } from '../../../../heroes-select/heroes-select.component';
 import { HeroesSelectPreviewComponent } from '../../../../heroes-select-preview/heroes-select-preview.component';
 import { StatsComponent } from '../../../../views/stats/stats.component';
 import { Unit } from '../../../../../models/unit.model';
+import { SceneNames } from '../../../../../constants';
 
 @Component({
   selector: 'app-choose-first-hero',
@@ -14,7 +18,10 @@ import { Unit } from '../../../../../models/unit.model';
   styleUrl: './choose-first-hero.component.scss',
 })
 export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implements SceneComponent {
-  private _bottomSheetRef = inject<MatBottomSheetRef<ChooseFirstHeroComponent>>(MatBottomSheetRef);
+  bottomSheetRef =
+    inject<MatBottomSheetRef<ChooseFirstHeroComponent, SceneContext<SceneNames.firstHero>>>(
+      MatBottomSheetRef,
+    );
 
   override maxHeroes = 1;
 
@@ -23,13 +30,10 @@ export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implement
     this.init(this.heroesService.getInitialHeroes());
   }
 
-  runScene() {
-    console.log('start');
-  }
+  runScene() {}
 
   stopScene() {
-    console.log('stop');
-    this._bottomSheetRef.dismiss();
+    this.bottomSheetRef.dismiss({ name: this.chosenUnits[0].name, repeat: false });
   }
 
   getSelectedHero() {

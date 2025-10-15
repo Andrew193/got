@@ -19,10 +19,10 @@ export abstract class ApiService<T> {
   protected http = inject(HttpClient);
   protected localStorageService = inject(LocalStorageService);
 
-  protected userId = '0';
+  protected _userId = '0';
 
   constructor() {
-    this.userId = this.getUserId();
+    this._userId = this.getUserId();
   }
 
   protected putPostCover<R extends boolean, E extends IdEntity>(
@@ -70,5 +70,15 @@ export abstract class ApiService<T> {
     const user = this.localStorageService.getItem(USER_TOKEN) as User;
 
     return user.id;
+  }
+
+  get userId() {
+    if (this._userId) {
+      return this._userId;
+    }
+
+    this._userId = this.getUserId();
+
+    return this._userId;
   }
 }

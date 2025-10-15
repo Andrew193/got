@@ -1,0 +1,29 @@
+<div class="p-2 color-white">
+  <div class="final-container mb-2">
+    <app-display-reward
+      [containerClass]="'m-0 bc-transparent cards-container justify-content-evenly'"
+      [imageClass]="'image-30'"
+      (allRevealed)="showBtn($event)"
+      [showTotalBar]="false"
+      [rewards]="rewards"></app-display-reward>
+  </div>
+  <main>
+    <p class="banner p-2">
+      The wind died down. Snow slowly settles on the shattered sword frozen in your hand. All around
+      are the traces of battle, and the occasional torchlight drifting in the darkness.
+    </p>
+    <p class="banner p-2">
+      The Lord Commander stands opposite, unsmiling. His gaze is brief, but respectful.
+    </p>
+    <p class="oath p-2">
+      "That's it. You've proven you won't run away. Today, you are one of us. Remember: the Watch
+      brings no glory. Only duty and a cold that will never let go. Your name is inscribed in the
+      books of the Wall. From now on, you have sworn an oath—and your true story begins."
+    </p>
+
+    @if (showNextSceneButton) {
+      <p>This is your reward for winning your first battle as a brother of the Night's Watch.</p>
+      <button (click)="stopScene()" class="got-toggle w-100">Go to the Castle Black</button>
+    }
+  </main>
+</div>

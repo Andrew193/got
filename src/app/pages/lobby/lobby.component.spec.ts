@@ -8,6 +8,9 @@ import { DailyRewardComponent } from '../../components/daily-reward/daily-reward
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
 import { DailyReward } from '../../models/reward-based.model';
 import { UsersService } from '../../services/users/users.service';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatListHarness } from '@angular/material/list/testing';
 
 describe('LobbyComponent', () => {
   let component: LobbyComponent;
@@ -16,6 +19,8 @@ describe('LobbyComponent', () => {
   let notificationsServiceSpy: jasmine.SpyObj<NotificationsService>;
   let dailyRewardServiceSpy: jasmine.SpyObj<DailyRewardService>;
   let usersServiceSpy: jasmine.SpyObj<UsersService>;
+  let loader: HarnessLoader;
+
   const dailyReward: DailyReward = {
     day: 1,
     lastLogin: '',
@@ -69,6 +74,9 @@ describe('LobbyComponent', () => {
 
     fixture = TestBed.createComponent(LobbyComponent);
     component = fixture.componentInstance;
+
+    loader = TestbedHarnessEnvironment.loader(fixture);
+
     fixture.detectChanges();
   });
 
@@ -76,16 +84,16 @@ describe('LobbyComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('LobbyComponent should render basic layout', () => {
-    const linksGroup = fixture.debugElement.query(By.css('.list-group'))
-      .nativeElement as HTMLUListElement;
+  it('LobbyComponent should render basic layout', async () => {
+    const matList = await loader.getHarness(MatListHarness);
+    const listElements = await matList.getItems();
+
     const storesContainer = fixture.debugElement.query(By.css('.store-row'))
       .nativeElement as HTMLDivElement;
 
-    expect(linksGroup.children.length).toBe(component.pageRoutes.length);
+    expect(listElements.length).toBe(component.pageRoutes.length);
     expect(storesContainer.children.length).toBe(component.activities.length);
 
-    //Check labels
     function getLabels(
       collection: HTMLCollection,
       selector: (el: Element) => NodeListOf<HTMLElement>,
@@ -96,9 +104,7 @@ describe('LobbyComponent', () => {
         .flat();
     }
 
-    const linksLabels = getLabels(linksGroup.children, (el: Element) =>
-      el.querySelectorAll('span'),
-    );
+    const linksLabels = await Promise.all(listElements.map(el => el.getFullText()));
     const storesLabels = getLabels(storesContainer.children, (el: Element) =>
       el.querySelectorAll('.card-title'),
     );

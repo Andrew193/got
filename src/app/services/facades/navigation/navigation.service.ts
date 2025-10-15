@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { frontRoutes } from '../../../constants';
+import { frontRoutes as FrontRoutes } from '../../../constants';
 import { Unit } from '../../../models/unit.model';
 import { Router } from '@angular/router';
 
@@ -10,45 +10,45 @@ export class NavigationService {
   private router = inject(Router);
 
   goToMainPage() {
-    this.router.navigate([frontRoutes.base]);
+    this.router.navigate([FrontRoutes.base]);
   }
 
   goToLogin() {
-    this.router.navigate([frontRoutes.login]);
+    this.router.navigate([FrontRoutes.login]);
   }
 
   goToTaverna() {
-    this.router.navigate([frontRoutes.taverna]);
+    this.router.navigate([FrontRoutes.taverna]);
   }
 
   goToTraining() {
-    this.router.navigate([frontRoutes.training]);
+    this.router.navigate([FrontRoutes.training]);
   }
 
   goToGiftLand() {
-    this.router.navigateByUrl(frontRoutes.giftStore);
+    this.router.navigateByUrl(FrontRoutes.giftStore);
   }
 
   goToIronBank() {
-    this.router.navigateByUrl(frontRoutes.ironBank);
+    this.router.navigateByUrl(FrontRoutes.ironBank);
   }
 
   goToSummonTree() {
-    this.router.navigateByUrl(frontRoutes.summonTree);
+    this.router.navigateByUrl(FrontRoutes.summonTree);
   }
 
   goToDailyBoss() {
-    this.router.navigateByUrl(frontRoutes.dailyBoss);
+    this.router.navigateByUrl(FrontRoutes.dailyBoss);
   }
 
   goToTrainingBattle(state: { userUnits: Unit[]; aiUnits: Unit[] }) {
-    this.router.navigate([frontRoutes.training, frontRoutes.trainingBattle], {
+    this.router.navigate([FrontRoutes.training, FrontRoutes.trainingBattle], {
       state: state,
     });
   }
 
   goToDailyBossBattle(level: number, units: string[]) {
-    this.router.navigate([frontRoutes.dailyBoss, frontRoutes.dailyBossBattle, level], {
+    this.router.navigate([FrontRoutes.dailyBoss, FrontRoutes.dailyBossBattle, level], {
       queryParams: {
         units: units,
       },

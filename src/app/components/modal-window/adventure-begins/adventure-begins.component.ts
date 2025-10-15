@@ -1,13 +1,13 @@
 import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { HasFooterHost } from '../modal-interfaces';
-import { AdventureScenesHelperService } from './helpers/scenes-helper.service';
 import { SceneRunnerService } from '../../../services/facades/scene-runner/scene-runner.service';
 import { ScenesRunnerHost } from '../../../models/interfaces/scenes/scene.interface';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
+import { ScenariosHelperService } from './helpers/scenarios-helper.service';
 
-type Callback = {
+export type Callback = {
   callback: () => void;
 };
 
@@ -23,7 +23,7 @@ export class AdventureBeginsComponent implements HasFooterHost, ScenesRunnerHost
 
   inProgress = false;
 
-  scenesHelper = inject(AdventureScenesHelperService);
+  scenesHelper = inject(ScenariosHelperService);
   runner = inject(SceneRunnerService);
 
   @ViewChild('footerHost', { read: ViewContainerRef, static: true })
@@ -32,13 +32,12 @@ export class AdventureBeginsComponent implements HasFooterHost, ScenesRunnerHost
   playSequences() {
     this.inProgress = true;
 
-    this.runner.playSequence(this.scenesHelper.scenes).subscribe({
-      complete: () => {
-        this.inProgress = false;
-        this.modalWindowService.dropModal();
-        this.dialogRef.close();
-        this._data.callback();
-      },
+    this.runner.init(this.scenesHelper.adventureScenario).subscribe(result => {
+      console.log(result);
+      this.inProgress = false;
+      this.modalWindowService.dropModal();
+      this.dialogRef.close();
+      this._data.callback();
     });
   }
 }

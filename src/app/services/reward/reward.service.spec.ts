@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { Reward, RewardService } from './reward.service';
 import { HeroesService } from '../heroes/heroes.service';
-import { Unit } from '../../models/unit.model';
+import { HeroesNamesCodes, Unit } from '../../models/unit.model';
 import { Currency } from '../users/users.interfaces';
 import { REWARD } from '../../constants';
+import { CurrencyHelperService } from '../users/currency/helper/currency-helper.service';
 
 describe('RewardService', () => {
   let rewardService: RewardService;
   let heroServiceSpy: jasmine.SpyObj<HeroesService>;
+  let currencyHelperService: CurrencyHelperService;
 
   beforeEach(() => {
     const units: Unit[] = [
@@ -37,7 +39,7 @@ describe('RewardService', () => {
         description: 'Test unit description',
         health: 0,
         maxHealth: 0,
-        name: 'Test unit',
+        name: HeroesNamesCodes.LadyOfDragonStone,
         attack: 0,
         defence: 0,
         rage: 0,
@@ -52,10 +54,15 @@ describe('RewardService', () => {
     heroServiceSpy = jasmine.createSpyObj('HeroesService', ['getAllHeroes']);
 
     TestBed.configureTestingModule({
-      providers: [RewardService, { provide: HeroesService, useValue: heroServiceSpy }],
+      providers: [
+        RewardService,
+        { provide: HeroesService, useValue: heroServiceSpy },
+        CurrencyHelperService,
+      ],
     });
 
     rewardService = TestBed.inject(RewardService);
+    currencyHelperService = TestBed.inject(CurrencyHelperService);
 
     function getAllHeroes(returnNames?: false): Unit[];
     function getAllHeroes(returnNames?: true): string[];
@@ -96,7 +103,7 @@ describe('RewardService', () => {
   it('RewardService should convert currency to coin', () => {
     const currency: Currency = { copper: 100, gold: 10, silver: 1 };
 
-    const coins = rewardService.convertUserCurrencyToCoin(currency);
+    const coins = currencyHelperService.convertCurrencyToCoin(currency);
 
     expect(coins.length).toBe(3);
 

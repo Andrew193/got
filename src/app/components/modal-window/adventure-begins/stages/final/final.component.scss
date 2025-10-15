@@ -1,0 +1,26 @@
+@use '../../../../../../assets/resourses/styles/index' as index;
+
+.final-container {
+  @include index.mixin-page-container;
+  background: url('../../../../../../assets/resourses/imgs/background/summon_tree.jpg') no-repeat
+    center;
+  background-size: contain;
+  height: 380px;
+}
+
+@include index.mixin-got-btn;
+
+app-display-reward {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  width: calc(100% - 22px);
+  left: 11px;
+}
+
+::ng-deep {
+  .cards-container > div {
+    max-width: 100px;
+    max-height: 70px;
+  }
+}

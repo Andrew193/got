@@ -1,17 +1,29 @@
 @let _cards = cards();
+@let _containerClass = containerClass();
+@let _imageClass = imageClass();
+
+@let _showTotalBar = showTotalBar();
+@let _showTotalReward = showTotalReward();
+
+@let _showOpenButton = showOpenButton();
 
 @if (_cards.length) {
-  <div class="summon-container flip-items-container row gap-2 m-2 color-white">
+  <div
+    class="summon-container flip-items-container row gap-2 color-white"
+    [class]="_containerClass">
     @for (card of _cards; track $index) {
       @if (card) {
         <div class="flip-items-inner-container col" [class.claimed]="card.flipped">
           <div class="flip-card">
-            <div class="card-front">?</div>
+            <div class="card-front" (click)="revealOne($index)">?</div>
             <div class="card-back">
-              <app-image [alt]="card.name" [source]="card.src" [imageClass]="'card-image'" />
-              <span [class]="card.name.toLowerCase()" class="ignore">{{
-                card.amount | number
-              }}</span>
+              <app-image
+                [alt]="card.name"
+                [source]="card.src"
+                [imageClass]="'card-image ' + _imageClass" />
+              <span [class]="card.name.toLowerCase()" class="ignore">
+                {{ card.amount | number }}
+              </span>
             </div>
           </div>
         </div>
@@ -21,9 +33,9 @@
         </div>
       }
     }
-    @if (showOpenButton()) {
+    @if (_showOpenButton) {
       <button (click)="revealAll()" class="got-toggle">Open cards</button>
-    } @else if (showTotalReward()) {
+    } @else if (_showTotalBar && _showTotalReward) {
       <div style="grid-template-columns: 1fr 3fr" class="d-grid p-0 gap-2">
         <p class="m-0 total-reward-title">Total reward:</p>
         <div class="row ps-2 pe-2 m-0 gap-2">

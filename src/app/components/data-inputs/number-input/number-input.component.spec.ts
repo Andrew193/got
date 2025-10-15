@@ -21,7 +21,7 @@ class HostComponent {
   form = new FormGroup({ test: new FormControl(0, { nonNullable: true }) });
 }
 
-describe('TextInputComponent', () => {
+describe('NumberInputComponent', () => {
   let hostComponent: HostComponent;
   let loader: HarnessLoader;
   let fixture: ComponentFixture<HostComponent>;
@@ -39,11 +39,11 @@ describe('TextInputComponent', () => {
     fixture.detectChanges();
   });
 
-  it('TextInputComponent should de created', () => {
+  it('NumberInputComponent should de created', () => {
     expect(hostComponent).toBeTruthy();
   });
 
-  it('TextInputComponent should get correct initial state', async () => {
+  it('NumberInputComponent should get correct initial state', async () => {
     const formFieldHarness = await loader.getHarness(MatFormFieldHarness);
     const inputHarness = await loader.getHarness(MatInputHarness);
 
@@ -54,7 +54,7 @@ describe('TextInputComponent', () => {
     expect(await inputHarness.getType()).toBe('number');
   });
 
-  it('TextInputComponent should update value', async () => {
+  it('NumberInputComponent should update value', async () => {
     const input = await loader.getHarness(MatInputHarness);
 
     await input.setValue('New');

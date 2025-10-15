@@ -3,12 +3,15 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ValidationService } from '../../services/validation/validation.service';
 import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
-import { USER_TOKEN } from '../../constants';
+import { SNACKBAR_CONFIG, USER_TOKEN } from '../../constants';
 import { UsersService } from '../../services/users/users.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { TextInputComponent } from '../../components/data-inputs/text-input/text-input.component';
 import { LoginFacadeService } from '../../services/facades/login/login.service';
 import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
+import { AppInitializerFunction } from '../../app.config';
+import { APP_INIT_STEPS } from '../../injection-tokens';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-page',
@@ -22,8 +25,10 @@ import { ModalWindowComponent } from '../../components/modal-window/modal-window
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent implements OnInit {
+  steps = inject(APP_INIT_STEPS);
   nav = inject(NavigationService);
   facade = inject(LoginFacadeService);
+  private snackBar = inject(MatSnackBar);
 
   form;
   createUser = false;
@@ -47,11 +52,18 @@ export class LoginPageComponent implements OnInit {
     this.createUser = !this.createUser;
   }
 
-  processing<T>(user: T) {
-    debugger;
-    this.form.enable();
-    this.localStorageService.setItem(USER_TOKEN, user);
-    this.nav.goToMainPage();
+  processing<T>(data: T) {
+    if (data instanceof Error) {
+      this.form.enable();
+      this.snackBar.open(data.message, '', SNACKBAR_CONFIG);
+    } else {
+      this.localStorageService.setItem(USER_TOKEN, data);
+
+      AppInitializerFunction(this.steps).finally(() => {
+        this.form.enable();
+        this.nav.goToMainPage();
+      });
+    }
   }
 
   submit() {
@@ -73,7 +85,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.usersService.isAuth()) {
-      // this.nav.goToMainPage();
+      this.nav.goToMainPage();
     }
   }
 }

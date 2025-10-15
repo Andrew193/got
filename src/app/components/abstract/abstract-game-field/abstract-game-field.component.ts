@@ -7,6 +7,7 @@ import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
 import {
   GameFieldVars,
+  GameResultsRedirectType,
   Position,
   Tile,
   TilesToHighlight,
@@ -19,8 +20,6 @@ export interface GameField {
   gameConfig: any[][];
   possibleMoves: Position[];
 }
-
-type TopBarUnitConfig = Pick<TileUnit, 'inBattle' | 'imgSrc' | 'health' | 'name' | 'user'>;
 
 @Component({
   selector: 'app-abstract-game-field',
@@ -36,11 +35,9 @@ export abstract class AbstractGameFieldComponent
   @Input() userUnits: TileUnit[] = [];
   @Input() aiUnits: TileUnit[] = [];
   @Input() battleMode = true;
-  @Input() gameResultsRedirect: (realAiUnits: TileUnit[]) => void = () => {};
+  @Input() gameResultsRedirect: GameResultsRedirectType = () => {};
 
   autoFight = false;
-  usersTopBarConfig: { units: TopBarUnitConfig[] } = { units: [] };
-  aiTopBarConfig: { units: TopBarUnitConfig[] } = { units: [] };
 
   log: LogRecord[] = [];
   turnUser = true;
@@ -79,29 +76,10 @@ export abstract class AbstractGameFieldComponent
     }
 
     this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
-    //Init top bar
-    this.createTopBar();
   }
 
   shouldRenderAction(hero: TileUnit, type: 'canMove' | 'canAttack') {
-    return this.battleMode && (hero.inBattle || hero.inBattle === undefined)
-      ? this.battleMode
-      : hero.user
-        ? hero[type] && hero.health
-        : hero.user;
-  }
-
-  createTopBar() {
-    const convert = (el: TileUnit) => ({
-      imgSrc: el.imgSrc,
-      inBattle: el.inBattle,
-      name: el.name,
-      health: el.health,
-      user: el.user,
-    });
-
-    this.usersTopBarConfig = { units: this.userUnits.map(convert) };
-    this.aiTopBarConfig = { units: this.aiUnits.map(convert) };
+    return this.battleMode ? this.battleMode : hero.user ? hero[type] && hero.health : hero.user;
   }
 
   showPossibleMoves(location: Position, radius: number, diagCheck = false) {
@@ -150,18 +128,7 @@ export abstract class AbstractGameFieldComponent
       for (const enemyInRange of enemiesInRange) {
         const enemyIndex = this.unitS.findUnitIndex(enemiesArray, enemyInRange);
 
-        this.makeAttackMove(
-          enemyIndex,
-          this.effectsS.getBoostedParameterCover(attacker, attacker.effects) *
-            (skill.attackInRangeM || 0),
-          this.effectsS.getBoostedParameterCover(
-            enemiesArray[enemyIndex],
-            enemiesArray[enemyIndex].effects,
-          ),
-          enemiesArray,
-          attacker,
-          skill,
-        );
+        this.makeAttackMove(enemyIndex, enemiesArray, attacker, skill);
 
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
           this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs);
@@ -172,16 +139,17 @@ export abstract class AbstractGameFieldComponent
 
   makeAttackMove(
     enemyIndex: number,
-    attack: number,
-    defence: number,
     dmgTaker: TileUnit[],
     attackDealer: TileUnit,
     skill: TileUnitSkill,
   ) {
-    const damage = this.abstractFieldS.getDamage(
-      { dmgTaker: dmgTaker[enemyIndex], attackDealer },
-      { attack },
-    );
+    const dmg =
+      this.effectsS.getBoostedParameterCover(attackDealer, attackDealer.effects) * skill.dmgM;
+
+    const damage = this.abstractFieldS.getDamage({
+      dmgTaker: dmgTaker[enemyIndex],
+      attackDealer: { ...attackDealer, attack: dmg },
+    });
 
     if (dmgTaker[enemyIndex].health) {
       const newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);

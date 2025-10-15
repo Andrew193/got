@@ -1,14 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WelcomeComponent } from './welcome.component';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { FakeMatBottomSheetRef } from '../../../../../test-related';
 
-describe('ChooseFirstHeroComponent', () => {
+describe('WelcomeComponent', () => {
   let component: WelcomeComponent;
   let fixture: ComponentFixture<WelcomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [WelcomeComponent],
+      providers: [
+        {
+          provide: MatBottomSheetRef,
+          useValue: FakeMatBottomSheetRef,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WelcomeComponent);
@@ -16,7 +23,7 @@ describe('ChooseFirstHeroComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('WelcomeComponent should be created', () => {
     expect(component).toBeTruthy();
   });
 });

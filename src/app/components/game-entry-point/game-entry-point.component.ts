@@ -8,7 +8,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { GameFieldComponent } from '../game-field/game-field.component';
-import { TileUnit, TileUnitWithReward } from '../../models/field.model';
+import { GameResultsRedirectType, TileUnit } from '../../models/field.model';
 
 @Component({
   selector: 'app-game-entry-point',
@@ -18,10 +18,9 @@ import { TileUnit, TileUnitWithReward } from '../../models/field.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameEntryPointComponent<T extends TileUnit> {
+  @Input() gameResultsRedirect: GameResultsRedirectType = () => {};
+
   gameField = viewChild(GameFieldComponent);
-
-  @Input() gameResultsRedirect: (realAiUnits: TileUnit[] | TileUnitWithReward[]) => void = () => {};
-
   userUnits = model<TileUnit[]>([]);
   aiUnits = model<T[]>([]);
   battleMode = input(true);

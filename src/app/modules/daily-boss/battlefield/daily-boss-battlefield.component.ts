@@ -24,7 +24,6 @@ export class DailyBossBattlefieldComponent {
         ...this.heroesService.getDailyBossVersion1(),
         user: false,
         ...this.dailyBossService.uppBoss(value['bossLevel']),
-        inBattle: true,
       });
 
       this.aiUnits = [this.heroesService.getTileUnit(temp)];
@@ -35,11 +34,10 @@ export class DailyBossBattlefieldComponent {
           ...this.heroesService.getUnitByName(el),
           y: 0,
           x: 1 + index,
-          inBattle: true,
         };
       });
 
-      this.userUnits = temp.map(this.heroesService.getTileUnit);
+      this.userUnits = temp.map(el => this.heroesService.getTileUnit(el));
     });
   }
 }

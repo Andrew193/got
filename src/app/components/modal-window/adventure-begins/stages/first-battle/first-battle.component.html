@@ -1,0 +1,8 @@
+<div>
+  @if (aiUnits.length && userUnits.length) {
+    <app-game-entry-point
+      [gameResultsRedirect]="battleEnd"
+      [aiUnits]="aiUnits"
+      [userUnits]="userUnits"></app-game-entry-point>
+  }
+</div>

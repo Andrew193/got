@@ -1,5 +1,14 @@
 import moment from 'moment';
 import { RewardLootConstant } from './models/reward-based.model';
+import { Currency } from './services/users/users.interfaces';
+import { ParamCheckConfig, ParamToCheck } from './models/api.model';
+
+export enum SceneNames {
+  welcome,
+  firstHero,
+  firstBattle,
+  finalAuth,
+}
 
 export const API_ENDPOINTS = {
   gift: 'giftTrip',
@@ -7,6 +16,17 @@ export const API_ENDPOINTS = {
   users: 'users',
   deposits: 'deposits',
 };
+
+export const PARAMS_TO_CHECK: Record<ParamToCheck, ParamCheckConfig> = {
+  userId: {
+    reaction: PARAMS_TO_CHECK_REACTION.empty,
+    violation: ['undefined'],
+  },
+} as const;
+
+export const enum PARAMS_TO_CHECK_REACTION {
+  empty,
+}
 
 export const CURRENCY_NAMES = {
   gold: 'gold',
@@ -20,6 +40,19 @@ export const USER_TOKEN = 'user';
 export const TODAY = moment().format(DATE_FORMAT);
 export const GIFT_STORE_NPC_AMOUNT = 10;
 export const STEP_DEFAULT_ORDER = 100;
+export const LOGIN_ERROR = 'Login or password is wrong. Try again.';
+
+export const BASIC_CURRENCY: Currency = {
+  gold: 300,
+  silver: 1000,
+  copper: 15000,
+};
+
+export const SNACKBAR_CONFIG = {
+  horizontalPosition: 'end',
+  verticalPosition: 'top',
+  duration: 5000,
+} as const;
 
 export const getDiagonals = (checkDiagonals: boolean) => {
   return checkDiagonals
@@ -78,9 +111,9 @@ export type EffectsValues = Effects[EffectsKey];
 export const ALL_EFFECTS_MULTIPLIERS: Record<EffectsValues, number> = {
   [ALL_EFFECTS.healthRestore]: 0.05,
   [ALL_EFFECTS.burning]: 0.1,
-  [ALL_EFFECTS.freezing]: 1,
+  [ALL_EFFECTS.freezing]: 0.2,
   [ALL_EFFECTS.root]: 0,
-  [ALL_EFFECTS.defDestroy]: -50,
+  [ALL_EFFECTS.defDestroy]: -150,
   [ALL_EFFECTS.poison]: 0.075,
   [ALL_EFFECTS.bleeding]: 0.05,
   [ALL_EFFECTS.defBreak]: 0.5,

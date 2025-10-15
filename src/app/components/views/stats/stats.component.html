@@ -14,11 +14,11 @@
       'stats-table': _tableMode,
       'flex-column': !_tableMode,
     }">
-    <ng-template #statRow let-icon="icon" let-value="value" let-desc="desc">
+    <ng-template #statRow let-icon="icon" let-value="value" let-desc="desc" let-key="key">
       <div class="flex-row" style="font-weight: bold">
         <p class="m-0 col-auto stat-p-container">
           <img [src]="icon" [alt]="icon" />
-          <span [class]="icon">{{ value }}</span>
+          <span [class]="key">{{ value }}</span>
         </p>
         @if (!_tableMode) {
           <span class="col d-block text-start">{{ desc }}</span>
@@ -33,6 +33,7 @@
           icon: s.icon,
           value: s.value(),
           desc: s.desc,
+          key: s.key,
         }">
       </ng-container>
     }

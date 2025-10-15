@@ -1,6 +1,7 @@
 import { AbstractFieldService } from './abstract-field.service';
 import { TestBed } from '@angular/core/testing';
 import { Position, TileUnit } from '../../../models/field.model';
+import { HeroesNamesCodes } from '../../../models/unit.model';
 
 describe('AbstractFieldService', () => {
   let service: AbstractFieldService;
@@ -35,7 +36,6 @@ describe('AbstractFieldService', () => {
       x: 0,
       y: 0,
       health: 0,
-      inBattle: false,
       user: false,
       imgSrc: '',
       canMove: false,
@@ -47,7 +47,7 @@ describe('AbstractFieldService', () => {
       attack: 0,
       defence: 0,
       maxHealth: 0,
-      name: '',
+      name: HeroesNamesCodes.JonKing,
       maxCanCross: 0,
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0,
@@ -73,7 +73,6 @@ describe('AbstractFieldService', () => {
         x: 1,
         y: 2,
         health: 10,
-        inBattle: true,
         user: true,
         imgSrc: '',
         canMove: false,
@@ -85,7 +84,7 @@ describe('AbstractFieldService', () => {
         attack: 10,
         defence: 10,
         maxHealth: 10,
-        name: 'User',
+        name: HeroesNamesCodes.LadyOfDragonStone,
         maxCanCross: 0,
         reducedDmgFromDebuffs: [],
         dmgReducedBy: 0,
@@ -102,7 +101,6 @@ describe('AbstractFieldService', () => {
         x: 3,
         y: 3,
         health: 30,
-        inBattle: true,
         user: false,
         imgSrc: '',
         canMove: false,
@@ -114,7 +112,7 @@ describe('AbstractFieldService', () => {
         attack: 30,
         defence: 30,
         maxHealth: 30,
-        name: 'AI',
+        name: HeroesNamesCodes.Ranger,
         maxCanCross: 0,
         reducedDmgFromDebuffs: [],
         dmgReducedBy: 0,

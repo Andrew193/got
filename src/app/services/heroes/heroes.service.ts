@@ -1,30 +1,17 @@
 import { Injectable } from '@angular/core';
 import { EffectsService } from '../effects/effects.service';
-import { PreviewUnit, Unit } from '../../models/unit.model';
+import {
+  GetTileConfig,
+  HeroesNamesCodes,
+  HeroType,
+  PreviewUnit,
+  Rarity,
+  Unit,
+  UnitConfig,
+} from '../../models/unit.model';
 import { ContentService, ContentTypes } from '../abstract/content/content-service.service';
 import { EffectsValues } from '../../constants';
 import { TileUnit } from '../../models/field.model';
-
-interface UnitConfig {
-  level: number;
-  rank: number;
-  eq1Level: number;
-  eq2Level: number;
-  eq3Level: number;
-  eq4Level: number;
-}
-
-export enum heroType {
-  ATTACK,
-  DEFENCE,
-}
-
-export enum rarity {
-  COMMON,
-  RARE,
-  EPIC,
-  LEGENDARY,
-}
 
 @Injectable({
   providedIn: 'root',
@@ -76,8 +63,8 @@ export class HeroesService extends ContentService {
   getLadyOfDragonStone(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.LEGENDARY,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effects.burning],
@@ -96,7 +83,7 @@ export class HeroesService extends ContentService {
       willpower: 25,
       imgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png',
-      name: 'Daenerys Targaryen (Lady of Dragonstone)',
+      name: HeroesNamesCodes.LadyOfDragonStone,
       description:
         'По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет её совершать великие военные подвиги.',
       skills: [
@@ -182,8 +169,8 @@ export class HeroesService extends ContentService {
   getTargaryenKnight(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.DEFENCE,
-      rarity: rarity.EPIC,
+      heroType: HeroType.DEFENCE,
+      rarity: Rarity.EPIC,
       attackRange: 1,
       rankBoost: 1.2,
       ignoredDebuffs: [this.effects.burning],
@@ -202,7 +189,7 @@ export class HeroesService extends ContentService {
       willpower: 50,
       imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_Avatar_Unit_21.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png',
-      name: 'Targaryen Knight',
+      name: HeroesNamesCodes.TargaryenKnight,
       description:
         'Всесторонний воин Таргариенов из Королевских земель, этот рыцарь превосходен как в нападении, так и в защите.',
       skills: [
@@ -278,8 +265,8 @@ export class HeroesService extends ContentService {
     return {
       ...this.getBasicUserConfig(),
       attackRange: 1,
-      rarity: rarity.RARE,
-      heroType: heroType.ATTACK,
+      rarity: Rarity.RARE,
+      heroType: HeroType.ATTACK,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -298,7 +285,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png',
-      name: 'White Wolf',
+      name: HeroesNamesCodes.WhiteWolf,
       description:
         'Альфа стаи за стеной. Вселяет ужас в сердца людей и наносит ужасные раны в гневе.',
       skills: [
@@ -334,9 +321,9 @@ export class HeroesService extends ContentService {
   getPriest(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.DEFENCE,
+      heroType: HeroType.DEFENCE,
       healer: true,
-      rarity: rarity.EPIC,
+      rarity: Rarity.EPIC,
       onlyHealer: true,
       attackRange: 1,
       rankBoost: 1.15,
@@ -356,7 +343,7 @@ export class HeroesService extends ContentService {
       willpower: 70,
       imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png',
-      name: 'Priest',
+      name: HeroesNamesCodes.Priest,
       description: 'Жрец за стеной.',
       skills: [
         {
@@ -408,9 +395,9 @@ export class HeroesService extends ContentService {
   getBrownWolf(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
+      heroType: HeroType.ATTACK,
       attackRange: 1,
-      rarity: rarity.COMMON,
+      rarity: Rarity.COMMON,
       rankBoost: 1.05,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -429,7 +416,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png',
-      name: 'Brown Wolf',
+      name: HeroesNamesCodes.BrownWolf,
       description: 'Волк стаи за стеной.',
       skills: [
         {
@@ -448,9 +435,9 @@ export class HeroesService extends ContentService {
   getIceRiverHunter(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
+      heroType: HeroType.ATTACK,
       attackRange: 1,
-      rarity: rarity.COMMON,
+      rarity: Rarity.COMMON,
       rankBoost: 1.1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -470,7 +457,7 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Avatar_Unit_IceRiverHunters.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Icon_Avatar_FullBody_Wildling_02_IceRiverHunters.png',
-      name: 'Ice River Hunter',
+      name: HeroesNamesCodes.IceRiverHunter,
       description: 'Молодой охотник из земель за стеной. Ледяная река - его место охоты.',
       skills: [
         {
@@ -493,8 +480,8 @@ export class HeroesService extends ContentService {
   getRelinaShow(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.LEGENDARY,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.1,
       ignoredDebuffs: [this.effects.poison, this.effects.freezing, this.effects.root],
@@ -513,7 +500,7 @@ export class HeroesService extends ContentService {
       willpower: 30,
       imgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png',
       fullImgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png',
-      name: 'Relina Snow',
+      name: HeroesNamesCodes.RelinaShow,
       description: 'Релина Сноу это воительница Зачарованного Леса. Умелый и хитрый боец.',
       skills: [
         {
@@ -584,8 +571,8 @@ export class HeroesService extends ContentService {
   getFreeTrapper(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.RARE,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.RARE,
       attackRange: 2,
       rankBoost: 1.1,
       ignoredDebuffs: [],
@@ -606,7 +593,7 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
-      name: 'Archer of the Free Folk',
+      name: HeroesNamesCodes.FreeTrapper,
       description:
         'Лучник вольного народа изучал мастерство убийства с рождения. Он мастерски владеет природными ядами и умеет ставить капканы на животных и людей.',
       skills: [
@@ -662,11 +649,11 @@ export class HeroesService extends ContentService {
   getGiant(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.LEGENDARY,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.LEGENDARY,
       attackRange: 1,
       rankBoost: 1.05,
-      ignoredDebuffs: [],
+      ignoredDebuffs: [this.effects.freezing],
       reducedDmgFromDebuffs: [],
       dmgReducedBy: 0.5,
       canCross: 1,
@@ -682,7 +669,7 @@ export class HeroesService extends ContentService {
       willpower: 15,
       imgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
-      name: 'Giant',
+      name: HeroesNamesCodes.Giant,
       description:
         'Невероятно сильный враг. Мифическое существо из сказаний. Его шкуру почти невозможно пробить оружием, но он уязвим к ослаблениям.',
       skills: [
@@ -723,7 +710,8 @@ export class HeroesService extends ContentService {
           passive: true,
           restoreSkill: true,
           description:
-            'Получает на 50% меньше урона от атак противников, но крайне уязвим к ослаблениям и штрафам.',
+            'Получает на 50% меньше урона от атак противников, но крайне уязвим к ослаблениям и штрафам. На этого героя невозможно наложить штраф ' +
+            this.effects.freezing,
         },
       ],
       effects: [],
@@ -733,8 +721,8 @@ export class HeroesService extends ContentService {
   getNightKing(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.LEGENDARY,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.LEGENDARY,
       attackRange: 2,
       rankBoost: 1.3,
       ignoredDebuffs: [this.effects.freezing],
@@ -754,7 +742,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png',
-      name: 'Night King',
+      name: HeroesNamesCodes.NightKing,
       description:
         'Ужасный враг. Сильнейший из белых ходоков и король Края Вечной Зимы. Создан для защиты живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
       skills: [
@@ -833,8 +821,8 @@ export class HeroesService extends ContentService {
   getWhiteWalkerGeneral(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.LEGENDARY,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.LEGENDARY,
       attackRange: 1,
       rankBoost: 1.2,
       ignoredDebuffs: [this.effects.freezing],
@@ -854,7 +842,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker1.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker2.png',
-      name: 'General Walker',
+      name: HeroesNamesCodes.WhiteWalkerGeneral,
       description:
         'Ужасный враг. Сильный белый ходок и командир армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
       skills: [
@@ -900,9 +888,9 @@ export class HeroesService extends ContentService {
   getWhiteWalkerCapitan(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
+      heroType: HeroType.ATTACK,
       attackRange: 1,
-      rarity: rarity.LEGENDARY,
+      rarity: Rarity.LEGENDARY,
       rankBoost: 1.1,
       ignoredDebuffs: [this.effects.freezing],
       reducedDmgFromDebuffs: [],
@@ -921,7 +909,7 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker2.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker3.png',
-      name: 'Captain Walker',
+      name: HeroesNamesCodes.WhiteWalkerCapitan,
       description:
         'Ужасный враг. Слабейший белый ходок и капитан армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
       skills: [
@@ -962,10 +950,10 @@ export class HeroesService extends ContentService {
   getJonKing(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
+      heroType: HeroType.ATTACK,
       attackRange: 1,
       rankBoost: 1.3,
-      rarity: rarity.LEGENDARY,
+      rarity: Rarity.LEGENDARY,
       ignoredDebuffs: [this.effects.freezing, this.effects.attackBreak],
       reducedDmgFromDebuffs: [this.effects.bleeding],
       dmgReducedBy: 0.1,
@@ -982,7 +970,7 @@ export class HeroesService extends ContentService {
       willpower: 25,
       imgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_Avatar_Unit_JonKingNorth.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png',
-      name: 'Jon Snow (King in the North)',
+      name: HeroesNamesCodes.JonKing,
       description:
         'Сильный, настоящий лидер, бесчисленные победы Джона Сноу на поле боя заставили его сверстников признать его королем Севера.',
       skills: [
@@ -1057,8 +1045,8 @@ export class HeroesService extends ContentService {
   getDailyBossVersion1(): Unit {
     return {
       ...this.getBasicUserConfig(),
-      heroType: heroType.ATTACK,
-      rarity: rarity.LEGENDARY,
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.LEGENDARY,
       attackRange: 1,
       rankBoost: 1.5,
       ignoredDebuffs: [this.effects.burning],
@@ -1077,7 +1065,7 @@ export class HeroesService extends ContentService {
       willpower: 50,
       imgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Avatar_Unit_GromyrtheFlame.png',
       fullImgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Boss_CutIn_Pic_1.png',
-      name: 'Gromirt Flame',
+      name: HeroesNamesCodes.DailyBossVersion1,
       description: '',
       skills: [
         {
@@ -1237,7 +1225,7 @@ export class HeroesService extends ContentService {
     };
   }
 
-  getTileUnit(unit: Unit): TileUnit {
+  getTileUnit(unit: Unit, config?: GetTileConfig): TileUnit {
     return {
       onlyHealer: unit.onlyHealer || false,
       rage: unit.rage,
@@ -1254,16 +1242,15 @@ export class HeroesService extends ContentService {
       heroType: unit.heroType,
       ignoredDebuffs: unit.ignoredDebuffs,
       imgSrc: unit.imgSrc,
-      inBattle: unit.inBattle || false,
       maxCanCross: unit.canCross,
       maxHealth: unit.maxHealth,
       name: unit.name,
       reducedDmgFromDebuffs: unit.reducedDmgFromDebuffs,
       skills: unit.skills,
-      user: unit.user,
+      user: config?.user ?? unit.user,
       willpower: unit.willpower,
-      x: unit.x,
-      y: unit.y,
+      x: config?.x || unit.x,
+      y: config?.y || unit.y,
     };
   }
 

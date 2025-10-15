@@ -48,7 +48,7 @@ describe('PreloadingStrategyService', () => {
     concat(okTest$, notOkTest$)
       .pipe(toArray())
       .subscribe(([ok, notOk]) => {
-        expect(ok).toBeTrue();
+        expect(ok).toBeUndefined();
         expect(notOk).toBeUndefined();
         done();
       });

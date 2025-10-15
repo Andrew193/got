@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { DecimalPipe } from '@angular/common';
-import { USER_TOKEN } from '../../../constants';
+import { CURRENCY_NAMES, USER_TOKEN } from '../../../constants';
 import { UsersService } from '../../../services/users/users.service';
 import { User } from '../../../services/users/users.interfaces';
 import { BossRewardCurrency } from '../../../models/reward-based.model';
@@ -38,15 +38,15 @@ export class HeaderComponent implements OnInit {
 
     return [
       {
-        alias: 'copper',
+        alias: CURRENCY_NAMES.copper,
         amount: currency.copper,
       },
       {
-        alias: 'silver',
+        alias: CURRENCY_NAMES.silver,
         amount: currency.silver,
       },
       {
-        alias: 'gold',
+        alias: CURRENCY_NAMES.gold,
         amount: currency.gold,
       },
     ];

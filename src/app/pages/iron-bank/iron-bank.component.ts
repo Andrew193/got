@@ -14,6 +14,7 @@ import { DepositFacadeService } from '../../services/facades/deposit/deposit.ser
 import { finalize } from 'rxjs';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { ExchangerComponent } from './exchanger/exchanger.component';
+import { CURRENCY_NAMES } from '../../constants';
 
 @Component({
   selector: 'app-iron-bank',
@@ -95,7 +96,8 @@ export class IronBankComponent implements OnInit {
   }
 
   get key() {
-    return (this.exchangerForm.value.from?.toLowerCase() || 'copper') as Lowercase<Cur>;
+    return (this.exchangerForm.value.from?.toLowerCase() ||
+      CURRENCY_NAMES.copper) as Lowercase<Cur>;
   }
 
   goToMainPage() {

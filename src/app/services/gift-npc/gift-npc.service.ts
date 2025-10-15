@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { HeroesService, heroType, rarity } from '../heroes/heroes.service';
-import { DisplayReward, Reward, RewardService } from '../reward/reward.service';
-import { Unit, UnitWithReward } from '../../models/unit.model';
-import { RewardComponentInterface } from '../../models/reward-based.model';
+import { HeroesService } from '../heroes/heroes.service';
+import { basicRewardNames, DisplayReward, Reward, RewardService } from '../reward/reward.service';
+import { HeroesNamesCodes, HeroType, Rarity, Unit, UnitWithReward } from '../../models/unit.model';
+import { RewardComponentInterface, RewardValues } from '../../models/reward-based.model';
 import { NumbersService } from '../numbers/numbers.service';
 import { GIFT_STORE_NPC_AMOUNT } from '../../constants';
 
@@ -64,7 +64,6 @@ export class GiftNpcService implements RewardComponentInterface {
             reward: reward,
             x: i,
             y: j,
-            inBattle: false,
           });
         }
       }
@@ -81,18 +80,12 @@ export class GiftNpcService implements RewardComponentInterface {
     return this.heroService.getFreeTrapper();
   }
 
-  getUserForNPC(): Unit {
+  getUserForNPC(unit: Partial<Unit> = {}): Unit {
     return {
       ...this.heroService.getBasicUserConfig(),
       attackRange: 1,
-      rarity: rarity.COMMON,
-      heroType: heroType.ATTACK,
-      rank: 1,
-      level: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
+      rarity: Rarity.COMMON,
+      heroType: HeroType.ATTACK,
       rankBoost: 1,
       ignoredDebuffs: [],
       reducedDmgFromDebuffs: [],
@@ -112,7 +105,7 @@ export class GiftNpcService implements RewardComponentInterface {
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
-      name: 'Разведчик',
+      name: HeroesNamesCodes.Ranger,
       description: 'Разведчик Ночного Дозора.',
       skills: [
         {
@@ -135,22 +128,17 @@ export class GiftNpcService implements RewardComponentInterface {
         },
       ],
       effects: [],
+      ...unit,
     };
   }
 
-  getNPC(name?: string, description?: string): Unit {
+  getNPC(name?: HeroesNamesCodes | RewardValues, description?: string): Unit {
     return {
       ...this.heroService.getBasicUserConfig(),
       attackRange: 1,
-      rarity: rarity.COMMON,
-      heroType: heroType.DEFENCE,
-      rank: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
+      rarity: Rarity.COMMON,
+      heroType: HeroType.DEFENCE,
       rankBoost: 1,
-      level: 1,
       healthIncrement: 0,
       attackIncrement: 0,
       defenceIncrement: 0,
@@ -167,7 +155,7 @@ export class GiftNpcService implements RewardComponentInterface {
       willpower: 0,
       imgSrc: '../../../assets/resourses/imgs/icons/chest.png',
       fullImgSrc: '../../../assets/resourses/imgs/icons/chest.png',
-      name: name || 'Chest',
+      name: name || basicRewardNames.chest,
       description: description || 'Сундук со случайной наградой. Был давно потерян в этих краях.',
       skills: [],
       effects: [],

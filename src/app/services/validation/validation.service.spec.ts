@@ -2,15 +2,42 @@ import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, of, tap } from 'rxjs';
+import { fakeUser } from '../../test-related';
 
 describe('ValidationService', () => {
   let validationService: ValidationService;
   let formGroup: FormGroup;
 
+  let updateCallback: Observable<unknown[]>;
+  let createCallback: Observable<unknown>;
+
+  let updateCallbackSpy = jasmine.createSpy('updateCallback');
+  let createCallbackSpy = jasmine.createSpy('createCallback');
+
+  function spyCover<R extends boolean>(
+    callback: jasmine.Spy<jasmine.Func>,
+    isArray: R,
+  ): R extends true ? Observable<unknown[]> : Observable<unknown> {
+    return of(isArray ? [fakeUser] : fakeUser).pipe(
+      tap({
+        finalize: () => {
+          callback();
+        },
+      }),
+    ) as any;
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ValidationService],
     });
+
+    updateCallbackSpy = jasmine.createSpy('updateCallback');
+    createCallbackSpy = jasmine.createSpy('createCallback');
+
+    updateCallback = spyCover(updateCallbackSpy, true);
+    createCallback = spyCover(createCallbackSpy, false);
 
     validationService = TestBed.inject(ValidationService);
     formGroup = new FormGroup({
@@ -77,10 +104,7 @@ describe('ValidationService', () => {
   });
 
   it('ValidationService should validate and submit form. Default', () => {
-    const updateCallbackSpy = jasmine.createSpy('updateCallback');
-    const createCallbackSpy = jasmine.createSpy('createCallback');
-
-    validationService.validateFormAndSubmit(formGroup, updateCallbackSpy, createCallbackSpy, true);
+    validationService.validateFormAndSubmit(formGroup, updateCallback, createCallback, true);
 
     //The Form is invalid. Nothing happens
     expect(updateCallbackSpy).not.toHaveBeenCalled();
@@ -89,9 +113,6 @@ describe('ValidationService', () => {
   });
 
   it('ValidationService should validate and submit form. Update', () => {
-    const updateCallbackSpy = jasmine.createSpy('updateCallback');
-    const createCallbackSpy = jasmine.createSpy('createCallback');
-
     //The form is valid. Check update
     formGroup.patchValue(
       {
@@ -100,16 +121,13 @@ describe('ValidationService', () => {
       { emitEvent: true },
     );
 
-    validationService.validateFormAndSubmit(formGroup, updateCallbackSpy, createCallbackSpy, true);
+    validationService.validateFormAndSubmit(formGroup, updateCallback, createCallback, true);
 
     expect(formGroup.disabled).toBeTrue();
     expect(updateCallbackSpy).toHaveBeenCalled();
   });
 
   it('ValidationService should validate and submit form. Create', () => {
-    const updateCallbackSpy = jasmine.createSpy('updateCallback');
-    const createCallbackSpy = jasmine.createSpy('createCallback');
-
     //The form is valid. Check update
     formGroup.patchValue(
       {
@@ -119,7 +137,7 @@ describe('ValidationService', () => {
     );
 
     //The form is valid. Check creation
-    validationService.validateFormAndSubmit(formGroup, updateCallbackSpy, createCallbackSpy, false);
+    validationService.validateFormAndSubmit(formGroup, updateCallback, createCallback, false);
 
     expect(formGroup.disabled).toBeTrue();
     expect(createCallbackSpy).toHaveBeenCalled();

@@ -4,7 +4,7 @@ import { DayReward } from '../../components/daily-reward/daily-reward.component'
 import { DailyReward } from '../../models/reward-based.model';
 import { IdEntity } from '../../models/common.model';
 import { NumbersService } from '../numbers/numbers.service';
-import { API_ENDPOINTS } from '../../constants';
+import { API_ENDPOINTS, CURRENCY_NAMES } from '../../constants';
 import { ConfigInterface } from '../../models/interfaces/config.interface';
 
 @Injectable({
@@ -23,21 +23,21 @@ export class DailyRewardService
 
     if (reward.copperCoin)
       coins.push({
-        class: 'copper',
+        class: CURRENCY_NAMES.copper,
         imgSrc: 'assets/resourses/imgs/copper.png',
         alt: 'copperCoin',
         amount: reward.copperCoin,
       });
     if (reward.silverCoin)
       coins.push({
-        class: 'silver',
+        class: CURRENCY_NAMES.silver,
         imgSrc: 'assets/resourses/imgs/silver.png',
         alt: 'silverCoin',
         amount: reward.silverCoin,
       });
     if (reward.goldCoin)
       coins.push({
-        class: 'gold',
+        class: CURRENCY_NAMES.gold,
         imgSrc: 'assets/resourses/imgs/gold.png',
         alt: 'goldCoin',
         amount: reward.goldCoin,

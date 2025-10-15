@@ -1,7 +1,7 @@
 @use '../../../assets/resourses/styles/index' as index;
 
 .login-container {
-  background: url('../../../assets/resourses/imgs/background/summon_tree.jpg') no-repeat;
+  background: url('../../../assets/resourses/imgs/background/forest.jpeg') no-repeat;
   @include index.mixin-page-container;
   @include index.mixin-got-btn;
 

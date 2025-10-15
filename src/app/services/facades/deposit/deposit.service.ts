@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { DepositService } from '../../users/currency/currency.service';
+import { DepositService } from '../../users/currency/deposit.service';
 import { UsersService } from '../../users/users.service';
 import { DepositConfig } from '../../../models/iron-bank.model';
 import { map, switchMap } from 'rxjs';

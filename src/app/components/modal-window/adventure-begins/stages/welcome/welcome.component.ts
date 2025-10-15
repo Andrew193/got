@@ -1,7 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { SceneComponent } from '../../../../../models/interfaces/scenes/scene.interface';
+import {
+  SceneComponent,
+  SceneContext,
+} from '../../../../../models/interfaces/scenes/scene.interface';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { SceneNames } from '../../../../../constants';
 
 @Component({
   selector: 'app-welcome',
@@ -10,17 +14,17 @@ import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
   styleUrl: './welcome.component.scss',
 })
 export class WelcomeComponent implements SceneComponent {
-  private _bottomSheetRef = inject<MatBottomSheetRef<WelcomeComponent>>(MatBottomSheetRef);
+  bottomSheetRef =
+    inject<MatBottomSheetRef<WelcomeComponent, SceneContext<SceneNames.welcome>>>(
+      MatBottomSheetRef,
+    );
 
   showNextSceneButton = false;
 
-  runScene() {
-    console.log('start');
-  }
+  runScene() {}
 
   stopScene() {
-    this._bottomSheetRef.dismiss();
-    console.log('stop');
+    this.bottomSheetRef.dismiss({ repeat: false });
   }
 
   onTabChange(event: MatTabChangeEvent) {

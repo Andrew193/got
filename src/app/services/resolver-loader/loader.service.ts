@@ -34,6 +34,7 @@ export class LoaderService implements InitInterface {
   start() {
     this.activeCount.update(n => n + 1);
   }
+
   stop() {
     this.activeCount.update(n => Math.max(0, n - 1));
   }

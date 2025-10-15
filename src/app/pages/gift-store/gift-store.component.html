@@ -14,9 +14,7 @@
           <button class="ms-1 got-toggle got-toggle-red" (click)="init()">
             Refresh field (load new rewards)
           </button>
-          <button class="got-toggle ms-1">
-            <a routerLink="/" class="fake-link">Back to Castle Black</a>
-          </button>
+          <button class="got-toggle ms-1" (click)="goToMainPage()">Back to Castle Black</button>
           @if (loot.length) {
             <button class="got-toggle got-toggle-green ms-1" (click)="collectAndLeave()">
               Collect loot and leave

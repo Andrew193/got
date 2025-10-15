@@ -25,10 +25,7 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     return this.gameConfig;
   }
 
-  abstract getDamage(
-    unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit },
-    config: { attack: number },
-  ): number;
+  abstract getDamage(unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit }): number;
 
   getFieldsInRadius(
     grid: Tile[][],

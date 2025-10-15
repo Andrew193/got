@@ -11,8 +11,8 @@ export class ViewProviderComponent {
 
   private parent = inject(FormGroupDirective, { host: true });
 
-  get control(): FormControl<number> {
-    return this.parentForm.get(this.controlName()) as FormControl<number>;
+  get control(): FormControl {
+    return this.parentForm.get(this.controlName()) as FormControl;
   }
 
   get parentForm() {

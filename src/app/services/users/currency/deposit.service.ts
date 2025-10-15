@@ -49,13 +49,7 @@ export class DepositService
         url: this.url,
         callback: () => {},
       },
-    ).pipe(
-      map(() => {
-        console.log(deposit);
-
-        return deposit;
-      }),
-    );
+    ).pipe(map(() => deposit));
   }
 
   getConfig(callback: (config: DepositCurrency) => void) {

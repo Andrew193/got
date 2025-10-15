@@ -5,6 +5,7 @@ import { EffectsService } from '../effects/effects.service';
 import { getEffectFake, getFakeEffectMap } from '../../test-related';
 import { createDeepCopy } from '../../helpers';
 import { ALL_EFFECTS } from '../../constants';
+import { HeroesNamesCodes } from '../../models/unit.model';
 
 describe('HeroesService', () => {
   let service: HeroesService;
@@ -12,11 +13,11 @@ describe('HeroesService', () => {
 
   beforeEach(() => {
     effectsMock = jasmine.createSpyObj('EffectsService', ['getEffect'], {
-      effectsToHighlight: ['Горение', 'Заморозка'],
+      effectsToHighlight: [ALL_EFFECTS.burning, ALL_EFFECTS.freezing],
       effects: createDeepCopy(ALL_EFFECTS),
       effectsDescriptions: {
-        Горение: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
-        Заморозка: 'Герой заморожен и может пройти только 1 клетку за ход.',
+        [ALL_EFFECTS.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
+        [ALL_EFFECTS.freezing]: 'Герой заморожен и может пройти только 1 клетку за ход.',
       },
       effectsMap: getFakeEffectMap(),
     });
@@ -77,13 +78,13 @@ describe('HeroesService', () => {
     expect(effects.length).toEqual(2);
   });
 
-  it('HeroesService returns a hero', () => {
+  it('HeroesService should return a hero.', () => {
     const ladyOfDragonStone = service.getLadyOfDragonStone();
 
-    expect(ladyOfDragonStone.name).toEqual('Дейнерис Таргариен ( Леди Драконьего Камня )');
+    expect(ladyOfDragonStone.name).toEqual(HeroesNamesCodes.LadyOfDragonStone);
   });
 
-  it('HeroesService returns a hero', () => {
+  it('HeroesService should return a hero by name.', () => {
     const ldsName = service.getLadyOfDragonStone().name;
     const giantName = service.getGiant().name;
 

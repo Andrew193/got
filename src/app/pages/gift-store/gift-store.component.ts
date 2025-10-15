@@ -1,11 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GameEntryPointComponent } from '../../components/game-entry-point/game-entry-point.component';
 import { GiftNpcService } from '../../services/gift-npc/gift-npc.service';
-import { DisplayReward, RewardService } from '../../services/reward/reward.service';
+import {
+  basicRewardNames,
+  DisplayReward,
+  RewardService,
+} from '../../services/reward/reward.service';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
-import { Router, RouterLink } from '@angular/router';
 import { GiftService } from '../../services/gift/gift.service';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { TODAY } from '../../constants';
 import {
   NotificationsService,
@@ -15,15 +18,17 @@ import { GiftConfig } from '../../models/gift.model';
 import { UsersService } from '../../services/users/users.service';
 import { Currency } from '../../services/users/users.interfaces';
 import { TileUnit, TileUnitWithReward } from '../../models/field.model';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-gift-store',
-  imports: [GameEntryPointComponent, DisplayRewardComponent, RouterLink],
+  imports: [GameEntryPointComponent, DisplayRewardComponent],
   templateUrl: './gift-store.component.html',
   styleUrl: './gift-store.component.scss',
 })
 export class GiftStoreComponent implements OnInit {
   notificationService = inject(NotificationsService);
+  nav = inject(NavigationService);
 
   loot: (DisplayReward | null)[] = [];
   aiUnits: TileUnitWithReward[] = [];
@@ -40,25 +45,19 @@ export class GiftStoreComponent implements OnInit {
     private giftService: GiftService,
     private usersService: UsersService,
     private rewardService: RewardService,
-    private router: Router,
   ) {
     this.init();
   }
 
   ngOnInit(): void {
     this.giftService._data.subscribe(config => {
-      this.giftConfig = structuredClone({ ...(config || {}), userId: config.userId });
+      this.giftConfig = { ...config, userId: config.userId };
     });
   }
 
   init() {
     this.userUnits = [
-      this.npcService.convertToTileUnit({
-        ...this.npcService.getUserForNPC(),
-        x: 0,
-        y: 0,
-        inBattle: true,
-      }),
+      this.npcService.convertToTileUnit(this.npcService.getUserForNPC({ x: 0, y: 0 })),
     ];
     this.aiUnits = [];
 
@@ -75,13 +74,12 @@ export class GiftStoreComponent implements OnInit {
       .map(el => {
         const elType = this.rewardService.getReward(1, this.items);
 
-        return elType.name === 'Special 0'
+        return elType.name === basicRewardNames.special0
           ? {
               ...this.npcService.getWildling(),
               x: el.x,
               y: el.y,
               reward: this.npcService.getSpecialGiftReward(),
-              inBattle: true,
               user: false,
               healer: el.healer || false,
               onlyHealer: el.onlyHealer || false,
@@ -98,9 +96,9 @@ export class GiftStoreComponent implements OnInit {
     };
 
     const chestsReward = this.loot
-      .filter(el => el?.name === 'Chest')
+      .filter(el => el?.name === basicRewardNames.chest)
       .map(() => this.npcService.getChestReward());
-    const otherRewards = this.loot.filter(el => el?.name !== 'Chest');
+    const otherRewards = this.loot.filter(el => el?.name !== basicRewardNames.chest);
     const allRewards = [...chestsReward, ...otherRewards].filter(el => !!el) as DisplayReward[];
 
     allRewards.forEach(el => {
@@ -111,7 +109,7 @@ export class GiftStoreComponent implements OnInit {
 
     const newCurrency = this.usersService.updateCurrency(reward, {
       returnObs: true,
-    }) as Observable<any>;
+    });
 
     newCurrency
       .pipe(
@@ -124,13 +122,17 @@ export class GiftStoreComponent implements OnInit {
               },
               () => {
                 this.notificationService.notificationsValue(NotificationType.gift_store, false);
-                this.router.navigateByUrl('/');
+                this.goToMainPage();
               },
             );
           },
         }),
       )
       .subscribe();
+  }
+
+  goToMainPage() {
+    this.nav.goToMainPage();
   }
 
   public gameResultsRedirect = (realAiUnits: TileUnitWithReward[] | TileUnit[]) => {

@@ -91,7 +91,9 @@ describe('GameFieldService', () => {
       attackDealer: heroesService.getTileUnit(heroesService.getGiant()),
     };
 
-    let damage = gameFieldService.getDamage(units, { attack: 10 });
+    units.attackDealer.attack = 10;
+
+    let damage = gameFieldService.getDamage(units);
 
     expect(gameActionServiceSpy.getFixedDefence).toHaveBeenCalledWith(
       units.dmgTaker.defence,
@@ -101,7 +103,8 @@ describe('GameFieldService', () => {
     expect(damage).toBeLessThanOrEqual(300);
 
     //Add attack
-    damage = gameFieldService.getDamage(units, { attack: 1000 });
+    units.attackDealer.attack = 1000;
+    damage = gameFieldService.getDamage(units);
     expect(damage).toBeGreaterThanOrEqual(700);
   });
 

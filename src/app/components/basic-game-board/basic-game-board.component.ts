@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { NgClass } from '@angular/common';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
 import { Coordinate, Tile, TilesToHighlight, TileUnit } from '../../models/field.model';
+import { basicRewardNames } from '../../services/reward/reward.service';
 
 @Component({
   selector: 'app-basic-game-board',
@@ -48,10 +49,10 @@ export class BasicGameBoardComponent {
   showActionButtonCondition(tile: Tile, type: keyof TileUnit) {
     const entity = (tile as Tile).entity as TileUnit;
 
-    return this.battleMode
-      ? entity[type] &&
-          !!entity.health &&
-          (entity?.inBattle === true || entity?.inBattle === undefined)
-      : entity.user;
+    if (entity.name === basicRewardNames.chest || entity.name === basicRewardNames.copper) {
+      return false;
+    }
+
+    return this.battleMode ? entity[type] && !!entity.health : entity.user;
   }
 }

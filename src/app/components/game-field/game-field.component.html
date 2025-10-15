@@ -12,22 +12,12 @@
       <span class="user-bar">Turn: {{ turnUser ? 'Player' : 'AI' }}</span>
     </h4>
     <div class="heroes-bar flex-row">
-      <div class="heroes user-heroes col-5 d-flex align-items-center justify-content-end">
-        <ng-container
-          [ngTemplateOutlet]="usersTopBar"
-          [ngTemplateOutletContext]="usersTopBarConfig"></ng-container>
-      </div>
       <div class="turns-counter col-2 d-flex justify-content-center cursor-pointer">
         <div class="col-9">
-          <div tooltip="Finish turn" (click)="finishTurn()">
+          <div (click)="finishTurn()">
             <span>{{ turnCount }} / {{ maxTurnCount }}</span>
           </div>
         </div>
-      </div>
-      <div class="heroes ai-heroes col-5 d-flex align-items-center justify-content-start">
-        <ng-container
-          [ngTemplateOutlet]="usersTopBar"
-          [ngTemplateOutletContext]="aiTopBarConfig"></ng-container>
       </div>
     </div>
   }
@@ -83,7 +73,6 @@
                   [ngTemplateOutlet]="asideUnits"
                   [ngTemplateOutletContext]="{
                     hero: hero,
-                    progressbarClass: 'success',
                   }"></ng-container>
               }
             </div>
@@ -98,7 +87,6 @@
                   [ngTemplateOutlet]="asideUnits"
                   [ngTemplateOutletContext]="{
                     hero: hero,
-                    progressbarClass: 'danger',
                   }"></ng-container>
               }
             </div>
@@ -139,7 +127,7 @@
   </div>
 </div>
 
-<ng-template #asideUnits let-hero="hero" let-progressbarClass="progressbarClass">
+<ng-template #asideUnits let-hero="hero">
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <div class="flex-column d-flex w-100 p-1 shadow-none">
@@ -171,10 +159,7 @@
           <div class="col p-0">
             <div class="aside-hero-tab-header">
               <h4 class="color-white text-center">{{ hero.name }}</h4>
-              @let showProgressBar =
-                battleMode
-                  ? battleMode && (hero.inBattle === true || hero.inBattle === undefined)
-                  : hero.user;
+              @let showProgressBar = battleMode ? battleMode : hero.user;
 
               @if (showProgressBar) {
                 <mat-progress-bar
@@ -200,10 +185,7 @@
       </div>
     </mat-expansion-panel-header>
     <div>
-      @let showHeroesConfig =
-        battleMode && (hero.inBattle === true || hero.inBattle === undefined)
-          ? battleMode
-          : hero.user;
+      @let showHeroesConfig = battleMode ? battleMode : hero.user;
 
       @if (showHeroesConfig) {
         <div class="flex-row justify-content-between color-white">
@@ -248,17 +230,4 @@
       }
     </div>
   </mat-expansion-panel>
-</ng-template>
-
-<ng-template #usersTopBar let-units="units">
-  @for (hero of units; track hero.name + hero.x + hero.y + $index) {
-    @if (hero.inBattle || hero.inBattle === undefined) {
-      <img
-        [src]="hero.imgSrc"
-        alt="hero"
-        class="game-field-img"
-        [ngClass]="{ disabled: !hero.health }"
-        [matTooltip]="`Health: {{ hero.health }}`" />
-    }
-  }
 </ng-template>

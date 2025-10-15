@@ -4,12 +4,16 @@ import {
   BasicLocalStorage,
   BasicLocalStorageNamesKeys,
 } from './services/localStorage/local-storage.service';
-import { ALL_EFFECTS, EffectsValues } from './constants';
+import { ALL_EFFECTS, EffectsValues, frontRoutes } from './constants';
 import { Injectable } from '@angular/core';
 import { ApiService } from './services/abstract/api/api.service';
 import { IdEntity } from './models/common.model';
 import { Observable, Subscription } from 'rxjs';
 import { PutPostMetaOf } from './models/api.model';
+
+//Config
+
+export const fakeFrontRoutes = structuredClone(frontRoutes);
 
 //Effects
 
@@ -69,6 +73,7 @@ export const fakeUser: User = {
     lastLoyaltyBonus: '',
   },
   password: 'fake',
+  depositId: 'deposit',
 } as const;
 
 //Local Storage
@@ -103,3 +108,19 @@ export class TestApiService<T> extends ApiService<T> {
     return this.putPostCover(entity, meta) as any;
   }
 }
+
+//Test MatDialogRef
+
+export const FakeMatDialogRef = {
+  close: () => {
+    console.log('Mat Dialog Closed');
+  },
+};
+
+//Test MatBottomSheetRef
+
+export const FakeMatBottomSheetRef = {
+  dismiss: (result?: any) => {
+    console.log('Mat Bottom Closed');
+  },
+};

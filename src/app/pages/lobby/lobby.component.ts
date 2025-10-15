@@ -1,6 +1,5 @@
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   contentChildren,
@@ -9,7 +8,6 @@ import {
   input,
   model,
   OnInit,
-  viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DailyRewardComponent } from '../../components/daily-reward/daily-reward.component';
@@ -18,7 +16,6 @@ import { NotificationType } from '../../services/notifications/notifications.ser
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule } from '@angular/forms';
-import { HighlightDirective } from '../../directives/highlight/highlight.directive';
 import { NgTemplateOutlet } from '@angular/common';
 import { NumbersService, NumbersService2 } from '../../services/numbers/numbers.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
@@ -127,18 +124,8 @@ export class UserComponent implements AfterContentInit {
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',
 })
-export class LobbyComponent implements AfterViewInit {
+export class LobbyComponent {
   nav = inject(NavigationService);
-
-  directive = viewChild<HighlightDirective>('directive');
-
-  ngAfterViewInit() {
-    const _dir = this.directive();
-
-    if (_dir) {
-      _dir.onMouseEnter();
-    }
-  }
 
   isShowDailyReward = false;
 

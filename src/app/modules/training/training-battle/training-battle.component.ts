@@ -33,14 +33,8 @@ export class TrainingBattleComponent {
       } | null;
 
       if (config?.aiUnits && config.userUnits) {
-        this.aiUnits = config.aiUnits.map(el => ({
-          ...this.heroesService.getTileUnit(el),
-          inBattle: true,
-        }));
-        this.userUnits = config.userUnits.map(el => ({
-          ...this.heroesService.getTileUnit(el),
-          inBattle: true,
-        }));
+        this.aiUnits = config.aiUnits.map(el => this.heroesService.getTileUnit(el));
+        this.userUnits = config.userUnits.map(el => this.heroesService.getTileUnit(el));
       } else {
         this.redirectToTraining();
       }

@@ -2,12 +2,18 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { ApiService } from '../abstract/api/api.service';
-import { API_ENDPOINTS, USER_TOKEN } from '../../constants';
+import {
+  API_ENDPOINTS,
+  BASIC_CURRENCY,
+  LOGIN_ERROR,
+  SNACKBAR_CONFIG,
+  USER_TOKEN,
+} from '../../constants';
 import { Currency, User } from './users.interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrencyDifComponent } from '../../components/modal-window/currency/currency-dif/currency-dif.component';
 import { NavigationService } from '../facades/navigation/navigation.service';
-import { DepositService } from './currency/currency.service';
+import { DepositService } from './currency/deposit.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,11 +38,7 @@ export class UsersService extends ApiService<User> {
         claimedRewards: [],
         lastLoyaltyBonus: '',
       },
-      currency: {
-        gold: 300,
-        silver: 1000,
-        copper: 15000,
-      },
+      currency: BASIC_CURRENCY,
     } as User;
   }
 
@@ -72,7 +74,7 @@ export class UsersService extends ApiService<User> {
     );
   }
 
-  login<F extends (user: User) => void>(user: Partial<User>, callback: F) {
+  login<F extends (user: User | Error) => void>(user: Partial<User>, callback: F) {
     return this.http
       .get<Partial<User[]>>(this.url, {
         params: {
@@ -86,10 +88,13 @@ export class UsersService extends ApiService<User> {
             if (user[0]) {
               callback(user[0]);
               this.user.next(user[0]);
+            } else {
+              callback(new Error(LOGIN_ERROR));
             }
           },
           error: () => {
             this.nav.goToLogin();
+            callback(new Error(LOGIN_ERROR));
           },
         }),
       );
@@ -121,9 +126,7 @@ export class UsersService extends ApiService<User> {
         this.localStorage.setItem(BasicLocalStorage.names.user, response);
         this.user.next(response);
         this._snackBar.openFromComponent(CurrencyDifComponent, {
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-          duration: 5000,
+          ...SNACKBAR_CONFIG,
           data: { old: user.currency, new: response.currency },
         });
       },

@@ -3,13 +3,13 @@ import { createDeepCopy } from '../../helpers';
 import { ModalWindowService } from '../modal/modal-window.service';
 import { EffectsService } from '../effects/effects.service';
 import { UnitService } from '../unit/unit.service';
-import { heroType } from '../heroes/heroes.service';
 import { Skill, SkillSrc, TileUnitSkill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
 import { GameLoggerService } from '../game-logger/logger.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
-import { Position, TileUnit } from '../../models/field.model';
+import { GameResultsRedirectType, Position, TileUnit } from '../../models/field.model';
 import { LogRecord } from '../../models/logger.model';
+import { HeroType } from '../../models/unit.model';
 
 @Injectable({
   providedIn: 'root',
@@ -88,7 +88,7 @@ export class GameService {
 
   getFixedAttack(attack: number, unit: TileUnit) {
     const attackReducedEffect = unit.effects.find((effect): effect is EffectForMult => {
-      return unit.heroType === heroType.ATTACK
+      return unit.heroType === HeroType.ATTACK
         ? effect.type === this.eS.effects.attackBreak
         : effect.type === this.eS.effects.defBreak;
     });
@@ -194,11 +194,7 @@ export class GameService {
     };
   }
 
-  checkCloseFight(
-    userUnits: TileUnit[],
-    aiUnits: TileUnit[],
-    callback: (realAiUnits: any) => void,
-  ) {
+  checkCloseFight(userUnits: TileUnit[], aiUnits: TileUnit[], callback: GameResultsRedirectType) {
     const realUserUnits = userUnits[0].user ? userUnits : aiUnits;
     const realAiUnits = !aiUnits[0].user ? aiUnits : userUnits;
 
@@ -211,7 +207,7 @@ export class GameService {
         headerMessage: allUserUnitsDead ? 'Вы проиграли' : 'Вы победили',
         closeBtnLabel: allUserUnitsDead ? 'Попробовать позже' : 'Отлично',
         callback: () => {
-          callback(realAiUnits);
+          callback(realAiUnits, !allUserUnitsDead);
         },
       };
 
@@ -222,7 +218,7 @@ export class GameService {
         {
           open: true,
           callback: () => {
-            callback(realAiUnits);
+            callback(realAiUnits, !allUserUnitsDead);
           },
           strategy: ModalStrategiesTypes.base,
         },

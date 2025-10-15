@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Currency, DepositCurrency } from '../../users.interfaces';
-import { Coin, CoinNames } from '../../../../models/reward-based.model';
-import { basicRewardNames, RewardNames } from '../../../reward/reward.service';
+import { Coin, CoinNames, RewardValues } from '../../../../models/reward-based.model';
+import { basicRewardNames, DisplayReward, RewardNames } from '../../../reward/reward.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,14 +29,6 @@ export class CurrencyHelperService {
       gold: deposit.gold,
       silver: deposit.silver,
     };
-  }
-
-  convertCurrencyToCoin(currency: Currency): Coin[] {
-    return [
-      this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames),
-      this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames),
-      this.getCoin(currency.copper, this.rewardNames.copper.toLowerCase() as CoinNames),
-    ];
   }
 
   getSaveCurrency(currency: Partial<Currency>): Currency {
@@ -68,5 +60,26 @@ export class CurrencyHelperService {
       }),
       { copper: 0, silver: 0, gold: 0 } satisfies Currency,
     );
+  }
+
+  convertCurrencyToCoin(currency: Currency): Coin[] {
+    return [
+      this.getCoin(currency.gold, this.rewardNames.gold.toLowerCase() as CoinNames),
+      this.getCoin(currency.silver, this.rewardNames.silver.toLowerCase() as CoinNames),
+      this.getCoin(currency.copper, this.rewardNames.copper.toLowerCase() as CoinNames),
+    ];
+  }
+
+  convertCurrencyToDisplayReward(currency: Currency): DisplayReward[] {
+    const coins = this.convertCurrencyToCoin(currency);
+
+    return coins.map(coin => {
+      return {
+        name: (coin.class[0].toUpperCase() + coin.class.slice(1)) as RewardValues,
+        src: coin.imgSrc,
+        amount: coin.amount,
+        flipped: false,
+      } satisfies DisplayReward;
+    });
   }
 }

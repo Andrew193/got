@@ -19,6 +19,8 @@ import { InitInterface } from './models/interfaces/init.interface';
 import { concatAll, firstValueFrom, from } from 'rxjs';
 import { STEP_DEFAULT_ORDER } from './constants';
 import { MatDialogModule } from '@angular/material/dialog';
+import { InitStep } from './models/init.model';
+import { paramsCheckerInterceptor } from './interceptors/params-checker/params-checker.interceptor';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -41,8 +43,14 @@ export const INIT_STEPS_PROVIDERS = [
   },
 ];
 
-function AppInitializerFunction() {
-  const steps = inject(APP_INIT_STEPS);
+export function AppInitializerFunction(_steps?: InitStep[]) {
+  let steps: InitStep[];
+
+  try {
+    steps = inject(APP_INIT_STEPS);
+  } catch (error) {
+    steps = _steps || [];
+  }
 
   const stepsResults = steps
     .sort((a, b) => (a.order || STEP_DEFAULT_ORDER) - (b.order || STEP_DEFAULT_ORDER))
@@ -57,7 +65,9 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(AppInitializerFunction),
     importProvidersFrom(MatDialogModule),
     provideRouter(routes, withPreloading(PreloadingStrategyService)),
-    provideHttpClient(withInterceptors([authInterceptor, loggerInterceptor])),
+    provideHttpClient(
+      withInterceptors([paramsCheckerInterceptor, authInterceptor, loggerInterceptor]),
+    ),
     provideAnimationsAsync(),
   ],
 };

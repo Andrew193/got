@@ -11,6 +11,7 @@ import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-ba
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { BasicHeroSelectComponent } from '../../../components/abstract/basic-hero-select/basic-hero-select.component';
+import { CURRENCY_NAMES } from '../../../constants';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -49,7 +50,11 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
 
   bossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
     const reward = this.dailyBossService.bossReward[level];
-    const coins: BossRewardCurrency[] = ['copper', 'silver', 'gold'];
+    const coins: BossRewardCurrency[] = [
+      CURRENCY_NAMES.copper,
+      CURRENCY_NAMES.silver,
+      CURRENCY_NAMES.gold,
+    ];
 
     return coins.map(type => ({
       base: reward[type],

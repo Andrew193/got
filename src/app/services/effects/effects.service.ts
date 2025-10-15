@@ -1,11 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { TileUnitSkill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
-import { heroType } from '../heroes/heroes.service';
-import { createDeepCopy } from '../../helpers';
 import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS, Effects, EffectsValues } from '../../constants';
 import { NumbersService } from '../numbers/numbers.service';
 import { TileUnit } from '../../models/field.model';
+import { HeroType } from '../../models/unit.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ import { TileUnit } from '../../models/field.model';
 export class EffectsService {
   private numberService = inject(NumbersService);
 
-  effects: Effects = createDeepCopy(ALL_EFFECTS);
+  effects: Effects = structuredClone(ALL_EFFECTS);
 
   effectsDescriptions: Record<EffectsValues, string> = {
     //Buffs
@@ -23,7 +22,8 @@ export class EffectsService {
     [this.effects.bleeding]: 'Наносит противнику урон в размере 5% от его здоровья каждый ход.',
     [this.effects.poison]: 'Наносит противнику урон в размере 7.5% от его здоровья каждый ход.',
     //Mobility
-    [this.effects.freezing]: 'Герой заморожен и может пройти только 1 клетку за ход.',
+    [this.effects.freezing]:
+      'Герой заморожен и может пройти только 1 клетку за ход. Также теряет 20% здоровья каждый ход.',
     [this.effects.root]: 'Герой скован корнями и не может двигаться.',
     //Attack
     [this.effects.attackBuff]: 'Увеличивает атаку героя на 50%.',
@@ -42,14 +42,12 @@ export class EffectsService {
     let message = '';
     const mobility: string[] = [this.effects.freezing, this.effects.root];
 
-    const unitCopy = createDeepCopy(unit);
-
     if (mobility.includes(effect.type)) {
-      unitCopy.canCross = effect.m;
-      message += unitCopy.health ? this.effectsDescriptions[effect.type] : '';
+      unit.canCross = effect.m;
+      message += unit.health ? this.effectsDescriptions[effect.type] : '';
     }
 
-    return { unit: unitCopy, message: message };
+    return { unit, message: message };
   }
 
   recountStatsBasedOnEffect(effect: Effect, unit: TileUnit) {
@@ -97,7 +95,7 @@ export class EffectsService {
   }
 
   getBoostedParameterCover(unit: TileUnit, effects: Effect[]) {
-    const isAttackHero = unit.heroType === heroType.ATTACK;
+    const isAttackHero = unit.heroType === HeroType.ATTACK;
 
     return this.getBoostedParameter(
       isAttackHero ? unit.attack : unit.defence,

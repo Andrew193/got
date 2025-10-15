@@ -11,10 +11,7 @@ import { NumbersService } from '../numbers/numbers.service';
 })
 export class GameFieldService extends AbstractFieldService {
   private numberService = inject(NumbersService);
-
-  constructor(private gameActionService: GameService) {
-    super();
-  }
+  private gameActionService = inject(GameService);
 
   chooseAiSkill(skills: TileUnitSkill[]): TileUnitSkill {
     const possibleActiveSkill = skills.find(skill => skill.cooldown && !skill.remainingCooldown);
@@ -22,16 +19,13 @@ export class GameFieldService extends AbstractFieldService {
     return possibleActiveSkill || (skills.find(skill => !skill.cooldown) as Skill);
   }
 
-  getDamage(
-    unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit },
-    config: { attack: number },
-  ) {
+  getDamage(unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit }) {
     const fixedDefence = this.gameActionService.getFixedDefence(
       unitConfig.dmgTaker.defence,
       unitConfig.dmgTaker,
     );
     const fixedAttack = this.gameActionService.getFixedAttack(
-      config.attack,
+      unitConfig.attackDealer.attack,
       unitConfig.attackDealer,
     );
     const blockedDamage = fixedDefence * 0.4;

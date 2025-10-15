@@ -18,7 +18,6 @@ export type Coordinate = {
 
 type TileUnitKeys =
   | 'health'
-  | 'inBattle'
   | 'user'
   | 'imgSrc'
   | 'canMove'
@@ -62,3 +61,8 @@ export class GameFieldVars {
   tilesToHighlight: TilesToHighlight[] = [];
   possibleMoves: Position[] = [];
 }
+
+export type GameResultsRedirectType = (
+  realAiUnits: TileUnit[] | TileUnitWithReward[],
+  win: boolean,
+) => void;

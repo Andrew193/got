@@ -28,6 +28,10 @@ describe('UsersService', () => {
 
   const userBase = { login: 'test', password: 'test' };
 
+  function actionHandler<T>(response: T) {
+    console.log('Login: ', response);
+  }
+
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
@@ -76,10 +80,10 @@ describe('UsersService', () => {
 
     httpClientSpy.post.and.returnValue(of(user));
 
-    userService.createUser(userBase).subscribe({
+    userService.createUser(userBase, actionHandler).subscribe({
       next: res => {
         expect(res).toEqual(user);
-        expect(httpClientSpy.post.calls.count()).toBe(1);
+        expect(httpClientSpy.post.calls.count()).toBe(3);
         done();
       },
     });
@@ -96,7 +100,7 @@ describe('UsersService', () => {
       ).pipe(delay(1000)),
     );
 
-    userService.createUser({}).subscribe({
+    userService.createUser({}, actionHandler).subscribe({
       next: () => {
         done.fail('Expected an error, not created user');
       },
@@ -112,7 +116,7 @@ describe('UsersService', () => {
 
     httpClientSpy.get.and.returnValue(of([user]));
 
-    const login$ = userService.login(user).pipe(
+    const login$ = userService.login(user, actionHandler).pipe(
       map(res => res[0]),
       withLatestFrom(userService.$user),
       map(response => {
@@ -143,7 +147,7 @@ describe('UsersService', () => {
       throwError(() => new HttpErrorResponse({ status: 401, statusText: 'Login error' })),
     );
 
-    userService.login({}).subscribe({
+    userService.login({}, actionHandler).subscribe({
       next: () => {
         done.fail('Expected an error.');
       },

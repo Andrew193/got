@@ -49,6 +49,14 @@ export class IronBankDepositHelperService {
     4: 5.6,
   };
 
+  DAYS_TO_DURATION_MULTIPLIERS: Record<number, number> = {
+    3: 0,
+    10: 1,
+    25: 2,
+    120: 3,
+    365: 4,
+  };
+
   readonly depositOptions = [3, 10, 25, 120, 365] as const;
 
   private depositRates: Currency = {

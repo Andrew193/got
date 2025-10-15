@@ -9,8 +9,12 @@ import { frontRoutes } from '../../constants';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../../services/users/users.interfaces';
+import { InitStep, InitTaskObs } from '../../models/init.model';
+import { APP_INIT_STEPS } from '../../injection-tokens';
+import { TextInputComponent } from '../../components/data-inputs/text-input/text-input.component';
+import { LoginFacadeService } from '../../services/facades/login/login.service';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -18,8 +22,21 @@ describe('LoginPageComponent', () => {
   let userServiceSpy: jasmine.SpyObj<UsersService>;
   let location: Location;
   let localStorage: LocalStorageService;
+  const initSteps: InitStep[] = [
+    {
+      name: 'Fake init step',
+      task: function (): Observable<InitTaskObs> {
+        return of({ ok: true, message: 'Ok' });
+      },
+    },
+  ];
+  let facade: jasmine.SpyObj<LoginFacadeService>;
+
+  let inputs: TextInputComponent[];
 
   beforeEach(async () => {
+    facade = jasmine.createSpyObj('LoginFacadeService', ['openAdventureBegins']);
+
     userServiceSpy = jasmine.createSpyObj('UsersService', ['isAuth', 'createUser', 'login']);
 
     userServiceSpy.isAuth.and.returnValue(false);
@@ -52,6 +69,8 @@ describe('LoginPageComponent', () => {
       providers: [
         { provide: LocalStorageService, useClass: FakeLocalStorage },
         { provide: UsersService, useValue: userServiceSpy },
+        { provide: APP_INIT_STEPS, useValue: initSteps },
+        { provide: LoginFacadeService, useValue: facade },
         provideRouter([{ path: frontRoutes.base, component: LoginPageComponent }]),
         provideLocationMocks(),
       ],
@@ -61,6 +80,11 @@ describe('LoginPageComponent', () => {
     localStorage = TestBed.inject(LocalStorageService);
 
     fixture = TestBed.createComponent(LoginPageComponent);
+
+    inputs = fixture.debugElement
+      .queryAllNodes(By.directive(TextInputComponent))
+      .map(el => el.componentInstance as TextInputComponent);
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -80,10 +104,8 @@ describe('LoginPageComponent', () => {
     expect(component.form.valid).toBeFalse();
     expect(component.form.dirty).toBeFalse();
 
-    const loginInput = fixture.debugElement.query(By.css('#login'))
-      .nativeElement as HTMLInputElement;
-    const passwordInput = fixture.debugElement.query(By.css('#password'))
-      .nativeElement as HTMLInputElement;
+    const [loginInput, passwordInput] = inputs;
+
     const submitBtn = fixture.debugElement.query(By.css('.login-btn'))
       .nativeElement as HTMLButtonElement;
 
@@ -95,6 +117,12 @@ describe('LoginPageComponent', () => {
 
     //Show all errors
     submitBtn.dispatchEvent(new Event('click'));
+
+    loginInput.control.markAsDirty();
+    loginInput.control.markAsTouched();
+
+    passwordInput.control.markAsDirty();
+    passwordInput.control.markAsTouched();
 
     await fixture.whenStable();
     fixture.detectChanges();
@@ -115,8 +143,7 @@ describe('LoginPageComponent', () => {
     expect(errorsConfig.errorMessages).toEqual(['Login is required.', 'Password is required.']);
 
     //Fix login error
-    loginInput.value = 'test';
-    loginInput.dispatchEvent(new Event('input'));
+    loginInput.control.setValue('test');
 
     fixture.detectChanges();
     errorsConfig = getErrorsConfig();
@@ -125,8 +152,7 @@ describe('LoginPageComponent', () => {
     expect(errorsConfig.errorMessages).toEqual(['Password is required.']);
 
     //Fix all errors
-    passwordInput.value = 'rest';
-    passwordInput.dispatchEvent(new Event('input'));
+    passwordInput.control.setValue('rest');
 
     fixture.detectChanges();
     errorsConfig = getErrorsConfig();
@@ -135,26 +161,21 @@ describe('LoginPageComponent', () => {
   });
 
   it('LoginPageComponent should create a new user', () => {
-    const loginInput = fixture.debugElement.query(By.css('#login'))
-      .nativeElement as HTMLInputElement;
-    const passwordInput = fixture.debugElement.query(By.css('#password'))
-      .nativeElement as HTMLInputElement;
+    const [loginInput, passwordInput] = inputs;
+
     const submitBtn = fixture.debugElement.query(By.css('.login-btn'))
       .nativeElement as HTMLButtonElement;
 
-    loginInput.value = 'test';
-    passwordInput.value = 'rest';
-
-    loginInput.dispatchEvent(new Event('input'));
-    passwordInput.dispatchEvent(new Event('input'));
-
+    loginInput.control.setValue('test');
+    passwordInput.control.setValue('rest');
     fixture.detectChanges();
 
     submitBtn.dispatchEvent(new Event('click'));
 
     fixture.detectChanges();
 
-    expect(userServiceSpy.login).toHaveBeenCalled();
+    expect(facade.openAdventureBegins).toHaveBeenCalled();
+    component.submitInnerFunction();
 
     const user = localStorage.getItem('user') as User;
 
@@ -172,18 +193,16 @@ describe('LoginPageComponent', () => {
     expect(modeSwitcher.textContent?.trim()).toBe('Sign up');
 
     //Create a new user
-    const loginInput = fixture.debugElement.query(By.css('#login'))
-      .nativeElement as HTMLInputElement;
-    const passwordInput = fixture.debugElement.query(By.css('#password'))
-      .nativeElement as HTMLInputElement;
+    const [loginInput, passwordInput] = inputs;
+
     const submitBtn = fixture.debugElement.query(By.css('.login-btn'))
       .nativeElement as HTMLButtonElement;
 
-    loginInput.value = 'create';
-    passwordInput.value = 'create';
+    loginInput.control.setValue('create');
+    passwordInput.control.setValue('create');
 
-    loginInput.dispatchEvent(new Event('input'));
-    passwordInput.dispatchEvent(new Event('input'));
+    loginInput.control.markAsTouched();
+    passwordInput.control.markAsTouched();
 
     fixture.detectChanges();
 
@@ -191,6 +210,7 @@ describe('LoginPageComponent', () => {
 
     fixture.detectChanges();
 
+    component.submitInnerFunction();
     const user = localStorage.getItem('user') as User;
 
     expect(userServiceSpy.createUser).toHaveBeenCalled();

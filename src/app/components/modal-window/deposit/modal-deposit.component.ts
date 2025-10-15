@@ -47,7 +47,9 @@ export class DepositModalComponent implements HasFooterHost {
   }
 
   get rates() {
-    return this.helper.deposit.getRates();
+    return this.helper.deposit.getRates(
+      this.helper.deposit.DAYS_TO_DURATION_MULTIPLIERS[this._data.days],
+    );
   }
 
   getDepositDay(date: number) {
@@ -62,10 +64,16 @@ export class DepositModalComponent implements HasFooterHost {
     return toggler ? DifferenceMode.arrow : DifferenceMode.hourglass;
   }
 
-  getDeposit() {
+  getDeposit(canceled: boolean) {
     this.depositFacadeService
-      .getDeposit(this.currencyHelperService.convertCoinToCurrency(this.newCoins))
-      .subscribe(this.dialogRef.close);
+      .getDeposit(
+        this.currencyHelperService.convertCoinToCurrency(
+          canceled ? this.getCoins() : this.newCoins,
+        ),
+      )
+      .subscribe(() => {
+        this.dialogRef.close();
+      });
   }
 
   setNewCoins(coins: Coin[]) {

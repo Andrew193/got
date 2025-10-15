@@ -9,7 +9,6 @@ import { provideRouter } from '@angular/router';
 import { frontRoutes } from '../../constants';
 import { provideLocationMocks } from '@angular/common/testing';
 import { Location } from '@angular/common';
-import { ImageComponent } from '../../components/views/image/image.component';
 import { By } from '@angular/platform-browser';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 
@@ -81,13 +80,9 @@ describe('SummonTreeComponent', () => {
   });
 
   it('SummonTreeComponent should have a background image', () => {
-    const images = fixture.debugElement.queryAll(By.directive(ImageComponent));
+    const bgImage = fixture.debugElement.query(By.css('.summon-background'));
 
-    const bgImage = images.filter(el => {
-      return el.query(By.css('.summon-background'));
-    });
-
-    expect(bgImage.length).toBe(1);
+    expect(bgImage).toBeTruthy();
   });
 
   it('SummonTreeComponent should render a reward list', async () => {

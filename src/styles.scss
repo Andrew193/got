@@ -223,6 +223,20 @@ mat-bottom-sheet-container {
   height: 80%;
 }
 
+.cdk-overlay-pane:has(app-first-battle),
+.cdk-overlay-pane:has(app-login-final) {
+  width: 100%;
+  justify-content: center;
+
+  mat-bottom-sheet-container {
+    width: inherit;
+  }
+}
+
+.cdk-overlay-pane:has(app-login-final) {
+  height: auto;
+}
+
 :root {
   @include mat.bottom-sheet-overrides(
     (

@@ -11,7 +11,7 @@ import { InitInterface } from '../../models/interfaces/init.interface';
 import { InitTaskObs } from '../../models/init.model';
 import { ConfigInterface } from '../../models/interfaces/config.interface';
 import { GetConfig } from '../../models/common.model';
-import { DepositService } from '../users/currency/currency.service';
+import { DepositService } from '../users/currency/deposit.service';
 
 export enum NotificationType {
   daily_reward,
