@@ -56,6 +56,6 @@
   </div>
 </ng-template>
 
-@if (isShowDailyReward) {
+@if (showDailyReward$ | async) {
   <app-daily-reward [closePopup]="showDailyReward"></app-daily-reward>
 }

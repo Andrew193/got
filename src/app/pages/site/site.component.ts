@@ -18,7 +18,6 @@ export class SiteComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.usersService.isAuth()) {
-      debugger;
       this.nav.goToLogin();
     }
   }

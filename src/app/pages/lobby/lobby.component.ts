@@ -16,11 +16,15 @@ import { NotificationType } from '../../services/notifications/notifications.ser
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule } from '@angular/forms';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NumbersService, NumbersService2 } from '../../services/numbers/numbers.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
 import { MatLine } from '@angular/material/core';
+import { Store } from '@ngrx/store';
+import { StoreType } from '../../store/store.interfaces';
+import { selectDailyRewardFlag } from '../../store/selectors/lobby.selectors';
+import { toggleDailyReward } from '../../store/actions/lobby.actions';
 
 export type Route = {
   name: string;
@@ -120,14 +124,15 @@ export class UserComponent implements AfterContentInit {
     MatListItem,
     MatDivider,
     MatLine,
+    AsyncPipe,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',
 })
 export class LobbyComponent {
   nav = inject(NavigationService);
-
-  isShowDailyReward = false;
+  store = inject(Store<StoreType>);
+  readonly showDailyReward$ = this.store.select(selectDailyRewardFlag);
 
   pageRoutes: Route[] = [
     { name: 'Tavern', url: frontRoutes.taverna, src: 'taverna.png' },
@@ -144,7 +149,7 @@ export class LobbyComponent {
   ];
 
   public showDailyReward = () => {
-    this.isShowDailyReward = !this.isShowDailyReward;
+    this.store.dispatch(toggleDailyReward());
   };
 
   activities: Activity[] = [

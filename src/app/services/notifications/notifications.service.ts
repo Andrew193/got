@@ -58,7 +58,7 @@ export class NotificationsService implements InitInterface {
           .subscribe();
       });
 
-      this.showPossibleActivities();
+      //this.showPossibleActivities();
 
       return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
     } catch (e) {
@@ -83,7 +83,6 @@ export class NotificationsService implements InitInterface {
   }
 
   private showPossibleActivities() {
-    console.log('dfdsffsd');
     const config = this.modalWindowService.getModalConfig('', '', '', {
       open: true,
       callback: () => {},

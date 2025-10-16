@@ -3,6 +3,7 @@ import {
   importProvidersFrom,
   inject,
   provideAppInitializer,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter, withPreloading } from '@angular/router';
 import { routes } from './app.routes';
@@ -21,6 +22,9 @@ import { STEP_DEFAULT_ORDER } from './constants';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InitStep } from './models/init.model';
 import { paramsCheckerInterceptor } from './interceptors/params-checker/params-checker.interceptor';
+import { provideStore } from '@ngrx/store';
+import { StateConfigs } from './store/store.config';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -69,5 +73,8 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([paramsCheckerInterceptor, authInterceptor, loggerInterceptor]),
     ),
     provideAnimationsAsync(),
+    provideStore(),
+    StateConfigs,
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
