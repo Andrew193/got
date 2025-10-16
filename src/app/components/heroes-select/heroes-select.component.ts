@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
-import { SelectableUnit } from '../../models/unit.model';
+import { ChangeDetectionStrategy, Component, input, Input, OnInit } from '@angular/core';
+import { HeroesNamesCodes, SelectableUnit } from '../../models/unit.model';
+import { RewardValues } from '../../models/reward-based.model';
 
 @Component({
   selector: 'app-heroes-select',
@@ -7,31 +8,32 @@ import { SelectableUnit } from '../../models/unit.model';
   styleUrl: './heroes-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeroesSelectComponent {
+export class HeroesSelectComponent implements OnInit {
   title = input('');
   containerClass = input('');
   allHeroes = input<SelectableUnit[]>([]);
   isUser = input(false);
+  defaultUnits = input<(HeroesNamesCodes | RewardValues)[]>([]);
 
   @Input() addUserUnit: (unit: SelectableUnit, isUser?: boolean) => boolean = () => true;
 
-  leftUnits: Map<string, string> = new Map<string, string>();
-  rightUnits: Map<string, string> = new Map<string, string>();
+  units = new Set<HeroesNamesCodes | RewardValues>();
+
+  ngOnInit() {
+    this.units = new Set(this.defaultUnits());
+  }
 
   unitClick(unit: SelectableUnit) {
     const isUser = this.isUser();
 
-    const key = isUser ? 'leftUnits' : 'rightUnits';
     const updateCheck = (shouldAdd = true) => {
-      this[key].has(unit.name) || !shouldAdd
-        ? this[key].delete(unit.name)
-        : this[key].set(unit.name, unit.name);
+      this.units.has(unit.name) || !shouldAdd
+        ? this.units.delete(unit.name)
+        : this.units.add(unit.name);
     };
 
     updateCheck(this.addUserUnit(unit, isUser));
   }
 
-  public checkSelected = (unitName: string, user = true) => {
-    return user ? this.leftUnits.has(unitName) : this.rightUnits.has(unitName);
-  };
+  public checkSelected = (unitName: HeroesNamesCodes | RewardValues) => this.units.has(unitName);
 }

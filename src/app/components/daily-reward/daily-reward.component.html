@@ -1,3 +1,5 @@
+@let _isHeroPreview = isHeroPreview | async;
+
 <div class="c-container d-flex align-items-center justify-content-center">
   <div (appOutsideClick)="closePopup()" class="col-11 inner-container row position-relative">
     <!-- Hero Preview Section -->
@@ -8,12 +10,12 @@
     </div>
 
     <aside class="col-lg-9 col-md-12 col-sm-12 flex-column justify-content-evenly pt-2">
-      @if (!isHeroPreview) {
+      @if (!_isHeroPreview) {
         <h1 class="text-center caption">Collect rewards every day and they will only grow!!!</h1>
       }
 
       <!-- Rewards List -->
-      @if (!isHeroPreview && dailyRewardConfig.totalDays) {
+      @if (!_isHeroPreview && dailyRewardConfig.totalDays) {
         <app-rewards-calendar
           [rewardPool]="month"
           [claimReward]="claimReward"
@@ -23,7 +25,7 @@
       }
 
       <!-- Hero Preview Details -->
-      @if (isHeroPreview) {
+      @if (_isHeroPreview) {
         <div>
           <p style="font-weight: bold; color: white">
             {{ rewardHero.description }}

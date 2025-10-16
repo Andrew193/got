@@ -19,6 +19,8 @@ export class BasicLocalStorage {
   updateLocalStorage$ = this.updateLocalStorage.asObservable();
 
   prefix = 'got_';
+  static appPrefix = '__app_state__';
+
   static names = {
     [USER_TOKEN]: USER_TOKEN,
     localOnlineBuffer: 'localOnlineBuffer',

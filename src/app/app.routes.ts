@@ -4,6 +4,7 @@ import { LobbyComponent } from './pages/lobby/lobby.component';
 import { AuthGuard, GiftGuard } from './guards/canActivate';
 import { frontRoutes } from './constants';
 import { TestResolver } from './test.resolver';
+import { StateConfigs } from './store/store.config';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
         component: LobbyComponent,
         path: frontRoutes.base,
         resolve: { test: TestResolver },
+        providers: [StateConfigs.lobby, StateConfigs.dailyReward],
       },
       {
         path: frontRoutes.taverna,
@@ -25,6 +27,7 @@ export const routes: Routes = [
         path: frontRoutes.training,
         loadChildren: () =>
           import('./modules/training/training.module').then(m => m.TrainingModule),
+        providers: [StateConfigs.trainingGround],
       },
       {
         path: frontRoutes.dailyBoss,

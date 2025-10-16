@@ -1,9 +1,11 @@
 @let options = allHeroes();
 @let _isUser = isUser();
+@let _title = title();
+@let _containerClass = containerClass();
 
 <div class="d-flex justify-content-center heroes-select-container">
-  <div class="col-12 units-config-inner-container {{ containerClass() }}">
-    <h4 class="text-center">{{ title() }}</h4>
+  <div class="col-12 units-config-inner-container" [class]="_containerClass">
+    <h4 class="text-center">{{ _title }}</h4>
     <div class="flex-row justify-content-evenly">
       @for (unit of options; track unit.name) {
         <div class="m-1" (click)="unitClick(unit)">
@@ -16,7 +18,7 @@
             <img
               [src]="unit.imgSrc"
               [alt]="unit.name"
-              [class.selected-enemy]="checkSelected(unit.name, false)" />
+              [class.selected-enemy]="checkSelected(unit.name)" />
           }
         </div>
       }

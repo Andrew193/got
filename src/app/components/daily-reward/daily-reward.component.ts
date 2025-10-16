@@ -25,6 +25,10 @@ import { RewardsCalendarComponent } from '../common/rewards-calendar/rewards-cal
 import { DailyReward } from '../../models/reward-based.model';
 import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
 import { TileUnit } from '../../models/field.model';
+import { Store } from '@ngrx/store';
+import { selectIsHeroPreview } from '../../store/reducers/daily-reward.reducer';
+import { AsyncPipe } from '@angular/common';
+import { toggleHeroPreview } from '../../store/actions/daily-reward.actions';
 
 export interface DayReward {
   copperCoin: number;
@@ -37,17 +41,25 @@ export interface DayReward {
 
 @Component({
   selector: 'app-daily-reward',
-  imports: [OutsideClickDirective, StatsComponent, RewardsCalendarComponent, SkillsRenderComponent],
+  imports: [
+    OutsideClickDirective,
+    StatsComponent,
+    RewardsCalendarComponent,
+    SkillsRenderComponent,
+    AsyncPipe,
+  ],
   templateUrl: './daily-reward.component.html',
   styleUrl: './daily-reward.component.scss',
 })
 export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
+  store = inject(Store);
+  isHeroPreview = this.store.select(selectIsHeroPreview);
+
   @Input() closePopup: () => void = () => {};
   @ViewChild('heroInFrame') heroInFrame: any;
 
   notificationService = inject(NotificationsService);
   destroyRef = inject(DestroyRef);
-  isHeroPreview = false;
   rewardHero!: Unit;
   tileRewardHero!: TileUnit;
   month: DayReward[] = [];
@@ -73,7 +85,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   rewardClass = (i: number) => (+this.dailyRewardConfig.day === i ? 'today' : '');
 
   showHeroPreview() {
-    this.isHeroPreview = !this.isHeroPreview;
+    this.store.dispatch(toggleHeroPreview());
   }
 
   ngOnInit(): void {

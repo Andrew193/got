@@ -1,3 +1,6 @@
+@let _userSelCtx = userSelCtx();
+@let _aiSelCtx = aiSelCtx();
+
 <div>
   <h3 class="text-center">Configure your training</h3>
   <div class="flex-row units-config-container">
@@ -14,18 +17,19 @@
   </div>
 
   <div class="flex-row units-config-container" style="margin-top: 7px">
-    <ng-container [ngTemplateOutlet]="selectedUnitsBar" [ngTemplateOutletContext]="userSelCtx">
+    <ng-container [ngTemplateOutlet]="selectedUnitsBar" [ngTemplateOutletContext]="_userSelCtx">
     </ng-container>
-    <ng-container [ngTemplateOutlet]="selectedUnitsBar" [ngTemplateOutletContext]="aiSelCtx">
+    <ng-container [ngTemplateOutlet]="selectedUnitsBar" [ngTemplateOutletContext]="_aiSelCtx">
     </ng-container>
   </div>
 </div>
 
-<ng-template #unitsBar let-isUser="isUser" let-title="title">
+<ng-template #unitsBar let-isUser="isUser" let-title="title" let-defaultUnits="defaultUnits">
   <div class="col-lg-6 col-md-12">
     <app-heroes-select
       [title]="title"
       [isUser]="isUser"
+      [defaultUnits]="defaultUnits"
       [allHeroes]="allUnitsForSelect"
       [addUserUnit]="addUserUnit"></app-heroes-select>
   </div>

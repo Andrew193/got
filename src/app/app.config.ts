@@ -23,8 +23,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { InitStep } from './models/init.model';
 import { paramsCheckerInterceptor } from './interceptors/params-checker/params-checker.interceptor';
 import { provideStore } from '@ngrx/store';
-import { StateConfigs } from './store/store.config';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { hydrationMeta } from './store/meta/hydration.meta';
+import { StoreNames } from './store/store.interfaces';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -73,8 +74,9 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([paramsCheckerInterceptor, authInterceptor, loggerInterceptor]),
     ),
     provideAnimationsAsync(),
-    provideStore(),
-    StateConfigs,
+    provideStore(undefined, {
+      metaReducers: [hydrationMeta([StoreNames.trainingGround])],
+    }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };

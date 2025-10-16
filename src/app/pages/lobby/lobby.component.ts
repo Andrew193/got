@@ -22,7 +22,6 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
 import { MatLine } from '@angular/material/core';
 import { Store } from '@ngrx/store';
-import { StoreType } from '../../store/store.interfaces';
 import { selectDailyRewardFlag } from '../../store/selectors/lobby.selectors';
 import { toggleDailyReward } from '../../store/actions/lobby.actions';
 
@@ -131,7 +130,7 @@ export class UserComponent implements AfterContentInit {
 })
 export class LobbyComponent {
   nav = inject(NavigationService);
-  store = inject(Store<StoreType>);
+  store = inject(Store);
   readonly showDailyReward$ = this.store.select(selectDailyRewardFlag);
 
   pageRoutes: Route[] = [
