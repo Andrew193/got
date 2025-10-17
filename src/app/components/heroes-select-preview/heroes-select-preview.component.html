@@ -1,9 +1,11 @@
 @let options = units();
 @let _user = user();
+@let _containerClass = containerClass();
+@let _title = title();
 
 <div class="d-flex justify-content-center heroes-container">
-  <div class="col-12 units-config-inner-container {{ containerClass() }}">
-    <h4 class="text-center">{{ title() }}</h4>
+  <div class="col-12 units-config-inner-container" [class]="_containerClass">
+    <h4 class="text-center">{{ _title }}</h4>
     <div class="flex-row justify-content-evenly preview-selected-heroes">
       @for (unit of options; let i = $index; track unit.name) {
         <div>
@@ -17,7 +19,7 @@
           </div>
           <div class="col description-bar">
             @if (getDescriptionState(_user, i)) {
-              <div class="ps-3">{{ unit.description }}</div>
+              <div class="p-2">{{ unit.description }}</div>
             } @else {
               <div class="d-flex justify-content-around">
                 @for (skill of unit.skills; track skill.imgSrc + $index) {

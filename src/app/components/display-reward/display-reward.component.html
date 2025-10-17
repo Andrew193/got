@@ -1,4 +1,4 @@
-@let _cards = cards();
+@let _cards = rewards();
 @let _containerClass = containerClass();
 @let _imageClass = imageClass();
 
@@ -6,6 +6,7 @@
 @let _showTotalReward = showTotalReward();
 
 @let _showOpenButton = showOpenButton();
+@let _contextName = contextName();
 
 @if (_cards.length) {
   <div
@@ -13,19 +14,11 @@
     [class]="_containerClass">
     @for (card of _cards; track $index) {
       @if (card) {
-        <div class="flip-items-inner-container col" [class.claimed]="card.flipped">
-          <div class="flip-card">
-            <div class="card-front" (click)="revealOne($index)">?</div>
-            <div class="card-back">
-              <app-image
-                [alt]="card.name"
-                [source]="card.src"
-                [imageClass]="'card-image ' + _imageClass" />
-              <span [class]="card.name.toLowerCase()" class="ignore">
-                {{ card.amount | number }}
-              </span>
-            </div>
-          </div>
+        <div class="flip-items-inner-container col">
+          <app-card
+            [cardCollectionName]="_contextName"
+            [index]="$index"
+            [imageClass]="_imageClass" />
         </div>
       } @else {
         <div class="flip-items-inner-container col">

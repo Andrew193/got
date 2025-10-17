@@ -179,8 +179,8 @@ describe('GameService', () => {
     gameService.checkCloseFight([{ ...testUnit, health: 0 }], [testUnit], callbackSpy);
     expect(modalWindowServiceSpy.openModal).toHaveBeenCalledWith({
       headerClass: 'red-b',
-      headerMessage: 'Вы проиграли',
-      closeBtnLabel: 'Попробовать позже',
+      headerMessage: 'You lost',
+      closeBtnLabel: 'Try again later',
       config: jasmine.any(Object),
     });
 
@@ -192,8 +192,8 @@ describe('GameService', () => {
     );
     expect(modalWindowServiceSpy.openModal).toHaveBeenCalledWith({
       headerClass: 'green-b',
-      headerMessage: 'Вы победили',
-      closeBtnLabel: 'Отлично',
+      headerMessage: 'You won',
+      closeBtnLabel: 'Great',
       config: jasmine.any(Object),
     });
   });

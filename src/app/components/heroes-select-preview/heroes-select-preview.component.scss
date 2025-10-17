@@ -28,8 +28,6 @@
   }
 
   .description-bar {
-    padding-left: 5px;
-
     @include index.anim-border-glow(skill-disabled);
   }
 

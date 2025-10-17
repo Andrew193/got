@@ -85,10 +85,10 @@ export class HeroesService extends ContentService {
       fullImgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png',
       name: HeroesNamesCodes.LadyOfDragonStone,
       description:
-        'По мере того как ее влияние растет, способность Дейенерис направлять огонь своего сердца через свой народ заставляет её совершать великие военные подвиги.',
+        "As her influence grows, Daenerys's ability to channel the fire of her heart through her people drives her to perform great feats of war.",
       skills: [
         {
-          name: 'Сожжение',
+          name: 'Burning',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/lds/skills/UI_HeroicAbility_BloodOfTheDragon.jpeg',
           dmgM: 1.8,
@@ -108,7 +108,7 @@ export class HeroesService extends ContentService {
             ' на 5 ходов.',
         },
         {
-          name: 'Дракарис',
+          name: 'Drakarys',
           imgSrc: '../../../assets/resourses/imgs/heroes/lds/skills/UI_ActiveAbility_Dracarys.jpeg',
           dmgM: 2.9,
           cooldown: 3,
@@ -140,7 +140,7 @@ export class HeroesService extends ContentService {
             ' на 3 хода.',
         },
         {
-          name: 'Таргариен',
+          name: 'Targaryen',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/lds/skills/UI_PassiveAbility_FerventDevotion.jpeg',
           dmgM: 0,
@@ -191,10 +191,10 @@ export class HeroesService extends ContentService {
       fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png',
       name: HeroesNamesCodes.TargaryenKnight,
       description:
-        'Всесторонний воин Таргариенов из Королевских земель, этот рыцарь превосходен как в нападении, так и в защите.',
+        'A versatile Targaryen warrior from the Crownlands, this knight excels in both offense and defense.',
       skills: [
         {
-          name: 'Ярость дракона',
+          name: 'Dragon Fury',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_ActiveAbility_Intimidate.webp',
           dmgM: 1.1,
@@ -211,7 +211,7 @@ export class HeroesService extends ContentService {
             ' на 2 хода.',
         },
         {
-          name: 'За Короля',
+          name: 'For the King',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_HeroicAbility_ShieldMastery.webp',
           dmgM: 1.3,
@@ -236,7 +236,7 @@ export class HeroesService extends ContentService {
             ' на 1 ход.',
         },
         {
-          name: 'Щит короны',
+          name: 'Crown Shield',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_PassiveAbility_ScaledArmor.webp',
           dmgM: 0,
@@ -287,31 +287,31 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png',
       name: HeroesNamesCodes.WhiteWolf,
       description:
-        'Альфа стаи за стеной. Вселяет ужас в сердца людей и наносит ужасные раны в гневе.',
+        'The alpha of the pack beyond the wall. Strikes terror into the hearts of men and inflicts terrible wounds in anger.',
       skills: [
         {
-          name: 'Укус зверя',
+          name: 'Beast bite',
           imgSrc: '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png',
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.eS.getEffect(this.effects.bleeding, 1)],
           description:
-            'Наносит противнику урон в размере 100% от показателя атаки, накладывает на врага штраф ' +
+            'Deals damage to the enemy equal to 100% of the attack value, imposes a penalty on the enemy ' +
             this.effects.bleeding +
-            ' на 1 ход.',
+            ' for 1 move.',
         },
         {
-          name: 'Рваная рана',
+          name: 'Torn wound',
           imgSrc: '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_def_attack.png',
           dmgM: 1.2,
           cooldown: 3,
           remainingCooldown: 0,
           debuffs: [this.eS.getEffect(this.effects.defBreak)],
           description:
-            'Наносит врагу урон в размере 120% от показателя атаки, накладывает на врага штраф ' +
+            'Deals damage to an enemy equal to 120% of the attack value and applies a debuff to the enemy. ' +
             this.effects.defBreak +
-            ' на 2 хода.',
+            ' for 2 moves.',
         },
       ],
       effects: [],
@@ -344,10 +344,10 @@ export class HeroesService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png',
       name: HeroesNamesCodes.Priest,
-      description: 'Жрец за стеной.',
+      description: 'The priest beyond the wall.',
       skills: [
         {
-          name: 'Перевязка ран',
+          name: 'Wound dressing',
           imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/skills/health_restore_buff.png',
           dmgM: 0.15,
           healM: 0.1,
@@ -356,10 +356,10 @@ export class HeroesService extends ContentService {
           healAll: true,
           heal: true,
           description:
-            'Наносит противнику урон в размере 15% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 10% от своего максимального здоровья.',
+            'Deals damage to an enemy equal to 15% of their defense. Before attacking, restores health to all allies equal to 10% of their maximum health.',
         },
         {
-          name: 'Великое исцеление',
+          name: 'Great Healing',
           imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/skills/healer_2skill.png',
           dmgM: 1,
           healM: 0.25,
@@ -371,11 +371,11 @@ export class HeroesService extends ContentService {
           healAll: true,
           heal: true,
           description:
-            'Наносит противнику урон в размере 100% от показателя защиты. Перед атакой восстанавливает всем союзникам здоровье в размере 25% от своего максимального здоровья.' +
-            ' Наносит 90% от атаки врагам в радиусе 3 клеток.',
+            'Deals damage to an enemy equal to 100% of their defense. Before attacking, restores all allies' +
+            ' health equal to 25% of their maximum health. Deals 90% of their attack damage to enemies within a 3-tile radius.',
         },
         {
-          name: 'Локранд',
+          name: 'Lokrand',
           imgSrc: '../../../assets/resourses/imgs/icons/aura.png',
           dmgM: 0,
           cooldown: 0,
@@ -383,9 +383,9 @@ export class HeroesService extends ContentService {
           passive: true,
           restoreSkill: true,
           description:
-            'Получает на 15% меньше урона от атак противников. В начале игры получает бонус ' +
+            'Takes 15% less damage from enemy attacks. Receives a bonus at the start of the game. ' +
             this.effects.healthRestore +
-            ' на 2 раунда. Имеет шанс воскреснуть после смертельного удара.',
+            ' for 2 rounds. Has a chance to resurrect after a fatal blow.',
         },
       ],
       effects: [this.eS.getEffect(this.effects.healthRestore)],
@@ -417,15 +417,15 @@ export class HeroesService extends ContentService {
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png',
       name: HeroesNamesCodes.BrownWolf,
-      description: 'Волк стаи за стеной.',
+      description: 'The wolf of the pack beyond the wall.',
       skills: [
         {
-          name: 'Укус',
+          name: 'Taste',
           imgSrc: '../../../assets/resourses/imgs/heroes/wolf/skills/wolf_attack.png',
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
-          description: 'Наносит противнику урон в размере 100% от показателя атаки.',
+          description: 'Deals damage to the enemy equal to 100% of the attack value.',
         },
       ],
       effects: [],
@@ -458,19 +458,20 @@ export class HeroesService extends ContentService {
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Icon_Avatar_FullBody_Wildling_02_IceRiverHunters.png',
       name: HeroesNamesCodes.IceRiverHunter,
-      description: 'Молодой охотник из земель за стеной. Ледяная река - его место охоты.',
+      description:
+        'A young hunter from the lands beyond the wall. The icy river is his hunting ground.',
       skills: [
         {
-          name: 'Ледяная стрела',
+          name: 'Ice Arrow',
           imgSrc: '../../../assets/resourses/imgs/heroes/iceriver_hunter/skills/iceriver_h_c_s.png',
           dmgM: 2.1,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.eS.getEffect(this.effects.freezing)],
           description:
-            'Наносит противнику урон в размере 210% от показателя атаки, накладывает на врага штраф ' +
+            'Deals damage to the enemy equal to 210% of the attack value, imposes a penalty on the enemy ' +
             this.effects.freezing +
-            ' на 2 хода.',
+            ' for 2 moves.',
         },
       ],
       effects: [],
@@ -501,10 +502,11 @@ export class HeroesService extends ContentService {
       imgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png',
       fullImgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png',
       name: HeroesNamesCodes.RelinaShow,
-      description: 'Релина Сноу это воительница Зачарованного Леса. Умелый и хитрый боец.',
+      description:
+        'Relina Snow is a warrior of the Enchanted Forest. A skilled and cunning fighter.',
       skills: [
         {
-          name: 'Капкан',
+          name: 'Trap',
           imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a1.png',
           dmgM: 1.9,
           cooldown: 0,
@@ -515,17 +517,16 @@ export class HeroesService extends ContentService {
           debuffs: [this.eS.getEffect(this.effects.poison), this.eS.getEffect(this.effects.root)],
           inRangeDebuffs: [this.eS.getEffect(this.effects.attackBreak)],
           description:
-            'Наносит противнику урон в размере 190% от показателя атаки, накладывает штраф ' +
+            'Deals damage to the enemy equal to 190% of the attack value, applies a penalty ' +
             this.effects.poison +
-            ' на 2 ходa. ' +
-            'Также накладывает штраф ' +
+            ' for 2 turns. Also applies a penalty ' +
             this.effects.root +
-            ' на 2 хода. Все враги на поле получают штраф ' +
+            ' for 2 turns. All enemies on the field receive a penalty. ' +
             this.effects.attackBreak +
-            ' на 2 ходa.',
+            ' for 2 moves.',
         },
         {
-          name: 'Засада',
+          name: 'Ambush',
           imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_a2.png',
           dmgM: 1.5,
           cooldown: 2,
@@ -538,24 +539,23 @@ export class HeroesService extends ContentService {
             this.eS.getEffect(this.effects.defBreak),
           ],
           description:
-            'Наносит противнику урон в размере 150% от показателя атаки, накладывает на врага штрафы: ' +
+            'Deals damage to the enemy equal to 150% of the attack value, imposes penalties on the enemy: ' +
             this.effects.bleeding +
-            ' и ' +
+            ' and ' +
             this.effects.defBreak +
-            ' на 2 ходa. Также атакует противников в радиусе 3 клетoк на 115% от атаки.',
+            ' for 2 turns. Also attacks enemies within a 3-cell radius with 115% of their attack.',
         },
         {
-          name: 'Воительница',
+          name: 'Warrior',
           imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_p.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
           passive: true,
           description:
-            'Этот герой получает на 25% меньше урона от штрафа ' +
+            'This hero takes 25% less damage from the debuff. ' +
             this.effects.bleeding +
-            '. Может атаковать с растояния в 2 клетки.' +
-            ' На этого героя невозможно наложить штрафы: ' +
+            '. Can attack from a distance of 2 cells. This hero cannot be penalized: ' +
             this.effects.poison +
             ', ' +
             this.effects.freezing +
@@ -595,22 +595,22 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
       name: HeroesNamesCodes.FreeTrapper,
       description:
-        'Лучник вольного народа изучал мастерство убийства с рождения. Он мастерски владеет природными ядами и умеет ставить капканы на животных и людей.',
+        'A Free Folk archer has studied the art of assassination since birth. He is a master of natural poisons and knows how to set traps for animals and people.',
       skills: [
         {
-          name: 'Токсичный выстрел',
+          name: 'Toxic Shot',
           imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_c_skill.png',
           dmgM: 1.5,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.eS.getEffect(this.effects.poison, 1)],
           description:
-            'Наносит противнику урон в размере 150% от показателя атаки, накладывает штраф ' +
+            'Deals damage to the enemy equal to 150% of the attack value, applies a penalty ' +
             this.effects.poison +
-            ' на 1 ход.',
+            ' for 1 turn.',
         },
         {
-          name: 'Ловушка',
+          name: 'Trap',
           imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_a_skill.png',
           dmgM: 2,
           cooldown: 3,
@@ -623,23 +623,23 @@ export class HeroesService extends ContentService {
             this.eS.getEffect(this.effects.defBreak),
           ],
           description:
-            'Наносит противнику урон в размере 200% от показателя атаки, накладывает на врага штрафы: ' +
+            'Deals damage to the enemy equal to 200% of the attack value, imposes penalties on the enemy: ' +
             this.effects.bleeding +
-            ' и ' +
+            ' and ' +
             this.effects.defBreak +
-            ' на 2 хода. Также атакует противников в радиусе 1 клетки на 50% от атаки.',
+            ' for 2 turns. Also attacks enemies within a 1-cell radius with 50% of their attack.',
         },
         {
-          name: 'Вольный человек',
+          name: 'A free man',
           imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
           passive: true,
           description:
-            'Этот герой получает на 25% меньше урона от штрафа ' +
+            'This hero takes 25% less damage from the debuff. ' +
             this.effects.poison +
-            '. Может атаковать с растояния в 2 клетки.',
+            '. Can attack from a distance of 2 cells.',
         },
       ],
       effects: [],
@@ -671,22 +671,22 @@ export class HeroesService extends ContentService {
       fullImgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
       name: HeroesNamesCodes.Giant,
       description:
-        'Невероятно сильный враг. Мифическое существо из сказаний. Его шкуру почти невозможно пробить оружием, но он уязвим к ослаблениям.',
+        'An incredibly powerful enemy. A mythical creature from legends. Its hide is almost impenetrable by weapons, but it is vulnerable to debuffs.',
       skills: [
         {
-          name: 'Могучий удар',
+          name: 'Mighty Blow',
           imgSrc: '../../../assets/resourses/imgs/heroes/giant/skills/giant_c_skill.png',
           dmgM: 3,
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.eS.getEffect(this.effects.attackBreak)],
           description:
-            'Наносит противнику урон в размере 300% от показателя атаки и накладывает на него штраф ' +
+            'Deals 300% of Attack damage to an enemy and applies a debuff to them. ' +
             this.effects.attackBreak +
-            ' на 2 хода.',
+            ' for 2 turns.',
         },
         {
-          name: 'Крошитель',
+          name: 'Crusher',
           imgSrc: '../../../assets/resourses/imgs/heroes/giant/skills/giant_active_skill.png',
           dmgM: 5,
           cooldown: 6,
@@ -695,14 +695,14 @@ export class HeroesService extends ContentService {
           addBuffsBeforeAttack: false,
           debuffs: [this.eS.getEffect(this.effects.defBreak)],
           description:
-            'Наносит врагу урон в размере 500% от показателя атаки, накладывает на него штраф ' +
+            'Deals damage to an enemy equal to 500% of their attack value and applies a debuff to them. ' +
             this.effects.defBreak +
-            ' на 2 хода. После атаки накладывает на себя ' +
+            ' for 2 turns. After attacking, casts a buff on himself. ' +
             this.effects.attackBuff +
-            ' на 2 хода.',
+            ' for 2 turns.',
         },
         {
-          name: 'Гигант',
+          name: 'Giant',
           imgSrc: '../../../assets/resourses/imgs/icons/aura.png',
           dmgM: 0,
           cooldown: 0,
@@ -710,7 +710,7 @@ export class HeroesService extends ContentService {
           passive: true,
           restoreSkill: true,
           description:
-            'Получает на 50% меньше урона от атак противников, но крайне уязвим к ослаблениям и штрафам. На этого героя невозможно наложить штраф ' +
+            'Takes 50% less damage from enemy attacks, but is extremely vulnerable to debuffs and penalties. This hero cannot be debuffed. ' +
             this.effects.freezing,
         },
       ],
@@ -744,10 +744,11 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png',
       name: HeroesNamesCodes.NightKing,
       description:
-        'Ужасный враг. Сильнейший из белых ходоков и король Края Вечной Зимы. Создан для защиты живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
+        'A terrible enemy. The most powerful of the White Walkers and the king of the Land of Eternal Winter. Created to protect ' +
+        'the living, he now seeks to plunge the world into darkness and eternal night.',
       skills: [
         {
-          name: 'Ветер Севера',
+          name: 'Wind of the North',
           imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_c_s.png',
           dmgM: 2.4,
           cooldown: 0,
@@ -758,15 +759,14 @@ export class HeroesService extends ContentService {
           debuffs: [this.eS.getEffect(this.effects.freezing)],
           inRangeDebuffs: [this.eS.getEffect(this.effects.freezing)],
           description:
-            'Наносит противнику урон в размере 240% от показателя атаки и накладывает на него штраф ' +
+            'Deals 240% of Attack damage to an enemy and applies a debuff to them. ' +
             this.effects.freezing +
-            ' на 2 хода. Также атакует всех врагов на поле на 150% от показателя атаки,' +
-            ' накладывает на них штраф ' +
+            ' for 2 turns. Also attacks all enemies on the field with 150% of their attack value, inflicting a penalty on them. ' +
             this.effects.freezing +
-            ' на 2 ходa.',
+            ' for 2 turns.',
         },
         {
-          name: 'Сковывающий холод',
+          name: 'The chilling frost',
           imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_a_s.png',
           dmgM: 4.2,
           cooldown: 3,
@@ -782,20 +782,20 @@ export class HeroesService extends ContentService {
           ],
           inRangeDebuffs: [this.eS.getEffect(this.effects.defDestroy)],
           description:
-            'Наносит целевому врагу урон в размере 420% от показателя атаки, накладывает на него штраф ' +
+            'Deals 420% Attack damage to a target enemy and applies a debuff to them. ' +
             this.effects.defDestroy +
-            ' и ' +
+            ' and ' +
             this.effects.defBreak +
-            ' на 2 хода. Наносит 330% от атаки всем врагам на поле боя и накладывает на них штраф ' +
+            ' for 2 turns. Deals 330% of attack damage to all enemies on the battlefield and applies a debuff to them. ' +
             this.effects.defDestroy +
-            ' на 2 хода. Перед атакой накладывает на себя ' +
+            ' for 2 turns. Before attacking, casts a buff on yourself. ' +
             this.effects.attackBuff +
-            ' и ' +
+            ' and ' +
             this.effects.defBuff +
-            ' на 2 хода.',
+            ' for 2 turns.',
         },
         {
-          name: 'Король Ночи',
+          name: 'The Night King',
           imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png',
           dmgM: 0,
           cooldown: 0,
@@ -803,15 +803,15 @@ export class HeroesService extends ContentService {
           buffs: [this.eS.getEffect(this.effects.attackBuff, 1)],
           passive: true,
           description:
-            'Получает на 50% меньше урона от атак противников. Получает на 25% меньше урона от штрафов ' +
+            'Takes 50% less damage from enemy attacks. Takes 25% less damage from debuffs. ' +
             this.effects.bleeding +
-            ' и ' +
+            ' and ' +
             this.effects.poison +
-            '. На этого героя невозможно наложить штраф ' +
+            '. This hero is immune to ' +
             this.effects.freezing +
-            '. В начал хода получает бонус ' +
+            '. At the start of the turn, receive a buff ' +
             this.effects.attackBuff +
-            ' на 1 ход. Может атаковать с растояния в 2 клетки.',
+            ' for 1 turn. Can attack from a distance of 2 cells.',
         },
       ],
       effects: [],
@@ -844,10 +844,11 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker2.png',
       name: HeroesNamesCodes.WhiteWalkerGeneral,
       description:
-        'Ужасный враг. Сильный белый ходок и командир армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
+        'A terrible enemy. A powerful white walker and commander of the Night King army. Created by his ' +
+        'master to destroy the living, he now seeks to plunge the world into darkness and eternal night.',
       skills: [
         {
-          name: 'Морозный Ветер',
+          name: 'Frosty Wind',
           imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_c_s.jpg',
           dmgM: 2.7,
           cooldown: 0,
@@ -857,12 +858,12 @@ export class HeroesService extends ContentService {
           attackInRangeM: 1.4,
           debuffs: [this.eS.getEffect(this.effects.defBreak, 1)],
           description:
-            'Наносит противнику урон в размере 270% от показателя атаки и накладывает на него штраф ' +
+            'Deals 270% of Attack Damage to an enemy and applies a debuff to them. ' +
             this.effects.defBreak +
-            ' на 1 ход. Также атакует всех врагов на поле на 140% от показателя атаки.',
+            ' for 1 turn. Also attacks all enemies on the field with 140% of their attack value.',
         },
         {
-          name: 'Белый Ходок',
+          name: 'White Walker',
           imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
           dmgM: 0,
           cooldown: 0,
@@ -870,15 +871,15 @@ export class HeroesService extends ContentService {
           buffs: [this.eS.getEffect(this.effects.defBuff, 1)],
           passive: true,
           description:
-            'Получает на 30% меньше урона от атак противников. Получает на 25% меньше урона от штрафов ' +
+            'Takes 30% less damage from enemy attacks. Takes 25% less damage from debuffs. ' +
             this.effects.bleeding +
-            ' и ' +
+            ' and ' +
             this.effects.poison +
-            '. На этого героя невозможно наложить штраф ' +
+            '. This hero is immune to ' +
             this.effects.freezing +
-            '. Перед началом хода получает ' +
+            '. Before the start of the turn receives ' +
             this.effects.defBuff +
-            ' на 1 ход. Получает этот бонус в начале игры на 2 хода.',
+            ' for 1 turn. Receives this bonus at the start of the game for 2 turns.',
         },
       ],
       effects: [this.eS.getEffect(this.effects.defBuff)],
@@ -911,18 +912,19 @@ export class HeroesService extends ContentService {
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker3.png',
       name: HeroesNamesCodes.WhiteWalkerCapitan,
       description:
-        'Ужасный враг. Слабейший белый ходок и капитан армии Короля Ночи. Создан своим господином для уничтожения живых, сейчас пытается погрузить мир во тьму и вечную ночь.',
+        'A terrible enemy. The weakest white walker and captain of the Night Kings army. Created by his master to destroy the living,' +
+        ' he now seeks to plunge the world into darkness and eternal night.',
       skills: [
         {
-          name: 'Морозный удар',
+          name: 'Frost Strike',
           imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/white_walker_c_s.jpg',
           dmgM: 1.9,
           cooldown: 0,
           remainingCooldown: 0,
-          description: 'Наносит противнику урон в размере 190% от показателя атаки.',
+          description: 'Deals damage to the enemy equal to 190% of the attack value.',
         },
         {
-          name: 'Белый Ходок',
+          name: 'White Walker',
           imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
           dmgM: 0,
           cooldown: 0,
@@ -933,14 +935,13 @@ export class HeroesService extends ContentService {
           ],
           passive: true,
           description:
-            'Получает на 15% меньше урона от атак противников. На этого героя невозможно наложить штраф ' +
+            'Takes 15% less damage from enemy attacks. This hero is immune to ' +
             this.effects.freezing +
-            '. ' +
-            'Каждый ход получает ' +
+            '. Each turn gets ' +
             this.effects.defBuff +
-            ' и ' +
+            ' and ' +
             this.effects.attackBuff +
-            ' на 2 хода.',
+            ' for 2 turns.',
         },
       ],
       effects: [],
@@ -972,23 +973,23 @@ export class HeroesService extends ContentService {
       fullImgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png',
       name: HeroesNamesCodes.JonKing,
       description:
-        'Сильный, настоящий лидер, бесчисленные победы Джона Сноу на поле боя заставили его сверстников признать его королем Севера.',
+        'A strong, true leader, Jon Snow countless victories on the battlefield led his peers to recognize him as the King in the North.',
       skills: [
         {
-          name: 'Решающий удар',
+          name: 'The Decisive Blow',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/jon_king/skills/UI_HeroicAbility_PathfindersBlade.webp',
           dmgM: 2,
           cooldown: 0,
           remainingCooldown: 0,
           attackInRange: true,
-          attackRange: 1.1,
-          attackInRangeM: 1,
+          attackRange: 1,
+          attackInRangeM: 1.1,
           description:
-            'Наносит противнику урон в размере 200% от показателя атаки и 110% от атаки врагам в радиусе 1 клетки.',
+            'Deals damage to the enemy equal to 200% of the attack value and 110% of the attack value to enemies within a 1 cell radius.',
         },
         {
-          name: 'Клинок Первопроходца',
+          name: 'Blade of the Pioneer',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/jon_king/skills/UI_ActiveAbility_DecisiveStrike.webp',
           dmgM: 3.1,
@@ -1004,18 +1005,18 @@ export class HeroesService extends ContentService {
           ],
           inRangeDebuffs: [this.eS.getEffect(this.effects.bleeding)],
           description:
-            'Наносит целевому врагу урон в размере 310% от показателя атаки, накладывает на него 3 штрафа: ' +
+            'Deals damage to the target enemy equal to 310% of their attack value and applies 3 debuffs to them: ' +
             this.effects.defBreak +
             ', ' +
             this.effects.bleeding +
-            ' и ' +
+            ' and ' +
             this.effects.attackBreak +
-            ' на 3 хода. Наносит 250% от атаки врагам в радиусе 1 клетки и накладывает на них штраф ' +
+            ' for 3 turns. Deals 250% of attack damage to enemies within a 1-cell radius and applies a debuff to them. ' +
             this.effects.bleeding +
-            ' на 2 хода.',
+            ' for 2 turns.',
         },
         {
-          name: 'Правосудие',
+          name: 'Justice',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/jon_king/skills/UI_PassiveAbility_PassTheSentenceSwingTheSword.webp',
           dmgM: 0,
@@ -1024,18 +1025,17 @@ export class HeroesService extends ContentService {
           buffs: [this.eS.getEffect(this.effects.attackBuff, 1)],
           passive: true,
           description:
-            'Получает на 10% меньше урона от атак противников. Получает на 25% меньше урона от штрафа' +
+            'Takes 10% less damage from enemy attacks. Takes 25% less damage from debuffs.' +
             this.effects.bleeding +
-            '. На этого героя невозможно наложить штрафы ' +
+            '. This hero is immune to ' +
             this.effects.freezing +
-            ' и ' +
+            ' and ' +
             this.effects.attackBreak +
-            '. В начале игры получает ' +
+            '. At the beginning of the game receives ' +
             this.effects.defBuff +
-            ' на 2 ходa.' +
-            '. Перед началом хода накладывает на себя ' +
+            ' for 2 turns. Before the start of the turn, casts a debuff on itself. ' +
             this.effects.attackBuff +
-            ' на 1 ход.',
+            ' for 1 turn.',
         },
       ],
       effects: [this.eS.getEffect(this.effects.defBuff)],
@@ -1069,7 +1069,7 @@ export class HeroesService extends ContentService {
       description: '',
       skills: [
         {
-          name: 'Горячий Приём',
+          name: 'Warm Reception',
           imgSrc: '../../../assets/resourses/imgs/boss/v1/skills/gr_s1.png',
           dmgM: 2.8,
           cooldown: 0,
@@ -1080,15 +1080,15 @@ export class HeroesService extends ContentService {
           debuffs: [...this.eS.getEffect(this.effects.burning, 2, 2)],
           inRangeDebuffs: [this.eS.getEffect(this.effects.defBreak)],
           description:
-            'Наносит противнику урон в размере 280% от показателя атаки и накладывает на него 2 штрафa ' +
+            'Deals 280% of attack damage to an enemy and applies 2 debuffs to them. ' +
             this.effects.burning +
-            ' на 2 ходa. Также атакует врагов в радиусе 1 клеткм на 235% от показателя атаки,' +
-            ' накладывает на них штраф ' +
+            ' for 2 turns. Also attacks enemies within a 1 cell radius for 235% of their attack value.,' +
+            ' applies to them ' +
             this.effects.defBreak +
-            ' на 2 хода.',
+            ' for 2 turns.',
         },
         {
-          name: 'Исцеление огнём',
+          name: 'Healing by fire',
           imgSrc: '../../../assets/resourses/imgs/boss/v1/skills/boss_s2.png',
           dmgM: 1.4,
           healM: 0.01,
@@ -1106,32 +1106,32 @@ export class HeroesService extends ContentService {
             this.eS.getEffect(this.effects.defDestroy, 3),
           ],
           description:
-            'Наносит противнику урон в размере 140% от показателя атаки и накладывает на него 4 штрафa ' +
+            'Deals 140% of attack damage to an enemy and applies 4 debuffs to them. ' +
             this.effects.burning +
-            ' на 3 ходa. Перед атакой восстанавливает всем союзникам здоровье в размере 1% от своего максимального здоровья.' +
-            ' Наносит 110% от атаки врагам в радиусе 2 клеток и накладывает на них штрафы: ' +
+            ' for 3 turns. Before attacking, restores all allies health equal to 1% of their maximum health.' +
+            ' Deals 110% of attack damage to enemies within 2 cells and applies to them: ' +
             this.effects.defDestroy +
             ', ' +
             this.effects.bleeding +
             ', ' +
             this.effects.defBreak +
-            ' на 3 хода.',
+            ' for 3 turns.',
         },
         {
-          name: 'Душа Пламени',
+          name: 'Soul of Flame',
           imgSrc: '../../../assets/resourses/imgs/debuffs/burning.png',
           dmgM: 0,
           cooldown: 0,
           remainingCooldown: 0,
           passive: true,
           description:
-            'Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафа' +
+            'Takes 25% less damage from enemy attacks. Takes 25% less damage from debuffs: ' +
             this.effects.bleeding +
-            '. На этого героя невозможно наложить штраф ' +
+            '. This hero is immune to ' +
             this.effects.burning +
-            '. В начале игры получает бонус ' +
+            '. Receives a buff at the start of the game ' +
             this.effects.healthRestore +
-            ' до конца боя. Имеет шанс воскреснуть после смертельного удара.',
+            ' until the end of the battle. Has a chance to resurrect after a fatal blow.',
         },
       ],
       effects: [this.eS.getEffect(this.effects.healthRestore, 1000)],
@@ -1275,6 +1275,18 @@ export class HeroesService extends ContentService {
       eq3Level: 1,
       eq4Level: 1,
     };
+  }
+
+  getUnitsForTrainingBattle(
+    getUser: boolean,
+    unitsToCompare: PreviewUnit[],
+    allUnits = this.getAllHeroes(),
+  ) {
+    return allUnits
+      .filter(unit => {
+        return unitsToCompare.findIndex(v => v.name === unit.name) !== -1;
+      })
+      .map((el, i) => ({ ...el, x: 2 + i, y: getUser ? 1 : 8, user: getUser }));
   }
 
   getInitialHeroes() {

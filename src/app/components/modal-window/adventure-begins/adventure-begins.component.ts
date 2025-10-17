@@ -33,7 +33,6 @@ export class AdventureBeginsComponent implements HasFooterHost, ScenesRunnerHost
     this.inProgress = true;
 
     this.runner.init(this.scenesHelper.adventureScenario).subscribe(result => {
-      console.log(result);
       this.inProgress = false;
       this.modalWindowService.dropModal();
       this.dialogRef.close();

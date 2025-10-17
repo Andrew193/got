@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { frontRoutes as FrontRoutes } from '../../../constants';
-import { Unit } from '../../../models/unit.model';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -41,10 +40,8 @@ export class NavigationService {
     this.router.navigateByUrl(FrontRoutes.dailyBoss);
   }
 
-  goToTrainingBattle(state: { userUnits: Unit[]; aiUnits: Unit[] }) {
-    this.router.navigate([FrontRoutes.training, FrontRoutes.trainingBattle], {
-      state: state,
-    });
+  goToTrainingBattle() {
+    this.router.navigate([FrontRoutes.training, FrontRoutes.trainingBattle]);
   }
 
   goToDailyBossBattle(level: number, units: string[]) {

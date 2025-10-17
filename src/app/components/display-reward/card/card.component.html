@@ -1,0 +1,18 @@
+@let _card = card();
+@let _imageClass = imageClass();
+@let _index = index();
+
+<div class="flip-items-inner-container col" [class.claimed]="_card.flipped" style="width: auto">
+  <div class="flip-card">
+    <div class="card-front" (click)="revealOne.emit(_index)">?</div>
+    <div class="card-back">
+      <app-image
+        [alt]="_card.name"
+        [source]="_card.src"
+        [imageClass]="'card-image ' + _imageClass" />
+      <span [class]="_card.name.toLowerCase()" class="ignore">
+        {{ _card.amount | number }}
+      </span>
+    </div>
+  </div>
+</div>

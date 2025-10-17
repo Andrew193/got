@@ -5,6 +5,9 @@ import { ImageComponent } from '../../components/views/image/image.component';
 import { RewardComponentInterface } from '../../models/reward-based.model';
 import { DecimalPipe } from '@angular/common';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { DisplayRewardNames } from '../../store/store.interfaces';
+import { setDisplayRewardState } from '../../store/actions/display-reward.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-summon-tree',
@@ -13,6 +16,9 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
   styleUrl: './summon-tree.component.scss',
 })
 export class SummonTreeComponent implements RewardComponentInterface {
+  store = inject(Store);
+  contextName = DisplayRewardNames.summon;
+
   nav = inject(NavigationService);
 
   constructor(public rewardService: RewardService) {}
@@ -31,6 +37,8 @@ export class SummonTreeComponent implements RewardComponentInterface {
       amountOfRewards === 1
         ? [this.rewardService.getReward(1, this.items)]
         : this.rewardService.getReward(10, this.items);
+
+    this.store.dispatch(setDisplayRewardState({ name: this.contextName, data: this.rewards }));
   }
 
   goToMainPage() {

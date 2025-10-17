@@ -14,7 +14,11 @@ import { NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
 import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
-import { setAIUnits, setUserUnits } from '../../../store/actions/training.actions';
+import {
+  dropTrainingSelectUnits,
+  setAIUnits,
+  setUserUnits,
+} from '../../../store/actions/training.actions';
 import { RewardValues } from '../../../models/reward-based.model';
 
 type BarCtx = {
@@ -129,20 +133,11 @@ export class TrainingConfigComponent {
   };
 
   openFight() {
-    const getUnits = (getUser: boolean) => {
-      return this.allUnits
-        .filter(unit => {
-          const units = this[this.getUnitKey(getUser)]();
-
-          return units.findIndex(v => v.name === unit.name) !== -1;
-        })
-        .map((el, i) => ({ ...el, x: 2 + i, y: getUser ? 1 : 8, user: getUser }));
-    };
-
-    this.nav.goToTrainingBattle({ userUnits: getUnits(true), aiUnits: getUnits(false) });
+    this.nav.goToTrainingBattle();
   }
 
   goToMainPage() {
+    this.store.dispatch(dropTrainingSelectUnits());
     this.nav.goToMainPage();
   }
 }

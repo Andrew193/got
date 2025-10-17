@@ -1,5 +1,7 @@
 @let _userSelCtx = userSelCtx();
 @let _aiSelCtx = aiSelCtx();
+@let _aiUnitsLength = aiUnits().length;
+@let _userUnitsLength = userUnits().length;
 
 <div>
   <h3 class="text-center">Configure your training</h3>
@@ -9,11 +11,15 @@
     <ng-container [ngTemplateOutlet]="unitsBar" [ngTemplateOutletContext]="aiBarCtx">
     </ng-container>
   </div>
-  <div class="d-flex ms-4 me-4">
-    <button class="me-2 got-toggle" (click)="goToMainPage()">Back to Castle Black</button>
-    @if (aiUnits.length && userUnits.length) {
-      <button class="got-toggle got-toggle-red" (click)="openFight()">Fight</button>
-    }
+  <div class="row m-0">
+    <div class="col-6">
+      <button class="me-2 got-toggle w-100" (click)="goToMainPage()">Back to Castle Black</button>
+    </div>
+    <div class="col-6">
+      @if (_aiUnitsLength && _userUnitsLength) {
+        <button class="got-toggle got-toggle-red w-100" (click)="openFight()">Fight</button>
+      }
+    </div>
   </div>
 
   <div class="flex-row units-config-container" style="margin-top: 7px">

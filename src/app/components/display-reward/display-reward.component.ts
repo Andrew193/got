@@ -3,13 +3,20 @@ import {
   Component,
   computed,
   effect,
+  inject,
   input,
-  model,
   output,
 } from '@angular/core';
-import { DisplayReward } from '../../services/reward/reward.service';
 import { ImageComponent } from '../views/image/image.component';
 import { DecimalPipe } from '@angular/common';
+import { CardComponent } from './card/card.component';
+import { DisplayRewardNames } from '../../store/store.interfaces';
+import { Store } from '@ngrx/store';
+import { setDisplayRewardCartState } from '../../store/actions/display-reward.actions';
+import {
+  selectAllCardsFlipped,
+  selectCardCollection,
+} from '../../store/reducers/display-reward.reducer';
 
 type InnerTotal = {
   src: string;
@@ -18,19 +25,24 @@ type InnerTotal = {
 
 @Component({
   selector: 'app-display-reward',
-  imports: [ImageComponent, DecimalPipe],
+  imports: [ImageComponent, DecimalPipe, CardComponent],
   templateUrl: './display-reward.component.html',
   styleUrl: './display-reward.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DisplayRewardComponent {
+  store = inject(Store);
+
+  contextName = input.required<DisplayRewardNames>();
+
   containerClass = input('m-2');
   imageClass = input('');
   showTotalBar = input(true);
-  rewards = model.required<(DisplayReward | null)[]>();
+
   allRevealed = output<boolean>();
 
-  cards = computed(() => this.rewards());
+  rewards = computed(() => this.store.selectSignal(selectCardCollection(this.contextName()))());
+
   cardsPrize = computed(() => {
     const total: Record<string, InnerTotal> = {};
 
@@ -39,7 +51,7 @@ export class DisplayRewardComponent {
       .forEach(reward => {
         total[reward?.name] = {
           src: reward?.src,
-          amount: (total[reward?.name]['amount'] || 0) + reward?.amount,
+          amount: (total[reward?.name]?.['amount'] || 0) + reward?.amount,
         };
       });
 
@@ -55,9 +67,7 @@ export class DisplayRewardComponent {
   });
 
   private allFlipped = computed(() => {
-    const arr = this.rewards().filter(Boolean) as DisplayReward[];
-
-    return arr.length > 0 && arr.every(r => r.flipped);
+    return this.store.selectSignal(selectAllCardsFlipped(this.contextName()))();
   });
 
   constructor() {
@@ -95,16 +105,16 @@ export class DisplayRewardComponent {
     const reward = this.rewards()[i];
 
     if (reward) {
-      this.rewards.update(model => {
-        return model.map((_, index) => {
-          return i === index
-            ? {
-                ...reward,
-                flipped: true,
-              }
-            : _;
-        });
-      });
+      this.store.dispatch(
+        setDisplayRewardCartState({
+          name: this.contextName(),
+          index: i,
+          data: {
+            ...reward,
+            flipped: true,
+          },
+        }),
+      );
     }
   }
 }

@@ -204,8 +204,8 @@ export class GameService {
     if (allUserUnitsDead || allAiUnitsDead) {
       this.gameResult = {
         headerClass: allUserUnitsDead ? 'red-b' : 'green-b',
-        headerMessage: allUserUnitsDead ? 'Вы проиграли' : 'Вы победили',
-        closeBtnLabel: allUserUnitsDead ? 'Попробовать позже' : 'Отлично',
+        headerMessage: allUserUnitsDead ? 'You lost' : 'You won',
+        closeBtnLabel: allUserUnitsDead ? 'Try again later' : 'Great',
         callback: () => {
           callback(realAiUnits, !allUserUnitsDead);
         },
