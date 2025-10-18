@@ -19,6 +19,10 @@ import { UsersService } from '../../services/users/users.service';
 import { Currency } from '../../services/users/users.interfaces';
 import { TileUnit, TileUnitWithReward } from '../../models/field.model';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { DisplayRewardNames } from '../../store/store.interfaces';
+import { Store } from '@ngrx/store';
+import { setDisplayRewardState } from '../../store/actions/display-reward.actions';
+import { selectCardCollection } from '../../store/reducers/display-reward.reducer';
 
 @Component({
   selector: 'app-gift-store',
@@ -27,10 +31,12 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
   styleUrl: './gift-store.component.scss',
 })
 export class GiftStoreComponent implements OnInit {
+  store = inject(Store);
   notificationService = inject(NotificationsService);
   nav = inject(NavigationService);
+  contextName = DisplayRewardNames.gift;
+  loot = this.store.selectSignal(selectCardCollection(this.contextName));
 
-  loot: (DisplayReward | null)[] = [];
   aiUnits: TileUnitWithReward[] = [];
   userUnits: TileUnit[] = [];
   private giftConfig!: GiftConfig;
@@ -88,17 +94,17 @@ export class GiftStoreComponent implements OnInit {
       });
   }
 
-  collectAndLeave() {
+  collectAndLeave(loot: DisplayReward[]) {
     const reward: Currency = {
       gold: 0,
       silver: 0,
       copper: 0,
     };
 
-    const chestsReward = this.loot
+    const chestsReward = loot
       .filter(el => el?.name === basicRewardNames.chest)
       .map(() => this.npcService.getChestReward());
-    const otherRewards = this.loot.filter(el => el?.name !== basicRewardNames.chest);
+    const otherRewards = loot.filter(el => el?.name !== basicRewardNames.chest);
     const allRewards = [...chestsReward, ...otherRewards].filter(el => !!el) as DisplayReward[];
 
     allRewards.forEach(el => {
@@ -136,6 +142,11 @@ export class GiftStoreComponent implements OnInit {
   }
 
   public gameResultsRedirect = (realAiUnits: TileUnitWithReward[] | TileUnit[]) => {
-    this.loot = this.aiUnits.map((el, index) => (!realAiUnits[index].health ? el.reward : null));
+    const loot = this.aiUnits.map((el, index) => ({
+      ...el.reward,
+      amount: !realAiUnits[index].health ? el.reward.amount : 0,
+    }));
+
+    this.store.dispatch(setDisplayRewardState({ name: this.contextName, data: loot }));
   };
 }

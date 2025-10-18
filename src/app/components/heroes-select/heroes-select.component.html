@@ -2,25 +2,18 @@
 @let _isUser = isUser();
 @let _title = title();
 @let _containerClass = containerClass();
+@let _contextName = contextName();
 
 <div class="d-flex justify-content-center heroes-select-container">
   <div class="col-12 units-config-inner-container" [class]="_containerClass">
     <h4 class="text-center">{{ _title }}</h4>
     <div class="flex-row justify-content-evenly">
       @for (unit of options; track unit.name) {
-        <div class="m-1" (click)="unitClick(unit)">
-          @if (_isUser) {
-            <img
-              [src]="unit.imgSrc"
-              [alt]="unit.name"
-              [class.selected]="checkSelected(unit.name)" />
-          } @else {
-            <img
-              [src]="unit.imgSrc"
-              [alt]="unit.name"
-              [class.selected-enemy]="checkSelected(unit.name)" />
-          }
-        </div>
+        <app-hero-select-tile
+          [collectionName]="_contextName"
+          (unitClick)="unitClick($event)"
+          [isUser]="_isUser"
+          [unit]="unit" />
       }
     </div>
   </div>

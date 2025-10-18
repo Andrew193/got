@@ -137,7 +137,7 @@ export class GameService {
     logs.push({
       info: true,
       imgSrc: skill.imgSrc,
-      message: `${unit.user ? 'Игрок' : 'Бот'} ${unit.name} восстановил ${restoredHealth} ед. !`,
+      message: `${unit.user ? 'Player' : 'Bote'} ${unit.name} restored ${restoredHealth} points. !`,
     });
   }
 
@@ -169,7 +169,7 @@ export class GameService {
     ).toFixed(0);
   }
 
-  //Shows skills in attack bar ( user units ) and decreases cooldonws by 1 for used skills
+  //Shows skills in attack bar (user units) and decreases cooldowns by 1 for used skills
   selectSkillsAndRecountCooldown(
     units: TileUnit[],
     selectedUnit: TileUnit,
@@ -232,54 +232,34 @@ export class GameService {
     return units.every(userUnit => !userUnit.health);
   }
 
-  checkDebuffs(
-    unit: TileUnit,
-    decreaseRestoreCooldown = true,
-    battleMode: boolean,
-    canRestoreHealth: boolean,
-  ) {
-    let unitCopy: TileUnit = createDeepCopy(unit);
+  checkDebuffs(unit: TileUnit, decreaseCooldown = true, battleMode: boolean) {
+    const unitWithUpdatedCooldown = this.updateEffectDuration(unit, decreaseCooldown, battleMode);
 
-    const unitWithUpdatedCooldown = this.updateEffectDuration(
-      unitCopy,
-      decreaseRestoreCooldown,
-      battleMode,
-      canRestoreHealth,
-    );
+    unit = unitWithUpdatedCooldown.unit;
 
-    unitCopy = unitWithUpdatedCooldown.unit;
+    const processEffectsResult = this.processEffects(createDeepCopy(unit), battleMode);
 
-    const processEffectsResult = this.processEffects(createDeepCopy(unitCopy), battleMode);
-
-    unitCopy = processEffectsResult.unit;
-    unitCopy.effects = unitCopy.effects.filter(debuff => !!debuff.duration);
+    unit = processEffectsResult.unit;
+    unit.effects = unit.effects.filter(debuff => !!debuff.duration);
 
     return {
-      unit: unitCopy,
+      unit: unit,
       log: [...unitWithUpdatedCooldown.log, ...processEffectsResult.log],
     };
   }
 
-  private updateEffectDuration(
-    unit: TileUnit,
-    decreaseRestoreCooldown: boolean,
-    battleMode: boolean,
-    checkHealthRestore = false,
-  ) {
+  private updateEffectDuration(unit: TileUnit, decreaseCooldown: boolean, battleMode: boolean) {
     const log: LogRecord[] = [];
 
     unit.effects.forEach((effect: Effect, i, array) => {
+      const newDuration = decreaseCooldown ? effect.duration - 1 : effect.duration;
+
       if (effect.duration > 0) {
+        array[i] = { ...effect, duration: newDuration };
+
         if (effect.restore) {
-          if (checkHealthRestore) {
-            array[i] = {
-              ...effect,
-              duration: decreaseRestoreCooldown ? effect.duration - 1 : effect.duration,
-            };
-            this.checkEffectsForHealthRestore(unit, log);
-          }
+          this.checkEffectsForHealthRestore(unit, log);
         } else {
-          array[i] = { ...effect, duration: effect.duration - 1 };
           if (!effect.passive) {
             const additionalDmg = this.getReducedDmgForEffects(
               unit,
@@ -355,35 +335,12 @@ export class GameService {
     return { log, unit };
   }
 
-  /**
-   * Replacement for
-   *   const aiUnitAttack = (index: number) => {
-   *     //Get AI unit and look for debuffs ( deal dmg before making a move )
-   *     let aiUnit = this[aiMove ? 'aiUnits' : 'userUnits'][index];
-   *     this[aiMove ? 'aiUnits' : 'userUnits'][index] = this.checkDebuffs(createDeepCopy(aiUnit));
-   *     aiUnit = this[aiMove ? 'aiUnits' : 'userUnits'][index];
-   *     //AI makes a move
-   *     makeAiMove(aiUnit, index);
-   *     //Update skills cooldowns
-   *     this.gameActionService.selectSkillsAndRecountCooldown(this[aiMove ? 'aiUnits' : 'userUnits'], this[aiMove ? 'aiUnits' : 'userUnits'][index]);
-   *   }
-   *   This is a servant function of the attackUser function
-   */
   aiUnitAttack(
     index: number,
     units: TileUnit[],
-    battleMode: boolean,
     makeAiMove: (aiUnit: TileUnit, index: number) => void,
-    logs: LogRecord[],
   ) {
-    let aiUnit = units[index];
-    const response = this.checkDebuffs(createDeepCopy(aiUnit), true, battleMode, true);
-
-    units[index] = response.unit;
-    logs.push(...response.log);
-    aiUnit = units[index];
-
-    makeAiMove(aiUnit, index);
+    makeAiMove(units[index], index);
 
     this.selectSkillsAndRecountCooldown(units, units[index]);
   }

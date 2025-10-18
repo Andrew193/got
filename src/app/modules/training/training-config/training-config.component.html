@@ -30,12 +30,12 @@
   </div>
 </div>
 
-<ng-template #unitsBar let-isUser="isUser" let-title="title" let-defaultUnits="defaultUnits">
+<ng-template #unitsBar let-isUser="isUser" let-title="title" let-contextName="contextName">
   <div class="col-lg-6 col-md-12">
     <app-heroes-select
       [title]="title"
+      [contextName]="contextName"
       [isUser]="isUser"
-      [defaultUnits]="defaultUnits"
       [allHeroes]="allUnitsForSelect"
       [addUserUnit]="addUserUnit"></app-heroes-select>
   </div>

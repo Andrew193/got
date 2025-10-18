@@ -243,7 +243,7 @@ export class HeroesService extends ContentService {
           cooldown: 0,
           remainingCooldown: 0,
           passive: true,
-          restoreSkill: true,
+          restoreSkill: false,
           description:
             'Получает на 25% меньше урона от атак противников. Получает на 25% меньше урона от штрафов ' +
             this.effects.bleeding +
@@ -257,7 +257,10 @@ export class HeroesService extends ContentService {
             ' на 2 раунда.',
         },
       ],
-      effects: [this.eS.getEffect(this.effects.healthRestore)],
+      effects: [
+        this.eS.getEffect(this.effects.healthRestore),
+        this.eS.getEffect(this.effects.freezing),
+      ],
     };
   }
 

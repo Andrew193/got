@@ -1,7 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { TileUnitSkill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
-import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS, Effects, EffectsValues } from '../../constants';
+import {
+  ALL_EFFECTS,
+  ALL_EFFECTS_MULTIPLIERS,
+  ALL_MOBILITY_EFFECTS_MULTIPLIERS,
+  Effects,
+  EffectsValues,
+  MobilityEffects,
+} from '../../constants';
 import { NumbersService } from '../numbers/numbers.service';
 import { TileUnit } from '../../models/field.model';
 import { HeroType } from '../../models/unit.model';
@@ -40,10 +47,13 @@ export class EffectsService {
 
   getMobilityStatsBasedOnEffect(effect: Effect, unit: TileUnit) {
     let message = '';
-    const mobility: string[] = [this.effects.freezing, this.effects.root];
+    const mobility: MobilityEffects[] = [this.effects.freezing, this.effects.root];
 
+    // @ts-ignore
     if (mobility.includes(effect.type)) {
-      unit.canCross = effect.m;
+      const type = effect.type as MobilityEffects;
+
+      unit.canCross = ALL_MOBILITY_EFFECTS_MULTIPLIERS[type];
       message += unit.health ? this.effectsDescriptions[effect.type] : '';
     }
 
@@ -67,9 +77,12 @@ export class EffectsService {
   }
 
   restoreStatsAfterEffect(effect: Effect, config: { unit: TileUnit; message: string }) {
+    debugger;
+    console.log('dsfsdfdsfsfsfdsfds');
     let message = '';
 
     if (effect.type === this.effects.freezing || effect.type === this.effects.root) {
+      console.log('RESTORED');
       config.unit.canCross = config.unit.maxCanCross;
       message = config.unit.health ? `Герой ${config.unit.name} восстановил мобильность!` : '';
     }

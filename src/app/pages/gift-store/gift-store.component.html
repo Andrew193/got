@@ -1,3 +1,5 @@
+@let _loot = loot();
+
 <div class="inner-container">
   <h4 class="text-center caption mt-2">
     Explore the Gift and reap the harvest. Be extremely careful because sometimes there are
@@ -15,17 +17,17 @@
             Refresh field (load new rewards)
           </button>
           <button class="got-toggle ms-1" (click)="goToMainPage()">Back to Castle Black</button>
-          @if (loot.length) {
-            <button class="got-toggle got-toggle-green ms-1" (click)="collectAndLeave()">
+          @if (_loot.length) {
+            <button class="got-toggle got-toggle-green ms-1" (click)="collectAndLeave(_loot)">
               Collect loot and leave
             </button>
           }
         </ng-container>
       </app-game-entry-point>
     </div>
-    @if (loot.length) {
+    @if (_loot.length) {
       <div class="col-lg-12 col-md-12 mt-3">
-        <!--        <app-display-reward [rewards]="loot"></app-display-reward>-->
+        <app-display-reward [contextName]="contextName"></app-display-reward>
       </div>
     }
   </div>

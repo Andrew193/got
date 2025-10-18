@@ -57,13 +57,11 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       getTargetTile,
     } = params;
 
-    this.addBuffToUnit(attackerTeam, attackerIndex, skill);
+    if (skill.addBuffsBeforeAttack) {
+      this.addBuffToUnit(attackerTeam, attackerIndex, skill);
+    }
 
     let attacker = attackerTeam[attackerIndex];
-
-    if (skill.addBuffsBeforeAttack) {
-      attacker = attackerTeam[attackerIndex];
-    }
 
     if (attacker.healer && skill.healAll) {
       this.makeHealerMove(null, skill, attacker, attackerTeam);
@@ -79,6 +77,19 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         (defenderTeam[defenderIndex] as unknown as TileUnit);
 
       this.universalRangeAttack(skill, tile, defenderTeam, isAiMove, attacker);
+    }
+
+    if (!skill.addBuffsBeforeAttack) {
+      this.addBuffToUnit(
+        attackerTeam,
+        attackerIndex,
+        !this.autoFight
+          ? {
+              ...skill,
+              buffs: (skill.buffs || []).map(el => ({ ...el, duration: el.duration + 1 })),
+            }
+          : skill,
+      );
     }
 
     attacker = attackerTeam[attackerIndex];
@@ -139,7 +150,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
     this.updateGridUnits([...this.aiUnits, ...this.userUnits]);
     this.dropEnemy();
-    this.checkAiMoves();
+    this.checkAiMoves(true);
   }
 
   updateSkillsCooldown(
@@ -369,10 +380,10 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     this.selectedEntity = null;
     this.possibleMoves = [];
-    this.checkAiMoves();
+    this.checkAiMoves(true);
   }
 
-  checkAiMoves(aiMove = true) {
+  checkAiMoves(aiMove: boolean) {
     const userFinishedTurn = this.userUnits.every(
       userHero => (!userHero.canMove && !userHero.canAttack) || !userHero.health,
     );
@@ -396,7 +407,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     const tick = () => {
       this.attackUser(false);
       this.fieldService.resetMoveAndAttack(this.userUnits, false);
-      this.checkAiMoves();
+      this.checkAiMoves(true);
 
       if (this.checkAutoFightEnd() || oneTick) {
         this.autoFight = false;
@@ -442,12 +453,16 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     // Apply debuff damage
     for (let i = 0; i < userUnits.length; i++) {
-      userUnits[i] = this.checkDebuffs(userUnits[i], true, true);
+      userUnits[i] = this.checkDebuffs(structuredClone(userUnits[i]), true);
     }
 
-    // Check passive skills if AI just moved
-    if (aiMove && !this.autoFight) {
-      this.gameActionService.checkPassiveSkills(userUnits, this.log);
+    if (!this.autoFight) {
+      for (let i = 0; i < aiUnits.length; i++) {
+        aiUnits[i] = this.checkDebuffs(structuredClone(aiUnits[i]), !aiMove);
+      }
+
+      // Check passive skills if AI just moved
+      aiMove && this.gameActionService.checkPassiveSkills(userUnits, this.log);
     }
 
     // Update game state
@@ -551,25 +566,18 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.gameActionService.checkPassiveSkills(aiUnits, this.log);
 
     for (let i = 0; i < aiUnits.length; i++) {
-      this.gameActionService.aiUnitAttack(
-        i,
-        aiUnits,
-        this.battleMode,
-        makeAiMove.bind(this),
-        this.log,
-      );
+      this.gameActionService.aiUnitAttack(i, aiUnits, makeAiMove.bind(this));
     }
 
     // Finish AI turn — same behavior
     this.finishAiTurn(aiMove);
   }
 
-  checkDebuffs(unit: TileUnit, decreaseRestoreCooldown = true, canRestoreHealth: boolean) {
+  checkDebuffs(unit: TileUnit, decreaseRestoreCooldown = true) {
     const response = this.gameActionService.checkDebuffs(
       unit,
-      decreaseRestoreCooldown,
+      !this.autoFight ? true : decreaseRestoreCooldown,
       this.battleMode,
-      canRestoreHealth,
     );
 
     unit = response.unit;
@@ -591,6 +599,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       }),
     );
     this.updateGridUnits(this.userUnits);
-    this.checkAiMoves();
+    this.checkAiMoves(true);
   }
 }

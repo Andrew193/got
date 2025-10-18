@@ -34,7 +34,7 @@
           <div class="skills-container ps-2 pe-2">
             <div class="d-flex rewards-bar h-100 align-items-center">
               <img
-                [src]="'assets/resourses/imgs/icons/silver_chest.jpeg'"
+                src="assets/resourses/imgs/icons/silver_chest.jpeg"
                 alt="silver_chest"
                 height="125px" />
               <div class="ps-2">
@@ -61,6 +61,7 @@
         <app-heroes-select
           [allHeroes]="allUnitsForSelect"
           [isUser]="true"
+          [contextName]="heroesContext"
           [containerClass]="'border-radius-none border-end-0'"
           [addUserUnit]="addUserUnit"></app-heroes-select>
         @if (chosenUnits.length) {

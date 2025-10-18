@@ -2,5 +2,7 @@
 
 .heroes-select-container {
   background-color: index.$var-background-color-main;
-  @include index.mixin-units-container-config;
+  ::ng-deep {
+    @include index.mixin-units-container-config;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
@@ -7,13 +7,15 @@ import { HeroesService } from '../../../services/heroes/heroes.service';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
 import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
+import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
+import { HeroesSelectNames } from '../../../constants';
 
 @Component({
   selector: 'app-training-battle',
   imports: [GameEntryPointComponent],
   templateUrl: './training-battle.component.html',
 })
-export class TrainingBattleComponent {
+export class TrainingBattleComponent implements OnDestroy {
   store = inject(Store);
   aiUnitsFromStore = this.store.selectSignal(selectAiUnits);
   userUnitsFromStore = this.store.selectSignal(selectUserUnits);
@@ -52,4 +54,10 @@ export class TrainingBattleComponent {
   public victoryRedirect = () => {
     this.nav.goToTraining();
   };
+
+  ngOnDestroy() {
+    this.store.dispatch(
+      HeroesSelectActions.resetHeroCollection({ name: HeroesSelectNames.dailyBoss }),
+    );
+  }
 }

@@ -10,6 +10,12 @@ export enum SceneNames {
   finalAuth,
 }
 
+export enum HeroesSelectNames {
+  user,
+  ai,
+  dailyBoss,
+}
+
 export const API_ENDPOINTS = {
   gift: 'giftTrip',
   daily: 'dailyReward',
@@ -107,6 +113,10 @@ export const ALL_EFFECTS = {
 export type Effects = typeof ALL_EFFECTS;
 export type EffectsKey = keyof Effects;
 export type EffectsValues = Effects[EffectsKey];
+export type MobilityEffects = Extract<
+  EffectsValues,
+  typeof ALL_EFFECTS.root | typeof ALL_EFFECTS.freezing
+>;
 
 export const ALL_EFFECTS_MULTIPLIERS: Record<EffectsValues, number> = {
   [ALL_EFFECTS.healthRestore]: 0.05,
@@ -120,6 +130,11 @@ export const ALL_EFFECTS_MULTIPLIERS: Record<EffectsValues, number> = {
   [ALL_EFFECTS.attackBreak]: 0.5,
   [ALL_EFFECTS.attackBuff]: 1.5,
   [ALL_EFFECTS.defBuff]: 1.5,
+} as const;
+
+export const ALL_MOBILITY_EFFECTS_MULTIPLIERS: Record<MobilityEffects, number> = {
+  [ALL_EFFECTS.freezing]: 1,
+  [ALL_EFFECTS.root]: 0,
 } as const;
 
 export const REWARD: RewardLootConstant = {

@@ -6,8 +6,10 @@ import {
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { SceneNames } from '../../../../../constants';
 import { DisplayRewardComponent } from '../../../../display-reward/display-reward.component';
-import { DisplayReward } from '../../../../../services/reward/reward.service';
 import { CurrencyHelperService } from '../../../../../services/users/currency/helper/currency-helper.service';
+import { Store } from '@ngrx/store';
+import { setDisplayRewardState } from '../../../../../store/actions/display-reward.actions';
+import { DisplayRewardNames } from '../../../../../store/store.interfaces';
 
 @Component({
   selector: 'app-login-final',
@@ -17,15 +19,17 @@ import { CurrencyHelperService } from '../../../../../services/users/currency/he
 })
 export class FinalComponent implements SceneComponent {
   showNextSceneButton = false;
+  store = inject(Store);
+  contextName = DisplayRewardNames.finalLoginButtle;
 
   bottomSheetRef = inject(MatBottomSheetRef<FinalComponent, SceneContext<SceneNames>>);
   data = inject<SceneContext<SceneNames.firstBattle>>(MAT_BOTTOM_SHEET_DATA);
   currencyHelperService = inject(CurrencyHelperService);
 
-  rewards: DisplayReward[] = [];
-
   runScene(): void {
-    this.rewards = this.currencyHelperService.convertCurrencyToDisplayReward(this.data.reward);
+    const rewards = this.currencyHelperService.convertCurrencyToDisplayReward(this.data.reward);
+
+    this.store.dispatch(setDisplayRewardState({ name: this.contextName, data: rewards }));
   }
 
   stopScene(): void {

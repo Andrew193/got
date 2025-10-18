@@ -1,17 +1,21 @@
 //Store
-import { PreviewUnit } from '../models/unit.model';
+import { HeroesNamesCodes, PreviewUnit } from '../models/unit.model';
 import { DisplayReward } from '../services/reward/reward.service';
+import { RewardValues } from '../models/reward-based.model';
+import { HeroesSelectNames } from '../constants';
 
 export enum StoreNames {
   lobby = 'lobby',
   dailyReward = 'dailyReward',
   trainingGround = 'trainingGround',
   displayReward = 'displayReward',
+  heroesSelect = 'heroesSelect',
 }
 
 export enum DisplayRewardNames {
   summon = 'summonTree',
   gift = 'gift',
+  finalLoginButtle = 'finalLoginButtle',
 }
 
 export type StoreType = {
@@ -48,4 +52,14 @@ export type DisplayRewardState = {
 
 export type TrainingStateSelectUnit = {
   units: PreviewUnit[];
+};
+
+//Heroes select
+export type HeroesSelectStateContexts = Record<
+  HeroesSelectNames,
+  (RewardValues | HeroesNamesCodes)[]
+>;
+
+export type HeroesSelectState = {
+  contexts: HeroesSelectStateContexts;
 };

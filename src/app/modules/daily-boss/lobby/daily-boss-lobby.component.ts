@@ -11,7 +11,7 @@ import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-ba
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { BasicHeroSelectComponent } from '../../../components/abstract/basic-hero-select/basic-hero-select.component';
-import { CURRENCY_NAMES } from '../../../constants';
+import { CURRENCY_NAMES, HeroesSelectNames } from '../../../constants';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -31,6 +31,7 @@ import { CURRENCY_NAMES } from '../../../constants';
 })
 export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   nav = inject(NavigationService);
+  heroesContext = HeroesSelectNames.dailyBoss;
 
   selectedHero!: Unit;
   selectedTileHero!: TileUnit;

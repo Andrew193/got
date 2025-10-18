@@ -19,12 +19,14 @@ import {
   setAIUnits,
   setUserUnits,
 } from '../../../store/actions/training.actions';
+import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { RewardValues } from '../../../models/reward-based.model';
+import { HeroesSelectNames } from '../../../constants';
 
 type BarCtx = {
   isUser: boolean;
   title: 'User Units' | 'AI Units';
-  defaultUnits: (HeroesNamesCodes | RewardValues)[];
+  contextName: HeroesSelectNames;
 };
 
 @Component({
@@ -46,8 +48,8 @@ export class TrainingConfigComponent {
   aiUnitsDescriptions: boolean[] = [];
   userUnitsDescriptions: boolean[] = [];
 
-  userBarCtx: BarCtx = { isUser: true, title: 'User Units', defaultUnits: [] };
-  aiBarCtx: BarCtx = { isUser: false, title: 'AI Units', defaultUnits: [] };
+  userBarCtx: BarCtx = { isUser: true, title: 'User Units', contextName: HeroesSelectNames.user };
+  aiBarCtx: BarCtx = { isUser: false, title: 'AI Units', contextName: HeroesSelectNames.ai };
 
   userSelCtx = computed(() => {
     return { user: true, title: 'Selected User Units', units: this.userUnits() };
@@ -60,6 +62,26 @@ export class TrainingConfigComponent {
     this.allUnits = this.heroesService.getAllHeroes();
     this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
 
+    const setContext = (
+      userUnits: (HeroesNamesCodes | RewardValues)[] = [],
+      aiUnits: (HeroesNamesCodes | RewardValues)[] = [],
+    ) => {
+      this.store.dispatch(
+        HeroesSelectActions.setHeroesSelectState({
+          name: this.userBarCtx.contextName,
+          data: userUnits,
+        }),
+      );
+      this.store.dispatch(
+        HeroesSelectActions.setHeroesSelectState({
+          name: this.aiBarCtx.contextName,
+          data: aiUnits,
+        }),
+      );
+    };
+
+    setContext();
+
     effect(() => {
       const stashedAIUnits = this.store.selectSignal(selectAiUnits)();
       const stashedUserUnits = this.store.selectSignal(selectUserUnits)();
@@ -71,11 +93,13 @@ export class TrainingConfigComponent {
         aiUnits.length !== stashedAIUnits.length ||
         userUnits.length !== stashedUserUnits.length
       ) {
+        setContext(
+          stashedUserUnits.map(el => el.name),
+          stashedAIUnits.map(el => el.name),
+        );
+
         this.aiUnits.set(stashedAIUnits);
         this.userUnits.set(stashedUserUnits);
-
-        this.userBarCtx = { ...this.userBarCtx, defaultUnits: stashedUserUnits.map(el => el.name) };
-        this.aiBarCtx = { ...this.aiBarCtx, defaultUnits: stashedAIUnits.map(el => el.name) };
       }
     });
   }

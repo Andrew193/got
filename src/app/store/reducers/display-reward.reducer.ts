@@ -9,6 +9,7 @@ export const DisplayRewardInitialState: DisplayRewardState = {
   contexts: {
     [DisplayRewardNames.summon]: [],
     [DisplayRewardNames.gift]: [],
+    [DisplayRewardNames.finalLoginButtle]: [],
   },
 };
 
