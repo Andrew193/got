@@ -1,9 +1,15 @@
 import { DisplayRewardNames, DisplayRewardState, StoreNames } from '../store.interfaces';
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import {
   setDisplayRewardCartState,
   setDisplayRewardState,
 } from '../actions/display-reward.actions';
+import {
+  makeSelectAllCardsFlipped,
+  makeSelectCardCollection,
+  makeSelectCardState,
+  SelectContexts,
+} from '../selectors/display-reward.selectors';
 
 export const DisplayRewardInitialState: DisplayRewardState = {
   contexts: {
@@ -32,16 +38,29 @@ export const DisplayRewardFeature = createFeature({
     }),
   ),
   extraSelectors: baseSelectors => {
+    const selectContexts = baseSelectors.selectContexts as SelectContexts;
+
+    const selectCardState = (name: DisplayRewardNames, index: number) =>
+      makeSelectCardState(selectContexts, name, index);
+
+    const selectAllCardsFlipped = (name: DisplayRewardNames, ignoreEmpty = false) =>
+      makeSelectAllCardsFlipped(selectContexts, name, ignoreEmpty);
+
+    const selectCardCollection = (name: DisplayRewardNames) =>
+      makeSelectCardCollection(selectContexts, name);
+
     return {
-      selectCardState: (name: DisplayRewardNames, index: number) =>
-        createSelector(baseSelectors.selectContexts, ctx => ctx?.[name]?.[index] ?? null),
-      selectAllCardsFlipped: (name: DisplayRewardNames) =>
-        createSelector(baseSelectors.selectContexts, ctx => ctx[name].every(card => card.flipped)),
-      selectCardCollection: (name: DisplayRewardNames) =>
-        createSelector(baseSelectors.selectContexts, ctx => ctx[name]),
+      selectContexts,
+      selectCardState,
+      selectAllCardsFlipped,
+      selectCardCollection,
     };
   },
 });
 
-export const { selectCardState, selectAllCardsFlipped, selectCardCollection } =
-  DisplayRewardFeature;
+export const {
+  selectCardState,
+  selectAllCardsFlipped,
+  selectCardCollection,
+  selectContexts: selectDisplayRewardContexts,
+} = DisplayRewardFeature;

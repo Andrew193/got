@@ -1,13 +1,23 @@
-import { inject, Injectable } from '@angular/core';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { concatMap, from, Observable, of, switchMap, tap, toArray } from 'rxjs';
+import { SceneNames } from '../../../constants';
 import {
   Scenario,
   Scene,
   SceneComponent,
   SceneContext,
 } from '../../../models/interfaces/scenes/scene.interface';
-import { SceneNames } from '../../../constants';
+import {
+  catchError,
+  concatMap,
+  from,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  throwError,
+  toArray,
+} from 'rxjs';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class SceneRunnerService {
@@ -24,32 +34,39 @@ export class SceneRunnerService {
 
   private playSequence(scenes: Scene[]): Observable<SceneContext<SceneNames>[] | undefined> {
     return this.runOnce(scenes).pipe(
-      switchMap(results => {
-        const restartCtx = results.find(r => r?.repeat);
+      catchError(err => {
+        if (err instanceof RestartError) {
+          const startIdx = Math.max(
+            0,
+            scenes.findIndex(s => s.name === err.startFrom),
+          );
+          const next = startIdx >= 0 ? scenes.slice(startIdx) : scenes;
 
-        if (!restartCtx) {
-          return of(this.getResultContext());
+          return this.playSequence(next);
         }
 
-        const startFrom =
-          restartCtx.startWithScene ?? results.at(-1)!.startWithScene ?? scenes[0].name;
-        const startIdx = scenes.findIndex(s => s.name === startFrom);
-        const next = startIdx >= 0 ? scenes.slice(startIdx) : scenes;
-
-        return this.playSequence(next);
+        return throwError(() => err);
       }),
     );
   }
 
   private runOnce(scenes: Scene[]): Observable<SceneContext<SceneNames>[]> {
     return from(scenes).pipe(
-      concatMap(scene => this.openOne(scene)),
+      concatMap(scene =>
+        this.openOne(scene).pipe(
+          switchMap(result => {
+            if (result?.repeat) {
+              const startFrom = result.startWithScene ?? scene.name ?? scenes[0].name;
+
+              return throwError(() => new RestartError(startFrom));
+            }
+
+            return of(result);
+          }),
+        ),
+      ),
       toArray(),
     );
-  }
-
-  private getResultContext() {
-    return Array.from(this.context).map(el => el[1]);
   }
 
   private openOne(scene: Scene) {
@@ -64,10 +81,16 @@ export class SceneRunnerService {
       sub.unsubscribe();
     });
 
-    return ref.afterDismissed().pipe(
-      tap({
-        next: result => this.context.set(scene.name, result),
-      }),
-    ) as Observable<SceneContext<SceneNames>>;
+    return ref
+      .afterDismissed()
+      .pipe(tap(result => this.context.set(scene.name, result))) as Observable<
+      SceneContext<SceneNames>
+    >;
+  }
+}
+
+class RestartError extends Error {
+  constructor(public startFrom: SceneNames) {
+    super('RESTART_SCENES');
   }
 }

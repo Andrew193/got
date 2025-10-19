@@ -12,6 +12,8 @@ import { NavigationService } from '../../../services/facades/navigation/navigati
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { BasicHeroSelectComponent } from '../../../components/abstract/basic-hero-select/basic-hero-select.component';
 import { CURRENCY_NAMES, HeroesSelectNames } from '../../../constants';
+import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -30,6 +32,7 @@ import { CURRENCY_NAMES, HeroesSelectNames } from '../../../constants';
   styleUrl: './daily-boss-lobby.component.scss',
 })
 export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
+  store = inject(Store);
   nav = inject(NavigationService);
   heroesContext = HeroesSelectNames.dailyBoss;
 
@@ -73,6 +76,8 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   }
 
   openFight(bossLevel: number) {
+    this.store.dispatch(HeroesSelectActions.resetHeroCollection({ name: this.heroesContext }));
+
     this.nav.goToDailyBossBattle(
       bossLevel,
       this.chosenUnits.map(el => el.name),

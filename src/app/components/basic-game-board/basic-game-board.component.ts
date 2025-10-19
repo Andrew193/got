@@ -1,17 +1,29 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgClass } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
-import { Coordinate, Tile, TilesToHighlight, TileUnit } from '../../models/field.model';
-import { basicRewardNames } from '../../services/reward/reward.service';
+import { Tile, TilesToHighlight, TileUnit } from '../../models/field.model';
+import { GameBoardTileComponent } from './game-board-tile/game-board-tile.component';
+import { Store } from '@ngrx/store';
+import { GameBoardActions } from '../../store/actions/game-board.actions';
 
 @Component({
   selector: 'app-basic-game-board',
-  imports: [OutsideClickDirective, NgClass],
+  imports: [OutsideClickDirective, GameBoardTileComponent],
   templateUrl: './basic-game-board.component.html',
   styleUrl: './basic-game-board.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasicGameBoardComponent {
+export class BasicGameBoardComponent implements OnChanges {
+  store = inject(Store);
+
   @Input() gameConfig: Tile[][] = [];
   @Input() battleMode = true;
 
@@ -22,37 +34,11 @@ export class BasicGameBoardComponent {
     callback: (v: TilesToHighlight[]) => void;
   }>();
 
-  private highlightMap = new Map<string, string>();
-
-  onMoveEntity(tile: Tile) {
-    this.moveEntity.emit(tile);
-    this.setTilesToHighlight([]);
-  }
-
-  onHighlightMakeMove(entity: TileUnit, event: MouseEvent) {
-    this.highlightMakeMove.emit({
-      entity,
-      event,
-      callback: this.setTilesToHighlight.bind(this),
-    });
-  }
-
   setTilesToHighlight(list: TilesToHighlight[]) {
-    this.highlightMap.clear();
-    for (const t of list) this.highlightMap.set(`${t.i}:${t.j}`, t.highlightedClass);
+    this.store.dispatch(GameBoardActions.setTilesToHighlight({ list }));
   }
 
-  isHighlighted(tile: Coordinate, cls: string): boolean {
-    return this.highlightMap.get(`${tile.x}:${tile.y}`) === cls;
-  }
-
-  showActionButtonCondition(tile: Tile, type: keyof TileUnit) {
-    const entity = (tile as Tile).entity as TileUnit;
-
-    if (entity.name === basicRewardNames.chest || entity.name === basicRewardNames.copper) {
-      return false;
-    }
-
-    return this.battleMode ? entity[type] && !!entity.health : entity.user;
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 }

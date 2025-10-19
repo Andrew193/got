@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, Signal } from '@angular/core';
 import { SelectableUnit } from '../../../models/unit.model';
 import { Store } from '@ngrx/store';
 import { selectHeroState } from '../../../store/reducers/heroes-select.reducer';
@@ -11,16 +11,20 @@ import { HeroesSelectNames } from '../../../constants';
   imports: [NgClass],
   styleUrl: './hero-select-tile.component.scss',
 })
-export class HeroSelectTileComponent {
+export class HeroSelectTileComponent implements OnInit {
   store = inject(Store);
 
   unit = input.required<SelectableUnit>();
   isUser = input.required<boolean>();
   collectionName = input.required<HeroesSelectNames>();
 
-  selected = computed(() => {
-    return this.store.selectSignal(selectHeroState(this.collectionName(), this.unit().name))();
-  });
+  selected: Signal<boolean> = signal(false);
 
   unitClick = output<SelectableUnit>();
+
+  ngOnInit() {
+    this.selected = this.store.selectSignal(
+      selectHeroState(this.collectionName(), this.unit().name),
+    );
+  }
 }

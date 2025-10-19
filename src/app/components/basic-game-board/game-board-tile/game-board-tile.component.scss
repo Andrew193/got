@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.user-heroes,
+.ai-heroes {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: inherit;
+  border-radius: inherit;
+}

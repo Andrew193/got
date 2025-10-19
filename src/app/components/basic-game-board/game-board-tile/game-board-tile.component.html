@@ -1,0 +1,39 @@
+@let _tile = tile();
+@let _battleMode = battleMode();
+
+<div
+  (click)="onMoveEntity(_tile)"
+  [class.ai-heroes]="!_tile?.entity?.user"
+  [class.user-heroes]="_tile?.entity?.user"
+  [class.entity-b]="!!_tile?.entity"
+  [class.disabled]="_tile?.entity?.health === 0"
+  [class.block]="!_tile.active && _tile.entity === null"
+  [class.green-b]="isHighlighted(_tile, 'green-b')"
+  [class.red-b]="isHighlighted(_tile, 'red-b')">
+  <span class="tile-label">{{ _tile.x + 1 }}-{{ _tile.y + 1 }}</span>
+  @if (_tile.entity) {
+    <div class="position-relative">
+      @let showMoveIcon = showActionButtonCondition(_tile, 'canMove');
+      @let showAttackIcon = showActionButtonCondition(_tile, 'canAttack');
+
+      <img
+        [src]="_tile?.entity?.imgSrc"
+        alt="Entity"
+        class="game-field-img"
+        [ngClass]="{ 'loot-img': !_battleMode && !_tile.entity.user }"
+        (click)="onHighlightMakeMove(_tile.entity!, $event); $event.stopPropagation()" />
+      @if (showMoveIcon) {
+        <img
+          [src]="'assets/resourses/imgs/icons/move_icon.png'"
+          alt="can move"
+          class="action-icon position-absolute can-move-icon" />
+      }
+      @if (showAttackIcon) {
+        <img
+          [src]="'assets/resourses/imgs/icons/attack_icon.png'"
+          alt="can attack"
+          class="action-icon position-absolute can-attack-icon" />
+      }
+    </div>
+  }
+</div>

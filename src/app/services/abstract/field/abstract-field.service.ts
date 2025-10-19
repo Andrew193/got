@@ -20,50 +20,71 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
   }
 
   populateGameFieldWithUnits(userUnits: TileUnit[], aiUnits: TileUnit[]) {
-    this.gameConfig = this.getGameField(userUnits, aiUnits, this.getDefaultGameField());
-
-    return this.gameConfig;
+    return this.getGameField(userUnits, aiUnits, this.getDefaultGameField());
   }
 
   abstract getDamage(unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit }): number;
 
+  // getFieldsInRadius(
+  //   grid: Tile[][],
+  //   location: Position,
+  //   radius: number,
+  //   diagonalCheck?: boolean,
+  // ): Position[] {
+  //   const fields = [];
+  //   const rows = grid.length;
+  //   const cols = grid[0].length;
+  //
+  //   if (diagonalCheck) {
+  //     const { i: centerI, j: centerJ } = location;
+  //
+  //     for (let i = centerI - radius; i <= centerI + radius; i++) {
+  //       for (let j = centerJ - radius; j <= centerJ + radius; j++) {
+  //         if (i >= 0 && i < rows && j >= 0 && j < cols) {
+  //           if (!(i === location.i && j === location.j)) {
+  //             fields.push({ i, j });
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     for (let i = location.i - radius; i <= location.i + radius; i++) {
+  //       for (let j = location.j - radius; j <= location.j + radius; j++) {
+  //         if (
+  //           i >= 0 &&
+  //           i < rows &&
+  //           j >= 0 &&
+  //           j < cols &&
+  //           Math.abs(i - location.i) + Math.abs(j - location.j) <= radius
+  //         ) {
+  //           if (!(i === location.i && j === location.j)) {
+  //             fields.push({ i, j });
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //
+  //   return fields;
+  // }
   getFieldsInRadius(
     grid: Tile[][],
-    location: Position,
+    { i: ci, j: cj }: Position,
     radius: number,
     diagonalCheck?: boolean,
   ): Position[] {
-    const fields = [];
+    const fields: Position[] = [];
     const rows = grid.length;
     const cols = grid[0].length;
 
-    if (diagonalCheck) {
-      const { i: centerI, j: centerJ } = location;
+    for (let i = ci - radius; i <= ci + radius; i++) {
+      for (let j = cj - radius; j <= cj + radius; j++) {
+        if (i === ci && j === cj) continue;
+        if (i < 0 || j < 0 || i >= rows || j >= cols) continue;
 
-      for (let i = centerI - radius; i <= centerI + radius; i++) {
-        for (let j = centerJ - radius; j <= centerJ + radius; j++) {
-          if (i >= 0 && i < rows && j >= 0 && j < cols) {
-            if (!(i === location.i && j === location.j)) {
-              fields.push({ i, j });
-            }
-          }
-        }
-      }
-    } else {
-      for (let i = location.i - radius; i <= location.i + radius; i++) {
-        for (let j = location.j - radius; j <= location.j + radius; j++) {
-          if (
-            i >= 0 &&
-            i < rows &&
-            j >= 0 &&
-            j < cols &&
-            Math.abs(i - location.i) + Math.abs(j - location.j) <= radius
-          ) {
-            if (!(i === location.i && j === location.j)) {
-              fields.push({ i, j });
-            }
-          }
-        }
+        if (!diagonalCheck && Math.abs(i - ci) + Math.abs(j - cj) > radius) continue;
+
+        fields.push({ i, j });
       }
     }
 
@@ -95,29 +116,21 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
     gameField: Tile[][],
     objects: Tile[] = [],
   ) {
-    //const unplayableObjects = [{x:0, y:2},{x:1, y:2},{x:2, y:2},{x:3, y:2},{x:4, y:2},{x:5, y:2}]
+    const patchedRows: Record<number, Tile[]> = {};
 
-    userUnits.forEach(user => {
-      gameField[user.x][user.y] = {
-        ...gameField[user.x][user.y],
-        active: false,
-        entity: user,
-      };
-    });
+    const ensureRowCopy = (x: number) => (patchedRows[x] ??= [...gameField[x]] as Tile[]);
 
-    aiUnits.forEach(ai => {
-      gameField[ai.x][ai.y] = { ...gameField[ai.x][ai.y], active: false, entity: ai };
-    });
+    const setAt = (x: number, y: number, entity: TileUnit) => {
+      const row = ensureRowCopy(x);
 
-    objects.forEach(ai => {
-      gameField[ai.x][ai.y] = {
-        ...gameField[ai.x][ai.y],
-        active: false,
-        entity: {} as TileUnit,
-      };
-    });
+      row[y] = { ...row[y], active: false, entity };
+    };
 
-    return gameField;
+    userUnits.forEach(u => setAt(u.x, u.y, u));
+    aiUnits.forEach(a => setAt(a.x, a.y, a));
+    objects.forEach(o => setAt(o.x, o.y, {} as TileUnit));
+
+    return gameField.map((row, x) => patchedRows[x] ?? [...row]);
   }
 
   resetMoveAndAttack(unitArray: TileUnit[] | TileUnit[][], setValue = true) {

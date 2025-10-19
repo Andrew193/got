@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Skill, TileUnitSkill } from '../../../models/skill.model';
@@ -28,10 +28,7 @@ export interface GameField {
   styleUrl: './abstract-game-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export abstract class AbstractGameFieldComponent
-  extends GameFieldVars
-  implements OnInit, OnDestroy
-{
+export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnDestroy {
   @Input() userUnits: TileUnit[] = [];
   @Input() aiUnits: TileUnit[] = [];
   @Input() battleMode = true;
@@ -76,6 +73,7 @@ export abstract class AbstractGameFieldComponent
     }
 
     this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
+    console.log('create');
   }
 
   shouldRenderAction(hero: TileUnit, type: 'canMove' | 'canAttack') {
@@ -154,7 +152,8 @@ export abstract class AbstractGameFieldComponent
     if (dmgTaker[enemyIndex].health) {
       const newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
 
-      this.log.push(
+      this.log = [
+        ...this.log,
         this.gameLoggerS.logEvent(
           {
             damage,
@@ -165,7 +164,7 @@ export abstract class AbstractGameFieldComponent
           skill,
           dmgTaker[enemyIndex],
         ),
-      );
+      ];
       dmgTaker[enemyIndex] = { ...dmgTaker[enemyIndex], health: newHealth };
     }
   }
@@ -235,10 +234,6 @@ export abstract class AbstractGameFieldComponent
     );
 
     return enemyClicked ? clickedTile : null;
-  }
-
-  ngOnInit(): void {
-    this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
   }
 
   ngOnDestroy() {

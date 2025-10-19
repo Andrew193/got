@@ -11,6 +11,11 @@ import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import {
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+  CdkVirtualScrollViewport,
+} from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-game-field',
@@ -25,6 +30,9 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     MatExpansionPanel,
     MatTooltip,
     MatProgressBar,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    CdkVirtualScrollViewport,
   ],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss',

@@ -5,7 +5,10 @@ import {
   effect,
   inject,
   input,
+  OnInit,
   output,
+  Signal,
+  signal,
 } from '@angular/core';
 import { ImageComponent } from '../views/image/image.component';
 import { DecimalPipe } from '@angular/common';
@@ -17,6 +20,7 @@ import {
   selectAllCardsFlipped,
   selectCardCollection,
 } from '../../store/reducers/display-reward.reducer';
+import { DisplayReward } from '../../services/reward/reward.service';
 
 type InnerTotal = {
   src: string;
@@ -30,7 +34,7 @@ type InnerTotal = {
   styleUrl: './display-reward.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DisplayRewardComponent {
+export class DisplayRewardComponent implements OnInit {
   store = inject(Store);
 
   contextName = input.required<DisplayRewardNames>();
@@ -41,7 +45,16 @@ export class DisplayRewardComponent {
 
   allRevealed = output<boolean>();
 
-  rewards = computed(() => this.store.selectSignal(selectCardCollection(this.contextName()))());
+  rewards: Signal<DisplayReward[]> = signal<DisplayReward[]>([]);
+
+  private allFlipped: Signal<boolean> = signal(false);
+
+  ngOnInit() {
+    const name = this.contextName();
+
+    this.rewards = this.store.selectSignal(selectCardCollection(name));
+    this.allFlipped = this.store.selectSignal(selectAllCardsFlipped(name, true));
+  }
 
   cardsPrize = computed(() => {
     const total: Record<string, InnerTotal> = {};
@@ -66,21 +79,9 @@ export class DisplayRewardComponent {
     return config ? this.testRewards(true) : false;
   });
 
-  private allFlipped = computed(() => {
-    return this.store.selectSignal(selectAllCardsFlipped(this.contextName()))();
-  });
-
   constructor() {
-    let prev = false;
-
     effect(() => {
-      const now = this.allFlipped();
-
-      if (now && !prev) {
-        this.allRevealed.emit(true);
-      }
-
-      prev = now;
+      this.allRevealed.emit(this.allFlipped());
     });
   }
 

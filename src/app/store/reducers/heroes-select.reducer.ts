@@ -1,15 +1,20 @@
 import { HeroesSelectState, StoreNames } from '../store.interfaces';
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { HeroesSelectActions } from '../actions/heroes-select.actions';
 import { RewardValues } from '../../models/reward-based.model';
 import { HeroesNamesCodes } from '../../models/unit.model';
 import { HeroesSelectNames } from '../../constants';
+import {
+  makeSelectHeroesCollection,
+  makeSelectHeroState,
+} from '../selectors/heroes-select.selectors';
 
 export const HeroesSelectInitialState: HeroesSelectState = {
   contexts: {
     [HeroesSelectNames.ai]: [],
     [HeroesSelectNames.dailyBoss]: [],
     [HeroesSelectNames.user]: [],
+    [HeroesSelectNames.firstBattle]: [],
   },
 };
 
@@ -33,7 +38,7 @@ export const HeroesSelectFeature = createFeature({
       };
     }),
     on(HeroesSelectActions.resetHeroCollection, (state, action) => {
-      return { ...state, contexts: { ...state.contexts, [action.name]: new Set() } };
+      return { ...state, contexts: { ...state.contexts, [action.name]: [] } };
     }),
     on(HeroesSelectActions.addHeroToCollection, (state, action) => {
       const collection = state.contexts[action.name];
@@ -45,15 +50,22 @@ export const HeroesSelectFeature = createFeature({
     }),
   ),
   extraSelectors: baseSelectors => {
+    const selectContexts = baseSelectors.selectContexts;
+
+    const selectHeroesCollection = (name: HeroesSelectNames) =>
+      makeSelectHeroesCollection(selectContexts, name);
+    const selectHeroState = (name: HeroesSelectNames, itemName: RewardValues | HeroesNamesCodes) =>
+      makeSelectHeroState(selectContexts, name, itemName);
+
     return {
-      selectHeroesCollection: (name: HeroesSelectNames) => {
-        return createSelector(baseSelectors.selectContexts, ctx => ctx[name]);
-      },
-      selectHeroState: (name: HeroesSelectNames, itemName: RewardValues | HeroesNamesCodes) => {
-        return createSelector(baseSelectors.selectContexts, ctx => ctx[name].includes(itemName));
-      },
+      selectHeroesCollection,
+      selectHeroState,
     };
   },
 });
 
-export const { selectHeroesCollection, selectHeroState } = HeroesSelectFeature;
+export const {
+  selectHeroesCollection,
+  selectHeroState,
+  selectContexts: selectHeroesContexts,
+} = HeroesSelectFeature;

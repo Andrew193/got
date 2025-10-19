@@ -6,12 +6,14 @@ import { TrainingFeature, TrainingInitialState } from './reducers/training.reduc
 import { EnvironmentProviders } from '@angular/core';
 import { DisplayRewardFeature, DisplayRewardInitialState } from './reducers/display-reward.reducer';
 import { HeroesSelectFeature } from './reducers/heroes-select.reducer';
+import { GameBoardFeature, GameBoardInitialState } from './reducers/game-board.reducer';
 
 export const InitialStore: StoreType = {
   [StoreNames.lobby]: LobbyInitialState,
   [StoreNames.dailyReward]: DailyRewardInitialState,
   [StoreNames.trainingGround]: TrainingInitialState,
   [StoreNames.displayReward]: DisplayRewardInitialState,
+  [StoreNames.gameBoard]: GameBoardInitialState,
 };
 
 export const StateConfigs: Record<StoreNames, EnvironmentProviders[]> = {
@@ -20,4 +22,5 @@ export const StateConfigs: Record<StoreNames, EnvironmentProviders[]> = {
   [StoreNames.trainingGround]: [provideState(TrainingFeature)],
   [StoreNames.displayReward]: [provideState(DisplayRewardFeature)],
   [StoreNames.heroesSelect]: [provideState(HeroesSelectFeature)],
+  [StoreNames.gameBoard]: [provideState(GameBoardFeature)],
 };

@@ -107,7 +107,10 @@ export class GameService {
             const buffs = skill.buffs || [];
 
             for (const buff of buffs) {
-              units[index] = this.restoreHealthForUnit(unit, buff, logs, skill);
+              const response = this.restoreHealthForUnit(unit, buff, logs, skill);
+
+              units[index] = response.unit;
+              logs = response.logs;
             }
           } else if (skill.passive && skill.buffs) {
             skill.buffs.forEach(buff => {
@@ -117,15 +120,17 @@ export class GameService {
         });
       }
     }
+
+    return logs;
   }
 
   restoreHealthForUnit(unit: TileUnit, buff: Effect, logs: LogRecord[], skill: SkillSrc) {
     const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
 
-    this.logRestoreHealth(logs, skill, unit, restoredHealth);
+    logs = this.logRestoreHealth(logs, skill, unit, restoredHealth);
     unit.health = this.eS.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth);
 
-    return unit;
+    return { unit, logs };
   }
 
   private logRestoreHealth(
@@ -134,19 +139,26 @@ export class GameService {
     unit: TileUnit,
     restoredHealth: number,
   ) {
-    logs.push({
-      info: true,
-      imgSrc: skill.imgSrc,
-      message: `${unit.user ? 'Player' : 'Bote'} ${unit.name} restored ${restoredHealth} points. !`,
-    });
+    return [
+      ...logs,
+      {
+        info: true,
+        imgSrc: skill.imgSrc,
+        message: `${unit.user ? 'Player' : 'Bote'} ${unit.name} restored ${restoredHealth} points. !`,
+      },
+    ];
   }
 
   private checkEffectsForHealthRestore(unit: TileUnit, logs: LogRecord[]) {
     unit.effects.forEach(effect => {
       if (effect.type === this.eS.effects.healthRestore) {
-        unit = this.restoreHealthForUnit(unit, effect, logs, {
+        debugger;
+        const response = this.restoreHealthForUnit(unit, effect, logs, {
           imgSrc: effect.imgSrc,
         });
+
+        unit = response.unit;
+        logs = response.logs;
       }
     });
   }
@@ -251,43 +263,45 @@ export class GameService {
   private updateEffectDuration(unit: TileUnit, decreaseCooldown: boolean, battleMode: boolean) {
     const log: LogRecord[] = [];
 
-    unit.effects.forEach((effect: Effect, i, array) => {
-      const newDuration = decreaseCooldown ? effect.duration - 1 : effect.duration;
+    if (unit.health) {
+      unit.effects.forEach((effect: Effect, i, array) => {
+        const newDuration = decreaseCooldown ? effect.duration - 1 : effect.duration;
 
-      if (effect.duration > 0) {
-        array[i] = { ...effect, duration: newDuration };
+        if (effect.duration > 0) {
+          array[i] = { ...effect, duration: newDuration };
 
-        if (effect.restore) {
-          this.checkEffectsForHealthRestore(unit, log);
-        } else {
-          if (!effect.passive) {
-            const additionalDmg = this.getReducedDmgForEffects(
-              unit,
-              this.eS.getDebuffDmg(effect.type, unit.health, effect.m),
-              effect,
-            );
-
-            if (additionalDmg) {
-              log.push(
-                this.gameLoggerService.logEvent(
-                  {
-                    damage: null,
-                    newHealth: null,
-                    addDmg: additionalDmg,
-                    battleMode: battleMode,
-                  },
-                  unit.user,
-                  effect,
-                  unit,
-                ),
+          if (effect.restore) {
+            this.checkEffectsForHealthRestore(unit, log);
+          } else {
+            if (!effect.passive) {
+              const additionalDmg = this.getReducedDmgForEffects(
+                unit,
+                this.eS.getDebuffDmg(effect.type, unit.health, effect.m),
+                effect,
               );
-            }
 
-            unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
+              if (additionalDmg) {
+                log.push(
+                  this.gameLoggerService.logEvent(
+                    {
+                      damage: null,
+                      newHealth: null,
+                      addDmg: additionalDmg,
+                      battleMode: battleMode,
+                    },
+                    unit.user,
+                    effect,
+                    unit,
+                  ),
+                );
+              }
+
+              unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
+            }
           }
         }
-      }
-    });
+      });
+    }
 
     return { log, unit };
   }

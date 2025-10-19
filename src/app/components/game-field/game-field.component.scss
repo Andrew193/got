@@ -74,6 +74,9 @@
   border-radius: 5px;
   width: 100% !important;
   opacity: 1 !important;
+  height: 70px;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   img {
     background: transparent;
@@ -164,4 +167,8 @@
       order: 1;
     }
   }
+}
+
+.example-viewport {
+  height: 200px;
 }

@@ -16,14 +16,8 @@ interface ExecuteActionParams {
   attackerIndex: number;
   defenderIndex: number;
   skill: Skill;
-
-  /** Ход делает AI? (идёт в updateSkillsCooldown и universalRangeAttack) */
   isAiMove?: boolean;
-
-  /** Как получить индекс скилла (если уже знаем — можно передать число) */
   findSkillIndex: number | ((skills: Skill[], skill: Skill) => number);
-
-  /** Как получить TileUnit цели для universalRangeAttack */
   getTargetTile?: (defenderTeam: TileUnit[], defenderIndex: number) => TileUnit | null;
 }
 
@@ -200,6 +194,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   updateGridUnits(unitsArray: TileUnit[]) {
+    console.log('create 2');
     this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
   }
 
@@ -462,7 +457,9 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       }
 
       // Check passive skills if AI just moved
-      aiMove && this.gameActionService.checkPassiveSkills(userUnits, this.log);
+      if (aiMove) {
+        this.log = this.gameActionService.checkPassiveSkills(userUnits, this.log);
+      }
     }
 
     // Update game state
@@ -487,7 +484,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       const aiPos = this.unitService.getPositionFromCoordinate(aiUnit);
       const userPos = this.unitService.getPositionFromCoordinate(userUnit);
 
-      this.updateField(userUnits, aiUnits);
+      //this.updateField(userUnits, aiUnits);
       const path = this.fieldService.getShortestPathCover(
         this.fieldService.getGridFromField(this.gameConfig),
         aiPos,
@@ -512,7 +509,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         canAttack: false,
         skills: updatedSkills ?? aiUnits[index].skills,
       };
-      this.updateField(userUnits, aiUnits);
+      //this.updateField(userUnits, aiUnits);
     };
 
     const performAttack = (userIndex: number, aiSkill: TileUnitSkill, index: number) => {
@@ -563,7 +560,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     };
 
     // Apply passive buffs to all AI units
-    this.gameActionService.checkPassiveSkills(aiUnits, this.log);
+    this.log = this.gameActionService.checkPassiveSkills(aiUnits, this.log);
 
     for (let i = 0; i < aiUnits.length; i++) {
       this.gameActionService.aiUnitAttack(i, aiUnits, makeAiMove.bind(this));
@@ -581,7 +578,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     );
 
     unit = response.unit;
-    this.log.push(...response.log);
+    this.log = [...this.log, ...response.log];
 
     return unit;
   }

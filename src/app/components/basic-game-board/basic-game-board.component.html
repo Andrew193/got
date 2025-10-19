@@ -2,42 +2,12 @@
   @for (row of gameConfig; track $index) {
     <div class="flex-row">
       @for (tile of row; track $index) {
-        <div
-          (click)="onMoveEntity(tile)"
-          class="col tile d-flex align-items-center justify-content-center"
-          [class.ai-heroes]="!tile?.entity?.user"
-          [class.user-heroes]="tile?.entity?.user"
-          [class.entity-b]="!!tile?.entity"
-          [class.disabled]="tile?.entity?.health === 0"
-          [class.block]="!tile.active && tile.entity === null"
-          [class.green-b]="isHighlighted(tile, 'green-b')"
-          [class.red-b]="isHighlighted(tile, 'red-b')">
-          <span class="tile-label">{{ tile.x + 1 }}-{{ tile.y + 1 }}</span>
-          @if (tile.entity) {
-            <div class="position-relative">
-              @let showMoveIcon = showActionButtonCondition(tile, 'canMove');
-              @let showAttackIcon = showActionButtonCondition(tile, 'canAttack');
-
-              <img
-                [src]="tile?.entity?.imgSrc"
-                alt="Entity"
-                class="game-field-img"
-                [ngClass]="{ 'loot-img': !battleMode && !tile.entity.user }"
-                (click)="onHighlightMakeMove(tile.entity!, $event); $event.stopPropagation()" />
-              @if (showMoveIcon) {
-                <img
-                  [src]="'assets/resourses/imgs/icons/move_icon.png'"
-                  alt="can move"
-                  class="action-icon position-absolute can-move-icon" />
-              }
-              @if (showAttackIcon) {
-                <img
-                  [src]="'assets/resourses/imgs/icons/attack_icon.png'"
-                  alt="can attack"
-                  class="action-icon position-absolute can-attack-icon" />
-              }
-            </div>
-          }
+        <div class="col tile d-flex align-items-center justify-content-center">
+          <app-game-board-tile
+            [tile]="tile"
+            (moveEntity)="moveEntity.emit($event)"
+            (highlightMakeMove)="highlightMakeMove.emit($event)"
+            [battleMode]="battleMode" />
         </div>
       }
     </div>

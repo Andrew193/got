@@ -31,7 +31,7 @@
     </div>
     <aside class="col-12 d-flex flex-column mb-3">
       @if (skillsInAttackBar.length) {
-        <div class="meta-aside mb-3 flex-row justify-content-evenly p-1">
+        <div class="meta-aside mb-3 flex-row justify-content-evenly p-1 color-white">
           @for (skill of skillsInAttackBar; track skill.name + $index) {
             <div class="skills-container col-3">
               <div>
@@ -96,20 +96,22 @@
               {{ battleMode ? 'Battle history' : 'History' }}
             </ng-template>
             <div class="heroes user-heroes m-1">
-              @for (logRecord of log; track logRecord.message + logRecord.isUser + $index) {
-                @if (logRecord.message) {
-                  <p
-                    class="log-record"
-                    [ngClass]="{
-                      'red-b': logRecord.isUser,
-                      'green-b': !logRecord.isUser,
-                      'entity-b': logRecord.info,
-                    }">
-                    <img [src]="logRecord.imgSrc" alt="Effect img" />
-                    <span>{{ logRecord.message }}</span>
-                  </p>
-                }
-              }
+              <cdk-virtual-scroll-viewport itemSize="70" class="example-viewport">
+                <div *cdkVirtualFor="let logRecord of log">
+                  @if (logRecord.message) {
+                    <p
+                      class="log-record"
+                      [ngClass]="{
+                        'red-b': logRecord.isUser,
+                        'green-b': !logRecord.isUser,
+                        'entity-b': logRecord.info,
+                      }">
+                      <img [src]="logRecord.imgSrc" alt="Effect img" />
+                      <span>{{ logRecord.message }}</span>
+                    </p>
+                  }
+                </div>
+              </cdk-virtual-scroll-viewport>
             </div>
           </mat-tab>
         </mat-tab-group>

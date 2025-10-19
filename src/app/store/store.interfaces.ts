@@ -10,6 +10,7 @@ export enum StoreNames {
   trainingGround = 'trainingGround',
   displayReward = 'displayReward',
   heroesSelect = 'heroesSelect',
+  gameBoard = 'gameBoard',
 }
 
 export enum DisplayRewardNames {
@@ -23,6 +24,7 @@ export type StoreType = {
   [StoreNames.dailyReward]: DailyRewardState;
   [StoreNames.trainingGround]: TrainingState;
   [StoreNames.displayReward]: DisplayRewardState;
+  [StoreNames.gameBoard]: BasicBoardState;
 };
 
 //States
@@ -62,4 +64,11 @@ export type HeroesSelectStateContexts = Record<
 
 export type HeroesSelectState = {
   contexts: HeroesSelectStateContexts;
+};
+
+//Game Board
+export type BasicBoardStateContexts = Record<string, string>;
+
+export type BasicBoardState = {
+  contexts: BasicBoardStateContexts;
 };
