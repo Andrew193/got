@@ -1,10 +1,9 @@
 import { ActionReducer, INIT, UPDATE } from '@ngrx/store';
 import { BasicLocalStorage } from '../../services/localStorage/local-storage.service';
 import { RECOMPUTE } from '@ngrx/store-devtools';
+import { StoreNames } from '../store.interfaces';
 
-type SliceName = string;
-
-export function hydrationMeta(slices: SliceName[] = []) {
+export function hydrationMeta(slices: StoreNames[] = []) {
   return (reducer: ActionReducer<any>) => (state: any, action: any) => {
     if (action.type === INIT || action.type === UPDATE) {
       try {

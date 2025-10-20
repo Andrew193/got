@@ -1,71 +1,81 @@
-import { HeroesSelectState, StoreNames } from '../store.interfaces';
+import { HeroesSelectState, HeroesSelectStateEntity, StoreNames } from '../store.interfaces';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { HeroesSelectActions } from '../actions/heroes-select.actions';
-import { RewardValues } from '../../models/reward-based.model';
-import { HeroesNamesCodes } from '../../models/unit.model';
 import { HeroesSelectNames } from '../../constants';
+import { createEntityAdapter } from '@ngrx/entity';
+import { HeroesSelectActions } from '../actions/heroes-select.actions';
 import {
   makeSelectHeroesCollection,
   makeSelectHeroState,
 } from '../selectors/heroes-select.selectors';
 
+function selectId(model: HeroesSelectStateEntity) {
+  return model;
+}
+
+const aiAdapter = createEntityAdapter<HeroesSelectStateEntity>({
+  selectId,
+});
+const dailyBossAdapter = createEntityAdapter<HeroesSelectStateEntity>({
+  selectId,
+});
+const userAdapter = createEntityAdapter<HeroesSelectStateEntity>({
+  selectId,
+});
+const firstBattleAdapter = createEntityAdapter<HeroesSelectStateEntity>({
+  selectId,
+});
+
 export const HeroesSelectInitialState: HeroesSelectState = {
-  contexts: {
-    [HeroesSelectNames.ai]: [],
-    [HeroesSelectNames.dailyBoss]: [],
-    [HeroesSelectNames.user]: [],
-    [HeroesSelectNames.firstBattle]: [],
-  },
+  [HeroesSelectNames.ai]: aiAdapter.getInitialState(),
+  [HeroesSelectNames.dailyBoss]: dailyBossAdapter.getInitialState(),
+  [HeroesSelectNames.user]: userAdapter.getInitialState(),
+  [HeroesSelectNames.firstBattle]: firstBattleAdapter.getInitialState(),
 };
+
+export function chooseHeroesAdapter(name: HeroesSelectNames) {
+  return {
+    [HeroesSelectNames.ai]: aiAdapter,
+    [HeroesSelectNames.dailyBoss]: dailyBossAdapter,
+    [HeroesSelectNames.user]: userAdapter,
+    [HeroesSelectNames.firstBattle]: firstBattleAdapter,
+  }[name];
+}
 
 export const HeroesSelectFeature = createFeature({
   name: StoreNames.heroesSelect,
   reducer: createReducer(
     HeroesSelectInitialState,
     on(HeroesSelectActions.setHeroesSelectState, (state, action) => {
-      return { ...state, contexts: { ...state.contexts, [action.name]: action.data } };
-    }),
-    on(HeroesSelectActions.removeHeroFromCollection, (state, { name, itemName }) => {
-      const prev = state.contexts[name] ?? [];
-      const next = prev.filter(x => x !== itemName);
+      const adapter = chooseHeroesAdapter(action.name);
 
-      return {
-        ...state,
-        contexts: {
-          ...state.contexts,
-          [name]: next,
-        },
-      };
+      return { ...state, [action.name]: adapter.setAll(action.data, state[action.name]) };
     }),
-    on(HeroesSelectActions.resetHeroCollection, (state, action) => {
-      return { ...state, contexts: { ...state.contexts, [action.name]: [] } };
+    on(HeroesSelectActions.removeHeroFromCollection, (state, action) => {
+      const adapter = chooseHeroesAdapter(action.name);
+
+      return { ...state, [action.name]: adapter.removeOne(action.itemName, state[action.name]) };
     }),
     on(HeroesSelectActions.addHeroToCollection, (state, action) => {
-      const collection = state.contexts[action.name];
+      const adapter = chooseHeroesAdapter(action.name);
 
-      return {
-        ...state,
-        contexts: { ...state.contexts, [action.name]: [collection, action.itemName].flat() },
-      };
+      return { ...state, [action.name]: adapter.addOne(action.itemName, state[action.name]) };
+    }),
+    on(HeroesSelectActions.resetHeroCollection, (state, action) => {
+      const adapter = chooseHeroesAdapter(action.name);
+
+      return { ...state, [action.name]: adapter.removeAll(state[action.name]) };
     }),
   ),
   extraSelectors: baseSelectors => {
-    const selectContexts = baseSelectors.selectContexts;
-
-    const selectHeroesCollection = (name: HeroesSelectNames) =>
-      makeSelectHeroesCollection(selectContexts, name);
-    const selectHeroState = (name: HeroesSelectNames, itemName: RewardValues | HeroesNamesCodes) =>
-      makeSelectHeroState(selectContexts, name, itemName);
+    const selectBranch = baseSelectors.selectHeroesSelectState;
 
     return {
-      selectHeroesCollection,
-      selectHeroState,
+      selectHeroState: (name: HeroesSelectNames, itemName: HeroesSelectStateEntity) =>
+        makeSelectHeroState(selectBranch, name, itemName),
+      selectHeroesCollection: (name: HeroesSelectNames) =>
+        makeSelectHeroesCollection(selectBranch, name),
     };
   },
 });
 
-export const {
-  selectHeroesCollection,
-  selectHeroState,
-  selectContexts: selectHeroesContexts,
-} = HeroesSelectFeature;
+export const { selectHeroState, selectHeroesCollection } = HeroesSelectFeature;

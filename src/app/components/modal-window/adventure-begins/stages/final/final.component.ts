@@ -8,8 +8,8 @@ import { SceneNames } from '../../../../../constants';
 import { DisplayRewardComponent } from '../../../../display-reward/display-reward.component';
 import { CurrencyHelperService } from '../../../../../services/users/currency/helper/currency-helper.service';
 import { Store } from '@ngrx/store';
-import { setDisplayRewardState } from '../../../../../store/actions/display-reward.actions';
 import { DisplayRewardNames } from '../../../../../store/store.interfaces';
+import { DisplayRewardActions } from '../../../../../store/actions/display-reward.actions';
 
 @Component({
   selector: 'app-login-final',
@@ -29,7 +29,9 @@ export class FinalComponent implements SceneComponent {
   runScene(): void {
     const rewards = this.currencyHelperService.convertCurrencyToDisplayReward(this.data.reward);
 
-    this.store.dispatch(setDisplayRewardState({ name: this.contextName, data: rewards }));
+    this.store.dispatch(
+      DisplayRewardActions.setDisplayRewardState({ name: this.contextName, data: rewards }),
+    );
   }
 
   stopScene(): void {

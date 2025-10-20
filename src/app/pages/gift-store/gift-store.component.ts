@@ -21,7 +21,7 @@ import { TileUnit, TileUnitWithReward } from '../../models/field.model';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { DisplayRewardNames } from '../../store/store.interfaces';
 import { Store } from '@ngrx/store';
-import { setDisplayRewardState } from '../../store/actions/display-reward.actions';
+import { DisplayRewardActions } from '../../store/actions/display-reward.actions';
 import { selectCardCollection } from '../../store/reducers/display-reward.reducer';
 
 @Component({
@@ -147,6 +147,8 @@ export class GiftStoreComponent implements OnInit {
       amount: !realAiUnits[index].health ? el.reward.amount : 0,
     }));
 
-    this.store.dispatch(setDisplayRewardState({ name: this.contextName, data: loot }));
+    this.store.dispatch(
+      DisplayRewardActions.setDisplayRewardState({ name: this.contextName, data: loot }),
+    );
   };
 }

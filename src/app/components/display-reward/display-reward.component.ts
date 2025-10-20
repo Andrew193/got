@@ -15,12 +15,12 @@ import { DecimalPipe } from '@angular/common';
 import { CardComponent } from './card/card.component';
 import { DisplayRewardNames } from '../../store/store.interfaces';
 import { Store } from '@ngrx/store';
-import { setDisplayRewardCartState } from '../../store/actions/display-reward.actions';
+import { DisplayReward } from '../../services/reward/reward.service';
+import { DisplayRewardActions } from '../../store/actions/display-reward.actions';
 import {
   selectAllCardsFlipped,
   selectCardCollection,
 } from '../../store/reducers/display-reward.reducer';
-import { DisplayReward } from '../../services/reward/reward.service';
 
 type InnerTotal = {
   src: string;
@@ -107,7 +107,7 @@ export class DisplayRewardComponent implements OnInit {
 
     if (reward) {
       this.store.dispatch(
-        setDisplayRewardCartState({
+        DisplayRewardActions.setDisplayRewardCartState({
           name: this.contextName(),
           index: i,
           data: {

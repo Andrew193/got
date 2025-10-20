@@ -1,8 +1,9 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { DisplayReward } from '../../services/reward/reward.service';
-import { DisplayRewardNames } from '../store.interfaces';
+import { DisplayRewardNames, DisplayRewardState } from '../store.interfaces';
+import { chooseDisplayRewardAdapter } from '../reducers/display-reward.reducer';
 
-export type SelectContexts = MemoizedSelector<object, Record<DisplayRewardNames, DisplayReward[]>>;
+export type SelectContexts = MemoizedSelector<object, DisplayRewardState>;
 
 const cardStateCache = new Map<string, MemoizedSelector<object, DisplayReward>>();
 const allFlippedCache = new Map<string, MemoizedSelector<object, boolean>>();
@@ -17,7 +18,12 @@ export function makeSelectCardState(
   let memo = cardStateCache.get(key);
 
   if (!memo) {
-    memo = createSelector(selectContexts, ctx => ctx?.[name]?.[index]);
+    const adapter = chooseDisplayRewardAdapter(name);
+    const selectAll = adapter.getSelectors(
+      createSelector(selectContexts, ctx => ctx[name]),
+    ).selectAll;
+
+    memo = createSelector(selectAll, ctx => ctx[index]);
     cardStateCache.set(key, memo);
   }
 
@@ -33,9 +39,12 @@ export function makeSelectAllCardsFlipped(
   let memo = allFlippedCache.get(key);
 
   if (!memo) {
-    memo = createSelector(selectContexts, ctx => {
-      const collection = ctx[name];
+    const adapter = chooseDisplayRewardAdapter(name);
+    const selectAll = adapter.getSelectors(
+      createSelector(selectContexts, ctx => ctx[name]),
+    ).selectAll;
 
+    memo = createSelector(selectAll, collection => {
       if (!collection.length && ignoreEmpty) return false;
 
       return collection.every(card => card.flipped);
@@ -54,7 +63,12 @@ export function makeSelectCardCollection(
   let memo = cardCollectionCache.get(key);
 
   if (!memo) {
-    memo = createSelector(selectContexts, ctx => ctx[name] ?? []);
+    const adapter = chooseDisplayRewardAdapter(name);
+    const selectAll = adapter.getSelectors(
+      createSelector(selectContexts, ctx => ctx[name]),
+    ).selectAll;
+
+    memo = createSelector(selectAll, collection => collection ?? []);
     cardCollectionCache.set(key, memo);
   }
 

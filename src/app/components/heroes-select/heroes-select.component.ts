@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  Input,
+  OnInit,
+  signal,
+  Signal,
+} from '@angular/core';
 import { SelectableUnit } from '../../models/unit.model';
 import { Store } from '@ngrx/store';
-import { selectHeroesContexts } from '../../store/reducers/heroes-select.reducer';
 import { HeroesSelectActions } from '../../store/actions/heroes-select.actions';
 import { HeroSelectTileComponent } from './hero-select-tile/hero-select-tile.component';
 import { HeroesSelectNames } from '../../constants';
+import { HeroesSelectStateEntity } from '../../store/store.interfaces';
+import { selectHeroesCollection } from '../../store/reducers/heroes-select.reducer';
 
 @Component({
   selector: 'app-heroes-select',
@@ -13,10 +23,9 @@ import { HeroesSelectNames } from '../../constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HeroSelectTileComponent],
 })
-export class HeroesSelectComponent {
+export class HeroesSelectComponent implements OnInit {
   store = inject(Store);
   contextName = input.required<HeroesSelectNames>();
-  readonly contexts = this.store.selectSignal(selectHeroesContexts);
 
   title = input('');
   containerClass = input('');
@@ -25,12 +34,11 @@ export class HeroesSelectComponent {
 
   @Input() addUserUnit: (unit: SelectableUnit, isUser?: boolean) => boolean = () => true;
 
-  units = computed(() => {
-    const contexts = this.contexts();
-    const name = this.contextName();
+  units: Signal<HeroesSelectStateEntity[]> = signal([]);
 
-    return contexts?.[name] || [];
-  });
+  ngOnInit() {
+    this.units = this.store.selectSignal(selectHeroesCollection(this.contextName()));
+  }
 
   unitClick(unit: SelectableUnit) {
     const isUser = this.isUser();

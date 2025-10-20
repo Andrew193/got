@@ -3,6 +3,7 @@ import { HeroesNamesCodes, PreviewUnit } from '../models/unit.model';
 import { DisplayReward } from '../services/reward/reward.service';
 import { RewardValues } from '../models/reward-based.model';
 import { HeroesSelectNames } from '../constants';
+import { EntityState } from '@ngrx/entity';
 
 export enum StoreNames {
   lobby = 'lobby',
@@ -41,30 +42,21 @@ export type DailyRewardState = {
 
 //Training
 export type TrainingState = {
-  aiUnits: PreviewUnit[];
-  userUnits: PreviewUnit[];
-};
-
-//Display reward
-export type DisplayRewardStateContexts = Record<DisplayRewardNames, DisplayReward[]>;
-
-export type DisplayRewardState = {
-  contexts: DisplayRewardStateContexts;
+  aiUnits: EntityState<PreviewUnit>;
+  userUnits: EntityState<PreviewUnit>;
 };
 
 export type TrainingStateSelectUnit = {
   units: PreviewUnit[];
 };
 
-//Heroes select
-export type HeroesSelectStateContexts = Record<
-  HeroesSelectNames,
-  (RewardValues | HeroesNamesCodes)[]
->;
+//Display reward
+export type DisplayRewardState = Record<DisplayRewardNames, EntityState<DisplayReward>>;
 
-export type HeroesSelectState = {
-  contexts: HeroesSelectStateContexts;
-};
+//Heroes select
+export type HeroesSelectStateEntity = RewardValues | HeroesNamesCodes;
+
+export type HeroesSelectState = Record<HeroesSelectNames, EntityState<HeroesSelectStateEntity>>;
 
 //Game Board
 export type BasicBoardStateContexts = Record<string, string>;

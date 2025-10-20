@@ -13,15 +13,11 @@ import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-
 import { NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
-import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
-import {
-  dropTrainingSelectUnits,
-  setAIUnits,
-  setUserUnits,
-} from '../../../store/actions/training.actions';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { RewardValues } from '../../../models/reward-based.model';
 import { HeroesSelectNames } from '../../../constants';
+import { TrainingActions } from '../../../store/actions/training.actions';
+import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
 
 type BarCtx = {
   isUser: boolean;
@@ -123,9 +119,9 @@ export class TrainingConfigComponent {
       this[unitKey].set(updatedUnits);
 
       if (unitKey === 'aiUnits') {
-        this.store.dispatch(setAIUnits({ units: updatedUnits }));
+        this.store.dispatch(TrainingActions.setAIUnits({ units: updatedUnits }));
       } else {
-        this.store.dispatch(setUserUnits({ units: updatedUnits }));
+        this.store.dispatch(TrainingActions.setUserUnits({ units: updatedUnits }));
       }
 
       this[descKey] = updatedUnits.map(() => false);
@@ -161,7 +157,7 @@ export class TrainingConfigComponent {
   }
 
   goToMainPage() {
-    this.store.dispatch(dropTrainingSelectUnits());
+    this.store.dispatch(TrainingActions.dropTrainingSelectUnits());
     this.nav.goToMainPage();
   }
 }

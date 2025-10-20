@@ -1,9 +1,11 @@
-import { createAction, props } from '@ngrx/store';
-import { TrainingStateSelectUnit } from '../store.interfaces';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { StoreNames, TrainingStateSelectUnit } from '../store.interfaces';
 
-export const setAIUnits = createAction('[Training] setAIUnits', props<TrainingStateSelectUnit>());
-export const setUserUnits = createAction(
-  '[Training] setUserUnits',
-  props<TrainingStateSelectUnit>(),
-);
-export const dropTrainingSelectUnits = createAction('[Training] dropTrainingSelectUnits');
+export const TrainingActions = createActionGroup({
+  source: StoreNames.trainingGround,
+  events: {
+    setAIUnits: props<TrainingStateSelectUnit>(),
+    setUserUnits: props<TrainingStateSelectUnit>(),
+    dropTrainingSelectUnits: emptyProps(),
+  },
+});

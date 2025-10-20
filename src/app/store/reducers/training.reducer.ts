@@ -1,30 +1,54 @@
 import { StoreNames, TrainingState } from '../store.interfaces';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { dropTrainingSelectUnits, setAIUnits, setUserUnits } from '../actions/training.actions';
+import { createEntityAdapter } from '@ngrx/entity';
+import { PreviewUnit } from '../../models/unit.model';
+import { TrainingActions } from '../actions/training.actions';
+
+function selectId(model: PreviewUnit) {
+  return model.name;
+}
+
+const aiUnitsAdapter = createEntityAdapter<PreviewUnit>({
+  selectId,
+});
+const userUnitsAdapter = createEntityAdapter<PreviewUnit>({
+  selectId,
+});
 
 export const TrainingInitialState: TrainingState = {
-  aiUnits: [],
-  userUnits: [],
+  aiUnits: aiUnitsAdapter.getInitialState([]),
+  userUnits: userUnitsAdapter.getInitialState([]),
 };
 
 export const TrainingFeature = createFeature({
   name: StoreNames.trainingGround,
   reducer: createReducer(
     TrainingInitialState,
-    on(setAIUnits, (state, action) => {
-      const data = action.units;
-
-      return { ...state, aiUnits: data };
+    on(TrainingActions.setAIUnits, (state, action) => {
+      return { ...state, aiUnits: aiUnitsAdapter.setAll(action.units, state.aiUnits) };
     }),
-    on(setUserUnits, (state, action) => {
-      const data = action.units;
-
-      return { ...state, userUnits: data };
+    on(TrainingActions.setUserUnits, (state, action) => {
+      return { ...state, userUnits: userUnitsAdapter.setAll(action.units, state.userUnits) };
     }),
-    on(dropTrainingSelectUnits, state => {
-      return { ...state, aiUnits: [], userUnits: [] };
+    on(TrainingActions.dropTrainingSelectUnits, state => {
+      return {
+        ...state,
+        aiUnits: aiUnitsAdapter.removeAll(state.aiUnits),
+        userUnits: userUnitsAdapter.removeAll(state.userUnits),
+      };
     }),
   ),
+  extraSelectors: baseSelectors => {
+    const aiSelectors = aiUnitsAdapter.getSelectors(baseSelectors.selectAiUnits);
+    const userSelectors = userUnitsAdapter.getSelectors(baseSelectors.selectUserUnits);
+
+    return {
+      selectAiUnitsEntities: aiSelectors.selectEntities,
+      selectUserUnitsEntities: userSelectors.selectEntities,
+      selectAiUnits: aiSelectors.selectAll,
+      selectUserUnits: userSelectors.selectAll,
+    };
+  },
 });
 
 export const { selectAiUnits, selectUserUnits } = TrainingFeature;

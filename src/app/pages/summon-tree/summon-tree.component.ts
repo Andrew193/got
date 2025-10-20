@@ -6,8 +6,8 @@ import { RewardComponentInterface } from '../../models/reward-based.model';
 import { DecimalPipe } from '@angular/common';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { DisplayRewardNames } from '../../store/store.interfaces';
-import { setDisplayRewardState } from '../../store/actions/display-reward.actions';
 import { Store } from '@ngrx/store';
+import { DisplayRewardActions } from '../../store/actions/display-reward.actions';
 
 @Component({
   selector: 'app-summon-tree',
@@ -38,7 +38,9 @@ export class SummonTreeComponent implements RewardComponentInterface {
         ? [this.rewardService.getReward(1, this.items)]
         : this.rewardService.getReward(10, this.items);
 
-    this.store.dispatch(setDisplayRewardState({ name: this.contextName, data: this.rewards }));
+    this.store.dispatch(
+      DisplayRewardActions.setDisplayRewardState({ name: this.contextName, data: this.rewards }),
+    );
   }
 
   goToMainPage() {

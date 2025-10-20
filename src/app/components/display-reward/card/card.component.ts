@@ -2,9 +2,9 @@ import { Component, inject, input, OnInit, output, Signal } from '@angular/core'
 import { DecimalPipe } from '@angular/common';
 import { ImageComponent } from '../../views/image/image.component';
 import { Store } from '@ngrx/store';
-import { selectCardState } from '../../../store/reducers/display-reward.reducer';
 import { DisplayRewardNames } from '../../../store/store.interfaces';
 import { DisplayReward } from '../../../services/reward/reward.service';
+import { selectCardState } from '../../../store/reducers/display-reward.reducer';
 
 @Component({
   selector: 'app-card',

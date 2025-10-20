@@ -1,7 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { StoreNames } from '../store.interfaces';
-import { RewardValues } from '../../models/reward-based.model';
-import { HeroesNamesCodes } from '../../models/unit.model';
+import { HeroesSelectStateEntity, StoreNames } from '../store.interfaces';
 import { HeroesSelectNames } from '../../constants';
 
 export const HeroesSelectActions = createActionGroup({
@@ -9,15 +7,15 @@ export const HeroesSelectActions = createActionGroup({
   events: {
     setHeroesSelectState: props<{
       name: HeroesSelectNames;
-      data: (RewardValues | HeroesNamesCodes)[];
+      data: HeroesSelectStateEntity[];
     }>(),
     removeHeroFromCollection: props<{
       name: HeroesSelectNames;
-      itemName: RewardValues | HeroesNamesCodes;
+      itemName: HeroesSelectStateEntity;
     }>(),
     addHeroToCollection: props<{
       name: HeroesSelectNames;
-      itemName: RewardValues | HeroesNamesCodes;
+      itemName: HeroesSelectStateEntity;
     }>(),
     resetHeroCollection: props<{ name: HeroesSelectNames }>(),
   },
