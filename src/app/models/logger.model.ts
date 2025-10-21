@@ -1,3 +1,5 @@
+import { Id } from './common.model';
+
 export type LogConfig = {
   damage: number | null;
   newHealth: number | null;
@@ -5,7 +7,7 @@ export type LogConfig = {
   battleMode: boolean;
 };
 
-export interface LogRecord {
+export interface LogRecord extends Id {
   message: string;
   isUser?: boolean;
   info?: boolean;

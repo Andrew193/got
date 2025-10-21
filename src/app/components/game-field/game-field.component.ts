@@ -4,7 +4,6 @@ import { GameService } from '../../services/game-action/game.service';
 import { EffectsService } from '../../services/effects/effects.service';
 import { UnitService } from '../../services/unit/unit.service';
 import { BasicGameBoardComponent } from '../basic-game-board/basic-game-board.component';
-import { GameLoggerService } from '../../services/game-logger/logger.service';
 import { BasicGameFieldComponent } from '../abstract/basic-game-field/basic-game-field.component';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
@@ -44,8 +43,7 @@ export class GameFieldComponent extends BasicGameFieldComponent {
     unitService: UnitService,
     effectsService: EffectsService,
     gameActionService: GameService,
-    gameLoggerService: GameLoggerService,
   ) {
-    super(fieldService, unitService, effectsService, gameActionService, gameLoggerService);
+    super(fieldService, unitService, effectsService, gameActionService);
   }
 }

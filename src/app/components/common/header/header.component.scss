@@ -3,8 +3,10 @@
 .header-avatar-popper {
   min-width: 210px;
 
-  li:hover {
-    background: #bbbbbb;
+  @include index.mixin-got-btn;
+
+  button {
+    width: 100%;
   }
 }
 

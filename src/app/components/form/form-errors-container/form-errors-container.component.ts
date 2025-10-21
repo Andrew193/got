@@ -107,11 +107,7 @@ export class FormErrorsContainerComponent implements OnInit {
   updateErrors(errors: any) {
     const hideErrors = errors.every((error: any) => error.meta.touched === false);
 
-    if (!errors.length || hideErrors) {
-      this.showErrors = false;
-    } else {
-      this.showErrors = true;
-    }
+    this.showErrors = !(!errors.length || hideErrors);
   }
 
   get isRequiredErrors() {

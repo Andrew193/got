@@ -4,10 +4,7 @@ import { Effect } from '../../models/effect.model';
 import { LogConfig, LogRecord } from '../../models/logger.model';
 import { TileUnit } from '../../models/field.model';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class GameLoggerService {
+export class BaseGameLoggerService {
   logEvent(
     props: LogConfig,
     isUser: boolean,
@@ -24,6 +21,7 @@ export class GameLoggerService {
         isUser: isUser,
         imgSrc: skill.imgSrc,
         message: mgs,
+        id: crypto.randomUUID(),
       };
     };
 
@@ -51,6 +49,11 @@ export class GameLoggerService {
       }
     }
 
-    return { message: '', isUser: false, imgSrc: '' };
+    return { message: '', isUser: false, imgSrc: '', id: crypto.randomUUID() };
   }
 }
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GameLoggerService extends BaseGameLoggerService {}

@@ -20,7 +20,7 @@
 </nav>
 
 <mat-menu #menu="matMenu">
-  <ul class="list-group header-avatar-popper" mat-menu-item>
-    <li class="list-group-item cursor-pointer" (click)="logOut()">Log out</li>
-  </ul>
+  <div class="header-avatar-popper" mat-menu-item>
+    <button class="got-toggle cursor-pointer" (click)="logOut()">Log out</button>
+  </div>
 </mat-menu>

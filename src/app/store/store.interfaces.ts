@@ -4,6 +4,8 @@ import { DisplayReward } from '../services/reward/reward.service';
 import { RewardValues } from '../models/reward-based.model';
 import { HeroesSelectNames } from '../constants';
 import { EntityState } from '@ngrx/entity';
+import { TilesToHighlight } from '../models/field.model';
+import { LogRecord } from '../models/logger.model';
 
 export enum StoreNames {
   lobby = 'lobby',
@@ -59,8 +61,11 @@ export type HeroesSelectStateEntity = RewardValues | HeroesNamesCodes;
 export type HeroesSelectState = Record<HeroesSelectNames, EntityState<HeroesSelectStateEntity>>;
 
 //Game Board
-export type BasicBoardStateContexts = Record<string, string>;
+export interface BasicBoardLogRecord extends EntityState<LogRecord> {
+  keepTrack: boolean;
+}
 
 export type BasicBoardState = {
-  contexts: BasicBoardStateContexts;
+  tilesToHighlight: EntityState<TilesToHighlight>;
+  battleLog: BasicBoardLogRecord;
 };

@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { createDeepCopy } from '../../helpers';
 import { ModalWindowService } from '../modal/modal-window.service';
 import { EffectsService } from '../effects/effects.service';
 import { UnitService } from '../unit/unit.service';
 import { Skill, SkillSrc, TileUnitSkill } from '../../models/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
-import { GameLoggerService } from '../game-logger/logger.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
 import { GameResultsRedirectType, Position, TileUnit } from '../../models/field.model';
-import { LogRecord } from '../../models/logger.model';
 import { HeroType } from '../../models/unit.model';
+import { Store } from '@ngrx/store';
+import { GameBoardActions } from '../../store/actions/game-board.actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
+  store = inject(Store);
+
   private gameResult = {
     headerMessage: '',
     headerClass: '',
@@ -27,7 +29,6 @@ export class GameService {
   constructor(
     private unitService: UnitService,
     private eS: EffectsService,
-    private gameLoggerService: GameLoggerService,
     private modalWindowService: ModalWindowService,
   ) {}
 
@@ -97,7 +98,7 @@ export class GameService {
   }
 
   //Check buffs ( health restore )
-  checkPassiveSkills(units: TileUnit[], logs: LogRecord[]) {
+  checkPassiveSkills(units: TileUnit[]) {
     for (let index = 0; index < units.length; index++) {
       const unit = units[index];
 
@@ -107,10 +108,7 @@ export class GameService {
             const buffs = skill.buffs || [];
 
             for (const buff of buffs) {
-              const response = this.restoreHealthForUnit(unit, buff, logs, skill);
-
-              units[index] = response.unit;
-              logs = response.logs;
+              units[index] = this.restoreHealthForUnit(unit, buff, skill).unit;
             }
           } else if (skill.passive && skill.buffs) {
             skill.buffs.forEach(buff => {
@@ -120,45 +118,36 @@ export class GameService {
         });
       }
     }
-
-    return logs;
   }
 
-  restoreHealthForUnit(unit: TileUnit, buff: Effect, logs: LogRecord[], skill: SkillSrc) {
+  restoreHealthForUnit(unit: TileUnit, buff: Effect, skill: SkillSrc) {
     const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
 
-    logs = this.logRestoreHealth(logs, skill, unit, restoredHealth);
+    this.logRestoreHealth(skill, unit, restoredHealth);
     unit.health = this.eS.getHealthAfterRestore(unit.health + restoredHealth, unit.maxHealth);
 
-    return { unit, logs };
+    return { unit };
   }
 
-  private logRestoreHealth(
-    logs: LogRecord[],
-    skill: SkillSrc,
-    unit: TileUnit,
-    restoredHealth: number,
-  ) {
-    return [
-      ...logs,
-      {
+  private logRestoreHealth(skill: SkillSrc, unit: TileUnit, restoredHealth: number) {
+    this.store.dispatch(
+      GameBoardActions.logRecord({
         info: true,
         imgSrc: skill.imgSrc,
         message: `${unit.user ? 'Player' : 'Bote'} ${unit.name} restored ${restoredHealth} points. !`,
-      },
-    ];
+        id: crypto.randomUUID(),
+      }),
+    );
   }
 
-  private checkEffectsForHealthRestore(unit: TileUnit, logs: LogRecord[]) {
+  private checkEffectsForHealthRestore(unit: TileUnit) {
     unit.effects.forEach(effect => {
       if (effect.type === this.eS.effects.healthRestore) {
-        debugger;
-        const response = this.restoreHealthForUnit(unit, effect, logs, {
+        const response = this.restoreHealthForUnit(unit, effect, {
           imgSrc: effect.imgSrc,
         });
 
         unit = response.unit;
-        logs = response.logs;
       }
     });
   }
@@ -246,23 +235,17 @@ export class GameService {
 
   checkDebuffs(unit: TileUnit, decreaseCooldown = true, battleMode: boolean) {
     const unitWithUpdatedCooldown = this.updateEffectDuration(unit, decreaseCooldown, battleMode);
+    const processEffectsResult = this.processEffects(unitWithUpdatedCooldown.unit, battleMode);
 
-    unit = unitWithUpdatedCooldown.unit;
-
-    const processEffectsResult = this.processEffects(createDeepCopy(unit), battleMode);
-
-    unit = processEffectsResult.unit;
-    unit.effects = unit.effects.filter(debuff => !!debuff.duration);
-
-    return {
-      unit: unit,
-      log: [...unitWithUpdatedCooldown.log, ...processEffectsResult.log],
+    unit = {
+      ...processEffectsResult.unit,
+      effects: processEffectsResult.unit.effects.filter(debuff => !!debuff.duration),
     };
+
+    return { unit: unit };
   }
 
   private updateEffectDuration(unit: TileUnit, decreaseCooldown: boolean, battleMode: boolean) {
-    const log: LogRecord[] = [];
-
     if (unit.health) {
       unit.effects.forEach((effect: Effect, i, array) => {
         const newDuration = decreaseCooldown ? effect.duration - 1 : effect.duration;
@@ -271,7 +254,7 @@ export class GameService {
           array[i] = { ...effect, duration: newDuration };
 
           if (effect.restore) {
-            this.checkEffectsForHealthRestore(unit, log);
+            this.checkEffectsForHealthRestore(unit);
           } else {
             if (!effect.passive) {
               const additionalDmg = this.getReducedDmgForEffects(
@@ -281,17 +264,19 @@ export class GameService {
               );
 
               if (additionalDmg) {
-                log.push(
-                  this.gameLoggerService.logEvent(
-                    {
-                      damage: null,
-                      newHealth: null,
-                      addDmg: additionalDmg,
-                      battleMode: battleMode,
-                    },
-                    unit.user,
-                    effect,
-                    unit,
+                this.store.dispatch(
+                  GameBoardActions.logEvent(
+                    structuredClone({
+                      config: {
+                        damage: null,
+                        newHealth: null,
+                        addDmg: additionalDmg,
+                        battleMode: battleMode,
+                      },
+                      isUser: unit.user,
+                      skill: effect,
+                      unit: unit,
+                    }),
                   ),
                 );
               }
@@ -303,7 +288,7 @@ export class GameService {
       });
     }
 
-    return { log, unit };
+    return { unit };
   }
 
   getCanCross(entity: TileUnit) {
@@ -320,8 +305,6 @@ export class GameService {
   }
 
   private processEffects(unit: TileUnit, battleMode: boolean) {
-    const log: LogRecord[] = [];
-
     unit.effects.forEach(effect => {
       let recountedUnit = this.eS.recountStatsBasedOnEffect(effect, unit);
 
@@ -330,23 +313,25 @@ export class GameService {
         : recountedUnit;
       unit = recountedUnit.unit;
       if (recountedUnit.message) {
-        log.push(
-          this.gameLoggerService.logEvent(
-            {
-              damage: null,
-              newHealth: null,
-              battleMode: battleMode,
-            },
-            unit.user,
-            effect,
-            unit,
-            recountedUnit.message,
+        this.store.dispatch(
+          GameBoardActions.logEvent(
+            structuredClone({
+              config: {
+                damage: null,
+                newHealth: null,
+                battleMode: battleMode,
+              },
+              isUser: unit.user,
+              skill: effect,
+              unit: unit,
+              message: recountedUnit.message,
+            }),
           ),
         );
       }
     });
 
-    return { log, unit };
+    return { unit };
   }
 
   aiUnitAttack(

@@ -4,9 +4,7 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
 import { Tile, TilesToHighlight, TileUnit } from '../../models/field.model';
@@ -21,7 +19,7 @@ import { GameBoardActions } from '../../store/actions/game-board.actions';
   styleUrl: './basic-game-board.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasicGameBoardComponent implements OnChanges {
+export class BasicGameBoardComponent {
   store = inject(Store);
 
   @Input() gameConfig: Tile[][] = [];
@@ -36,9 +34,5 @@ export class BasicGameBoardComponent implements OnChanges {
 
   setTilesToHighlight(list: TilesToHighlight[]) {
     this.store.dispatch(GameBoardActions.setTilesToHighlight({ list }));
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
   }
 }

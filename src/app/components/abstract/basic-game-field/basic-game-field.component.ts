@@ -3,7 +3,6 @@ import { GameFieldService } from '../../../services/game-field/game-field.servic
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
 import { GameService } from '../../../services/game-action/game.service';
-import { GameLoggerService } from '../../../services/game-logger/logger.service';
 import { Skill, TileUnitSkill } from '../../../models/skill.model';
 import { createDeepCopy } from '../../../helpers';
 import { AbstractGameFieldComponent } from '../abstract-game-field/abstract-game-field.component';
@@ -24,7 +23,6 @@ interface ExecuteActionParams {
 @Component({
   selector: 'app-basic-game-field',
   template: '',
-  imports: [],
 })
 export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent {
   cdRef = inject(ChangeDetectorRef);
@@ -34,9 +32,8 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     private unitService: UnitService,
     private eS: EffectsService,
     private gameActionService: GameService,
-    private gameLoggerService: GameLoggerService,
   ) {
-    super(fieldService, gameLoggerService, unitService, eS);
+    super(fieldService, unitService, eS);
   }
 
   private executeAction(params: ExecuteActionParams) {
@@ -208,6 +205,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     callback: (tiles: TilesToHighlight[]) => void;
   }) {
     const entity = structuredClone(e.entity);
+    let tilesToHighlight: TilesToHighlight[] = [];
     const event = e.event;
 
     if (this.showAttackBar) this.dropEnemy();
@@ -221,7 +219,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     if (isSelected || !canInteract) {
       this.ignoreMove = true;
       this.selectedEntity = null;
-      e.callback(this.tilesToHighlight);
+      e.callback(tilesToHighlight);
 
       return;
     }
@@ -288,14 +286,14 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
         }
       }
 
-      this.highlightCells(this.possibleMoves, entity.user ? 'green-b' : 'red-b');
+      tilesToHighlight = this.highlightCells(this.possibleMoves, entity.user ? 'green-b' : 'red-b');
     }
 
     if (this.showAttackBar) {
       this.skillsInAttackBar = (this.selectedEntity as TileUnit).skills;
     }
 
-    e.callback(this.tilesToHighlight);
+    e.callback(tilesToHighlight);
   }
 
   getPossibleMoves(entity: TileUnit) {
@@ -458,7 +456,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
       // Check passive skills if AI just moved
       if (aiMove) {
-        this.log = this.gameActionService.checkPassiveSkills(userUnits, this.log);
+        this.gameActionService.checkPassiveSkills(userUnits);
       }
     }
 
@@ -560,7 +558,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     };
 
     // Apply passive buffs to all AI units
-    this.log = this.gameActionService.checkPassiveSkills(aiUnits, this.log);
+    this.gameActionService.checkPassiveSkills(aiUnits);
 
     for (let i = 0; i < aiUnits.length; i++) {
       this.gameActionService.aiUnitAttack(i, aiUnits, makeAiMove.bind(this));
@@ -578,13 +576,12 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     );
 
     unit = response.unit;
-    this.log = [...this.log, ...response.log];
 
     return unit;
   }
 
   highlightCells(path: Position[], className: string) {
-    this.tilesToHighlight = this.highlightCellsInnerFunction(path, className);
+    return this.highlightCellsInnerFunction(path, className);
   }
 
   finishTurn() {

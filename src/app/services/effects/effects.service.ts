@@ -77,14 +77,11 @@ export class EffectsService {
   }
 
   restoreStatsAfterEffect(effect: Effect, config: { unit: TileUnit; message: string }) {
-    debugger;
-    console.log('dsfsdfdsfsfsfdsfds');
     let message = '';
 
     if (effect.type === this.effects.freezing || effect.type === this.effects.root) {
-      console.log('RESTORED');
       config.unit.canCross = config.unit.maxCanCross;
-      message = config.unit.health ? `Герой ${config.unit.name} восстановил мобильность!` : '';
+      message = config.unit.health ? `Unit ${config.unit.name} restored mobility!` : '';
     }
 
     return { unit: config.unit, message: message ? message : config.message };

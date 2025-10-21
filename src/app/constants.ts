@@ -140,7 +140,7 @@ export const ALL_MOBILITY_EFFECTS_MULTIPLIERS: Record<MobilityEffects, number> =
 
 export const REWARD: RewardLootConstant = {
   copper: { min: 10000, max: 40000 },
-  gold: { min: 20, max: 50 },
+  gold: { min: 25, max: 50 },
   shards: { min: 1, max: 10 },
   silver: { min: 50, max: 250 },
 };

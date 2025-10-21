@@ -1,8 +1,8 @@
-export interface IdEntity {
-  id?: string;
-
-  [key: string]: any;
+export interface Id {
+  id: string;
 }
+
+export type IdEntity = Partial<Id> & Record<string, any>;
 
 export interface LastLogin {
   lastLogin: string;

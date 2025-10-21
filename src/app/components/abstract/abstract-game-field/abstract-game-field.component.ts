@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Skill, TileUnitSkill } from '../../../models/skill.model';
-import { GameLoggerService } from '../../../services/game-logger/logger.service';
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
 import {
@@ -13,7 +12,9 @@ import {
   TilesToHighlight,
   TileUnit,
 } from '../../../models/field.model';
-import { LogRecord } from '../../../models/logger.model';
+import { Store } from '@ngrx/store';
+import { GameBoardActions } from '../../../store/actions/game-board.actions';
+import { selectBattleLog } from '../../../store/reducers/game-board.reducer';
 
 export interface GameField {
   gameField: Tile[][];
@@ -23,12 +24,13 @@ export interface GameField {
 
 @Component({
   selector: 'app-abstract-game-field',
-  imports: [],
   template: '',
   styleUrl: './abstract-game-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnDestroy {
+  store = inject(Store);
+
   @Input() userUnits: TileUnit[] = [];
   @Input() aiUnits: TileUnit[] = [];
   @Input() battleMode = true;
@@ -36,7 +38,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
 
   autoFight = false;
 
-  log: LogRecord[] = [];
+  log = this.store.select(selectBattleLog());
   turnUser = true;
   turnCount = 0;
   maxTurnCount = 20;
@@ -51,7 +53,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
 
   constructor(
     private abstractFieldS: AbstractFieldService,
-    private gameLoggerS: GameLoggerService,
     private unitS: UnitService,
     private effectsS: EffectsService,
   ) {
@@ -152,19 +153,18 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     if (dmgTaker[enemyIndex].health) {
       const newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
 
-      this.log = [
-        ...this.log,
-        this.gameLoggerS.logEvent(
-          {
+      this.store.dispatch(
+        GameBoardActions.logEvent({
+          config: {
             damage,
             newHealth: null,
             battleMode: this.battleMode,
           },
-          dmgTaker[enemyIndex].user,
-          skill,
-          dmgTaker[enemyIndex],
-        ),
-      ];
+          isUser: dmgTaker[enemyIndex].user,
+          skill: skill,
+          unit: dmgTaker[enemyIndex],
+        }),
+      );
       dmgTaker[enemyIndex] = { ...dmgTaker[enemyIndex], health: newHealth };
     }
   }
@@ -237,7 +237,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
   }
 
   ngOnDestroy() {
-    this.log = [];
     this.turnUser = true;
     this.turnCount = 0;
     this.clickedEnemy = null;
@@ -248,5 +247,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     this.showAttackBar = false;
     this._turnCount.next(1);
     this.autoFight = false;
+    this.store.dispatch(GameBoardActions.dropLog());
   }
 }

@@ -258,6 +258,26 @@ mat-bottom-sheet-container {
     )
   );
 
+  @include mat.menu-overrides(
+    (
+      container-color: index.$var-metal-dark-1,
+      item-label-text-color: red,
+    )
+  );
+
+  .mat-mdc-menu-panel {
+    border: index.$var-border-2-bronze;
+  }
+
+  .mat-mdc-menu-item-text {
+    width: 100%;
+
+    .list-group-item {
+      background-color: index.$var-metal-dark-2;
+      color: inherit;
+    }
+  }
+
   @include mat.option-overrides(
     (
       label-text-color: index.$var-basic-golden,

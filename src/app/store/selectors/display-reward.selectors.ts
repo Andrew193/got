@@ -64,11 +64,9 @@ export function makeSelectCardCollection(
 
   if (!memo) {
     const adapter = chooseDisplayRewardAdapter(name);
-    const selectAll = adapter.getSelectors(
-      createSelector(selectContexts, ctx => ctx[name]),
-    ).selectAll;
 
-    memo = createSelector(selectAll, collection => collection ?? []);
+    memo = adapter.getSelectors(createSelector(selectContexts, ctx => ctx[name])).selectAll;
+
     cardCollectionCache.set(key, memo);
   }
 

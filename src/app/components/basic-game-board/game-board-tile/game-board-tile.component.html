@@ -8,8 +8,8 @@
   [class.entity-b]="!!_tile?.entity"
   [class.disabled]="_tile?.entity?.health === 0"
   [class.block]="!_tile.active && _tile.entity === null"
-  [class.green-b]="isHighlighted(_tile, 'green-b')"
-  [class.red-b]="isHighlighted(_tile, 'red-b')">
+  [class.green-b]="isHighlighted('green-b')"
+  [class.red-b]="isHighlighted('red-b')">
   <span class="tile-label">{{ _tile.x + 1 }}-{{ _tile.y + 1 }}</span>
   @if (_tile.entity) {
     <div class="position-relative">

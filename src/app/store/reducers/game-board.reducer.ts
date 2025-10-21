@@ -1,26 +1,78 @@
-import { BasicBoardState, BasicBoardStateContexts, StoreNames } from '../store.interfaces';
+import { BasicBoardState, StoreNames } from '../store.interfaces';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { GameBoardActions } from '../actions/game-board.actions';
+import { createEntityAdapter } from '@ngrx/entity';
+import { Coordinate, TilesToHighlight } from '../../models/field.model';
+import {
+  makeSelectBattleLog,
+  makeSelectTilesToHighlightArray,
+  makeSelectTileToHighlight,
+} from '../selectors/game-board.selectors';
+import { LogRecord } from '../../models/logger.model';
+import { BaseGameLoggerService } from '../../services/game-logger/logger.service';
+
+function selectId(model: TilesToHighlight) {
+  return `${model.i}:${model.j}`;
+}
+
+export const tilesToHighlightAdapter = createEntityAdapter<TilesToHighlight>({
+  selectId,
+});
+
+export const logAdapter = createEntityAdapter<LogRecord>();
 
 export const GameBoardInitialState: BasicBoardState = {
-  contexts: {},
+  tilesToHighlight: tilesToHighlightAdapter.getInitialState(),
+  battleLog: logAdapter.getInitialState({ keepTrack: true }),
 };
+
+const loggerHelper = new BaseGameLoggerService();
 
 export const GameBoardFeature = createFeature({
   name: StoreNames.gameBoard,
   reducer: createReducer(
     GameBoardInitialState,
     on(GameBoardActions.setTilesToHighlight, (state, action) => {
-      const newState: BasicBoardStateContexts = {};
+      return {
+        ...state,
+        tilesToHighlight: tilesToHighlightAdapter.setAll(action.list, state.tilesToHighlight),
+      };
+    }),
+    on(GameBoardActions.logEvent, (state, action) => {
+      if (state.battleLog.keepTrack) {
+        const { config, isUser, skill, unit, message } = action;
+        const newLog = loggerHelper.logEvent(config, isUser, skill, unit, message);
 
-      for (const t of action.list) newState[`${t.i}:${t.j}`] = t.highlightedClass;
+        return { ...state, battleLog: logAdapter.addOne(newLog, state.battleLog) };
+      }
 
-      return { ...state, contexts: newState };
+      return state;
+    }),
+    on(GameBoardActions.logRecord, (state, action) => {
+      if (state.battleLog.keepTrack) {
+        return { ...state, battleLog: logAdapter.addOne(action, state.battleLog) };
+      }
+
+      return state;
+    }),
+    on(GameBoardActions.toggleTrackLog, state => {
+      return { ...state, battleLog: { ...state.battleLog, keepTrack: !state.battleLog.keepTrack } };
+    }),
+    on(GameBoardActions.dropLog, state => {
+      return { ...state, battleLog: logAdapter.removeAll(state.battleLog) };
     }),
   ),
   extraSelectors: baseSelectors => {
-    return {};
+    const selectGameBoardState = baseSelectors.selectGameBoardState;
+
+    return {
+      selectTilesToHighlightArray: () => makeSelectTilesToHighlightArray(selectGameBoardState),
+      selectTileToHighlight: (tile: Coordinate) =>
+        makeSelectTileToHighlight(selectGameBoardState, tile),
+      selectBattleLog: () => makeSelectBattleLog(selectGameBoardState),
+    };
   },
 });
 
-export const { selectContexts: selectGameBoardContexts } = GameBoardFeature;
+export const { selectTilesToHighlightArray, selectTileToHighlight, selectBattleLog } =
+  GameBoardFeature;
