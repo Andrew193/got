@@ -9,19 +9,9 @@ import {
   makeSelectCardState,
 } from '../selectors/display-reward.selectors';
 
-function selectId(model: DisplayReward) {
-  return model.name + model.amount;
-}
-
-const summonAdapter = createEntityAdapter<DisplayReward>({
-  selectId,
-});
-const giftAdapter = createEntityAdapter<DisplayReward>({
-  selectId,
-});
-const finalLoginButtleAdapter = createEntityAdapter<DisplayReward>({
-  selectId,
-});
+const summonAdapter = createEntityAdapter<DisplayReward>();
+const giftAdapter = createEntityAdapter<DisplayReward>();
+const finalLoginButtleAdapter = createEntityAdapter<DisplayReward>();
 
 export const DisplayRewardInitialState: DisplayRewardState = {
   [DisplayRewardNames.summon]: summonAdapter.getInitialState(),
@@ -52,7 +42,7 @@ export const DisplayRewardFeature = createFeature({
       return {
         ...state,
         [action.name]: adapter.updateOne(
-          { id: selectId(action.data), changes: action.data },
+          { id: action.data.id, changes: action.data },
           state[action.name],
         ),
       };

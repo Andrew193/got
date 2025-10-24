@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { UnitService } from './unit.service';
 import { EffectsService } from '../effects/effects.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HeroesService } from '../heroes/heroes.service';
-import { Skill } from '../../models/skill.model';
+import { HeroesService } from '../facades/heroes/heroes.service';
+import { Skill } from '../../models/units-related/skill.model';
 import { Coordinate, Position, Tile, TileUnit } from '../../models/field.model';
 
 describe('UnitService', () => {

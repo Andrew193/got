@@ -6,8 +6,12 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { HeroesNamesCodes, PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
-import { HeroesService } from '../../../services/heroes/heroes.service';
+import {
+  HeroesNamesCodes,
+  PreviewUnit,
+  SelectableUnit,
+  Unit,
+} from '../../../models/units-related/unit.model';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
 import { NgTemplateOutlet } from '@angular/common';
@@ -18,6 +22,8 @@ import { RewardValues } from '../../../models/reward-based.model';
 import { HeroesSelectNames } from '../../../constants';
 import { TrainingActions } from '../../../store/actions/training.actions';
 import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
+import { EnhancedFormConstructorComponent } from '../../../components/form/enhancedFormConstructor/enhanced-form-constructor/enhanced-form-constructor.component';
 
 type BarCtx = {
   isUser: boolean;
@@ -27,7 +33,12 @@ type BarCtx = {
 
 @Component({
   selector: 'app-training-config',
-  imports: [HeroesSelectPreviewComponent, HeroesSelectComponent, NgTemplateOutlet],
+  imports: [
+    HeroesSelectPreviewComponent,
+    HeroesSelectComponent,
+    NgTemplateOutlet,
+    EnhancedFormConstructorComponent,
+  ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,7 +65,7 @@ export class TrainingConfigComponent {
     return { user: false, title: 'Selected AI Units', units: this.aiUnits() };
   });
 
-  constructor(private heroesService: HeroesService) {
+  constructor(private heroesService: HeroesFacadeService) {
     this.allUnits = this.heroesService.getAllHeroes();
     this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
 

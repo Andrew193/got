@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { DailyRewardService } from '../daily-reward/daily-reward.service';
-import { GiftService } from '../gift/gift.service';
+import { GiftService } from '../gift-related/gift/gift.service';
 import { ModalWindowService } from '../modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
 import { NotificationComponent } from '../../components/modal-window/notification/notification.component';
@@ -58,7 +58,7 @@ export class NotificationsService implements InitInterface {
           .subscribe();
       });
 
-      //this.showPossibleActivities();
+      this.showPossibleActivities();
 
       return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
     } catch (e) {

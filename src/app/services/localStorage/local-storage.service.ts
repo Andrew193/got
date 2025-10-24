@@ -28,7 +28,8 @@ export class BasicLocalStorage {
 }
 
 export type BasicLocalStorageNamesKeys =
-  (typeof BasicLocalStorage.names)[keyof typeof BasicLocalStorage.names];
+  | (typeof BasicLocalStorage.names)[keyof typeof BasicLocalStorage.names]
+  | string;
 
 @Injectable({
   providedIn: 'root',

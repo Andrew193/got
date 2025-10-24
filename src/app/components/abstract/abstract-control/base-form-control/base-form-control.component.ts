@@ -11,6 +11,9 @@ export class BaseFormControlComponent implements ControlValueAccessor {
   @Input() label = '';
   @Input() placeholder = 'Placeholder';
   @Input() form!: FormGroup;
+  @Input() alias = '';
+
+  @Input() action?: (alias: string, formGroup: FormGroup) => void = () => {};
 
   public control: FormControl = new FormControl('');
 
@@ -23,7 +26,10 @@ export class BaseFormControlComponent implements ControlValueAccessor {
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-    this.control.valueChanges.subscribe(v => this.onChange(v));
+    this.control.valueChanges.subscribe(v => {
+      this.onChange(v);
+      this.action && this.action(this.alias, this.form);
+    });
   }
 
   registerOnTouched(fn: any): void {

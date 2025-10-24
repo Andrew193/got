@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatsComponent } from './stats.component';
-import { HeroesService } from '../../../services/heroes/heroes.service';
-import { Unit } from '../../../models/unit.model';
+import { HeroesService } from '../../../services/facades/heroes/heroes.service';
+import { Unit } from '../../../models/units-related/unit.model';
 import { By } from '@angular/platform-browser';
 
 describe('StatsComponent', () => {

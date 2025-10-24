@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { SceneNames } from '../../../constants';
 import { Currency } from '../../../services/users/users.interfaces';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { HeroesNamesCodes } from '../../unit.model';
+import { HeroesNamesCodes } from '../../units-related/unit.model';
 import { RewardValues } from '../../reward-based.model';
 
 export interface SceneComponent<Component = unknown, Context extends SceneNames = SceneNames> {

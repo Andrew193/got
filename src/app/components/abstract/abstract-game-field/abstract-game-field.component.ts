@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
-import { Skill, TileUnitSkill } from '../../../models/skill.model';
+import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
 import {

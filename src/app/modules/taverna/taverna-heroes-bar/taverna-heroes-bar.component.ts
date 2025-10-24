@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { HeroesService } from '../../../services/heroes/heroes.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { map, Observable, startWith } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AutocompleteMatInputComponent } from '../../../components/data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
 import { BasePaginationComponent } from '../../../components/abstract/base-pagination/base-pagination.component';
-import { frontRoutes } from '../../../constants';
 import { MatPaginator } from '@angular/material/paginator';
 import { RatingComponent } from '../../../components/common/rating/rating.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TavernaFacadeService } from '../../../services/facades/taverna/taverna.service';
+import { PAGINATION_SERVICE } from '../../../models/tokens';
+import { Unit } from '../../../models/units-related/unit.model';
 
 @Component({
   selector: 'app-taverna-heroes-bar',
@@ -19,65 +19,49 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     RatingComponent,
     MatProgressSpinner,
   ],
+  providers: [{ provide: PAGINATION_SERVICE, useClass: HeroesFacadeService }],
   templateUrl: './taverna-heroes-bar.component.html',
   styleUrl: './taverna-heroes-bar.component.scss',
 })
-export class TavernaHeroesBarComponent extends BasePaginationComponent implements OnInit {
-  formGroup;
-  options: string[] = [];
-  filteredOptions: Observable<string[]>;
+export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
+  helper = inject(TavernaFacadeService);
 
-  constructor(
-    public heroesService: HeroesService,
-    private router: Router,
-  ) {
-    super(heroesService);
-    this.formGroup = new FormGroup({
-      unitName: new FormControl(''),
-    });
+  formGroup = this.helper.formGroup;
+  filteredOptions;
+  options;
 
-    this.filteredOptions = this.formGroup.get('unitName')!.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+  constructor(public heroesService: HeroesFacadeService) {
+    super();
+    const config = this.helper.init();
 
-    this.formGroup.get('unitName')!.valueChanges.subscribe(newName => {
+    this.options = config.options;
+    this.filteredOptions = config.filteredOptions;
+
+    config.source$.subscribe(newName => {
       const openFirstPage = () => {
-        this.currentPage = 0;
         this.pageChanged({
           pageSize: this.itemsPerPage,
-          pageIndex: this.currentPage,
+          pageIndex: 0,
         });
       };
 
-      if (!newName) {
-        openFirstPage();
-      } else {
-        openFirstPage();
+      openFirstPage();
+      if (newName) {
         this.returnedArray = this.contentArray.filter(item => item.name === newName);
+        this.totalElements = this.returnedArray.length;
+      } else {
+        this.totalElements = this.contentArray.length;
       }
     });
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
-  ngOnInit(): void {
-    this.options = this.heroesService.getAllHeroes().map(hero => hero.name);
-  }
+  getRank = this.heroesService.helper.getRank;
 
   openHeroPreview(name: string) {
-    this.router.navigate([[frontRoutes.taverna, frontRoutes.preview].join('/')], {
-      queryParams: {
-        name,
-      },
-    });
+    this.helper.nav.goToHeroPreview(name);
   }
 
   backToMainPage() {
-    this.router.navigate([frontRoutes.base]);
+    this.helper.nav.goToMainPage();
   }
 }

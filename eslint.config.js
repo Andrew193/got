@@ -27,6 +27,7 @@ module.exports = tseslint.config(
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
       'unused-imports/no-unused-imports': 'error',
+      '@typescript-eslint/adjacent-overload-signatures': 'off',
 
       //Lines
       'padding-line-between-statements': [

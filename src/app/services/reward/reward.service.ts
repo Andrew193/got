@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { HeroesService } from '../heroes/heroes.service';
+import { HeroesFacadeService } from '../facades/heroes/heroes.service';
 import { NumbersService } from '../numbers/numbers.service';
 import { RewardValues } from '../../models/reward-based.model';
 import { REWARD } from '../../constants';
+import { Id } from '../../models/common.model';
 
 export type Reward = {
   probability: number;
@@ -14,7 +15,7 @@ export type DisplayReward = {
   amount: number;
   src: string;
   flipped: boolean;
-};
+} & Id;
 
 export type RewardLoot = {
   min: number;
@@ -57,7 +58,7 @@ export class RewardService {
     { name: this.rewardNames.gold, ...REWARD.gold },
   ];
 
-  constructor(private heroService: HeroesService) {}
+  constructor(private heroService: HeroesFacadeService) {}
 
   getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
   getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
@@ -98,7 +99,7 @@ export class RewardService {
       item.name === this.rewardNames.silver ||
       item.name === this.rewardNames.gold
     ) {
-      return this.getDisplayRewardBase(
+      return RewardService.getDisplayRewardBase(
         item,
         this.numberService.getNumberInRange(loot.min, loot.max),
       );
@@ -106,30 +107,27 @@ export class RewardService {
       const heroes = this.heroService.getAllHeroes();
       const heroIndex = this.numberService.getNumberInRange(0, heroes.length - 1);
 
-      return {
-        amount: this.numberService.getNumberInRange(loot.min, loot.max),
-        name: item.name,
-        src: heroes[heroIndex].imgSrc,
-        flipped: false,
-      };
+      return RewardService.getDisplayRewardBase(
+        item,
+        this.numberService.getNumberInRange(loot.min, loot.max),
+        { src: heroes[heroIndex].imgSrc },
+      );
     } else if (item.name === this.rewardNames.chest) {
-      return {
-        amount: 1,
-        name: item.name,
+      return RewardService.getDisplayRewardBase(item, 1, {
         src: 'assets/resourses/imgs/icons/chest.png',
-        flipped: false,
-      };
+      });
     }
 
-    return { amount: 1, src: '', name: item.name, flipped: false };
+    return RewardService.getDisplayRewardBase(item, 1, { src: '' });
   }
 
-  private getDisplayRewardBase(item: Reward, amount: number) {
+  static getDisplayRewardBase(item: Reward, amount: number, config?: Partial<{ src: string }>) {
     return {
       amount: amount,
       name: item.name,
-      src: `assets/resourses/imgs/${item.name.toLowerCase()}.png`,
+      src: config?.src ?? `assets/resourses/imgs/${item.name.toLowerCase()}.png`,
       flipped: false,
+      id: crypto.randomUUID(),
     };
   }
 }

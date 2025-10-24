@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
-import { PreviewUnit } from '../../models/unit.model';
+import { PreviewUnit } from '../../models/units-related/unit.model';
 import { ImageComponent } from '../views/image/image.component';
 import { MatTooltip } from '@angular/material/tooltip';
 

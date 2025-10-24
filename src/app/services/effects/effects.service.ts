@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { TileUnitSkill } from '../../models/skill.model';
+import { TileUnitSkill } from '../../models/units-related/skill.model';
 import { Effect, EffectForMult } from '../../models/effect.model';
 import {
   ALL_EFFECTS,
@@ -11,7 +11,7 @@ import {
 } from '../../constants';
 import { NumbersService } from '../numbers/numbers.service';
 import { TileUnit } from '../../models/field.model';
-import { HeroType } from '../../models/unit.model';
+import { HeroType } from '../../models/units-related/unit.model';
 
 @Injectable({
   providedIn: 'root',

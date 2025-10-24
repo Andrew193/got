@@ -1,3 +1,5 @@
+import { ALPHABET } from '../constants';
+
 export interface Id {
   id: string;
 }
@@ -13,3 +15,5 @@ export interface DepositDay {
 }
 
 export interface GetConfig extends Partial<LastLogin>, Partial<DepositDay> {}
+
+export type Alphabet = (typeof ALPHABET)[number];

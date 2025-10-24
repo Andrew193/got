@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Reward, RewardService } from './reward.service';
-import { HeroesService } from '../heroes/heroes.service';
-import { HeroesNamesCodes, Unit } from '../../models/unit.model';
+import { HeroesService } from '../facades/heroes/heroes.service';
+import { HeroesNamesCodes, Unit } from '../../models/units-related/unit.model';
 import { Currency } from '../users/users.interfaces';
 import { REWARD } from '../../constants';
 import { CurrencyHelperService } from '../users/currency/helper/currency-helper.service';
@@ -51,7 +51,7 @@ describe('RewardService', () => {
       },
     ];
 
-    heroServiceSpy = jasmine.createSpyObj('HeroesService', ['getAllHeroes']);
+    heroServiceSpy = jasmine.createSpyObj('HeroesHelperService', ['getAllHeroes']);
 
     TestBed.configureTestingModule({
       providers: [

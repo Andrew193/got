@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Currency, DepositCurrency } from '../../users.interfaces';
 import { Coin, CoinNames, RewardValues } from '../../../../models/reward-based.model';
-import { basicRewardNames, DisplayReward, RewardNames } from '../../../reward/reward.service';
+import {
+  basicRewardNames,
+  DisplayReward,
+  RewardNames,
+  RewardService,
+} from '../../../reward/reward.service';
 
 @Injectable({
   providedIn: 'root',
@@ -74,12 +79,16 @@ export class CurrencyHelperService {
     const coins = this.convertCurrencyToCoin(currency);
 
     return coins.map(coin => {
-      return {
-        name: (coin.class[0].toUpperCase() + coin.class.slice(1)) as RewardValues,
-        src: coin.imgSrc,
-        amount: coin.amount,
-        flipped: false,
-      } satisfies DisplayReward;
+      const reward = RewardService.getDisplayRewardBase(
+        {
+          name: (coin.class[0].toUpperCase() + coin.class.slice(1)) as RewardValues,
+          probability: 0,
+        },
+        coin.amount,
+        { src: coin.imgSrc },
+      );
+
+      return reward satisfies DisplayReward;
     });
   }
 }

@@ -1,7 +1,7 @@
 import { AbstractFieldService } from './abstract-field.service';
 import { TestBed } from '@angular/core/testing';
 import { Position, TileUnit } from '../../../models/field.model';
-import { HeroesNamesCodes } from '../../../models/unit.model';
+import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
 
 describe('AbstractFieldService', () => {
   let service: AbstractFieldService;

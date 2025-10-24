@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { EffectsService } from './effects.service';
 import { Effect } from '../../models/effect.model';
 import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS } from '../../constants';
-import { HeroesService } from '../heroes/heroes.service';
+import { HeroesService } from '../facades/heroes/heroes.service';
 import { TileUnit } from '../../models/field.model';
 
 describe('EffectsService', () => {

@@ -1,7 +1,7 @@
 import { StoreNames, TrainingState } from '../store.interfaces';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { createEntityAdapter } from '@ngrx/entity';
-import { PreviewUnit } from '../../models/unit.model';
+import { PreviewUnit } from '../../models/units-related/unit.model';
 import { TrainingActions } from '../actions/training.actions';
 
 function selectId(model: PreviewUnit) {

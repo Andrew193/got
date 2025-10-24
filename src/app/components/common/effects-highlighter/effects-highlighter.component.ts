@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { HeroesService } from '../../../services/heroes/heroes.service';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { EffectsValues } from '../../../constants';
 
@@ -11,7 +11,7 @@ import { EffectsValues } from '../../../constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EffectsHighlighterComponent {
-  heroService = inject(HeroesService);
+  heroService = inject(HeroesFacadeService);
 
   text = input.required<string>();
 
@@ -21,7 +21,7 @@ export class EffectsHighlighterComponent {
     }
 
     const _text = this.text();
-    const effects = this.heroService.getEffectsToHighlight();
+    const effects = this.heroService.helper.getEffectsToHighlight();
 
     if (!_text || !effects || (Array.isArray(effects) && !effects.length)) return [];
 
@@ -46,7 +46,7 @@ export class EffectsHighlighterComponent {
       out.push({
         text: match[0],
         hint: true,
-        desc: this.heroService.getEffectsDescription(match[0] as EffectsValues),
+        desc: this.heroService.helper.getEffectsDescription(match[0] as EffectsValues),
       });
       last = idx + match[0].length;
     }

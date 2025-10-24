@@ -1,0 +1,149 @@
+<div [ngStyle]="{ height: `${getContainerHeight(mtx.mtx.length)}px` }">
+  <div class="form-constructor-control">
+    <div class="form-constructor-main">
+      <div class="form-container">
+        <ng-container *ngFor="let row of mtx.mtx; let y = index">
+          <ng-container *ngFor="let col of row; let x = index">
+            <div
+              [appContextMenuTriggerFor]="isFormCtrOn ? apMenu : null"
+              (contextmenu)="setActiveCoordinatesCtxMenu(y, x)">
+              @if (mtx.mtx[y][x]) {
+                <ng-container *ngIf="mtx.tiles.get(mtx.mtx[y][x]) as tile">
+                  <div
+                    *ngIf="tile.x === x && tile.y === y"
+                    [id]="tile.id.toString()"
+                    [ngClass]="'form-tile ' + (isFormCtrOn && 'tile-visibility')"
+                    [draggable]="isTileDraggable"
+                    (dragstart)="startTileDrag(tile)"
+                    cdkDropListOrientation="horizontal"
+                    cdkDropList
+                    [cdkDropListData]="tile.cdkDropListData"
+                    (cdkDropListDropped)="tileOps.dropField($event)"
+                    [cdkDropListConnectedTo]="getConnectedTiles()"
+                    [ngStyle]="getTilePositionStyles(tile)">
+                    <ng-container
+                      *ngFor="let f of tile.cdkDropListData; let i = index; let last = last">
+                      <div
+                        *ngIf="i === 0"
+                        class="form-item-separator"
+                        [ngStyle]="{
+                          width: (isFormCtrOn ? 2 : 1) * multiplier * tileMargin + 'px',
+                        }"></div>
+                      <div
+                        cdkDrag
+                        (mouseenter)="isTileDraggable = false"
+                        (mouseleave)="isTileDraggable = true"
+                        (cdkDragStarted)="startDrag()"
+                        (cdkDragEnded)="endDrag()"
+                        [cdkDragDisabled]="!isFormCtrOn"
+                        class="form-item"
+                        [appContextMenuTriggerFor]="isFormCtrOn ? apMenu : null"
+                        (contextmenu)="setActiveCoordinatesCtxMenu(y, x); $event.stopPropagation()">
+                        {{ f | json }}
+                      </div>
+                      <div
+                        class="form-item-separator"
+                        [ngStyle]="{
+                          width:
+                            (last
+                              ? (isFormCtrOn ? 2 : 1) * multiplier * tileMargin
+                              : (isFormCtrOn ? 4 : 2) * multiplier * tileMargin) + 'px',
+                        }"></div>
+                    </ng-container>
+                  </div>
+                </ng-container>
+              } @else {
+                <div
+                  *ngIf="isFormCtrOn"
+                  (dragover)="onTileDragOver($event)"
+                  (drop)="onTileDrop(y, x)"
+                  class="anchor-point"
+                  [ngStyle]="getApPositionStyles(y, x)">
+                  <mat-icon class="anchor-icon">control_camera</mat-icon>
+                </div>
+              }
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #apMenu>
+  <div class="anchor-point-menu" style="padding: 12px">
+    <div *ngIf="getTileExistsCondition()" class="anchor-point-menu">
+      <div class="directions">
+        <div style="display: flex; justify-content: center">
+          <button
+            mat-icon-button
+            (click)="tileOps.moveTileUp(apCtxMenuActions.y, apCtxMenuActions.x)">
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+          <button
+            mat-icon-button
+            (click)="tileOps.moveTileLeft(apCtxMenuActions.y, apCtxMenuActions.x)"
+            style="margin-right: 20px">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            (click)="tileOps.moveTileRight(apCtxMenuActions.y, apCtxMenuActions.x)"
+            style="margin-left: 20px">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+        <div style="display: flex; justify-content: center">
+          <button
+            mat-icon-button
+            (click)="tileOps.moveTileDown(apCtxMenuActions.y, apCtxMenuActions.x)">
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+        </div>
+      </div>
+      <form [formGroup]="apCtxMenuActions.apFormGroup">
+        @if (apCtxMenuActions.onOffField) {
+          @let onOffField = apCtxMenuActions.onOffField;
+          @let options = onOffField.mainControl?.filterLocalSource();
+
+          @if (options) {
+            <app-autocomplete-mat-input
+              (click)="$event.stopPropagation()"
+              [label]="onOffField.placeholder"
+              [form]="apCtxMenuActions.apFormGroup"
+              [filteredOptions]="options"
+              [action]="onOffField.action"
+              [alias]="onOffField.alias"
+              [formControlName]="onOffField.alias"></app-autocomplete-mat-input>
+          }
+        }
+      </form>
+    </div>
+
+    <div class="anchor-point-menu">
+      <form [formGroup]="apCtxMenuActions.apFormGroup">
+        <ng-container *ngFor="let tileControl of apCtxMenuActions.apFields">
+          @if (tileControl.mainControl?.type === CONTROL_TYPE.INPUT) {
+            <app-text-input
+              [label]="tileControl.placeholder"
+              [controlName]="tileControl.alias"
+              (click)="$event.stopPropagation()" />
+            <mat-divider />
+          }
+        </ng-container>
+      </form>
+    </div>
+  </div>
+
+  @for (action of apCtxMenuActions.allActions; track action) {
+    <div *ngIf="action.getShowCondition()" class="contextMenu">
+      <button mat-menu-item (click)="action.getAction()" style="margin-right: 10px">
+        <mat-icon [ngStyle]="{ color: action.color }">{{ action.icon }}</mat-icon>
+        <span>{{ action.getDescription() }}</span>
+      </button>
+    </div>
+  }
+</mat-menu>

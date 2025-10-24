@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SkillsRenderComponent } from './skills-render.component';
-import { HeroesService } from '../../../services/heroes/heroes.service';
+import { HeroesService } from '../../../services/facades/heroes/heroes.service';
 import { TileUnit } from '../../../models/field.model';
 import { By } from '@angular/platform-browser';
 import { ImageComponent } from '../image/image.component';

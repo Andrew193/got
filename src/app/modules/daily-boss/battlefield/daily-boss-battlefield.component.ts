@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ActivatedRoute } from '@angular/router';
-import { HeroesService } from '../../../services/heroes/heroes.service';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { DailyBossService } from '../../../services/daily-boss/daily-boss.service';
 import { TileUnit } from '../../../models/field.model';
 
@@ -17,10 +17,10 @@ export class DailyBossBattlefieldComponent {
   constructor(
     private route: ActivatedRoute,
     private dailyBossService: DailyBossService,
-    private heroesService: HeroesService,
+    private heroesService: HeroesFacadeService,
   ) {
     this.route.params.subscribe(value => {
-      const temp = this.heroesService.getEquipmentForUnit({
+      const temp = this.heroesService.helper.getEquipmentForUnit({
         ...this.heroesService.getDailyBossVersion1(),
         user: false,
         ...this.dailyBossService.uppBoss(value['bossLevel']),

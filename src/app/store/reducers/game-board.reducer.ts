@@ -5,11 +5,12 @@ import { createEntityAdapter } from '@ngrx/entity';
 import { Coordinate, TilesToHighlight } from '../../models/field.model';
 import {
   makeSelectBattleLog,
+  makeSelectFieldConfig,
   makeSelectTilesToHighlightArray,
   makeSelectTileToHighlight,
 } from '../selectors/game-board.selectors';
 import { LogRecord } from '../../models/logger.model';
-import { BaseGameLoggerService } from '../../services/game-logger/logger.service';
+import { BaseGameLoggerService } from '../../services/game-related/game-logger/logger.service';
 
 function selectId(model: TilesToHighlight) {
   return `${model.i}:${model.j}`;
@@ -24,6 +25,10 @@ export const logAdapter = createEntityAdapter<LogRecord>();
 export const GameBoardInitialState: BasicBoardState = {
   tilesToHighlight: tilesToHighlightAdapter.getInitialState(),
   battleLog: logAdapter.getInitialState({ keepTrack: true }),
+  fieldConfig: {
+    rows: 7,
+    columns: 10,
+  },
 };
 
 const loggerHelper = new BaseGameLoggerService();
@@ -70,9 +75,9 @@ export const GameBoardFeature = createFeature({
       selectTileToHighlight: (tile: Coordinate) =>
         makeSelectTileToHighlight(selectGameBoardState, tile),
       selectBattleLog: () => makeSelectBattleLog(selectGameBoardState),
+      selectFieldConfig: () => makeSelectFieldConfig(selectGameBoardState),
     };
   },
 });
 
-export const { selectTilesToHighlightArray, selectTileToHighlight, selectBattleLog } =
-  GameBoardFeature;
+export const { selectTileToHighlight, selectBattleLog, selectFieldConfig } = GameBoardFeature;

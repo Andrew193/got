@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { HeroesService } from '../../services/heroes/heroes.service';
+import { HeroesFacadeService } from '../../services/facades/heroes/heroes.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StatsComponent } from '../views/stats/stats.component';
-import { Unit } from '../../models/unit.model';
+import { Unit } from '../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
 import { NgTemplateOutlet } from '@angular/common';
 import { TileUnit } from '../../models/field.model';
@@ -33,7 +33,7 @@ export class HeroPreviewComponent implements OnInit {
   };
 
   constructor(
-    public heroService: HeroesService,
+    public heroService: HeroesFacadeService,
     private route: ActivatedRoute,
   ) {}
 

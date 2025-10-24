@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GameEntryPointComponent } from '../../components/game-entry-point/game-entry-point.component';
-import { GiftNpcService } from '../../services/gift-npc/gift-npc.service';
+import { GiftNpcService } from '../../services/gift-related/gift-npc/gift-npc.service';
 import {
   basicRewardNames,
   DisplayReward,
   RewardService,
 } from '../../services/reward/reward.service';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
-import { GiftService } from '../../services/gift/gift.service';
+import { GiftService } from '../../services/gift-related/gift/gift.service';
 import { tap } from 'rxjs';
 import { TODAY } from '../../constants';
 import {

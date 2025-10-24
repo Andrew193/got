@@ -1,5 +1,5 @@
-import { Unit } from './unit.model';
-import { TileUnitSkill } from './skill.model';
+import { Unit } from './units-related/unit.model';
+import { TileUnitSkill } from './units-related/skill.model';
 import { DisplayReward } from '../services/reward/reward.service';
 
 export interface Position {

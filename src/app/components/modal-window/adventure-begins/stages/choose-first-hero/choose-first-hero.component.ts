@@ -8,7 +8,7 @@ import { BasicHeroSelectComponent } from '../../../../abstract/basic-hero-select
 import { HeroesSelectComponent } from '../../../../heroes-select/heroes-select.component';
 import { HeroesSelectPreviewComponent } from '../../../../heroes-select-preview/heroes-select-preview.component';
 import { StatsComponent } from '../../../../views/stats/stats.component';
-import { Unit } from '../../../../../models/unit.model';
+import { Unit } from '../../../../../models/units-related/unit.model';
 import { HeroesSelectNames, SceneNames } from '../../../../../constants';
 import { HeroesSelectActions } from '../../../../../store/actions/heroes-select.actions';
 import { Store } from '@ngrx/store';

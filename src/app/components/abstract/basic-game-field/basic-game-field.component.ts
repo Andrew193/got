@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { GameFieldService } from '../../../services/game-field/game-field.service';
+import { GameFieldService } from '../../../services/game-related/game-field/game-field.service';
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
-import { GameService } from '../../../services/game-action/game.service';
-import { Skill, TileUnitSkill } from '../../../models/skill.model';
+import { GameService } from '../../../services/game-related/game-action/game.service';
+import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
 import { createDeepCopy } from '../../../helpers';
 import { AbstractGameFieldComponent } from '../abstract-game-field/abstract-game-field.component';
 import { BATTLE_SPEED } from '../../../constants';

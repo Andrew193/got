@@ -3,7 +3,7 @@ import { GameEntryPointComponent } from '../../../components/game-entry-point/ga
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
 import { TileUnit } from '../../../models/field.model';
-import { HeroesService } from '../../../services/heroes/heroes.service';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
 import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
@@ -21,7 +21,7 @@ export class TrainingBattleComponent implements OnDestroy {
   userUnitsFromStore = this.store.selectSignal(selectUserUnits);
 
   nav = inject(NavigationService);
-  heroesService = inject(HeroesService);
+  heroesService = inject(HeroesFacadeService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];

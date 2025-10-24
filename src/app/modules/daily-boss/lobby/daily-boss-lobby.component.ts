@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { StatsComponent } from '../../../components/views/stats/stats.component';
-import { Unit } from '../../../models/unit.model';
+import { Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
@@ -69,7 +69,7 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   }
 
   upBoss(version: number) {
-    return this.heroesService.getEquipmentForUnit({
+    return this.heroesService.helper.getEquipmentForUnit({
       ...this.selectedHero,
       ...this.dailyBossService.uppBoss(version),
     });

@@ -9,11 +9,11 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { HeroesService } from '../../services/heroes/heroes.service';
+import { HeroesFacadeService } from '../../services/facades/heroes/heroes.service';
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
 import { StatsComponent } from '../views/stats/stats.component';
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
-import { Unit } from '../../models/unit.model';
+import { Unit } from '../../models/units-related/unit.model';
 import { UsersService } from '../../services/users/users.service';
 import { TODAY } from '../../constants';
 import {
@@ -72,7 +72,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   constructor(
-    public heroService: HeroesService,
+    public heroService: HeroesFacadeService,
     protected dailyRewardService: DailyRewardService,
     public usersService: UsersService,
     private render2: Renderer2,

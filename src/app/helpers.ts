@@ -1,5 +1,5 @@
-import { Skill } from './models/skill.model';
-import { Unit } from './models/unit.model';
+import { Skill } from './models/units-related/skill.model';
+import { Unit } from './models/units-related/unit.model';
 
 export function createDeepCopy<T>(object: T) {
   return JSON.parse(JSON.stringify(object)) as T;

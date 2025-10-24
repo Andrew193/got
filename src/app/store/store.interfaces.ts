@@ -1,5 +1,5 @@
 //Store
-import { HeroesNamesCodes, PreviewUnit } from '../models/unit.model';
+import { HeroesNamesCodes, PreviewUnit } from '../models/units-related/unit.model';
 import { DisplayReward } from '../services/reward/reward.service';
 import { RewardValues } from '../models/reward-based.model';
 import { HeroesSelectNames } from '../constants';
@@ -65,7 +65,13 @@ export interface BasicBoardLogRecord extends EntityState<LogRecord> {
   keepTrack: boolean;
 }
 
+export type BasicBoardFieldConfig = {
+  columns: number;
+  rows: number;
+};
+
 export type BasicBoardState = {
   tilesToHighlight: EntityState<TilesToHighlight>;
   battleLog: BasicBoardLogRecord;
+  fieldConfig: BasicBoardFieldConfig;
 };

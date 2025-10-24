@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GiftStoreComponent } from './gift-store.component';
-import { GiftService } from '../../services/gift/gift.service';
+import { GiftService } from '../../services/gift-related/gift/gift.service';
 import { GiftConfig } from '../../models/gift.model';
 import { of } from 'rxjs';
 import { UsersService } from '../../services/users/users.service';

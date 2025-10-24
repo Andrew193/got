@@ -8,7 +8,7 @@ import {
   signal,
   Signal,
 } from '@angular/core';
-import { SelectableUnit } from '../../models/unit.model';
+import { SelectableUnit } from '../../models/units-related/unit.model';
 import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../store/actions/heroes-select.actions';
 import { HeroSelectTileComponent } from './hero-select-tile/hero-select-tile.component';

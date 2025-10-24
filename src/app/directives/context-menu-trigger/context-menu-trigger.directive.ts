@@ -1,41 +1,57 @@
-import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { HeroesService } from '../../services/heroes/heroes.service';
+import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
+import { Id } from '../../models/common.model';
 
 @Directive({
-  selector: '[appContextMenuTriggerFor]',
   standalone: true,
+  selector: '[appContextMenuTriggerFor]',
 })
-export class ContextMenuTriggerDirective implements OnInit {
-  @Input('contextMenuTriggerFor') text = '';
-  tipRef!: Element | null;
+export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnInit {
+  private readonly anchorElement = document.createElement('div');
 
-  constructor(
-    private el: ElementRef,
-    private render2: Renderer2,
-    private heroService: HeroesService,
-  ) {}
-
-  public ngOnInit(): void {
-    this.render2.listen(this.el.nativeElement, 'click', event => {
-      event.preventDefault();
-      this.removeTip();
-
-      const tipContainer = this.render2.createElement('div') as HTMLDivElement;
-
-      tipContainer.innerText = this.heroService.getEffectsFromString(this.text).join(',');
-      this.tipRef = tipContainer;
-      this.render2.appendChild(this.el.nativeElement, tipContainer);
-    });
-
-    this.render2.listen(this.el.nativeElement, 'mouseleave', () => {
-      this.removeTip();
-    });
+  @Input('appContextMenuTriggerFor')
+  public get contextMenuTriggerFor() {
+    return this.menu;
+  }
+  public set contextMenuTriggerFor(menu: MatMenuPanel | null) {
+    this.menu = menu;
   }
 
-  removeTip() {
-    if (this.tipRef) {
-      this.render2.removeChild(this.el.nativeElement, this.tipRef);
-      this.tipRef = null;
-    }
+  @Input('appContextMenuTriggerData')
+  public get contextMenuData() {
+    return this.menuData;
+  }
+
+  public set contextMenuData(menuData: { row: Id; index: number }) {
+    this.menuData = menuData;
+  }
+
+  public ngOnInit(): void {
+    this.anchorElement.style.position = 'fixed';
+    this.anchorElement.style.width = '0px';
+    this.anchorElement.style.height = '0px';
+    this.anchorElement.style.visibility = 'hidden';
+
+    (this as any)._element = new ElementRef(this.anchorElement);
+  }
+
+  public override _handleClick() {}
+
+  public override openMenu() {
+    document.body.appendChild(this.anchorElement);
+    super.openMenu();
+  }
+
+  public override closeMenu() {
+    this.anchorElement.remove();
+    super.closeMenu();
+  }
+
+  @HostListener('contextmenu', ['$event'])
+  public handleContextMenu(event: MouseEvent) {
+    event.preventDefault();
+    this.anchorElement.style.top = `${event.clientY}px`;
+    this.anchorElement.style.left = `${event.clientX}px`;
+    super._handleClick(event);
   }
 }

@@ -2,7 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { StoreNames } from '../store.interfaces';
 import { TilesToHighlight, TileUnit } from '../../models/field.model';
 import { LogConfig, LogRecord } from '../../models/logger.model';
-import { TileUnitSkill } from '../../models/skill.model';
+import { TileUnitSkill } from '../../models/units-related/skill.model';
 import { Effect } from '../../models/effect.model';
 
 export const GameBoardActions = createActionGroup({

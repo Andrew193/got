@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { PreviewUnit, SelectableUnit, Unit } from '../../../models/unit.model';
-import { HeroesService } from '../../../services/heroes/heroes.service';
+import { PreviewUnit, SelectableUnit, Unit } from '../../../models/units-related/unit.model';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 
 @Component({
   imports: [],
@@ -8,7 +8,7 @@ import { HeroesService } from '../../../services/heroes/heroes.service';
 })
 export abstract class BasicHeroSelectComponent {
   maxHeroes = 5;
-  protected heroesService = inject(HeroesService);
+  protected heroesService = inject(HeroesFacadeService);
 
   allUnits: Unit[] = [];
   allUnitsForSelect: SelectableUnit[] = [];

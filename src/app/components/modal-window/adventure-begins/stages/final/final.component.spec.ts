@@ -5,7 +5,7 @@ import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bott
 import { FakeMatBottomSheetRef } from '../../../../../test-related';
 import { SceneContext } from '../../../../../models/interfaces/scenes/scene.interface';
 import { SceneNames } from '../../../../../constants';
-import { HeroesNamesCodes } from '../../../../../models/unit.model';
+import { HeroesNamesCodes } from '../../../../../models/units-related/unit.model';
 
 describe('FinalComponent', () => {
   let component: FinalComponent;

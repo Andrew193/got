@@ -1,17 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GameField } from '../../../components/abstract/abstract-game-field/abstract-game-field.component';
 import { GameFieldVars, Position, Tile, TileUnit } from '../../../models/field.model';
+import { Store } from '@ngrx/store';
+import { selectFieldConfig } from '../../../store/reducers/game-board.reducer';
 
 @Injectable({
   providedIn: 'root',
 })
 export abstract class AbstractFieldService extends GameFieldVars implements Partial<GameField> {
+  store = inject(Store);
+  private fieldConfig = this.store.selectSignal(selectFieldConfig());
+
   getGridFromField(field: Tile[][]): number[][] {
+    const fieldConfig = this.fieldConfig();
+
     const grid: number[][] = [];
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < fieldConfig.rows; i++) {
       grid[i] = [] as number[];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < fieldConfig.columns; j++) {
         grid[i].push(field[i][j].active && !field[i][j].entity ? 0 : 1);
       }
     }
@@ -92,13 +99,15 @@ export abstract class AbstractFieldService extends GameFieldVars implements Part
   }
 
   getDefaultGameField() {
+    const fieldConfig = this.fieldConfig();
+
     const tempGameField: Tile[][] = [];
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < fieldConfig.rows; i++) {
       tempGameField[i] = [];
       const innerArray = [];
 
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < fieldConfig.columns; j++) {
         innerArray.push({ x: i, y: j, active: true });
       }
 

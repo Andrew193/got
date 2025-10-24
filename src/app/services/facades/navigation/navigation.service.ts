@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { frontRoutes as FrontRoutes } from '../../../constants';
+import { frontRoutes, frontRoutes as FrontRoutes } from '../../../constants';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -48,6 +48,14 @@ export class NavigationService {
     this.router.navigate([FrontRoutes.dailyBoss, FrontRoutes.dailyBossBattle, level], {
       queryParams: {
         units: units,
+      },
+    });
+  }
+
+  goToHeroPreview(name: string) {
+    this.router.navigate([frontRoutes.taverna, frontRoutes.preview], {
+      queryParams: {
+        name,
       },
     });
   }

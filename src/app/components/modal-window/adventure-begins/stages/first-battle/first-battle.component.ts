@@ -7,7 +7,7 @@ import {
 } from '../../../../../models/interfaces/scenes/scene.interface';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { BASIC_CURRENCY, SceneNames } from '../../../../../constants';
-import { HeroesService } from '../../../../../services/heroes/heroes.service';
+import { HeroesFacadeService } from '../../../../../services/facades/heroes/heroes.service';
 
 @Component({
   selector: 'app-first-battle',
@@ -16,7 +16,7 @@ import { HeroesService } from '../../../../../services/heroes/heroes.service';
   styleUrl: './first-battle.component.scss',
 })
 export class FirstBattleComponent implements SceneComponent {
-  heroService = inject(HeroesService);
+  heroService = inject(HeroesFacadeService);
   repeat = false;
 
   aiUnits: TileUnit[] = [

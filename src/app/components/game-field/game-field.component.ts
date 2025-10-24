@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { GameFieldService } from '../../services/game-field/game-field.service';
-import { GameService } from '../../services/game-action/game.service';
+import { GameFieldService } from '../../services/game-related/game-field/game-field.service';
+import { GameService } from '../../services/game-related/game-action/game.service';
 import { EffectsService } from '../../services/effects/effects.service';
 import { UnitService } from '../../services/unit/unit.service';
 import { BasicGameBoardComponent } from '../basic-game-board/basic-game-board.component';

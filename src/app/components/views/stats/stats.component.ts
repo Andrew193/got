@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { Unit } from '../../../models/unit.model';
+import { Unit } from '../../../models/units-related/unit.model';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

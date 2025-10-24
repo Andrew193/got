@@ -1,19 +1,20 @@
-import { Component } from '@angular/core';
-import { Unit } from '../../../models/unit.model';
-import { ContentService } from '../../../services/abstract/content/content-service.service';
+import { Component, inject } from '@angular/core';
+import { PAGINATION_SERVICE } from '../../../models/tokens';
 
 @Component({
   templateUrl: './base-pagination.component.html',
   styleUrl: './base-pagination.component.scss',
 })
-export class BasePaginationComponent {
+export class BasePaginationComponent<T> {
+  contentService = inject(PAGINATION_SERVICE);
+
   protected totalElements = 0;
   protected currentPage = 0;
   protected itemsPerPage = 5;
-  protected returnedArray: Unit[] = [];
-  protected contentArray: Unit[] = [];
+  protected returnedArray: T[] = [];
+  protected contentArray: T[] = [];
 
-  constructor(private contentService: ContentService) {
+  constructor() {
     this.getInitContent();
   }
 
@@ -26,8 +27,11 @@ export class BasePaginationComponent {
   }
 
   protected pageChanged(event: { pageIndex: number; pageSize: number }) {
-    const startItem = event.pageIndex * event.pageSize;
-    const endItem = startItem + event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.itemsPerPage = event.pageSize;
+
+    const startItem = this.currentPage * this.itemsPerPage;
+    const endItem = startItem + this.itemsPerPage;
 
     this.returnedArray = this.contentArray.slice(startItem, endItem);
   }

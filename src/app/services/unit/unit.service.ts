@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createDeepCopy } from '../../helpers';
-import { TileUnitSkill } from '../../models/skill.model';
+import { TileUnitSkill } from '../../models/units-related/skill.model';
 import { Coordinate, Position, Tile, TileUnit } from '../../models/field.model';
 import { Effect } from '../../models/effect.model';
 
