@@ -7,6 +7,7 @@ import { ModalConfig, ModalStrategiesTypes } from '../../components/modal-window
 })
 export class ModalWindowService {
   static frozen = false;
+
   init: ModalConfig = {
     headerMessage: '',
     headerClass: '',

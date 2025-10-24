@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, input, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { DataInputsService } from '../../../../services/facades/data-inputs/data-inputs.service';
 
 @Component({
   selector: 'app-base-form-control',
@@ -8,10 +9,12 @@ import { ControlValueAccessor, FormControl, FormGroup, FormsModule } from '@angu
   styleUrl: './base-form-control.component.scss',
 })
 export class BaseFormControlComponent implements ControlValueAccessor {
-  @Input() label = '';
+  dataInputsService = inject(DataInputsService);
+
+  @Input() label = 'Label';
   @Input() placeholder = 'Placeholder';
   @Input() form!: FormGroup;
-  @Input() alias = '';
+  controlName = input.required<string>();
 
   @Input() action?: (alias: string, formGroup: FormGroup) => void = () => {};
 
@@ -28,7 +31,7 @@ export class BaseFormControlComponent implements ControlValueAccessor {
     this.onChange = fn;
     this.control.valueChanges.subscribe(v => {
       this.onChange(v);
-      this.action && this.action(this.alias, this.form);
+      this.action && this.action(this.controlName(), this.form);
     });
   }
 

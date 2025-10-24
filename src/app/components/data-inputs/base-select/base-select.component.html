@@ -1,0 +1,19 @@
+@let _withReset = withReset();
+@let _className = className();
+@let _controlName = controlName();
+
+@let _options = filteredOptions | async;
+
+<ng-container *ngIf="isMulti !== null">
+  <mat-form-field [class]="_className" style="width: auto">
+    <mat-label>{{ label }}</mat-label>
+    <mat-select [formControlName]="_controlName" placeholder="Search" [multiple]="isMulti">
+      <mat-option *ngFor="let entry of _options" [value]="entry">
+        {{ entry }}
+      </mat-option>
+    </mat-select>
+    <div matSuffix *ngIf="_withReset">
+      <mat-icon (click)="onClear($event)">clear</mat-icon>
+    </div>
+  </mat-form-field>
+</ng-container>

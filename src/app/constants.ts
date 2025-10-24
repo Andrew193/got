@@ -173,4 +173,8 @@ export const ALPHABET = [
   'Y',
   'Z',
 ] as const;
+
 export const SELECT_SEARCH_PREFIX = 'SelectSearch';
+export const DATA_SOURCES = {
+  dataInputs: 'field',
+} as const;

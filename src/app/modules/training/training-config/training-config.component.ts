@@ -14,7 +14,7 @@ import {
 } from '../../../models/units-related/unit.model';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
 import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
@@ -24,6 +24,7 @@ import { TrainingActions } from '../../../store/actions/training.actions';
 import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { EnhancedFormConstructorComponent } from '../../../components/form/enhancedFormConstructor/enhanced-form-constructor/enhanced-form-constructor.component';
+import { selectFieldConfig } from '../../../store/reducers/game-board.reducer';
 
 type BarCtx = {
   isUser: boolean;
@@ -38,6 +39,7 @@ type BarCtx = {
     HeroesSelectComponent,
     NgTemplateOutlet,
     EnhancedFormConstructorComponent,
+    AsyncPipe,
   ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
@@ -46,6 +48,7 @@ type BarCtx = {
 export class TrainingConfigComponent {
   store = inject(Store);
   nav = inject(NavigationService);
+  gridConfig = this.store.select(selectFieldConfig());
 
   aiUnits = signal<PreviewUnit[]>([]);
   userUnits = signal<PreviewUnit[]>([]);

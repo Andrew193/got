@@ -73,11 +73,9 @@ export abstract class ApiService<T> {
   }
 
   get userId() {
-    if (this._userId) {
-      return this._userId;
+    if (!this._userId) {
+      this._userId = this.getUserId();
     }
-
-    this._userId = this.getUserId();
 
     return this._userId;
   }

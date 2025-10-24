@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, Input, model, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AnchorPointEnhancedContextMenuActions } from '../actions/anchorPointEnhancedContextMenuActions';
 import { formEnhancedImports } from '../form-imports/formEnhancedImports';
@@ -6,9 +6,12 @@ import { TileEnhancedOperations } from './tile-enhanced-operations';
 import { FormEnhancedActions } from '../actions/formEnhancedActions';
 import { FormEnhancedContextMenuActions } from '../actions/formEnhancedContextMenuActions';
 import { Id } from '../../../../models/common.model';
-import { AppEntity, CONTROL_TYPE, FormMatrix, Tile } from '../form-constructor.models';
+import { AppEntity, CONTROL_TYPE, FormConfig, FormMatrix, Tile } from '../form-constructor.models';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DATA_SOURCES } from '../../../../constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormHelperService } from '../../helper.service';
 
 @Component({
   standalone: true,
@@ -17,7 +20,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [formEnhancedImports],
 })
 export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnInit {
+  helper = inject(FormHelperService);
+
   _snackBar = inject(MatSnackBar);
+  colQty = model(10);
+  rowQty = model(7);
+  ignoreTemplate = input<boolean>(false);
+
+  protected readonly DATA_SOURCES = DATA_SOURCES;
+  showModeToggler = input<boolean>(true);
 
   CONTROL_TYPE = CONTROL_TYPE;
 
@@ -31,9 +42,7 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
 
   public tileOps!: TileEnhancedOperations<T>;
 
-  @Input() controllerPath!: string;
-
-  formGroup!: FormGroup;
+  formGroup: FormGroup = this.fb.group({});
 
   isFormCtrOn = true;
   protected enableFormStringSuffix = '_state';
@@ -44,30 +53,38 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     return this._formName;
   }
 
-  colQty = 10;
-  rowQty = 7;
   rowHeight = 85;
 
-  public mtx: FormMatrix<T> = {
-    tiles: new Map<number, Tile<T>>(),
-    mtx: Array.from({ length: this.rowQty }, () => Array(this.colQty).fill(0)),
-  };
+  public mtx!: FormMatrix<T>;
+
+  resetFormMtx(colQty: number, rowQty: number) {
+    this.colQty.set(colQty);
+    this.rowQty.set(rowQty);
+    this.buildMtx();
+    this.tileOps.mtx = this.mtx;
+    this.tileOps.saveFormTemplate();
+  }
+
+  buildMtx() {
+    this.mtx = {
+      tiles: new Map<number, Tile<T>>(),
+      mtx: Array.from({ length: this.rowQty() }, () => Array(this.colQty()).fill(0)),
+    };
+  }
 
   formActions!: FormEnhancedActions<T>;
 
   formCtxMenuActions!: FormEnhancedContextMenuActions<T>;
   apCtxMenuActions!: AnchorPointEnhancedContextMenuActions<T>;
 
-  set formName(name: string) {
+  @Input() set formName(name: string) {
     this._formName = name;
   }
 
   constructor(
     protected fb: FormBuilder,
     protected localStorageService: LocalStorageService,
-  ) {
-    this.formGroup = this.fb.group({});
-  }
+  ) {}
 
   private deserializeFormMatrix<T>(parsed: FormMatrix<T>): FormMatrix<T> {
     const tiles = new Map<number, Tile<T>>(parsed.tiles);
@@ -78,11 +95,24 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     };
   }
 
+  formConfig = computed((): FormConfig => {
+    return {
+      colQty: this.colQty(),
+      rowHeight: this.rowHeight,
+      tileMargin: this.tileMargin,
+    };
+  });
+
+  getApPositionStyles = this.helper.getApPositionStyles;
+  getTilePositionStyles = this.helper.getTilePositionStyles<T>;
+  configArray = this.helper.configArray;
+
   ngOnInit(): void {
-    this.formActions = new FormEnhancedActions(this.formGroup);
+    this.buildMtx();
+    this.formActions = new FormEnhancedActions(this.formGroup, this._snackBar);
     const matrixStr = this.localStorageService.getItem(this.formName);
 
-    if (matrixStr) {
+    if (matrixStr && !this.ignoreTemplate()) {
       this.mtx = this.deserializeFormMatrix(matrixStr);
     }
 
@@ -118,11 +148,19 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
       this.mtx,
       this.fb,
       this.localStorageService,
+      this._snackBar,
     );
-    debugger;
-    this.apCtxMenuActions = new AnchorPointEnhancedContextMenuActions(this.fb, this.tileOps);
 
+    this.apCtxMenuActions = new AnchorPointEnhancedContextMenuActions(
+      this.fb,
+      this.tileOps,
+      this._snackBar,
+    );
     this.formCtxMenuActions = new FormEnhancedContextMenuActions(this.fb, this.tileOps);
+
+    this.allFields.forEach(c => {
+      c.mainControl && this.tileOps.addControlsToFormGroup(c.alias, c.mainControl, this.formGroup);
+    });
 
     this.saveFormConstructorState();
   }
@@ -141,6 +179,11 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     this.tileOps.saveFormTemplate(this.enableFormStringSuffix, JSON.stringify(this.isFormCtrOn));
   }
 
+  toggleFormConstructor(event: MatSlideToggleChange) {
+    this.isFormCtrOn = event.checked;
+    this.saveFormConstructorState();
+  }
+
   setActiveCoordinatesCtxMenu(y: number, x: number) {
     this.apCtxMenuActions.y = y;
     this.apCtxMenuActions.x = x;
@@ -154,27 +197,6 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     return false;
   }
 
-  public getApPositionStyles(y: number, x: number) {
-    return {
-      top: `${y * this.rowHeight + 3}px`,
-      left: `calc(${this.tileMargin}px + 100% * ${x} / ${this.colQty})`,
-      width: `calc(${-this.tileMargin * 2}px + 100% / ${this.colQty})`,
-      height: `${this.rowHeight - this.tileMargin * 2}px`,
-    };
-  }
-
-  public getContainerHeight(rows: number) {
-    return (this.rowHeight - this.tileMargin * 2) * rows + 35;
-  }
-
-  public getTilePositionStyles(tile: Tile<T>) {
-    return {
-      ...this.getApPositionStyles(tile.y, tile.x),
-      width: `calc(${-this.tileMargin * 2}px + ${tile.xSpan} * 100% / ${this.colQty})`,
-      height: `${this.rowHeight * tile.ySpan - this.tileMargin * 2}px`,
-    };
-  }
-
   startDrag() {
     document.body.style.userSelect = 'none';
   }
@@ -184,7 +206,7 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
   }
 
   startTileDrag(tile: Tile<T>) {
-    document.body.style.userSelect = 'none';
+    this.startDrag();
     this.draggedTile = tile;
   }
 
@@ -202,7 +224,7 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
         vt: vtOffset,
       },
     );
-    document.body.style.userSelect = 'auto';
+    this.endDrag();
   }
 
   onTileDragOver(event: DragEvent) {

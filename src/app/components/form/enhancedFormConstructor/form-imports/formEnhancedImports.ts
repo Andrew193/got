@@ -10,6 +10,7 @@ import { MatDivider } from '@angular/material/list';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AutocompleteMatInputComponent } from '../../../data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
+import { BaseSelectComponent } from '../../../data-inputs/base-select/base-select.component';
 
 export const formEnhancedImports = [
   CdkDrag,
@@ -32,5 +33,6 @@ export const formEnhancedImports = [
   MatFabButton,
   MatMenuItem,
   AutocompleteMatInputComponent,
+  BaseSelectComponent,
   JsonPipe,
 ];

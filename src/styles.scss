@@ -310,6 +310,23 @@ mat-bottom-sheet-container {
     )
   );
 
+  @include mat.slide-toggle-overrides(
+    (
+      unselected-icon-color: index.$var-deep-golden,
+      selected-icon-color: black,
+      //Unselected track
+      unselected-track-color: index.$var-bronze,
+      unselected-hover-track-color: index.$var-bronze,
+      unselected-pressed-track-color: index.$var-bronze,
+      unselected-focus-track-color: index.$var-bronze,
+      //Selected track
+      selected-track-color: index.$var-deep-golden,
+      selected-hover-track-color: index.$var-deep-golden,
+      selected-pressed-track-color: index.$var-deep-golden,
+      selected-focus-track-color: index.$var-deep-golden,
+    )
+  );
+
   @include mat.slider-overrides(
     (
       handle-color: index.$var-basic-golden,

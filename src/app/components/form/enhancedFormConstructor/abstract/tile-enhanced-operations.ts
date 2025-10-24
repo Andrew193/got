@@ -2,18 +2,32 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormEnhancedOperations } from './form-enhanced-operations';
 import { AppEntity, FormMatrix, Tile } from '../form-constructor.models';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_CONFIG } from '../../../../constants';
 
 export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
-  //_snackBar = inject(MatSnackBar);
-
   constructor(
     public override allFields: AppEntity<T>[],
     protected override formName: string,
     public override mtx: FormMatrix<T>,
     protected override fb: FormBuilder,
     protected override localStorageService: LocalStorageService,
+    protected override _snackBar: MatSnackBar,
   ) {
-    super(allFields, formName, mtx, fb, localStorageService);
+    super(allFields, formName, mtx, fb, localStorageService, _snackBar);
+  }
+
+  clearAllTiles(formGroup: FormGroup, alias: string) {
+    const formControl = formGroup.get(alias);
+
+    formControl?.setValue([]);
+    const matrix = this.mtx.mtx;
+
+    matrix.forEach(row => row.fill(0));
+    this.mtx.tiles.clear();
+    this.mtx = { ...this.mtx };
+    this.saveFormTemplate();
+    this._snackBar.open('Form tiles cleared!', '', SNACKBAR_CONFIG);
   }
 
   private iterateTileSpace(
@@ -72,7 +86,7 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
         cdkDropListData: [],
       } as Tile<T>);
       this.mtx = { ...this.mtx };
-      //this._snackBar.open(`A tile ${xSpan}x${ySpan} succesfully created!`)
+      this._snackBar.open(`A tile ${xSpan}x${ySpan} succesfully created!`, '', SNACKBAR_CONFIG);
       this.saveFormTemplate();
     }
   }
@@ -141,7 +155,7 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
         tile.xSpan = xSpan;
         tile.y = yOffset;
         tile.x = xOffset;
-        //this._snackBar.open(`A tile ${xSpan}x${ySpan} succesfully edited!`);
+        this._snackBar.open(`A tile ${xSpan}x${ySpan} succesfully edited!`, '', SNACKBAR_CONFIG);
         this.saveFormTemplate();
       }
     } else {
@@ -176,19 +190,21 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
   private saveResult(resultMessage: string) {
     this.mtx = { ...this.mtx };
     this.saveFormTemplate();
-    //this._snackBar.open(resultMessage);
+    this._snackBar.open(resultMessage, '', SNACKBAR_CONFIG);
   }
 
   private isRowActionAllowed(matrix: number[][], y: number, action: 'add to' | 'delete'): boolean {
     const currentRow = matrix[y];
 
     if (action === 'delete' && matrix.length === 1) {
-      // this._snackBar.open('You can’t delete the last row!');
+      this._snackBar.open('You can’t delete the last row!', '', SNACKBAR_CONFIG);
+
       return false;
     }
 
     if (!currentRow.every(tileId => !tileId)) {
-      //this._snackBar.open(`You can only ${action} an empty row!`);
+      this._snackBar.open(`You can only ${action} an empty row!`, '', SNACKBAR_CONFIG);
+
       return false;
     }
 
@@ -241,11 +257,15 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
   }
 
   private getTileAbsentErrorToast(y: number, x: number) {
-    // this._snackBar.open(`No tile exists on position row = ${y} column = ${x}!`);
+    this._snackBar.open(
+      `No tile exists on position row = ${y} column = ${x}!`,
+      '',
+      SNACKBAR_CONFIG,
+    );
   }
 
   private getFailedToModfyTileError(action: string) {
-    // this._snackBar.open(`Failed to ${action} tile!`);
+    this._snackBar.open(`Failed to ${action} tile!`, '', SNACKBAR_CONFIG);
   }
 
   moveTileUp(y: number, x: number) {

@@ -4,9 +4,10 @@ import { Id } from '../../../../models/common.model';
 import { ACTIONS, AppEntity, CONTROL_TYPE, Tile } from '../form-constructor.models';
 import { ProtoActions } from './protoActions';
 import { AnchorPointAction } from './anchorPointAction';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_CONFIG } from '../../../../constants';
 
 export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoActions {
-  //_snackBar = inject(MatSnackBar);
   public y = 0;
   public x = 0;
 
@@ -17,7 +18,6 @@ export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoAc
   apFormGroup!: FormGroup;
 
   apFields!: AppEntity<T>[];
-  activePlaceHolders = new Set<string>();
 
   onOffField: AppEntity<T>;
 
@@ -86,6 +86,7 @@ export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoAc
   constructor(
     protected fb: FormBuilder,
     protected tileOps: TileEnhancedOperations<T>,
+    protected _snackBar: MatSnackBar,
   ) {
     super();
     const activeFormElements = [...this.tileOps.mtx.tiles.values()]
@@ -137,21 +138,23 @@ export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoAc
 
     if (matrix.tiles.size) {
       if (formControl && formControl.value.length) {
-        const activePlaceHolder = formControl.value;
-
-        this.activePlaceHolders.add(activePlaceHolder);
+        const activePlaceHolders = formControl.value;
         const activeFormElements = [...matrix.tiles.values()]
           .map(el => el.cdkDropListData.map(tile => tile.placeholder || ''))
           .flat();
 
-        this.enableFormElements(Array.from(this.activePlaceHolders), activeFormElements);
-        this.disableFormElement([activePlaceHolder], activeFormElements);
+        this.enableFormElements(activePlaceHolders, activeFormElements);
+        this.disableFormElement(activePlaceHolders, activeFormElements);
 
-        //this._snackBar.open('Form configuration successfully changed!');
+        this._snackBar.open('Form configuration successfully changed!', '', SNACKBAR_CONFIG);
       }
     } else {
       formControl?.reset();
-      //this._snackBar.open('No form containers found! Please add at least one form container!');
+      this._snackBar.open(
+        'No form containers found! Please add at least one form container!',
+        '',
+        SNACKBAR_CONFIG,
+      );
     }
 
     this.tileOps.saveFormTemplate();

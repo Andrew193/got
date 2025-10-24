@@ -2,6 +2,7 @@
 @let _aiSelCtx = aiSelCtx();
 @let _aiUnitsLength = aiUnits().length;
 @let _userUnitsLength = userUnits().length;
+@let _gridConfig = gridConfig | async;
 
 <div>
   <h3 class="text-center">Configure your training</h3>
@@ -29,7 +30,12 @@
     </ng-container>
   </div>
 
-  <app-enhanced-form-constructor />
+  @if (_gridConfig) {
+    <app-enhanced-form-constructor
+      [colQty]="_gridConfig.columns"
+      [rowQty]="_gridConfig.rows"
+      [ignoreTemplate]="true" />
+  }
 </div>
 
 <ng-template #unitsBar let-isUser="isUser" let-title="title" let-contextName="contextName">

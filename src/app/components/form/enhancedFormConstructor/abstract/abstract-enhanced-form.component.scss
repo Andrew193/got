@@ -1,7 +1,13 @@
 @use '../../../../../assets/resourses/styles/index' as index;
 
+$actions-padding: 15px;
+
 .form-constructor-main {
   position: relative;
+}
+
+.nav {
+  @include index.mixin-got-btn;
 }
 
 .form-constructor-control {
@@ -9,7 +15,6 @@
   z-index: 1;
   background-color: index.$var-metal-dark-1;
   overflow: auto;
-  height: inherit;
   border: index.$var-border-1-black;
 }
 
@@ -19,6 +24,11 @@
   display: flex;
   justify-content: space-between;
   height: 50px;
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .form-item {
@@ -26,8 +36,6 @@
   width: calc(100% - 10px);
   height: calc(100% - 10px);
   padding: 3px;
-  background-color: index.$var-metal-dark-2;
-  border: index.$var-border-2-bronze;
 }
 
 .form-item-separator {
@@ -57,7 +65,9 @@
     0 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14),
     0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  background-color: #dadbdd;
+  background-color: index.$var-metal-dark-2;
+  border: index.$var-border-2-bronze;
+  cursor: grab;
 }
 
 ::ng-deep {
@@ -70,18 +80,22 @@
 
 .form-control-elements {
   z-index: 1000;
-  padding: 15px;
+  padding: $actions-padding;
   display: flex;
   justify-content: right;
 }
 
 .anchor-point {
   position: absolute;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
-.contextMenu {
-  padding-right: 20px;
-  padding-left: 15px;
+.context-menu {
+  > button {
+    padding: 0 5px;
+  }
 }
 
 .anchor-icon {
@@ -105,8 +119,8 @@
 }
 
 .anchor-point-menu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  > form {
+    display: flex;
+    flex-direction: column;
+  }
 }

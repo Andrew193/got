@@ -1,5 +1,6 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { Id } from '../../../models/common.model';
 
 export interface ProtoAction {
   type: ACTIONS;
@@ -30,6 +31,17 @@ export enum CONTROL_TYPE {
   DATE_INPUT,
   TEXT,
 }
+
+export type DefinedConfigs = {
+  colQty: number;
+  rowQty: number;
+} & Id;
+
+export type FormConfig = {
+  rowHeight: number;
+  tileMargin: number;
+  colQty: number;
+};
 
 export interface Control {
   type: CONTROL_TYPE;

@@ -3,17 +3,17 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { AppEntity, Control, CONTROL_TYPE, FormMatrix } from '../form-constructor.models';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
-import { SELECT_SEARCH_PREFIX } from '../../../../constants';
+import { SELECT_SEARCH_PREFIX, SNACKBAR_CONFIG } from '../../../../constants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class FormEnhancedOperations<T> {
-  //_snackBar = inject(MatSnackBar);
-
   constructor(
     public allFields: AppEntity<T>[],
     protected formName: string,
     public mtx: FormMatrix<T>,
     protected fb: FormBuilder,
     protected localStorageService: LocalStorageService,
+    protected _snackBar: MatSnackBar,
   ) {}
 
   public dropField(event: CdkDragDrop<any>) {
@@ -46,7 +46,11 @@ export class FormEnhancedOperations<T> {
     } else {
       const errorMsg = 'Error saving form template configuration, the form name is not set!';
 
-      //this._snackBar.open('Error saving form template configuration, the form name is not set!')
+      this._snackBar.open(
+        'Error saving form template configuration, the form name is not set!',
+        '',
+        SNACKBAR_CONFIG,
+      );
       throw Error(errorMsg);
     }
   }
@@ -74,21 +78,6 @@ export class FormEnhancedOperations<T> {
       }
     }
   }
-
-  createNewRowGroup = (row: (T & Record<string, any>) | null = null): FormGroup => {
-    const rowGroup = this.fb.group({});
-
-    if (this.allFields) {
-      this.allFields.forEach(c =>
-        this.addControlsToFormGroup(c.alias, c.rowControl, rowGroup, row),
-      );
-      rowGroup.markAllAsTouched();
-
-      return rowGroup;
-    }
-
-    throw new Error('Your columns are not defined!');
-  };
 
   private addSelectSearchControl(alias: string, control: Control, formGroup: FormGroup) {
     control.type === CONTROL_TYPE.SELECT &&
