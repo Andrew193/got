@@ -52,9 +52,9 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
         console.log(res);
       });
     }
+  }
 
-    this.formControl.valueChanges.subscribe(() => {
-      this.action && this.action(this.controlName(), this.parentForm);
-    });
+  valueChange() {
+    this.action && this.action(this.controlName(), this.parentForm);
   }
 }

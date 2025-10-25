@@ -1,13 +1,18 @@
 @let _withReset = withReset();
 @let _className = className();
 @let _controlName = controlName();
+@let _isMulti = isMulti();
 
 @let _options = filteredOptions | async;
 
-<ng-container *ngIf="isMulti !== null">
+<ng-container *ngIf="_isMulti !== null">
   <mat-form-field [class]="_className" style="width: auto">
     <mat-label>{{ label }}</mat-label>
-    <mat-select [formControlName]="_controlName" placeholder="Search" [multiple]="isMulti">
+    <mat-select
+      [formControlName]="_controlName"
+      placeholder="Search"
+      (selectionChange)="valueChange()"
+      [multiple]="_isMulti">
       <mat-option *ngFor="let entry of _options" [value]="entry">
         {{ entry }}
       </mat-option>

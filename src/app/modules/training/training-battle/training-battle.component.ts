@@ -6,7 +6,11 @@ import { TileUnit } from '../../../models/field.model';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
-import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
+import {
+  selectAiUnits,
+  selectTrainingFieldConfig,
+  selectUserUnits,
+} from '../../../store/reducers/training.reducer';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { HeroesSelectNames } from '../../../constants';
 
@@ -19,6 +23,7 @@ export class TrainingBattleComponent implements OnDestroy {
   store = inject(Store);
   aiUnitsFromStore = this.store.selectSignal(selectAiUnits);
   userUnitsFromStore = this.store.selectSignal(selectUserUnits);
+  fieldConfig = this.store.selectSignal(selectTrainingFieldConfig());
 
   nav = inject(NavigationService);
   heroesService = inject(HeroesFacadeService);
@@ -29,10 +34,21 @@ export class TrainingBattleComponent implements OnDestroy {
   constructor(private modalService: ModalWindowService) {
     const aiUnitsFromStore = this.aiUnitsFromStore();
     const userUnitsFromStore = this.userUnitsFromStore();
+    const { columns } = this.fieldConfig();
 
     if (aiUnitsFromStore.length && userUnitsFromStore.length) {
-      const userUnits = this.heroesService.getUnitsForTrainingBattle(true, userUnitsFromStore);
-      const aiUnits = this.heroesService.getUnitsForTrainingBattle(false, aiUnitsFromStore);
+      const userUnits = this.heroesService.getUnitsForTrainingBattle(
+        true,
+        userUnitsFromStore,
+        undefined,
+        columns - 1,
+      );
+      const aiUnits = this.heroesService.getUnitsForTrainingBattle(
+        false,
+        aiUnitsFromStore,
+        undefined,
+        columns - 1,
+      );
 
       this.aiUnits = aiUnits.map(el => this.heroesService.getTileUnit(el));
       this.userUnits = userUnits.map(el => this.heroesService.getTileUnit(el));

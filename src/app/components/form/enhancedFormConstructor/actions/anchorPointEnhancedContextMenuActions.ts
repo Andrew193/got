@@ -1,15 +1,15 @@
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TileEnhancedOperations } from '../abstract/tile-enhanced-operations';
-import { Id } from '../../../../models/common.model';
 import { ACTIONS, AppEntity, CONTROL_TYPE, Tile } from '../form-constructor.models';
 import { ProtoActions } from './protoActions';
 import { AnchorPointAction } from './anchorPointAction';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CONFIG } from '../../../../constants';
 
-export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoActions {
+export class AnchorPointEnhancedContextMenuActions<T> extends ProtoActions {
   public y = 0;
   public x = 0;
+  disabled = true;
 
   tileColSpanAlias = 'tile-col-span';
   tileRowSpanAlias = 'tile-row-span';
@@ -110,7 +110,7 @@ export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoAc
         placeholder: 'Col span',
         mainControl: {
           type: CONTROL_TYPE.INPUT,
-          getControl: () => new FormControl<number>(2),
+          getControl: () => new FormControl<number>(1),
         },
       },
       {
@@ -130,9 +130,15 @@ export class AnchorPointEnhancedContextMenuActions<T extends Id> extends ProtoAc
     );
   }
 
-  public enableDisableFormElements = (alias: string, formGroup: FormGroup) => {
-    debugger;
+  dropOnOffField() {
+    const OnOffField = this.apFormGroup.get(this.onOffAlias);
 
+    if (OnOffField) {
+      OnOffField.setValue([]);
+    }
+  }
+
+  public enableDisableFormElements = (alias: string, formGroup: FormGroup) => {
     const formControl = formGroup.get(alias);
     const matrix = this.tileOps.mtx;
 

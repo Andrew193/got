@@ -6,6 +6,10 @@
   box-shadow: index.$var-box-shadow;
   border-radius: 5px;
 
+  &.bordered {
+    border: index.$var-border-2-bronze;
+  }
+
   .store-title {
     @include index.mixin-grad-color;
     vertical-align: middle;

@@ -1,0 +1,11 @@
+@let _data = data();
+
+@if (_data) {
+  <div [class.green-b]="!isHighlighted(_data)" [class.red-b]="isHighlighted(_data)">
+    <img
+      [src]="_data.imgSrc"
+      style="height: 59px; width: 59px"
+      alt="Entity"
+      class="game-field-img" />
+  </div>
+}

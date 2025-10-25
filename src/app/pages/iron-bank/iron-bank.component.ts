@@ -15,6 +15,7 @@ import { finalize } from 'rxjs';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { ExchangerComponent } from './exchanger/exchanger.component';
 import { CURRENCY_NAMES } from '../../constants';
+import { BasicStoresHolderComponent } from '../../components/views/basic-stores-holder/basic-stores-holder.component';
 
 @Component({
   selector: 'app-iron-bank',
@@ -25,6 +26,7 @@ import { CURRENCY_NAMES } from '../../constants';
     DepositComponent,
     AsyncPipe,
     ExchangerComponent,
+    BasicStoresHolderComponent,
   ],
   templateUrl: './iron-bank.component.html',
   styleUrl: './iron-bank.component.scss',

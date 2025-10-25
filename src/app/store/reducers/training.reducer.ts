@@ -3,6 +3,9 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { PreviewUnit } from '../../models/units-related/unit.model';
 import { TrainingActions } from '../actions/training.actions';
+import { FieldConfigInitialState, FieldConfigReducer } from './field-config.reducer';
+import { FieldConfigActions } from '../actions/field-config.actions';
+import { makeSelectFieldConfig } from '../selectors/field-config.selectors';
 
 function selectId(model: PreviewUnit) {
   return model.name;
@@ -18,12 +21,16 @@ const userUnitsAdapter = createEntityAdapter<PreviewUnit>({
 export const TrainingInitialState: TrainingState = {
   aiUnits: aiUnitsAdapter.getInitialState([]),
   userUnits: userUnitsAdapter.getInitialState([]),
+  fieldConfig: FieldConfigInitialState,
 };
 
 export const TrainingFeature = createFeature({
   name: StoreNames.trainingGround,
   reducer: createReducer(
     TrainingInitialState,
+    on(FieldConfigActions.setFieldConfig, (state, action) => {
+      return { ...state, fieldConfig: FieldConfigReducer(state.fieldConfig, action) };
+    }),
     on(TrainingActions.setAIUnits, (state, action) => {
       return { ...state, aiUnits: aiUnitsAdapter.setAll(action.units, state.aiUnits) };
     }),
@@ -47,8 +54,14 @@ export const TrainingFeature = createFeature({
       selectUserUnitsEntities: userSelectors.selectEntities,
       selectAiUnits: aiSelectors.selectAll,
       selectUserUnits: userSelectors.selectAll,
+      selectFieldConfig: () =>
+        makeSelectFieldConfig(baseSelectors.selectFieldConfig, StoreNames.trainingGround),
     };
   },
 });
 
-export const { selectAiUnits, selectUserUnits } = TrainingFeature;
+export const {
+  selectAiUnits,
+  selectUserUnits,
+  selectFieldConfig: selectTrainingFieldConfig,
+} = TrainingFeature;

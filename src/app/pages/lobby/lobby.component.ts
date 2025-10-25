@@ -24,6 +24,7 @@ import { Store } from '@ngrx/store';
 import { selectDailyRewardFlag } from '../../store/selectors/lobby.selectors';
 import { LobbyService } from '../../services/lobby/lobby.service';
 import { ShortcutService } from '../../services/facades/shortcut/shortcut.service';
+import { BasicStoresHolderComponent } from '../../components/views/basic-stores-holder/basic-stores-holder.component';
 
 export type Route = {
   name: string;
@@ -117,6 +118,7 @@ export class UserComponent implements AfterContentInit {
     MatDivider,
     MatLine,
     AsyncPipe,
+    BasicStoresHolderComponent,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',

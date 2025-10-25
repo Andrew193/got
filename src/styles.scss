@@ -33,6 +33,11 @@ fieldset[disabled] {
   pointer-events: none;
   position: relative;
 
+  &.inherit {
+    display: inherit;
+    flex-direction: inherit;
+  }
+
   &:after {
     content: '\2715';
     position: absolute;

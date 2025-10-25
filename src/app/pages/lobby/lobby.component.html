@@ -1,39 +1,34 @@
 <div class="lobby-container container-fluid">
   <main class="row mt-4 g-2">
     <aside class="col-sm-12 col-md-6 shadow-none">
-      <mat-list class="pt-0 pb-0">
-        @for (route of pageRoutes; track route.name) {
-          <mat-list-item>
-            <a [routerLink]="route.url" class="list-group-item" mat-line>
-              <span class="d-flex">
-                <app-image
-                  [source]="'assets/resourses/imgs/nav_icons/' + route.src"
-                  [alt]="route.name"></app-image>
-                {{ route.name }}
-              </span>
-            </a>
-            @if (!$last) {
-              <mat-divider [inset]="true"></mat-divider>
-            }
-          </mat-list-item>
-        }
-        <mat-divider></mat-divider>
-      </mat-list>
+      <app-basic-stores-placeholder title="Routes">
+        <mat-list class="pt-0 pb-0">
+          @for (route of pageRoutes; track route.name) {
+            <mat-list-item>
+              <a [routerLink]="route.url" class="list-group-item" mat-line>
+                <span class="d-flex">
+                  <app-image
+                    [source]="'assets/resourses/imgs/nav_icons/' + route.src"
+                    [alt]="route.name"></app-image>
+                  {{ route.name }}
+                </span>
+              </a>
+              @if (!$last) {
+                <mat-divider [inset]="true"></mat-divider>
+              }
+            </mat-list-item>
+          }
+          <mat-divider></mat-divider>
+        </mat-list>
+      </app-basic-stores-placeholder>
     </aside>
 
     <div class="col-sm-12 col-md-6">
-      <div class="stores h-100">
-        <p class="col-12 text-center mt-2 mb-0 store-title">Shops and Rewards</p>
-        <nav class="flex-row justify-content-between">
-          <div class="row g-2 store-row ms-1 me-1">
-            @for (activity of activities; track activity.name) {
-              <ng-container
-                [ngTemplateOutlet]="storeTemplate"
-                [ngTemplateOutletContext]="activity" />
-            }
-          </div>
-        </nav>
-      </div>
+      <app-basic-stores-placeholder title="Shops and Rewards">
+        @for (activity of activities; track activity.name) {
+          <ng-container [ngTemplateOutlet]="storeTemplate" [ngTemplateOutletContext]="activity" />
+        }
+      </app-basic-stores-placeholder>
     </div>
   </main>
 </div>

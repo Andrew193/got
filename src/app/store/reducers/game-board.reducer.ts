@@ -5,12 +5,14 @@ import { createEntityAdapter } from '@ngrx/entity';
 import { Coordinate, TilesToHighlight } from '../../models/field.model';
 import {
   makeSelectBattleLog,
-  makeSelectFieldConfig,
   makeSelectTilesToHighlightArray,
   makeSelectTileToHighlight,
 } from '../selectors/game-board.selectors';
 import { LogRecord } from '../../models/logger.model';
 import { BaseGameLoggerService } from '../../services/game-related/game-logger/logger.service';
+import { FieldConfigInitialState, FieldConfigReducer } from './field-config.reducer';
+import { FieldConfigActions } from '../actions/field-config.actions';
+import { makeSelectFieldConfig } from '../selectors/field-config.selectors';
 
 function selectId(model: TilesToHighlight) {
   return `${model.i}:${model.j}`;
@@ -25,10 +27,7 @@ export const logAdapter = createEntityAdapter<LogRecord>();
 export const GameBoardInitialState: BasicBoardState = {
   tilesToHighlight: tilesToHighlightAdapter.getInitialState(),
   battleLog: logAdapter.getInitialState({ keepTrack: true }),
-  fieldConfig: {
-    rows: 7,
-    columns: 10,
-  },
+  fieldConfig: FieldConfigInitialState,
 };
 
 const loggerHelper = new BaseGameLoggerService();
@@ -37,6 +36,9 @@ export const GameBoardFeature = createFeature({
   name: StoreNames.gameBoard,
   reducer: createReducer(
     GameBoardInitialState,
+    on(FieldConfigActions.setFieldConfig, (state, action) => {
+      return { ...state, fieldConfig: FieldConfigReducer(state.fieldConfig, action) };
+    }),
     on(GameBoardActions.setTilesToHighlight, (state, action) => {
       return {
         ...state,
@@ -75,9 +77,14 @@ export const GameBoardFeature = createFeature({
       selectTileToHighlight: (tile: Coordinate) =>
         makeSelectTileToHighlight(selectGameBoardState, tile),
       selectBattleLog: () => makeSelectBattleLog(selectGameBoardState),
-      selectFieldConfig: () => makeSelectFieldConfig(selectGameBoardState),
+      selectFieldConfig: () =>
+        makeSelectFieldConfig(baseSelectors.selectFieldConfig, StoreNames.gameBoard),
     };
   },
 });
 
-export const { selectTileToHighlight, selectBattleLog, selectFieldConfig } = GameBoardFeature;
+export const {
+  selectTileToHighlight,
+  selectBattleLog,
+  selectFieldConfig: selectGameFieldConfig,
+} = GameBoardFeature;

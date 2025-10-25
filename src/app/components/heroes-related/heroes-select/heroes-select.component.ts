@@ -8,20 +8,21 @@ import {
   signal,
   Signal,
 } from '@angular/core';
-import { SelectableUnit } from '../../models/units-related/unit.model';
+import { SelectableUnit } from '../../../models/units-related/unit.model';
 import { Store } from '@ngrx/store';
-import { HeroesSelectActions } from '../../store/actions/heroes-select.actions';
+import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { HeroSelectTileComponent } from './hero-select-tile/hero-select-tile.component';
-import { HeroesSelectNames } from '../../constants';
-import { HeroesSelectStateEntity } from '../../store/store.interfaces';
-import { selectHeroesCollection } from '../../store/reducers/heroes-select.reducer';
+import { HeroesSelectNames } from '../../../constants';
+import { HeroesSelectStateEntity } from '../../../store/store.interfaces';
+import { selectHeroesCollection } from '../../../store/reducers/heroes-select.reducer';
+import { BasicStoresHolderComponent } from '../../views/basic-stores-holder/basic-stores-holder.component';
 
 @Component({
   selector: 'app-heroes-select',
   templateUrl: './heroes-select.component.html',
   styleUrl: './heroes-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HeroSelectTileComponent],
+  imports: [HeroSelectTileComponent, BasicStoresHolderComponent],
 })
 export class HeroesSelectComponent implements OnInit {
   store = inject(Store);

@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { HeroesFacadeService } from '../../services/facades/heroes/heroes.service';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { StatsComponent } from '../views/stats/stats.component';
-import { Unit } from '../../models/units-related/unit.model';
-import { SkillsRenderComponent } from '../views/skills-render/skills-render.component';
+import { StatsComponent } from '../../views/stats/stats.component';
+import { Unit } from '../../../models/units-related/unit.model';
+import { SkillsRenderComponent } from '../../views/skills-render/skills-render.component';
 import { NgTemplateOutlet } from '@angular/common';
-import { TileUnit } from '../../models/field.model';
-import { NavigationService } from '../../services/facades/navigation/navigation.service';
-import { RatingComponent } from '../common/rating/rating.component';
+import { TileUnit } from '../../../models/field.model';
+import { NavigationService } from '../../../services/facades/navigation/navigation.service';
+import { RatingComponent } from '../../common/rating/rating.component';
 
 type EqName = 'eq1' | 'eq2' | 'eq3' | 'eq4';
 

@@ -13,6 +13,7 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
     protected override fb: FormBuilder,
     protected override localStorageService: LocalStorageService,
     protected override _snackBar: MatSnackBar,
+    protected elementsPerTile: number,
   ) {
     super(allFields, formName, mtx, fb, localStorageService, _snackBar);
   }
@@ -266,6 +267,17 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
 
   private getFailedToModfyTileError(action: string) {
     this._snackBar.open(`Failed to ${action} tile!`, '', SNACKBAR_CONFIG);
+  }
+
+  checkFieldsAmount(y: number, x: number) {
+    const id = this.mtx.mtx[y][x];
+    const tile = this.mtx.tiles.get(id);
+
+    if (tile && this.elementsPerTile) {
+      return tile.cdkDropListData.length >= this.elementsPerTile;
+    }
+
+    return false;
   }
 
   moveTileUp(y: number, x: number) {

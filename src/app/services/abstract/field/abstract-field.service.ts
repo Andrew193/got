@@ -2,14 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { GameField } from '../../../components/abstract/abstract-game-field/abstract-game-field.component';
 import { GameFieldVars, Position, Tile, TileUnit } from '../../../models/field.model';
 import { Store } from '@ngrx/store';
-import { selectFieldConfig } from '../../../store/reducers/game-board.reducer';
+import { selectGameFieldConfig } from '../../../store/reducers/game-board.reducer';
 
 @Injectable({
   providedIn: 'root',
 })
 export abstract class AbstractFieldService extends GameFieldVars implements Partial<GameField> {
   store = inject(Store);
-  private fieldConfig = this.store.selectSignal(selectFieldConfig());
+  private fieldConfig = this.store.selectSignal(selectGameFieldConfig());
 
   getGridFromField(field: Tile[][]): number[][] {
     const fieldConfig = this.fieldConfig();

@@ -3,7 +3,6 @@ import { ExtendedModalConfig, ModalStrategy } from '../modal-interfaces';
 
 @Component({
   selector: 'app-dynamic-modal-host',
-  imports: [],
   templateUrl: './dynamic-host.component.html',
   styleUrl: './dynamic-host.component.scss',
 })

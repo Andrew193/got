@@ -1,36 +1,15 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
-import {
-  HeroesNamesCodes,
-  PreviewUnit,
-  SelectableUnit,
-  Unit,
-} from '../../../models/units-related/unit.model';
-import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
-import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { PreviewUnit, SelectableUnit } from '../../../models/units-related/unit.model';
+import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
+import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
+import { NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
-import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
-import { RewardValues } from '../../../models/reward-based.model';
-import { HeroesSelectNames } from '../../../constants';
 import { TrainingActions } from '../../../store/actions/training.actions';
-import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
-import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
+import { selectTrainingFieldConfig } from '../../../store/reducers/training.reducer';
 import { EnhancedFormConstructorComponent } from '../../../components/form/enhancedFormConstructor/enhanced-form-constructor/enhanced-form-constructor.component';
-import { selectFieldConfig } from '../../../store/reducers/game-board.reducer';
-
-type BarCtx = {
-  isUser: boolean;
-  title: 'User Units' | 'AI Units';
-  contextName: HeroesSelectNames;
-};
+import { FieldConfigActions } from '../../../store/actions/field-config.actions';
+import { TrainingFacadeService } from '../../../services/facades/training/training.service';
 
 @Component({
   selector: 'app-training-config',
@@ -39,7 +18,6 @@ type BarCtx = {
     HeroesSelectComponent,
     NgTemplateOutlet,
     EnhancedFormConstructorComponent,
-    AsyncPipe,
   ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
@@ -48,79 +26,25 @@ type BarCtx = {
 export class TrainingConfigComponent {
   store = inject(Store);
   nav = inject(NavigationService);
-  gridConfig = this.store.select(selectFieldConfig());
+  facade = inject(TrainingFacadeService);
+  gridConfig = this.store.selectSignal(selectTrainingFieldConfig());
 
-  aiUnits = signal<PreviewUnit[]>([]);
-  userUnits = signal<PreviewUnit[]>([]);
+  aiUnits = this.facade.aiUnits;
+  userUnits = this.facade.userUnits;
+  userSelCtx = this.facade.userSelCtx;
+  aiSelCtx = this.facade.aiSelCtx;
+  allUnitsForFieldConfig = this.facade.allUnitsForFieldConfig;
 
-  allUnits: Unit[] = [];
-  allUnitsForSelect: SelectableUnit[] = [];
+  userBarCtx = this.facade.userBarCtx;
+  aiBarCtx = this.facade.aiBarCtx;
+
+  getUnitKey = this.facade.getUnitKey;
+  getDescKey = this.facade.getDescKey;
+
+  allUnitsForSelect = this.facade.allUnitsForSelect;
+
   aiUnitsDescriptions: boolean[] = [];
   userUnitsDescriptions: boolean[] = [];
-
-  userBarCtx: BarCtx = { isUser: true, title: 'User Units', contextName: HeroesSelectNames.user };
-  aiBarCtx: BarCtx = { isUser: false, title: 'AI Units', contextName: HeroesSelectNames.ai };
-
-  userSelCtx = computed(() => {
-    return { user: true, title: 'Selected User Units', units: this.userUnits() };
-  });
-  aiSelCtx = computed(() => {
-    return { user: false, title: 'Selected AI Units', units: this.aiUnits() };
-  });
-
-  constructor(private heroesService: HeroesFacadeService) {
-    this.allUnits = this.heroesService.getAllHeroes();
-    this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
-
-    const setContext = (
-      userUnits: (HeroesNamesCodes | RewardValues)[] = [],
-      aiUnits: (HeroesNamesCodes | RewardValues)[] = [],
-    ) => {
-      this.store.dispatch(
-        HeroesSelectActions.setHeroesSelectState({
-          name: this.userBarCtx.contextName,
-          data: userUnits,
-        }),
-      );
-      this.store.dispatch(
-        HeroesSelectActions.setHeroesSelectState({
-          name: this.aiBarCtx.contextName,
-          data: aiUnits,
-        }),
-      );
-    };
-
-    setContext();
-
-    effect(() => {
-      const stashedAIUnits = this.store.selectSignal(selectAiUnits)();
-      const stashedUserUnits = this.store.selectSignal(selectUserUnits)();
-
-      const aiUnits = this.aiUnits();
-      const userUnits = this.userUnits();
-
-      if (
-        aiUnits.length !== stashedAIUnits.length ||
-        userUnits.length !== stashedUserUnits.length
-      ) {
-        setContext(
-          stashedUserUnits.map(el => el.name),
-          stashedAIUnits.map(el => el.name),
-        );
-
-        this.aiUnits.set(stashedAIUnits);
-        this.userUnits.set(stashedUserUnits);
-      }
-    });
-  }
-
-  getDescKey(user = true) {
-    return user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions';
-  }
-
-  getUnitKey(user = true) {
-    return user ? 'userUnits' : 'aiUnits';
-  }
 
   public addUserUnit = (unit: SelectableUnit, user = true): boolean => {
     const unitKey = this.getUnitKey(user);
@@ -147,7 +71,7 @@ export class TrainingConfigComponent {
 
     return update(
       addNew
-        ? [...currentUnits, this.heroesService.getPreviewUnit(unit.name)]
+        ? [...currentUnits, this.facade.heroesService.getPreviewUnit(unit.name)]
         : currentUnits.filter((_, i) => i !== index),
       addNew,
     );
@@ -167,6 +91,7 @@ export class TrainingConfigComponent {
   };
 
   openFight() {
+    this.store.dispatch(FieldConfigActions.setFieldConfig(this.gridConfig()));
     this.nav.goToTrainingBattle();
   }
 

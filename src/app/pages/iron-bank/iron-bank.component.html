@@ -13,38 +13,44 @@
   }
 
   <main class="row g-4 m-0">
-    <div class="col-12 col-md">
-      <aside class="stores w-100 h-100">
-        <app-exchanger
-          [(form)]="exchangerForm"
-          [coins]="coins"
-          [currencies]="currencies"
-          [rateLabel]="rateLabel"
-          [result]="result"
-          [uiErrorsNames]="uiErrorsNames"
-          [amountMax]="_amountMax"
-          [allowedToOptions]="exchangerAllowedToOptions"
-          (exchangeCurrency)="exchangeCurrency($event)" />
-      </aside>
+    <div class="col-12 col-md mt-0">
+      <app-basic-stores-placeholder title="Exchanger">
+        <aside class="stores w-100">
+          <app-exchanger
+            [(form)]="exchangerForm"
+            [coins]="coins"
+            [currencies]="currencies"
+            [rateLabel]="rateLabel"
+            [result]="result"
+            [uiErrorsNames]="uiErrorsNames"
+            [amountMax]="_amountMax"
+            [allowedToOptions]="exchangerAllowedToOptions"
+            (exchangeCurrency)="exchangeCurrency($event)" />
+        </aside>
+      </app-basic-stores-placeholder>
     </div>
 
-    <div class="col-12 col-md">
-      <aside class="stores w-100 h-100">
-        <fieldset [disabled]="!depositAvailable" class="h-100">
-          <app-deposit
-            [(form)]="depositForm"
-            [copperMax]="getMax(user, 'copper')"
-            [silverMax]="getMax(user, 'silver')"
-            [goldMax]="getMax(user, 'gold')"
-            [depositOptions]="depositOptions"
-            [uiErrorsNames]="uiErrorsNames"
-            (depositCurrency)="depositCurrency()">
-            @if (!depositAvailable) {
-              <p class="text-center w-100 mb-0">You can not have more than one deposit.</p>
-            }
-          </app-deposit>
-        </fieldset>
-      </aside>
+    <div class="col-12 col-md mt-0">
+      <app-basic-stores-placeholder title="Deposit">
+        <aside class="stores w-100">
+          <fieldset [disabled]="!depositAvailable" class="h-100">
+            <app-deposit
+              [(form)]="depositForm"
+              [copperMax]="getMax(user, 'copper')"
+              [silverMax]="getMax(user, 'silver')"
+              [goldMax]="getMax(user, 'gold')"
+              [depositOptions]="depositOptions"
+              [uiErrorsNames]="uiErrorsNames"
+              (depositCurrency)="depositCurrency()">
+              @if (!depositAvailable) {
+                <p class="text-center w-100 mb-0 color-white">
+                  You can not have more than one deposit.
+                </p>
+              }
+            </app-deposit>
+          </fieldset>
+        </aside>
+      </app-basic-stores-placeholder>
     </div>
 
     <div class="ps-2 pe-2">

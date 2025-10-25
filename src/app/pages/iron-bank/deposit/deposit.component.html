@@ -6,12 +6,10 @@
 @let _uiErrorsNames = uiErrorsNames();
 
 <div class="flex-row store-row p-2">
-  <h4 class="w-100 text-center m-0">Deposit</h4>
-
   <form [formGroup]="_form" class="w-100">
     <div class="row m-0 g-2">
       <span class="col-2 mb-0 deposit-label color-white">Duration:</span>
-      <div class="col-10">
+      <div class="col-10 ps-2 pe-3">
         <app-slider [controlName]="'days'" [options]="_depositOptions" />
       </div>
     </div>

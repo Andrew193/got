@@ -3,10 +3,11 @@ import { EffectsHighlighterComponent } from '../../common/effects-highlighter/ef
 import { ImageComponent } from '../image/image.component';
 import { TileUnit } from '../../../models/field.model';
 import { NgClass } from '@angular/common';
+import { BasicStoresHolderComponent } from '../basic-stores-holder/basic-stores-holder.component';
 
 @Component({
   selector: 'app-skills-render',
-  imports: [EffectsHighlighterComponent, ImageComponent, NgClass],
+  imports: [EffectsHighlighterComponent, ImageComponent, NgClass, BasicStoresHolderComponent],
   templateUrl: './skills-render.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

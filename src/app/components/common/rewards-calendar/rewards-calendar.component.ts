@@ -24,6 +24,6 @@ export class RewardsCalendarComponent {
   getLabel = (i: number) => {
     const _rewardBackLabels = this.rewardBackLabels();
 
-    return !!_rewardBackLabels ? _rewardBackLabels[i] : `День ${i + 1}`;
+    return !!_rewardBackLabels ? _rewardBackLabels[i] : `Day ${i + 1}`;
   };
 }

@@ -1,0 +1,14 @@
+@let _title = title();
+
+<div class="stores h-100 bordered d-flex flex-column">
+  @if (_title) {
+    <p class="col-12 text-center mt-0 mb-2 banner no-top b-t-l-r-i b-t-r-r-i">
+      <span class="store-title">{{ _title }}</span>
+    </p>
+  }
+  <nav class="flex-row justify-content-between flex-grow-1">
+    <div class="row g-2 w-100 store-row ms-1 me-1">
+      <ng-content />
+    </div>
+  </nav>
+</div>

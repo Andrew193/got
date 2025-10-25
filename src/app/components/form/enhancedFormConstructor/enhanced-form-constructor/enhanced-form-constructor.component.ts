@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, model } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { AbstractEnhancedFormComponent } from '../abstract/abstract-enhanced-form.component';
 import { formEnhancedImports } from '../form-imports/formEnhancedImports';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
-import { CONTROL_TYPE } from '../form-constructor.models';
-import { Id } from '../../../../models/common.model';
+import { AppEntity } from '../form-constructor.models';
 
 @Component({
   selector: 'app-enhanced-form-constructor',
@@ -13,26 +12,8 @@ import { Id } from '../../../../models/common.model';
   templateUrl: './../abstract/abstract-enhanced-form.component.html',
   styleUrl: './../abstract/abstract-enhanced-form.component.scss',
 })
-export class EnhancedFormConstructorComponent extends AbstractEnhancedFormComponent<Id> {
-  @Input() override allFields = [
-    {
-      alias: 'id',
-      placeholder: 'ID',
-      mainControl: {
-        type: CONTROL_TYPE.INPUT,
-        getControl: () => new FormControl<string>(''),
-      },
-    },
-    {
-      alias: 'firstName',
-      placeholder: 'First Name',
-      mainControl: {
-        type: CONTROL_TYPE.INPUT,
-        getControl: () =>
-          new FormControl<string>('', [Validators.required, Validators.minLength(2)]),
-      },
-    },
-  ];
+export class EnhancedFormConstructorComponent<T> extends AbstractEnhancedFormComponent<T> {
+  override allFields = model.required<AppEntity<T>[]>();
 
   constructor(
     protected override fb: FormBuilder,
@@ -41,5 +22,19 @@ export class EnhancedFormConstructorComponent extends AbstractEnhancedFormCompon
     super(fb, localStorageService);
 
     this.formName = 'enhanced_form';
+
+    // Experimental
+    // let initialRun = true;
+    // effect(() => {
+    //   const allFields = this.allFields();
+    //
+    //   if (!initialRun) {
+    //     this.saveFormConstructorState();
+    //     this.tileOps.saveFormTemplate();
+    //     super.ngOnInit();
+    //   }
+    //
+    //   initialRun = false;
+    // });
   }
 }

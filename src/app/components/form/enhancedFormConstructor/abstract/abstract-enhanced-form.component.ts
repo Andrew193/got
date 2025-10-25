@@ -1,17 +1,27 @@
-import { Component, computed, inject, input, Input, model, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  Input,
+  model,
+  ModelSignal,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AnchorPointEnhancedContextMenuActions } from '../actions/anchorPointEnhancedContextMenuActions';
 import { formEnhancedImports } from '../form-imports/formEnhancedImports';
 import { TileEnhancedOperations } from './tile-enhanced-operations';
 import { FormEnhancedActions } from '../actions/formEnhancedActions';
 import { FormEnhancedContextMenuActions } from '../actions/formEnhancedContextMenuActions';
-import { Id } from '../../../../models/common.model';
 import { AppEntity, CONTROL_TYPE, FormConfig, FormMatrix, Tile } from '../form-constructor.models';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { DATA_SOURCES } from '../../../../constants';
+import { DATA_SOURCES, GAME_BOARD_FIELD } from '../../../../constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormHelperService } from '../../helper.service';
+import { Store } from '@ngrx/store';
+import { FieldConfigActions } from '../../../../store/actions/field-config.actions';
 
 @Component({
   standalone: true,
@@ -19,17 +29,26 @@ import { FormHelperService } from '../../helper.service';
   styleUrl: './abstract-enhanced-form.component.scss',
   imports: [formEnhancedImports],
 })
-export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnInit {
+export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
+  store = inject(Store);
   helper = inject(FormHelperService);
-
   _snackBar = inject(MatSnackBar);
-  colQty = model(10);
-  rowQty = model(7);
-  ignoreTemplate = input<boolean>(false);
 
-  protected readonly DATA_SOURCES = DATA_SOURCES;
+  colQty = model(GAME_BOARD_FIELD.columns);
+  rowQty = model(GAME_BOARD_FIELD.rows);
+  elementsPerTile = input<number>(1);
+
+  ignoreTemplate = input<boolean>(false);
   showModeToggler = input<boolean>(true);
 
+  getApPositionStyles = this.helper.getApPositionStyles;
+  getTilePositionStyles = this.helper.getTilePositionStyles<T>;
+  deserializeFormMatrix = this.helper.deserializeFormMatrix<T>;
+  copyMatchingFields = this.helper.copyMatchingFields;
+  startDrag = this.helper.startDrag;
+  endDrag = this.helper.endDrag;
+
+  protected readonly DATA_SOURCES = DATA_SOURCES;
   CONTROL_TYPE = CONTROL_TYPE;
 
   tileMargin = 3;
@@ -38,7 +57,7 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
   draggedTile!: Tile<T>;
   isTileDraggable = true;
 
-  allFields!: AppEntity<T>[];
+  allFields!: ModelSignal<AppEntity<T>[]>;
 
   public tileOps!: TileEnhancedOperations<T>;
 
@@ -49,8 +68,12 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
 
   private _formName = 'TEST';
 
-  get formName(): string {
+  get formName() {
     return this._formName;
+  }
+
+  @Input() set formName(name: string) {
+    this._formName = name;
   }
 
   rowHeight = 85;
@@ -60,9 +83,13 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
   resetFormMtx(colQty: number, rowQty: number) {
     this.colQty.set(colQty);
     this.rowQty.set(rowQty);
+
     this.buildMtx();
+
     this.tileOps.mtx = this.mtx;
     this.tileOps.saveFormTemplate();
+    this.store.dispatch(FieldConfigActions.setFieldConfig({ columns: colQty, rows: rowQty }));
+    this.apCtxMenuActions.dropOnOffField();
   }
 
   buildMtx() {
@@ -77,23 +104,10 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
   formCtxMenuActions!: FormEnhancedContextMenuActions<T>;
   apCtxMenuActions!: AnchorPointEnhancedContextMenuActions<T>;
 
-  @Input() set formName(name: string) {
-    this._formName = name;
-  }
-
   constructor(
     protected fb: FormBuilder,
     protected localStorageService: LocalStorageService,
   ) {}
-
-  private deserializeFormMatrix<T>(parsed: FormMatrix<T>): FormMatrix<T> {
-    const tiles = new Map<number, Tile<T>>(parsed.tiles);
-
-    return {
-      tiles,
-      mtx: parsed.mtx,
-    };
-  }
 
   formConfig = computed((): FormConfig => {
     return {
@@ -103,8 +117,6 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     };
   });
 
-  getApPositionStyles = this.helper.getApPositionStyles;
-  getTilePositionStyles = this.helper.getTilePositionStyles<T>;
   configArray = this.helper.configArray;
 
   ngOnInit(): void {
@@ -127,7 +139,7 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     this.mtx.tiles.forEach(tile => {
       tile.cdkDropListData = tile.cdkDropListData
         .map(source => {
-          const target: AppEntity<T> | undefined = this.allFields.find(
+          const target: AppEntity<T> | undefined = this.allFields().find(
             f => f.alias === source.alias,
           );
 
@@ -143,12 +155,13 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     });
 
     this.tileOps = new TileEnhancedOperations<T>(
-      this.allFields,
+      this.allFields(),
       this.formName,
       this.mtx,
       this.fb,
       this.localStorageService,
       this._snackBar,
+      this.elementsPerTile(),
     );
 
     this.apCtxMenuActions = new AnchorPointEnhancedContextMenuActions(
@@ -158,21 +171,11 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     );
     this.formCtxMenuActions = new FormEnhancedContextMenuActions(this.fb, this.tileOps);
 
-    this.allFields.forEach(c => {
+    this.allFields().forEach(c => {
       c.mainControl && this.tileOps.addControlsToFormGroup(c.alias, c.mainControl, this.formGroup);
     });
 
     this.saveFormConstructorState();
-  }
-
-  private copyMatchingFields<T extends Record<string, any>>(source: T, target: T): void {
-    const fields: string[] = Object.keys(target).filter(key => typeof target[key] !== 'object');
-
-    fields.forEach(field => {
-      const sourceValue = source[field];
-
-      sourceValue && ((target as Record<string, any>)[field] = sourceValue);
-    });
   }
 
   saveFormConstructorState(): void {
@@ -195,14 +198,6 @@ export abstract class AbstractEnhancedFormComponent<T extends Id> implements OnI
     }
 
     return false;
-  }
-
-  startDrag() {
-    document.body.style.userSelect = 'none';
-  }
-
-  endDrag() {
-    document.body.style.userSelect = 'auto';
   }
 
   startTileDrag(tile: Tile<T>) {

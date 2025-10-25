@@ -3,9 +3,9 @@ import { StatsComponent } from '../../../components/views/stats/stats.component'
 import { Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
-import { HeroesSelectComponent } from '../../../components/heroes-select/heroes-select.component';
+import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
 import { BossDifficulty, DailyBossService } from '../../../services/daily-boss/daily-boss.service';
-import { HeroesSelectPreviewComponent } from '../../../components/heroes-select-preview/heroes-select-preview.component';
+import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { TileUnit } from '../../../models/field.model';
 import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-based.model';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';

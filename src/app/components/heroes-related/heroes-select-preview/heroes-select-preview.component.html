@@ -1,0 +1,57 @@
+@let options = units();
+@let _user = user();
+@let _containerClass = containerClass();
+@let _title = title();
+
+@if (options.length) {
+  <div class="d-flex justify-content-center heroes-container">
+    <div class="col-12 units-config-inner-container" [class]="_containerClass">
+      <app-basic-stores-placeholder [title]="_title">
+        <div class="flex-row justify-content-evenly preview-selected-heroes">
+          @for (unit of options; let i = $index; track unit.name) {
+            <div class="w-100">
+              <div class="col-auto position-relative cursor-pointer">
+                <app-image
+                  (click)="toggleDescription(_user, i)"
+                  [matTooltip]="unit.name"
+                  imageClass="image-100"
+                  [alt]="unit.name"
+                  [source]="unit.imgSrc" />
+              </div>
+              <div class="col description-bar">
+                @if (getDescriptionState(_user, i)) {
+                  <div class="p-2">{{ unit.description }}</div>
+                } @else {
+                  <div class="d-flex justify-content-around">
+                    @for (skill of unit.skills; track skill.imgSrc + $index) {
+                      <div>
+                        <h5 class="text-center m-0">{{ skill.name }}</h5>
+                        <div
+                          class="position-relative"
+                          style="margin: 0 auto; width: fit-content"
+                          [matTooltip]="skill.description">
+                          <img
+                            [alt]="skill.name"
+                            [src]="skill.imgSrc"
+                            class="image-100 skill-preview-icon cursor-pointer" />
+
+                          @if (skill.passive) {
+                            <div class="skill-disabled" style="top: 0px; left: 0px">
+                              <i aria-hidden="true">P</i>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </app-basic-stores-placeholder>
+    </div>
+  </div>
+} @else {
+  <p class="text-center mb-0">Not heroes to preview</p>
+}

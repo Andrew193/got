@@ -4,7 +4,7 @@
   @for (config of configArray; track config.id) {
     <div class="col">
       <button class="got-toggle w-100" (click)="resetFormMtx(config.colQty, config.rowQty)">
-        Field({{ config.rowQty }} * {{ config.colQty }})
+        Field ({{ config.rowQty }} * {{ config.colQty }})
       </button>
     </div>
   }
@@ -91,8 +91,20 @@
                             ">
                             <ng-container [formGroup]="formGroup">
                               <fieldset [disabled]="isFormCtrOn">
-                                @if (f.mainControl?.type === CONTROL_TYPE.INPUT) {
-                                  <app-text-input [label]="f.placeholder" [controlName]="f.alias" />
+                                @switch (f.mainControl?.type) {
+                                  @case (CONTROL_TYPE.INPUT) {
+                                    <app-text-input
+                                      [label]="f.placeholder"
+                                      [controlName]="f.alias" />
+                                  }
+                                  @case (CONTROL_TYPE.CUSTOM) {
+                                    @if (f.mainControl && f.mainControl.data) {
+                                      <app-custom-data-holder
+                                        [type]="f.mainControl.data"
+                                        [data]="f.mainControl.dataContext"
+                                        [coordinate]="{ x, y }" />
+                                    }
+                                  }
                                 }
                               </fieldset>
                             </ng-container>
@@ -137,6 +149,7 @@
     </button>
   </div>
 }
+
 <mat-menu #apMenu>
   <div class="anchor-point-menu p-2">
     @if (getTileExistsCondition()) {
@@ -176,14 +189,18 @@
             @let options = onOffField.mainControl?.filterLocalSource();
 
             @if (options) {
-              <app-base-select
-                (click)="$event.stopPropagation()"
-                [label]="onOffField.placeholder"
-                [isMulti]="true"
-                [action]="onOffField.action"
-                [filteredOptions]="options"
-                [controlName]="onOffField.alias"
-                [source]="DATA_SOURCES.dataInputs"></app-base-select>
+              <fieldset
+                [disabled]="tileOps.checkFieldsAmount(apCtxMenuActions.y, apCtxMenuActions.x)">
+                <app-base-select
+                  (click)="$event.stopPropagation()"
+                  [label]="onOffField.placeholder"
+                  [isMulti]="true"
+                  [action]="onOffField.action"
+                  [filteredOptions]="options"
+                  [controlName]="onOffField.alias"
+                  [source]="DATA_SOURCES.dataInputs"></app-base-select>
+              </fieldset>
+              <span class="mb-2"></span>
             }
           }
         </form>
@@ -192,15 +209,23 @@
 
     <div class="anchor-point-menu">
       <form [formGroup]="apCtxMenuActions.apFormGroup">
-        @for (tileControl of apCtxMenuActions.apFields; track tileControl.alias) {
-          @if (tileControl.mainControl?.type === CONTROL_TYPE.INPUT) {
-            <app-text-input
-              [label]="tileControl.placeholder"
-              [controlName]="tileControl.alias"
-              (click)="$event.stopPropagation()" />
-            <span class="mb-2"></span>
+        <fieldset [disabled]="apCtxMenuActions.disabled" class="inherit">
+          @for (
+            tileControl of apCtxMenuActions.apFields;
+            track tileControl.alias;
+            let last = $last
+          ) {
+            @if (tileControl.mainControl?.type === CONTROL_TYPE.INPUT) {
+              <app-text-input
+                [label]="tileControl.placeholder"
+                [controlName]="tileControl.alias"
+                (click)="$event.stopPropagation()" />
+              @if (!last) {
+                <span class="mb-2"></span>
+              }
+            }
           }
-        }
+        </fieldset>
       </form>
     </div>
   </div>

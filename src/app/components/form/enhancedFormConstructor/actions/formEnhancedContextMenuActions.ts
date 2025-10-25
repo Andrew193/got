@@ -1,11 +1,10 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TileEnhancedOperations } from '../abstract/tile-enhanced-operations';
 import { AppEntity } from '../form-constructor.models';
-import { Id } from '../../../../models/common.model';
 import { ProtoActions } from './protoActions';
 import { AppAction } from './appAction';
 
-export class FormEnhancedContextMenuActions<T extends Id> extends ProtoActions {
+export class FormEnhancedContextMenuActions<T> extends ProtoActions {
   currentFormElementForCtxMenu!: AppEntity<T>;
 
   override allActions: AppAction<AppEntity<T>>[] = [];

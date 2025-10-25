@@ -47,11 +47,13 @@
         <span class="col-12 text-center">
           @if (_remainingDepositTime !== 0) {
             You can collect your money in: <b>{{ _remainingDepositTime.hours }}</b> hours.
-            <button class="got-toggle-green got-toggle" (click)="getDeposit(true)">
+            <button class="got-toggle-green got-toggle p-2" (click)="getDeposit(true)">
               Cancel this Deposit
             </button>
           } @else {
-            <button class="got-toggle-green got-toggle" (click)="getDeposit(false)">Collect</button>
+            <button class="got-toggle-green got-toggle p-2" (click)="getDeposit(false)">
+              Collect
+            </button>
           }
         </span>
       </div>

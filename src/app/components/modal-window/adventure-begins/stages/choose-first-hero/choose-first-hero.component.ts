@@ -5,8 +5,8 @@ import {
 } from '../../../../../models/interfaces/scenes/scene.interface';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { BasicHeroSelectComponent } from '../../../../abstract/basic-hero-select/basic-hero-select.component';
-import { HeroesSelectComponent } from '../../../../heroes-select/heroes-select.component';
-import { HeroesSelectPreviewComponent } from '../../../../heroes-select-preview/heroes-select-preview.component';
+import { HeroesSelectComponent } from '../../../../heroes-related/heroes-select/heroes-select.component';
+import { HeroesSelectPreviewComponent } from '../../../../heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { StatsComponent } from '../../../../views/stats/stats.component';
 import { Unit } from '../../../../../models/units-related/unit.model';
 import { HeroesSelectNames, SceneNames } from '../../../../../constants';

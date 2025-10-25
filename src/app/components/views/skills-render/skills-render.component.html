@@ -4,30 +4,29 @@
 @let _showAsBackground = showAsBackground();
 @let _imageCoverClass = imageCoverClass();
 
-<div class="skills-container ps-2 pe-2">
-  @if (_showLabel) {
-    <p class="text-center fw-bold mb-0">Skills</p>
-  }
-  @for (skill of hero.skills; track skill.name + $index) {
-    <div class="flex-row flex-nowrap skill-container">
-      <div
-        [class]="_imageCoverClass"
-        style="margin-right: 10px"
-        [ngClass]="{
-          'dynamic-border': skill.passive,
-        }">
-        <app-image
-          [source]="skill.imgSrc"
-          [alt]="skill.name"
-          [renderAsBackground]="_showAsBackground" />
+<div class="skills-container no-text-highlight ps-2 pe-2">
+  <app-basic-stores-placeholder [title]="_showLabel ? 'Skills' : ''">
+    @for (skill of hero.skills; track skill.name + $index) {
+      <div class="flex-row flex-nowrap skill-container cursor-unset no-text-highlight">
+        <div
+          [class]="_imageCoverClass"
+          style="margin-right: 10px"
+          [ngClass]="{
+            'dynamic-border': skill.passive,
+          }">
+          <app-image
+            [source]="skill.imgSrc"
+            [alt]="skill.name"
+            [renderAsBackground]="_showAsBackground" />
+        </div>
+        <app-effects-highlighter [text]="skill.description">
+          <p class="mb-1">
+            <b class="defence-color"
+              >{{ _showSkillName ? skill.name : '' }} {{ skill.passive ? '( P )' : '' }}</b
+            >
+          </p>
+        </app-effects-highlighter>
       </div>
-      <app-effects-highlighter [text]="skill.description">
-        <p class="mb-1">
-          <b class="defence-color"
-            >{{ _showSkillName ? skill.name : '' }} {{ skill.passive ? '( P )' : '' }}</b
-          >
-        </p>
-      </app-effects-highlighter>
-    </div>
-  }
+    }
+  </app-basic-stores-placeholder>
 </div>

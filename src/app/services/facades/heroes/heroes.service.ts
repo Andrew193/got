@@ -1187,12 +1187,13 @@ export class HeroesFacadeService extends ContentService {
     getUser: boolean,
     unitsToCompare: PreviewUnit[],
     allUnits = this.getAllHeroes(),
+    y: number,
   ) {
     return allUnits
       .filter(unit => {
         return unitsToCompare.findIndex(v => v.name === unit.name) !== -1;
       })
-      .map((el, i) => ({ ...el, x: 2 + i, y: getUser ? 1 : 8, user: getUser }));
+      .map((el, i) => ({ ...el, x: i, y: getUser ? 1 : (y ?? 8), user: getUser }));
   }
 
   getInitialHeroes() {

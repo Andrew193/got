@@ -1,6 +1,8 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Id } from '../../../models/common.model';
+import { Coordinate } from '../../../models/field.model';
+import { Signal } from '@angular/core';
 
 export interface ProtoAction {
   type: ACTIONS;
@@ -30,6 +32,11 @@ export enum CONTROL_TYPE {
   DATE_RANGE,
   DATE_INPUT,
   TEXT,
+  CUSTOM,
+}
+
+export enum CONTROL_DATA_TYPE {
+  HERO_PREVIEW = 1,
 }
 
 export type DefinedConfigs = {
@@ -46,8 +53,15 @@ export type FormConfig = {
 export interface Control {
   type: CONTROL_TYPE;
   getControl: () => AbstractControl;
+  data?: CONTROL_DATA_TYPE;
+  dataContext?: any;
   dependentAliases?: string[];
   filterLocalSource?: (field?: string, term?: string, dep?: string) => Observable<string[]>;
+}
+
+export interface ControlCustomComponent {
+  data: any;
+  coordinate: Signal<Coordinate>;
 }
 
 export interface AppEntity<T> {
@@ -55,14 +69,11 @@ export interface AppEntity<T> {
   alias: string;
   placeholder: string;
   mainControl?: Control;
-  rowControl?: Control;
   action?: (alias: string, formGroup: FormGroup) => void;
 }
 
-export interface Tile<T> {
+export interface Tile<T> extends Coordinate {
   id: number;
-  y: number;
-  x: number;
   ySpan: number;
   xSpan: number;
   cdkDropListData: AppEntity<T>[];

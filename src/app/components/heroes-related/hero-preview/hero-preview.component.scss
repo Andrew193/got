@@ -1,4 +1,4 @@
-@use '../../../assets/resourses/styles/index' as index;
+@use '../../../../assets/resourses/styles/index' as index;
 
 .card-img-top.taverna {
   object-fit: contain;
@@ -26,7 +26,7 @@
 }
 
 .preview-container {
-  background: url('../../../assets/resourses/imgs/background/taverna-2.webp') no-repeat;
+  background: url('../../../../assets/resourses/imgs/background/taverna-2.webp') no-repeat;
   background-size: cover;
   min-height: 100%;
   box-shadow: index.$var-box-shadow;

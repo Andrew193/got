@@ -10,6 +10,11 @@ export enum SceneNames {
   finalAuth,
 }
 
+export enum TrainingSuf {
+  ai = 'AI',
+  user = 'User',
+}
+
 export enum HeroesSelectNames {
   user,
   ai,
@@ -53,6 +58,11 @@ export const BASIC_CURRENCY: Currency = {
   gold: 300,
   silver: 1000,
   copper: 15000,
+};
+
+export const GAME_BOARD_FIELD = {
+  rows: 7,
+  columns: 10,
 };
 
 export const SNACKBAR_CONFIG = {

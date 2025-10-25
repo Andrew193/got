@@ -2,10 +2,11 @@
 @let _aiSelCtx = aiSelCtx();
 @let _aiUnitsLength = aiUnits().length;
 @let _userUnitsLength = userUnits().length;
-@let _gridConfig = gridConfig | async;
+@let _gridConfig = gridConfig();
+@let _allUnitsForFieldConfig = allUnitsForFieldConfig();
 
 <div>
-  <h3 class="text-center">Configure your training</h3>
+  <h3 class="text-center banner">Configure your training</h3>
   <div class="flex-row units-config-container">
     <ng-container [ngTemplateOutlet]="unitsBar" [ngTemplateOutletContext]="userBarCtx">
     </ng-container>
@@ -30,10 +31,11 @@
     </ng-container>
   </div>
 
-  @if (_gridConfig) {
+  @if (_gridConfig && _allUnitsForFieldConfig.length) {
     <app-enhanced-form-constructor
       [colQty]="_gridConfig.columns"
       [rowQty]="_gridConfig.rows"
+      [allFields]="_allUnitsForFieldConfig"
       [ignoreTemplate]="true" />
   }
 </div>

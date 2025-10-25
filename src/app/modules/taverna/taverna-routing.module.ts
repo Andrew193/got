@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TavernaInnerContainerComponent } from './taverna-inner-container/taverna-inner-container.component';
-import { HeroPreviewComponent } from '../../components/hero-preview/hero-preview.component';
+import { HeroPreviewComponent } from '../../components/heroes-related/hero-preview/hero-preview.component';
 import { frontRoutes } from '../../constants';
 
 export const tavernaRoutes: Routes = [

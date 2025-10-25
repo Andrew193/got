@@ -30,6 +30,10 @@ export type StoreType = {
   [StoreNames.gameBoard]: BasicBoardState;
 };
 
+export type FieldConfigState = {
+  fieldConfig: FieldConfig;
+};
+
 //States
 
 //Lobby
@@ -43,10 +47,10 @@ export type DailyRewardState = {
 };
 
 //Training
-export type TrainingState = {
+export interface TrainingState extends FieldConfigState {
   aiUnits: EntityState<PreviewUnit>;
   userUnits: EntityState<PreviewUnit>;
-};
+}
 
 export type TrainingStateSelectUnit = {
   units: PreviewUnit[];
@@ -65,13 +69,12 @@ export interface BasicBoardLogRecord extends EntityState<LogRecord> {
   keepTrack: boolean;
 }
 
-export type BasicBoardFieldConfig = {
+export type FieldConfig = {
   columns: number;
   rows: number;
 };
 
-export type BasicBoardState = {
+export interface BasicBoardState extends FieldConfigState {
   tilesToHighlight: EntityState<TilesToHighlight>;
   battleLog: BasicBoardLogRecord;
-  fieldConfig: BasicBoardFieldConfig;
-};
+}

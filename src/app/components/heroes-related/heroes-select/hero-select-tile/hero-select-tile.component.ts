@@ -1,9 +1,9 @@
 import { Component, inject, input, OnInit, output, signal, Signal } from '@angular/core';
-import { SelectableUnit } from '../../../models/units-related/unit.model';
+import { SelectableUnit } from '../../../../models/units-related/unit.model';
 import { Store } from '@ngrx/store';
-import { selectHeroState } from '../../../store/reducers/heroes-select.reducer';
+import { selectHeroState } from '../../../../store/reducers/heroes-select.reducer';
 import { NgClass } from '@angular/common';
-import { HeroesSelectNames } from '../../../constants';
+import { HeroesSelectNames } from '../../../../constants';
 
 @Component({
   selector: 'app-hero-select-tile',
