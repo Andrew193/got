@@ -30,6 +30,12 @@
     &.got-toggle-red {
       border: 2px solid var.$light-red;
     }
+
+    &[disabled] {
+      pointer-events: none;
+      cursor: not-allowed;
+      background: #808080;
+    }
   }
 
   .#{$name}:hover {

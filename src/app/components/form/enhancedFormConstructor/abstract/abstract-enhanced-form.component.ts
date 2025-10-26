@@ -37,6 +37,7 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
   colQty = model(GAME_BOARD_FIELD.columns);
   rowQty = model(GAME_BOARD_FIELD.rows);
   elementsPerTile = input<number>(1);
+  dragAllowed = input<boolean>(true);
 
   ignoreTemplate = input<boolean>(false);
   showModeToggler = input<boolean>(true);
@@ -136,23 +137,7 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
       this.isFormCtrOn = JSON.parse(enableFormStr);
     }
 
-    this.mtx.tiles.forEach(tile => {
-      tile.cdkDropListData = tile.cdkDropListData
-        .map(source => {
-          const target: AppEntity<T> | undefined = this.allFields().find(
-            f => f.alias === source.alias,
-          );
-
-          if (target) {
-            this.copyMatchingFields(source, target);
-
-            return target;
-          }
-
-          return undefined;
-        })
-        .filter((item): item is AppEntity<T> => item !== undefined);
-    });
+    this.setFieldsToMtxTiles(this.allFields());
 
     this.tileOps = new TileEnhancedOperations<T>(
       this.allFields(),
@@ -171,11 +156,33 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
     );
     this.formCtxMenuActions = new FormEnhancedContextMenuActions(this.fb, this.tileOps);
 
+    this.addAllFieldsToFormGroup();
+    this.saveFormConstructorState();
+  }
+
+  setFieldsToMtxTiles(allFields: AppEntity<T>[]) {
+    this.mtx.tiles.forEach(tile => {
+      tile.cdkDropListData = tile.cdkDropListData
+        .map(source => {
+          const target: AppEntity<T> | undefined = allFields.find(f => f.alias === source.alias);
+
+          if (target) {
+            this.copyMatchingFields(source, target);
+
+            return target;
+          }
+
+          return undefined;
+        })
+        .filter((item): item is AppEntity<T> => item !== undefined);
+    });
+    debugger;
+  }
+
+  addAllFieldsToFormGroup() {
     this.allFields().forEach(c => {
       c.mainControl && this.tileOps.addControlsToFormGroup(c.alias, c.mainControl, this.formGroup);
     });
-
-    this.saveFormConstructorState();
   }
 
   saveFormConstructorState(): void {

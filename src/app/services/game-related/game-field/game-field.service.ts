@@ -20,6 +20,7 @@ export class GameFieldService extends AbstractFieldService {
   }
 
   getDamage(unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit }) {
+    debugger;
     const fixedDefence = this.gameActionService.getFixedDefence(
       unitConfig.dmgTaker.defence,
       unitConfig.dmgTaker,

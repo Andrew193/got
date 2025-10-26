@@ -11,6 +11,7 @@ import {
 import { ContentService, ContentTypes } from '../../abstract/content/content-service.service';
 import { TileUnit } from '../../../models/field.model';
 import { HeroesHelperService } from './helpers/heroes-helper.service';
+import { TrainingStateUnit } from '../../../store/store.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -211,14 +212,11 @@ export class HeroesFacadeService extends ContentService {
             this.helper.effects.burning +
             '.' +
             ' В начале игры получает бонус ' +
-            this.helper.effects.healthRestore +
+            this.helper.effects.defBuff +
             ' на 2 раунда.',
         },
       ],
-      effects: [
-        this.helper.eS.getEffect(this.helper.effects.healthRestore),
-        this.helper.eS.getEffect(this.helper.effects.freezing),
-      ],
+      effects: [this.helper.eS.getEffect(this.helper.effects.defBuff)],
     };
   }
 
@@ -285,7 +283,7 @@ export class HeroesFacadeService extends ContentService {
       heroType: HeroType.DEFENCE,
       healer: true,
       rarity: Rarity.EPIC,
-      onlyHealer: true,
+      onlyHealer: false,
       attackRange: 1,
       rankBoost: 1.15,
       ignoredDebuffs: [],
@@ -1185,15 +1183,14 @@ export class HeroesFacadeService extends ContentService {
 
   getUnitsForTrainingBattle(
     getUser: boolean,
-    unitsToCompare: PreviewUnit[],
+    unitsToCompare: TrainingStateUnit[],
     allUnits = this.getAllHeroes(),
-    y: number,
   ) {
-    return allUnits
-      .filter(unit => {
-        return unitsToCompare.findIndex(v => v.name === unit.name) !== -1;
-      })
-      .map((el, i) => ({ ...el, x: i, y: getUser ? 1 : (y ?? 8), user: getUser }));
+    return unitsToCompare.map(_ => {
+      const el = allUnits.find(el => el.name === _.name) as Unit;
+
+      return { ...el, x: _.x ?? 0, y: _.y ?? 0, user: getUser } satisfies Unit;
+    });
   }
 
   getInitialHeroes() {

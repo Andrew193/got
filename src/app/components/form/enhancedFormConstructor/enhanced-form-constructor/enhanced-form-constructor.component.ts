@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, effect, model } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AbstractEnhancedFormComponent } from '../abstract/abstract-enhanced-form.component';
 import { formEnhancedImports } from '../form-imports/formEnhancedImports';
@@ -21,20 +21,34 @@ export class EnhancedFormConstructorComponent<T> extends AbstractEnhancedFormCom
   ) {
     super(fb, localStorageService);
 
-    this.formName = 'enhanced_form';
+    let initialRun = true;
 
-    // Experimental
-    // let initialRun = true;
-    // effect(() => {
-    //   const allFields = this.allFields();
-    //
-    //   if (!initialRun) {
-    //     this.saveFormConstructorState();
-    //     this.tileOps.saveFormTemplate();
-    //     super.ngOnInit();
-    //   }
-    //
-    //   initialRun = false;
-    // });
+    effect(() => {
+      const allFields = this.allFields();
+
+      if (!initialRun) {
+        const onOffControl = this.apCtxMenuActions.apFormGroup.get(
+          this.apCtxMenuActions.onOffAlias,
+        );
+        const onOffValues = onOffControl?.value as string[];
+
+        if (onOffValues) {
+          const remainingSelection = onOffValues.filter(el => {
+            const inArray = allFields.find(_ => _.placeholder === el);
+
+            return !!inArray;
+          });
+
+          this.apCtxMenuActions.setOnOffField(remainingSelection);
+        }
+
+        this.tileOps.allFields = allFields;
+        this.setFieldsToMtxTiles(allFields);
+        this.addAllFieldsToFormGroup();
+        this.tileOps.saveFormTemplate();
+      }
+
+      initialRun = false;
+    });
   }
 }

@@ -2,12 +2,14 @@
 @let _user = userUnits();
 @let mode = battleMode();
 
-<app-game-field
-  [aiUnits]="_ai"
-  [userUnits]="_user"
-  [battleMode]="mode"
-  [gameResultsRedirect]="gameResultsRedirect">
-  <ng-container ngProjectAs="bottom-navigation">
-    <ng-content select="bottom-navigation"></ng-content>
-  </ng-container>
-</app-game-field>
+@if (_ai.length && _user.length) {
+  <app-game-field
+    [aiUnits]="_ai"
+    [userUnits]="_user"
+    [battleMode]="mode"
+    [gameResultsRedirect]="gameResultsRedirect">
+    <ng-container ngProjectAs="bottom-navigation">
+      <ng-content select="bottom-navigation"></ng-content>
+    </ng-container>
+  </app-game-field>
+}

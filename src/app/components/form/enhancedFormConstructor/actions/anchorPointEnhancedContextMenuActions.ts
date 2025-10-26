@@ -131,10 +131,14 @@ export class AnchorPointEnhancedContextMenuActions<T> extends ProtoActions {
   }
 
   dropOnOffField() {
+    this.setOnOffField([]);
+  }
+
+  setOnOffField(value: string[]) {
     const OnOffField = this.apFormGroup.get(this.onOffAlias);
 
     if (OnOffField) {
-      OnOffField.setValue([]);
+      OnOffField.setValue(value);
     }
   }
 
@@ -142,8 +146,9 @@ export class AnchorPointEnhancedContextMenuActions<T> extends ProtoActions {
     const formControl = formGroup.get(alias);
     const matrix = this.tileOps.mtx;
 
+    debugger;
     if (matrix.tiles.size) {
-      if (formControl && formControl.value.length) {
+      if (formControl) {
         const activePlaceHolders = formControl.value;
         const activeFormElements = [...matrix.tiles.values()]
           .map(el => el.cdkDropListData.map(tile => tile.placeholder || ''))

@@ -1,5 +1,8 @@
 import { Component, inject, input, ViewEncapsulation } from '@angular/core';
-import { NotificationsService } from '../../services/notifications/notifications.service';
+import {
+  NotificationsService,
+  NotificationType,
+} from '../../services/notifications/notifications.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -12,7 +15,7 @@ import { AsyncPipe } from '@angular/common';
 export class NotificationMarkerComponent {
   notificationService = inject(NotificationsService);
 
-  notificationType = input.required<number>();
+  notificationType = input.required<NotificationType>();
   notificationConfig = this.notificationService.$notifications;
 
   protected readonly getNotification = this.notificationService.getNotification;

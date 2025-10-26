@@ -27,9 +27,6 @@ export class GameEntryPointComponent<T extends TileUnit> {
 
   constructor() {
     effect(() => {
-      this.userUnits.update(model => model.map(unit => ({ ...unit, user: true })));
-      this.aiUnits.update(model => model.map(unit => ({ ...unit, user: false })));
-
       if (this.gameField()) {
         this.gameField()?.recreateGameConfig(this.userUnits(), this.aiUnits());
       }

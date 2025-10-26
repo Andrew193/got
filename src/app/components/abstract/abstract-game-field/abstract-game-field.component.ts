@@ -142,12 +142,16 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     attackDealer: TileUnit,
     skill: TileUnitSkill,
   ) {
-    const dmg =
+    const boostedAttack =
       this.effectsS.getBoostedParameterCover(attackDealer, attackDealer.effects) * skill.dmgM;
+    const boostedDefence = this.effectsS.getBoostedParameterCover(
+      dmgTaker[enemyIndex],
+      dmgTaker[enemyIndex].effects,
+    );
 
     const damage = this.abstractFieldS.getDamage({
-      dmgTaker: dmgTaker[enemyIndex],
-      attackDealer: { ...attackDealer, attack: dmg },
+      dmgTaker: { ...dmgTaker[enemyIndex], defence: boostedDefence },
+      attackDealer: { ...attackDealer, attack: boostedAttack },
     });
 
     if (dmgTaker[enemyIndex].health) {
@@ -175,6 +179,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     healer: TileUnit,
     units: TileUnit[],
   ) {
+    debugger;
     const healedHealth = healer.maxHealth * (skill.healM as number);
 
     const getNewHealth = (unit: TileUnit) => {

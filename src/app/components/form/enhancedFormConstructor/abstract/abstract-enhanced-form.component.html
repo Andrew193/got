@@ -1,9 +1,14 @@
 @let _formConfig = formConfig();
+@let _dragAllowed = dragAllowed();
 
 <div class="nav row g-2 mb-2">
   @for (config of configArray; track config.id) {
     <div class="col">
-      <button class="got-toggle w-100" (click)="resetFormMtx(config.colQty, config.rowQty)">
+      <button
+        class="got-toggle w-100"
+        (click)="resetFormMtx(config.colQty, config.rowQty)"
+        [ngClass]="{ 'got-toggle-green': _formConfig.colQty === config.colQty }"
+        [disabled]="_formConfig.colQty === config.colQty">
         Field ({{ config.rowQty }} * {{ config.colQty }})
       </button>
     </div>
@@ -83,7 +88,7 @@
                             (mouseleave)="isTileDraggable = true"
                             (cdkDragStarted)="startDrag()"
                             (cdkDragEnded)="endDrag()"
-                            [cdkDragDisabled]="!isFormCtrOn"
+                            [cdkDragDisabled]="!isFormCtrOn || !_dragAllowed"
                             class="form-item"
                             [appContextMenuTriggerFor]="isFormCtrOn ? apMenu : null"
                             (contextmenu)="
@@ -102,7 +107,7 @@
                                       <app-custom-data-holder
                                         [type]="f.mainControl.data"
                                         [data]="f.mainControl.dataContext"
-                                        [coordinate]="{ x, y }" />
+                                        [coordinate]="{ x: y, y: x }" />
                                     }
                                   }
                                 }

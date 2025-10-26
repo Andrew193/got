@@ -48,6 +48,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       getTargetTile,
     } = params;
 
+    debugger;
     if (skill.addBuffsBeforeAttack) {
       this.addBuffToUnit(attackerTeam, attackerIndex, skill);
     }
@@ -251,13 +252,11 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       this.selectedEntity = entity;
       this.possibleMoves = this.getPossibleMoves(entity);
 
-      if (entity.attackRange >= entity.canCross && !entity.healer) {
+      if (entity.attackRange >= entity.canCross) {
         this.possibleAttackMoves = this.getPossibleMoves({
           ...entity,
           canCross: entity.attackRange,
         });
-      } else if (entity.healer) {
-        this.skillsInAttackBar = this.selectedEntity.skills;
       }
 
       if (!entity?.canMove || !entity?.canCross) {

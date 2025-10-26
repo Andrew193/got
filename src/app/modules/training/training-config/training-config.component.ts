@@ -1,12 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { PreviewUnit, SelectableUnit } from '../../../models/units-related/unit.model';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
 import { TrainingActions } from '../../../store/actions/training.actions';
-import { selectTrainingFieldConfig } from '../../../store/reducers/training.reducer';
+import {
+  selectCanStartTrainingBattle,
+  selectTrainingFieldConfig,
+} from '../../../store/reducers/training.reducer';
 import { EnhancedFormConstructorComponent } from '../../../components/form/enhancedFormConstructor/enhanced-form-constructor/enhanced-form-constructor.component';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 import { TrainingFacadeService } from '../../../services/facades/training/training.service';
@@ -18,22 +21,26 @@ import { TrainingFacadeService } from '../../../services/facades/training/traini
     HeroesSelectComponent,
     NgTemplateOutlet,
     EnhancedFormConstructorComponent,
+    AsyncPipe,
   ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TrainingConfigComponent {
+export class TrainingConfigComponent implements OnInit {
   store = inject(Store);
   nav = inject(NavigationService);
   facade = inject(TrainingFacadeService);
   gridConfig = this.store.selectSignal(selectTrainingFieldConfig());
+  canStartFight = this.store.select(selectCanStartTrainingBattle());
 
   aiUnits = this.facade.aiUnits;
   userUnits = this.facade.userUnits;
   userSelCtx = this.facade.userSelCtx;
   aiSelCtx = this.facade.aiSelCtx;
   allUnitsForFieldConfig = this.facade.allUnitsForFieldConfig;
+  showField = this.facade.showField;
+  formName = this.facade.formName;
 
   userBarCtx = this.facade.userBarCtx;
   aiBarCtx = this.facade.aiBarCtx;
@@ -53,16 +60,18 @@ export class TrainingConfigComponent {
     const currentUnits = this[unitKey]();
     const index = currentUnits.findIndex(el => el.name === unit.name);
 
-    const update = (updatedUnits: PreviewUnit[], toReturn: boolean) => {
-      this[unitKey].set(updatedUnits);
+    const update = (unit: PreviewUnit, toReturn: boolean) => {
+      this[unitKey].update(model => [...model, unit]);
 
-      if (unitKey === 'aiUnits') {
-        this.store.dispatch(TrainingActions.setAIUnits({ units: updatedUnits }));
+      if (toReturn) {
+        this.store.dispatch(TrainingActions.addUnit({ data: unit, isUser: unitKey !== 'aiUnits' }));
       } else {
-        this.store.dispatch(TrainingActions.setUserUnits({ units: updatedUnits }));
+        this.store.dispatch(
+          TrainingActions.removeUnit({ key: unit.name, isUser: unitKey !== 'aiUnits' }),
+        );
       }
 
-      this[descKey] = updatedUnits.map(() => false);
+      this[descKey] = this[unitKey]().map(() => false);
 
       return toReturn;
     };
@@ -71,8 +80,8 @@ export class TrainingConfigComponent {
 
     return update(
       addNew
-        ? [...currentUnits, this.facade.heroesService.getPreviewUnit(unit.name)]
-        : currentUnits.filter((_, i) => i !== index),
+        ? this.facade.heroesService.getPreviewUnit(unit.name)
+        : currentUnits.filter((_, i) => i === index)[0],
       addNew,
     );
   };
@@ -91,12 +100,17 @@ export class TrainingConfigComponent {
   };
 
   openFight() {
+    this.store.dispatch(TrainingActions.setUnitUpdate({ canUpdateUnit: false }));
     this.store.dispatch(FieldConfigActions.setFieldConfig(this.gridConfig()));
     this.nav.goToTrainingBattle();
   }
 
   goToMainPage() {
-    this.store.dispatch(TrainingActions.dropTrainingSelectUnits());
+    this.facade.cleanup();
     this.nav.goToMainPage();
+  }
+
+  ngOnInit() {
+    this.store.dispatch(TrainingActions.setUnitUpdate({ canUpdateUnit: true }));
   }
 }

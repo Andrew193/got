@@ -33,6 +33,7 @@ export class GameService {
   ) {}
 
   getFixedDefence(defence: number, unit: TileUnit) {
+    debugger;
     const defReducedEffect = unit.effects.find(
       (effect): effect is EffectForMult => effect.type === this.eS.effects.defBreak,
     );

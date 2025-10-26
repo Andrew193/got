@@ -4,6 +4,8 @@
 @let _userUnitsLength = userUnits().length;
 @let _gridConfig = gridConfig();
 @let _allUnitsForFieldConfig = allUnitsForFieldConfig();
+@let _canStartFight = canStartFight | async;
+@let _showField = showField | async;
 
 <div>
   <h3 class="text-center banner">Configure your training</h3>
@@ -19,7 +21,12 @@
     </div>
     <div class="col-6">
       @if (_aiUnitsLength && _userUnitsLength) {
-        <button class="got-toggle got-toggle-red w-100" (click)="openFight()">Fight</button>
+        <button
+          class="got-toggle got-toggle-red w-100"
+          [disabled]="!_canStartFight"
+          (click)="openFight()">
+          Fight
+        </button>
       }
     </div>
   </div>
@@ -31,12 +38,13 @@
     </ng-container>
   </div>
 
-  @if (_gridConfig && _allUnitsForFieldConfig.length) {
+  @if (_gridConfig && _showField) {
     <app-enhanced-form-constructor
       [colQty]="_gridConfig.columns"
+      [dragAllowed]="false"
+      [formName]="formName"
       [rowQty]="_gridConfig.rows"
-      [allFields]="_allUnitsForFieldConfig"
-      [ignoreTemplate]="true" />
+      [allFields]="_allUnitsForFieldConfig" />
   }
 </div>
 

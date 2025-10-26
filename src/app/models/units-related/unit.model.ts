@@ -4,6 +4,8 @@ import { DisplayReward } from '../../services/reward/reward.service';
 import { Coordinate } from '../field.model';
 import { RewardValues } from '../reward-based.model';
 
+export type UnitName = HeroesNamesCodes | RewardValues;
+
 export interface Unit extends Coordinate {
   rank: number;
   rarity: number;
@@ -32,7 +34,7 @@ export interface Unit extends Coordinate {
   description: string;
   health: number;
   maxHealth: number;
-  name: HeroesNamesCodes | RewardValues;
+  name: UnitName;
   attack: number;
   defence: number;
   rage: number;

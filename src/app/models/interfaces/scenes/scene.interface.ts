@@ -2,8 +2,7 @@ import { Type } from '@angular/core';
 import { SceneNames } from '../../../constants';
 import { Currency } from '../../../services/users/users.interfaces';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { HeroesNamesCodes } from '../../units-related/unit.model';
-import { RewardValues } from '../../reward-based.model';
+import { UnitName } from '../../units-related/unit.model';
 
 export interface SceneComponent<Component = unknown, Context extends SceneNames = SceneNames> {
   runScene(): void;
@@ -35,7 +34,7 @@ export type SceneConfig = {
 
 export type SceneContext<T extends SceneNames> = {
   [SceneNames.welcome]: SceneConfig;
-  [SceneNames.firstHero]: { name: HeroesNamesCodes | RewardValues } & SceneConfig;
+  [SceneNames.firstHero]: { name: UnitName } & SceneConfig;
   [SceneNames.firstBattle]: { reward: Currency } & SceneContext<SceneNames.firstHero> & SceneConfig;
   [SceneNames.finalAuth]: SceneConfig;
 }[T];

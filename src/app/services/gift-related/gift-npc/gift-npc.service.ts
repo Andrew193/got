@@ -11,9 +11,10 @@ import {
   HeroType,
   Rarity,
   Unit,
+  UnitName,
   UnitWithReward,
 } from '../../../models/units-related/unit.model';
-import { RewardComponentInterface, RewardValues } from '../../../models/reward-based.model';
+import { RewardComponentInterface } from '../../../models/reward-based.model';
 import { NumbersService } from '../../numbers/numbers.service';
 import { GIFT_STORE_NPC_AMOUNT } from '../../../constants';
 
@@ -143,7 +144,7 @@ export class GiftNpcService implements RewardComponentInterface {
     };
   }
 
-  getNPC(name?: HeroesNamesCodes | RewardValues, description?: string): Unit {
+  getNPC(name?: UnitName, description?: string): Unit {
     return {
       ...this.heroService.helper.getBasicUserConfig(),
       attackRange: 1,

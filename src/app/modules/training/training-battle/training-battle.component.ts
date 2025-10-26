@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
@@ -13,17 +13,18 @@ import {
 } from '../../../store/reducers/training.reducer';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { HeroesSelectNames } from '../../../constants';
+import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 
 @Component({
   selector: 'app-training-battle',
   imports: [GameEntryPointComponent],
   templateUrl: './training-battle.component.html',
 })
-export class TrainingBattleComponent implements OnDestroy {
+export class TrainingBattleComponent implements OnDestroy, OnInit {
   store = inject(Store);
   aiUnitsFromStore = this.store.selectSignal(selectAiUnits);
   userUnitsFromStore = this.store.selectSignal(selectUserUnits);
-  fieldConfig = this.store.selectSignal(selectTrainingFieldConfig());
+  gridConfig = this.store.selectSignal(selectTrainingFieldConfig());
 
   nav = inject(NavigationService);
   heroesService = inject(HeroesFacadeService);
@@ -34,27 +35,20 @@ export class TrainingBattleComponent implements OnDestroy {
   constructor(private modalService: ModalWindowService) {
     const aiUnitsFromStore = this.aiUnitsFromStore();
     const userUnitsFromStore = this.userUnitsFromStore();
-    const { columns } = this.fieldConfig();
 
     if (aiUnitsFromStore.length && userUnitsFromStore.length) {
-      const userUnits = this.heroesService.getUnitsForTrainingBattle(
-        true,
-        userUnitsFromStore,
-        undefined,
-        columns - 1,
-      );
-      const aiUnits = this.heroesService.getUnitsForTrainingBattle(
-        false,
-        aiUnitsFromStore,
-        undefined,
-        columns - 1,
-      );
+      const userUnits = this.heroesService.getUnitsForTrainingBattle(true, userUnitsFromStore);
+      const aiUnits = this.heroesService.getUnitsForTrainingBattle(false, aiUnitsFromStore);
 
       this.aiUnits = aiUnits.map(el => this.heroesService.getTileUnit(el));
       this.userUnits = userUnits.map(el => this.heroesService.getTileUnit(el));
     } else {
       this.redirectToTraining();
     }
+  }
+
+  ngOnInit() {
+    this.store.dispatch(FieldConfigActions.setFieldConfig(this.gridConfig()));
   }
 
   redirectToTraining() {

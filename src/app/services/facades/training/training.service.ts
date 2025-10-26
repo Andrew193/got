@@ -1,9 +1,9 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import {
-  HeroesNamesCodes,
   PreviewUnit,
   SelectableUnit,
   Unit,
+  UnitName,
 } from '../../../models/units-related/unit.model';
 import {
   AppEntity,
@@ -11,12 +11,17 @@ import {
   CONTROL_TYPE,
 } from '../../../components/form/enhancedFormConstructor/form-constructor.models';
 import { FormControl } from '@angular/forms';
-import { RewardValues } from '../../../models/reward-based.model';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
 import { Store } from '@ngrx/store';
-import { HeroesSelectNames, TrainingSuf } from '../../../constants';
+import { GAME_BOARD_FIELD, HeroesSelectNames, TrainingSuf } from '../../../constants';
 import { HeroesFacadeService } from '../heroes/heroes.service';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { TrainingActions } from '../../../store/actions/training.actions';
+import { LocalStorageService } from '../../localStorage/local-storage.service';
+import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 
 export enum BarCtxTitle {
   user = 'User Units',
@@ -34,6 +39,8 @@ type BarCtx = {
 })
 export class TrainingFacadeService {
   heroesService = inject(HeroesFacadeService);
+  private localStorageService = inject(LocalStorageService);
+  formName = 'enhanced_form';
 
   private store = inject(Store);
 
@@ -70,6 +77,11 @@ export class TrainingFacadeService {
     return units;
   });
 
+  showField = toObservable(this.allUnitsForFieldConfig).pipe(
+    debounceTime(500),
+    map(array => !!array.length),
+  );
+
   userBarCtx: BarCtx = {
     isUser: true,
     title: BarCtxTitle.user,
@@ -84,10 +96,7 @@ export class TrainingFacadeService {
     this.allUnits = this.heroesService.getAllHeroes();
     this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
 
-    const setContext = (
-      userUnits: (HeroesNamesCodes | RewardValues)[] = [],
-      aiUnits: (HeroesNamesCodes | RewardValues)[] = [],
-    ) => {
+    const setContext = (userUnits: UnitName[] = [], aiUnits: UnitName[] = []) => {
       this.store.dispatch(
         HeroesSelectActions.setHeroesSelectState({
           name: this.userBarCtx.contextName,
@@ -132,5 +141,14 @@ export class TrainingFacadeService {
 
   getUnitKey(user = true) {
     return user ? 'userUnits' : 'aiUnits';
+  }
+
+  cleanup() {
+    this.store.dispatch(TrainingActions.dropTraining());
+    this.store.dispatch(FieldConfigActions.setFieldConfig(GAME_BOARD_FIELD));
+
+    setTimeout(() => {
+      this.localStorageService.removeItem(this.formName);
+    }, 0);
   }
 }

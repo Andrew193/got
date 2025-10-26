@@ -1,11 +1,12 @@
-//Store
 import { HeroesNamesCodes, PreviewUnit } from '../models/units-related/unit.model';
 import { DisplayReward } from '../services/reward/reward.service';
 import { RewardValues } from '../models/reward-based.model';
 import { HeroesSelectNames } from '../constants';
 import { EntityState } from '@ngrx/entity';
-import { TilesToHighlight } from '../models/field.model';
+import { Coordinate, TilesToHighlight } from '../models/field.model';
 import { LogRecord } from '../models/logger.model';
+
+//Store
 
 export enum StoreNames {
   lobby = 'lobby',
@@ -47,13 +48,16 @@ export type DailyRewardState = {
 };
 
 //Training
+export type TrainingStateUnit = PreviewUnit & Partial<Coordinate>;
+
 export interface TrainingState extends FieldConfigState {
-  aiUnits: EntityState<PreviewUnit>;
-  userUnits: EntityState<PreviewUnit>;
+  aiUnits: EntityState<TrainingStateUnit>;
+  userUnits: EntityState<TrainingStateUnit>;
+  unitUpdateAllowed: boolean;
 }
 
 export type TrainingStateSelectUnit = {
-  units: PreviewUnit[];
+  units: TrainingStateUnit[];
 };
 
 //Display reward

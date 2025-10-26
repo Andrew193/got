@@ -30,6 +30,7 @@ export class BaseFormControlComponent implements ControlValueAccessor {
   registerOnChange(fn: any): void {
     this.onChange = fn;
     this.control.valueChanges.subscribe(v => {
+      console.log('dsfsdfsdfdsf');
       this.onChange(v);
       this.action && this.action(this.controlName(), this.form);
     });

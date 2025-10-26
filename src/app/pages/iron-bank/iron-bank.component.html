@@ -9,6 +9,7 @@
       <button mat-fab class="deposit-notificator" (click)="showCurrentDeposit()">
         <mat-icon>currency_exchange</mat-icon>
       </button>
+      <app-notification-marker [notificationType]="NotificationType.deposit" />
     </div>
   }
 

@@ -52,6 +52,8 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
         console.log(res);
       });
     }
+
+    console.log('init');
   }
 
   valueChange() {

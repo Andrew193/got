@@ -1,4 +1,7 @@
-<app-game-entry-point
-  [aiUnits]="aiUnits"
-  [gameResultsRedirect]="victoryRedirect"
-  [userUnits]="userUnits"></app-game-entry-point>
+@if (aiUnits.length && userUnits.length) {
+  <app-game-entry-point
+    [aiUnits]="aiUnits"
+    [userUnits]="userUnits"
+    [gameResultsRedirect]="victoryRedirect">
+  </app-game-entry-point>
+}

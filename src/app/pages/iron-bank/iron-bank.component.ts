@@ -16,6 +16,8 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
 import { ExchangerComponent } from './exchanger/exchanger.component';
 import { CURRENCY_NAMES } from '../../constants';
 import { BasicStoresHolderComponent } from '../../components/views/basic-stores-holder/basic-stores-holder.component';
+import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
+import { NotificationType } from '../../services/notifications/notifications.service';
 
 @Component({
   selector: 'app-iron-bank',
@@ -27,6 +29,7 @@ import { BasicStoresHolderComponent } from '../../components/views/basic-stores-
     AsyncPipe,
     ExchangerComponent,
     BasicStoresHolderComponent,
+    NotificationMarkerComponent,
   ],
   templateUrl: './iron-bank.component.html',
   styleUrl: './iron-bank.component.scss',
@@ -105,4 +108,6 @@ export class IronBankComponent implements OnInit {
   goToMainPage() {
     this.nav.goToMainPage();
   }
+
+  protected readonly NotificationType = NotificationType;
 }
