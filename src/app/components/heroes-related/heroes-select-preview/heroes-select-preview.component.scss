@@ -28,7 +28,7 @@
   }
 
   .description-bar {
-    @include index.anim-border-glow(skill-disabled);
+    max-height: 100px;
   }
 
   .hero-name {

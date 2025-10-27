@@ -1,0 +1,224 @@
+@use '@angular/material' as mat;
+@use '../index' as index;
+
+//Angular material override
+
+.mat-mdc-tab-group {
+  @include mat.tabs-overrides(
+    (
+      active-focus-label-text-color: inherit,
+    )
+  );
+}
+
+.mat-mdc-tab-body-wrapper {
+  border-left: index.$var-border-2-bronze;
+  border-right: index.$var-border-2-bronze;
+  border-bottom: index.$var-border-2-bronze;
+
+  background-color: index.$var-metal-dark-1;
+}
+
+.mat-mdc-progress-bar {
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-height: 15px,
+      track-height: 15px,
+      active-indicator-color: index.$var-light-green,
+      track-color: index.$var-light-red,
+    )
+  );
+}
+
+.mat-mdc-dialog-surface {
+  overflow-y: unset !important;
+}
+
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+  @include mat.dialog-overrides(
+    (
+      container-max-width: 90%,
+      container-min-width: 50%,
+    )
+  );
+}
+
+.mat-mdc-dialog-container {
+  max-height: unset !important;
+  max-width: unset !important;
+}
+
+html .mat-mdc-fab.mat-accent {
+  @include mat.fab-overrides(
+    (
+      container-color: index.$var-deep-golden,
+    )
+  );
+}
+
+mat-bottom-sheet-container {
+  border: index.$var-border-2-bronze;
+}
+
+.cdk-overlay-pane:has(mat-bottom-sheet-container) {
+  position: absolute !important;
+  top: 10%;
+  height: 80%;
+}
+
+.cdk-overlay-pane:has(app-first-battle),
+.cdk-overlay-pane:has(app-login-final) {
+  width: 100%;
+  justify-content: center;
+
+  mat-bottom-sheet-container {
+    width: inherit;
+  }
+}
+
+.cdk-overlay-pane:has(app-login-final) {
+  height: auto;
+}
+
+:root {
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: transparent,
+      content-background-color: transparent,
+      container-text-color: white,
+    )
+  );
+
+  @include mat.bottom-sheet-overrides(
+    (
+      container-background-color: index.$var-background-color-main,
+    )
+  );
+
+  @include mat.progress-spinner-overrides(
+    (
+      active-indicator-color: index.$var-gold,
+    )
+  );
+
+  @include mat.select-overrides(
+    (
+      panel-background-color: index.$var-metal-dark-2,
+      enabled-trigger-text-color: index.$var-gold,
+      focused-arrow-color: index.$var-deep-golden,
+    )
+  );
+
+  @include mat.menu-overrides(
+    (
+      container-color: index.$var-metal-dark-1,
+      item-label-text-color: red,
+    )
+  );
+
+  .mat-mdc-menu-panel {
+    border: index.$var-border-2-bronze;
+  }
+
+  .mat-mdc-menu-item-text {
+    width: 100%;
+
+    .list-group-item {
+      background-color: index.$var-metal-dark-2;
+      color: inherit;
+    }
+  }
+
+  @include mat.option-overrides(
+    (
+      label-text-color: index.$var-basic-golden,
+      selected-state-label-text-color: index.$var-gold,
+    )
+  );
+
+  @include mat.autocomplete-overrides(
+    (
+      background-color: index.$var-metal-dark-2,
+      container-elevation-shadow: index.$var-box-shadow-out,
+    )
+  );
+
+  mat-form-field {
+    border: index.$var-border-2-bronze;
+    border-radius: 5px;
+  }
+
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: index.$var-metal-dark-2,
+      filled-caret-color: index.$var-bronze,
+      filled-label-text-color: index.$var-basic-golden,
+      filled-hover-label-text-color: index.$var-basic-golden,
+      filled-focus-label-text-color: index.$var-basic-golden,
+      filled-input-text-placeholder-color: index.$var-deep-golden,
+      filled-input-text-color: index.$var-gold,
+      filled-focus-active-indicator-color: index.$var-metal-dark-2,
+    )
+  );
+
+  @include mat.slide-toggle-overrides(
+    (
+      unselected-icon-color: index.$var-deep-golden,
+      selected-icon-color: black,
+      //Unselected track
+      unselected-track-color: index.$var-bronze,
+      unselected-hover-track-color: index.$var-bronze,
+      unselected-pressed-track-color: index.$var-bronze,
+      unselected-focus-track-color: index.$var-bronze,
+      //Selected track
+      selected-track-color: index.$var-deep-golden,
+      selected-hover-track-color: index.$var-deep-golden,
+      selected-pressed-track-color: index.$var-deep-golden,
+      selected-focus-track-color: index.$var-deep-golden,
+    )
+  );
+
+  @include mat.slider-overrides(
+    (
+      handle-color: index.$var-basic-golden,
+      focus-handle-color: #daa520,
+      hover-handle-color: #ffd700,
+      active-track-color: index.$var-basic-golden,
+      inactive-track-color: index.$var-deep-golden,
+      with-tick-marks-inactive-container-color: index.$var-deep-golden,
+      with-tick-marks-active-container-color: index.$var-basic-golden,
+      focus-state-layer-color: index.$var-deep-golden,
+    )
+  );
+
+  @include mat.expansion-overrides(
+    (
+      header-expanded-state-height: auto,
+      header-collapsed-state-height: auto,
+      container-background-color: index.$var-deep-golden,
+    )
+  );
+
+  @include mat.paginator-overrides(
+    (
+      container-text-color: index.$var-bronze,
+      disabled-icon-color: index.$var-deep-golden,
+      enabled-icon-color: index.$var-bronze,
+      container-background-color: index.$var-metal-dark-1,
+    )
+  );
+
+  @include mat.slider-overrides(
+    (
+      hover-state-layer-color: index.$var-deep-golden,
+    )
+  );
+
+  .mat-expansion-panel-body {
+    padding: 10px;
+  }
+
+  .mat-content.mat-content-hide-toggle {
+    margin-right: 0;
+  }
+}

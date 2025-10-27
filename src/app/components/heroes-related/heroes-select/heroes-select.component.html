@@ -7,6 +7,13 @@
 <div class="d-flex justify-content-center heroes-select-container">
   <div class="col-12 units-config-inner-container" [class]="_containerClass">
     <app-basic-stores-placeholder [title]="_title">
+      <form [formGroup]="formGroup" class="p-2">
+        <app-autocomplete-mat-input
+          [label]="'Hero Name'"
+          [placeholder]="'I summon...'"
+          [filteredOptions]="filteredOptions"
+          [controlName]="'unitName'"></app-autocomplete-mat-input>
+      </form>
       <div class="flex-row justify-content-evenly">
         @for (unit of options; track unit.name) {
           <app-hero-select-tile

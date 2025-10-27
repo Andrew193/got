@@ -1,4 +1,4 @@
-import { Component, inject, input, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { DataInputsService } from '../../../../services/facades/data-inputs/data-inputs.service';
 
@@ -10,6 +10,7 @@ import { DataInputsService } from '../../../../services/facades/data-inputs/data
 })
 export class BaseFormControlComponent implements ControlValueAccessor {
   dataInputsService = inject(DataInputsService);
+  cd = inject(ChangeDetectorRef);
 
   @Input() label = 'Label';
   @Input() placeholder = 'Placeholder';

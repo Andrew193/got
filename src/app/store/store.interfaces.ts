@@ -49,11 +49,14 @@ export type DailyRewardState = {
 
 //Training
 export type TrainingStateUnit = PreviewUnit & Partial<Coordinate>;
+export type TrainingVisibilityUnit = Pick<TrainingStateUnit, 'name'> & { visible: boolean };
 
 export interface TrainingState extends FieldConfigState {
   aiUnits: EntityState<TrainingStateUnit>;
   userUnits: EntityState<TrainingStateUnit>;
   unitUpdateAllowed: boolean;
+  aiVisibility: EntityState<TrainingVisibilityUnit>;
+  userVisibility: EntityState<TrainingVisibilityUnit>;
 }
 
 export type TrainingStateSelectUnit = {

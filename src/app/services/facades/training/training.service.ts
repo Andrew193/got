@@ -89,12 +89,12 @@ export class TrainingFacadeService {
   };
   aiBarCtx: BarCtx = { isUser: false, title: BarCtxTitle.ai, contextName: HeroesSelectNames.ai };
 
-  private allUnits: Unit[] = [];
+  private readonly allUnits: Unit[] = [];
   allUnitsForSelect: SelectableUnit[] = [];
 
   constructor() {
     this.allUnits = this.heroesService.getAllHeroes();
-    this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
+    this.allUnitsForSelect = this.heroesService.helper.getSelectableUnit(this.allUnits);
 
     const setContext = (userUnits: UnitName[] = [], aiUnits: UnitName[] = []) => {
       this.store.dispatch(
@@ -133,10 +133,6 @@ export class TrainingFacadeService {
         this.userUnits.set(stashedUserUnits);
       }
     });
-  }
-
-  getDescKey(user = true) {
-    return user ? 'userUnitsDescriptions' : 'aiUnitsDescriptions';
   }
 
   getUnitKey(user = true) {

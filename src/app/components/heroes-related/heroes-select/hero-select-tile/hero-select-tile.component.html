@@ -1,14 +1,19 @@
 @let _unit = unit();
 @let _isUser = isUser();
 @let _selected = selected();
+@let _visible = visible | async;
 
-<div class="m-1" (click)="unitClick.emit(_unit)">
-  <img
-    [src]="_unit.imgSrc"
-    [alt]="_unit.name"
-    [ngClass]="{
-      selected: _isUser && _selected,
-      'selected-enemy': !_isUser && _selected,
-    }"
-    [class.selected]="_selected" />
-</div>
+@if (_visible) {
+  <div class="m-1" (click)="unitClick.emit(_unit)">
+    <img
+      [src]="_unit.imgSrc"
+      [alt]="_unit.name"
+      [ngClass]="{
+        selected: _isUser && _selected,
+        'selected-enemy': !_isUser && _selected,
+      }"
+      [class.selected]="_selected" />
+  </div>
+} @else {
+  <span class="invisible"></span>
+}

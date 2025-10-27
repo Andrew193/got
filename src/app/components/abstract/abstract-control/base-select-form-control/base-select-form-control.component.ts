@@ -4,7 +4,6 @@ import { BaseFormControlComponent } from '../base-form-control/base-form-control
 
 @Component({
   selector: 'app-base-select-form-control',
-  imports: [],
   templateUrl: './base-select-form-control.component.html',
   styleUrl: './base-select-form-control.component.scss',
 })

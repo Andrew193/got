@@ -3,22 +3,27 @@
 @let _controlName = controlName();
 @let _isMulti = isMulti();
 
-@let _options = filteredOptions | async;
+@let _options = options | async;
 
-<ng-container *ngIf="_isMulti !== null">
+@if (_isMulti !== null) {
   <mat-form-field [class]="_className" style="width: auto">
     <mat-label>{{ label }}</mat-label>
     <mat-select
+      #select
       [formControlName]="_controlName"
       placeholder="Search"
       (selectionChange)="valueChange()"
       [multiple]="_isMulti">
-      <mat-option *ngFor="let entry of _options" [value]="entry">
-        {{ entry }}
-      </mat-option>
+      @for (entry of _options; track entry) {
+        <mat-option [value]="entry" (onSelectionChange)="onOptionSelection($event, select)">
+          {{ entry }}
+        </mat-option>
+      }
     </mat-select>
-    <div matSuffix *ngIf="_withReset">
-      <mat-icon (click)="onClear($event)">clear</mat-icon>
-    </div>
+    @if (_withReset) {
+      <div matSuffix>
+        <mat-icon (click)="onClear($event)">clear</mat-icon>
+      </div>
+    }
   </mat-form-field>
-</ng-container>
+}

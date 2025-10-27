@@ -21,7 +21,6 @@ export class HeroPreviewDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('set');
     const { coordinate, name, data } = this.getDataForDispatch();
 
     this.store.dispatch(
@@ -30,7 +29,6 @@ export class HeroPreviewDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('remove');
     const { name, data } = this.getDataForDispatch();
 
     this.store.dispatch(

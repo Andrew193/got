@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   computed,
   inject,
@@ -33,6 +34,7 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
   store = inject(Store);
   helper = inject(FormHelperService);
   _snackBar = inject(MatSnackBar);
+  cd = inject(ChangeDetectorRef);
 
   colQty = model(GAME_BOARD_FIELD.columns);
   rowQty = model(GAME_BOARD_FIELD.rows);
@@ -98,6 +100,17 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
       tiles: new Map<number, Tile<T>>(),
       mtx: Array.from({ length: this.rowQty() }, () => Array(this.colQty()).fill(0)),
     };
+  }
+
+  fillTiles() {
+    this.tileOps.clearAllTiles(
+      this.apCtxMenuActions.apFormGroup,
+      this.apCtxMenuActions.onOffAlias,
+      { showSnackbar: false },
+    );
+    this.tileOps.fillAllTiles(this.cd, () => {
+      this.apCtxMenuActions.setOnOffField(this.allFields().map(_ => _.placeholder));
+    });
   }
 
   formActions!: FormEnhancedActions<T>;

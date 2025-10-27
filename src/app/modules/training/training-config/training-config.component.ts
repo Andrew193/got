@@ -46,16 +46,11 @@ export class TrainingConfigComponent implements OnInit {
   aiBarCtx = this.facade.aiBarCtx;
 
   getUnitKey = this.facade.getUnitKey;
-  getDescKey = this.facade.getDescKey;
 
   allUnitsForSelect = this.facade.allUnitsForSelect;
 
-  aiUnitsDescriptions: boolean[] = [];
-  userUnitsDescriptions: boolean[] = [];
-
   public addUserUnit = (unit: SelectableUnit, user = true): boolean => {
     const unitKey = this.getUnitKey(user);
-    const descKey = this.getDescKey(user);
 
     const currentUnits = this[unitKey]();
     const index = currentUnits.findIndex(el => el.name === unit.name);
@@ -71,8 +66,6 @@ export class TrainingConfigComponent implements OnInit {
         );
       }
 
-      this[descKey] = this[unitKey]().map(() => false);
-
       return toReturn;
     };
 
@@ -84,19 +77,6 @@ export class TrainingConfigComponent implements OnInit {
         : currentUnits.filter((_, i) => i === index)[0],
       addNew,
     );
-  };
-
-  public toggleDescription = (user: boolean, index: number) => {
-    const descKey = this.getDescKey(user);
-    const next = [...this[descKey]];
-
-    next[index] = !next[index];
-
-    this[descKey] = next;
-  };
-
-  public getDescriptionState = (user: boolean, index: number) => {
-    return this[this.getDescKey(user)][index];
   };
 
   openFight() {

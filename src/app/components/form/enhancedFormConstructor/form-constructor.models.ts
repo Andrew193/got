@@ -25,6 +25,11 @@ export enum ACTIONS {
   DELETE = 'DELETE',
 }
 
+export enum ModifyTileError {
+  create = ACTIONS.CREATE,
+  edit = ACTIONS.EDIT,
+}
+
 export enum CONTROL_TYPE {
   SELECT,
   INPUT,
@@ -83,3 +88,15 @@ export interface FormMatrix<T> {
   tiles: Map<number, Tile<T>>;
   mtx: number[][];
 }
+
+type ShowSnackbar = {
+  showSnackbar: boolean;
+};
+
+export type TileCreationConfig<T> = {
+  cdkDropListData: AppEntity<T>[];
+  tileId: number;
+  saveTemplate: boolean;
+} & ShowSnackbar;
+
+export type TilesClearConfig = {} & ShowSnackbar;

@@ -4,20 +4,26 @@ import { TavernaHeroesBarSearchForm } from '../../../models/taverna.model';
 import { map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
+import { Unit } from '../../../models/units-related/unit.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TavernaFacadeService {
   nav = inject(NavigationService);
-  private heroesService = inject(HeroesFacadeService);
+  protected heroesService = inject(HeroesFacadeService);
 
   private options: string[] = [];
+  private readonly originalOptions: Unit[] = [];
   filteredOptions: Observable<string[]> = of([]);
 
-  formGroup = new FormGroup<TavernaHeroesBarSearchForm>({
-    unitName: new FormControl('', { nonNullable: true }),
-  });
+  formGroup;
+
+  constructor() {
+    this.formGroup = new FormGroup<TavernaHeroesBarSearchForm>({
+      unitName: new FormControl('', { nonNullable: true }),
+    });
+
+    this.originalOptions = this.heroesService.getAllHeroes();
+  }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -26,7 +32,7 @@ export class TavernaFacadeService {
   }
 
   init() {
-    this.options = this.heroesService.getAllHeroes().map(hero => hero.name);
+    this.options = this.originalOptions.map(hero => hero.name);
 
     this.filteredOptions = this.formGroup.get('unitName')!.valueChanges.pipe(
       startWith(''),
@@ -38,5 +44,9 @@ export class TavernaFacadeService {
       filteredOptions: this.filteredOptions,
       source$: this.formGroup.get('unitName')!.valueChanges,
     };
+  }
+
+  get unitOptions() {
+    return this.originalOptions;
   }
 }

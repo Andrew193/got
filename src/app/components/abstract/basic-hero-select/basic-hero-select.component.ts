@@ -20,7 +20,7 @@ export abstract class BasicHeroSelectComponent {
 
   init(allUnits?: Unit[]) {
     this.allUnits = allUnits || this.heroesService.getAllHeroes();
-    this.allUnitsForSelect = this.allUnits.map(el => ({ name: el.name, imgSrc: el.imgSrc }));
+    this.allUnitsForSelect = this.heroesService.helper.getSelectableUnit(this.allUnits);
   }
 
   public addUserUnit = (unit: SelectableUnit): boolean => {

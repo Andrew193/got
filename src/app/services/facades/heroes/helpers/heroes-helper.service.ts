@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Unit } from '../../../../models/units-related/unit.model';
+import { SelectableUnit, Unit } from '../../../../models/units-related/unit.model';
 import { EffectsValues } from '../../../../constants';
 import { EffectsService } from '../../../effects/effects.service';
 
@@ -108,5 +108,9 @@ export class HeroesHelperService {
     }
 
     return result;
+  }
+
+  getSelectableUnit(units: Unit[]): SelectableUnit[] {
+    return units.map(_ => ({ name: _.name, imgSrc: _.imgSrc }));
   }
 }

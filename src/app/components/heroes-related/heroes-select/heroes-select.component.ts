@@ -16,16 +16,32 @@ import { HeroesSelectNames } from '../../../constants';
 import { HeroesSelectStateEntity } from '../../../store/store.interfaces';
 import { selectHeroesCollection } from '../../../store/reducers/heroes-select.reducer';
 import { BasicStoresHolderComponent } from '../../views/basic-stores-holder/basic-stores-holder.component';
+import { AutocompleteMatInputComponent } from '../../data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HeroesSelectFacadeService } from '../../../services/facades/heroes/helpers/heroes-select-helper.service';
+import { TavernaFacadeService } from '../../../services/facades/taverna/taverna.service';
 
 @Component({
   selector: 'app-heroes-select',
   templateUrl: './heroes-select.component.html',
   styleUrl: './heroes-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HeroSelectTileComponent, BasicStoresHolderComponent],
+  providers: [HeroesSelectFacadeService, TavernaFacadeService],
+  imports: [
+    HeroSelectTileComponent,
+    BasicStoresHolderComponent,
+    AutocompleteMatInputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class HeroesSelectComponent implements OnInit {
   store = inject(Store);
+
+  facade = inject(HeroesSelectFacadeService);
+  formGroup = this.facade.formGroup;
+  filteredOptions = this.facade.filteredOptions;
+
   contextName = input.required<HeroesSelectNames>();
 
   title = input('');
@@ -38,7 +54,12 @@ export class HeroesSelectComponent implements OnInit {
   units: Signal<HeroesSelectStateEntity[]> = signal([]);
 
   ngOnInit() {
-    this.units = this.store.selectSignal(selectHeroesCollection(this.contextName()));
+    const contextName = this.contextName();
+    const isUser = this.isUser();
+
+    this.units = this.store.selectSignal(selectHeroesCollection(contextName));
+
+    this.facade.init(isUser);
   }
 
   unitClick(unit: SelectableUnit) {

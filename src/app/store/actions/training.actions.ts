@@ -1,7 +1,13 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { StoreNames, TrainingStateSelectUnit, TrainingStateUnit } from '../store.interfaces';
+import {
+  StoreNames,
+  TrainingStateSelectUnit,
+  TrainingStateUnit,
+  TrainingVisibilityUnit,
+} from '../store.interfaces';
 import { Coordinate } from '../../models/field.model';
 import { UnitName } from '../../models/units-related/unit.model';
+import { Update } from '@ngrx/entity';
 
 export const TrainingActions = createActionGroup({
   source: StoreNames.trainingGround,
@@ -14,5 +20,8 @@ export const TrainingActions = createActionGroup({
     setUserUnits: props<TrainingStateSelectUnit>(),
     dropTrainingSelectUnits: emptyProps(),
     dropTraining: emptyProps(),
+    setUnitVisibility: props<{ isUser: boolean; visibility: boolean; name: UnitName }>(),
+    setUnitArrayVisibility: props<{ isUser: boolean; data: TrainingVisibilityUnit[] }>(),
+    updateUnitArrayVisibility: props<{ isUser: boolean; data: Update<TrainingVisibilityUnit>[] }>(),
   },
 });

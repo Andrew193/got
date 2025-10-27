@@ -61,11 +61,6 @@
 
 <ng-template #selectedUnitsBar let-units="units" let-title="title" let-user="user">
   <div class="col-lg-6 col-md-12">
-    <app-heroes-select-preview
-      [units]="units"
-      [title]="title"
-      [user]="user"
-      [toggleDescription]="toggleDescription"
-      [getDescriptionState]="getDescriptionState"></app-heroes-select-preview>
+    <app-heroes-select-preview [units]="units" [title]="title"></app-heroes-select-preview>
   </div>
 </ng-template>

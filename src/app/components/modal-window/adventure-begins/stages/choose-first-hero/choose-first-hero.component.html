@@ -20,8 +20,9 @@
     @if (chosenUnits.length) {
       <app-heroes-select-preview
         [units]="chosenUnits"
-        [containerClass]="'border-radius-none border-end-0 color-white'"
-        [user]="true"></app-heroes-select-preview>
+        [containerClass]="
+          'border-radius-none border-end-0 color-white'
+        "></app-heroes-select-preview>
 
       @if (_selectedHero) {
         <div class="mt-2">

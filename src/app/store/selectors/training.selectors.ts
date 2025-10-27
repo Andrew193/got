@@ -1,8 +1,31 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { TrainingStateUnit } from '../store.interfaces';
+import { TrainingStateUnit, TrainingVisibilityUnit } from '../store.interfaces';
+import { UnitName } from '../../models/units-related/unit.model';
 
 export type SelectContexts = MemoizedSelector<object, TrainingStateUnit[]>;
+type SelectVisibilityContexts = MemoizedSelector<object, TrainingVisibilityUnit[]>;
+
 let canStartTrainingBattleCache: MemoizedSelector<object, boolean> | null = null;
+const unitsVisibilityCache = new Map<string, MemoizedSelector<object, boolean>>();
+
+export function makeUnitVisibility(
+  selectContexts: SelectVisibilityContexts,
+  id: UnitName,
+  isUser: boolean,
+) {
+  const key = `${isUser}:${id}`;
+
+  let selector = unitsVisibilityCache.get(key);
+
+  if (!selector) {
+    selector = createSelector(selectContexts, ctx => {
+      return ctx.filter(_ => _.name === id)[0].visible;
+    });
+    unitsVisibilityCache.set(key, selector);
+  }
+
+  return selector;
+}
 
 export function makeCanStartTrainingBattle(
   selectAiUnits: SelectContexts,
