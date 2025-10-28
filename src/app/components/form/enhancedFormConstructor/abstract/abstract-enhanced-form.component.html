@@ -55,8 +55,8 @@
 
   <div class="form-constructor-main">
     <div class="form-container">
-      <ng-container *ngFor="let row of mtx.mtx; let y = index">
-        <ng-container *ngFor="let col of row; let x = index">
+      @for (row of mtx.mtx; let y = $index; track y) {
+        @for (col of row; let x = $index; track x) {
           <div
             [appContextMenuTriggerFor]="isFormCtrOn ? apMenu : null"
             (contextmenu)="setActiveCoordinatesCtxMenu(y, x)">
@@ -149,8 +149,8 @@
               }
             }
           </div>
-        </ng-container>
-      </ng-container>
+        }
+      }
     </div>
   </div>
 </div>

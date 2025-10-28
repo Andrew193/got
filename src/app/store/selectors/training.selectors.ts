@@ -19,7 +19,9 @@ export function makeUnitVisibility(
 
   if (!selector) {
     selector = createSelector(selectContexts, ctx => {
-      return ctx.filter(_ => _.name === id)[0].visible;
+      const unit = ctx.filter(_ => _.name === id)[0];
+
+      return unit ? unit.visible : false;
     });
     unitsVisibilityCache.set(key, selector);
   }

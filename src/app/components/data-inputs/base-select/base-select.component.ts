@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, input, model, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, model, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { ControlContainer, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
@@ -23,9 +23,23 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
   className = input<string>('');
   source = input<Source | null>(null);
   isMulti = model<boolean | null>(null);
+  staticOptions = input<Observable<string[]>>(of([]));
 
-  @Input() staticOptions: Observable<string[]> = of([]);
   options = new BehaviorSubject<string[]>([]);
+
+  constructor() {
+    super();
+
+    effect(() => {
+      const staticOptions = this.staticOptions();
+
+      staticOptions.pipe(take(1)).subscribe(res => {
+        if (res.length !== this.options.value.length) {
+          this.options.next(res);
+        }
+      });
+    });
+  }
 
   onClear(event: Event) {
     event.stopPropagation();
@@ -33,10 +47,6 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
   }
 
   ngOnInit() {
-    this.staticOptions.pipe(take(1)).subscribe(res => {
-      this.options.next(res);
-    });
-
     const isMulti = this.isMulti();
     const source = this.source();
 

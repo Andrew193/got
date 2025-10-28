@@ -12,7 +12,7 @@ export class HeroesSelectFacadeService {
 
   helper = inject(TavernaFacadeService);
 
-  formGroup = this.helper.formGroup;
+  formGroup = this.helper.getFormGroup();
   filteredOptions;
   options;
 

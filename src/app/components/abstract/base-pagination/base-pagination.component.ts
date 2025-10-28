@@ -2,8 +2,7 @@ import { Component, inject } from '@angular/core';
 import { PAGINATION_SERVICE } from '../../../models/tokens';
 
 @Component({
-  templateUrl: './base-pagination.component.html',
-  styleUrl: './base-pagination.component.scss',
+  template: '',
 })
 export class BasePaginationComponent<T> {
   contentService = inject(PAGINATION_SERVICE);
