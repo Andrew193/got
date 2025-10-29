@@ -2,6 +2,17 @@
 @use 'sass:math';
 
 $columns: 100;
+$text-directions: justify, center, left, right;
+
+@each $direction in $text-directions {
+  .text-#{$direction} {
+    text-align: $direction;
+  }
+
+  .text-#{$direction}-i {
+    text-align: $direction !important;
+  }
+}
 
 @for $i from 1 through 10 {
   .opacity-#{$i} {
@@ -101,10 +112,6 @@ a.fake-link {
 
 .color-white {
   color: white;
-}
-
-.text-justify {
-  text-align: justify;
 }
 
 .text-full-stretch {

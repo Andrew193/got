@@ -2,13 +2,25 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { EffectsHighlighterComponent } from '../../common/effects-highlighter/effects-highlighter.component';
 import { ImageComponent } from '../image/image.component';
 import { TileUnit } from '../../../models/field.model';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { BasicStoresHolderComponent } from '../basic-stores-holder/basic-stores-holder.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { StoresConfig } from '../../../models/stores/stores.model';
+import { BASIC_STORES_CONFIG } from '../../../constants';
 
 @Component({
   selector: 'app-skills-render',
-  imports: [EffectsHighlighterComponent, ImageComponent, NgClass, BasicStoresHolderComponent],
+  imports: [
+    EffectsHighlighterComponent,
+    ImageComponent,
+    NgClass,
+    BasicStoresHolderComponent,
+    MatTabGroup,
+    MatTab,
+    NgTemplateOutlet,
+  ],
   templateUrl: './skills-render.component.html',
+  styleUrl: './skills-render.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkillsRenderComponent {
@@ -17,4 +29,7 @@ export class SkillsRenderComponent {
   showAsBackground = input(false);
   showSkillName = input(false);
   imageCoverClass = input('');
+  sliderMode = input<boolean>(false);
+  placeholderConfig = input<Partial<StoresConfig>>(BASIC_STORES_CONFIG);
+  containerPaddingClasses = input<string>('ps-2 pe-2');
 }

@@ -26,7 +26,7 @@ import { Unit } from '../../../models/units-related/unit.model';
 export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
   helper = inject(TavernaFacadeService);
 
-  formGroup = this.helper.getFormGroup();
+  formGroup = this.helper.formGroup;
   filteredOptions;
   options;
 
@@ -59,9 +59,5 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
 
   openHeroPreview(name: string) {
     this.helper.nav.goToHeroPreview(name);
-  }
-
-  backToMainPage() {
-    this.helper.nav.goToMainPage();
   }
 }

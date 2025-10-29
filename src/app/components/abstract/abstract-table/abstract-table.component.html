@@ -1,32 +1,104 @@
 @let _displayedColumns = displayedColumns();
+@let _displayedDetailColumns = displayedDetailColumns();
 @let _columns = columns();
+@let _expandable = expandable();
+@let _expandableTemplateRef = expandableTemplateRef();
 
-<div class="table-container mat-elevation-z8">
+<div class="mat-elevation-z8 position-relative">
   @if (isLoadingResults) {
     <div class="loading-shade">
       <mat-spinner></mat-spinner>
     </div>
   }
 
-  <div class="example-table-container">
-    <table mat-table [dataSource]="data" class="example-table" matSort>
+  <div class="table-container">
+    <table
+      mat-table
+      [ngClass]="{
+        expandable: _expandable,
+      }"
+      [dataSource]="data"
+      multiTemplateDataRows
+      [trackBy]="trackBy"
+      matSort>
       @for (column of _columns; track column) {
         <ng-container [matColumnDef]="column.alias">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.label }}</th>
-          <td mat-cell *matCellDef="let row">
-            @let rowValue = row[column.tdAlias || column.alias];
-            {{ column.tdParser ? column.tdParser(row) : rowValue }}
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ column.label }}
+            <input [(ngModel)]="column.label" />
+          </th>
+          <td mat-cell *matCellDef="let row" [class]="column.className">
+            <ng-container
+              [ngTemplateOutlet]="td"
+              [ngTemplateOutletContext]="{ column, element: row }" />
           </td>
         </ng-container>
       }
 
+      @if (_expandable) {
+        @if (_expandableTemplateRef) {
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="_columns.length">
+              <div class="detail-wrapper" [class.detail-wrapper-expanded]="isExpanded(element)">
+                <div class="detail">
+                  <ng-container
+                    [ngTemplateOutlet]="_expandableTemplateRef"
+                    [ngTemplateOutletContext]="{ element }" />
+                </div>
+              </div>
+            </td>
+          </ng-container>
+        } @else {
+          @for (column of _columns; track column) {
+            <ng-container [matColumnDef]="column.alias + '__detail'">
+              <td mat-cell *matCellDef="let element" class="detail-cell" [class]="column.className">
+                <ng-container
+                  [ngTemplateOutlet]="td"
+                  [ngTemplateOutletContext]="{ column, element }" />
+              </td>
+            </ng-container>
+          }
+        }
+      }
+
+      <!-- Header -->
       <tr mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: _displayedColumns"></tr>
+
+      <!-- Rows -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: _displayedColumns"
+        class="table-row"
+        [class.expanded-row]="isExpanded(row)"
+        (click)="_expandable && toggle(row)"></tr>
+
+      @if (_expandable) {
+        <!-- Expand row -->
+        @if (_expandableTemplateRef) {
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+        } @else {
+          <tr
+            mat-row
+            *matRowDef="let row; columns: _displayedDetailColumns; when: rowIsExpanded"></tr>
+        }
+      }
+
+      <tr class="mat-row no-data" *matNoDataRow>
+        <td class="mat-cell color-white text-center" [colSpan]="_displayedColumns.length">
+          Loading table data. Please wait.
+        </td>
+      </tr>
     </table>
   </div>
 
   <mat-paginator
     [length]="resultsLength"
     [pageSize]="pageSize"
-    aria-label="Select page of GitHub search results"></mat-paginator>
+    aria-label="Select page of GitHub search results">
+  </mat-paginator>
+
+  <ng-template #td let-column="column" let-element="element">
+    @let rowValue = element[column.tdAlias || column.alias];
+    {{ column.tdParser ? column.tdParser(element) : rowValue }}
+  </ng-template>
 </div>

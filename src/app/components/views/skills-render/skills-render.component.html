@@ -3,14 +3,39 @@
 @let _showSkillName = showSkillName();
 @let _showAsBackground = showAsBackground();
 @let _imageCoverClass = imageCoverClass();
+@let _sliderMode = sliderMode();
+@let _placeholderConfig = placeholderConfig();
+@let _containerPaddingClasses = containerPaddingClasses();
 
-<div class="skills-container no-text-highlight ps-2 pe-2">
-  <app-basic-stores-placeholder [title]="_showLabel ? 'Skills' : ''">
-    @for (skill of hero.skills; track skill.name + $index) {
-      <div class="flex-row flex-nowrap skill-container cursor-unset no-text-highlight">
+<div class="skills-container no-text-highlight" [class]="_containerPaddingClasses">
+  <app-basic-stores-placeholder [title]="_showLabel ? 'Skills' : ''" [config]="_placeholderConfig">
+    @if (_sliderMode) {
+      <mat-tab-group class="skills-tabs">
+        @for (skill of hero.skills; track skill.name + $index) {
+          <mat-tab [label]="skill.name">
+            <ng-container
+              [ngTemplateOutlet]="skillBar"
+              [ngTemplateOutletContext]="{ skill, showImage: false }" />
+          </mat-tab>
+        }
+      </mat-tab-group>
+    } @else {
+      @for (skill of hero.skills; track skill.name + $index) {
+        <ng-container
+          [ngTemplateOutlet]="skillBar"
+          [ngTemplateOutletContext]="{ skill, showImage: true }" />
+      }
+    }
+  </app-basic-stores-placeholder>
+</div>
+
+<ng-template #skillBar let-skill="skill" let-showImage="showImage">
+  <div class="skill-container cursor-unset no-text-highlight row g-2 m-0 ignore-direction">
+    @if (showImage) {
+      <div class="col-auto mt-0">
         <div
+          style="width: fit-content"
           [class]="_imageCoverClass"
-          style="margin-right: 10px"
           [ngClass]="{
             'dynamic-border': skill.passive,
           }">
@@ -19,14 +44,16 @@
             [alt]="skill.name"
             [renderAsBackground]="_showAsBackground" />
         </div>
-        <app-effects-highlighter [text]="skill.description">
-          <p class="mb-1">
-            <b class="defence-color"
-              >{{ _showSkillName ? skill.name : '' }} {{ skill.passive ? '( P )' : '' }}</b
-            >
-          </p>
-        </app-effects-highlighter>
       </div>
     }
-  </app-basic-stores-placeholder>
-</div>
+    <div class="col">
+      <app-effects-highlighter [text]="skill.description">
+        @if (_showSkillName) {
+          <p class="mb-1">
+            <b class="defence-color"> {{ skill.name }} {{ skill.passive ? '( P )' : '' }} </b>
+          </p>
+        }
+      </app-effects-highlighter>
+    </div>
+  </div>
+</ng-template>

@@ -1,10 +1,13 @@
 @use './index' as index;
 
 .stores {
-  background: #00000070;
   background-size: cover;
-  box-shadow: index.$var-box-shadow;
   border-radius: 5px;
+
+  &.with-background {
+    background: #00000070;
+    box-shadow: index.$var-box-shadow;
+  }
 
   &.bordered {
     border: index.$var-border-2-bronze;
@@ -39,7 +42,10 @@
       @include index.mixin-d-f-a-c;
       height: inherit;
       border-radius: 5px;
-      flex-direction: column;
+
+      &:not(.ignore-direction) {
+        flex-direction: column;
+      }
 
       &:not(.no-text-highlight):hover {
         span {

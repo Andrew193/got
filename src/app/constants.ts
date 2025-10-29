@@ -2,6 +2,7 @@ import moment from 'moment';
 import { RewardLootConstant } from './models/reward-based.model';
 import { Currency } from './services/users/users.interfaces';
 import { ParamCheckConfig, ParamToCheck } from './models/api.model';
+import { StoresConfig } from './models/stores/stores.model';
 
 export enum SceneNames {
   welcome,
@@ -188,3 +189,7 @@ export const SELECT_SEARCH_PREFIX = 'SelectSearch';
 export const DATA_SOURCES = {
   dataInputs: 'field',
 } as const;
+export const BASIC_STORES_CONFIG: StoresConfig = {
+  bordered: true,
+  withBackground: true,
+};

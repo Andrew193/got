@@ -6,6 +6,7 @@ import {
   MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
+  MatNoDataRow,
   MatRow,
   MatRowDef,
   MatTable,
@@ -29,4 +30,5 @@ export const TableImports = [
   MatPaginator,
   MatProgressSpinner,
   MatSortHeader,
+  MatNoDataRow,
 ];

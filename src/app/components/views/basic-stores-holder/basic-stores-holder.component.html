@@ -1,6 +1,12 @@
 @let _title = title();
+@let _config = config();
 
-<div class="stores h-100 bordered d-flex flex-column">
+<div
+  class="stores h-100 d-flex flex-column"
+  [ngClass]="{
+    bordered: _config.bordered,
+    'with-background': _config.withBackground,
+  }">
   @if (_title) {
     <p class="col-12 text-center mt-0 mb-2 banner no-top b-t-l-r-i b-t-r-r-i">
       <span class="store-title">{{ _title }}</span>

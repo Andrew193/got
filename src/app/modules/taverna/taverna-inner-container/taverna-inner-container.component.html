@@ -3,5 +3,33 @@
     <h3 class="m-2">Tavern of Heroes</h3>
   </div>
   <app-taverna-heroes-bar />
-  <app-taverna-heroes-table />
+
+  <section class="ms-4 me-4">
+    <div class="text-center">
+      <h3>Short Information</h3>
+    </div>
+    <app-taverna-heroes-table [expandableTemplateRef]="description" [expandable]="false" />
+    <button class="got-toggle mt-2 mb-2" (click)="backToMainPage()">Back to Castle Black</button>
+  </section>
+
+  <ng-template #description let-element="element">
+    <div class="description-bar w-100 mb-1 pt-2 pb-2 d-flex">
+      <div class="col">
+        <app-skills-render
+          [containerPaddingClasses]="''"
+          [showLabel]="false"
+          [sliderMode]="true"
+          [placeholderConfig]="skillsRenderConfig"
+          [selectedHero]="element"></app-skills-render>
+      </div>
+      <div class="col ps-2 pe-2">
+        <p class="text-left">{{ element.description }}</p>
+        <button
+          class="got-toggle-green w-100 got-toggle ps-3 pe-3 pt-1 pb-1 d-flex justify-content-center">
+          <span class="me-2">Open this hero</span>
+          <mat-icon>delete_sweep</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
 </div>

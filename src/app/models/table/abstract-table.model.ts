@@ -5,6 +5,7 @@ export type TableColumns<T> = {
   alias: keyof T & string;
   tdAlias?: keyof T & string;
   tdParser?: (model: T) => any;
+  className?: string;
   label: string;
 };
 
@@ -21,3 +22,5 @@ export interface DataSource<T> {
     itemsPerPage: number,
   ): Observable<TableApiResponse<T>>;
 }
+
+export type IsExpandedChecker<T> = (a: T, B: T) => boolean;

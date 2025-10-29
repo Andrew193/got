@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SkillsRenderComponent } from './skills-render.component';
-import { HeroesService } from '../../../services/facades/heroes/heroes.service';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { TileUnit } from '../../../models/field.model';
 import { By } from '@angular/platform-browser';
 import { ImageComponent } from '../image/image.component';
@@ -9,16 +9,16 @@ import { EffectsHighlighterComponent } from '../../common/effects-highlighter/ef
 describe('SkillsRenderComponent', () => {
   let component: SkillsRenderComponent;
   let fixture: ComponentFixture<SkillsRenderComponent>;
-  let herosService: HeroesService;
+  let herosService: HeroesFacadeService;
   let testUnit: TileUnit;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SkillsRenderComponent],
-      providers: [HeroesService],
+      providers: [HeroesFacadeService],
     }).compileComponents();
 
-    herosService = TestBed.inject(HeroesService);
+    herosService = TestBed.inject(HeroesFacadeService);
     testUnit = herosService.getTileUnit(herosService.getLadyOfDragonStone());
 
     fixture = TestBed.createComponent(SkillsRenderComponent);

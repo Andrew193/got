@@ -4,26 +4,34 @@ import { TavernaHeroesBarSearchForm } from '../../../models/taverna.model';
 import { delay, map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
-import { HeroType, Rarity, Unit } from '../../../models/units-related/unit.model';
+import { Unit } from '../../../models/units-related/unit.model';
 import { DataSource, TableApiResponse } from '../../../models/table/abstract-table.model';
 import { SortDirection } from '@angular/material/sort';
+import { TavernaHeroesTableHelperService } from './helpers/heroes-table-helper.service';
 
 @Injectable()
 export class TavernaFacadeService {
   nav = inject(NavigationService);
+
   protected heroesService = inject(HeroesFacadeService);
-  private datasource: DataSource<Unit>;
-  private pageSize = 10;
+  private heroesTableHelper = inject(TavernaHeroesTableHelperService);
+
+  datasource = this.heroesTableHelper.datasource;
+  getUnitRarityLabel = this.heroesTableHelper.getUnitRarityLabel;
+  getUnitTypeLabel = this.heroesTableHelper.getUnitTypeLabel;
+  pageSize = this.heroesTableHelper.pageSize;
+  isExpanded = this.heroesTableHelper.isExpanded;
+  trackBy = this.heroesTableHelper.trackBy;
 
   private options: string[] = [];
   private readonly originalOptions: Unit[] = [];
 
   filteredOptions: Observable<string[]> = of([]);
 
-  private formGroup;
+  private readonly _formGroup;
 
   constructor() {
-    this.formGroup = new FormGroup<TavernaHeroesBarSearchForm>({
+    this._formGroup = new FormGroup<TavernaHeroesBarSearchForm>({
       unitName: new FormControl('', { nonNullable: true }),
     });
 
@@ -40,7 +48,7 @@ export class TavernaFacadeService {
   init() {
     this.options = this.originalOptions.map(hero => hero.name);
 
-    this.filteredOptions = this.formGroup.get('unitName')!.valueChanges.pipe(
+    this.filteredOptions = this._formGroup.get('unitName')!.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
@@ -48,7 +56,7 @@ export class TavernaFacadeService {
     return {
       options: this.options,
       filteredOptions: this.filteredOptions,
-      source$: this.formGroup.get('unitName')!.valueChanges,
+      source$: this._formGroup.get('unitName')!.valueChanges,
     };
   }
 
@@ -56,32 +64,8 @@ export class TavernaFacadeService {
     return this.originalOptions;
   }
 
-  getFormGroup() {
-    return this.formGroup;
-  }
-
-  getDataSource() {
-    return this.datasource;
-  }
-
-  setPageSize(pageSize: number) {
-    this.pageSize = pageSize;
-  }
-
-  getUnitRarityLabel(level: Rarity) {
-    return {
-      [Rarity.LEGENDARY]: 'Legendary',
-      [Rarity.EPIC]: 'Epic',
-      [Rarity.RARE]: 'Rare',
-      [Rarity.COMMON]: 'Common',
-    }[level];
-  }
-
-  getUnitTypeLabel(type: HeroType) {
-    return {
-      [HeroType.ATTACK]: 'Attack',
-      [HeroType.DEFENCE]: 'Defence',
-    }[type];
+  get formGroup() {
+    return this._formGroup;
   }
 }
 

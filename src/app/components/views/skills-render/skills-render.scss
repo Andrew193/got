@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+:host ::ng-deep {
+  .mat-mdc-tab-header {
+    line-height: 25px;
+    height: 25px;
+
+    .mat-mdc-tab-labels .mat-mdc-tab {
+      max-height: 25px;
+      line-height: inherit;
+      padding: 4px;
+      font-size: 13px;
+    }
+  }
+}

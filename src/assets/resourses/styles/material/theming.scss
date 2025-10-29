@@ -89,6 +89,27 @@ mat-bottom-sheet-container {
     )
   );
 
+  @include mat.table-overrides(
+    (
+      background-color: index.$var-metal-dark-2,
+      header-headline-color: index.$var-basic-golden,
+      row-item-outline-color: index.$var-deep-golden,
+      row-item-label-text-color: white,
+    )
+  );
+
+  thead {
+    background-color: index.$var-metal-dark-1 !important;
+  }
+
+  .mat-sort-header-container {
+    justify-content: center;
+  }
+
+  .mat-mdc-cell {
+    text-align: center;
+  }
+
   @include mat.bottom-sheet-overrides(
     (
       container-background-color: index.$var-background-color-main,
