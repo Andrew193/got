@@ -1,10 +1,16 @@
 @use '../../../../assets/resourses/styles/index' as index;
+@use '@angular/material' as mat;
 
 .table-container {
   position: relative;
   min-height: 200px;
   max-height: 400px;
   overflow: auto;
+  background-color: index.$var-metal-dark-2;
+}
+
+.mdc-data-table__header-cell {
+  padding: 0 5px 5px 5px;
 }
 
 .no-data {
@@ -14,15 +20,20 @@
 table {
   width: 100%;
 
-  tr.detail-row {
-    height: 0;
+  app-base-select {
+    display: grid;
   }
 
-  tr.table-row {
-    cursor: pointer;
+  tr.detail-row {
+    height: 0;
+    background: rgba(0, 0, 0, 0.02);
   }
 
   &.expandable {
+    tr.table-row {
+      cursor: pointer;
+    }
+
     tr.table-row:not(.expanded-row):hover {
       opacity: 0.4;
     }
@@ -66,16 +77,45 @@ table {
   min-height: 0;
 }
 
-.table-row {
-  cursor: pointer;
-}
-.detail-row {
-  background: rgba(0, 0, 0, 0.02);
-}
 .detail-cell {
   padding-top: 12px;
   padding-bottom: 12px;
 }
+
 .detail-row .mat-mdc-cell {
   border-top: none;
+}
+
+/* Включаем фиксированную раскладку только в режиме equalize */
+table.equal-cols {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Одинаковая ширина для всех видимых колонок (хедер/ячейки/футер) */
+table.equal-cols th.mat-header-cell,
+table.equal-cols td.mat-cell,
+table.equal-cols td.mat-footer-cell {
+  width: calc(100% / var(--col-count));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* если нужно принудительно в одну строку */
+}
+
+/* Фильтры в заголовке тоже могут обрезаться — подстрахуем */
+table.equal-cols th.mat-header-cell .mat-form-field,
+table.equal-cols th.mat-header-cell app-text-input,
+table.equal-cols th.mat-header-cell app-base-select {
+  display: block;
+  min-width: 0; /* чтобы flex/overflow не ломали макет */
+}
+
+/* Не ломаем строки с деталями (они идут отдельной строкой и colspan'ом) */
+.detail-row td {
+  white-space: normal; /* внутри подробностей пусть контент переносится */
+}
+
+/* По желанию: хинт, чтобы видеть полный текст по ховеру */
+table.equal-cols td.mat-cell {
+  cursor: help;
 }

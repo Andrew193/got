@@ -1,13 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TavernaHeroesBarSearchForm } from '../../../models/taverna.model';
-import { delay, map, Observable, of, startWith } from 'rxjs';
+import { map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
 import { Unit } from '../../../models/units-related/unit.model';
-import { DataSource, TableApiResponse } from '../../../models/table/abstract-table.model';
+import {
+  DataSource,
+  FilterValue,
+  TableApiResponse,
+} from '../../../models/table/abstract-table.model';
 import { SortDirection } from '@angular/material/sort';
 import { TavernaHeroesTableHelperService } from './helpers/heroes-table-helper.service';
+import { TableService } from '../../table/table.service';
 
 @Injectable()
 export class TavernaFacadeService {
@@ -77,33 +82,16 @@ export class TavernaTableDatabase<T> implements DataSource<T> {
     order: SortDirection,
     page: number,
     itemsPerPage: number,
+    filters: Partial<Record<keyof T, FilterValue<T, keyof T>>>,
+    tableService: TableService<T>,
   ): Observable<TableApiResponse<T>> {
-    const sortedItems = [...this.originalOptions].sort((a, b) => {
-      const aValue = a[sort];
-      const bValue = b[sort];
-
-      if (aValue == null) return 1;
-      if (bValue == null) return -1;
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-      }
-
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return order === 'asc' ? aValue - bValue : bValue - aValue;
-      }
-
-      return order === 'asc'
-        ? String(aValue).localeCompare(String(bValue))
-        : String(bValue).localeCompare(String(aValue));
-    });
-
-    const startItem = page * itemsPerPage;
-    const endItem = startItem + itemsPerPage;
-
-    return of({
-      total_count: sortedItems.length,
-      items: sortedItems.slice(startItem, endItem),
-    }).pipe(delay(500));
+    return tableService.fetchContent(
+      sort,
+      order,
+      page,
+      itemsPerPage,
+      filters,
+      this.originalOptions,
+    );
   }
 }

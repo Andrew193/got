@@ -1,7 +1,13 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { AppEntity, Control, CONTROL_TYPE, FormMatrix } from '../form-constructor.models';
+import {
+  AppEntity,
+  Control,
+  CONTROL_TYPE,
+  FormMatrix,
+  LabelValue,
+} from '../form-constructor.models';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { SELECT_SEARCH_PREFIX, SNACKBAR_CONFIG } from '../../../../constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -31,11 +37,15 @@ export class FormEnhancedOperations<T> {
     this.saveFormTemplate();
   }
 
-  public getSortedActiveFormElements = (field?: string, term?: string): Observable<string[]> => {
+  public getSortedActiveFormElements = (
+    field?: string,
+    term?: string,
+  ): Observable<LabelValue[]> => {
     return of(
       this.allFields
         .map(f => f.placeholder || '')
-        .filter(item => item.toLowerCase().includes((term || '').toLowerCase())),
+        .filter(item => item.toLowerCase().includes((term || '').toLowerCase()))
+        .map(el => ({ label: el, value: el })),
     );
   };
 

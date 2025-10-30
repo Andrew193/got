@@ -88,6 +88,7 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
 
       this.r.setStyle(this.host.nativeElement, 'width', `${rawXSpan * this.baseCellW}px`);
       this.r.setStyle(this.host.nativeElement, 'height', `${rawYSpan * this.baseCellH}px`);
+      this.r.setStyle(this.host.nativeElement, 'zIndex', 10000);
     });
 
     const up = this.r.listen('window', 'pointerup', (e: PointerEvent) => {

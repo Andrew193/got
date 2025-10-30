@@ -186,9 +186,13 @@ export const ALPHABET = [
 ] as const;
 
 export const SELECT_SEARCH_PREFIX = 'SelectSearch';
+
 export const DATA_SOURCES = {
   dataInputs: 'field',
+  heroTypes: 'heroTypes',
+  heroRarity: 'heroRarity',
 } as const;
+
 export const BASIC_STORES_CONFIG: StoresConfig = {
   bordered: true,
   withBackground: true,

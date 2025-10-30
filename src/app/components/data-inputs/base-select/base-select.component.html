@@ -14,9 +14,9 @@
       placeholder="Search"
       (selectionChange)="valueChange()"
       [multiple]="_isMulti">
-      @for (entry of _options; track entry) {
-        <mat-option [value]="entry" (onSelectionChange)="onOptionSelection($event, select)">
-          {{ entry }}
+      @for (entry of _options; track entry.label) {
+        <mat-option [value]="entry.value" (onSelectionChange)="onOptionSelection($event, select)">
+          {{ entry.label }}
         </mat-option>
       }
     </mat-select>

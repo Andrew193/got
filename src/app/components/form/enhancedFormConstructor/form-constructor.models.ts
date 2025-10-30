@@ -55,13 +55,18 @@ export type FormConfig = {
   colQty: number;
 };
 
+export type LabelValue = {
+  label: string;
+  value: any;
+};
+
 export interface Control {
   type: CONTROL_TYPE;
   getControl: () => AbstractControl;
   data?: CONTROL_DATA_TYPE;
   dataContext?: any;
   dependentAliases?: string[];
-  filterLocalSource?: (field?: string, term?: string, dep?: string) => Observable<string[]>;
+  filterLocalSource?: (field?: string, term?: string, dep?: string) => Observable<LabelValue[]>;
 }
 
 export interface ControlCustomComponent {

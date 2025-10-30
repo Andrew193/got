@@ -8,6 +8,7 @@ import { ViewProviderComponent } from '../../abstract/abstract-control/view-prov
 import { BehaviorSubject, Observable, of, take } from 'rxjs';
 import { Source } from '../../../models/api.model';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import { LabelValue } from '../../form/enhancedFormConstructor/form-constructor.models';
 
 @Component({
   selector: 'app-base-select',
@@ -23,18 +24,19 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
   className = input<string>('');
   source = input<Source | null>(null);
   isMulti = model<boolean | null>(null);
-  staticOptions = input<Observable<string[]>>(of([]));
+  staticOptions = input<Observable<LabelValue[]>>(of([]));
 
-  options = new BehaviorSubject<string[]>([]);
+  options = new BehaviorSubject<LabelValue[]>([]);
 
   constructor() {
     super();
 
     effect(() => {
       const staticOptions = this.staticOptions();
+      const source = this.source();
 
       staticOptions.pipe(take(1)).subscribe(res => {
-        if (res.length !== this.options.value.length) {
+        if (res.length !== this.options.value.length && !source) {
           this.options.next(res);
         }
       });
@@ -56,8 +58,7 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
 
     if (source) {
       this.dataInputsService.getSelectOptions(source).subscribe(res => {
-        console.log(res);
-        //this.options.next(res)
+        this.options.next(res);
       });
     }
   }

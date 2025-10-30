@@ -14,6 +14,10 @@ import {
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TextInputComponent } from '../../data-inputs/text-input/text-input.component';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { BaseSelectComponent } from '../../data-inputs/base-select/base-select.component';
 
 export const TableImports = [
   MatTable,
@@ -31,4 +35,9 @@ export const TableImports = [
   MatProgressSpinner,
   MatSortHeader,
   MatNoDataRow,
+  ReactiveFormsModule,
+  TextInputComponent,
+  NgTemplateOutlet,
+  NgClass,
+  BaseSelectComponent,
 ];

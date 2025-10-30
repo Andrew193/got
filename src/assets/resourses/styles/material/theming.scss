@@ -179,8 +179,25 @@ mat-bottom-sheet-container {
       filled-input-text-placeholder-color: index.$var-deep-golden,
       filled-input-text-color: index.$var-gold,
       filled-focus-active-indicator-color: index.$var-metal-dark-2,
+      filled-disabled-container-color: index.$var-metal-dark-2,
+      filled-disabled-input-text-color: index.$var-deep-golden,
+      filled-disabled-label-text-color: index.$var-deep-golden,
+      outlined-input-text-placeholder-color: index.$var-deep-golden,
+      disabled-input-text-placeholder-color: index.$var-deep-golden,
+      container-text-line-height: 17px,
+      container-height: 43px,
     )
   );
+
+  app-base-select {
+    .mat-mdc-form-field-infix {
+      max-height: 49px;
+    }
+  }
+
+  .mat-mdc-select-placeholder {
+    color: index.$var-deep-golden !important;
+  }
 
   @include mat.slide-toggle-overrides(
     (

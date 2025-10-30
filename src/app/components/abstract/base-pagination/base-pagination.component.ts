@@ -5,7 +5,7 @@ import { PAGINATION_SERVICE } from '../../../models/tokens';
   template: '',
 })
 export class BasePaginationComponent<T> {
-  contentService = inject(PAGINATION_SERVICE);
+  contentService = inject(PAGINATION_SERVICE, { optional: true });
 
   protected totalElements = 0;
   protected currentPage = 0;
@@ -18,11 +18,13 @@ export class BasePaginationComponent<T> {
   }
 
   private getInitContent() {
-    const elements = this.contentService.getContent();
+    if (this.contentService) {
+      const elements = this.contentService.getContent();
 
-    this.totalElements = elements.length;
-    this.contentArray = elements;
-    this.returnedArray = this.contentArray.slice(0, this.itemsPerPage);
+      this.totalElements = elements.length;
+      this.contentArray = elements;
+      this.returnedArray = this.contentArray.slice(0, this.itemsPerPage);
+    }
   }
 
   protected pageChanged(event: { pageIndex: number; pageSize: number }) {

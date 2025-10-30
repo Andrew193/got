@@ -20,10 +20,7 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
   private _httpClient = inject(HttpClient);
 
   datasource: DataSource<T> = new Database(this._httpClient);
-  data: T[] = [];
-
-  resultsLength = 0;
-  pageSize = 30;
+  override contentArray: T[] = [];
   isLoadingResults = true;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,7 +29,7 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    merge(this.sort.sortChange, this.paginator.page)
+    merge(this.sort.sortChange, this.paginator.page, this.filterForm.valueChanges)
       .pipe(
         startWith({}),
         switchMap(() => {
@@ -43,7 +40,9 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
               this.sort.active as keyof T,
               this.sort.direction,
               this.paginator.pageIndex,
-              this.pageSize,
+              this.itemsPerPage,
+              this.filterForm.getRawValue(),
+              this.tableService,
             )
             .pipe(catchError(() => of(null)));
         }),
@@ -54,12 +53,12 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
             return [];
           }
 
-          this.resultsLength = data.total_count;
+          this.totalElements = data.total_count;
 
           return data.items;
         }),
       )
-      .subscribe(data => (this.data = data));
+      .subscribe(data => (this.contentArray = data));
   }
 }
 
@@ -67,11 +66,6 @@ export class Database<T> implements DataSource<T> {
   constructor(private _httpClient: HttpClient) {}
 
   fetchContent(sort: keyof T, order: SortDirection, page: number): Observable<TableApiResponse<T>> {
-    const href = 'https://api.github.com/search/issues';
-    const requestUrl = `${href}?q=repo:angular/components&sort=${String(sort)}&order=${order}&page=${
-      page + 1
-    }`;
-
-    return this._httpClient.get<TableApiResponse<T>>(requestUrl);
+    return of({ total_count: 0, items: [] });
   }
 }

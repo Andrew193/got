@@ -3,8 +3,8 @@
     <div class="text-center">
       <h3>{{ name }}</h3>
     </div>
-    <div class="flex-row main-content">
-      <aside class="p-2 flex-row stats-bar justify-content-between mb-0">
+    <div class="row main-content m-0">
+      <aside class="p-2 stats-bar justify-content-between mb-0">
         <div class="p-2 flex-column justify-content-evenly color-white">
           <app-stats [selectedHero]="selectedHero">
             <app-rating ngProjectAs="reward-avatar-container" [rating]="selectedHero.rank" />
@@ -14,7 +14,7 @@
             [showSkillName]="true"></app-skills-render>
         </div>
       </aside>
-      <aside class="p-2 flex-row stats-bar justify-content-between mb-0 color-white">
+      <aside class="p-2 stats-bar justify-content-between mb-0 color-white">
         <div class="p-2 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
           <div class="flex-row gap-1">
