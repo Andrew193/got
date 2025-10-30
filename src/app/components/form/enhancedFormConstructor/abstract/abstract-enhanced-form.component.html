@@ -67,6 +67,13 @@
                 <ng-container>
                   @if (tile.x === x && tile.y === y) {
                     <div
+                      [appTileResize]="{
+                        enabled: isFormCtrOn,
+                        y: y,
+                        x: x,
+                        tile: tile,
+                        tileOps: tileOps,
+                      }"
                       [id]="tile.id.toString()"
                       [ngClass]="'form-tile ' + (isFormCtrOn && 'tile-visibility')"
                       [draggable]="isTileDraggable"
@@ -104,7 +111,7 @@
                               setActiveCoordinatesCtxMenu(y, x); $event.stopPropagation()
                             ">
                             <ng-container [formGroup]="formGroup">
-                              <fieldset [disabled]="isFormCtrOn">
+                              <fieldset [disabled]="isFormCtrOn" class="h-100">
                                 @switch (f.mainControl?.type) {
                                   @case (CONTROL_TYPE.INPUT) {
                                     <app-text-input

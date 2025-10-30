@@ -8,6 +8,7 @@ export type CustomDataHolderComponentMap = Record<CONTROL_DATA_TYPE, Type<Contro
 @Component({
   selector: 'app-custom-data-holder',
   templateUrl: './custom-data-holder.component.html',
+  styleUrl: './custom-data-holder.component.scss',
 })
 export class CustomDataHolderComponent implements AfterViewInit {
   type = input.required<CONTROL_DATA_TYPE>();

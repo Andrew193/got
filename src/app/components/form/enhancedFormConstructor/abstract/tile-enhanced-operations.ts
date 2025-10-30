@@ -95,7 +95,11 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
     const isAvailable = this.iterateTileSpace(y, x, ySpan, xSpan, (row, col) => !matrix[row][col]);
 
     if (!isAvailable) {
-      this.getFailedToModifyTileError(ModifyTileError.create);
+      try {
+        this.getFailedToModifyTileError(ModifyTileError.create);
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       this.iterateTileSpace(y, x, ySpan, xSpan, (row, col) => {
         matrix[row][col] = tileId;
@@ -193,7 +197,7 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
       );
 
       if (!isAvailable) {
-        this.getFailedToModifyTileError(ModifyTileError.edit);
+        return this.getFailedToModifyTileError(ModifyTileError.edit, tile);
       } else {
         this.iterateTileSpace(tile.y, tile.x, tile.ySpan, tile.xSpan, (row, col) => {
           matrix[row][col] = 0;
@@ -318,8 +322,10 @@ export class TileEnhancedOperations<T> extends FormEnhancedOperations<T> {
     );
   }
 
-  private getFailedToModifyTileError(action: ModifyTileError) {
+  private getFailedToModifyTileError(action: ModifyTileError, tile?: Tile<T>) {
     this._snackBar.open(`Failed to ${action} tile!`, '', SNACKBAR_CONFIG);
+
+    throw tile;
   }
 
   checkFieldsAmount(y: number, x: number) {

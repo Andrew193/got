@@ -12,6 +12,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { AutocompleteMatInputComponent } from '../../../data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
 import { BaseSelectComponent } from '../../../data-inputs/base-select/base-select.component';
 import { CustomDataHolderComponent } from '../custom-data-holder/custom-data-holder.component';
+import { TileResizeDirective } from '../../../../directives/form/tile-resizer.directive';
 
 export const formEnhancedImports = [
   CdkDrag,
@@ -37,4 +38,5 @@ export const formEnhancedImports = [
   BaseSelectComponent,
   JsonPipe,
   CustomDataHolderComponent,
+  TileResizeDirective,
 ];

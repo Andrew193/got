@@ -1,7 +1,10 @@
 @let _data = data();
 
 @if (_data) {
-  <div [class.green-b]="!isHighlighted(_data)" [class.red-b]="isHighlighted(_data)">
+  <div
+    [class.green-b]="!isHighlighted(_data)"
+    [class.red-b]="isHighlighted(_data)"
+    class="h-100 d-flex align-items-center justify-content-center">
     <img
       [src]="_data.imgSrc"
       style="height: 59px; width: 59px"

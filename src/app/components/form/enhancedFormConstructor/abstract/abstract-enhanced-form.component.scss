@@ -75,6 +75,7 @@ $actions-padding: 15px;
     position: absolute;
     display: flex;
     align-items: center;
+    border: 1px solid black;
   }
 }
 
@@ -123,4 +124,11 @@ $actions-padding: 15px;
     display: flex;
     flex-direction: column;
   }
+}
+
+.tile-resize-handle {
+  height: 3px;
+  width: 3px;
+  background-color: index.$var-metal-dark-1;
+  border-radius: 50%;
 }

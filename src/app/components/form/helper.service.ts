@@ -26,6 +26,8 @@ export class FormHelperService {
   }
 
   getTilePositionStyles<T>(tile: Tile<T>, config: FormConfig) {
+    debugger;
+
     return {
       ...this.getApPositionStyles(tile.y, tile.x, config),
       width: `calc(${-config.tileMargin * 2}px + ${tile.xSpan} * 100% / ${config.colQty})`,
