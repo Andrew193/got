@@ -23,11 +23,21 @@
 html,
 body {
   height: 100%;
-  background-color: black;
   color: white;
-
   scrollbar-color: index.$var-metal-dark-1 index.$var-metal-dark-2;
   scrollbar-width: thin;
+}
+
+html:has(.page-loader) {
+  overflow: hidden;
+}
+
+.loader-holder {
+  display: none;
+}
+
+.page-loader .loader-holder {
+  display: block;
 }
 
 fieldset[disabled] {
@@ -167,4 +177,8 @@ body {
 .nav-item .active {
   box-shadow: index.$var-box-shadow;
   border: none !important;
+}
+
+.page-loader {
+  @include index.mixin-page-loader;
 }

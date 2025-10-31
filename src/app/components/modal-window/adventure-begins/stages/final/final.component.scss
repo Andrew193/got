@@ -1,5 +1,9 @@
 @use '../../../../../../assets/resourses/styles/index' as index;
 
+:host {
+  display: block;
+}
+
 .final-container {
   @include index.mixin-page-container;
   background: url('../../../../../../assets/resourses/imgs/background/summon_tree.jpg') no-repeat

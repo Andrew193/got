@@ -21,6 +21,7 @@ export class TavernaHeroesTableComponent extends AbstractTableComponent<Unit> {
 
   override datasource = this.helper.datasource;
   override itemsPerPage = this.helper.pageSize;
+  override pageSizeOptions = this.helper.pageSizeOptions;
   override isExpandedChecker = this.helper.isExpanded;
   trackBy = this.helper.trackBy;
 

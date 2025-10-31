@@ -81,6 +81,8 @@ mat-bottom-sheet-container {
 }
 
 :root {
+  --mdc-outlined-text-field-focus-outline-color: transparent;
+
   @include mat.sidenav-overrides(
     (
       container-background-color: transparent,
@@ -152,7 +154,7 @@ mat-bottom-sheet-container {
 
   @include mat.option-overrides(
     (
-      label-text-color: index.$var-basic-golden,
+      label-text-color: index.$var-dirty-golden,
       selected-state-label-text-color: index.$var-gold,
     )
   );

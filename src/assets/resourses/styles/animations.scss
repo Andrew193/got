@@ -7,6 +7,19 @@
   inherits: false;
 }
 
+@keyframes fadeIn {
+  from {
+    display: block;
+  }
+  to {
+    display: none;
+  }
+}
+
+@mixin delayed-element() {
+  display: block;
+}
+
 @mixin border-glow($selector: dynamic-border, $name: spin, $duration: 3s) {
   .#{$selector} {
     position: relative;

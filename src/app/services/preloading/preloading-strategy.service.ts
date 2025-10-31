@@ -26,7 +26,6 @@ export class PreloadingStrategyService implements PreloadingStrategy {
     return fakeCheck().pipe(
       switchMap(response => {
         const key = response?.login;
-
         const userConfig = mockConfig[key === 'rest' ? key : 'empty'];
 
         return userConfig.includes(route.path || '') ? load() : EMPTY;

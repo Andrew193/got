@@ -4,7 +4,7 @@
       <div class="text-center filters">
         <form [formGroup]="formGroup" class="p-2">
           <app-autocomplete-mat-input
-            [label]="'Hero Name'"
+            [showLabel]="false"
             [placeholder]="'I summon...'"
             [filteredOptions]="filteredOptions"
             [controlName]="'unitName'"></app-autocomplete-mat-input>

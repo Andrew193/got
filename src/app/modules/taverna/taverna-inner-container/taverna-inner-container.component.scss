@@ -1,10 +1,14 @@
 @use '../../../../assets/resourses/styles/index' as index;
 
+:host {
+  display: block;
+}
+
 .taverna-inner-container {
   background: url('../../../../assets/resourses/imgs/background/taverna-3.webp') no-repeat;
+
   @include index.mixin-page-container;
   @include index.mixin-got-btn;
-
   h3 {
     @include index.mixin-grad-color;
   }

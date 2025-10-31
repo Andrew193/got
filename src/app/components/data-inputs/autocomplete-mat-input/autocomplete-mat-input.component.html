@@ -1,8 +1,12 @@
 @let options = filteredOptions | async;
 @let _controlName = controlName();
+@let _showLabel = showLabel();
 
 <mat-form-field class="w-100">
-  <mat-label>{{ label }}</mat-label>
+  @if (_showLabel) {
+    <mat-label>{{ label }}</mat-label>
+  }
+
   <input
     type="text"
     [placeholder]="placeholder"

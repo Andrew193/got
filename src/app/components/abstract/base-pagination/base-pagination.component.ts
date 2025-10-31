@@ -12,6 +12,7 @@ export class BasePaginationComponent<T> {
   protected itemsPerPage = 5;
   protected returnedArray: T[] = [];
   protected contentArray: T[] = [];
+  protected pageSizeOptions = [5, 10, 25];
 
   constructor() {
     this.getInitContent();

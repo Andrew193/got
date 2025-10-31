@@ -8,9 +8,18 @@ import { DataSource } from '../../../../models/table/abstract-table.model';
 export class TavernaHeroesTableHelperService {
   private readonly _datasource!: DataSource<Unit>;
   private _pageSize = 10;
+  private _pageSizeOptions = [5, 10, 25, 100];
 
   get datasource() {
     return this._datasource;
+  }
+
+  set pageSizeOptions(pageSizeOptions: number[]) {
+    this._pageSizeOptions = pageSizeOptions;
+  }
+
+  get pageSizeOptions() {
+    return this._pageSizeOptions;
   }
 
   set pageSize(pageSize: number) {

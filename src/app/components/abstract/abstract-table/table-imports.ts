@@ -11,6 +11,7 @@ import {
   MatRowDef,
   MatTable,
 } from '@angular/material/table';
+import { MatTooltip } from '@angular/material/tooltip';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -20,6 +21,7 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { BaseSelectComponent } from '../../data-inputs/base-select/base-select.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatMiniFabButton } from '@angular/material/button';
+import { NumberInputComponent } from '../../data-inputs/number-input/number-input.component';
 
 export const TableImports = [
   MatTable,
@@ -44,4 +46,6 @@ export const TableImports = [
   BaseSelectComponent,
   MatIcon,
   MatMiniFabButton,
+  MatTooltip,
+  NumberInputComponent,
 ];

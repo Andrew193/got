@@ -25,6 +25,8 @@ export class TavernaFacadeService {
   getUnitRarityLabel = this.heroesTableHelper.getUnitRarityLabel;
   getUnitTypeLabel = this.heroesTableHelper.getUnitTypeLabel;
   pageSize = this.heroesTableHelper.pageSize;
+  pageSizeOptions = this.heroesTableHelper.pageSizeOptions;
+
   isExpanded = this.heroesTableHelper.isExpanded;
   trackBy = this.heroesTableHelper.trackBy;
 

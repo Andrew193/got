@@ -121,6 +121,17 @@
   padding-top: 1px;
 }
 
+@mixin page-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include h-100-w-100;
+  @include anim.delayed-element;
+  z-index: 1;
+  padding: 5%;
+  background-color: var.$metal-dark-1;
+}
+
 @mixin units-container-config {
   .units-config-inner-container {
     background-color: var.$background-color-main-hover;

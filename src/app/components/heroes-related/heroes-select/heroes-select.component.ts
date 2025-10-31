@@ -48,6 +48,7 @@ export class HeroesSelectComponent implements OnInit {
   containerClass = input('');
   allHeroes = input<SelectableUnit[]>([]);
   isUser = input(false);
+  showSearchInput = input(true);
 
   @Input() addUserUnit: (unit: SelectableUnit, isUser?: boolean) => boolean = () => true;
 

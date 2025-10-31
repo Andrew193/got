@@ -1,7 +1,10 @@
 @let _name = controlName();
 @let _type = type();
+@let _showLabel = showLabel();
 
 <mat-form-field class="w-100">
-  <mat-label>{{ label }}</mat-label>
-  <input matInput [type]="_type" [formControlName]="_name" />
+  @if (_showLabel) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <input matInput [type]="_type" [placeholder]="placeholder" [formControlName]="_name" />
 </mat-form-field>

@@ -73,6 +73,7 @@ export class SceneRunnerService {
     const ref = this.bottomSheet.open(scene.component, {
       hasBackdrop: false,
       disableClose: true,
+      autoFocus: 'dialog',
       data: scene.contextName && this.context.get(scene.contextName),
     });
 

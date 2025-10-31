@@ -28,13 +28,13 @@ export class NumberInputComponent extends ViewProviderComponent implements OnIni
       const m = this.max();
       const maxValidator = Validators.max(m);
 
-      this.control.setValidators([...this.baseValidators, maxValidator]);
-      this.control.updateValueAndValidity({ emitEvent: false });
+      this.formControl.setValidators([...this.baseValidators, maxValidator]);
+      this.formControl.updateValueAndValidity({ emitEvent: false });
     });
   }
 
   ngOnInit() {
-    const initial = this.control.validator;
+    const initial = this.formControl.validator;
 
     this.baseValidators = initial ? [initial] : [];
   }

@@ -122,9 +122,9 @@
     <footer class="position-relative">
       <button mat-mini-fab (click)="equalize = !equalize" class="resize-btn">
         @if (equalize) {
-          <mat-icon>swap_horiz</mat-icon>
+          <mat-icon matTooltip="Default columns size">swap_horiz</mat-icon>
         } @else {
-          <mat-icon>compare_arrows</mat-icon>
+          <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
         }
       </button>
 
@@ -140,7 +140,7 @@
         [length]="totalElements"
         [pageSize]="itemsPerPage"
         (page)="pageChanged($event)"
-        [pageSizeOptions]="[5, 10, 25, 100]"
+        [pageSizeOptions]="pageSizeOptions"
         aria-label="Select page">
       </mat-paginator>
     </footer>
@@ -153,11 +153,21 @@
     <ng-template #headerFilter let-column="column">
       @switch (column.filter.filterType) {
         @case (filterTypes.TEXT) {
-          <app-text-input [label]="column.label" [controlName]="column.alias" />
+          <app-text-input
+            [showLabel]="false"
+            [placeholder]="'Search'"
+            [controlName]="column.alias" />
+        }
+        @case (filterTypes.INPUT) {
+          <app-number-input
+            [showLabel]="false"
+            [placeholder]="'Search'"
+            [controlName]="column.alias" />
         }
         @case (filterTypes.SELECT) {
           <app-base-select
-            [label]="column.label"
+            [placeholder]="'Search'"
+            [showLabel]="false"
             [controlName]="column.alias"
             [source]="column.filter.source"
             [isMulti]="column.filter.multi ?? false" />

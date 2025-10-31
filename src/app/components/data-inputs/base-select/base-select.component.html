@@ -2,16 +2,20 @@
 @let _className = className();
 @let _controlName = controlName();
 @let _isMulti = isMulti();
+@let _showLabel = showLabel();
 
 @let _options = options | async;
 
 @if (_isMulti !== null) {
   <mat-form-field [class]="_className" style="width: auto">
-    <mat-label>{{ label }}</mat-label>
+    @if (_showLabel) {
+      <mat-label>{{ label }}</mat-label>
+    }
+
     <mat-select
       #select
       [formControlName]="_controlName"
-      placeholder="Search"
+      [placeholder]="placeholder"
       (selectionChange)="valueChange()"
       [multiple]="_isMulti">
       @for (entry of _options; track entry.label) {
