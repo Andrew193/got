@@ -20,6 +20,27 @@
 table {
   width: 100%;
 
+  th ::ng-deep {
+    app-text-input mat-form-field,
+    app-base-select {
+      transform: scaleY(0.9);
+    }
+  }
+
+  .multi-sort-th-container {
+    height: 24px;
+
+    .header-label,
+    b {
+      line-height: 25px;
+    }
+
+    b {
+      margin-left: 5px;
+      color: black;
+    }
+  }
+
   app-base-select {
     display: grid;
   }
@@ -86,36 +107,40 @@ table {
   border-top: none;
 }
 
-/* Включаем фиксированную раскладку только в режиме equalize */
+.resize-btn {
+  position: absolute;
+  left: 10px;
+  top: calc(100% - 56px + 10px);
+}
+
+.columns-on-off {
+  position: absolute;
+  left: 50px;
+  transform: scale(0.8);
+  top: 6px;
+}
+
 table.equal-cols {
   table-layout: fixed;
   width: 100%;
 }
 
-/* Одинаковая ширина для всех видимых колонок (хедер/ячейки/футер) */
 table.equal-cols th.mat-header-cell,
 table.equal-cols td.mat-cell,
 table.equal-cols td.mat-footer-cell {
   width: calc(100% / var(--col-count));
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; /* если нужно принудительно в одну строку */
+  white-space: nowrap;
 }
 
-/* Фильтры в заголовке тоже могут обрезаться — подстрахуем */
 table.equal-cols th.mat-header-cell .mat-form-field,
 table.equal-cols th.mat-header-cell app-text-input,
 table.equal-cols th.mat-header-cell app-base-select {
   display: block;
-  min-width: 0; /* чтобы flex/overflow не ломали макет */
+  min-width: 0;
 }
 
-/* Не ломаем строки с деталями (они идут отдельной строкой и colspan'ом) */
 .detail-row td {
-  white-space: normal; /* внутри подробностей пусть контент переносится */
-}
-
-/* По желанию: хинт, чтобы видеть полный текст по ховеру */
-table.equal-cols td.mat-cell {
-  cursor: help;
+  white-space: normal;
 }

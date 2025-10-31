@@ -18,6 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from '../../data-inputs/text-input/text-input.component';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { BaseSelectComponent } from '../../data-inputs/base-select/base-select.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 export const TableImports = [
   MatTable,
@@ -40,4 +42,6 @@ export const TableImports = [
   NgTemplateOutlet,
   NgClass,
   BaseSelectComponent,
+  MatIcon,
+  MatMiniFabButton,
 ];

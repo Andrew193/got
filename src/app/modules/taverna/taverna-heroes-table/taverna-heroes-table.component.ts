@@ -33,6 +33,7 @@ export class TavernaHeroesTableComponent extends AbstractTableComponent<Unit> {
         filterType: CONTROL_TYPE.TEXT,
         disabled: true,
       },
+      visible: false,
     },
     {
       alias: 'rarity',

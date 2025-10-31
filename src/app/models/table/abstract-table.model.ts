@@ -19,6 +19,7 @@ export type TableColumnsFilter = {
 
 export type TableColumns<T> = {
   alias: keyof T & string;
+  visible?: boolean;
   tdAlias?: keyof T & string;
   tdParser?: (model: T) => any;
   className?: string;
@@ -33,8 +34,8 @@ export interface TableApiResponse<T> {
 
 export interface DataSource<T> {
   fetchContent(
-    sort: keyof T,
-    order: SortDirection,
+    sort: (keyof T)[],
+    order: SortDirection[],
     page: number,
     itemsPerPage: number,
     filters: Partial<Record<keyof T, FilterValue<T, keyof T>>>,

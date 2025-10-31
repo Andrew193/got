@@ -27,24 +27,37 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    const multiSort = this.multiSort();
+    const sortEvent = multiSort ? this.sort$ : this.sort.sortChange;
 
-    merge(this.sort.sortChange, this.paginator.page, this.filterForm.valueChanges)
+    sortEvent.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(this.sort.sortChange, this.paginator.page, this.filterForm.valueChanges, this.sort$)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
 
-          return this.datasource
-            ?.fetchContent(
-              this.sort.active as keyof T,
-              this.sort.direction,
-              this.paginator.pageIndex,
-              this.itemsPerPage,
-              this.filterForm.getRawValue(),
-              this.tableService,
-            )
-            .pipe(catchError(() => of(null)));
+          return this.sort$.pipe(
+            switchMap(el => {
+              const mAlias = Array.from(el.keys())[0];
+              const mOrder = Array.from(el.values())[0];
+
+              const sortAlias = [(multiSort ? mAlias : this.sort.active) as keyof T];
+              const sortDirection = [multiSort ? mOrder : this.sort.direction];
+
+              return this.datasource
+                ?.fetchContent(
+                  sortAlias,
+                  sortDirection,
+                  this.paginator.pageIndex,
+                  this.itemsPerPage,
+                  this.filterForm.getRawValue(),
+                  this.tableService,
+                )
+                .pipe(catchError(() => of(null)));
+            }),
+          );
         }),
         map(data => {
           this.isLoadingResults = false;
@@ -65,7 +78,11 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
 export class Database<T> implements DataSource<T> {
   constructor(private _httpClient: HttpClient) {}
 
-  fetchContent(sort: keyof T, order: SortDirection, page: number): Observable<TableApiResponse<T>> {
+  fetchContent(
+    sort: (keyof T)[],
+    order: SortDirection[],
+    page: number,
+  ): Observable<TableApiResponse<T>> {
     return of({ total_count: 0, items: [] });
   }
 }

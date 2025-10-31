@@ -8,7 +8,11 @@
     <div class="text-center">
       <h3>Short Information</h3>
     </div>
-    <app-taverna-heroes-table [expandableTemplateRef]="description" [expandable]="false" />
+
+    <app-taverna-heroes-table
+      [expandableTemplateRef]="description"
+      [multiSort]="true"
+      [expandable]="true" />
     <button class="got-toggle mt-2 mb-2" (click)="backToMainPage()">Back to Castle Black</button>
   </section>
 
@@ -25,6 +29,7 @@
       <div class="col ps-2 pe-2">
         <p class="text-left">{{ element.description }}</p>
         <button
+          (click)="openHeroPreview(element.name)"
           class="got-toggle-green w-100 got-toggle ps-3 pe-3 pt-1 pb-1 d-flex justify-content-center">
           <span class="me-2">Open this hero</span>
           <mat-icon>delete_sweep</mat-icon>

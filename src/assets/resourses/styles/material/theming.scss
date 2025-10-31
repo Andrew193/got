@@ -185,6 +185,8 @@ mat-bottom-sheet-container {
       outlined-input-text-placeholder-color: index.$var-deep-golden,
       disabled-input-text-placeholder-color: index.$var-deep-golden,
       container-text-line-height: 17px,
+      filled-with-label-container-padding-top: 17px,
+      filled-with-label-container-padding-bottom: 0px,
       container-height: 43px,
     )
   );

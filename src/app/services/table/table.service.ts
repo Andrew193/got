@@ -1,15 +1,83 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterValue, Range, TableColumns } from '../../models/table/abstract-table.model';
 import { delay, of } from 'rxjs';
 import { SortDirection } from '@angular/material/sort';
+import { LabelValue } from '../../components/form/enhancedFormConstructor/form-constructor.models';
+import { SortDirectionMap } from '../../constants';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TableService<T> {
+  //Filters
   private _filterForm = new FormGroup({}, { updateOn: 'blur' });
+  private _columnsOnOffForm = new FormGroup({
+    columns: new FormControl<string[]>([], { nonNullable: true }),
+  });
+
+  //Sorting
+  sort = signal<Map<keyof T, SortDirection>>(new Map());
+  sort$ = toObservable(this.sort);
+
+  sortByField = (alias: keyof T) => {
+    const sortElement = this.sort().get(alias);
+
+    if (!sortElement) {
+      this.sort.update(model => {
+        const now = new Map(model);
+
+        now.set(alias, SortDirectionMap.asc);
+
+        return now;
+      });
+    } else if (sortElement && sortElement === SortDirectionMap.asc) {
+      this.sort.update(model => {
+        const now = new Map(model);
+
+        now.set(alias, SortDirectionMap.desc);
+
+        return now;
+      });
+    } else {
+      this.sort.update(model => {
+        const now = new Map(model);
+
+        now.delete(alias);
+
+        return now;
+      });
+    }
+  };
+
+  getSortConfig = (alias: keyof T) => {
+    const sort = this.sort();
+    const sortIndex = Array.from(sort).findIndex(el => {
+      return el[0] === alias;
+    });
+
+    return {
+      order: sort.get(alias),
+      on: sortIndex + 1,
+    };
+  };
+
   private columns: TableColumns<T>[] = [];
+
+  initTable(columns: TableColumns<T>[]) {
+    this.createFilterForm(columns);
+
+    return this.setColumnsControl();
+  }
+
+  setColumnsControl(): LabelValue[] {
+    this._columnsOnOffForm.patchValue({
+      columns: this.columns.filter(el => el.visible || el.visible == null).map(el => el.alias),
+    });
+
+    return this.columns.map(column => ({ label: column.label, value: column.alias }));
+  }
 
   createFilterForm(columns: TableColumns<T>[]) {
     this.columns = columns;
@@ -29,11 +97,15 @@ export class TableService<T> {
     return this._filterForm;
   }
 
+  get columnsOnOffForm() {
+    return this._columnsOnOffForm;
+  }
+
   private isInactive = (v: any) =>
     v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
 
-  private compareValues(a: any, b: any, order: 'asc' | 'desc'): number {
-    const dir = order === 'asc' ? 1 : -1;
+  private compareValues(a: any, b: any, order: SortDirection): number {
+    const dir = order === SortDirectionMap.asc ? 1 : -1;
 
     if (a == null && b == null) return 0;
     if (a == null) return 1;
@@ -101,8 +173,8 @@ export class TableService<T> {
   }
 
   fetchContent(
-    sort: keyof T,
-    order: SortDirection,
+    sort: (keyof T)[],
+    order: SortDirection[],
     page: number,
     itemsPerPage: number,
     filters: Partial<Record<keyof T, FilterValue<T, keyof T>>>,
@@ -113,7 +185,11 @@ export class TableService<T> {
     );
 
     const sortedItems = [...originalOptions].sort((a, b) =>
-      this.compareValues(a[sort], b[sort], order === 'asc' ? 'asc' : 'desc'),
+      this.compareValues(
+        a[sort[0]],
+        b[sort[0]],
+        order[0] === SortDirectionMap.asc ? SortDirectionMap.asc : SortDirectionMap.desc,
+      ),
     );
 
     const filteredItems =

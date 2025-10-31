@@ -78,8 +78,8 @@ export class TavernaTableDatabase<T> implements DataSource<T> {
   constructor(public originalOptions: T[]) {}
 
   fetchContent(
-    sort: keyof T,
-    order: SortDirection,
+    sort: (keyof T)[],
+    order: SortDirection[],
     page: number,
     itemsPerPage: number,
     filters: Partial<Record<keyof T, FilterValue<T, keyof T>>>,

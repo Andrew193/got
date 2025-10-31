@@ -197,3 +197,8 @@ export const BASIC_STORES_CONFIG: StoresConfig = {
   bordered: true,
   withBackground: true,
 };
+
+export const SortDirectionMap = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;

@@ -23,4 +23,5 @@ export class TavernaInnerContainerComponent {
   };
 
   backToMainPage = () => this.nav.goToMainPage();
+  openHeroPreview = (name: string) => this.nav.goToHeroPreview(name);
 }

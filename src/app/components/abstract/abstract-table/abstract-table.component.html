@@ -1,8 +1,9 @@
 @let _displayedColumns = displayedColumns();
 @let _displayedDetailColumns = displayedDetailColumns();
-@let _columns = columns();
+@let _columns = visibleColumns();
 @let _expandable = expandable();
 @let _expandableTemplateRef = expandableTemplateRef();
+@let _multiSort = multiSort();
 
 <div class="mat-elevation-z8 position-relative">
   @if (isLoadingResults) {
@@ -27,7 +28,25 @@
         @for (column of _columns; track column) {
           <ng-container [matColumnDef]="column.alias">
             <th mat-header-cell *matHeaderCellDef>
-              <span mat-sort-header>{{ column.label }}</span>
+              @let _sortConfig = getSortConfig(column.alias);
+              @if (_multiSort) {
+                <span
+                  class="d-inline-flex justify-content-center w-100 cursor-pointer multi-sort-th-container"
+                  (click)="sortByField(column.alias)">
+                  <span class="header-label">{{ column.label }}</span>
+                  @if (_sortConfig.on) {
+                    <b>{{ _sortConfig.on }}</b>
+                    @if (_sortConfig.order === sortAsc) {
+                      <mat-icon>arrow_upward</mat-icon>
+                    } @else {
+                      <mat-icon>arrow_downward</mat-icon>
+                    }
+                  }
+                </span>
+              } @else {
+                <span mat-sort-header>{{ column.label }}</span>
+              }
+
               <ng-container
                 [ngTemplateOutlet]="headerFilter"
                 [ngTemplateOutletContext]="{ column }"></ng-container>
@@ -81,8 +100,8 @@
           [class.expanded-row]="isExpanded(row)"
           (click)="_expandable && toggle(row)"></tr>
 
+        <!-- Expand row -->
         @if (_expandable) {
-          <!-- Expand row -->
           @if (_expandableTemplateRef) {
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
           } @else {
@@ -100,17 +119,31 @@
       </table>
     </div>
 
-    <mat-paginator
-      [length]="totalElements"
-      [pageSize]="itemsPerPage"
-      (page)="pageChanged($event)"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      aria-label="Select page">
-    </mat-paginator>
+    <footer class="position-relative">
+      <button mat-mini-fab (click)="equalize = !equalize" class="resize-btn">
+        @if (equalize) {
+          <mat-icon>swap_horiz</mat-icon>
+        } @else {
+          <mat-icon>compare_arrows</mat-icon>
+        }
+      </button>
 
-    <button mat-stroked-button (click)="equalize = !equalize">
-      {{ equalize ? 'Снять одинаковые ширины' : 'Равные ширины колонок' }}
-    </button>
+      <ng-container [formGroup]="columnsOnOffForm">
+        <app-base-select
+          class="columns-on-off"
+          [label]="'Columns on/off'"
+          [controlName]="'columns'"
+          [staticOptions]="columnsOnOffOptions" />
+      </ng-container>
+
+      <mat-paginator
+        [length]="totalElements"
+        [pageSize]="itemsPerPage"
+        (page)="pageChanged($event)"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page">
+      </mat-paginator>
+    </footer>
 
     <ng-template #td let-column="column" let-element="element">
       @let rowValue = element[column.tdAlias || column.alias];
