@@ -1,8 +1,12 @@
 @use '../../../assets/resourses/styles/index' as index;
 
+:host {
+  display: block;
+}
+
 .inner-container {
-  background: url('../../../assets/resourses/imgs/background/gift.jpg') no-repeat;
   @include index.mixin-page-container;
+  background: url('../../../assets/resourses/imgs/background/gift.jpg') no-repeat;
 
   h3 {
     @include index.mixin-grad-color;

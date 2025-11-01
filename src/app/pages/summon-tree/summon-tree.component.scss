@@ -1,9 +1,9 @@
 @use '../../../assets/resourses/styles/index' as index;
 
 .inner-container {
+  @include index.mixin-page-container;
   background: url('../../../assets/resourses/imgs/background/summon-tree-component.png') no-repeat
     center;
-  @include index.mixin-page-container;
 
   h4 {
     @include index.mixin-grad-color;
@@ -11,6 +11,12 @@
   }
 
   @include index.mixin-got-btn;
+
+  ::ng-deep .loader-holder {
+    background: url('../../../assets/resourses/imgs/background/summon-tree-component.png') no-repeat
+      center;
+    background-size: cover;
+  }
 }
 
 .summon-container {

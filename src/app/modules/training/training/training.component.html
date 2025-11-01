@@ -1,8 +1,4 @@
 <div class="training-container">
   <router-outlet></router-outlet>
-  <div appElementLoader [beacon]="loader">
-    <span class="loader-holder">
-      <mat-spinner class="loader"></mat-spinner>
-    </span>
-  </div>
+  <app-page-loader [loader]="loader" />
 </div>

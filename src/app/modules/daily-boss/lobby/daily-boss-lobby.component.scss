@@ -12,6 +12,11 @@
 
 .page-container {
   @include index.mixin-got-btn;
+
+  ::ng-deep .loader-holder {
+    background: url('../../../../assets/resourses/imgs/background/way.png') no-repeat center;
+    background-size: contain;
+  }
 }
 
 ::ng-deep {

@@ -11,9 +11,11 @@ import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-ba
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { BasicHeroSelectComponent } from '../../../components/abstract/basic-hero-select/basic-hero-select.component';
-import { CURRENCY_NAMES, HeroesSelectNames } from '../../../constants';
+import { CURRENCY_NAMES, frontRoutes, HeroesSelectNames } from '../../../constants';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { Store } from '@ngrx/store';
+import { PageLoaderComponent } from '../../../components/views/page-loader/page-loader.component';
+import { LoaderService } from '../../../services/resolver-loader/loader.service';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -27,6 +29,7 @@ import { Store } from '@ngrx/store';
     MatTabGroup,
     MatTab,
     MatTabLabel,
+    PageLoaderComponent,
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
@@ -35,6 +38,8 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   store = inject(Store);
   nav = inject(NavigationService);
   heroesContext = HeroesSelectNames.dailyBoss;
+  loaderService = inject(LoaderService);
+  loader = this.loaderService.getPageLoader(frontRoutes.dailyBoss);
 
   selectedHero!: Unit;
   selectedTileHero!: TileUnit;

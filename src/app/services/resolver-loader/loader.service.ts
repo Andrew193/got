@@ -17,13 +17,22 @@ import {
   Router,
 } from '@angular/router';
 import { InitInterface } from '../../models/interfaces/init.interface';
-import { of } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, of } from 'rxjs';
 import { InitTaskObs } from '../../models/init.model';
+import { frontRoutes } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoaderService implements InitInterface {
+  private pageLoaderMap = new Map<string, BehaviorSubject<boolean>>([
+    [frontRoutes.training, new BehaviorSubject<boolean>(true)],
+    [frontRoutes.taverna, new BehaviorSubject<boolean>(true)],
+    [frontRoutes.summonTree, new BehaviorSubject<boolean>(true)],
+    [frontRoutes.dailyBoss, new BehaviorSubject<boolean>(true)],
+  ]);
+  private subsCount = new Map<string, number>();
+
   private readonly activeCount = signal(0);
   readonly isLoading = computed(() => this.activeCount() > 0);
   private router = inject(Router);
@@ -70,5 +79,44 @@ export class LoaderService implements InitInterface {
     } catch (e) {
       return of({ ok: false, message: 'Failed to init loader' } satisfies InitTaskObs);
     }
+  }
+
+  private ensure(page: string): BehaviorSubject<boolean> {
+    if (!this.pageLoaderMap.has(page)) {
+      this.pageLoaderMap.set(page, new BehaviorSubject<boolean>(true));
+    }
+
+    return this.pageLoaderMap.get(page)!;
+  }
+
+  getPageLoader(page: string): Observable<boolean> {
+    const loader$ = this.ensure(page);
+
+    const count = (this.subsCount.get(page) ?? 0) + 1;
+
+    this.subsCount.set(page, count);
+
+    const tid = setTimeout(() => loader$.next(false), 500);
+
+    return loader$.pipe(
+      finalize(() => {
+        clearTimeout(tid);
+
+        const left = (this.subsCount.get(page) ?? 1) - 1;
+
+        if (left <= 0) {
+          this.subsCount.delete(page);
+          loader$.next(true);
+        } else {
+          this.subsCount.set(page, left);
+        }
+      }),
+    );
+  }
+
+  resetPageLoader(page: string) {
+    const loader$ = this.pageLoaderMap.get(page);
+
+    if (loader$) loader$.next(true);
   }
 }

@@ -1,12 +1,6 @@
 @use '../../../../assets/resourses/styles/index' as index;
 
 .training-container {
-  background: url('../../../../assets/resourses/imgs/background/way.png') no-repeat;
-  background-size: contain;
-  background-color: #1a1a1a;
-  min-height: 100%;
-  box-shadow: index.$var-box-shadow;
-  position: relative;
-  padding: 5px;
+  @include index.mixin-page-container;
   color: white;
 }

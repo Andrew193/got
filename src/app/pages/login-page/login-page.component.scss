@@ -1,9 +1,9 @@
 @use '../../../assets/resourses/styles/index' as index;
 
 .login-container {
-  background: url('../../../assets/resourses/imgs/background/forest.jpeg') no-repeat;
   @include index.mixin-page-container;
   @include index.mixin-got-btn;
+  background: url('../../../assets/resourses/imgs/background/forest.jpeg') no-repeat;
 
   main {
     height: 100%;

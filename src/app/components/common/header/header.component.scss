@@ -17,6 +17,7 @@ nav {
   background-size: cover;
   background: url('../../../../assets/resourses/imgs/small-forest.jpeg') no-repeat top;
   box-shadow: index.$var-box-shadow;
+  height: index.$var-header-height;
 
   span {
     height: fit-content;

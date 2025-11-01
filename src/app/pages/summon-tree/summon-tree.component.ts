@@ -8,14 +8,20 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
 import { DisplayRewardNames } from '../../store/store.interfaces';
 import { Store } from '@ngrx/store';
 import { DisplayRewardActions } from '../../store/actions/display-reward.actions';
+import { PageLoaderComponent } from '../../components/views/page-loader/page-loader.component';
+import { LoaderService } from '../../services/resolver-loader/loader.service';
+import { frontRoutes } from '../../constants';
 
 @Component({
   selector: 'app-summon-tree',
-  imports: [DisplayRewardComponent, ImageComponent, DecimalPipe],
+  imports: [DisplayRewardComponent, ImageComponent, DecimalPipe, PageLoaderComponent],
   templateUrl: './summon-tree.component.html',
   styleUrl: './summon-tree.component.scss',
 })
 export class SummonTreeComponent implements RewardComponentInterface {
+  loaderService = inject(LoaderService);
+  loader = this.loaderService.getPageLoader(frontRoutes.summonTree);
+
   store = inject(Store);
   contextName = DisplayRewardNames.summon;
 

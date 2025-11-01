@@ -1,28 +1,17 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { ElementLoaderDirective } from '../../../directives/loaders/element-loader.directive';
-import { BehaviorSubject } from 'rxjs';
+import { LoaderService } from '../../../services/resolver-loader/loader.service';
+import { frontRoutes } from '../../../constants';
+import { PageLoaderComponent } from '../../../components/views/page-loader/page-loader.component';
 
 @Component({
   selector: 'app-training',
-  imports: [
-    RouterOutlet,
-    MatProgressSpinner,
-    MatProgressSpinner,
-    MatProgressSpinner,
-    MatProgressSpinner,
-    ElementLoaderDirective,
-  ],
+  imports: [RouterOutlet, PageLoaderComponent],
   templateUrl: './training.component.html',
   styleUrl: './training.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrainingComponent {
-  loader = new BehaviorSubject<boolean>(true);
-
-  constructor() {
-    setTimeout(() => {
-      this.loader.next(false);
-    }, 2000);
-  }
+  loaderService = inject(LoaderService);
+  loader = this.loaderService.getPageLoader(frontRoutes.training);
 }

@@ -1,21 +1,12 @@
 @use '../../../../assets/resourses/styles/index' as index;
 
-:host {
-  display: block;
-}
-
 .training-container {
   @include index.mixin-page-container;
   color: white;
   padding: 5px;
 
-  &:has(.page-loader) {
-    max-height: calc(100vh - 90px);
-  }
-
-  .loader-holder {
-    background: url('../../../../assets/resourses/imgs/background/training.webp') no-repeat top
-      center;
-    height: 100%;
+  ::ng-deep .loader-holder {
+    background: url('../../../../assets/resourses/imgs/background/training.webp') no-repeat center;
+    background-size: cover;
   }
 }

@@ -1,16 +1,19 @@
 <div class="page-container">
-  <div class="row ms-2 me-2 mb-2" style="gap: 5px">
-    <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
+  <app-page-loader [loader]="loader" />
+
+  <div class="row ms-2 me-2 mb-2 g-2">
+    <div class="col-lg-6 col-sm-12">
       <app-stats [selectedHero]="selectedHero"></app-stats>
     </div>
-    <div class="col-lg-6 col-sm-12" style="margin: 0px -2px">
+    <div class="col-lg-6 col-sm-12">
       <app-skills-render
         [selectedHero]="selectedTileHero"
+        [containerPaddingClasses]="''"
         [showLabel]="true"
         [showSkillName]="true"></app-skills-render>
     </div>
   </div>
-  <div class="pb-2">
+  <div class="p-2">
     <mat-tab-group>
       @for (boss of config; track boss.level) {
         <mat-tab>
@@ -72,9 +75,7 @@
       </div>
       <div class="row mt-2 g-2">
         <div class="col-8">
-          <button class="w-100 got-toggle got-toggle-green" (click)="goToMainPage()">
-            Back to Castle Back
-          </button>
+          <button class="w-100 got-toggle" (click)="goToMainPage()">Back to Castle Back</button>
         </div>
         <div class="col-4">
           <button class="w-100 got-toggle got-toggle-red" (click)="openFight(bossLevel)">

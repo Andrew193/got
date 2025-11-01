@@ -32,14 +32,6 @@ html:has(.page-loader) {
   overflow: hidden;
 }
 
-.loader-holder {
-  display: none;
-}
-
-.page-loader .loader-holder {
-  display: block;
-}
-
 fieldset[disabled] {
   pointer-events: none;
   position: relative;
@@ -181,4 +173,16 @@ body {
 
 .page-loader {
   @include index.mixin-page-loader;
+}
+
+.loader-holder {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-size: contain;
+}
+
+.page-loader .loader-holder {
+  display: flex;
 }

@@ -14,8 +14,8 @@
 }
 
 .lobby-container {
-  background: url('../../../assets/resourses/imgs/lobby-back.jpeg') no-repeat;
   @include index.mixin-page-container;
+  background: url('../../../assets/resourses/imgs/lobby-back.jpeg') no-repeat;
 }
 
 aside {
