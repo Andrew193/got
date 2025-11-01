@@ -10,7 +10,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { IsExpandedChecker, TableColumns } from '../../../../models/table/abstract-table.model';
+import {
+  IsExpandedChecker,
+  TableColumns,
+  TableColumnsConfig,
+} from '../../../../models/table/abstract-table.model';
 import { MatTable } from '@angular/material/table';
 import {
   CONTROL_TYPE,
@@ -18,17 +22,23 @@ import {
 } from '../../../form/enhancedFormConstructor/form-constructor.models';
 import { TableService } from '../../../../services/table/table.service';
 import { BasePaginationComponent } from '../../base-pagination/base-pagination.component';
-import { BehaviorSubject } from 'rxjs';
-import { SortDirectionMap } from '../../../../constants';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { SortDirectionMap, TABLE_NAMES } from '../../../../constants';
+import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 
 @Component({
   template: '',
 })
 export abstract class ProtoTable<T> extends BasePaginationComponent<T> implements OnInit {
-  tableService = inject(TableService);
+  tableService = inject(TableService<T>);
+  localStorageService = inject(LocalStorageService);
+  subs = new Subject<boolean>();
+  tableConfigFetched = new BehaviorSubject<boolean>(false);
+
+  tableName: TABLE_NAMES = TABLE_NAMES.test;
   @ViewChild(MatTable) table!: MatTable<T>;
 
-  equalize = true;
+  equalize = false;
   cdr = inject(ChangeDetectorRef);
 
   //Columns
@@ -42,7 +52,6 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   filterTypes = CONTROL_TYPE;
   filterForm = this.tableService.filterForm;
   sort$ = this.tableService.sort$;
-
   columnsOnOffForm = this.tableService.columnsOnOffForm;
 
   //Sorting
@@ -58,6 +67,10 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   expandableTemplateRef = input<TemplateRef<any>>();
   expandedElement: T | null = null;
 
+  //Resize
+  resizable = input(true);
+  restoreColumnWidth = input(true);
+
   isExpanded(element: T) {
     if (this.isExpandedChecker) {
       return this.expandedElement ? this.isExpandedChecker(this.expandedElement, element) : false;
@@ -72,9 +85,27 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   }
 
   //Hooks
-
   ngOnInit() {
-    this.columnsOnOffOptions.next(this.tableService.initTable(this.columns()));
+    this.tableService.api.getTableConfig(this.tableName).subscribe(({ config }) => {
+      const tableConfig = config.columnsConfig;
+      const tablePageSize = config.pageSize;
+
+      if (tableConfig) {
+        const activeColumns = Object.keys(tableConfig);
+
+        this.columns.update(model => {
+          return model.map(el => ({ ...el, visible: activeColumns.includes(el.alias) }));
+        });
+      }
+
+      if (tablePageSize) {
+        this.itemsPerPage = tablePageSize;
+      }
+
+      this.columnsOnOffOptions.next(this.tableService.initTable(this.columns()));
+      this.tableConfigFetched.next(true);
+    });
+
     this.columnsOnOffForm.valueChanges.subscribe(value => {
       this.columns.update(model =>
         model.map(el => {
@@ -87,6 +118,15 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   //Helpers
   getAliases(columns: Signal<TableColumns<T>[]>) {
     return columns().map(el => el.alias);
+  }
+
+  onColumnResize() {
+    const tableConfig = this.localStorageService.getItem(this.tableName) as TableColumnsConfig<T>;
+
+    this.tableService.api.saveTableConfig(
+      this.tableService.createTableConfig(tableConfig, this.itemsPerPage),
+      this.tableName,
+    );
   }
 
   //Contract

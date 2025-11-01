@@ -5,10 +5,11 @@ import { ControlContainer, FormGroupDirective, ReactiveFormsModule } from '@angu
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { ViewProviderComponent } from '../../abstract/abstract-control/view-provider/view-provider.component';
-import { BehaviorSubject, Observable, of, take } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Source } from '../../../models/api.model';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { LabelValue } from '../../form/enhancedFormConstructor/form-constructor.models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-base-select',
@@ -35,11 +36,13 @@ export class BaseSelectComponent extends ViewProviderComponent implements OnInit
       const staticOptions = this.staticOptions();
       const source = this.source();
 
-      staticOptions.pipe(take(1)).subscribe(res => {
-        if (res.length !== this.options.value.length && !source) {
-          this.options.next(res);
-        }
-      });
+      if (!source) {
+        staticOptions.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
+          if (res.length !== this.options.value.length) {
+            this.options.next(res);
+          }
+        });
+      }
     });
   }
 

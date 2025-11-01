@@ -1,4 +1,3355 @@
 {
+  "tables": [
+    {
+      "id": "31ac",
+      "config": {
+        "columnsConfig": {
+          "attack": 706,
+          "heroType": 235,
+          "rarity": 246
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762007711387
+    },
+    {
+      "id": "12ac",
+      "config": {
+        "columnsConfig": {
+          "attack": 706,
+          "heroType": 235,
+          "rarity": 941
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010727544
+    },
+    {
+      "id": "97bc",
+      "config": {
+        "columnsConfig": {
+          "attack": 706,
+          "heroType": 235,
+          "rarity": 941,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010729777
+    },
+    {
+      "id": "fe00",
+      "config": {
+        "columnsConfig": {
+          "attack": 706,
+          "heroType": 235,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010733898
+    },
+    {
+      "id": "e004",
+      "config": {
+        "columnsConfig": {
+          "attack": 706,
+          "heroType": 401,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010736818
+    },
+    {
+      "id": "2ccf",
+      "config": {
+        "columnsConfig": {
+          "attack": 626,
+          "heroType": 401,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010739883
+    },
+    {
+      "id": "0f36",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 401,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010746435
+    },
+    {
+      "id": "6c85",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 401,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010748195
+    },
+    {
+      "id": "9de5",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 401,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010748379
+    },
+    {
+      "id": "bf4a",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 425,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010750032
+    },
+    {
+      "id": "285b",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 425,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010750216
+    },
+    {
+      "id": "670c",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 308,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010752977
+    },
+    {
+      "id": "56f7",
+      "config": {
+        "columnsConfig": {
+          "attack": 210,
+          "heroType": 1200,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010765546
+    },
+    {
+      "id": "6d69",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 1200,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010769329
+    },
+    {
+      "id": "989c",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 602,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010772721
+    },
+    {
+      "id": "e760",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 970,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010775017
+    },
+    {
+      "id": "7882",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 927,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010780745
+    },
+    {
+      "id": "0bb3",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 1126,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010783905
+    },
+    {
+      "id": "138e",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 1073,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010811410
+    },
+    {
+      "id": "3caa",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 1028,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010830108
+    },
+    {
+      "id": "deee",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 279,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010833348
+    },
+    {
+      "id": "3916",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 1200,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010835451
+    },
+    {
+      "id": "00da",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 449,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010841093
+    },
+    {
+      "id": "971f",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 799,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010845382
+    },
+    {
+      "id": "c40b",
+      "config": {
+        "columnsConfig": {
+          "attack": 84,
+          "heroType": 1200,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010869284
+    },
+    {
+      "id": "681f",
+      "config": {
+        "columnsConfig": {
+          "attack": 645,
+          "heroType": 1200,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010872391
+    },
+    {
+      "id": "210f",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 1200,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010877773
+    },
+    {
+      "id": "db1e",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 747,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010884352
+    },
+    {
+      "id": "fe22",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 335,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010886628
+    },
+    {
+      "id": "fe86",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 749,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762010891493
+    },
+    {
+      "id": "509f",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 958,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011035515
+    },
+    {
+      "id": "e35a",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 605,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011043004
+    },
+    {
+      "id": "29bd",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 908,
+          "rarity": 378,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011046005
+    },
+    {
+      "id": "fbe5",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 908,
+          "rarity": 913,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011118582
+    },
+    {
+      "id": "517e",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 908,
+          "rarity": 277,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011122180
+    },
+    {
+      "id": "9747",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 908,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011126012
+    },
+    {
+      "id": "a155",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 738,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011129631
+    },
+    {
+      "id": "48a2",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011134417
+    },
+    {
+      "id": "7933",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 621,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011137764
+    },
+    {
+      "id": "62f7",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 1008,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011139935
+    },
+    {
+      "id": "6c14",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011144781
+    },
+    {
+      "id": "114b",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 857,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011249240
+    },
+    {
+      "id": "5861",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011253874
+    },
+    {
+      "id": "b3af",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 939,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011257944
+    },
+    {
+      "id": "7ea7",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 140,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011262792
+    },
+    {
+      "id": "115a",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 1008,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011463496
+    },
+    {
+      "id": "6bcf",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 1008,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011466087
+    },
+    {
+      "id": "5ab2",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 1200,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011480527
+    },
+    {
+      "id": "e54e",
+      "config": {
+        "columnsConfig": {
+          "attack": 215,
+          "heroType": 1200,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011483943
+    },
+    {
+      "id": "975c",
+      "config": {
+        "columnsConfig": {
+          "attack": 473,
+          "heroType": 1200,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011485577
+    },
+    {
+      "id": "b392",
+      "config": {
+        "columnsConfig": {
+          "attack": 473,
+          "heroType": 1200,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011489489
+    },
+    {
+      "id": "d281",
+      "config": {
+        "columnsConfig": {
+          "attack": 719,
+          "heroType": 1200,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011493687
+    },
+    {
+      "id": "d18e",
+      "config": {
+        "columnsConfig": {
+          "attack": 719,
+          "heroType": 832,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011498393
+    },
+    {
+      "id": "add2",
+      "config": {
+        "columnsConfig": {
+          "attack": 719,
+          "heroType": 466,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011503730
+    },
+    {
+      "id": "bb9a",
+      "config": {
+        "columnsConfig": {
+          "attack": 1200,
+          "heroType": 466,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011505970
+    },
+    {
+      "id": "5c5d",
+      "config": {
+        "columnsConfig": {
+          "attack": 1200,
+          "heroType": 720,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011512024
+    },
+    {
+      "id": "9763",
+      "config": {
+        "columnsConfig": {
+          "attack": 724,
+          "heroType": 720,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011518160
+    },
+    {
+      "id": "29a4",
+      "config": {
+        "columnsConfig": {
+          "attack": 724,
+          "heroType": 1065,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011526088
+    },
+    {
+      "id": "8662",
+      "config": {
+        "columnsConfig": {
+          "attack": 1200,
+          "heroType": 1065,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011530632
+    },
+    {
+      "id": "3605",
+      "config": {
+        "columnsConfig": {
+          "attack": 634,
+          "heroType": 1065,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011537254
+    },
+    {
+      "id": "2b47",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 1065,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011539749
+    },
+    {
+      "id": "df69",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 486,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011547777
+    },
+    {
+      "id": "5fe3",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 243,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011550065
+    },
+    {
+      "id": "32ec",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 507,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011554753
+    },
+    {
+      "id": "dadb",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 1200,
+          "rarity": 449,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011704225
+    },
+    {
+      "id": "6780",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 1200,
+          "rarity": 504,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011707969
+    },
+    {
+      "id": "99ef",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 626,
+          "rarity": 504,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011714326
+    },
+    {
+      "id": "bb18",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 405,
+          "rarity": 504,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011718809
+    },
+    {
+      "id": "39e3",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 405,
+          "rarity": 778,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011720737
+    },
+    {
+      "id": "9477",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 405,
+          "rarity": 548,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011723790
+    },
+    {
+      "id": "daa1",
+      "config": {
+        "columnsConfig": {
+          "attack": 372,
+          "heroType": 405,
+          "rarity": 682,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011748674
+    },
+    {
+      "id": "37f5",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 682,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011759175
+    },
+    {
+      "id": "9826",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 335,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011771307
+    },
+    {
+      "id": "21e7",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 479,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011782887
+    },
+    {
+      "id": "41fc",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 581,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011788465
+    },
+    {
+      "id": "0ccd",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 323,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011810124
+    },
+    {
+      "id": "92aa",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 465,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762011904623
+    },
+    {
+      "id": "777f",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 405,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012266066
+    },
+    {
+      "id": "b61c",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 263,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012270098
+    },
+    {
+      "id": "2f89",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 263,
+          "rarity": 578,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012275089
+    },
+    {
+      "id": "f309",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 263,
+          "rarity": 644,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012278105
+    },
+    {
+      "id": "8803",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 1139,
+          "rarity": 644,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012372485
+    },
+    {
+      "id": "b068",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 1139,
+          "rarity": 571,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012375125
+    },
+    {
+      "id": "5730",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 682,
+          "rarity": 571,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012381133
+    },
+    {
+      "id": "d8e0",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 495,
+          "rarity": 571,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012385219
+    },
+    {
+      "id": "0cd4",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 495,
+          "rarity": 275,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012388764
+    },
+    {
+      "id": "7eaa",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 495,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012392147
+    },
+    {
+      "id": "e0f4",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 289,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012395782
+    },
+    {
+      "id": "56af",
+      "config": {
+        "columnsConfig": {
+          "attack": 547,
+          "heroType": 591,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012397782
+    },
+    {
+      "id": "839d",
+      "config": {
+        "columnsConfig": {
+          "attack": 554,
+          "heroType": 591,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012400466
+    },
+    {
+      "id": "da59",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 591,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012404659
+    },
+    {
+      "id": "73b4",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 357,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012407398
+    },
+    {
+      "id": "3888",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 357,
+          "rarity": 523,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012410211
+    },
+    {
+      "id": "d955",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 991,
+          "rarity": 523,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012413189
+    },
+    {
+      "id": "331f",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 991,
+          "rarity": 990,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012422540
+    },
+    {
+      "id": "d3b8",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 991,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012427372
+    },
+    {
+      "id": "c329",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 991,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012430692
+    },
+    {
+      "id": "6006",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 684,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012440462
+    },
+    {
+      "id": "35f6",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 684,
+          "rarity": 654,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012446780
+    },
+    {
+      "id": "b9ac",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 392,
+          "rarity": 654,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012450353
+    },
+    {
+      "id": "c7bc",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 392,
+          "rarity": 302,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012455813
+    },
+    {
+      "id": "7a15",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 392,
+          "rarity": 617,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012477005
+    },
+    {
+      "id": "c8b2",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 392,
+          "rarity": 257,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012494903
+    },
+    {
+      "id": "af5d",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 392,
+          "rarity": 257,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012597146
+    },
+    {
+      "id": "a8a0",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 392,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012652932
+    },
+    {
+      "id": "3012",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 743,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012656734
+    },
+    {
+      "id": "2785",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 131,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012664198
+    },
+    {
+      "id": "d652",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 131,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012668524
+    },
+    {
+      "id": "1395",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 131,
+          "rarity": 693,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012673039
+    },
+    {
+      "id": "1c82",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 131,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012677028
+    },
+    {
+      "id": "c1e6",
+      "config": {
+        "columnsConfig": {
+          "attack": 199,
+          "heroType": 1200,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012793752
+    },
+    {
+      "id": "1cbc",
+      "config": {
+        "columnsConfig": {
+          "attack": 705,
+          "heroType": 1200,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012797591
+    },
+    {
+      "id": "0663",
+      "config": {
+        "columnsConfig": {
+          "attack": 354,
+          "heroType": 1200,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012819520
+    },
+    {
+      "id": "0da5",
+      "config": {
+        "columnsConfig": {
+          "attack": 354,
+          "heroType": 991,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012831554
+    },
+    {
+      "id": "62f6",
+      "config": {
+        "columnsConfig": {
+          "attack": 354,
+          "heroType": 785,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012848052
+    },
+    {
+      "id": "00f3",
+      "config": {
+        "columnsConfig": {
+          "attack": 354,
+          "heroType": 292,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012893372
+    },
+    {
+      "id": "bdc5",
+      "config": {
+        "columnsConfig": {
+          "attack": 354,
+          "heroType": 1200,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012967184
+    },
+    {
+      "id": "f9f1",
+      "config": {
+        "columnsConfig": {
+          "attack": 867,
+          "heroType": 1200,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012970544
+    },
+    {
+      "id": "f72a",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1200,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012974229
+    },
+    {
+      "id": "b46c",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 495,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012977054
+    },
+    {
+      "id": "74b3",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 395,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012986078
+    },
+    {
+      "id": "aba5",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 395,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762012991118
+    },
+    {
+      "id": "e20b",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 863,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013025263
+    },
+    {
+      "id": "c9cc",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 784,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013032391
+    },
+    {
+      "id": "8356",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 395,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013039591
+    },
+    {
+      "id": "f41d",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 864,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013045241
+    },
+    {
+      "id": "56fc",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 239,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013171672
+    },
+    {
+      "id": "417d",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 329,
+          "rarity": 468,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013181899
+    },
+    {
+      "id": "f748",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 329,
+          "rarity": 735,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013561586
+    },
+    {
+      "id": "0b62",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 329,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013598067
+    },
+    {
+      "id": "e7df",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 364,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013874780
+    },
+    {
+      "id": "73ea",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 254,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013894337
+    },
+    {
+      "id": "c35f",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 258,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013902506
+    },
+    {
+      "id": "9094",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1200,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013922628
+    },
+    {
+      "id": "9c3c",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 303,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013964268
+    },
+    {
+      "id": "293b",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 80,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013968348
+    },
+    {
+      "id": "9b85",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 80,
+          "rarity": 1200,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762013982783
+    },
+    {
+      "id": "ad8d",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 80,
+          "rarity": 604,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014008023
+    },
+    {
+      "id": "3473",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 80,
+          "rarity": 80,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014013621
+    },
+    {
+      "id": "fe34",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 632,
+          "rarity": 80,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014168938
+    },
+    {
+      "id": "9abc",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 361,
+          "rarity": 80,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014194755
+    },
+    {
+      "id": "2548",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 728,
+          "rarity": 80,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014214963
+    },
+    {
+      "id": "9bcf",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1032,
+          "rarity": 80,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014221182
+    },
+    {
+      "id": "1d7e",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1200,
+          "rarity": 80,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014261335
+    },
+    {
+      "id": "37f7",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1200,
+          "rarity": 332,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014267069
+    },
+    {
+      "id": "c326",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1170,
+          "rarity": 332,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014281798
+    },
+    {
+      "id": "38ac",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 1170,
+          "rarity": 413,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014300002
+    },
+    {
+      "id": "7c94",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 331,
+          "rarity": 413,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014306254
+    },
+    {
+      "id": "f51c",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 331,
+          "rarity": 1085,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014310537
+    },
+    {
+      "id": "73a2",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 331,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014318265
+    },
+    {
+      "id": "7e7e",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 575,
+          "rarity": 561,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014320712
+    },
+    {
+      "id": "b760",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 575,
+          "rarity": 595,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014334586
+    },
+    {
+      "id": "ea1b",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 575,
+          "rarity": 413,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014376483
+    },
+    {
+      "id": "55ee",
+      "config": {
+        "columnsConfig": {
+          "attack": 577,
+          "heroType": 575,
+          "rarity": 413,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014382200
+    },
+    {
+      "id": "8bae",
+      "config": {
+        "columnsConfig": {
+          "attack": 577,
+          "heroType": 575,
+          "rarity": 330,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014388233
+    },
+    {
+      "id": "2ecc",
+      "config": {
+        "columnsConfig": {
+          "attack": 577,
+          "heroType": 575,
+          "rarity": 801,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014392723
+    },
+    {
+      "id": "852b",
+      "config": {
+        "columnsConfig": {
+          "attack": 577,
+          "heroType": 575,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014727334
+    },
+    {
+      "id": "4445",
+      "config": {
+        "columnsConfig": {
+          "attack": 577,
+          "heroType": 279,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014729894
+    },
+    {
+      "id": "7b61",
+      "config": {
+        "columnsConfig": {
+          "attack": 801,
+          "heroType": 279,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014735659
+    },
+    {
+      "id": "a59a",
+      "config": {
+        "columnsConfig": {
+          "attack": 264,
+          "heroType": 279,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014740531
+    },
+    {
+      "id": "98ef",
+      "config": {
+        "columnsConfig": {
+          "attack": 264,
+          "heroType": 386,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014745508
+    },
+    {
+      "id": "4e91",
+      "config": {
+        "columnsConfig": {
+          "attack": 277,
+          "heroType": 386,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014760380
+    },
+    {
+      "id": "3f24",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 386,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014762620
+    },
+    {
+      "id": "7db2",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 326,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014765380
+    },
+    {
+      "id": "3ef8",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 240,
+          "rarity": 268,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014768323
+    },
+    {
+      "id": "0242",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 240,
+          "rarity": 391,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014772535
+    },
+    {
+      "id": "72b8",
+      "config": {
+        "columnsConfig": {
+          "attack": 170,
+          "heroType": 344,
+          "rarity": 391,
+          "name": 347
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014776791
+    },
+    {
+      "id": "7121",
+      "config": {
+        "columnsConfig": {
+          "rarity": 448
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014803768
+    },
+    {
+      "id": "eb76",
+      "config": {
+        "columnsConfig": {
+          "rarity": 460
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014808361
+    },
+    {
+      "id": "2649",
+      "config": {
+        "columnsConfig": {
+          "rarity": 700
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014810463
+    },
+    {
+      "id": "e74e",
+      "config": {
+        "columnsConfig": {
+          "rarity": 700,
+          "attack": 440
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014814526
+    },
+    {
+      "id": "b3f6",
+      "config": {
+        "columnsConfig": {
+          "rarity": 676,
+          "attack": 440
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014818270
+    },
+    {
+      "id": "3b9f",
+      "config": {
+        "columnsConfig": {
+          "rarity": 676,
+          "attack": 440,
+          "heroType": 1166
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014847608
+    },
+    {
+      "id": "a98e",
+      "config": {
+        "columnsConfig": {
+          "rarity": 388,
+          "attack": 440,
+          "heroType": 1166
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014852561
+    },
+    {
+      "id": "2248",
+      "config": {
+        "columnsConfig": {
+          "rarity": 388,
+          "attack": 440,
+          "heroType": 632
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014856863
+    },
+    {
+      "id": "0080",
+      "config": {
+        "columnsConfig": {
+          "rarity": 388,
+          "attack": 608,
+          "heroType": 632
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014861407
+    },
+    {
+      "id": "cba6",
+      "config": {
+        "columnsConfig": {
+          "rarity": 388,
+          "attack": 301,
+          "heroType": 632
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014866887
+    },
+    {
+      "id": "6a94",
+      "config": {
+        "columnsConfig": {
+          "rarity": 388,
+          "attack": 301,
+          "heroType": 443
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014869504
+    },
+    {
+      "id": "105a",
+      "config": {
+        "columnsConfig": {
+          "rarity": 162,
+          "attack": 301,
+          "heroType": 443
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014872439
+    },
+    {
+      "id": "30df",
+      "config": {
+        "columnsConfig": {
+          "rarity": 406,
+          "attack": 301,
+          "heroType": 443
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014875792
+    },
+    {
+      "id": "ae6f",
+      "config": {
+        "columnsConfig": {
+          "rarity": 406,
+          "attack": 301,
+          "heroType": 259
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014879752
+    },
+    {
+      "id": "a97a",
+      "config": {
+        "columnsConfig": {
+          "rarity": 642,
+          "attack": 301,
+          "heroType": 259
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762014883680
+    },
+    {
+      "id": "60ad",
+      "config": {
+        "columnsConfig": {
+          "rarity": 642,
+          "attack": 301,
+          "heroType": 1166
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015074297
+    },
+    {
+      "id": "1c87",
+      "config": {
+        "columnsConfig": {
+          "rarity": 642,
+          "attack": 301,
+          "heroType": 208
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015082225
+    },
+    {
+      "id": "9e00",
+      "config": {
+        "columnsConfig": {
+          "rarity": 642,
+          "attack": 301,
+          "heroType": 457
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015093806
+    },
+    {
+      "id": "038b",
+      "config": {
+        "columnsConfig": {
+          "rarity": 973,
+          "attack": 301,
+          "heroType": 457
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015096576
+    },
+    {
+      "id": "3b65",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1198,
+          "attack": 301,
+          "heroType": 457
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015102002
+    },
+    {
+      "id": "d8bd",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1198,
+          "attack": 433,
+          "heroType": 457
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015110688
+    },
+    {
+      "id": "43db",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1198,
+          "attack": 433,
+          "heroType": 146
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015113561
+    },
+    {
+      "id": "ad26",
+      "config": {
+        "columnsConfig": {
+          "rarity": 586,
+          "attack": 433,
+          "heroType": 146
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015117363
+    },
+    {
+      "id": "93a5",
+      "config": {
+        "columnsConfig": {
+          "rarity": 435,
+          "attack": 433,
+          "heroType": 146
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015127170
+    },
+    {
+      "id": "08cd",
+      "config": {
+        "columnsConfig": {
+          "rarity": 435,
+          "attack": 433,
+          "heroType": 1187
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015208563
+    },
+    {
+      "id": "772c",
+      "config": {
+        "columnsConfig": {
+          "rarity": 435,
+          "attack": 433,
+          "heroType": 502
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015227259
+    },
+    {
+      "id": "d50c",
+      "config": {
+        "columnsConfig": {
+          "rarity": 228,
+          "attack": 433,
+          "heroType": 502
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015232139
+    },
+    {
+      "id": "d3cd",
+      "config": {
+        "columnsConfig": {
+          "rarity": 228,
+          "attack": 433,
+          "heroType": 212
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015235411
+    },
+    {
+      "id": "0052",
+      "config": {
+        "columnsConfig": {
+          "rarity": 228,
+          "attack": 311,
+          "heroType": 212
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015240947
+    },
+    {
+      "id": "648f",
+      "config": {
+        "columnsConfig": {
+          "rarity": 228,
+          "attack": 311,
+          "heroType": 287
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015248075
+    },
+    {
+      "id": "71fd",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 311,
+          "heroType": 287
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015252518
+    },
+    {
+      "id": "439f",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 311,
+          "heroType": 361
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015304045
+    },
+    {
+      "id": "4ea7",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 311,
+          "heroType": 325
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015360455
+    },
+    {
+      "id": "dd8d",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 311,
+          "heroType": 80
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015411400
+    },
+    {
+      "id": "a87c",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 311,
+          "heroType": 539
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015422834
+    },
+    {
+      "id": "5ae9",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 908,
+          "heroType": 539
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015427865
+    },
+    {
+      "id": "7f74",
+      "config": {
+        "columnsConfig": {
+          "rarity": 1098,
+          "attack": 908,
+          "heroType": 745
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015430835
+    },
+    {
+      "id": "3a9a",
+      "config": {
+        "columnsConfig": {
+          "rarity": 506,
+          "attack": 908,
+          "heroType": 745
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015433620
+    },
+    {
+      "id": "31b0",
+      "config": {
+        "columnsConfig": {
+          "rarity": 506,
+          "attack": 489,
+          "heroType": 745
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015445049
+    },
+    {
+      "id": "d663",
+      "config": {
+        "columnsConfig": {
+          "rarity": 244,
+          "attack": 489,
+          "heroType": 745
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015451553
+    },
+    {
+      "id": "9edc",
+      "config": {
+        "columnsConfig": {
+          "rarity": 244,
+          "attack": 489,
+          "heroType": 411
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015457818
+    },
+    {
+      "id": "a513",
+      "config": {
+        "columnsConfig": {
+          "rarity": 244,
+          "attack": 489,
+          "heroType": 442
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015474995
+    },
+    {
+      "id": "db60",
+      "config": {
+        "columnsConfig": {
+          "rarity": 244,
+          "attack": 489,
+          "heroType": 444
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015487172
+    },
+    {
+      "id": "ebb9",
+      "config": {
+        "columnsConfig": {
+          "rarity": 244,
+          "attack": 489,
+          "heroType": 361
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015530596
+    },
+    {
+      "id": "8d92",
+      "config": {
+        "columnsConfig": {
+          "rarity": 244,
+          "attack": 489,
+          "heroType": 1195
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015570814
+    },
+    {
+      "id": "34f4",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 489,
+          "heroType": 1195
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015574224
+    },
+    {
+      "id": "582c",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 90,
+          "heroType": 1195
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015578551
+    },
+    {
+      "id": "2796",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 90,
+          "heroType": 257
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015583039
+    },
+    {
+      "id": "af8f",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 90,
+          "heroType": 1196
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015628868
+    },
+    {
+      "id": "f474",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 641,
+          "heroType": 1196
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015632841
+    },
+    {
+      "id": "f99e",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 80,
+          "heroType": 1196
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015637842
+    },
+    {
+      "id": "bab1",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 80,
+          "heroType": 488
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015648266
+    },
+    {
+      "id": "433d",
+      "config": {
+        "columnsConfig": {
+          "rarity": 649,
+          "attack": 80,
+          "heroType": 265
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015659617
+    },
+    {
+      "id": "da54",
+      "config": {
+        "columnsConfig": {
+          "rarity": 889,
+          "attack": 80,
+          "heroType": 265
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015672515
+    },
+    {
+      "id": "a2a3",
+      "config": {
+        "columnsConfig": {
+          "rarity": 269,
+          "attack": 80,
+          "heroType": 265
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015680972
+    },
+    {
+      "id": "535c",
+      "config": {
+        "columnsConfig": {
+          "rarity": 269,
+          "attack": 80,
+          "heroType": 1178
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015762214
+    },
+    {
+      "id": "f48a",
+      "config": {
+        "columnsConfig": {
+          "rarity": 269,
+          "attack": 890,
+          "heroType": 1178
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015767043
+    },
+    {
+      "id": "bf2c",
+      "config": {
+        "columnsConfig": {
+          "rarity": 269,
+          "attack": 216,
+          "heroType": 1178
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015774507
+    },
+    {
+      "id": "0d2b",
+      "config": {
+        "columnsConfig": {
+          "rarity": 269,
+          "attack": 216,
+          "heroType": 590
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015777702
+    },
+    {
+      "id": "8c06",
+      "config": {
+        "columnsConfig": {
+          "rarity": 185,
+          "attack": 216,
+          "heroType": 590
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015797540
+    },
+    {
+      "id": "5cd0",
+      "config": {
+        "columnsConfig": {
+          "rarity": 277,
+          "attack": 216,
+          "heroType": 590
+        },
+        "pageSize": 25
+      },
+      "tableName": "TavernaHeroesTable",
+      "userId": "e046",
+      "createdAt": 1762015812345
+    }
+  ],
   "users": [
     {
       "id": "4b82",
@@ -23,14 +3374,19 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 515520,
-        "claimedRewards": ["2", "4", "8", "12"],
+        "onlineTime": 527640,
+        "claimedRewards": [
+          "2",
+          "4",
+          "8",
+          "12"
+        ],
         "lastLoyaltyBonus": "10/30/2025"
       },
       "currency": {
-        "gold": 1188,
-        "silver": 3395,
-        "copper": 2663557
+        "gold": 1263,
+        "silver": 3515,
+        "copper": 2818588
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -61,7 +3417,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "10/31/2025"
+      "lastLogin": "11/01/2025"
     }
   ],
   "deposits": [

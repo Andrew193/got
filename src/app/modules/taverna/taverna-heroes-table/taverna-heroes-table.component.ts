@@ -5,7 +5,7 @@ import { Unit } from '../../../models/units-related/unit.model';
 import { TableImports } from '../../../components/abstract/abstract-table/table-imports';
 import { TavernaFacadeService } from '../../../services/facades/taverna/taverna.service';
 import { CONTROL_TYPE } from '../../../components/form/enhancedFormConstructor/form-constructor.models';
-import { DATA_SOURCES } from '../../../constants';
+import { DATA_SOURCES, TABLE_NAMES } from '../../../constants';
 
 @Component({
   selector: 'app-taverna-heroes-table',
@@ -22,6 +22,7 @@ export class TavernaHeroesTableComponent extends AbstractTableComponent<Unit> {
   override datasource = this.helper.datasource;
   override itemsPerPage = this.helper.pageSize;
   override pageSizeOptions = this.helper.pageSizeOptions;
+  override tableName = TABLE_NAMES.taverna_hero_table;
   override isExpandedChecker = this.helper.isExpanded;
   trackBy = this.helper.trackBy;
 

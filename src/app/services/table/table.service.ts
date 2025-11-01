@@ -1,21 +1,58 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FilterValue, Range, TableColumns } from '../../models/table/abstract-table.model';
+import {
+  FilterValue,
+  Range,
+  TableColumns,
+  TableColumnsConfig,
+  TableConfig,
+} from '../../models/table/abstract-table.model';
 import { delay, of } from 'rxjs';
 import { SortDirection } from '@angular/material/sort';
 import { LabelValue } from '../../components/form/enhancedFormConstructor/form-constructor.models';
 import { SortDirectionMap } from '../../constants';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { TableApiService } from './table-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TableService<T> {
+  api = inject(TableApiService<T>);
+
+  //TableConfig
+
+  createTableConfig(tableConfig: TableColumnsConfig<T>, pageSize: number): TableConfig<T> {
+    return {
+      columnsConfig: tableConfig,
+      pageSize,
+    };
+  }
+
   //Filters
   private _filterForm = new FormGroup({}, { updateOn: 'blur' });
   private _columnsOnOffForm = new FormGroup({
     columns: new FormControl<string[]>([], { nonNullable: true }),
   });
+
+  createFilterForm(columns: TableColumns<T>[]) {
+    this.columns = columns;
+
+    this.columns.forEach(column => {
+      this._filterForm.addControl(
+        column.alias,
+        new FormControl({
+          value: column.filter.defaultValue ?? '',
+          disabled: column.filter.disabled || false,
+        }),
+        { emitEvent: false },
+      );
+    });
+  }
+
+  get filterForm() {
+    return this._filterForm;
+  }
 
   //Sorting
   sort = signal<Map<keyof T, SortDirection>>(new Map());
@@ -77,24 +114,6 @@ export class TableService<T> {
     });
 
     return this.columns.map(column => ({ label: column.label, value: column.alias }));
-  }
-
-  createFilterForm(columns: TableColumns<T>[]) {
-    this.columns = columns;
-
-    this.columns.forEach(column => {
-      this._filterForm.addControl(
-        column.alias,
-        new FormControl({
-          value: column.filter.defaultValue || '',
-          disabled: column.filter.disabled || false,
-        }),
-      );
-    });
-  }
-
-  get filterForm() {
-    return this._filterForm;
   }
 
   get columnsOnOffForm() {

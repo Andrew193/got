@@ -9,6 +9,10 @@
   background-color: index.$var-metal-dark-2;
 }
 
+th[mat-header-cell] .col-resize-handle:hover .col-resize-line {
+  opacity: 0.6;
+}
+
 .mdc-data-table__header-cell {
   padding: 0 5px 5px 5px;
 }
@@ -18,8 +22,6 @@
 }
 
 table {
-  width: 100%;
-
   th ::ng-deep {
     app-text-input mat-form-field,
     app-base-select {
@@ -118,27 +120,6 @@ table {
   left: 50px;
   transform: scale(0.8);
   top: 6px;
-}
-
-table.equal-cols {
-  table-layout: fixed;
-  width: 100%;
-}
-
-table.equal-cols th.mat-header-cell,
-table.equal-cols td.mat-cell,
-table.equal-cols td.mat-footer-cell {
-  width: calc(100% / var(--col-count));
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-table.equal-cols th.mat-header-cell .mat-form-field,
-table.equal-cols th.mat-header-cell app-text-input,
-table.equal-cols th.mat-header-cell app-base-select {
-  display: block;
-  min-width: 0;
 }
 
 .detail-row td {

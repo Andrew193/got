@@ -14,5 +14,9 @@
   "/deposits": {
     "target": "http://localhost:4567",
     "secure": false
+  },
+  "/tables": {
+    "target": "http://localhost:4567",
+    "secure": false
   }
 }

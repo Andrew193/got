@@ -4,6 +4,10 @@
 @let _expandable = expandable();
 @let _expandableTemplateRef = expandableTemplateRef();
 @let _multiSort = multiSort();
+@let _tableConfigFetched = tableConfigFetched | async;
+
+@let _resizable = resizable();
+@let _restoreColumnWidth = restoreColumnWidth();
 
 <div class="mat-elevation-z8 position-relative">
   @if (isLoadingResults) {
@@ -12,167 +16,177 @@
     </div>
   }
 
-  <ng-container [formGroup]="filterForm">
-    <div class="table-container">
-      <table
-        [style.--col-count]="_columns.length"
-        mat-table
-        [ngClass]="{
-          expandable: _expandable,
-          'equal-cols': equalize,
-        }"
-        [dataSource]="contentArray"
-        multiTemplateDataRows
-        [trackBy]="trackBy"
-        matSort>
-        @for (column of _columns; track column) {
-          <ng-container [matColumnDef]="column.alias">
-            <th mat-header-cell *matHeaderCellDef>
-              @let _sortConfig = getSortConfig(column.alias);
-              @if (_multiSort) {
-                <span
-                  class="d-inline-flex justify-content-center w-100 cursor-pointer multi-sort-th-container"
-                  (click)="sortByField(column.alias)">
-                  <span class="header-label">{{ column.label }}</span>
-                  @if (_sortConfig.on) {
-                    <b>{{ _sortConfig.on }}</b>
-                    @if (_sortConfig.order === sortAsc) {
-                      <mat-icon>arrow_upward</mat-icon>
-                    } @else {
-                      <mat-icon>arrow_downward</mat-icon>
+  @if (_columns) {
+    <ng-container [formGroup]="filterForm">
+      <div class="table-container">
+        <table
+          mat-table
+          appTableResize
+          [tableName]="tableName"
+          (resizeStoped)="onColumnResize()"
+          [resizeActive]="_resizable"
+          [applyResize]="_restoreColumnWidth"
+          [columns]="_columns"
+          [ngClass]="{
+            expandable: _expandable,
+          }"
+          [dataSource]="contentArray"
+          multiTemplateDataRows
+          [trackBy]="trackBy"
+          matSort>
+          @for (column of _columns; track column) {
+            <ng-container [matColumnDef]="column.alias">
+              <th mat-header-cell *matHeaderCellDef>
+                @let _sortConfig = getSortConfig(column.alias);
+                @if (_multiSort) {
+                  <span
+                    class="d-inline-flex justify-content-center w-100 cursor-pointer multi-sort-th-container"
+                    (click)="sortByField(column.alias)">
+                    <span class="header-label">{{ column.label }}</span>
+                    @if (_sortConfig.on) {
+                      <b>{{ _sortConfig.on }}</b>
+                      @if (_sortConfig.order === sortAsc) {
+                        <mat-icon>arrow_upward</mat-icon>
+                      } @else {
+                        <mat-icon>arrow_downward</mat-icon>
+                      }
                     }
-                  }
-                </span>
-              } @else {
-                <span mat-sort-header>{{ column.label }}</span>
-              }
+                  </span>
+                } @else {
+                  <span mat-sort-header>{{ column.label }}</span>
+                }
 
-              <ng-container
-                [ngTemplateOutlet]="headerFilter"
-                [ngTemplateOutletContext]="{ column }"></ng-container>
-            </th>
-            <td mat-cell *matCellDef="let row" [class]="column.className">
-              <ng-container
-                [ngTemplateOutlet]="td"
-                [ngTemplateOutletContext]="{ column, element: row }" />
-            </td>
-          </ng-container>
-        }
-
-        @if (_expandable) {
-          @if (_expandableTemplateRef) {
-            <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="_columns.length">
-                <div class="detail-wrapper" [class.detail-wrapper-expanded]="isExpanded(element)">
-                  <div class="detail">
-                    <ng-container
-                      [ngTemplateOutlet]="_expandableTemplateRef"
-                      [ngTemplateOutletContext]="{ element }" />
-                  </div>
-                </div>
+                <ng-container
+                  [ngTemplateOutlet]="headerFilter"
+                  [ngTemplateOutletContext]="{ column }"></ng-container>
+              </th>
+              <td mat-cell *matCellDef="let row" [class]="column.className">
+                <ng-container
+                  [ngTemplateOutlet]="td"
+                  [ngTemplateOutletContext]="{ column, element: row }" />
               </td>
             </ng-container>
-          } @else {
-            @for (column of _columns; track column) {
-              <ng-container [matColumnDef]="column.alias + '__detail'">
-                <td
-                  mat-cell
-                  *matCellDef="let element"
-                  class="detail-cell"
-                  [class]="column.className">
-                  <ng-container
-                    [ngTemplateOutlet]="td"
-                    [ngTemplateOutletContext]="{ column, element }" />
+          }
+
+          @if (_expandable) {
+            @if (_expandableTemplateRef) {
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="_columns.length">
+                  <div class="detail-wrapper" [class.detail-wrapper-expanded]="isExpanded(element)">
+                    <div class="detail">
+                      <ng-container
+                        [ngTemplateOutlet]="_expandableTemplateRef"
+                        [ngTemplateOutletContext]="{ element }" />
+                    </div>
+                  </div>
                 </td>
               </ng-container>
+            } @else {
+              @for (column of _columns; track column) {
+                <ng-container [matColumnDef]="column.alias + '__detail'">
+                  <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="detail-cell"
+                    [class]="column.className">
+                    <ng-container
+                      [ngTemplateOutlet]="td"
+                      [ngTemplateOutletContext]="{ column, element }" />
+                  </td>
+                </ng-container>
+              }
+            }
+          }
+
+          <!-- Header -->
+          <tr mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></tr>
+
+          <!-- Rows -->
+          <tr
+            mat-row
+            *matRowDef="let row; columns: _displayedColumns"
+            class="table-row"
+            [class.expanded-row]="isExpanded(row)"
+            (click)="_expandable && toggle(row)"></tr>
+
+          <!-- Expand row -->
+          @if (_expandable) {
+            @if (_expandableTemplateRef) {
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+            } @else {
+              <tr
+                mat-row
+                *matRowDef="let row; columns: _displayedDetailColumns; when: rowIsExpanded"></tr>
+            }
+          }
+
+          <tr class="mat-row no-data" *matNoDataRow>
+            <td class="mat-cell color-white text-center" [colSpan]="_displayedColumns.length">
+              {{ isLoadingResults ? 'Loading table data. Please wait.' : 'No data available' }}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <footer class="position-relative">
+        <button mat-mini-fab (click)="equalize = !equalize" class="resize-btn">
+          @if (equalize) {
+            <mat-icon matTooltip="Default columns size">swap_horiz</mat-icon>
+          } @else {
+            <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
+          }
+        </button>
+
+        <ng-container [formGroup]="columnsOnOffForm">
+          <app-base-select
+            class="columns-on-off"
+            [label]="'Columns on/off'"
+            [controlName]="'columns'"
+            [staticOptions]="columnsOnOffOptions" />
+        </ng-container>
+
+        <mat-paginator
+          [length]="totalElements"
+          [pageSize]="itemsPerPage"
+          (page)="pageChanged($event)"
+          [pageSizeOptions]="pageSizeOptions"
+          aria-label="Select page">
+        </mat-paginator>
+      </footer>
+
+      <ng-template #td let-column="column" let-element="element">
+        @let rowValue = element[column.tdAlias || column.alias];
+        {{ column.tdParser ? column.tdParser(element) : rowValue }}
+      </ng-template>
+
+      <ng-template #headerFilter let-column="column">
+        @if (_tableConfigFetched) {
+          @switch (column.filter.filterType) {
+            @case (filterTypes.TEXT) {
+              <app-text-input
+                [showLabel]="false"
+                [placeholder]="'Search'"
+                [controlName]="column.alias" />
+            }
+            @case (filterTypes.INPUT) {
+              <app-number-input
+                [showLabel]="false"
+                [placeholder]="'Search'"
+                [controlName]="column.alias" />
+            }
+            @case (filterTypes.SELECT) {
+              <app-base-select
+                [placeholder]="'Search'"
+                [showLabel]="false"
+                [controlName]="column.alias"
+                [source]="column.filter.source"
+                [isMulti]="column.filter.multi ?? false" />
             }
           }
         }
-
-        <!-- Header -->
-        <tr mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></tr>
-
-        <!-- Rows -->
-        <tr
-          mat-row
-          *matRowDef="let row; columns: _displayedColumns"
-          class="table-row"
-          [class.expanded-row]="isExpanded(row)"
-          (click)="_expandable && toggle(row)"></tr>
-
-        <!-- Expand row -->
-        @if (_expandable) {
-          @if (_expandableTemplateRef) {
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
-          } @else {
-            <tr
-              mat-row
-              *matRowDef="let row; columns: _displayedDetailColumns; when: rowIsExpanded"></tr>
-          }
-        }
-
-        <tr class="mat-row no-data" *matNoDataRow>
-          <td class="mat-cell color-white text-center" [colSpan]="_displayedColumns.length">
-            {{ isLoadingResults ? 'Loading table data. Please wait.' : 'No data available' }}
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <footer class="position-relative">
-      <button mat-mini-fab (click)="equalize = !equalize" class="resize-btn">
-        @if (equalize) {
-          <mat-icon matTooltip="Default columns size">swap_horiz</mat-icon>
-        } @else {
-          <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
-        }
-      </button>
-
-      <ng-container [formGroup]="columnsOnOffForm">
-        <app-base-select
-          class="columns-on-off"
-          [label]="'Columns on/off'"
-          [controlName]="'columns'"
-          [staticOptions]="columnsOnOffOptions" />
-      </ng-container>
-
-      <mat-paginator
-        [length]="totalElements"
-        [pageSize]="itemsPerPage"
-        (page)="pageChanged($event)"
-        [pageSizeOptions]="pageSizeOptions"
-        aria-label="Select page">
-      </mat-paginator>
-    </footer>
-
-    <ng-template #td let-column="column" let-element="element">
-      @let rowValue = element[column.tdAlias || column.alias];
-      {{ column.tdParser ? column.tdParser(element) : rowValue }}
-    </ng-template>
-
-    <ng-template #headerFilter let-column="column">
-      @switch (column.filter.filterType) {
-        @case (filterTypes.TEXT) {
-          <app-text-input
-            [showLabel]="false"
-            [placeholder]="'Search'"
-            [controlName]="column.alias" />
-        }
-        @case (filterTypes.INPUT) {
-          <app-number-input
-            [showLabel]="false"
-            [placeholder]="'Search'"
-            [controlName]="column.alias" />
-        }
-        @case (filterTypes.SELECT) {
-          <app-base-select
-            [placeholder]="'Search'"
-            [showLabel]="false"
-            [controlName]="column.alias"
-            [source]="column.filter.source"
-            [isMulti]="column.filter.multi ?? false" />
-        }
-      }
-    </ng-template>
-  </ng-container>
+      </ng-template>
+    </ng-container>
+  } @else {
+    <p>Loading this table</p>
+  }
 </div>

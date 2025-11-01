@@ -3,6 +3,7 @@ import { SortDirection } from '@angular/material/sort';
 import { CONTROL_TYPE } from '../../components/form/enhancedFormConstructor/form-constructor.models';
 import { TableService } from '../../services/table/table.service';
 import { Source } from '../api.model';
+import { TABLE_NAMES } from '../../constants';
 
 export type TableColumnsFilterType = Exclude<
   CONTROL_TYPE,
@@ -16,6 +17,20 @@ export type TableColumnsFilter = {
   source?: Source;
   multi?: boolean;
 };
+
+export type TableConfig<T> = {
+  pageSize: number;
+  columnsConfig: TableColumnsConfig<T>;
+};
+
+export type TableConfigApiResponse<T> = {
+  config: TableConfig<T>;
+  id: string;
+  userId: string;
+  tableName: TABLE_NAMES;
+};
+
+export type TableColumnsConfig<T> = Record<keyof T & string, number>;
 
 export type TableColumns<T> = {
   alias: keyof T & string;

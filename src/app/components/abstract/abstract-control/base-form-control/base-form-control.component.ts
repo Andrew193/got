@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, input, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, input, Input } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { DataInputsService } from '../../../../services/facades/data-inputs/data-inputs.service';
 
@@ -11,6 +11,7 @@ import { DataInputsService } from '../../../../services/facades/data-inputs/data
 export class BaseFormControlComponent {
   dataInputsService = inject(DataInputsService);
   cd = inject(ChangeDetectorRef);
+  destroyRef = inject(DestroyRef);
 
   @Input() label = 'Label';
   @Input() placeholder = 'Placeholder';

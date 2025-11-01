@@ -28,6 +28,7 @@ export const API_ENDPOINTS = {
   daily: 'dailyReward',
   users: 'users',
   deposits: 'deposits',
+  tables: 'tables',
 };
 
 export const PARAMS_TO_CHECK: Record<ParamToCheck, ParamCheckConfig> = {
@@ -39,6 +40,11 @@ export const PARAMS_TO_CHECK: Record<ParamToCheck, ParamCheckConfig> = {
 
 export const enum PARAMS_TO_CHECK_REACTION {
   empty,
+}
+
+export const enum TABLE_NAMES {
+  taverna_hero_table = 'TavernaHeroesTable',
+  test = 'TEST',
 }
 
 export const CURRENCY_NAMES = {

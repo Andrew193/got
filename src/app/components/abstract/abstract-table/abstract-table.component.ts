@@ -3,11 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { catchError, map, merge, Observable, of, startWith, switchMap } from 'rxjs';
+import { catchError, map, merge, Observable, of, switchMap, takeUntil } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DataSource, TableApiResponse } from '../../../models/table/abstract-table.model';
 import { ProtoTable } from './helpers/proto-table';
@@ -16,7 +17,10 @@ import { ProtoTable } from './helpers/proto-table';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements AfterViewInit {
+export abstract class AbstractTableComponent<T>
+  extends ProtoTable<T>
+  implements AfterViewInit, OnDestroy
+{
   private _httpClient = inject(HttpClient);
 
   datasource: DataSource<T> = new Database(this._httpClient);
@@ -27,14 +31,24 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
+    this.initDatasource();
+  }
+
+  initDatasource() {
     const multiSort = this.multiSort();
     const sortEvent = multiSort ? this.sort$ : this.sort.sortChange;
 
+    this.paginator.page.pipe(takeUntil(this.subs)).subscribe(event => {
+      this.localStorageService.setItem(this.tableName + '_page', event.pageSize);
+    });
+
     sortEvent.subscribe(() => (this.paginator.pageIndex = 0));
+
+    this.filterForm.valueChanges.subscribe(console.log);
 
     merge(this.sort.sortChange, this.paginator.page, this.filterForm.valueChanges, this.sort$)
       .pipe(
-        startWith({}),
+        switchMap(this.tableService.api.getTableData),
         switchMap(() => {
           this.isLoadingResults = true;
 
@@ -72,6 +86,11 @@ export abstract class AbstractTableComponent<T> extends ProtoTable<T> implements
         }),
       )
       .subscribe(data => (this.contentArray = data));
+  }
+
+  ngOnDestroy() {
+    this.subs.next(true);
+    this.subs.complete();
   }
 }
 
