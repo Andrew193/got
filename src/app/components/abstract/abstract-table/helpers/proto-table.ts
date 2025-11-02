@@ -38,7 +38,6 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   tableName: TABLE_NAMES = TABLE_NAMES.test;
   @ViewChild(MatTable) table!: MatTable<T>;
 
-  equalize = false;
   cdr = inject(ChangeDetectorRef);
 
   //Table config
@@ -81,6 +80,11 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
     preserveTableWidth: true,
     staticTable: false,
   };
+  equalize$ = new Subject<number>();
+
+  equalizeColumns() {
+    this.equalize$.next(new Date().getTime());
+  }
 
   isExpanded(element: T) {
     if (this.isExpandedChecker) {

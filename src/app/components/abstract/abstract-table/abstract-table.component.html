@@ -5,6 +5,7 @@
 @let _expandableTemplateRef = expandableTemplateRef();
 @let _multiSort = multiSort();
 @let _tableConfigFetched = tableConfigFetched | async;
+@let _equalize = equalize$ | async;
 
 @let _resizable = resizable();
 
@@ -23,6 +24,7 @@
           appTableResize
           [tableName]="tableName"
           [appTableResize]="resizeConfig"
+          [equalize]="_equalize"
           (resizeStoped)="onColumnResize()"
           [resizeActive]="_resizable"
           [columns]="_columns"
@@ -128,12 +130,8 @@
       </div>
 
       <footer class="position-relative">
-        <button mat-mini-fab (click)="equalize = !equalize" class="resize-btn">
-          @if (equalize) {
-            <mat-icon matTooltip="Default columns size">swap_horiz</mat-icon>
-          } @else {
-            <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
-          }
+        <button mat-mini-fab (click)="equalizeColumns()" class="resize-btn">
+          <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
         </button>
 
         <ng-container [formGroup]="columnsOnOffForm">

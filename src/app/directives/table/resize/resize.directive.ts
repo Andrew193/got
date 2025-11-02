@@ -36,6 +36,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   resizeActive = input(true);
   columns = input<TableColumns<T>[]>([]);
   tableName = input('');
+  equalize = input<number | null>(null);
   localStorageService = inject(LocalStorageService);
 
   inited = false;
@@ -84,6 +85,14 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
         this.inited = true;
       });
+    });
+
+    effect(() => {
+      if (this.equalize()) {
+        this.resetResize();
+        this.saveWidth();
+        this.resizeStoped.emit(new Date().getTime());
+      }
     });
   }
 

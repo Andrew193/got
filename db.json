@@ -3,9 +3,9 @@
     {
       "config": {
         "columnsConfig": {
-          "name": 489,
-          "rarity": 319,
-          "heroType": 278
+          "name": 317,
+          "rarity": 317,
+          "heroType": 317
         },
         "pageSize": 25
       },
@@ -38,13 +38,8 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 527820,
-        "claimedRewards": [
-          "2",
-          "4",
-          "8",
-          "12"
-        ],
+        "onlineTime": 528480,
+        "claimedRewards": ["2", "4", "8", "12"],
         "lastLoyaltyBonus": "10/30/2025"
       },
       "currency": {
