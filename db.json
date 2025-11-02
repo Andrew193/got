@@ -40,12 +40,12 @@
       "online": {
         "onlineTime": 528480,
         "claimedRewards": ["2", "4", "8", "12"],
-        "lastLoyaltyBonus": "10/30/2025"
+        "lastLoyaltyBonus": "11/02/2025"
       },
       "currency": {
-        "gold": 1263,
-        "silver": 3515,
-        "copper": 2818588
+        "gold": 1337,
+        "silver": 3960,
+        "copper": 3085431
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -76,7 +76,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "11/01/2025"
+      "lastLogin": "11/02/2025"
     }
   ],
   "deposits": [
