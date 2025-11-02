@@ -8,18 +8,18 @@ import { map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class TableApiService<T> extends ApiService<TableConfig<T>> {
+export class TableApiService<T> extends ApiService<TableConfigApiResponse<T>> {
   private _snackBar = inject(MatSnackBar);
 
   private url = `/${API_ENDPOINTS.tables}`;
 
-  saveTableConfig(config: TableConfig<T>, tableName: TABLE_NAMES) {
-    console.log(config, tableName, 'dsfs');
+  saveUpdateTableConfig(config: TableConfig<T>, tableName: TABLE_NAMES, id?: string) {
     this.putPostCover(
       {
         config,
         tableName,
         userId: this.userId,
+        ...(id ? { id } : {}),
       },
       {
         returnObs: false,
@@ -34,10 +34,13 @@ export class TableApiService<T> extends ApiService<TableConfig<T>> {
   getTableConfig(tableName: TABLE_NAMES) {
     return this.http.get<TableConfigApiResponse<T>[]>(this.url).pipe(
       map(configs => {
-        return configs.filter(config => {
-          return config.userId === this.userId && config.tableName === tableName;
-        })[0];
+        return configs.length
+          ? configs.filter(config => {
+              return config.userId === this.userId && config.tableName === tableName;
+            })[0]
+          : undefined;
       }),
+      this.basicResponseTapParser(() => {}),
     );
   }
 

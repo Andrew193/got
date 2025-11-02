@@ -25,6 +25,7 @@ import { BasePaginationComponent } from '../../base-pagination/base-pagination.c
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SortDirectionMap, TABLE_NAMES } from '../../../../constants';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
+import { ResizeCfg } from '../../../../directives/table/resize/resize.directive';
 
 @Component({
   template: '',
@@ -33,13 +34,16 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   tableService = inject(TableService<T>);
   localStorageService = inject(LocalStorageService);
   subs = new Subject<boolean>();
-  tableConfigFetched = new BehaviorSubject<boolean>(false);
 
   tableName: TABLE_NAMES = TABLE_NAMES.test;
   @ViewChild(MatTable) table!: MatTable<T>;
 
   equalize = false;
   cdr = inject(ChangeDetectorRef);
+
+  //Table config
+  tableConfigFetched = new BehaviorSubject<boolean>(false);
+  tableConfig = this.tableService.api.getStaticData.bind(this.tableService.api);
 
   //Columns
   columns = signal<TableColumns<T>[]>([]);
@@ -69,7 +73,14 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
 
   //Resize
   resizable = input(true);
-  restoreColumnWidth = input(true);
+  resizeConfig: Partial<ResizeCfg> = {
+    minWidth: 100,
+    maxWidth: 1200,
+    handleWidth: 10,
+    autosave: true,
+    preserveTableWidth: true,
+    staticTable: false,
+  };
 
   isExpanded(element: T) {
     if (this.isExpandedChecker) {
@@ -86,20 +97,23 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
 
   //Hooks
   ngOnInit() {
-    this.tableService.api.getTableConfig(this.tableName).subscribe(({ config }) => {
-      const tableConfig = config.columnsConfig;
-      const tablePageSize = config.pageSize;
+    this.tableService.api.getTableConfig(this.tableName).subscribe(response => {
+      if (response) {
+        const {
+          config: { pageSize, columnsConfig },
+        } = response;
 
-      if (tableConfig) {
-        const activeColumns = Object.keys(tableConfig);
+        if (columnsConfig) {
+          const activeColumns = Object.keys(columnsConfig as Record<keyof T, number>);
 
-        this.columns.update(model => {
-          return model.map(el => ({ ...el, visible: activeColumns.includes(el.alias) }));
-        });
-      }
+          this.columns.update(model => {
+            return model.map(el => ({ ...el, visible: activeColumns.includes(el.alias) }));
+          });
+        }
 
-      if (tablePageSize) {
-        this.itemsPerPage = tablePageSize;
+        if (pageSize) {
+          this.itemsPerPage = pageSize;
+        }
       }
 
       this.columnsOnOffOptions.next(this.tableService.initTable(this.columns()));
@@ -123,9 +137,10 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   onColumnResize() {
     const tableConfig = this.localStorageService.getItem(this.tableName) as TableColumnsConfig<T>;
 
-    this.tableService.api.saveTableConfig(
+    this.tableService.api.saveUpdateTableConfig(
       this.tableService.createTableConfig(tableConfig, this.itemsPerPage),
       this.tableName,
+      this.tableConfig().id,
     );
   }
 

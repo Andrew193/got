@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, pipe, Subscription, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { LocalStorageService } from '../../localStorage/local-storage.service';
 import { IdEntity } from '../../../models/common.model';
@@ -47,19 +47,22 @@ export abstract class ApiService<T> {
   }
 
   protected basicResponseTapParser(callback: TapParser<T>) {
-    return tap({
-      next: (response: T[] | T | undefined) => {
-        const toReturn = Array.isArray(response) ? response[0] : response;
-
-        if (toReturn) {
-          this.data.next(toReturn);
-          callback(toReturn);
-        }
-      },
-      error: error => {
-        console.log(error);
-      },
-    });
+    return pipe(
+      map((response: T[] | T | undefined) => (Array.isArray(response) ? response[0] : response)),
+      tap({
+        next: (response: T | undefined) => {
+          if (response) {
+            this.data.next(response);
+            callback(response);
+          } else {
+            this.data.next({} as T);
+          }
+        },
+        error: error => {
+          console.log(error);
+        },
+      }),
+    );
   }
 
   getStaticData() {

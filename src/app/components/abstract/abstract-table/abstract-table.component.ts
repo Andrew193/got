@@ -8,7 +8,18 @@ import {
 } from '@angular/core';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { catchError, map, merge, Observable, of, switchMap, takeUntil } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  merge,
+  Observable,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DataSource, TableApiResponse } from '../../../models/table/abstract-table.model';
 import { ProtoTable } from './helpers/proto-table';
@@ -31,7 +42,20 @@ export abstract class AbstractTableComponent<T>
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
-    this.initDatasource();
+    this.tableConfigFetched
+      .asObservable()
+      .pipe(
+        filter(Boolean),
+        take(1),
+        tap({
+          next: () => {
+            setTimeout(() => {
+              this.initDatasource();
+            }, 0);
+          },
+        }),
+      )
+      .subscribe();
   }
 
   initDatasource() {

@@ -4,6 +4,7 @@ import {
   effect,
   ElementRef,
   EventEmitter,
+  HostListener,
   inject,
   Inject,
   input,
@@ -18,12 +19,14 @@ import { DOCUMENT } from '@angular/common';
 import { TableColumns } from '../../../models/table/abstract-table.model';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 
-type ResizeCfg = {
+export type ResizeCfg = {
   storageKey?: string;
   minWidth?: number;
   maxWidth?: number;
   handleWidth?: number;
   autosave?: boolean;
+  preserveTableWidth?: boolean;
+  staticTable?: boolean;
 };
 
 @Directive({
@@ -31,12 +34,12 @@ type ResizeCfg = {
 })
 export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   resizeActive = input(true);
-  applyResize = input(true);
   columns = input<TableColumns<T>[]>([]);
   tableName = input('');
   localStorageService = inject(LocalStorageService);
 
   inited = false;
+  private colgroup?: HTMLTableColElement[]; // массив <col> по порядку
 
   @Input('appTableResize') cfg: ResizeCfg | '' = {};
   @Output() columnWidthChange = new EventEmitter<{ alias: string; width: number }>();
@@ -55,11 +58,13 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     const c = this.cfg && typeof this.cfg === 'object' ? this.cfg : {};
 
     return {
-      storageKey: c.storageKey ?? this.inferStorageKey(),
-      minWidth: c.minWidth ?? 80,
-      maxWidth: c.maxWidth ?? 1200,
-      handleWidth: c.handleWidth ?? 10,
+      storageKey: c.storageKey || this.inferStorageKey(),
+      minWidth: c.minWidth || 100,
+      maxWidth: c.maxWidth || 1200,
+      handleWidth: c.handleWidth || 10,
       autosave: c.autosave ?? true,
+      preserveTableWidth: c.preserveTableWidth ?? true,
+      staticTable: c.staticTable ?? true,
     };
   }
 
@@ -74,7 +79,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
       queueMicrotask(() => {
         if (this.inited) {
-          this.reinstallHandles();
+          this.resetResize();
         }
 
         this.inited = true;
@@ -82,16 +87,50 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     });
   }
 
+  resetResize() {
+    this.reinstallHandles();
+    this.colgroup = undefined;
+    this.table.querySelector('colgroup')?.remove();
+    this.ensureColgroup();
+    this.freezeCurrentWidths(true);
+  }
+
+  private ensureColgroup(): void {
+    if (this.colgroup?.length) return;
+
+    const table = this.table;
+    let cg = table.querySelector('colgroup') as HTMLTableSectionElement | null;
+
+    if (!cg) {
+      cg = this.r.createElement('colgroup') as HTMLTableSectionElement;
+      table.insertBefore(cg, table.firstElementChild);
+    }
+
+    const headers = this.getHeaders();
+
+    this.colgroup = headers.map(h => {
+      const alias = this.pickAlias(h)!;
+      let col = cg!.querySelector(`col.mat-column-${alias}`) as HTMLTableColElement | null;
+
+      if (!col) {
+        col = this.r.createElement('col') as HTMLTableColElement;
+        this.r.addClass(col, `mat-column-${alias}`);
+        cg!.appendChild(col);
+      }
+
+      return col!;
+    });
+  }
+
   ngAfterViewInit(): void {
-    const applyResize = this.applyResize();
     const resizeActive = this.resizeActive();
 
     this.table = this.el.nativeElement as HTMLTableElement;
     this.r.setStyle(this.table, 'table-layout', 'fixed');
 
-    if (resizeActive) {
-      this.restoreWidths();
+    this.freezeCurrentWidths();
 
+    if (resizeActive) {
       this.installHandles();
 
       this.zone.runOutsideAngular(() => {
@@ -102,14 +141,42 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
         this.destroyFns.push(up, move, dbl);
       });
     }
-
-    if (!resizeActive && applyResize) {
-      this.restoreWidths();
-    }
   }
 
   ngOnDestroy(): void {
     this.destroyFns.forEach(f => f());
+  }
+
+  private freezeCurrentWidths(hardReset = false) {
+    const headers = this.getHeaders();
+    const anyInline = headers.some(h => h.style.width);
+
+    if (anyInline && !hardReset) return;
+
+    let tableWidth = this.getTableWidth();
+    const raw = hardReset ? null : this.localStorageService.getItem(this.conf.storageKey);
+
+    if (raw) {
+      const toRemove = Object.values(raw as Record<string, number>).reduce((curr, prev) => {
+        return curr + prev;
+      }, 0);
+
+      tableWidth -= toRemove;
+    }
+
+    headers.forEach(h => {
+      const alias = this.pickAlias(h);
+      const noStylesCount = headers.length - (raw ? Object.values(raw).length || 0 : 0);
+
+      const w =
+        alias && raw && raw[alias]
+          ? raw[alias]
+          : noStylesCount > 0
+            ? tableWidth / noStylesCount
+            : h.getBoundingClientRect().width || h.offsetWidth;
+
+      this.applyWidth(h, Math.round(w));
+    });
   }
 
   private installHandles(): void {
@@ -184,53 +251,174 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
   private onMouseMove(e: MouseEvent): void {
     if (!this.moving) return;
+
     const dx = e.clientX - this.moving.startX;
-    const next = this.moving.startW + dx;
+    let next = this.moving.startW + dx;
+    const { minWidth, maxWidth, preserveTableWidth, staticTable } = this.conf;
 
-    const { minWidth, maxWidth } = this.conf;
+    // Clip the desired width of the current column
+    next = this.clamp(next, minWidth, maxWidth);
 
-    // @ts-ignore
-    console.log(next, this.moving.th.clientWidth);
-
-    if (next < minWidth || next > maxWidth) {
-      this.applyWidth(this.moving.th, this.moving.th.clientWidth);
-    } else {
+    if (!preserveTableWidth) {
+      // Without compensation (can be problematic for small tables)
       this.applyWidth(this.moving.th, next);
       this.columnWidthChange.emit({ alias: this.moving.alias, width: next });
+
+      return;
     }
+
+    // Maintain the sum: decrease/increase the width of the adjacent column
+    const rightNeighbor = this.pickRightNeighbor(this.moving.th);
+    const leftNeighbor = this.pickLeftNeighbor(this.moving.th);
+
+    const neighborTh = rightNeighbor ?? leftNeighbor;
+
+    if (!neighborTh) {
+      // If there is no neighbor, let the overall width change
+      this.applyWidth(this.moving.th, next);
+      this.columnWidthChange.emit({ alias: this.moving.alias, width: next });
+
+      return;
+    }
+
+    const currA = this.moving.th.getBoundingClientRect().width;
+    const delta = next - currA; // By how much do we want to change A (target)
+
+    if (delta === 0 && staticTable) return;
+
+    const aliasB = this.pickAlias(neighborTh);
+
+    if (!aliasB) return;
+
+    const currB = neighborTh.getBoundingClientRect().width;
+    let nextB = currB - delta; // Compensate
+
+    // Choose min/max for B
+    nextB = this.clamp(nextB, minWidth, maxWidth);
+
+    // If we hit the limit on B, we'll recalculate how much remains to be compensated
+    const effectiveDelta = currB - nextB; // How much was actually taken from B
+
+    //Increase table width (if there is a config)
+    const effectiveA = this.getEffectiveA(delta, effectiveDelta, currA);
+    const effectiveB = this.getEffectiveB(nextB, effectiveDelta, currB, effectiveA, dx);
+
+    const A = this.clamp(effectiveA, minWidth, maxWidth);
+    const B = this.clamp(effectiveB, minWidth, maxWidth);
+
+    const finalA = staticTable ? A : B === maxWidth ? A + Math.abs(dx) : A;
+    const finalB = staticTable ? B : B === maxWidth ? B + dx : B;
+
+    if (staticTable) {
+      const parentWidth = this.table.parentElement?.offsetWidth || this.getTableWidth();
+      const headerWidthMap = this.getHeaderWidthMap();
+      const possibleTableWidth = Object.values(headerWidthMap).reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+
+      if (possibleTableWidth > parentWidth) {
+        return;
+      }
+    }
+
+    this.applyWidth(this.moving.th, finalA);
+    this.applyWidth(neighborTh, finalB);
+
+    this.columnWidthChange.emit({ alias: this.moving.alias, width: finalA });
+    this.columnWidthChange.emit({ alias: aliasB, width: finalB });
   }
 
-  private stopResizing(): void {
+  private getEffectiveA(delta: number, effectiveDelta: number, currA: number) {
+    const { staticTable } = this.conf;
+
+    if (staticTable) {
+      return currA + effectiveDelta;
+    }
+
+    return delta > 0 && effectiveDelta === 0 ? currA + delta : currA + effectiveDelta;
+  }
+
+  private getEffectiveB(
+    nextB: number,
+    effectiveDelta: number,
+    currB: number,
+    effectiveA: number,
+    dx: number,
+  ) {
+    const { minWidth, staticTable } = this.conf;
+
+    if (staticTable) {
+      return nextB;
+    }
+
+    return effectiveDelta === 0 && effectiveA === minWidth ? currB + dx : nextB;
+  }
+
+  private pickRightNeighbor(th: HTMLTableCellElement): HTMLTableCellElement | null {
+    const all = this.getHeaders();
+    const idx = all.indexOf(th);
+
+    return idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+  }
+
+  private pickLeftNeighbor(th: HTMLTableCellElement): HTMLTableCellElement | null {
+    const all = this.getHeaders();
+    const idx = all.indexOf(th);
+
+    return idx > 0 ? all[idx - 1] : null;
+  }
+
+  private stopResizing() {
+    const { staticTable } = this.conf;
+
+    if (staticTable) {
+      const parentWidth = this.table.parentElement?.offsetWidth || this.getTableWidth();
+      const headerWidthMap = this.getHeaderWidthMap();
+
+      const possibleTableWidth = Object.values(headerWidthMap).reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+
+      if (possibleTableWidth > parentWidth - 10) {
+        this.getHeaders().map(el => {
+          this.applyWidth(el, headerWidthMap[this.pickAlias(el) || ''] - 20);
+        });
+      }
+    }
+
     if (!this.moving) return;
 
-    const { alias, th } = this.moving;
-    const w = th.getBoundingClientRect().width;
-
-    if (this.conf.autosave) this.saveWidth(alias, w);
+    if (this.conf.autosave) this.saveWidth();
 
     this.doc.body.classList.remove('resizing-col');
-
     this.moving = undefined;
     this.resizeStoped.emit(new Date().getTime());
   }
 
-  private onDblClick(e: MouseEvent): void {
-    const target = e.target as HTMLElement;
+  private onDblClick(e: MouseEvent) {
+    const { staticTable } = this.conf;
 
-    if (!target.closest('.col-resize-handle')) return;
+    if (!staticTable) {
+      //Slight table width increase (increases table width by adding overflow)
+      const target = e.target as HTMLElement;
 
-    const th = target.closest('th[mat-header-cell]') as HTMLTableCellElement | null;
+      if (!target.closest('.col-resize-handle')) return;
 
-    if (!th) return;
-    const alias = this.pickAlias(th);
+      const th = target.closest('th[mat-header-cell]') as HTMLTableCellElement | null;
 
-    if (!alias) return;
+      if (!th) return;
+      const alias = this.pickAlias(th);
 
-    const best = this.measureBestWidth(alias, th);
+      if (!alias) return;
 
-    this.applyWidth(th, best);
-    this.columnWidthChange.emit({ alias, width: best });
-    if (this.conf.autosave) this.saveWidth(alias, best);
+      const best = this.measureBestWidth(alias, th);
+
+      this.applyWidth(th, best);
+      this.columnWidthChange.emit({ alias, width: best });
+      if (this.conf.autosave) this.saveWidth();
+    }
   }
 
   private pickAlias(th: HTMLTableCellElement): string | null {
@@ -240,21 +428,33 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   }
 
   private applyWidth(th: HTMLTableCellElement, widthPx: number): void {
-    this.r.setStyle(th, 'width', `${widthPx}px`);
-    this.r.setStyle(th, 'max-width', `${widthPx}px`);
-    this.r.setStyle(th, 'min-width', `${widthPx}px`);
-
     const alias = this.pickAlias(th);
 
     if (!alias) return;
-    const selector = `.mat-column-${alias}`;
-    const cells = this.table.querySelectorAll<HTMLTableCellElement>(`td${selector}`);
 
-    cells.forEach(td => {
-      this.r.setStyle(td, 'width', `${widthPx}px`);
-      this.r.setStyle(td, 'max-width', `${widthPx}px`);
-      this.r.setStyle(td, 'min-width', `${widthPx}px`);
-    });
+    // If there is a colgroup, set the width to <col>
+    this.ensureColgroup();
+    const col = this.table.querySelector(`col.mat-column-${alias}`) as HTMLTableColElement | null;
+
+    if (col) {
+      this.r.setStyle(col, 'width', `${widthPx}px`);
+      this.r.setStyle(col, 'minWidth', `${widthPx}px`);
+      this.r.setStyle(col, 'maxWidth', `${widthPx}px`);
+    }
+
+    // Mirror to th/td for compatibility with custom styles
+    this.r.setStyle(th, 'width', `${widthPx}px`);
+    this.r.setStyle(th, 'minWidth', `${widthPx}px`);
+    this.r.setStyle(th, 'maxWidth', `${widthPx}px`);
+
+    // TD setter (not mandatory)
+    // const selector = `.mat-column-${alias}`;
+    // const cells = this.table.querySelectorAll<HTMLTableCellElement>(`td${selector}`);
+    // cells.forEach(td => {
+    //   this.r.setStyle(td, 'width', `${widthPx}px`);
+    //   this.r.setStyle(td, 'minWidth', `${widthPx}px`);
+    //   this.r.setStyle(td, 'maxWidth', `${widthPx}px`);
+    // });
   }
 
   private inferStorageKey(): string {
@@ -264,41 +464,24 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     return this.tableName() || `table-resize:${path}:${id || 'default'}`;
   }
 
-  private saveWidth(alias: string, width: number): void {
+  private saveWidth(): void {
     try {
-      debugger;
+      const toSave = this.getHeaderWidthMap();
       const key = this.conf.storageKey;
-      const raw = this.localStorageService.getItem(key);
-      const map = raw ? (raw as Record<string, number>) : {};
 
-      map[alias] = Math.round(width);
-      this.localStorageService.setItem(key, JSON.stringify(map));
+      this.localStorageService.setItem(key, toSave);
     } catch {
       // ignore
     }
   }
 
-  private restoreWidths(): void {
-    try {
-      const raw = this.localStorageService.getItem(this.conf.storageKey);
-
-      if (!raw) return;
-      const map = raw as Record<string, number>;
-      const headers = this.table.querySelectorAll<HTMLTableCellElement>('th[mat-header-cell]');
-
-      headers.forEach(th => {
-        const alias = this.pickAlias(th);
-
-        if (!alias) return;
-        const w = map[alias];
-
-        if (typeof w === 'number' && w > 0) {
-          this.applyWidth(th, w);
-        }
-      });
-    } catch {
-      // ignore
-    }
+  getHeaderWidthMap() {
+    return this.getHeaders().reduce(
+      (prev, curr) => {
+        return { ...prev, [this.pickAlias(curr) || '']: curr.clientWidth };
+      },
+      {} as Record<string, number>,
+    );
   }
 
   getHeaders() {
@@ -308,9 +491,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   getTableWidth() {
     return this.getHeaders()
       .map(el => window.getComputedStyle(el).width)
-      .reduce((curr, prev) => {
-        return curr + Number.parseFloat(prev);
-      }, 0);
+      .reduce((curr, prev) => curr + Number.parseFloat(prev), -20);
   }
 
   private measureBestWidth(alias: string, th: HTMLTableCellElement): number {
@@ -323,6 +504,15 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
     const { minWidth, maxWidth } = this.conf;
 
-    return Math.min(Math.max(max, minWidth), maxWidth);
+    return this.clamp(max, minWidth, maxWidth);
+  }
+
+  private clamp(n: number, min: number, max: number) {
+    return Math.min(Math.max(n, min), max);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.freezeCurrentWidths(true);
   }
 }

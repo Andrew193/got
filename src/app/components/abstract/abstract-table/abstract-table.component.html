@@ -7,7 +7,6 @@
 @let _tableConfigFetched = tableConfigFetched | async;
 
 @let _resizable = resizable();
-@let _restoreColumnWidth = restoreColumnWidth();
 
 <div class="mat-elevation-z8 position-relative">
   @if (isLoadingResults) {
@@ -16,16 +15,16 @@
     </div>
   }
 
-  @if (_columns) {
+  @if (_columns && _tableConfigFetched) {
     <ng-container [formGroup]="filterForm">
       <div class="table-container">
         <table
           mat-table
           appTableResize
           [tableName]="tableName"
+          [appTableResize]="resizeConfig"
           (resizeStoped)="onColumnResize()"
           [resizeActive]="_resizable"
-          [applyResize]="_restoreColumnWidth"
           [columns]="_columns"
           [ngClass]="{
             expandable: _expandable,
@@ -187,6 +186,8 @@
       </ng-template>
     </ng-container>
   } @else {
-    <p>Loading this table</p>
+    <div class="table-container d-flex align-items-center justify-content-center">
+      <p class="color-white text-center">Loading this table</p>
+    </div>
   }
 </div>
