@@ -5,15 +5,23 @@
 }
 
 .eq-container {
-  .eq-stats > div > div {
+  .eq-stats {
     background: index.$var-background-color-main;
     box-shadow: index.$var-box-shadow;
-    height: 100%;
-  }
 
-  .eq-stats {
+    .current-gear-level {
+      color: index.$var-basic-golden;
+    }
+
+    .level-bar {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
     img {
       width: 30px;
+      height: 30px;
     }
 
     span {
@@ -40,7 +48,7 @@
   .stats-bar > div {
     background: index.$var-background-color-main;
     box-shadow: index.$var-box-shadow-out;
-    border-radius: 15px;
+    border-radius: 5px;
   }
 
   .card {

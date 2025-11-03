@@ -325,7 +325,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
     if (finalA === minWidth) {
       //Silent drop of resizing
-      this.moving = undefined;
+      this.stopResizing();
 
       return;
     }

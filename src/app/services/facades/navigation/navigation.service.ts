@@ -20,6 +20,14 @@ export class NavigationService {
     this.router.navigate([FrontRoutes.taverna]);
   }
 
+  getToTavernaShortInformation() {
+    this.router.navigate([FrontRoutes.taverna, FrontRoutes.shortInformation]);
+  }
+
+  getToTavernaHeroesBar() {
+    this.router.navigate([FrontRoutes.taverna, FrontRoutes.tavernaHeroesBar]);
+  }
+
   goToTraining() {
     this.router.navigate([FrontRoutes.training]);
   }

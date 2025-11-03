@@ -16,8 +16,6 @@
 }
 
 main {
-  @include index.mixin-got-btn;
-
   aside {
     background: index.$var-background-color-main;
     box-shadow: index.$var-box-shadow;

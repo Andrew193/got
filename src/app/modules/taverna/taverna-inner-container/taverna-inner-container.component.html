@@ -1,40 +1,7 @@
-<div class="taverna-inner-container">
+<div class="taverna-inner-container p-3 pt-0">
   <div class="text-center">
-    <h3 class="m-2">Tavern of Heroes</h3>
+    <h3 class="m-2">Heroes Bar</h3>
   </div>
   <app-taverna-heroes-bar />
-
-  <section class="ms-4 me-4">
-    <div class="text-center">
-      <h3>Short Information</h3>
-    </div>
-
-    <app-taverna-heroes-table
-      [expandableTemplateRef]="description"
-      [multiSort]="true"
-      [expandable]="true" />
-    <button class="got-toggle mt-2 mb-2" (click)="backToMainPage()">Back to Castle Black</button>
-  </section>
-
-  <ng-template #description let-element="element">
-    <div class="description-bar w-100 mb-1 pt-2 pb-2 d-flex">
-      <div class="col">
-        <app-skills-render
-          [containerPaddingClasses]="''"
-          [showLabel]="false"
-          [sliderMode]="true"
-          [placeholderConfig]="skillsRenderConfig"
-          [selectedHero]="element"></app-skills-render>
-      </div>
-      <div class="col ps-2 pe-2">
-        <p class="text-left">{{ element.description }}</p>
-        <button
-          (click)="openHeroPreview(element.name)"
-          class="got-toggle-green w-100 got-toggle ps-3 pe-3 pt-1 pb-1 d-flex justify-content-center">
-          <span class="me-2">Open this hero</span>
-          <mat-icon>delete_sweep</mat-icon>
-        </button>
-      </div>
-    </div>
-  </ng-template>
+  <app-taverna-pages-footer />
 </div>

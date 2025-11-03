@@ -3,8 +3,9 @@
     {
       "config": {
         "columnsConfig": {
-          "name": 391,
-          "rarity": 391
+          "name": 105,
+          "rarity": 455,
+          "heroType": 100
         },
         "pageSize": 25
       },
@@ -37,19 +38,19 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 534240,
+        "onlineTime": 549780,
         "claimedRewards": [
           "2",
           "4",
           "8",
           "12"
         ],
-        "lastLoyaltyBonus": "11/02/2025"
+        "lastLoyaltyBonus": "11/03/2025"
       },
       "currency": {
-        "gold": 1337,
-        "silver": 3960,
-        "copper": 3359431
+        "gold": 1365,
+        "silver": 4450,
+        "copper": 3602741
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -80,7 +81,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "11/02/2025"
+      "lastLogin": "11/03/2025"
     }
   ],
   "deposits": [

@@ -1,3 +1,32 @@
-<div class="h-100">
+<div class="taverna-container p-3">
+  <app-page-loader [loader]="loader" />
+
+  <app-basic-stores-placeholder [title]="'Tavern of Heroes'">
+    @for (activity of activities; track activity.label) {
+      <div
+        class="col activity"
+        [style.--shadow-color]="activity.filterColor || '#B8860BFF'"
+        [ngClass]="{
+          'no-text-highlight': activity.closed,
+        }"
+        (click)="!activity.closed && activity.click()">
+        <div class="w-100 h-100 pt-2 pb-2 position-relative card-tile no-back">
+          <app-image
+            [source]="'./assets/resourses/imgs/tile-backgrounds/' + activity.imgSrc + '.png'"
+            [alt]="activity.label"
+            imageClass="card-img-top tile-img" />
+          <span class="banner tile-name fs-md-4 fs-lg-4">{{ activity.label }}</span>
+
+          @if (activity.closed) {
+            <app-container-label>
+              <mat-icon style="height: 50px; width: 50px; font-size: 50px">lock_outline</mat-icon>
+            </app-container-label>
+          }
+        </div>
+      </div>
+    }
+  </app-basic-stores-placeholder>
+
+  <app-taverna-pages-footer />
   <router-outlet></router-outlet>
 </div>

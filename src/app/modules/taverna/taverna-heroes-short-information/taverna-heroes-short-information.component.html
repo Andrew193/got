@@ -1,0 +1,34 @@
+<div class="short-information-container p-3 pt-0">
+  <div class="text-center">
+    <h3 class="m-2">Short Information</h3>
+  </div>
+
+  <app-taverna-heroes-table
+    [expandableTemplateRef]="description"
+    [multiSort]="true"
+    [expandable]="true" />
+
+  <app-taverna-pages-footer />
+</div>
+
+<ng-template #description let-element="element">
+  <div class="description-bar w-100 mb-1 pt-2 pb-2 d-flex">
+    <div class="col">
+      <app-skills-render
+        [containerPaddingClasses]="''"
+        [showLabel]="false"
+        [sliderMode]="true"
+        [placeholderConfig]="skillsRenderConfig"
+        [selectedHero]="element"></app-skills-render>
+    </div>
+    <div class="col ps-2 pe-2">
+      <p class="text-left">{{ element.description }}</p>
+      <button
+        (click)="openHeroPreview(element.name)"
+        class="got-toggle-green w-100 got-toggle ps-3 pe-3 pt-1 pb-1 d-flex justify-content-center">
+        <span class="me-2">Open this hero</span>
+        <mat-icon>delete_sweep</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>

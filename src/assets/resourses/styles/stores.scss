@@ -22,10 +22,10 @@
 
   @mixin card-tile-mixin {
     text-align: center;
-    background: index.$var-background-color-main;
+    background-color: index.$var-background-color-main;
     box-shadow: index.$var-box-shadow;
     color: white;
-    background-image: url('/assets/resourses/imgs/background/crack.png');
+    @content;
     background-size: cover;
     background-position: center;
     border-radius: inherit;
@@ -34,7 +34,13 @@
 
   .store-row {
     .card-tile {
-      @include card-tile-mixin;
+      @include card-tile-mixin {
+        background-image: url('/assets/resourses/imgs/background/crack.png');
+      }
+    }
+
+    .card-tile.no-back {
+      background-image: none !important;
     }
 
     > div {
@@ -54,7 +60,9 @@
       }
 
       &.card-tile {
-        @include card-tile-mixin;
+        @include card-tile-mixin {
+          background-image: url('/assets/resourses/imgs/background/crack.png');
+        }
       }
 
       span {

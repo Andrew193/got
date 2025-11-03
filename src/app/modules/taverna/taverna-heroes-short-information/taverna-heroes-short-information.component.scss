@@ -1,7 +1,6 @@
 @use '../../../../assets/resourses/styles/index' as index;
 
-.taverna-inner-container {
-  min-height: calc(100% - index.$var-header-height) !important;
+.short-information-container {
   @include index.mixin-page-container;
   @include index.mixin-got-btn;
 

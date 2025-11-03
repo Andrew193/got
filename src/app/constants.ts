@@ -101,6 +101,8 @@ export const getDiagonals = (checkDiagonals: boolean) => {
 export const frontRoutes = {
   base: '',
   taverna: 'taverna',
+  shortInformation: 'short-information',
+  tavernaHeroesBar: 'heroes-bar',
   preview: 'preview',
   battleField: 'test-b',
   training: 'training',

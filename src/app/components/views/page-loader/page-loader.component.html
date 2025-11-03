@@ -1,7 +1,11 @@
 @let _loader = loader();
 
-<div appElementLoader [beacon]="_loader">
-  <span class="loader-holder">
-    <mat-spinner class="loader"></mat-spinner>
-  </span>
-</div>
+@let _show = _loader | async;
+
+@if (_show) {
+  <div appElementLoader [beacon]="_loader" class="p-3">
+    <span class="loader-holder">
+      <mat-spinner class="loader"></mat-spinner>
+    </span>
+  </div>
+}

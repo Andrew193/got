@@ -1,0 +1,37 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.taverna-container {
+  @include index.mixin-page-container;
+  @include index.mixin-got-btn;
+
+  h3 {
+    @include index.mixin-grad-color;
+  }
+
+  ::ng-deep .loader-holder {
+    background: url('../../../../assets/resourses/imgs/background/taverna-3.webp') no-repeat center;
+    background-size: cover;
+  }
+
+  .activity {
+    max-height: 350px;
+    min-height: 300px;
+
+    &:not(:has(app-container-label)):hover {
+      ::ng-deep .tile-img {
+        @include index.mixin-drop-shadow(var(--shadow-color));
+      }
+    }
+  }
+
+  .tile-name {
+    height: 44px;
+  }
+
+  ::ng-deep .tile-img {
+    height: 85%;
+    object-fit: contain;
+    padding: 5%;
+    transition: filter ease 0.3s;
+  }
+}

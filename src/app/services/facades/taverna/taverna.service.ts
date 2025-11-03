@@ -1,6 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TavernaHeroesBarSearchForm } from '../../../models/taverna.model';
+import {
+  TavernaActivities,
+  TavernaHeroesBarSearchForm,
+} from '../../../models/taverna/taverna.model';
 import { map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
@@ -21,6 +24,24 @@ export class TavernaFacadeService {
   protected heroesService = inject(HeroesFacadeService);
   private heroesTableHelper = inject(TavernaHeroesTableHelperService);
 
+  //Root taverna
+  readonly activities: TavernaActivities[] = [
+    {
+      label: 'Short Information',
+      imgSrc: 'aemon_young',
+      click: () => this.nav.getToTavernaShortInformation(),
+      filterColor: 'gray',
+    },
+    { label: 'Heroes Bar', imgSrc: 'mayla_young', click: () => this.nav.getToTavernaHeroesBar() },
+    {
+      label: 'Skills Overview',
+      imgSrc: 'water_dancer',
+      closed: true,
+      click: () => this.nav.getToTavernaShortInformation(),
+    },
+  ];
+
+  //Taverna table
   datasource = this.heroesTableHelper.datasource;
   getUnitRarityLabel = this.heroesTableHelper.getUnitRarityLabel;
   getUnitTypeLabel = this.heroesTableHelper.getUnitTypeLabel;

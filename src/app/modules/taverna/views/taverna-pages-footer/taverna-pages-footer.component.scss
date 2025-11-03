@@ -1,0 +1,5 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
+:host {
+  @include index.mixin-got-btn;
+}

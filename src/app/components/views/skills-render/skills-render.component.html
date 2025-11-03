@@ -31,11 +31,11 @@
 
 <ng-template #skillBar let-skill="skill" let-showImage="showImage">
   <div
-    class="skill-container cursor-unset no-text-highlight row g-2 m-0 ignore-direction align-items-stretch">
+    class="skill-container pt-2 cursor-unset no-text-highlight row g-2 m-0 ignore-direction align-items-stretch">
     @if (showImage) {
       <div class="col-auto mt-0">
         <div
-          style="width: fit-content"
+          style="width: fit-content; height: 100%"
           [class]="_imageCoverClass"
           [ngClass]="{
             'dynamic-border': skill.passive,
@@ -47,7 +47,7 @@
         </div>
       </div>
     }
-    <div class="col">
+    <div class="col mt-0">
       <app-effects-highlighter [text]="skill.description">
         @if (_showSkillName) {
           <p class="mb-1">

@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TavernaInnerContainerComponent } from './taverna-inner-container/taverna-inner-container.component';
+import { TavernaHeroesBarContainerComponent } from './taverna-inner-container/taverna-inner-container.component';
 import { HeroPreviewComponent } from '../../components/heroes-related/hero-preview/hero-preview.component';
 import { frontRoutes } from '../../constants';
+import { TavernaComponent } from './taverna/taverna.component';
+import { TavernaHeroesShortInformationComponent } from './taverna-heroes-short-information/taverna-heroes-short-information.component';
 
 export const tavernaRoutes: Routes = [
-  { component: TavernaInnerContainerComponent, path: frontRoutes.base },
+  { component: TavernaComponent, path: frontRoutes.base },
+  { component: TavernaHeroesShortInformationComponent, path: frontRoutes.shortInformation },
+  { component: TavernaHeroesBarContainerComponent, path: frontRoutes.tavernaHeroesBar },
   { component: HeroPreviewComponent, path: frontRoutes.preview },
 ];
 

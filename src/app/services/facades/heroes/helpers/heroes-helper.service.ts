@@ -1,5 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { SelectableUnit, Unit } from '../../../../models/units-related/unit.model';
+import {
+  EqName,
+  GearPart,
+  SelectableUnit,
+  Unit,
+} from '../../../../models/units-related/unit.model';
 import { EffectsValues } from '../../../../constants';
 import { EffectsService } from '../../../effects/effects.service';
 
@@ -8,6 +13,35 @@ import { EffectsService } from '../../../effects/effects.service';
 })
 export class HeroesHelperService {
   eS = inject(EffectsService);
+
+  //Gear related
+  gearDescriptions: Record<EqName, string> = {
+    eq1: 'The breastplate is a very important piece of armor for any warrior.',
+    eq2: "Scrags are a very important piece of armor for any warrior. You can't fight much with bare feet.",
+    eq3: 'An amulet is a very important piece of armor for any warrior. Fortitude and faith are very important.',
+    eq4: 'A relic of this hero. Gives a bonus to parameters.',
+  };
+
+  getGearDescription(name: EqName) {
+    return this.gearDescriptions[name];
+  }
+
+  gearParts: GearPart[] = [
+    { alias: 'healthIncrement', src: 'health_icon', color: 'health-color' },
+    { alias: 'attackIncrement', src: 'attack_icon', color: 'attack-color' },
+    { alias: 'defenceIncrement', src: 'def_icon', color: 'defence-color' },
+  ];
+
+  getGearLevelByName(name: EqName, hero: Unit) {
+    return (
+      {
+        eq1: hero.eq1Level,
+        eq2: hero.eq2Level,
+        eq3: hero.eq3Level,
+        eq4: hero.eq4Level,
+      } satisfies Record<EqName, number>
+    )[name];
+  }
 
   get effects() {
     return this.eS.effects;

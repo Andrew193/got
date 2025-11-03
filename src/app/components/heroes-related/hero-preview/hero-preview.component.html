@@ -17,7 +17,7 @@
       <aside class="p-2 stats-bar justify-content-between mb-0 color-white">
         <div class="p-2 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
-          <div class="flex-row gap-1">
+          <div class="row g-3 m-0">
             <ng-container
               [ngTemplateOutlet]="itemTemplate"
               [ngTemplateOutletContext]="{ name: 'eq1' }"></ng-container>
@@ -32,49 +32,61 @@
               [ngTemplateOutletContext]="{ name: 'eq4' }"></ng-container>
           </div>
         </div>
+        <div class="mt-2">
+          <button class="w-100 got-toggle" (click)="backToTavern()">Back to Tavern</button>
+        </div>
       </aside>
     </div>
-    <button class="btn btn-info got-toggle" (click)="backToTavern()">Back to Tavern</button>
   </div>
 </div>
 
 <ng-template #itemTemplate let-name="name">
-  @let desc = getItemDescription(name);
-  @let level = getLevelByName(name);
+  @let desc = getGearDescription(name);
+  @let level = getGearLevelByName(name);
 
-  <div class="col row m-0 align-items-stretch flex-column justify-content-between">
-    <div class="flex-row">
+  <div class="col-md-6 col-lg d-flex flex-column align-items-stretch justify-content-between">
+    <div class="row g-0 flex-grow-1 mb-2">
       <div class="col-auto">
         <img [src]="'assets/resourses/imgs/eq/' + name + '.png'" [alt]="name" />
       </div>
       <p class="ps-2 col">{{ desc }}</p>
     </div>
-    <div class="flex-row eq-stats mb-0">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 flex-row justify-content-center mb-0">
-        <div class="col-12">
-          <div class="flex-row ps-2 mb-0">
-            <img src="../../../../assets/resourses/imgs/icons/attack_icon.png" alt="attack" />
-            <span>{{ level * selectedHero.attackIncrement }}</span>
-            <span>(+{{ selectedHero.attackIncrement }})</span>
-          </div>
-          <div class="flex-row ps-2 mb-0">
-            <img src="../../../../assets/resourses/imgs/icons/def_icon.png" alt="defence" />
-            <span>{{ level * selectedHero.defenceIncrement }}</span>
-            <span>+({{ selectedHero.defenceIncrement }})</span>
-          </div>
-          <div class="flex-row ps-2 mb-0">
-            <img src="../../../../assets/resourses/imgs/icons/health_icon.png" alt="health" />
-            <span>{{ level * selectedHero.healthIncrement }}</span>
-            <span>(+{{ selectedHero.healthIncrement }})</span>
-          </div>
-          <p class="text-center mb-2 fw-bold">{{ level }}/200</p>
+    <div
+      class="eq-stats col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center mb-0 p-2 position-relative">
+      @for (part of gearParts; track part.alias) {
+        <ng-container
+          [ngTemplateOutlet]="itemTemplatePart"
+          [ngTemplateOutletContext]="{
+            level,
+            src: part.src,
+            alias: part.alias,
+            color: part.color,
+          }" />
+      }
+      <span class="text-center fw-bold level-bar"
+        ><b class="current-gear-level">{{ level }}</b
+        >/200</span
+      >
+      @if (200 - level > 0) {
+        <div class="text-center mt-3">
+          <button class="got-toggle w-100 got-toggle-green">Upgrade</button>
         </div>
-      </div>
+      }
     </div>
-    @if (200 - level > 0) {
-      <div class="m-0-auto mt-2 text-center" style="height: fit-content">
-        <button class="got-toggle got-toggle-green">Upgrade</button>
-      </div>
-    }
+  </div>
+</ng-template>
+
+<ng-template
+  #itemTemplatePart
+  let-level="level"
+  let-src="src"
+  let-color="color"
+  let-alias="alias"
+  let-alt="alt">
+  <div class="flex-row ps-2 mb-0">
+    @let _increment = getIncrement(alias);
+    <img [src]="'../../../../assets/resourses/imgs/icons/' + src + '.png'" [alt]="alt || src" />
+    <span [class]="color">{{ level * _increment }}</span>
+    <span>( + {{ _increment }} )</span>
   </div>
 </ng-template>

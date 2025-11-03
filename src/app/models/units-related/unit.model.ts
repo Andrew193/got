@@ -69,6 +69,29 @@ export enum HeroType {
   DEFENCE,
 }
 
+export type EqName = 'eq1' | 'eq2' | 'eq3' | 'eq4';
+
+type GearMap = {
+  attackIncrement: 'attack_icon';
+  defenceIncrement: 'def_icon';
+  healthIncrement: 'health_icon';
+};
+
+type GearMapColors = {
+  attackIncrement: 'attack-color';
+  defenceIncrement: 'defence-color';
+  healthIncrement: 'health-color';
+};
+
+export type GearPart = {
+  [K in keyof GearMap]: {
+    alias: K;
+    src: GearMap[K];
+    color: GearMapColors[K];
+    alt?: string;
+  };
+}[keyof GearMap];
+
 export enum Rarity {
   COMMON,
   RARE,

@@ -17,8 +17,28 @@
 @use 'assets/resourses/styles/flips';
 @use 'assets/resourses/styles/images';
 @use 'assets/resourses/styles/material/theming';
+@use 'sass:map';
 
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+
+$utilities: map.merge(
+  $utilities,
+  (
+    'font-size': map.merge(
+        map.get($utilities, 'font-size'),
+        (
+          responsive: true,
+        )
+      ),
+  )
+);
+
+@import 'bootstrap/scss/utilities/api';
+@import 'bootstrap/scss/bootstrap';
 
 html,
 body {
