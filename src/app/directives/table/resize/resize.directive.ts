@@ -40,7 +40,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   localStorageService = inject(LocalStorageService);
 
   inited = false;
-  private colgroup?: HTMLTableColElement[]; // массив <col> по порядку
+  private colgroup?: HTMLTableColElement[];
 
   @Input('appTableResize') cfg: ResizeCfg | '' = {};
   @Output() columnWidthChange = new EventEmitter<{ alias: string; width: number }>();
@@ -101,7 +101,12 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     this.colgroup = undefined;
     this.table.querySelector('colgroup')?.remove();
     this.ensureColgroup();
-    this.freezeCurrentWidths(true);
+    const sbw = this.getBarWidth();
+
+    this.freezeCurrentWidths(
+      true,
+      (this.table.parentElement?.offsetWidth || sbw) - sbw - this.conf.handleWidth,
+    );
   }
 
   private ensureColgroup(): void {
@@ -156,13 +161,13 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     this.destroyFns.forEach(f => f());
   }
 
-  private freezeCurrentWidths(hardReset = false) {
+  private freezeCurrentWidths(hardReset = false, width?: number) {
     const headers = this.getHeaders();
     const anyInline = headers.some(h => h.style.width);
 
     if (anyInline && !hardReset) return;
 
-    let tableWidth = this.getTableWidth();
+    let tableWidth = width || this.getTableWidth();
     const raw = hardReset ? null : this.localStorageService.getItem(this.conf.storageKey);
 
     if (raw) {
@@ -318,17 +323,11 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     const finalA = staticTable ? A : B === maxWidth ? A + Math.abs(dx) : A;
     const finalB = staticTable ? B : B === maxWidth ? B + dx : B;
 
-    if (staticTable) {
-      const parentWidth = this.table.parentElement?.offsetWidth || this.getTableWidth();
-      const headerWidthMap = this.getHeaderWidthMap();
-      const possibleTableWidth = Object.values(headerWidthMap).reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-        0,
-      );
+    if (finalA === minWidth) {
+      //Silent drop of resizing
+      this.moving = undefined;
 
-      if (possibleTableWidth > parentWidth) {
-        return;
-      }
+      return;
     }
 
     this.applyWidth(this.moving.th, finalA);
@@ -379,24 +378,6 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   }
 
   private stopResizing() {
-    const { staticTable } = this.conf;
-
-    if (staticTable) {
-      const parentWidth = this.table.parentElement?.offsetWidth || this.getTableWidth();
-      const headerWidthMap = this.getHeaderWidthMap();
-
-      const possibleTableWidth = Object.values(headerWidthMap).reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-        0,
-      );
-
-      if (possibleTableWidth > parentWidth - 10) {
-        this.getHeaders().map(el => {
-          this.applyWidth(el, headerWidthMap[this.pickAlias(el) || ''] - 20);
-        });
-      }
-    }
-
     if (!this.moving) return;
 
     if (this.conf.autosave) this.saveWidth();
@@ -500,7 +481,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   getTableWidth() {
     return this.getHeaders()
       .map(el => window.getComputedStyle(el).width)
-      .reduce((curr, prev) => curr + Number.parseFloat(prev), -20);
+      .reduce((curr, prev) => curr + Number.parseFloat(prev), -this.getBarWidth());
   }
 
   private measureBestWidth(alias: string, th: HTMLTableCellElement): number {
@@ -518,6 +499,12 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
   private clamp(n: number, min: number, max: number) {
     return Math.min(Math.max(n, min), max);
+  }
+
+  private getBarWidth() {
+    return (
+      (this.table.parentElement?.offsetWidth || 0) - (this.table.parentElement?.clientWidth || 0)
+    );
   }
 
   @HostListener('window:resize', ['$event'])

@@ -9,6 +9,11 @@
   background-color: index.$var-metal-dark-2;
 }
 
+table.mat-mdc-table {
+  width: 100%;
+  border-collapse: separate;
+}
+
 th[mat-header-cell] .col-resize-handle:hover .col-resize-line {
   opacity: 0.6;
 }

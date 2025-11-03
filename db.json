@@ -3,9 +3,8 @@
     {
       "config": {
         "columnsConfig": {
-          "name": 317,
-          "rarity": 317,
-          "heroType": 317
+          "name": 391,
+          "rarity": 391
         },
         "pageSize": 25
       },
@@ -38,14 +37,19 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 528480,
-        "claimedRewards": ["2", "4", "8", "12"],
+        "onlineTime": 534240,
+        "claimedRewards": [
+          "2",
+          "4",
+          "8",
+          "12"
+        ],
         "lastLoyaltyBonus": "11/02/2025"
       },
       "currency": {
         "gold": 1337,
         "silver": 3960,
-        "copper": 3085431
+        "copper": 3359431
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -62,9 +66,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 13,
-      "totalDays": 70,
-      "lastLogin": "11/02/2025"
+      "day": 14,
+      "totalDays": 71,
+      "lastLogin": "11/03/2025"
     }
   ],
   "giftTrip": [
