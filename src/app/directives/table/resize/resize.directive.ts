@@ -109,7 +109,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     );
   }
 
-  private ensureColgroup(): void {
+  private ensureColgroup() {
     if (this.colgroup?.length) return;
 
     const table = this.table;
@@ -136,7 +136,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     const resizeActive = this.resizeActive();
 
     this.table = this.el.nativeElement as HTMLTableElement;
@@ -157,7 +157,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroyFns.forEach(f => f());
   }
 
@@ -193,7 +193,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     });
   }
 
-  private installHandles(): void {
+  private installHandles() {
     const headers = this.table.querySelectorAll<HTMLTableCellElement>('th[mat-header-cell]');
 
     headers.forEach(th => {
@@ -236,14 +236,14 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     });
   }
 
-  private reinstallHandles(): void {
+  private reinstallHandles() {
     const handles = this.table.querySelectorAll('.col-resize-handle');
 
     handles.forEach(h => h.remove());
     this.installHandles();
   }
 
-  private onMouseDown(e: MouseEvent, th: HTMLTableCellElement): void {
+  private onMouseDown(e: MouseEvent, th: HTMLTableCellElement) {
     if (this.table.classList.contains('equal-cols')) return;
 
     e.preventDefault();
@@ -263,7 +263,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     this.doc.body.classList.add('resizing-col');
   }
 
-  private onMouseMove(e: MouseEvent): void {
+  private onMouseMove(e: MouseEvent) {
     if (!this.moving) return;
 
     const dx = e.clientX - this.moving.startX;
@@ -323,12 +323,13 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     const finalA = staticTable ? A : B === maxWidth ? A + Math.abs(dx) : A;
     const finalB = staticTable ? B : B === maxWidth ? B + dx : B;
 
-    if (finalA === minWidth) {
-      //Silent drop of resizing
-      this.stopResizing();
-
-      return;
-    }
+    // Optional drop for small size
+    // if (finalA === minWidth) {
+    //   //Silent drop of resizing
+    //   this.stopResizing();
+    //
+    //   return;
+    // }
 
     this.applyWidth(this.moving.th, finalA);
     this.applyWidth(neighborTh, finalB);
@@ -417,7 +418,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     return cls ? cls.replace('mat-column-', '') : null;
   }
 
-  private applyWidth(th: HTMLTableCellElement, widthPx: number): void {
+  private applyWidth(th: HTMLTableCellElement, widthPx: number) {
     const alias = this.pickAlias(th);
 
     if (!alias) return;
@@ -454,7 +455,7 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     return this.tableName() || `table-resize:${path}:${id || 'default'}`;
   }
 
-  private saveWidth(): void {
+  private saveWidth() {
     try {
       const toSave = this.getHeaderWidthMap();
       const key = this.conf.storageKey;

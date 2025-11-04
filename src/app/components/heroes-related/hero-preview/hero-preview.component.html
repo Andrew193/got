@@ -1,7 +1,7 @@
 <div class="preview-container">
   <div class="m-2">
     <div class="text-center">
-      <h3>{{ name }}</h3>
+      <h3>{{ selectedTileHero.name }}</h3>
     </div>
     <div class="row main-content m-0">
       <aside class="p-2 stats-bar justify-content-between mb-0">
@@ -32,9 +32,7 @@
               [ngTemplateOutletContext]="{ name: 'eq4' }"></ng-container>
           </div>
         </div>
-        <div class="mt-2">
-          <button class="w-100 got-toggle" (click)="backToTavern()">Back to Tavern</button>
-        </div>
+        <app-taverna-pages-footer />
       </aside>
     </div>
   </div>
@@ -63,10 +61,10 @@
             color: part.color,
           }" />
       }
-      <span class="text-center fw-bold level-bar"
-        ><b class="current-gear-level">{{ level }}</b
-        >/200</span
-      >
+      <span class="text-center fw-bold level-bar">
+        <b class="current-gear-level">{{ level }}</b>
+        /200
+      </span>
       @if (200 - level > 0) {
         <div class="text-center mt-3">
           <button class="got-toggle w-100 got-toggle-green">Upgrade</button>

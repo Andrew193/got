@@ -8,10 +8,17 @@ import { NgTemplateOutlet } from '@angular/common';
 import { TileUnit } from '../../../models/field.model';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { RatingComponent } from '../../common/rating/rating.component';
+import { TavernaPagesFooterComponent } from '../../../modules/taverna/views/taverna-pages-footer/taverna-pages-footer.component';
 
 @Component({
   selector: 'app-hero-preview',
-  imports: [StatsComponent, SkillsRenderComponent, NgTemplateOutlet, RatingComponent],
+  imports: [
+    StatsComponent,
+    SkillsRenderComponent,
+    NgTemplateOutlet,
+    RatingComponent,
+    TavernaPagesFooterComponent,
+  ],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss',
 })
@@ -20,7 +27,6 @@ export class HeroPreviewComponent implements OnInit {
   route = inject(ActivatedRoute);
   facade = inject(HeroesFacadeService);
 
-  name = '';
   selectedHero!: Unit;
   selectedTileHero!: TileUnit;
   getGearDescription = (name: EqName) => this.facade.helper.getGearDescription(name);
@@ -30,10 +36,8 @@ export class HeroPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.name = params['name'];
-
-      if (this.name) {
-        this.selectedHero = this.facade.getUnitByName(this.name, {
+      if (params['name']) {
+        this.selectedHero = this.facade.getUnitByName(params['name'], {
           level: 1,
           rank: 1,
           eq1Level: 1,

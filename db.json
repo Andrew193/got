@@ -3,9 +3,10 @@
     {
       "config": {
         "columnsConfig": {
-          "name": 105,
-          "rarity": 455,
-          "heroType": 100
+          "heroType": 100,
+          "attack": 837,
+          "defence": 100,
+          "health": 826
         },
         "pageSize": 25
       },
@@ -38,7 +39,7 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 549780,
+        "onlineTime": 560400,
         "claimedRewards": [
           "2",
           "4",
@@ -48,9 +49,9 @@
         "lastLoyaltyBonus": "11/03/2025"
       },
       "currency": {
-        "gold": 1365,
+        "gold": 1430,
         "silver": 4450,
-        "copper": 3602741
+        "copper": 3893968
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -67,9 +68,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 14,
-      "totalDays": 71,
-      "lastLogin": "11/03/2025"
+      "day": 15,
+      "totalDays": 72,
+      "lastLogin": "11/04/2025"
     }
   ],
   "giftTrip": [
@@ -81,7 +82,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "11/03/2025"
+      "lastLogin": "11/04/2025"
     }
   ],
   "deposits": [

@@ -78,7 +78,7 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
     handleWidth: 10,
     autosave: true,
     preserveTableWidth: true,
-    staticTable: false,
+    staticTable: true,
   };
   equalize$ = new Subject<number>();
 
