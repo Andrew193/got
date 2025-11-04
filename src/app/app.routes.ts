@@ -12,7 +12,12 @@ export const routes: Routes = [
     path: frontRoutes.base,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    providers: [StateConfigs.displayReward, StateConfigs.heroesSelect, StateConfigs.gameBoard],
+    providers: [
+      StateConfigs.displayReward,
+      StateConfigs.heroesSelect,
+      StateConfigs.gameBoard,
+      StateConfigs.assistant,
+    ],
     children: [
       {
         component: LobbyComponent,

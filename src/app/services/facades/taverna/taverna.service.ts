@@ -16,6 +16,7 @@ import {
 import { SortDirection } from '@angular/material/sort';
 import { TavernaHeroesTableHelperService } from './helpers/heroes-table-helper.service';
 import { TableService } from '../../table/table.service';
+import { TavernaAssistantService } from './helpers/taverna-assistant.service';
 
 @Injectable()
 export class TavernaFacadeService {
@@ -23,6 +24,7 @@ export class TavernaFacadeService {
 
   protected heroesService = inject(HeroesFacadeService);
   private heroesTableHelper = inject(TavernaHeroesTableHelperService);
+  assistantService = inject(TavernaAssistantService);
 
   //Root taverna
   readonly activities: TavernaActivities[] = [
@@ -56,10 +58,10 @@ export class TavernaFacadeService {
 
   filteredOptions: Observable<string[]> = of([]);
 
-  private readonly _formGroup;
+  private readonly _heroBarFormGroup;
 
   constructor() {
-    this._formGroup = new FormGroup<TavernaHeroesBarSearchForm>({
+    this._heroBarFormGroup = new FormGroup<TavernaHeroesBarSearchForm>({
       unitName: new FormControl('', { nonNullable: true }),
     });
 
@@ -76,7 +78,7 @@ export class TavernaFacadeService {
   init() {
     this.options = this.originalOptions.map(hero => hero.name);
 
-    this.filteredOptions = this._formGroup.get('unitName')!.valueChanges.pipe(
+    this.filteredOptions = this._heroBarFormGroup.get('unitName')!.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
@@ -84,7 +86,7 @@ export class TavernaFacadeService {
     return {
       options: this.options,
       filteredOptions: this.filteredOptions,
-      source$: this._formGroup.get('unitName')!.valueChanges,
+      source$: this._heroBarFormGroup.get('unitName')!.valueChanges,
     };
   }
 
@@ -93,7 +95,11 @@ export class TavernaFacadeService {
   }
 
   get formGroup() {
-    return this._formGroup;
+    return this._heroBarFormGroup;
+  }
+
+  getAssistantFormGroup() {
+    return this.assistantService.getForm();
   }
 }
 

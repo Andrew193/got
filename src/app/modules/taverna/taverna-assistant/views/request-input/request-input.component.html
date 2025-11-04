@@ -1,0 +1,15 @@
+@let _isLoading = isLoading | async;
+
+<form [formGroup]="form">
+  <fieldset [disabled]="_isLoading" class="row m-0 gap-2 align-items-center">
+    <app-text-input
+      class="col p-0"
+      [showLabel]="false"
+      [placeholder]="'Ask anything.'"
+      [controlName]="'request'" />
+
+    <button (click)="submitAssistantForm()" class="col-auto submit-btn" mat-mini-fab>
+      <mat-icon>send</mat-icon>
+    </button>
+  </fieldset>
+</form>

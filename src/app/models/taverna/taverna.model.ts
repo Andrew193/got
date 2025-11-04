@@ -4,6 +4,10 @@ export type TavernaHeroesBarSearchForm = {
   unitName: FormControl<string>;
 };
 
+export type TavernaAssistantForm = {
+  request: FormControl<string>;
+};
+
 export type TavernaActivities = {
   label: string;
   imgSrc: string;

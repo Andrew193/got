@@ -1,0 +1,25 @@
+@use '../../../../../../assets/resourses/styles/index' as index;
+
+.response-holder-container {
+  height: 400px;
+  overflow: auto;
+  border: index.$var-border-2-bronze;
+  box-shadow: index.$var-box-shadow;
+  border-radius: inherit;
+
+  .request {
+    box-shadow: index.$var-box-shadow-out;
+    border-radius: 5px;
+    width: calc(100% - 5%);
+    background-color: rgba(223, 223, 223, 0.68);
+    color: black;
+
+    &.request-background {
+      margin-left: 5%;
+    }
+  }
+
+  .request-background {
+    background-color: rgb(157 157 157 / 68%);
+  }
+}

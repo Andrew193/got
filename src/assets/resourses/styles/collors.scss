@@ -63,4 +63,7 @@ $all-colors: (
   .#{$name + ''} {
     #{map.get($config, prop)}: map.get($config, value) !important;
   }
+  .#{$name + ''}-back {
+    background-color: map.get($config, value) !important;
+  }
 }

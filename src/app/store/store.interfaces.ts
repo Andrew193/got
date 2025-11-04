@@ -15,6 +15,7 @@ export enum StoreNames {
   displayReward = 'displayReward',
   heroesSelect = 'heroesSelect',
   gameBoard = 'gameBoard',
+  assistant = 'assistant',
 }
 
 export enum DisplayRewardNames {
@@ -85,3 +86,22 @@ export interface BasicBoardState extends FieldConfigState {
   tilesToHighlight: EntityState<TilesToHighlight>;
   battleLog: BasicBoardLogRecord;
 }
+
+//Assistant
+export type AssistantRecord = {
+  message: string;
+  request: boolean;
+  id: string;
+};
+
+export type ViewAssistantRecord = AssistantRecord & {
+  keywords: string[];
+};
+
+export type AssistantRecords = EntityState<AssistantRecord> & {
+  loading: boolean;
+};
+
+export type AssistantState = {
+  records: AssistantRecords;
+};

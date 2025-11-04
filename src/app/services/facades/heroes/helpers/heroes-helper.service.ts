@@ -131,19 +131,6 @@ export class HeroesHelperService {
     return this.eS.effectsDescriptions[effect];
   }
 
-  getEffectsFromString(text: string) {
-    const result = [];
-    const effects = this.getEffectsToHighlight();
-
-    for (const effect of effects) {
-      if (text.includes(effect)) {
-        result.push(`${effect} - ${this.getEffectsDescription(effect)}`);
-      }
-    }
-
-    return result;
-  }
-
   getSelectableUnit(units: Unit[]): SelectableUnit[] {
     return units.map(_ => ({ name: _.name, imgSrc: _.imgSrc }));
   }

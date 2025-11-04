@@ -11,6 +11,10 @@
   );
 }
 
+.mdc-evolution-chip-set__chips {
+  margin-left: unset !important;
+}
+
 .mat-mdc-tab-body-wrapper {
   border-left: index.$var-border-2-bronze;
   border-right: index.$var-border-2-bronze;

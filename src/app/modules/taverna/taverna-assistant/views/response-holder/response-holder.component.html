@@ -1,0 +1,41 @@
+@let _isLoading = isLoading | async;
+
+<div class="position-relative">
+  @if (_isLoading) {
+    <app-container-label>
+      <mat-spinner></mat-spinner>
+    </app-container-label>
+  }
+
+  <section class="response-holder-container mb-2 p-2">
+    @let _parsedRecords = parsedRecords();
+
+    @for (record of _parsedRecords; track record.id) {
+      <div
+        class="p-2 mb-2 request row"
+        [class]="!record.request ? 'ms-1' : ''"
+        [ngClass]="{
+          'request-background': record.request,
+        }">
+        @if (!record.request) {
+          <div class="col-auto">
+            <img
+              [src]="'assets/resourses/imgs/tile-backgrounds/aemon_young.png'"
+              alt="assistant"
+              width="60px"
+              height="60px" />
+          </div>
+        }
+
+        <div class="col">
+          <app-effects-highlighter [text]="record.message" />
+          <mat-chip-set aria-label="request keywords">
+            @for (tag of record.keywords; track $index) {
+              <mat-chip>{{ tag }}</mat-chip>
+            }
+          </mat-chip-set>
+        </div>
+      </div>
+    }
+  </section>
+</div>

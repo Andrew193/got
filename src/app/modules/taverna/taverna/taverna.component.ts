@@ -11,6 +11,7 @@ import { ContainerLabelComponent } from '../../../components/views/container-lab
 import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { TavernaPagesFooterComponent } from '../views/taverna-pages-footer/taverna-pages-footer.component';
+import { TavernaAssistantComponent } from '../taverna-assistant/taverna-assistant.component';
 
 @Component({
   selector: 'app-taverna',
@@ -23,6 +24,7 @@ import { TavernaPagesFooterComponent } from '../views/taverna-pages-footer/taver
     NgClass,
     MatIcon,
     TavernaPagesFooterComponent,
+    TavernaAssistantComponent,
   ],
   templateUrl: './taverna.component.html',
   providers: [HeroesSelectFacadeService],
