@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TableColumns } from '../../../models/table/abstract-table.model';
 import { AbstractTableComponent } from '../../../components/abstract/abstract-table/abstract-table.component';
 import { Unit } from '../../../models/units-related/unit.model';
@@ -15,6 +15,7 @@ import { DATA_SOURCES, TABLE_NAMES } from '../../../constants';
     './taverna-heroes-table.component.scss',
     '../../../components/abstract/abstract-table/abstract-table.component.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TavernaHeroesTableComponent extends AbstractTableComponent<Unit> {
   helper = inject(TavernaFacadeService);

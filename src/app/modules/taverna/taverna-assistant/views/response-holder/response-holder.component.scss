@@ -22,4 +22,12 @@
   .request-background {
     background-color: rgb(157 157 157 / 68%);
   }
+
+  ::ng-deep {
+    .response-container {
+      p:first-of-type:has(~ p) {
+        margin-bottom: 10px !important;
+      }
+    }
+  }
 }

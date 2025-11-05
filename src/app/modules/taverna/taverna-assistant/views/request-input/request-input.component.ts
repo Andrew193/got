@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TavernaFacadeService } from '../../../../../services/facades/taverna/taverna.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from '../../../../../components/data-inputs/text-input/text-input.component';
@@ -13,6 +13,7 @@ import { AsyncPipe } from '@angular/common';
   imports: [ReactiveFormsModule, TextInputComponent, MatIcon, MatMiniFabButton, AsyncPipe],
   templateUrl: './request-input.component.html',
   styleUrl: './request-input.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestInputComponent {
   store = inject(Store);

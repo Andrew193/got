@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BasicStoresHolderComponent } from '../../../components/views/basic-stores-holder/basic-stores-holder.component';
 import { PageLoaderComponent } from '../../../components/views/page-loader/page-loader.component';
@@ -29,6 +29,7 @@ import { TavernaAssistantComponent } from '../taverna-assistant/taverna-assistan
   templateUrl: './taverna.component.html',
   providers: [HeroesSelectFacadeService],
   styleUrl: './taverna.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TavernaComponent {
   helper = inject(TavernaFacadeService);

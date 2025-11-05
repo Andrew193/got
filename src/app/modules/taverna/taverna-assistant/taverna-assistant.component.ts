@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ResponseHolderComponent } from './views/response-holder/response-holder.component';
 import { RequestInputComponent } from './views/request-input/request-input.component';
 
@@ -7,6 +7,7 @@ import { RequestInputComponent } from './views/request-input/request-input.compo
   imports: [ResponseHolderComponent, RequestInputComponent],
   templateUrl: './taverna-assistant.component.html',
   styleUrl: './taverna-assistant.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TavernaAssistantComponent implements OnInit {
   ngOnInit() {}

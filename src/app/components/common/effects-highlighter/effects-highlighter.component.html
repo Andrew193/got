@@ -1,12 +1,37 @@
 @let _formatedText = formatedText();
+@let _renderBySentence = renderBySentence();
+@let _containerClass = containerClass();
 
-<ng-content />
-<p class="d-inline-block mb-0">
-  @for (word of _formatedText; track word.hint + word.text + $index) {
-    @if (word.hint) {
-      <span class="highlight-effect" [matTooltip]="word.desc">{{ word.text }}</span>
-    } @else {
-      <span>{{ word.text }}</span>
+<div [class]="_containerClass">
+  <ng-content />
+
+  @if (_renderBySentence) {
+    @for (textPart of _formatedText; track $index) {
+      <ng-template
+        [ngTemplateOutlet]="text"
+        [ngTemplateOutletContext]="{ text: textPart, last: $last, first: $first }" />
     }
+  } @else {
+    <ng-template [ngTemplateOutlet]="text" [ngTemplateOutletContext]="{ text: _formatedText[0] }" />
   }
-</p>
+
+  <ng-template #text let-text="text" let-last="last" let-first="first">
+    <p
+      class="mb-0 pr-1"
+      [ngClass]="{
+        'mt-2': last,
+        'mb-2': first,
+        'special-line': last || first,
+        'd-inline-block': last || first,
+        'd-inline': !last && !first,
+      }">
+      @for (word of text; track word.hint + word.text + $index) {
+        @if (word.hint) {
+          <span class="highlight-effect" [matTooltip]="word.desc">{{ word.text }}</span>
+        } @else {
+          <span>{{ word.text }}</span>
+        }
+      }
+    </p>
+  </ng-template>
+</div>

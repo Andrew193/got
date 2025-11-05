@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutocompleteMatInputComponent } from '../../../components/data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
@@ -22,6 +22,7 @@ import { Unit } from '../../../models/units-related/unit.model';
   providers: [{ provide: PAGINATION_SERVICE, useClass: HeroesFacadeService }],
   templateUrl: './taverna-heroes-bar.component.html',
   styleUrl: './taverna-heroes-bar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
   helper = inject(TavernaFacadeService);

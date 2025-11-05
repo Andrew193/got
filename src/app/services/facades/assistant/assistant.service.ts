@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AssistantMemory, Memory } from '../../../models/interfaces/assistant.interface';
 import { MemoryMapsService } from './helpers/memory-maps.service';
+import { AssistantRecord } from '../../../store/store.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -22,18 +23,34 @@ export class AssistantService {
 
   getResponseFromMemory(query: string) {
     const lowerCaseQuery = query.toLowerCase();
-    const response = new Map();
+    const responseParts = new Map();
 
     for (const key in this.memory) {
       if (lowerCaseQuery.includes(key)) {
-        response.set(key, this.memory[key]);
+        responseParts.set(key, this.memory[key]);
       }
     }
 
-    if (response.size) {
-      console.log(Array.from(response));
+    if (responseParts.size) {
+      const response = `Of course, let me explain.`;
+
+      return (
+        response +
+        [
+          ...responseParts.values(),
+          `If there's anything else you'd like to tell me, don't hesitate to ask.`,
+        ].join('')
+      );
     }
 
     return "Sorry, I didn't understand your question.";
+  }
+
+  createRequest(message: string, request: boolean): AssistantRecord {
+    return {
+      message: request ? message : this.getResponseFromMemory(message),
+      request,
+      id: crypto.randomUUID(),
+    };
   }
 }

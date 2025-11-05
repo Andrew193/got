@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { TavernaHeroesTableComponent } from '../taverna-heroes-table/taverna-heroes-table.component';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
@@ -16,6 +16,7 @@ import { TavernaPagesFooterComponent } from '../views/taverna-pages-footer/taver
   ],
   templateUrl: './taverna-heroes-short-information.component.html',
   styleUrl: './taverna-heroes-short-information.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TavernaHeroesShortInformationComponent {
   nav = inject(NavigationService);

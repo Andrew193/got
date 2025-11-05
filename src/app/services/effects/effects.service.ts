@@ -6,6 +6,7 @@ import {
   ALL_EFFECTS_MULTIPLIERS,
   ALL_MOBILITY_EFFECTS_MULTIPLIERS,
   Effects,
+  effectsDescriptions,
   EffectsValues,
   MobilityEffects,
 } from '../../constants';
@@ -21,25 +22,7 @@ export class EffectsService {
 
   effects: Effects = structuredClone(ALL_EFFECTS);
 
-  effectsDescriptions: Record<EffectsValues, string> = {
-    //Buffs
-    [this.effects.healthRestore]: 'Восстановливает 5% здоровья каждый ход.',
-    //Debuffs
-    [this.effects.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
-    [this.effects.bleeding]: 'Наносит противнику урон в размере 5% от его здоровья каждый ход.',
-    [this.effects.poison]: 'Наносит противнику урон в размере 7.5% от его здоровья каждый ход.',
-    //Mobility
-    [this.effects.freezing]:
-      'Герой заморожен и может пройти только 1 клетку за ход. Также теряет 20% здоровья каждый ход.',
-    [this.effects.root]: 'Герой скован корнями и не может двигаться.',
-    //Attack
-    [this.effects.attackBuff]: 'Увеличивает атаку героя на 50%.',
-    [this.effects.attackBreak]: 'Уменьшает атаку героя на 50%.',
-    //Deff
-    [this.effects.defBuff]: 'Увеличивает защиту героя на 50%.',
-    [this.effects.defBreak]: 'Уменьшает защиту героя на 50%.',
-    [this.effects.defDestroy]: 'Защита героя снижается на 50 ед. за ход.',
-  };
+  effectsDescriptions: Record<EffectsValues, string> = effectsDescriptions(this.effects);
 
   get effectsToHighlight() {
     return Object.values(this.effects);
@@ -69,7 +52,7 @@ export class EffectsService {
     if (effect.type === this.effects.defDestroy && effect.defDestroy) {
       unit.defence += effect.defDestroy;
       message += unit.health
-        ? `Защита героя ${unit.name} была снижена на ${effect.defDestroy} ед. из-за штрафа ${effect.type}.`
+        ? `Hero's Defense ${unit.name} was reduced by ${effect.defDestroy}, due to ${effect.type}.`
         : '';
     }
 

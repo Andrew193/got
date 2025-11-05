@@ -15,42 +15,20 @@ export class TavernaAssistantService {
   textService = inject(TextService);
   assistant = inject(AssistantService);
 
-  private _form = new FormGroup<TavernaAssistantForm>(
-    {
-      request: new FormControl('', { nonNullable: true }),
-    },
-    { updateOn: 'blur' },
-  );
+  private _form = new FormGroup<TavernaAssistantForm>({
+    request: new FormControl('', { nonNullable: true }),
+  });
 
   getForm() {
     return this._form;
   }
 
   public submitAssistantForm = () => {
-    const newRequest = this.createRequest();
+    const newRequest = this.assistant.createRequest(this._form.getRawValue().request, true);
 
     this._form.reset();
-    this.store.dispatch(AssistantActions.toggleLoading());
-
-    setTimeout(() => {
-      this.store.dispatch(AssistantActions.addRequest({ data: newRequest }));
-      this.store.dispatch(AssistantActions.toggleLoading());
-    }, 3000);
+    this.store.dispatch(AssistantActions.addRequest({ data: newRequest }));
   };
-
-  y = false;
-
-  private createRequest(): AssistantRecord {
-    const { request } = this._form.getRawValue();
-
-    this.y = !this.y;
-
-    return {
-      message: request,
-      request: this.y,
-      id: crypto.randomUUID(),
-    };
-  }
 
   parseRecords(records: AssistantRecord[], keywords: string[]): ViewAssistantRecord[] {
     return records.map(record => {

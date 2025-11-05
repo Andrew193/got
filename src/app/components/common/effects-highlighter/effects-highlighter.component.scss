@@ -6,4 +6,8 @@
 p {
   width: 100%;
   text-align: justify;
+
+  &.special-line {
+    font-weight: 500;
+  }
 }

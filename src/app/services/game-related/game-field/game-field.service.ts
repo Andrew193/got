@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AbstractFieldService } from '../../abstract/field/abstract-field.service';
 import { GameService } from '../game-action/game.service';
 import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
-import { getDiagonals } from '../../../constants';
+import { DEFENCE_REDUCTION, getDiagonals } from '../../../constants';
 import { Position, TileUnit } from '../../../models/field.model';
 import { NumbersService } from '../../numbers/numbers.service';
 
@@ -20,7 +20,6 @@ export class GameFieldService extends AbstractFieldService {
   }
 
   getDamage(unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit }) {
-    debugger;
     const fixedDefence = this.gameActionService.getFixedDefence(
       unitConfig.dmgTaker.defence,
       unitConfig.dmgTaker,
@@ -29,7 +28,7 @@ export class GameFieldService extends AbstractFieldService {
       unitConfig.attackDealer.attack,
       unitConfig.attackDealer,
     );
-    const blockedDamage = fixedDefence * 0.4;
+    const blockedDamage = fixedDefence * DEFENCE_REDUCTION;
 
     if (blockedDamage - 200 > fixedAttack) {
       return +(100 + this.numberService.getRandomInt(10, 70)).toFixed(0);

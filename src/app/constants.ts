@@ -55,6 +55,7 @@ export const CURRENCY_NAMES = {
 
 export const DATE_FORMAT = 'MM/DD/YYYY';
 export const BATTLE_SPEED = 500;
+export const DEFENCE_REDUCTION = 0.4;
 export const USER_TOKEN = 'user';
 export const TODAY = moment().format(DATE_FORMAT);
 export const GIFT_STORE_NPC_AMOUNT = 10;
@@ -117,18 +118,40 @@ export const frontRoutes = {
 };
 
 export const ALL_EFFECTS = {
-  burning: 'Горение',
-  freezing: 'Заморозка',
-  healthRestore: 'Восстановление',
-  bleeding: 'Кровотечение',
-  poison: 'Отравление',
-  attackBuff: 'Бонус атаки',
-  attackBreak: 'Заржавелый Меч',
-  defBuff: 'Бонус защиты',
-  defDestroy: 'Коррозия брони',
-  defBreak: 'Разлом брони',
-  root: 'Корень',
+  burning: 'Burning',
+  freezing: 'Freezing',
+  healthRestore: 'Recovery',
+  bleeding: 'Bleeding',
+  poison: 'Poison',
+  attackBuff: 'Attack Bonus',
+  attackBreak: 'Rusty Sword',
+  defBuff: 'Defense Bonus',
+  defDestroy: 'Armor corrosion',
+  defBreak: 'Armor Break',
+  root: 'Root',
 } as const;
+
+export const effectsDescriptions: (effects: Effects) => Record<EffectsValues, string> = (
+  effects: Effects,
+) => ({
+  //Buffs
+  [effects.healthRestore]: 'Restores 5% health every turn.',
+  //Debuffs
+  [effects.burning]: 'Deals damage to the enemy equal to 10% of their health every turn.',
+  [effects.bleeding]: 'Deals damage to the enemy equal to 5% of their health every turn.',
+  [effects.poison]: 'Deals damage to the enemy equal to 7.5% of their health every turn.',
+  //Mobility
+  [effects.freezing]:
+    'Freezes the hero and allows him to move only 1 cell per turn. The hero also loses 20% of health each turn.',
+  [effects.root]: 'Binds the hero with roots, making it is impossible to move.',
+  //Attack
+  [effects.attackBuff]: 'Increases the hero attack by 50%.',
+  [effects.attackBreak]: 'Reduces hero attack by 50%.',
+  //Deff
+  [effects.defBuff]: 'Increases the hero defense by 50%.',
+  [effects.defBreak]: 'Reduces the hero defense by 50%.',
+  [effects.defDestroy]: 'Defense decreases by 50 points per turn.',
+});
 
 export type Effects = typeof ALL_EFFECTS;
 export type EffectsKey = keyof Effects;

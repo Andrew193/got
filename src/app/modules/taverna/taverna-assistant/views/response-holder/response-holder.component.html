@@ -28,13 +28,32 @@
         }
 
         <div class="col">
-          <app-effects-highlighter [text]="record.message" />
-          <mat-chip-set aria-label="request keywords">
-            @for (tag of record.keywords; track $index) {
-              <mat-chip>{{ tag }}</mat-chip>
-            }
-          </mat-chip-set>
+          @if (record.request) {
+            <p>{{ record.message }}</p>
+          } @else {
+            <app-effects-highlighter
+              [containerClass]="'response-container'"
+              [text]="record.message"
+              [renderBySentence]="true"
+              [wordsToHighlight]="memoryKeys" />
+            <mat-chip-set aria-label="request keywords">
+              @for (tag of record.keywords; track $index) {
+                <mat-chip>{{ tag }}</mat-chip>
+              }
+            </mat-chip-set>
+          }
         </div>
+      </div>
+    }
+
+    @if (!_parsedRecords.length) {
+      <div class="p-2 text-center">
+        <img
+          [src]="'assets/resourses/imgs/tile-backgrounds/aemon_young.png'"
+          alt="assistant"
+          width="=100px"
+          height="100px" />
+        <p class="text-center mt-2">Maester Aemon's answers will appear here.</p>
       </div>
     }
   </section>

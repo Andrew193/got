@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   selectAssistantRecords,
@@ -24,6 +24,7 @@ import { ContainerLabelComponent } from '../../../../../components/views/contain
   ],
   templateUrl: './response-holder.component.html',
   styleUrl: './response-holder.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResponseHolderComponent {
   store = inject(Store);
@@ -34,6 +35,10 @@ export class ResponseHolderComponent {
   records = this.store.selectSignal(selectAssistantRecords);
 
   parsedRecords = computed(() => {
-    return this.facade.assistantService.parseRecords(this.records(), Object.keys(this.memory));
+    return this.facade.assistantService.parseRecords(this.records(), this.memoryKeys);
   });
+
+  get memoryKeys() {
+    return Object.keys(this.memory);
+  }
 }

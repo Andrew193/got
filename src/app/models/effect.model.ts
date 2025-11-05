@@ -11,5 +11,5 @@ export interface Effect {
 }
 
 export type EffectForMult = Omit<Effect, 'type'> & {
-  type: Extract<EffectsValues, 'Разлом брони' | 'Заржавелый Меч'>;
+  type: Extract<EffectsValues, 'Armor Break' | 'Rusty Sword'>;
 };
