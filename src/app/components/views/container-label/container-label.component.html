@@ -1,3 +1,15 @@
+@let _projectedContent = projectedContent();
+@let _size = size();
+
 <div class="h-100">
-  <ng-content />
+  <ng-content select="content"></ng-content>
+
+  @if (!_projectedContent) {
+    <mat-icon
+      [style.height]="_size + 'px'"
+      [style.width]="_size + 'px'"
+      [style.font-size]="_size + 'px'"
+      >lock_outline</mat-icon
+    >
+  }
 </div>

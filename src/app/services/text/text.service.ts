@@ -6,12 +6,18 @@ import { Injectable } from '@angular/core';
 export class TextService {
   getKeywordsFromText(text: string, keywords: string[]) {
     const result = [];
+    const textLowerCase = text.toLowerCase();
+
+    console.log('0000000000000000000000000000000000000000000000000000000000000');
 
     for (const word of keywords) {
-      if (text.includes(word)) {
+      console.log(word, '==================', textLowerCase);
+      if (textLowerCase.includes(word)) {
         result.push(word);
       }
     }
+
+    console.log('0000000000000000000000000000000000000000000000000000000000000');
 
     return result;
   }

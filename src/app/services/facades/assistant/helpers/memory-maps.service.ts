@@ -14,7 +14,7 @@ export class MemoryMapsService {
 
   private _baseMemory: Memory = {
     attack: 'The attack affects the damage dealt by a hero.',
-    defence: `Defense affects the amount of damage absorbed. It reduces dmg by ${DEFENCE_REDUCTION * 100}%. If your defense is 1000 points,
+    defence: `Defence affects the amount of damage absorbed. It reduces dmg by ${DEFENCE_REDUCTION * 100}%. If your defense is 1000 points,
     then you can block 400 damage.`,
     health: `Health affects a hero's survivability in battle. While health is above 0, a hero can move and use abilities.
      If health is 0, a hero cannot do anything.`,

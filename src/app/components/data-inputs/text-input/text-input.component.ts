@@ -15,4 +15,5 @@ type InputTypes = 'text' | 'password';
 })
 export class TextInputComponent extends ViewProviderComponent {
   type = input<InputTypes>('text');
+  renderTextarea = input<boolean>(false);
 }

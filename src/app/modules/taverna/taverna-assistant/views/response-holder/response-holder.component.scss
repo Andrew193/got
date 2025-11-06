@@ -1,11 +1,28 @@
 @use '../../../../../../assets/resourses/styles/index' as index;
 
 .response-holder-container {
-  height: 400px;
-  overflow: auto;
   border: index.$var-border-2-bronze;
   box-shadow: index.$var-box-shadow;
   border-radius: inherit;
+
+  .response-filters {
+    background-color: rgba(223, 223, 223, 0.68);
+    border: index.$var-border-2-bronze;
+    width: 300px;
+  }
+
+  .records-container {
+    height: 400px;
+    overflow: auto;
+  }
+
+  mat-chip-set {
+    ::ng-deep .mdc-evolution-chip-set__chips {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow: auto;
+    }
+  }
 
   .request {
     box-shadow: index.$var-box-shadow-out;
@@ -16,6 +33,10 @@
 
     &.request-background {
       margin-left: 5%;
+    }
+
+    &.selected-key {
+      background-color: rgba(162, 193, 155, 0.68) !important;
     }
   }
 

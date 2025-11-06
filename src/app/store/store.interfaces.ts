@@ -5,6 +5,7 @@ import { HeroesSelectNames } from '../constants';
 import { EntityState } from '@ngrx/entity';
 import { Coordinate, TilesToHighlight } from '../models/field.model';
 import { LogRecord } from '../models/logger.model';
+import { Keyword } from '../models/taverna/taverna.model';
 
 //Store
 
@@ -92,9 +93,6 @@ export type AssistantRecord = {
   message: string;
   request: boolean;
   id: string;
-};
-
-export type ViewAssistantRecord = AssistantRecord & {
   keywords: string[];
 };
 
@@ -102,6 +100,9 @@ export type AssistantRecords = EntityState<AssistantRecord> & {
   loading: boolean;
 };
 
+export type AssistantKeywords = EntityState<Keyword>;
+
 export type AssistantState = {
   records: AssistantRecords;
+  keywords: AssistantKeywords;
 };

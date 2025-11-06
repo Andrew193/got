@@ -31,7 +31,7 @@ aside {
     transition: all ease 0.5s;
     cursor: pointer;
 
-    &:hover {
+    &:not(:has(app-container-label)):hover {
       background: rgba(0, 0, 0, 0.56);
 
       a {

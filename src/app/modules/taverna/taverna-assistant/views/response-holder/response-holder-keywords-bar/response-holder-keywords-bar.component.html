@@ -1,0 +1,14 @@
+@let _allKeywords = allKeywords | async;
+
+@if (_allKeywords?.length) {
+  <mat-chip-listbox class="p-2" aria-label="chat keywords" [multiple]="true">
+    @for (keyword of _allKeywords; track keyword.word) {
+      <mat-chip-option
+        [value]="keyword.word"
+        [selected]="keyword.active"
+        (selectionChange)="optionChange($event)">
+        {{ keyword.word }}
+      </mat-chip-option>
+    }
+  </mat-chip-listbox>
+}

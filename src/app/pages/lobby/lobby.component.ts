@@ -15,7 +15,7 @@ import { DailyRewardComponent } from '../../components/daily-reward/daily-reward
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { NumbersService, NumbersService2 } from '../../services/numbers/numbers.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
@@ -25,11 +25,13 @@ import { selectDailyRewardFlag } from '../../store/selectors/lobby.selectors';
 import { LobbyService } from '../../services/lobby/lobby.service';
 import { ShortcutService } from '../../services/facades/shortcut/shortcut.service';
 import { BasicStoresHolderComponent } from '../../components/views/basic-stores-holder/basic-stores-holder.component';
+import { ContainerLabelComponent } from '../../components/views/container-label/container-label.component';
 
 export type Route = {
   name: string;
   url: string;
   src: string;
+  closed?: boolean;
 };
 
 @Component({
@@ -119,6 +121,8 @@ export class UserComponent implements AfterContentInit {
     MatLine,
     AsyncPipe,
     BasicStoresHolderComponent,
+    ContainerLabelComponent,
+    NgClass,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',

@@ -2,12 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { AssistantMemory, Memory } from '../../../models/interfaces/assistant.interface';
 import { MemoryMapsService } from './helpers/memory-maps.service';
 import { AssistantRecord } from '../../../store/store.interfaces';
+import { TextService } from '../../text/text.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AssistantService {
   private memoryMapService = inject(MemoryMapsService);
+  private textService = inject(TextService);
 
   private memoryType: AssistantMemory = AssistantMemory.taverna;
   private memory: Memory = this.memoryMapService.getMemory(this.memoryType);
@@ -21,7 +23,11 @@ export class AssistantService {
     return this.memory;
   }
 
-  getResponseFromMemory(query: string) {
+  getMemoryKeys() {
+    return Object.keys(this.getMemory());
+  }
+
+  getResponseFromMemory(query: string, callback?: (responseParts: Map<string, string>) => void) {
     const lowerCaseQuery = query.toLowerCase();
     const responseParts = new Map();
 
@@ -32,7 +38,9 @@ export class AssistantService {
     }
 
     if (responseParts.size) {
-      const response = `Of course, let me explain.`;
+      const response = `Of course, let me explain. `;
+
+      callback && callback(responseParts);
 
       return (
         response +
@@ -43,13 +51,19 @@ export class AssistantService {
       );
     }
 
+    callback && callback(responseParts);
+
     return "Sorry, I didn't understand your question.";
   }
 
   createRequest(message: string, request: boolean): AssistantRecord {
+    const preparedMessage = request ? message : this.getResponseFromMemory(message);
+    const keywords = this.textService.getKeywordsFromText(preparedMessage, this.getMemoryKeys());
+
     return {
-      message: request ? message : this.getResponseFromMemory(message),
+      message: preparedMessage,
       request,
+      keywords,
       id: crypto.randomUUID(),
     };
   }

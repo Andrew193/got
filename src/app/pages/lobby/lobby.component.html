@@ -4,7 +4,7 @@
       <app-basic-stores-placeholder title="Routes">
         <mat-list class="pt-0 pb-0">
           @for (route of pageRoutes; track route.name) {
-            <mat-list-item>
+            <mat-list-item class="position-relative">
               <a [routerLink]="route.url" class="list-group-item" mat-line>
                 <span class="d-flex">
                   <app-image
@@ -13,8 +13,13 @@
                   {{ route.name }}
                 </span>
               </a>
+
               @if (!$last) {
                 <mat-divider [inset]="true"></mat-divider>
+              }
+
+              @if (route.closed) {
+                <app-container-label [size]="25" class="color-white" />
               }
             </mat-list-item>
           }
@@ -38,8 +43,14 @@
   let-name="name"
   let-src="src"
   let-click="click"
+  let-closed="closed"
   let-notification="notification">
-  <div class="col-3" (click)="click ? click() : true">
+  <div
+    class="col-3"
+    (click)="click ? click() : true"
+    [ngClass]="{
+      'no-text-highlight': closed,
+    }">
     <div class="w-100 h-100 pt-2 pb-2 position-relative card-tile">
       <app-image
         [source]="'./assets/resourses/imgs/' + src + '.png'"
@@ -47,6 +58,10 @@
         imageClass="card-img-top image-75" />
       <span class="card-title banner">{{ name }}</span>
       <app-notification-marker [notificationType]="notification" />
+
+      @if (closed) {
+        <app-container-label [size]="25" />
+      }
     </div>
   </div>
 </ng-template>

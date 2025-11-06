@@ -1,6 +1,3 @@
-import { Skill } from './models/units-related/skill.model';
-import { Unit } from './models/units-related/unit.model';
-
 export function createDeepCopy<T>(object: T) {
   return JSON.parse(JSON.stringify(object)) as T;
 }
@@ -9,14 +6,16 @@ export function trackByIndex(index: number) {
   return index;
 }
 
-export function trackBySkill(index: number, skill: Skill) {
-  return skill.name + index;
-}
+export function filterByProperty<T>(data: T[], property: keyof T) {
+  const uniqueIds = new Set();
 
-export function trackByFullUnit(index: number, unit: Unit) {
-  return unit.name + unit.user;
-}
+  return data.filter(item => {
+    if (uniqueIds.has(item[property])) {
+      return false;
+    } else {
+      uniqueIds.add(item[property]);
 
-export function trackByLevel(index: number, content: { level: number }) {
-  return content.level + index;
+      return true;
+    }
+  });
 }

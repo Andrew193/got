@@ -8,9 +8,7 @@ import { frontRoutes } from '../../constants';
 import { Route } from '../../pages/lobby/lobby.component';
 import { ShortcutHelperService } from '../facades/shortcut/helpers/shortcut-helper.service';
 
-type Activity = {
-  name: string;
-  src: string;
+type Activity = Pick<Route, 'name' | 'src' | 'closed'> & {
   click?: () => void;
   notification?: NotificationType;
 };
@@ -71,11 +69,31 @@ export class LobbyService {
       click: () => this.nav.goToGiftLand(),
       notification: NotificationType.gift_store,
     },
-    { name: 'Kraster Exchange', src: 'icons/towers' },
-    { name: 'Summon Tree', src: 'icons/tree', click: () => this.nav.goToSummonTree() },
-    { name: 'Watchtower Store', src: 'icons/raven' },
-    { name: 'Arena Store', src: 'icons/arena-icon' },
-    { name: 'Wall Store', src: 'icons/maps' },
+    {
+      name: 'Kraster Exchange',
+      src: 'icons/towers',
+      closed: true,
+    },
+    {
+      name: 'Summon Tree',
+      src: 'icons/tree',
+      click: () => this.nav.goToSummonTree(),
+    },
+    {
+      name: 'Watchtower Store',
+      src: 'icons/raven',
+      closed: true,
+    },
+    {
+      name: 'Arena Store',
+      src: 'icons/arena-icon',
+      closed: true,
+    },
+    {
+      name: 'Wall Store',
+      src: 'icons/maps',
+      closed: true,
+    },
     {
       name: 'Daily Reward',
       src: 'UI_Avatar_Unit_Alvar',
@@ -88,7 +106,11 @@ export class LobbyService {
       click: () => this.nav.goToIronBank(),
       notification: NotificationType.deposit,
     },
-    { name: 'Craftsmen', src: 'silver' },
+    {
+      name: 'Craftsmen',
+      src: 'silver',
+      closed: true,
+    },
     {
       name: 'Daily Boss',
       src: 'UI_Avatar_Unit_PolarBear',
@@ -97,16 +119,45 @@ export class LobbyService {
   ];
 
   pageRoutes: Route[] = [
-    { name: 'Tavern', url: frontRoutes.taverna, src: 'taverna.png' },
-    { name: 'Barracks', url: '#', src: 'barracks.png' },
+    {
+      name: 'Tavern',
+      url: frontRoutes.taverna,
+      src: 'taverna.png',
+    },
+    {
+      name: 'Barracks',
+      url: '#',
+      src: 'barracks.png',
+      closed: true,
+    },
     {
       name: 'Training ground',
       url: frontRoutes.training,
       src: 'weightlifting.png',
     },
-    { name: 'Banquet Hall', url: '#', src: 'banquet.png' },
-    { name: 'Great Tree', url: '#', src: 'tree.png' },
-    { name: 'Watchtower', url: '#', src: 'knight.png' },
-    { name: 'Beyond the Wall', url: frontRoutes.battleField, src: 'wall.png' },
+    {
+      name: 'Banquet Hall',
+      url: '#',
+      src: 'banquet.png',
+      closed: true,
+    },
+    {
+      name: 'Great Tree',
+      url: '#',
+      src: 'tree.png',
+      closed: true,
+    },
+    {
+      name: 'Watchtower',
+      url: '#',
+      src: 'knight.png',
+      closed: true,
+    },
+    {
+      name: 'Beyond the Wall',
+      url: '#',
+      src: 'wall.png',
+      closed: true,
+    },
   ];
 }

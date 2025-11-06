@@ -15,3 +15,8 @@ export type TavernaActivities = {
   filterColor?: string;
   click: () => void;
 };
+
+export type Keyword = {
+  word: string;
+  active: boolean;
+};

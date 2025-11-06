@@ -11,11 +11,3 @@ export function createSelectLoading(selectContext: SelectRecords) {
 
   return selectLoadingCache;
 }
-
-export function createSelectAssistantRecords(selectContext: SelectRecords) {
-  if (!selectLoadingCache) {
-    selectLoadingCache = createSelector(selectContext, ctx => ctx.loading);
-  }
-
-  return selectLoadingCache;
-}

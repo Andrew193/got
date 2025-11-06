@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 import { AssistantActions } from '../actions/assistant.actions';
 import { delay } from 'rxjs';
 import { AssistantService } from '../../services/facades/assistant/assistant.service';
-import { none } from '../actions/common.actions';
 
 @Injectable()
 export class AssistantEffects {
@@ -23,11 +22,13 @@ export class AssistantEffects {
       ofType(AssistantActions.addRequest),
       delay(2500),
       map(event => {
-        return event.data.request
-          ? AssistantActions.addRequest({
-              data: this.assistant.createRequest(event.data.message, false),
-            })
-          : none();
+        if (event.data.request) {
+          const newData = this.assistant.createRequest(event.data.message, false);
+
+          return AssistantActions.addRequest({ data: newData });
+        }
+
+        return AssistantActions.addKeywords({ data: event.data.keywords });
       }),
     );
   });
