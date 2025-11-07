@@ -1,0 +1,52 @@
+@let _isLoading = isLoading | async;
+@let _records = filteredRecords();
+
+<div class="position-relative">
+  @if (_isLoading) {
+    <app-container-label>
+      <mat-spinner></mat-spinner>
+    </app-container-label>
+  }
+
+  <section class="response-holder-container mb-2">
+    <app-response-holder-keywords-bar />
+
+    <mat-drawer-container class="position-relative">
+      <mat-drawer #drawer class="p-2" mode="side">
+        <app-response-holder-keywords-filter (filtersChange)="filtersChange($event)" />
+      </mat-drawer>
+
+      <button
+        type="button"
+        mat-fab
+        extended
+        class="open-filters-button pe-0"
+        (click)="drawer.toggle()">
+        @if (drawer.opened) {
+          <mat-icon>arrow_backward</mat-icon>
+        } @else {
+          <mat-icon>arrow_forward</mat-icon>
+        }
+      </button>
+
+      <div class="records-container p-2">
+        @for (record of _records; track record.id) {
+          @let _selectedResponse = !record.request && shouldHighlightSelectedTags(record.keywords);
+
+          <app-response-holder-body [record]="record" [selectedResponse]="_selectedResponse" />
+        }
+
+        @if (!_records.length) {
+          <div class="p-2 text-center">
+            <img
+              [src]="'assets/resourses/imgs/tile-backgrounds/aemon_young.png'"
+              alt="assistant"
+              width="=100px"
+              height="100px" />
+            <p class="text-center color-white mt-2">Maester Aemon's answers will appear here.</p>
+          </div>
+        }
+      </div>
+    </mat-drawer-container>
+  </section>
+</div>

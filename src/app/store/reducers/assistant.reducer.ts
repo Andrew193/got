@@ -2,12 +2,12 @@ import { AssistantRecord, AssistantState, StoreNames } from '../store.interfaces
 import { createEntityAdapter } from '@ngrx/entity';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { AssistantActions } from '../actions/assistant.actions';
-import { createSelectLoading } from '../selectors/assistant.selectors';
+import { createSelectKeywordsLabels, createSelectLoading } from '../selectors/assistant.selectors';
 import { Keyword } from '../../models/taverna/taverna.model';
 
 export const assistantRecordsAdapter = createEntityAdapter<AssistantRecord>();
 export const assistantKeywordsAdapter = createEntityAdapter<Keyword>({
-  selectId: model => model.word,
+  selectId: model => model.word + model.assistantMemoryType,
 });
 
 const assistantRecordsInitialState = assistantRecordsAdapter.getInitialState({
@@ -34,7 +34,9 @@ export const AssistantFeature = createFeature({
       return { ...state, records: { ...state.records, loading: !state.records.loading } };
     }),
     on(AssistantActions.addKeywords, (state, action) => {
-      const parsedKeywords = action.data.map(word => ({ word, active: false }) satisfies Keyword);
+      const parsedKeywords = action.data.map(
+        word => ({ ...word, active: false }) satisfies Keyword,
+      );
 
       return {
         ...state,
@@ -45,7 +47,20 @@ export const AssistantFeature = createFeature({
       return {
         ...state,
         keywords: assistantKeywordsAdapter.updateOne(
-          { id: action.data.word, changes: action.data },
+          { id: action.data.word + action.data.assistantMemoryType, changes: action.data },
+          state.keywords,
+        ),
+      };
+    }),
+    on(AssistantActions.dropAssistant, (state, action) => {
+      return {
+        ...state,
+        records: assistantRecordsAdapter.removeMany(
+          model => model.assistantMemoryType === action.memoryType,
+          state.records,
+        ),
+        keywords: assistantKeywordsAdapter.removeMany(
+          model => model.assistantMemoryType === action.memoryType,
           state.keywords,
         ),
       };
@@ -61,8 +76,15 @@ export const AssistantFeature = createFeature({
       selectRecordsLoading: () => createSelectLoading(baseSelectors.selectRecords),
       selectAssistantRecords: assistantSelectors.selectAll,
       selectAllKeywords: assistantKeywordsSelectors.selectAll,
+      selectAllKeywordsLabels: () =>
+        createSelectKeywordsLabels(assistantKeywordsSelectors.selectAll),
     };
   },
 });
 
-export const { selectRecordsLoading, selectAssistantRecords, selectAllKeywords } = AssistantFeature;
+export const {
+  selectRecordsLoading,
+  selectAssistantRecords,
+  selectAllKeywords,
+  selectAllKeywordsLabels,
+} = AssistantFeature;

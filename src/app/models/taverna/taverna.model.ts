@@ -1,11 +1,8 @@
 import { FormControl } from '@angular/forms';
+import { AssistantMemory } from '../interfaces/assistant.interface';
 
 export type TavernaHeroesBarSearchForm = {
   unitName: FormControl<string>;
-};
-
-export type TavernaAssistantForm = {
-  request: FormControl<string>;
 };
 
 export type TavernaActivities = {
@@ -19,4 +16,5 @@ export type TavernaActivities = {
 export type Keyword = {
   word: string;
   active: boolean;
+  assistantMemoryType: AssistantMemory;
 };

@@ -17,9 +17,10 @@ import { SortDirection } from '@angular/material/sort';
 import { TavernaHeroesTableHelperService } from './helpers/heroes-table-helper.service';
 import { TableService } from '../../table/table.service';
 import { TavernaAssistantService } from './helpers/taverna-assistant.service';
+import { AssistantFacadeService } from '../../../models/interfaces/assistant.interface';
 
 @Injectable()
-export class TavernaFacadeService {
+export class TavernaFacadeService implements AssistantFacadeService {
   nav = inject(NavigationService);
 
   protected heroesService = inject(HeroesFacadeService);

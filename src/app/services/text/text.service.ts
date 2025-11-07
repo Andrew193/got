@@ -8,16 +8,11 @@ export class TextService {
     const result = [];
     const textLowerCase = text.toLowerCase();
 
-    console.log('0000000000000000000000000000000000000000000000000000000000000');
-
     for (const word of keywords) {
-      console.log(word, '==================', textLowerCase);
       if (textLowerCase.includes(word)) {
         result.push(word);
       }
     }
-
-    console.log('0000000000000000000000000000000000000000000000000000000000000');
 
     return result;
   }

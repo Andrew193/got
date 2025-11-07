@@ -1,0 +1,14 @@
+@let _filterOptions = filterOptions();
+
+<aside class="response-filters h-100 p-2">
+  <h4>Active keywords:</h4>
+  <ng-container [formGroup]="filtersForm">
+    <app-base-select
+      class="columns-on-off"
+      [showLabel]="false"
+      [isMulti]="true"
+      [placeholder]="'Active responses'"
+      [controlName]="'filter'"
+      [staticOptions]="_filterOptions" />
+  </ng-container>
+</aside>

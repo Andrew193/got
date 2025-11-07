@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { AssistantActions } from '../actions/assistant.actions';
 import { delay } from 'rxjs';
 import { AssistantService } from '../../services/facades/assistant/assistant.service';
+import { Keyword } from '../../models/taverna/taverna.model';
 
 @Injectable()
 export class AssistantEffects {
@@ -20,7 +21,7 @@ export class AssistantEffects {
   generateResponseAfterRequest$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AssistantActions.addRequest),
-      delay(2500),
+      delay(500),
       map(event => {
         if (event.data.request) {
           const newData = this.assistant.createRequest(event.data.message, false);
@@ -28,7 +29,15 @@ export class AssistantEffects {
           return AssistantActions.addRequest({ data: newData });
         }
 
-        return AssistantActions.addKeywords({ data: event.data.keywords });
+        const keywords = event.data.keywords.map(keyword => {
+          return {
+            word: keyword,
+            active: false,
+            assistantMemoryType: event.data.assistantMemoryType,
+          } satisfies Keyword;
+        });
+
+        return AssistantActions.addKeywords({ data: keywords });
       }),
     );
   });

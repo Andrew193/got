@@ -1,0 +1,40 @@
+@let _selectedResponse = selectedResponse();
+@let _record = record();
+
+<div
+  class="p-2 mb-2 request row position-relative"
+  [class]="!_record.request ? 'ms-1' : ''"
+  [ngClass]="{
+    'request-background': _record.request,
+    'selected-key': _selectedResponse,
+  }">
+  @if (!_record.request) {
+    <div class="col-auto">
+      <img
+        [src]="'assets/resourses/imgs/tile-backgrounds/aemon_young.png'"
+        alt="assistant"
+        width="60px"
+        height="60px" />
+    </div>
+  }
+
+  <div class="col">
+    @if (_record.request) {
+      <p>{{ _record.message }}</p>
+    } @else {
+      <app-effects-highlighter
+        [containerClass]="'response-container'"
+        [text]="_record.message"
+        [renderBySentence]="true"
+        [wordsToHighlight]="memoryKeys" />
+    }
+  </div>
+
+  @if (!_record.request) {
+    <mat-chip-set aria-label="request keywords">
+      @for (tag of _record.keywords; track tag) {
+        <mat-chip>{{ tag }}</mat-chip>
+      }
+    </mat-chip-set>
+  }
+</div>

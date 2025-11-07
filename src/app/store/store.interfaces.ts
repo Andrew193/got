@@ -6,6 +6,7 @@ import { EntityState } from '@ngrx/entity';
 import { Coordinate, TilesToHighlight } from '../models/field.model';
 import { LogRecord } from '../models/logger.model';
 import { Keyword } from '../models/taverna/taverna.model';
+import { AssistantMemory } from '../models/interfaces/assistant.interface';
 
 //Store
 
@@ -94,6 +95,7 @@ export type AssistantRecord = {
   request: boolean;
   id: string;
   keywords: string[];
+  assistantMemoryType: AssistantMemory;
 };
 
 export type AssistantRecords = EntityState<AssistantRecord> & {

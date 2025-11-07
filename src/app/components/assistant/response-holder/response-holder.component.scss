@@ -1,0 +1,24 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.response-holder-container {
+  border: index.$var-border-2-bronze;
+  box-shadow: index.$var-box-shadow;
+  border-radius: inherit;
+
+  .open-filters-button {
+    position: absolute;
+    top: 0;
+    transform: translate(-20px, 0%);
+    z-index: 1;
+
+    mat-icon {
+      margin-right: 5px;
+      margin-left: 0;
+    }
+  }
+
+  .records-container {
+    height: 400px;
+    overflow: auto;
+  }
+}

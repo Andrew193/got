@@ -11,8 +11,8 @@ export class AssistantService {
   private memoryMapService = inject(MemoryMapsService);
   private textService = inject(TextService);
 
-  private memoryType: AssistantMemory = AssistantMemory.taverna;
-  private memory: Memory = this.memoryMapService.getMemory(this.memoryType);
+  private memoryType!: AssistantMemory;
+  private memory!: Memory;
 
   setMemoryType(type: AssistantMemory) {
     this.memoryType = type;
@@ -64,6 +64,7 @@ export class AssistantService {
       message: preparedMessage,
       request,
       keywords,
+      assistantMemoryType: this.memoryType,
       id: crypto.randomUUID(),
     };
   }
