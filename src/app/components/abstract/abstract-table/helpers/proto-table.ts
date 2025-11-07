@@ -113,6 +113,7 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
           this.columns.update(model => {
             return model.map(el => ({ ...el, visible: activeColumns.includes(el.alias) }));
           });
+          this.localStorageService.setItem(this.tableName, columnsConfig);
         }
 
         if (pageSize) {

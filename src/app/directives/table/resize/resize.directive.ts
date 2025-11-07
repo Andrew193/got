@@ -31,6 +31,7 @@ export type ResizeCfg = {
 
 @Directive({
   selector: '[appTableResize]',
+  exportAs: 'appTableResize',
 })
 export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
   resizeActive = input(true);

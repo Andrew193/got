@@ -10,4 +10,9 @@ p {
   &.special-line {
     font-weight: 500;
   }
+
+  span {
+    text-align: inherit;
+    display: inline-block;
+  }
 }

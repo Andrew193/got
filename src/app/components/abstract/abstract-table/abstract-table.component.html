@@ -10,6 +10,7 @@
 @let _resizable = resizable();
 
 <div class="mat-elevation-z8 position-relative">
+  <button (click)="saveTableConfig()">Click</button>
   @if (isLoadingResults) {
     <div class="loading-shade">
       <mat-spinner></mat-spinner>
@@ -22,6 +23,7 @@
         <table
           mat-table
           appTableResize
+          #appTableResize="appTableResize"
           [tableName]="tableName"
           [appTableResize]="resizeConfig"
           [equalize]="_equalize"

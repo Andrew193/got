@@ -4,6 +4,7 @@ import {
   Component,
   inject,
   OnDestroy,
+  viewChild,
   ViewChild,
 } from '@angular/core';
 import { MatSort, SortDirection } from '@angular/material/sort';
@@ -23,6 +24,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { DataSource, TableApiResponse } from '../../../models/table/abstract-table.model';
 import { ProtoTable } from './helpers/proto-table';
+import { TableResizeDirective } from '../../../directives/table/resize/resize.directive';
 
 @Component({
   template: '',
@@ -32,6 +34,8 @@ export abstract class AbstractTableComponent<T>
   extends ProtoTable<T>
   implements AfterViewInit, OnDestroy
 {
+  resizeDirective = viewChild.required<TableResizeDirective<T>>('appTableResize');
+
   private _httpClient = inject(HttpClient);
 
   datasource: DataSource<T> = new Database(this._httpClient);
@@ -72,7 +76,6 @@ export abstract class AbstractTableComponent<T>
 
     merge(this.sort.sortChange, this.paginator.page, this.filterForm.valueChanges, this.sort$)
       .pipe(
-        switchMap(this.tableService.api.getTableData),
         switchMap(() => {
           this.isLoadingResults = true;
 
@@ -109,7 +112,14 @@ export abstract class AbstractTableComponent<T>
           return data.items;
         }),
       )
-      .subscribe(data => (this.contentArray = data));
+      .subscribe(data => {
+        this.contentArray = data;
+        this.cdr.markForCheck();
+      });
+  }
+
+  saveTableConfig() {
+    console.log(this.resizeDirective());
   }
 
   ngOnDestroy() {

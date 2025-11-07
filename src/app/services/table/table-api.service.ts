@@ -43,18 +43,4 @@ export class TableApiService<T> extends ApiService<TableConfigApiResponse<T>> {
       this.basicResponseTapParser(() => {}),
     );
   }
-
-  getTableData = () => {
-    console.log('get data');
-
-    return this.http.get<TableConfigApiResponse<T>[]>(this.url).pipe(
-      map(configs => {
-        return configs.filter(config => {
-          return (
-            config.userId === this.userId && config.tableName === TABLE_NAMES.taverna_hero_table
-          );
-        })[0];
-      }),
-    );
-  };
 }
