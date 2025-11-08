@@ -74,9 +74,6 @@ export class HeroesFacadeService extends ContentService {
           name: 'Targaryen',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/lds/skills/UI_PassiveAbility_FerventDevotion.jpeg',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           buffs: passiveBuffs,
           passive: true,
           restoreSkill: true,
@@ -142,9 +139,6 @@ export class HeroesFacadeService extends ContentService {
           name: 'Crown Shield',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/targaryen_knight/skills/UI_PassiveAbility_ScaledArmor.webp',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           passive: true,
           restoreSkill: false,
           description: this.helper.getPassiveSkillDescription(
@@ -239,9 +233,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'Lokrand',
           imgSrc: '../../../assets/resourses/imgs/icons/aura.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           passive: true,
           restoreSkill: true,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Priest, effects),
@@ -356,9 +347,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'Warrior',
           imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_p.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           passive: true,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RelinaShow, []),
         },
@@ -410,9 +398,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'A free man',
           imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           passive: true,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.FreeTrapper, []),
         },
@@ -458,9 +443,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'Giant',
           imgSrc: '../../../assets/resourses/imgs/icons/aura.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           passive: true,
           restoreSkill: true,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Giant, []),
@@ -520,9 +502,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'The Night King',
           imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           buffs: [this.helper.eS.getEffect(this.helper.effects.attackBuff, 1)],
           passive: true,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.NightKing, []),
@@ -565,9 +544,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'White Walker',
           imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           buffs: passiveBuffs,
           passive: true,
           description: this.helper.getPassiveSkillDescription(
@@ -612,9 +588,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'White Walker',
           imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/skills/walker_p_s.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           buffs: passiveBuffs,
           passive: true,
           description: this.helper.getPassiveSkillDescription(
@@ -678,9 +651,6 @@ export class HeroesFacadeService extends ContentService {
           name: 'Justice',
           imgSrc:
             '../../../assets/resourses/imgs/heroes/jon_king/skills/UI_PassiveAbility_PassTheSentenceSwingTheSword.webp',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           buffs: passiveBuffs,
           passive: true,
           description: this.helper.getPassiveSkillDescription(
@@ -744,9 +714,6 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'Soul of Flame',
           imgSrc: '../../../assets/resourses/imgs/debuffs/burning.png',
-          dmgM: 0,
-          cooldown: 0,
-          remainingCooldown: 0,
           passive: true,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.DailyBossVersion1,

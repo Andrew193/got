@@ -14,9 +14,13 @@ export class GameFieldService extends AbstractFieldService {
   private gameActionService = inject(GameService);
 
   chooseAiSkill(skills: TileUnitSkill[]): TileUnitSkill {
-    const possibleActiveSkill = skills.find(skill => skill.cooldown && !skill.remainingCooldown);
+    const possibleActiveSkill = skills.find(
+      skill => !skill.passive && skill.cooldown && !skill.remainingCooldown,
+    );
 
-    return possibleActiveSkill || (skills.find(skill => !skill.cooldown) as Skill);
+    return (
+      possibleActiveSkill || (skills.find(skill => !skill.passive && !skill.cooldown) as Skill)
+    );
   }
 
   getDamage(unitConfig: { dmgTaker: TileUnit; attackDealer: TileUnit }) {

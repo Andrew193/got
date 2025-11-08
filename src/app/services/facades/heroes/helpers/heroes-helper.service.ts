@@ -491,7 +491,7 @@ export class HeroesHelperService {
     return (skill: Skill) => {
       let description = '';
 
-      let dmgPersent = this.numberService.convertToPersent(skill.dmgM);
+      let dmgPersent = this.numberService.convertToPersent(!skill.passive ? skill.dmgM : 0);
       const primaryStat = heroType === HeroType.DEFENCE ? 'defence' : 'attack';
 
       description += `Deals ${dmgPersent}% of ${primaryStat} damage to an enemy.`;
@@ -532,10 +532,25 @@ export class HeroesHelperService {
   }
 
   convertEffectsToDescriptionString(effects: Effect[]) {
-    return effects
-      .map(
-        effect => `${effect.type} for ${effect.duration} ${effect.duration > 1 ? 'turns' : 'turn'}`,
-      )
-      .join(', ');
+    const effectsMap = new Map<string, string>();
+
+    effects.forEach(effect => {
+      if (!effectsMap.has(effect.type)) {
+        effectsMap.set(
+          effect.type,
+          `${effect.type} for ${effect.duration} ${effect.duration > 1 ? 'turns' : 'turn'} (1)`,
+        );
+      } else {
+        const value = effectsMap.get(effect.type) as string;
+        const amount = +value.slice(value.indexOf('(') + 1, value.length - 1);
+
+        effectsMap.set(
+          effect.type,
+          `${effect.type} for ${effect.duration} ${effect.duration > 1 ? 'turns' : 'turn'} (${amount + 1})`,
+        );
+      }
+    });
+
+    return Array.from(effectsMap.values()).join(', ');
   }
 }

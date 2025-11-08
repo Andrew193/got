@@ -38,19 +38,14 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 657840,
-        "claimedRewards": [
-          "2",
-          "4",
-          "8",
-          "12"
-        ],
-        "lastLoyaltyBonus": "11/07/2025"
+        "onlineTime": 661080,
+        "claimedRewards": ["2", "4", "8", "12"],
+        "lastLoyaltyBonus": "11/08/2025"
       },
       "currency": {
-        "gold": 2724,
-        "silver": 6918,
-        "copper": 5694261
+        "gold": 2754,
+        "silver": 7215,
+        "copper": 5738811
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"

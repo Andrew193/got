@@ -1,20 +1,32 @@
 import { Effect } from '../effect.model';
 
 export type Skill = {
-  dmgM: number;
   debuffs?: Effect[];
   inRangeDebuffs?: Effect[];
   buffs?: Effect[];
   addBuffsBeforeAttack?: boolean;
-  cooldown: number;
-  remainingCooldown: number;
   name: string;
   passive?: boolean;
   restoreSkill?: boolean;
   description: string;
 } & SkillSrc &
   SkillRangeConfig &
-  SkillHealConfig;
+  SkillHealConfig &
+  SkillCooldown;
+
+export type SkillCooldown =
+  | {
+      passive?: undefined;
+      dmgM: number;
+      cooldown: number;
+      remainingCooldown: number;
+    }
+  | {
+      passive: true;
+      dmgM?: number;
+      cooldown?: number;
+      remainingCooldown?: number;
+    };
 
 export type SkillHealConfig =
   | {
@@ -46,18 +58,15 @@ export interface SkillSrc {
 
 export type TileUnitSkill = Pick<
   Skill,
-  | 'remainingCooldown'
   | 'name'
-  | 'passive'
   | 'restoreSkill'
   | 'buffs'
   | 'imgSrc'
   | 'inRangeDebuffs'
   | 'debuffs'
   | 'addBuffsBeforeAttack'
-  | 'cooldown'
-  | 'dmgM'
   | 'description'
 > &
   SkillRangeConfig &
-  SkillHealConfig;
+  SkillHealConfig &
+  SkillCooldown;

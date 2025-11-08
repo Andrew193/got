@@ -15,11 +15,17 @@ export class UnitService {
   recountSkillsCooldown = (skills: TileUnitSkill[]) =>
     skills.map(skill => ({
       ...skill,
-      remainingCooldown: skill.remainingCooldown > 0 ? skill.remainingCooldown - 1 : 0,
+      ...(skill.passive
+        ? {}
+        : {
+            remainingCooldown:
+              (skill.remainingCooldown as number) > 0 ? (skill.remainingCooldown as number) - 1 : 0,
+          }),
     }));
 
   findSkillIndex(skills: TileUnitSkill[], selectedSkill: TileUnitSkill) {
     return skills.findIndex(
+      // @ts-ignore
       skill => skill.dmgM === selectedSkill.dmgM && skill.name === selectedSkill.name,
     );
   }
