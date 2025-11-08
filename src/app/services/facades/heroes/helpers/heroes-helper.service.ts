@@ -2,17 +2,24 @@ import { inject, Injectable } from '@angular/core';
 import {
   EqName,
   GearPart,
+  HeroesNamesCodes,
+  HeroType,
   SelectableUnit,
   Unit,
+  UnitBasicStats,
 } from '../../../../models/units-related/unit.model';
 import { EffectsValues } from '../../../../constants';
 import { EffectsService } from '../../../effects/effects.service';
+import { NumbersService } from '../../../numbers/numbers.service';
+import { Skill } from '../../../../models/units-related/skill.model';
+import { Effect } from '../../../../models/effect.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroesHelperService {
   eS = inject(EffectsService);
+  numberService = inject(NumbersService);
 
   //Gear related
   gearDescriptions: Record<EqName, string> = {
@@ -63,18 +70,22 @@ export class HeroesHelperService {
     };
   }
 
+  //Up hero
   getEquipmentForUnit(unit: Unit): Unit {
     //Level
     const leveledUnit = {
       ...unit,
-      attack: +(unit.attack + unit.attackIncrement * unit.level).toFixed(0),
-      defence: +(unit.defence + unit.defenceIncrement * unit.level).toFixed(0),
-      health: +(unit.health + unit.healthIncrement * unit.level).toFixed(0),
-      rage: +(unit.rage + (unit.level > 1 ? 2 * unit.level : 0)).toFixed(0),
-      willpower: +(unit.willpower + (unit.level > 1 ? 2 * unit.level : 0)).toFixed(0),
-      dmgReducedBy: +(
-        +(unit.dmgReducedBy * 100 + (unit.level > 1 ? 0.5 : 0) * unit.level).toFixed(0) / 100
-      ).toFixed(2),
+      attack: this.numberService.toFixed(unit.attack + unit.attackIncrement * unit.level),
+      defence: this.numberService.toFixed(unit.defence + unit.defenceIncrement * unit.level),
+      health: this.numberService.toFixed(unit.health + unit.healthIncrement * unit.level),
+      rage: this.numberService.toFixed(unit.rage + (unit.level > 1 ? 2 * unit.level : 0)),
+      willpower: this.numberService.toFixed(unit.willpower + (unit.level > 1 ? 2 * unit.level : 0)),
+      dmgReducedBy: this.numberService.toFixed(
+        this.numberService.toFixed(
+          unit.dmgReducedBy * 100 + (unit.level > 1 ? 0.5 : 0) * unit.level,
+        ) / 100,
+        2,
+      ),
     };
 
     //Rank
@@ -82,27 +93,51 @@ export class HeroesHelperService {
 
     while (usedRank !== unit.rank) {
       usedRank++;
-      leveledUnit.attack = +(leveledUnit.attack * unit.rankBoost).toFixed(0);
-      leveledUnit.defence = +(leveledUnit.defence * unit.rankBoost).toFixed(0);
-      leveledUnit.health = +(leveledUnit.health * unit.rankBoost).toFixed(0);
+      leveledUnit.attack = this.numberService.toFixed(leveledUnit.attack * unit.rankBoost);
+      leveledUnit.defence = this.numberService.toFixed(leveledUnit.defence * unit.rankBoost);
+      leveledUnit.health = this.numberService.toFixed(leveledUnit.health * unit.rankBoost);
     }
 
     //Eq 1
-    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq1Level).toFixed(0);
-    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq1Level).toFixed(0);
-    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq1Level).toFixed(0);
+    leveledUnit.attack += this.numberService.toFixed(
+      leveledUnit.attackIncrement * leveledUnit.eq1Level,
+    );
+    leveledUnit.defence += this.numberService.toFixed(
+      leveledUnit.defenceIncrement * leveledUnit.eq1Level,
+    );
+    leveledUnit.health += this.numberService.toFixed(
+      leveledUnit.healthIncrement * leveledUnit.eq1Level,
+    );
     //Eq 2
-    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq2Level).toFixed(0);
-    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq2Level).toFixed(0);
-    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq2Level).toFixed(0);
+    leveledUnit.attack += this.numberService.toFixed(
+      leveledUnit.attackIncrement * leveledUnit.eq2Level,
+    );
+    leveledUnit.defence += this.numberService.toFixed(
+      leveledUnit.defenceIncrement * leveledUnit.eq2Level,
+    );
+    leveledUnit.health += this.numberService.toFixed(
+      leveledUnit.healthIncrement * leveledUnit.eq2Level,
+    );
     //Eq 3
-    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq3Level).toFixed(0);
-    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq3Level).toFixed(0);
-    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq3Level).toFixed(0);
+    leveledUnit.attack += this.numberService.toFixed(
+      leveledUnit.attackIncrement * leveledUnit.eq3Level,
+    );
+    leveledUnit.defence += this.numberService.toFixed(
+      leveledUnit.defenceIncrement * leveledUnit.eq3Level,
+    );
+    leveledUnit.health += this.numberService.toFixed(
+      leveledUnit.healthIncrement * leveledUnit.eq3Level,
+    );
     //Eq 4
-    leveledUnit.attack += +(leveledUnit.attackIncrement * leveledUnit.eq4Level).toFixed(0);
-    leveledUnit.defence += +(leveledUnit.defenceIncrement * leveledUnit.eq4Level).toFixed(0);
-    leveledUnit.health += +(leveledUnit.healthIncrement * leveledUnit.eq4Level).toFixed(0);
+    leveledUnit.attack += this.numberService.toFixed(
+      leveledUnit.attackIncrement * leveledUnit.eq4Level,
+    );
+    leveledUnit.defence += this.numberService.toFixed(
+      leveledUnit.defenceIncrement * leveledUnit.eq4Level,
+    );
+    leveledUnit.health += this.numberService.toFixed(
+      leveledUnit.healthIncrement * leveledUnit.eq4Level,
+    );
 
     leveledUnit.maxHealth = leveledUnit.health;
 
@@ -133,5 +168,374 @@ export class HeroesHelperService {
 
   getSelectableUnit(units: Unit[]): SelectableUnit[] {
     return units.map(_ => ({ name: _.name, imgSrc: _.imgSrc }));
+  }
+
+  getHeroBasicStats(unitType: HeroesNamesCodes): UnitBasicStats {
+    const configMap: Record<HeroesNamesCodes, UnitBasicStats> = {
+      [HeroesNamesCodes.LadyOfDragonStone]: {
+        attackRange: 2,
+        rankBoost: 1.3,
+        dmgReducedBy: 0.15,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 10237,
+        healthIncrement: 195,
+        maxHealth: 10237,
+        attack: 1829,
+        attackIncrement: 23,
+        defence: 1485,
+        defenceIncrement: 15,
+        rage: 45,
+        willpower: 25,
+        ignoredDebuffs: [this.effects.burning],
+        reducedDmgFromDebuffs: [this.effects.bleeding],
+      },
+      [HeroesNamesCodes.TargaryenKnight]: {
+        attackRange: 1,
+        rankBoost: 1.2,
+        dmgReducedBy: 0.25,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 18837,
+        healthIncrement: 284,
+        attack: 829,
+        attackIncrement: 11,
+        defence: 2985,
+        defenceIncrement: 29,
+        maxHealth: 15837,
+        rage: 25,
+        willpower: 50,
+        ignoredDebuffs: [this.effects.burning],
+        reducedDmgFromDebuffs: [this.effects.bleeding, this.effects.poison],
+      },
+      [HeroesNamesCodes.WhiteWolf]: {
+        attackRange: 1,
+        rankBoost: 1.1,
+        dmgReducedBy: 0,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 5837,
+        healthIncrement: 98,
+        attack: 1029,
+        attackIncrement: 13,
+        defence: 785,
+        defenceIncrement: 6,
+        maxHealth: 5837,
+        rage: 15,
+        willpower: 10,
+        ignoredDebuffs: [],
+        reducedDmgFromDebuffs: [],
+      },
+      [HeroesNamesCodes.Priest]: {
+        attackRange: 1,
+        rankBoost: 1.15,
+        dmgReducedBy: 0.15,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 9737,
+        healthIncrement: 37,
+        attack: 699,
+        attackIncrement: 4,
+        defence: 1499,
+        defenceIncrement: 9,
+        maxHealth: 9737,
+        rage: 0,
+        willpower: 70,
+        ignoredDebuffs: [],
+        reducedDmgFromDebuffs: [],
+      },
+      [HeroesNamesCodes.BrownWolf]: {
+        attackRange: 1,
+        rankBoost: 1.05,
+        dmgReducedBy: 0,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 4837,
+        healthIncrement: 47,
+        attack: 899,
+        attackIncrement: 9,
+        defence: 685,
+        defenceIncrement: 3,
+        maxHealth: 4837,
+        rage: 0,
+        willpower: 0,
+        ignoredDebuffs: [],
+        reducedDmgFromDebuffs: [],
+      },
+      [HeroesNamesCodes.IceRiverHunter]: {
+        attackRange: 1,
+        rankBoost: 1.1,
+        dmgReducedBy: 0,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 8370,
+        healthIncrement: 100,
+        attack: 1199,
+        attackIncrement: 14,
+        defence: 985,
+        defenceIncrement: 12,
+        maxHealth: 8370,
+        rage: 15,
+        willpower: 20,
+        ignoredDebuffs: [],
+        reducedDmgFromDebuffs: [],
+      },
+      [HeroesNamesCodes.RelinaShow]: {
+        attackRange: 2,
+        rankBoost: 1.1,
+        dmgReducedBy: 0,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 19169,
+        healthIncrement: 189,
+        attack: 1999,
+        attackIncrement: 23,
+        defence: 1795,
+        defenceIncrement: 19,
+        maxHealth: 19169,
+        rage: 35,
+        willpower: 30,
+        ignoredDebuffs: [this.effects.poison, this.effects.freezing, this.effects.root],
+        reducedDmgFromDebuffs: [this.effects.bleeding],
+      },
+      [HeroesNamesCodes.FreeTrapper]: {
+        attackRange: 2,
+        rankBoost: 1.1,
+        dmgReducedBy: 0,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 8169,
+        healthIncrement: 89,
+        attack: 1299,
+        attackIncrement: 12,
+        defence: 995,
+        defenceIncrement: 10,
+        maxHealth: 8169,
+        rage: 20,
+        willpower: 20,
+        ignoredDebuffs: [],
+        reducedDmgFromDebuffs: [this.effects.poison],
+      },
+      [HeroesNamesCodes.Giant]: {
+        attackRange: 1,
+        rankBoost: 1.05,
+        dmgReducedBy: 0.5,
+        canCross: 1,
+        maxCanCross: 1,
+        health: 33837,
+        healthIncrement: 590,
+        attack: 3529,
+        attackIncrement: 19,
+        defence: 6385,
+        defenceIncrement: 29,
+        maxHealth: 33837,
+        rage: 60,
+        willpower: 15,
+        ignoredDebuffs: [this.effects.freezing],
+        reducedDmgFromDebuffs: [],
+      },
+      [HeroesNamesCodes.NightKing]: {
+        attackRange: 2,
+        rankBoost: 1.3,
+        dmgReducedBy: 0.5,
+        canCross: 4,
+        maxCanCross: 4,
+        health: 19937,
+        healthIncrement: 312,
+        attack: 2329,
+        attackIncrement: 25,
+        defence: 2085,
+        defenceIncrement: 19,
+        maxHealth: 19937,
+        rage: 125,
+        willpower: 150,
+        ignoredDebuffs: [this.effects.freezing],
+        reducedDmgFromDebuffs: [this.effects.bleeding, this.effects.poison],
+      },
+      [HeroesNamesCodes.WhiteWalkerGeneral]: {
+        attackRange: 1,
+        rankBoost: 1.2,
+        dmgReducedBy: 0.3,
+        canCross: 3,
+        maxCanCross: 3,
+        health: 15937,
+        healthIncrement: 219,
+        attack: 2129,
+        attackIncrement: 16,
+        defence: 1985,
+        defenceIncrement: 15,
+        maxHealth: 15937,
+        rage: 105,
+        willpower: 120,
+        ignoredDebuffs: [this.effects.freezing],
+        reducedDmgFromDebuffs: [this.effects.bleeding, this.effects.poison],
+      },
+      [HeroesNamesCodes.WhiteWalkerCapitan]: {
+        attackRange: 1,
+        rankBoost: 1.1,
+        dmgReducedBy: 0.15,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 11937,
+        healthIncrement: 145,
+        attack: 1829,
+        attackIncrement: 15,
+        defence: 1655,
+        defenceIncrement: 12,
+        maxHealth: 11937,
+        rage: 75,
+        willpower: 95,
+        ignoredDebuffs: [this.effects.freezing],
+        reducedDmgFromDebuffs: [],
+      },
+      [HeroesNamesCodes.JonKing]: {
+        attackRange: 1,
+        rankBoost: 1.3,
+        dmgReducedBy: 0.1,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 12837,
+        healthIncrement: 219,
+        attack: 1729,
+        attackIncrement: 18,
+        defence: 1285,
+        defenceIncrement: 14,
+        maxHealth: 12837,
+        rage: 25,
+        willpower: 25,
+        ignoredDebuffs: [this.effects.freezing, this.effects.attackBreak],
+        reducedDmgFromDebuffs: [this.effects.bleeding],
+      },
+      [HeroesNamesCodes.DailyBossVersion1]: {
+        attackRange: 1,
+        rankBoost: 1.5,
+        dmgReducedBy: 0.25,
+        canCross: 3,
+        maxCanCross: 3,
+        health: 39237,
+        healthIncrement: 3195,
+        attack: 1829,
+        attackIncrement: 23,
+        defence: 1485,
+        defenceIncrement: 15,
+        maxHealth: 39237,
+        rage: 145,
+        willpower: 50,
+        ignoredDebuffs: [this.effects.burning],
+        reducedDmgFromDebuffs: [this.effects.bleeding],
+      },
+      [HeroesNamesCodes.Ranger]: {
+        attackRange: 1,
+        rankBoost: 1,
+        dmgReducedBy: 0,
+        canCross: 2,
+        maxCanCross: 2,
+        health: 8169,
+        healthIncrement: 89,
+        attack: 1299,
+        attackIncrement: 12,
+        defence: 995,
+        defenceIncrement: 10,
+        maxHealth: 8169,
+        rage: 20,
+        willpower: 20,
+        ignoredDebuffs: [],
+        reducedDmgFromDebuffs: [],
+      },
+    };
+
+    return configMap[unitType];
+  }
+
+  getPassiveSkillDescription(
+    unitType: HeroesNamesCodes,
+    effects: Effect[],
+    passiveEffects?: Effect[],
+  ) {
+    const base = this.getHeroBasicStats(unitType);
+    let description = '';
+
+    if (base.dmgReducedBy) {
+      description += `Takes ${this.numberService.convertToPersent(base.dmgReducedBy)}% less damage from enemy attacks.`;
+    }
+
+    if (base.reducedDmgFromDebuffs.length) {
+      description += `Takes 25% less damage from ${base.reducedDmgFromDebuffs.length === 1 ? 'debuff' : 'debuffs'}:
+      ${base.reducedDmgFromDebuffs.join(', ')}.`;
+    }
+
+    if (base.ignoredDebuffs.length) {
+      description += `This hero is immune to: ${base.ignoredDebuffs.join(', ')}.`;
+    }
+
+    if (effects.length) {
+      const effectsConfig = this.convertEffectsToDescriptionString(effects);
+
+      description += `Receives: ${effectsConfig} at the start of the game.`;
+    }
+
+    if (passiveEffects && passiveEffects.length) {
+      const effectsConfig = this.convertEffectsToDescriptionString(passiveEffects);
+
+      description += `At the start of each turn receives: ${effectsConfig}.`;
+    }
+
+    if (base.attackRange > 1) {
+      description += `Can attack from a distance of ${base.attackRange} cells.`;
+    }
+
+    return description.replaceAll('.', '. ');
+  }
+
+  getAndSetSkillDescription(heroType: HeroType) {
+    return (skill: Skill) => {
+      let description = '';
+
+      let dmgPersent = this.numberService.convertToPersent(skill.dmgM);
+      const primaryStat = heroType === HeroType.DEFENCE ? 'defence' : 'attack';
+
+      description += `Deals ${dmgPersent}% of ${primaryStat} damage to an enemy.`;
+
+      if (skill.heal) {
+        dmgPersent = this.numberService.convertToPersent(skill.healM);
+        description += `Before attacking, restores ${skill.healAll ? 'all allies' : 'an ally'} health equal to ${dmgPersent}% of ${skill.healAll ? 'their' : `this ally`} maximum health.`;
+      }
+
+      if (skill.buffs) {
+        const buffsConfig = this.convertEffectsToDescriptionString(skill.buffs);
+
+        description += `Receives: ${buffsConfig} ${skill.addBuffsBeforeAttack ? 'before attack' : 'after attack'}.`;
+      }
+
+      if (skill.debuffs?.length) {
+        const debuffsConfig = this.convertEffectsToDescriptionString(skill.debuffs);
+
+        description += `Applies to them: ${debuffsConfig}.`;
+      }
+
+      if (skill.attackInRange) {
+        dmgPersent = this.numberService.convertToPersent(skill.attackInRangeM);
+
+        description += `Also attacks enemies within ${skill.attackRange} ${skill.attackRange > 1 ? 'cells' : 'cell'} radius for ${dmgPersent}% of ${primaryStat}.`;
+      }
+
+      if (skill.inRangeDebuffs) {
+        const debuffsConfig = this.convertEffectsToDescriptionString(skill.inRangeDebuffs);
+
+        description += `Applies to them: ${debuffsConfig}.`;
+      }
+
+      skill.description = description.replaceAll('.', '. ');
+
+      return skill;
+    };
+  }
+
+  convertEffectsToDescriptionString(effects: Effect[]) {
+    return effects
+      .map(
+        effect => `${effect.type} for ${effect.duration} ${effect.duration > 1 ? 'turns' : 'turn'}`,
+      )
+      .join(', ');
   }
 }

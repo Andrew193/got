@@ -44,6 +44,26 @@ export interface Unit extends Coordinate {
   effects: Effect[];
 }
 
+export type UnitBasicStats = Pick<
+  Unit,
+  | 'attackRange'
+  | 'rankBoost'
+  | 'dmgReducedBy'
+  | 'canCross'
+  | 'maxCanCross'
+  | 'health'
+  | 'healthIncrement'
+  | 'maxHealth'
+  | 'attack'
+  | 'attackIncrement'
+  | 'defence'
+  | 'defenceIncrement'
+  | 'rage'
+  | 'willpower'
+  | 'ignoredDebuffs'
+  | 'reducedDmgFromDebuffs'
+>;
+
 export interface UnitWithReward extends Unit {
   reward: DisplayReward;
 }

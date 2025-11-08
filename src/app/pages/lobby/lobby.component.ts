@@ -16,7 +16,6 @@ import { NotificationMarkerComponent } from '../../directives/notification-marke
 import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
-import { NumbersService, NumbersService2 } from '../../services/numbers/numbers.service';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
 import { MatLine } from '@angular/material/core';
@@ -68,12 +67,6 @@ export class TestComponent {
 
 @Component({
   selector: 'app-user',
-  providers: [
-    {
-      provide: NumbersService2,
-      useExisting: NumbersService,
-    },
-  ],
   template: `
     <div style="background-color: #70ff70">
       Test

@@ -1,8 +1,7 @@
 import { Effect } from '../effect.model';
 
-export interface Skill extends SkillSrc {
+export type Skill = {
   dmgM: number;
-  healM?: number;
   debuffs?: Effect[];
   inRangeDebuffs?: Effect[];
   buffs?: Effect[];
@@ -12,13 +11,34 @@ export interface Skill extends SkillSrc {
   name: string;
   passive?: boolean;
   restoreSkill?: boolean;
-  attackInRange?: boolean;
-  attackRange?: number;
-  attackInRangeM?: number;
   description: string;
-  healAll?: boolean;
-  heal?: boolean;
-}
+} & SkillSrc &
+  SkillRangeConfig &
+  SkillHealConfig;
+
+export type SkillHealConfig =
+  | {
+      heal?: false | undefined;
+      healM?: number;
+      healAll?: boolean;
+    }
+  | {
+      heal: true;
+      healM: number;
+      healAll: boolean;
+    };
+
+export type SkillRangeConfig =
+  | {
+      attackInRange?: false | undefined;
+      attackRange?: number;
+      attackInRangeM?: number;
+    }
+  | {
+      attackInRange: true;
+      attackRange: number;
+      attackInRangeM: number;
+    };
 
 export interface SkillSrc {
   imgSrc: string;
@@ -35,12 +55,9 @@ export type TileUnitSkill = Pick<
   | 'inRangeDebuffs'
   | 'debuffs'
   | 'addBuffsBeforeAttack'
-  | 'healAll'
   | 'cooldown'
-  | 'healM'
   | 'dmgM'
-  | 'attackInRange'
-  | 'attackRange'
-  | 'attackInRangeM'
   | 'description'
->;
+> &
+  SkillRangeConfig &
+  SkillHealConfig;
