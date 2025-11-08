@@ -13,10 +13,14 @@
     </div>
   }
 
-  <main class="row g-4 m-0">
+  <main class="row gap-2 g-4 m-0">
     <div class="col-12 col-md mt-0">
-      <app-basic-stores-placeholder title="Exchanger">
-        <aside class="stores w-100">
+      <app-basic-stores-placeholder
+        title="Exchanger"
+        titleClass="mt-0 mb-0"
+        navClass="placeholder-container"
+        innerDivClass="m-0">
+        <div class="stores w-100 no-text-highlight m-0 p-0">
           <app-exchanger
             [(form)]="exchangerForm"
             [coins]="coins"
@@ -27,13 +31,17 @@
             [amountMax]="_amountMax"
             [allowedToOptions]="exchangerAllowedToOptions"
             (exchangeCurrency)="exchangeCurrency($event)" />
-        </aside>
+        </div>
       </app-basic-stores-placeholder>
     </div>
 
     <div class="col-12 col-md mt-0">
-      <app-basic-stores-placeholder title="Deposit">
-        <aside class="stores w-100">
+      <app-basic-stores-placeholder
+        title="Deposit"
+        titleClass="mt-0 mb-0"
+        navClass="placeholder-container"
+        innerDivClass="m-0">
+        <div class="stores w-100 no-text-highlight m-0 p-0">
           <fieldset [disabled]="!depositAvailable" class="h-100">
             <app-deposit
               [(form)]="depositForm"
@@ -50,11 +58,11 @@
               }
             </app-deposit>
           </fieldset>
-        </aside>
+        </div>
       </app-basic-stores-placeholder>
     </div>
 
-    <div class="ps-2 pe-2">
+    <div class="ps-2 pe-2 mt-0">
       <button class="got-toggle w-100" (click)="goToMainPage()">Back to Castle Black</button>
     </div>
   </main>

@@ -11,6 +11,10 @@
   );
 }
 
+textarea {
+  max-height: 200px;
+}
+
 .mdc-evolution-chip-set__chips {
   margin-left: unset !important;
 }

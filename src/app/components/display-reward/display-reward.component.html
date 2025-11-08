@@ -14,7 +14,7 @@
     [class]="_containerClass">
     @for (card of _cards; track $index) {
       @if (card) {
-        <div class="flip-items-inner-container col">
+        <div class="flip-items-inner-container col-sm-2 col-md">
           <app-card
             [cardCollectionName]="_contextName"
             [index]="$index"
@@ -29,9 +29,9 @@
     @if (_showOpenButton) {
       <button (click)="revealAll()" class="got-toggle">Open cards</button>
     } @else if (_showTotalBar && _showTotalReward) {
-      <div style="grid-template-columns: 1fr 3fr" class="d-grid p-0 gap-2">
-        <p class="m-0 total-reward-title">Total reward:</p>
-        <div class="row ps-2 pe-2 m-0 gap-2">
+      <div class="row m-0 p-0 gap-2">
+        <p class="col-sm-12 col-md-auto m-0 total-reward-title">Total reward:</p>
+        <div class="col-sm-12 col-md row ps-2 pe-2 m-0 gap-2">
           @let _prize = cardsPrize();
 
           @for (el of _prize; track el[0]) {

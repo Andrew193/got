@@ -3,11 +3,11 @@
     {
       "config": {
         "columnsConfig": {
-          "attack": 356,
-          "defence": 356,
-          "health": 356
+          "attack": 100,
+          "defence": 412,
+          "health": 256
         },
-        "pageSize": 5
+        "pageSize": 25
       },
       "tableName": "TavernaHeroesTable",
       "userId": "e046",
@@ -38,19 +38,19 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 638280,
+        "onlineTime": 648780,
         "claimedRewards": [
           "2",
           "4",
           "8",
           "12"
         ],
-        "lastLoyaltyBonus": "11/06/2025"
+        "lastLoyaltyBonus": "11/07/2025"
       },
       "currency": {
-        "gold": 2386,
-        "silver": 6624,
-        "copper": 5104579
+        "gold": 2724,
+        "silver": 6918,
+        "copper": 5694261
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -67,9 +67,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 18,
-      "totalDays": 75,
-      "lastLogin": "11/07/2025"
+      "day": 19,
+      "totalDays": 76,
+      "lastLogin": "11/08/2025"
     }
   ],
   "giftTrip": [
@@ -81,7 +81,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "11/07/2025"
+      "lastLogin": "11/08/2025"
     }
   ],
   "deposits": [

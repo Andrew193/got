@@ -12,4 +12,8 @@ import { BASIC_STORES_CONFIG } from '../../../constants';
 export class BasicStoresHolderComponent {
   title = input<string>('');
   config = input<Partial<StoresConfig>>(BASIC_STORES_CONFIG);
+
+  titleClass = input<string>('mt-0 mb-2');
+  navClass = input<string>('');
+  innerDivClass = input<string>('ms-1 me-1');
 }

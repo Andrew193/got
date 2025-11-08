@@ -114,17 +114,8 @@ table {
   border-top: none;
 }
 
-.resize-btn {
-  position: absolute;
-  left: 10px;
-  top: calc(100% - 56px + 10px);
-}
-
-.columns-on-off {
-  position: absolute;
-  left: 50px;
-  transform: scale(0.8);
-  top: 6px;
+.table-footer {
+  background-color: index.$var-metal-dark-1;
 }
 
 .detail-row td {

@@ -1,6 +1,10 @@
 @let _title = title();
 @let _config = config();
 
+@let _titleClass = titleClass();
+@let _navClass = navClass();
+@let _innerDivClass = innerDivClass();
+
 <div
   class="stores h-100 d-flex flex-column"
   [ngClass]="{
@@ -8,12 +12,12 @@
     'with-background': _config.withBackground,
   }">
   @if (_title) {
-    <p class="col-12 text-center mt-0 mb-2 banner no-top b-t-l-r-i b-t-r-r-i">
+    <p class="col-12 text-center banner no-top b-t-l-r-i b-t-r-r-i" [class]="_titleClass">
       <span class="store-title">{{ _title }}</span>
     </p>
   }
-  <nav class="flex-row justify-content-between flex-grow-1">
-    <div class="row g-2 w-100 store-row ms-1 me-1">
+  <nav class="flex-row justify-content-between flex-grow-1" [class]="_navClass">
+    <div class="row g-2 w-100 store-row" [class]="_innerDivClass">
       <ng-content />
     </div>
   </nav>

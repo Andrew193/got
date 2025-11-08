@@ -1,31 +1,29 @@
-<div class="inner-container">
+<div class="inner-container p-2">
   <app-page-loader [loader]="loader" />
 
-  <div class="d-flex justify-content-center flex-column align-items-center">
-    <div class="summon-container container">
+  <div class="d-flex justify-content-center flex-column align-items-center container">
+    <p class="banner p-2 w-100 color-white">
+      Donate coins and receive heroes or their fragments. For duplicates of heroes you will receive
+      a large number of fragments.
+    </p>
+
+    <div class="summon-container w-100">
       <div class="m-0-auto summon-background"></div>
-      <div class="mb-3">
-        <h4>
-          Donate coins and receive heroes or their fragments. For duplicates of heroes you will
-          receive a large number of fragments.
-        </h4>
+      <div class="mt-2">
         <div class="d-flex align-items-center justify-content-evenly roll-container">
-          <button class="got-toggle silver" (click)="getReward()">
-            <app-image
-              source="../../../assets/resourses/imgs/silver.png"
-              alt="silver coin"
-              [useFixSize]="true" />300
-          </button>
-          <button class="got-toggle silver" (click)="getReward(10)">
-            <app-image
-              source="../../../assets/resourses/imgs/silver.png"
-              alt="silver coin"
-              [useFixSize]="true" />{{ 2700 | number }}
-          </button>
+          @for (cart of cartPrices; track cart.price) {
+            <button class="got-toggle silver" (click)="getReward(cart.amount)">
+              <app-image
+                source="../../../assets/resourses/imgs/silver.png"
+                alt="silver coin"
+                [useFixSize]="true" />
+              <span class="ms-2">{{ cart.price | number }}</span>
+            </button>
+          }
         </div>
       </div>
       <app-display-reward [contextName]="contextName"></app-display-reward>
-      <button class="got-toggle" (click)="goToMainPage()">Back to Castle Black</button>
     </div>
+    <button class="got-toggle w-100 mt-2" (click)="goToMainPage()">Back to Castle Black</button>
   </div>
 </div>

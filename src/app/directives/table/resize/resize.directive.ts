@@ -91,8 +91,11 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
     effect(() => {
       if (this.equalize()) {
         this.resetResize();
-        this.saveWidth();
-        this.resizeStoped.emit(new Date().getTime());
+
+        if (this.conf.autosave) {
+          this.saveWidth();
+          this.resizeStoped.emit(new Date().getTime());
+        }
       }
     });
   }
@@ -386,7 +389,8 @@ export class TableResizeDirective<T> implements AfterViewInit, OnDestroy {
 
     this.doc.body.classList.remove('resizing-col');
     this.moving = undefined;
-    this.resizeStoped.emit(new Date().getTime());
+
+    if (this.conf.autosave) this.resizeStoped.emit(new Date().getTime());
   }
 
   private onDblClick(e: MouseEvent) {

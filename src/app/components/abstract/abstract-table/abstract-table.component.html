@@ -10,7 +10,6 @@
 @let _resizable = resizable();
 
 <div class="mat-elevation-z8 position-relative">
-  <button (click)="saveTableConfig()">Click</button>
   @if (isLoadingResults) {
     <div class="loading-shade">
       <mat-spinner></mat-spinner>
@@ -132,18 +131,6 @@
       </div>
 
       <footer class="position-relative">
-        <button mat-mini-fab (click)="equalizeColumns()" class="resize-btn">
-          <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
-        </button>
-
-        <ng-container [formGroup]="columnsOnOffForm">
-          <app-base-select
-            class="columns-on-off"
-            [label]="'Columns on/off'"
-            [controlName]="'columns'"
-            [staticOptions]="columnsOnOffOptions" />
-        </ng-container>
-
         <mat-paginator
           [length]="totalElements"
           [pageSize]="itemsPerPage"
@@ -151,6 +138,24 @@
           [pageSizeOptions]="pageSizeOptions"
           aria-label="Select page">
         </mat-paginator>
+
+        <div class="row m-0 gap-2 align-items-center ps-1 pe-1 pb-1 table-footer">
+          <button mat-mini-fab (click)="saveTableConfig()" class="col-auto">
+            <mat-icon matTooltip="Save template">save</mat-icon>
+          </button>
+
+          <button mat-mini-fab (click)="equalizeColumns()" class="col-auto">
+            <mat-icon matTooltip="Equal columns size">compare_arrows</mat-icon>
+          </button>
+
+          <ng-container [formGroup]="columnsOnOffForm">
+            <app-base-select
+              class="col p-0"
+              [label]="'Columns on/off'"
+              [controlName]="'columns'"
+              [staticOptions]="columnsOnOffOptions" />
+          </ng-container>
+        </div>
       </footer>
 
       <ng-template #td let-column="column" let-element="element">

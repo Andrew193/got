@@ -22,7 +22,11 @@ import {
   tap,
 } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { DataSource, TableApiResponse } from '../../../models/table/abstract-table.model';
+import {
+  DataSource,
+  TableApiResponse,
+  TableColumnsConfig,
+} from '../../../models/table/abstract-table.model';
 import { ProtoTable } from './helpers/proto-table';
 import { TableResizeDirective } from '../../../directives/table/resize/resize.directive';
 
@@ -119,7 +123,9 @@ export abstract class AbstractTableComponent<T>
   }
 
   saveTableConfig() {
-    console.log(this.resizeDirective());
+    const columnsMap = this.resizeDirective().getHeaderWidthMap() as TableColumnsConfig<T>;
+
+    this.onColumnResize(columnsMap);
   }
 
   ngOnDestroy() {

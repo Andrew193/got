@@ -7,7 +7,7 @@
 @let _allowedToOptions = allowedToOptions();
 @let _uiErrorsNames = uiErrorsNames();
 
-<div class="flex-row store-row p-2">
+<div class="row gap-2 m-0 store-row p-2">
   <div class="no-text-highlight w-100 mt-2 cursor-unset">
     <p class="m-0 color-white">You have:</p>
     <div class="ps-2">
@@ -45,8 +45,8 @@
       </app-number-input>
     </div>
 
-    <div class="col p-0">
-      <div class="alert alert-primary w-100">
+    <div class="col-12 p-0">
+      <div class="alert alert-primary exchanger-result-label w-100">
         You get: <b>{{ _result | number }}</b>
       </div>
     </div>

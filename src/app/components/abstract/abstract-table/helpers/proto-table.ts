@@ -76,7 +76,7 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
     minWidth: 100,
     maxWidth: 1200,
     handleWidth: 10,
-    autosave: true,
+    autosave: false,
     preserveTableWidth: true,
     staticTable: true,
   };
@@ -139,8 +139,9 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
     return columns().map(el => el.alias);
   }
 
-  onColumnResize() {
-    const tableConfig = this.localStorageService.getItem(this.tableName) as TableColumnsConfig<T>;
+  onColumnResize(config?: TableColumnsConfig<T>) {
+    const tableConfig =
+      config || (this.localStorageService.getItem(this.tableName) as TableColumnsConfig<T>);
 
     this.tableService.api.saveUpdateTableConfig(
       this.tableService.createTableConfig(tableConfig, this.itemsPerPage),

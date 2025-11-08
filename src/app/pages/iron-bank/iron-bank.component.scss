@@ -10,4 +10,8 @@
   aside {
     @include index.anim-glow-pulse-border();
   }
+
+  ::ng-deep .placeholder-container {
+    margin: unset;
+  }
 }
