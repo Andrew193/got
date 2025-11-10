@@ -10,6 +10,7 @@ import { SummonTreeService } from '../../services/facades/summon-tree/summon-tre
 @Component({
   selector: 'app-summon-tree',
   imports: [DisplayRewardComponent, ImageComponent, DecimalPipe, PageLoaderComponent],
+  providers: [SummonTreeService],
   templateUrl: './summon-tree.component.html',
   styleUrl: './summon-tree.component.scss',
 })

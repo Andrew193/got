@@ -81,6 +81,5 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEffects([AssistantEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects(),
   ],
 };

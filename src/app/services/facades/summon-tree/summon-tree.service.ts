@@ -7,9 +7,7 @@ import { LoaderService } from '../../resolver-loader/loader.service';
 import { frontRoutes } from '../../../constants';
 import { SummonTreeCard } from '../../../models/summon-tree/summon-tree.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SummonTreeService {
   store = inject(Store);
   loaderService = inject(LoaderService);
