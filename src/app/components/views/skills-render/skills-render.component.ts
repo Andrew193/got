@@ -26,6 +26,7 @@ import { BASIC_STORES_CONFIG } from '../../../constants';
 export class SkillsRenderComponent {
   selectedHero = input.required<TileUnit>();
   showLabel = input(true);
+  label = input<string>('Skills');
   showAsBackground = input(false);
   showSkillName = input(false);
   imageCoverClass = input('');

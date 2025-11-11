@@ -36,13 +36,23 @@ export class HeroesMatcherComponent extends DragDropComponent {
   cdkList2 = 'SELECTED_LIST';
 
   dropCover(event: CdkDragDrop<typeof this.allUnitsForSelect>) {
-    if (event.previousContainer.id === this.cdkList1) {
-      this.store.dispatch(
-        HeroesSelectActions.removeHeroFromCollection({
-          name: this.contextName,
-          itemName: this.chosenUnits()[event.previousIndex].name,
-        }),
+    const context = {
+      name: this.contextName,
+      itemName: event.previousContainer.data[event.previousIndex].name,
+    };
+
+    if (event.container.id === this.cdkList2) {
+      const shouldRemove = this.matchedPreviewUnits.find(
+        el => el.name === event.previousContainer.data[event.previousIndex].name,
       );
+
+      !shouldRemove && this.store.dispatch(HeroesSelectActions.removeHeroFromCollection(context));
+    } else {
+      const shouldAdd = this.chosenUnits().find(
+        el => el.name === event.previousContainer.data[event.previousIndex].name,
+      );
+
+      !shouldAdd && this.store.dispatch(HeroesSelectActions.addHeroToCollection(context));
     }
 
     this.drop(event);

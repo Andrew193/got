@@ -19,10 +19,13 @@ import { TableService } from '../../table/table.service';
 import { TavernaAssistantService } from './helpers/taverna-assistant.service';
 import { AssistantFacadeService } from '../../../models/interfaces/assistant.interface';
 import { HeroesSelectNames } from '../../../constants';
+import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class TavernaFacadeService implements AssistantFacadeService {
   nav = inject(NavigationService);
+  store = inject(Store);
 
   protected heroesService = inject(HeroesFacadeService);
   private heroesTableHelper = inject(TavernaHeroesTableHelperService);
@@ -40,7 +43,18 @@ export class TavernaFacadeService implements AssistantFacadeService {
     if (index !== -1) {
       this.chosenUnits.update(model => model.filter((_, i) => _.name !== unit.name));
     } else {
-      this.chosenUnits.update(model => [...model, this.heroesService.getPreviewUnit(unit.name)]);
+      this.chosenUnits.update(model => {
+        if (model[0]) {
+          this.store.dispatch(
+            HeroesSelectActions.removeHeroFromCollection({
+              name: this.contextName,
+              itemName: model[0].name,
+            }),
+          );
+        }
+
+        return [this.heroesService.getPreviewUnit(unit.name)];
+      });
     }
 
     return index === -1;

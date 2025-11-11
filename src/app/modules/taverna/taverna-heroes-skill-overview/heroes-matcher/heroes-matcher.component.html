@@ -11,7 +11,7 @@
     <app-heroes-select-preview
       [dropListId]="cdkList1"
       [connectTo]="[cdkList2]"
-      (dropped)="drop($event)"
+      (dropped)="dropCover($event)"
       [containerClass]="'no-p mt-2'"
       [units]="_chosenUnits"
       [title]="'Selected units'"></app-heroes-select-preview>
@@ -40,6 +40,7 @@
         <div cdkDrag>
           <app-skills-render
             [containerPaddingClasses]="'skill-box mb-1 p-2'"
+            [label]="`${unit.name} - Skills`"
             [selectedHero]="unit"
             [convertTextToLowercase]="false"
             [sliderMode]="true" />

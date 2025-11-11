@@ -8,9 +8,10 @@
 @let _containerPaddingClasses = containerPaddingClasses();
 @let _convertTextToLowercase = convertTextToLowercase();
 @let _renderBySentence = renderBySentence();
+@let _label = label();
 
 <div class="skills-container" [class]="_containerPaddingClasses">
-  <app-basic-stores-placeholder [title]="_showLabel ? 'Skills' : ''" [config]="_placeholderConfig">
+  <app-basic-stores-placeholder [title]="_showLabel ? _label : ''" [config]="_placeholderConfig">
     @if (_sliderMode) {
       <mat-tab-group class="skills-tabs">
         @for (skill of hero.skills; track skill.name + $index) {
