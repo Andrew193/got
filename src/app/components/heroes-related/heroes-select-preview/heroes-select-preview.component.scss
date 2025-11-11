@@ -16,7 +16,6 @@
 
   > div {
     margin-bottom: 5px;
-    display: flex;
     border: index.$var-border-1-black;
     padding: 3px;
     border-radius: 3px;
@@ -25,10 +24,6 @@
     &:last-of-type {
       margin-bottom: 0px;
     }
-  }
-
-  .description-bar {
-    max-height: 100px;
   }
 
   .hero-name {

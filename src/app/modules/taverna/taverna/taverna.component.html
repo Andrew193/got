@@ -6,9 +6,6 @@
       <div
         class="col activity"
         [style.--shadow-color]="activity.filterColor || '#B8860BFF'"
-        [ngClass]="{
-          'no-text-highlight': activity.closed,
-        }"
         (click)="!activity.closed && activity.click()">
         <div class="w-100 h-100 pt-2 pb-2 position-relative card-tile no-back">
           <app-image

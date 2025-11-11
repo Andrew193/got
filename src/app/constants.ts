@@ -21,6 +21,7 @@ export enum HeroesSelectNames {
   ai,
   dailyBoss,
   firstBattle,
+  heroesMatcher,
 }
 
 export const API_ENDPOINTS = {

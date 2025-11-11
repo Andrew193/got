@@ -37,6 +37,10 @@
       @include card-tile-mixin {
         background-image: url('/assets/resourses/imgs/background/crack.png');
       }
+
+      &:not(:has(app-container-label)):hover span {
+        @include index.mixin-grad-color;
+      }
     }
 
     .card-tile.no-back {
@@ -51,12 +55,6 @@
 
       &:not(.ignore-direction) {
         flex-direction: column;
-      }
-
-      &:not(.no-text-highlight):hover {
-        span {
-          @include index.mixin-grad-color;
-        }
       }
 
       &.card-tile {

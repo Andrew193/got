@@ -16,8 +16,8 @@
       <span class="store-title">{{ _title }}</span>
     </p>
   }
-  <nav class="flex-row justify-content-between flex-grow-1" [class]="_navClass">
-    <div class="row g-2 w-100 store-row" [class]="_innerDivClass">
+  <nav [class]="_navClass">
+    <div class="row g-2 w-100 store-row p-2" [class]="_innerDivClass">
       <ng-content />
     </div>
   </nav>

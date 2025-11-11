@@ -8,7 +8,6 @@ import { ImageComponent } from '../../../components/views/image/image.component'
 import { TavernaFacadeService } from '../../../services/facades/taverna/taverna.service';
 import { HeroesSelectFacadeService } from '../../../services/facades/heroes/helpers/heroes-select-helper.service';
 import { ContainerLabelComponent } from '../../../components/views/container-label/container-label.component';
-import { NgClass } from '@angular/common';
 import { TavernaPagesFooterComponent } from '../views/taverna-pages-footer/taverna-pages-footer.component';
 import { TavernaAssistantComponent } from '../taverna-assistant/taverna-assistant.component';
 
@@ -20,7 +19,6 @@ import { TavernaAssistantComponent } from '../taverna-assistant/taverna-assistan
     PageLoaderComponent,
     ImageComponent,
     ContainerLabelComponent,
-    NgClass,
     TavernaPagesFooterComponent,
     TavernaAssistantComponent,
   ],

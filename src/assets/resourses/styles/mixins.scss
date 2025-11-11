@@ -167,14 +167,12 @@
   }
 
   > div {
-    padding: 10px;
+    &:not(.no-p) {
+      padding: 10px;
+    }
 
     h4 {
       margin: unset;
-    }
-
-    &:first-of-type {
-      border-right: var.$border-1-black;
     }
   }
 }

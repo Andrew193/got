@@ -5,12 +5,20 @@
   border: index.$var-border-2-bronze;
 }
 
-.skills-container {
+.skills-container.active {
   background-color: index.$var-metal-dark-2;
   border-radius: 5px;
   border: index.$var-border-2-bronze;
 
   h2 {
     @include index.mixin-grad-color;
+  }
+}
+
+.matcher-container {
+  > div {
+    &:first-of-type {
+      background-color: index.$var-metal-dark-1;
+    }
   }
 }

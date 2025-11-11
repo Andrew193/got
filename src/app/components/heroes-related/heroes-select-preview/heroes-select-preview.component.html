@@ -1,55 +1,63 @@
 @let options = units();
 @let _containerClass = containerClass();
 @let _title = title();
+@let _dropListId = dropListId();
+@let _connectTo = connectTo();
 
-@if (options.length) {
-  <div class="d-flex justify-content-center heroes-container">
-    <div class="col-12 units-config-inner-container" [class]="_containerClass">
-      <app-basic-stores-placeholder [title]="_title">
-        <div class="flex-row justify-content-evenly preview-selected-heroes">
-          @for (unit of options; track unit.name) {
-            <div class="w-100">
-              <div class="col-auto position-relative cursor-pointer">
-                <app-image
-                  (click)="drawer.toggle()"
-                  [matTooltip]="unit.name"
-                  imageClass="image-100"
-                  [alt]="unit.name"
-                  [source]="unit.imgSrc" />
-              </div>
-              <mat-drawer-container class="w-100 description-bar">
-                <mat-drawer #drawer class="w-100 p-2" mode="over">
-                  {{ unit.description }}
-                </mat-drawer>
-                <div class="d-flex justify-content-around color-white">
-                  @for (skill of unit.skills; track skill.imgSrc + $index) {
-                    <div>
-                      <h5 class="text-center m-0">{{ skill.name }}</h5>
-                      <div
-                        class="position-relative"
-                        style="margin: 0 auto; width: fit-content"
-                        [matTooltip]="skill.description">
-                        <img
-                          [alt]="skill.name"
-                          [src]="skill.imgSrc"
-                          class="image-100 skill-preview-icon cursor-pointer" />
-
-                        @if (skill.passive) {
-                          <div class="skill-disabled" style="top: 0; left: 0">
-                            <i aria-hidden="true">P</i>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  }
-                </div>
-              </mat-drawer-container>
+<div class="heroes-container">
+  <div class="col-12 units-config-inner-container" [class]="_containerClass">
+    <app-basic-stores-placeholder [title]="_title">
+      <div
+        cdkDropList
+        [id]="_dropListId"
+        [cdkDropListData]="options"
+        [cdkDropListConnectedTo]="_connectTo"
+        (cdkDropListDropped)="dropped.emit($event)"
+        class="row gap-2 m-0 p-0 preview-selected-heroes">
+        @for (unit of options; track unit.name) {
+          <div cdkDrag class="row m-0">
+            <div class="col-auto position-relative cursor-pointer">
+              <app-image
+                (click)="drawer.toggle()"
+                [matTooltip]="unit.name"
+                imageClass="image-100"
+                [alt]="unit.name"
+                [source]="unit.imgSrc" />
             </div>
-          }
-        </div>
-      </app-basic-stores-placeholder>
-    </div>
+            <mat-drawer-container class="col description-bar">
+              <mat-drawer #drawer class="w-100 p-2" mode="over">
+                {{ unit.description }}
+              </mat-drawer>
+              <div class="d-flex justify-content-around color-white">
+                @for (skill of unit.skills; track skill.imgSrc + $index) {
+                  <div>
+                    <h5 class="text-center m-0">{{ skill.name }}</h5>
+                    <div
+                      class="position-relative"
+                      style="margin: 0 auto; width: fit-content"
+                      [matTooltip]="skill.description">
+                      <img
+                        [alt]="skill.name"
+                        [src]="skill.imgSrc"
+                        class="image-100 skill-preview-icon cursor-pointer" />
+
+                      @if (skill.passive) {
+                        <div class="skill-disabled" style="top: 0; left: 0">
+                          <i aria-hidden="true">P</i>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </mat-drawer-container>
+          </div>
+        }
+
+        @if (!options.length) {
+          <p class="text-center color-white mb-0">No heroes to preview</p>
+        }
+      </div>
+    </app-basic-stores-placeholder>
   </div>
-} @else {
-  <p class="text-center mb-0">No heroes to preview</p>
-}
+</div>

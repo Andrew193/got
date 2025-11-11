@@ -1,44 +1,49 @@
-<div class="row gap-2 m-0">
-  <aside class="skills-container color-white col-md-12 col-lg p-2">
-    <h2 class="w-100 text-center mb-0">All skill sets</h2>
+@let _chosenUnits = chosenUnits();
 
-    <div
-      cdkDropList
-      #totalSkillsList="cdkDropList"
-      [cdkDropListData]="allTileUnits"
-      [cdkDropListConnectedTo]="[matchedSkillsList]"
-      (cdkDropListDropped)="drop($event)">
-      @for (unit of allTileUnits; track unit.name) {
-        <app-skills-render
-          cdkDrag
-          [containerPaddingClasses]="'skill-box mb-1 p-2'"
-          [selectedHero]="unit"
-          [convertTextToLowercase]="false"
-          [sliderMode]="true" />
-      }
-    </div>
-  </aside>
+<div cdkDropListGroup class="row gap-2 m-0 matcher-container">
+  <div class="col-12 p-2">
+    <p class="color-white banner w-100 p-2 mb-0">
+      The selected hero's abilities will be displayed here. When selecting a hero, heroes with which
+      this hero has synergies will also be highlighted. You can drag a hero from this block to the
+      column on the right.
+    </p>
 
-  <div class="col">
-    <ng-content />
+    <app-heroes-select-preview
+      [dropListId]="cdkList1"
+      [connectTo]="[cdkList2]"
+      (dropped)="drop($event)"
+      [containerClass]="'no-p mt-2'"
+      [units]="_chosenUnits"
+      [title]="'Selected units'"></app-heroes-select-preview>
   </div>
 
-  <aside class="skills-container color-white col-md-12 col-lg p-2">
-    <h2 class="w-100 text-center mb-0">Selected skill sets</h2>
+  <aside class="skills-container color-white col-md-12 col-lg p-0">
+    <app-heroes-select
+      [title]="'Units'"
+      [containerClass]="'no-p'"
+      [contextName]="contextName"
+      [isUser]="true"
+      [allHeroes]="allUnitsForSelect"
+      [addUserUnit]="addUserUnit"></app-heroes-select>
+  </aside>
 
+  <aside class="skills-container active color-white col-md-12 col-lg p-0">
+    <h2 class="w-100 text-center mb-0">Selected skill sets</h2>
     <div
+      class="h-100"
+      [id]="cdkList2"
       cdkDropList
-      #matchedSkillsList="cdkDropList"
-      [cdkDropListData]="matchedTileUnits"
-      [cdkDropListConnectedTo]="[totalSkillsList]"
-      (cdkDropListDropped)="drop($event)">
-      @for (unit of matchedTileUnits; track unit.name) {
-        <app-skills-render
-          cdkDrag
-          [containerPaddingClasses]="'skill-box mb-1 p-2'"
-          [selectedHero]="unit"
-          [convertTextToLowercase]="false"
-          [sliderMode]="true" />
+      [cdkDropListData]="matchedPreviewUnits"
+      [cdkDropListConnectedTo]="[cdkList1]"
+      (cdkDropListDropped)="dropCover($event)">
+      @for (unit of matchedPreviewUnits; track unit.name) {
+        <div cdkDrag>
+          <app-skills-render
+            [containerPaddingClasses]="'skill-box mb-1 p-2'"
+            [selectedHero]="unit"
+            [convertTextToLowercase]="false"
+            [sliderMode]="true" />
+        </div>
       }
     </div>
   </aside>

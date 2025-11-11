@@ -18,9 +18,9 @@
       <app-basic-stores-placeholder
         title="Exchanger"
         titleClass="mt-0 mb-0"
-        navClass="placeholder-container"
-        innerDivClass="m-0">
-        <div class="stores w-100 no-text-highlight m-0 p-0">
+        navClass="placeholder-container h-100"
+        innerDivClass="m-0 h-100">
+        <div class="stores w-100 m-0 p-0">
           <app-exchanger
             [(form)]="exchangerForm"
             [coins]="coins"
@@ -39,9 +39,9 @@
       <app-basic-stores-placeholder
         title="Deposit"
         titleClass="mt-0 mb-0"
-        navClass="placeholder-container"
-        innerDivClass="m-0">
-        <div class="stores w-100 no-text-highlight m-0 p-0">
+        navClass="placeholder-container h-100"
+        innerDivClass="m-0 h-100">
+        <div class="stores w-100 m-0 p-0">
           <fieldset [disabled]="!depositAvailable" class="h-100">
             <app-deposit
               [(form)]="depositForm"

@@ -45,12 +45,7 @@
   let-click="click"
   let-closed="closed"
   let-notification="notification">
-  <div
-    class="col-3"
-    (click)="click ? click() : true"
-    [ngClass]="{
-      'no-text-highlight': closed,
-    }">
+  <div class="col-3" (click)="click ? click() : true">
     <div class="w-100 h-100 pt-2 pb-2 position-relative card-tile">
       <app-image
         [source]="'./assets/resourses/imgs/' + src + '.png'"

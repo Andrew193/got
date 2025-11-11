@@ -48,10 +48,10 @@ export class TrainingFacadeService {
   userUnits = signal<PreviewUnit[]>([]);
 
   userSelCtx = computed(() => {
-    return { user: true, title: 'Selected User Units', units: this.userUnits() };
+    return { title: 'Selected User Units', units: this.userUnits() };
   });
   aiSelCtx = computed(() => {
-    return { user: false, title: 'Selected AI Units', units: this.aiUnits() };
+    return { title: 'Selected AI Units', units: this.aiUnits() };
   });
 
   allUnitsForFieldConfig = computed(() => {

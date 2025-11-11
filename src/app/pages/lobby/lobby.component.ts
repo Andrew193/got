@@ -15,7 +15,7 @@ import { DailyRewardComponent } from '../../components/daily-reward/daily-reward
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
 import { MatLine } from '@angular/material/core';
@@ -115,7 +115,6 @@ export class UserComponent implements AfterContentInit {
     AsyncPipe,
     BasicStoresHolderComponent,
     ContainerLabelComponent,
-    NgClass,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',

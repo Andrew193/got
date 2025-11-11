@@ -24,12 +24,16 @@ const userAdapter = createEntityAdapter<HeroesSelectStateEntity>({
 const firstBattleAdapter = createEntityAdapter<HeroesSelectStateEntity>({
   selectId,
 });
+const heroesMatcherAdapter = createEntityAdapter<HeroesSelectStateEntity>({
+  selectId,
+});
 
 export const HeroesSelectInitialState: HeroesSelectState = {
   [HeroesSelectNames.ai]: aiAdapter.getInitialState(),
   [HeroesSelectNames.dailyBoss]: dailyBossAdapter.getInitialState(),
   [HeroesSelectNames.user]: userAdapter.getInitialState(),
   [HeroesSelectNames.firstBattle]: firstBattleAdapter.getInitialState(),
+  [HeroesSelectNames.heroesMatcher]: heroesMatcherAdapter.getInitialState(),
 };
 
 export function chooseHeroesAdapter(name: HeroesSelectNames) {
@@ -38,6 +42,7 @@ export function chooseHeroesAdapter(name: HeroesSelectNames) {
     [HeroesSelectNames.dailyBoss]: dailyBossAdapter,
     [HeroesSelectNames.user]: userAdapter,
     [HeroesSelectNames.firstBattle]: firstBattleAdapter,
+    [HeroesSelectNames.heroesMatcher]: heroesMatcherAdapter,
   }[name];
 }
 

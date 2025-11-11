@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   TavernaActivities,
@@ -7,7 +7,7 @@ import {
 import { map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
-import { Unit } from '../../../models/units-related/unit.model';
+import { PreviewUnit, SelectableUnit, Unit } from '../../../models/units-related/unit.model';
 import {
   DataSource,
   FilterValue,
@@ -18,6 +18,7 @@ import { TavernaHeroesTableHelperService } from './helpers/heroes-table-helper.s
 import { TableService } from '../../table/table.service';
 import { TavernaAssistantService } from './helpers/taverna-assistant.service';
 import { AssistantFacadeService } from '../../../models/interfaces/assistant.interface';
+import { HeroesSelectNames } from '../../../constants';
 
 @Injectable()
 export class TavernaFacadeService implements AssistantFacadeService {
@@ -28,6 +29,22 @@ export class TavernaFacadeService implements AssistantFacadeService {
   assistantService = inject(TavernaAssistantService);
 
   getTileUnits = () => this.heroesService.getTileUnits();
+
+  //Heroes matcher
+  contextName = HeroesSelectNames.heroesMatcher;
+  chosenUnits = signal<PreviewUnit[]>([]);
+
+  public addUserUnit = (unit: SelectableUnit): boolean => {
+    const index = this.chosenUnits().findIndex(el => el.name === unit.name);
+
+    if (index !== -1) {
+      this.chosenUnits.update(model => model.filter((_, i) => _.name !== unit.name));
+    } else {
+      this.chosenUnits.update(model => [...model, this.heroesService.getPreviewUnit(unit.name)]);
+    }
+
+    return index === -1;
+  };
 
   //Root taverna
   readonly activities: TavernaActivities[] = [
