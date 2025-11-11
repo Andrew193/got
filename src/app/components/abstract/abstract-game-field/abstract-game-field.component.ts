@@ -74,7 +74,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     }
 
     this.gameConfig = this.abstractFieldS.populateGameFieldWithUnits(this.userUnits, this.aiUnits);
-    console.log('create');
   }
 
   shouldRenderAction(hero: TileUnit, type: 'canMove' | 'canAttack') {

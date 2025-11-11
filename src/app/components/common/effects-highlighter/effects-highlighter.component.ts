@@ -20,6 +20,7 @@ export class EffectsHighlighterComponent {
   wordsToHighlight = input<string[]>([]);
   renderBySentence = input<boolean>(false);
   containerClass = input<string>('');
+  convertTextToLowercase = input<boolean>(true);
 
   text = input.required<string>();
 
@@ -27,8 +28,9 @@ export class EffectsHighlighterComponent {
     return (text: string): Chunk[] => {
       const out: Chunk[] = [];
       let last = 0;
+      const textToCheck = this.convertTextToLowercase() ? text.toLowerCase() : text;
 
-      for (const m of text.toLowerCase().matchAll(re)) {
+      for (const m of textToCheck.matchAll(re)) {
         const idx = m.index ?? 0;
 
         if (idx > last) out.push({ text: text.slice(last, idx), hint: false });
@@ -46,11 +48,15 @@ export class EffectsHighlighterComponent {
 
       if (last < text.length) out.push({ text: text.slice(last), hint: false });
 
-      return out.map((el, i) => (i === out.length - 1 ? { ...el, text: `${el.text}.` } : el));
+      return out.map((el, i) => {
+        return i === out.length - 1 ? { ...el, text: `${el.text.trim()}.`.replace('..', '.') } : el;
+      });
     };
   }
 
   private effectsWords = computed(() => {
+    console.log([this.wordsToHighlight(), this.heroService.helper.getEffectsToHighlight()].flat());
+
     return [this.wordsToHighlight(), this.heroService.helper.getEffectsToHighlight()].flat();
   });
 

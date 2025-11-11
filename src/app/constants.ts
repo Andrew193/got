@@ -104,6 +104,7 @@ export const frontRoutes = {
   taverna: 'taverna',
   shortInformation: 'short-information',
   tavernaHeroesBar: 'heroes-bar',
+  tavernaSynergyOverview: 'synergy-overview',
   preview: 'preview',
   battleField: 'test-b',
   training: 'training',

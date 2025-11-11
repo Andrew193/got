@@ -2,7 +2,11 @@
 @let _renderBySentence = renderBySentence();
 @let _containerClass = containerClass();
 
-<div [class]="_containerClass">
+<div
+  [class]="_containerClass"
+  [ngClass]="{
+    'render-by-sentence': _renderBySentence,
+  }">
   <ng-content />
 
   @if (_renderBySentence) {
@@ -22,12 +26,12 @@
         'mt-2': last,
         'mb-2': first,
         'special-line': last || first,
-        'd-inline-block': last || first,
-        'd-inline': !last && !first,
+        'd-inline-block': !_renderBySentence || (_renderBySentence && (first || last)),
+        'd-inline': _renderBySentence,
       }">
       @for (word of text; track word.hint + word.text + $index) {
         @if (word.hint) {
-          <span class="highlight-effect" [matTooltip]="word.desc">{{ word.text }}</span>
+          <span class="highlight-effect ms-1 me-1" [matTooltip]="word.desc">{{ word.text }}</span>
         } @else {
           <span>{{ word.text }}</span>
         }

@@ -9,4 +9,6 @@
     background: url('../../../../assets/resourses/imgs/background/training.webp') no-repeat center;
     background-size: cover;
   }
+
+  @include index.mixin-got-btn;
 }

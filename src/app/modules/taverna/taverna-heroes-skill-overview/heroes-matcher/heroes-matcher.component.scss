@@ -1,0 +1,16 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
+.skill-box {
+  background-color: index.$var-metal-dark-1;
+  border: index.$var-border-2-bronze;
+}
+
+.skills-container {
+  background-color: index.$var-metal-dark-2;
+  border-radius: 5px;
+  border: index.$var-border-2-bronze;
+
+  h2 {
+    @include index.mixin-grad-color;
+  }
+}

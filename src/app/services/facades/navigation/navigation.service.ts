@@ -28,6 +28,10 @@ export class NavigationService {
     this.router.navigate([FrontRoutes.taverna, FrontRoutes.tavernaHeroesBar]);
   }
 
+  getToTavernaSynergyBar() {
+    this.router.navigate([FrontRoutes.taverna, FrontRoutes.tavernaSynergyOverview]);
+  }
+
   goToTraining() {
     this.router.navigate([FrontRoutes.training]);
   }

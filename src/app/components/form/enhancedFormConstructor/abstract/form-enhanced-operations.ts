@@ -1,4 +1,3 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import {
@@ -11,8 +10,9 @@ import {
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { SELECT_SEARCH_PREFIX, SNACKBAR_CONFIG } from '../../../../constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DragDropComponent } from '../../../abstract/drag-drop/drag-drop.component';
 
-export class FormEnhancedOperations<T> {
+export class FormEnhancedOperations<T> extends DragDropComponent {
   constructor(
     public allFields: AppEntity<T>[],
     protected formName: string,
@@ -20,20 +20,11 @@ export class FormEnhancedOperations<T> {
     protected fb: FormBuilder,
     protected localStorageService: LocalStorageService,
     protected _snackBar: MatSnackBar,
-  ) {}
+  ) {
+    super();
+  }
 
-  public dropField(event: CdkDragDrop<any>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-
+  override dropSideEffect() {
     this.saveFormTemplate();
   }
 

@@ -1,0 +1,45 @@
+<div class="row gap-2 m-0">
+  <aside class="skills-container color-white col-md-12 col-lg p-2">
+    <h2 class="w-100 text-center mb-0">All skill sets</h2>
+
+    <div
+      cdkDropList
+      #totalSkillsList="cdkDropList"
+      [cdkDropListData]="allTileUnits"
+      [cdkDropListConnectedTo]="[matchedSkillsList]"
+      (cdkDropListDropped)="drop($event)">
+      @for (unit of allTileUnits; track unit.name) {
+        <app-skills-render
+          cdkDrag
+          [containerPaddingClasses]="'skill-box mb-1 p-2'"
+          [selectedHero]="unit"
+          [convertTextToLowercase]="false"
+          [sliderMode]="true" />
+      }
+    </div>
+  </aside>
+
+  <div class="col">
+    <ng-content />
+  </div>
+
+  <aside class="skills-container color-white col-md-12 col-lg p-2">
+    <h2 class="w-100 text-center mb-0">Selected skill sets</h2>
+
+    <div
+      cdkDropList
+      #matchedSkillsList="cdkDropList"
+      [cdkDropListData]="matchedTileUnits"
+      [cdkDropListConnectedTo]="[totalSkillsList]"
+      (cdkDropListDropped)="drop($event)">
+      @for (unit of matchedTileUnits; track unit.name) {
+        <app-skills-render
+          cdkDrag
+          [containerPaddingClasses]="'skill-box mb-1 p-2'"
+          [selectedHero]="unit"
+          [convertTextToLowercase]="false"
+          [sliderMode]="true" />
+      }
+    </div>
+  </aside>
+</div>

@@ -43,6 +43,7 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
 
   ignoreTemplate = input<boolean>(false);
   showModeToggler = input<boolean>(true);
+  showUpdateFormButton = input<boolean>(true);
 
   getApPositionStyles = this.helper.getApPositionStyles;
   getTilePositionStyles = this.helper.getTilePositionStyles<T>;

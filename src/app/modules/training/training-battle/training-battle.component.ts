@@ -19,9 +19,11 @@ import { FieldConfigActions } from '../../../store/actions/field-config.actions'
   selector: 'app-training-battle',
   imports: [GameEntryPointComponent],
   templateUrl: './training-battle.component.html',
+  styleUrl: './training-battle.component.scss',
 })
 export class TrainingBattleComponent implements OnDestroy, OnInit {
   store = inject(Store);
+
   aiUnitsFromStore = this.store.selectSignal(selectAiUnits);
   userUnitsFromStore = this.store.selectSignal(selectUserUnits);
   gridConfig = this.store.selectSignal(selectTrainingFieldConfig());

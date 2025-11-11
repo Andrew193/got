@@ -1,5 +1,6 @@
 @let _formConfig = formConfig();
 @let _dragAllowed = dragAllowed();
+@let _showUpdateFormButton = showUpdateFormButton();
 
 <div class="nav row g-2 mb-2">
   @for (config of configArray; track config.id) {
@@ -81,7 +82,7 @@
                       cdkDropListOrientation="horizontal"
                       cdkDropList
                       [cdkDropListData]="tile.cdkDropListData"
-                      (cdkDropListDropped)="tileOps.dropField($event)"
+                      (cdkDropListDropped)="tileOps.drop($event)"
                       [cdkDropListConnectedTo]="getConnectedTiles()"
                       [ngStyle]="getTilePositionStyles(tile, _formConfig)">
                       @for (
@@ -162,7 +163,7 @@
   </div>
 </div>
 
-@if (!isFormCtrOn) {
+@if (!isFormCtrOn && _showUpdateFormButton) {
   <div class="form-control-elements">
     <button mat-fab extended (click)="formActions.saveAction()">
       <mat-icon>save_as</mat-icon>

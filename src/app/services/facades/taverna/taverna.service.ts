@@ -27,6 +27,8 @@ export class TavernaFacadeService implements AssistantFacadeService {
   private heroesTableHelper = inject(TavernaHeroesTableHelperService);
   assistantService = inject(TavernaAssistantService);
 
+  getTileUnits = () => this.heroesService.getTileUnits();
+
   //Root taverna
   readonly activities: TavernaActivities[] = [
     {
@@ -35,12 +37,16 @@ export class TavernaFacadeService implements AssistantFacadeService {
       click: () => this.nav.getToTavernaShortInformation(),
       filterColor: 'gray',
     },
-    { label: 'Heroes Bar', imgSrc: 'mayla_young', click: () => this.nav.getToTavernaHeroesBar() },
     {
-      label: 'Skills Overview',
+      label: 'Heroes Bar',
+      imgSrc: 'mayla_young',
+      click: () => this.nav.getToTavernaHeroesBar(),
+    },
+    {
+      label: 'Synergy Overview',
       imgSrc: 'water_dancer',
-      closed: true,
-      click: () => this.nav.getToTavernaShortInformation(),
+      click: () => this.nav.getToTavernaSynergyBar(),
+      filterColor: '#bcf5c7',
     },
   ];
 

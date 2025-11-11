@@ -5,7 +5,7 @@
         <mat-list class="pt-0 pb-0">
           @for (route of pageRoutes; track route.name) {
             <mat-list-item class="position-relative">
-              <a [routerLink]="route.url" class="list-group-item" mat-line>
+              <a [routerLink]="route.url" class="list-group-item h-100 w-100" mat-line>
                 <span class="d-flex">
                   <app-image
                     [source]="'assets/resourses/imgs/nav_icons/' + route.src"

@@ -6,6 +6,8 @@
 @let _sliderMode = sliderMode();
 @let _placeholderConfig = placeholderConfig();
 @let _containerPaddingClasses = containerPaddingClasses();
+@let _convertTextToLowercase = convertTextToLowercase();
+@let _renderBySentence = renderBySentence();
 
 <div class="skills-container no-text-highlight" [class]="_containerPaddingClasses">
   <app-basic-stores-placeholder [title]="_showLabel ? 'Skills' : ''" [config]="_placeholderConfig">
@@ -48,7 +50,10 @@
       </div>
     }
     <div class="col mt-0">
-      <app-effects-highlighter [text]="skill.description">
+      <app-effects-highlighter
+        [text]="skill.description"
+        [renderBySentence]="_renderBySentence"
+        [convertTextToLowercase]="_convertTextToLowercase">
         @if (_showSkillName) {
           <p class="mb-1">
             <b class="defence-color"> {{ skill.name }} {{ skill.passive ? '( P )' : '' }} </b>

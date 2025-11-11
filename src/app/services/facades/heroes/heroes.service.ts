@@ -802,6 +802,14 @@ export class HeroesFacadeService extends ContentService {
     return this.helper.getEquipmentForUnit({ ...userUnit, ...(config || {}) });
   }
 
+  getTileUnitSkills() {
+    return this.getTileUnits().map(el => el.skills);
+  }
+
+  getTileUnits() {
+    return this.getAllHeroes().map(el => this.getTileUnit(el));
+  }
+
   getUnitsForTrainingBattle(
     getUser: boolean,
     unitsToCompare: TrainingStateUnit[],

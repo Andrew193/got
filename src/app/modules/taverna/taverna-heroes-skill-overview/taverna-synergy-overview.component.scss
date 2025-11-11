@@ -1,0 +1,10 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.skills-overview-container {
+  @include index.mixin-page-container;
+  @include index.mixin-got-btn;
+
+  h3 {
+    @include index.mixin-grad-color;
+  }
+}

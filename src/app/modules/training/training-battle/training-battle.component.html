@@ -3,5 +3,10 @@
     [aiUnits]="aiUnits"
     [userUnits]="userUnits"
     [gameResultsRedirect]="victoryRedirect">
+    <ng-container ngProjectAs="bottom-navigation">
+      <button class="ms-1 got-toggle got-toggle-red" (click)="victoryRedirect()">
+        Back to Training Ground
+      </button>
+    </ng-container>
   </app-game-entry-point>
 }

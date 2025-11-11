@@ -32,4 +32,6 @@ export class SkillsRenderComponent {
   sliderMode = input<boolean>(false);
   placeholderConfig = input<Partial<StoresConfig>>(BASIC_STORES_CONFIG);
   containerPaddingClasses = input<string>('ps-2 pe-2');
+  convertTextToLowercase = input<boolean>(true);
+  renderBySentence = input<boolean>(false);
 }
