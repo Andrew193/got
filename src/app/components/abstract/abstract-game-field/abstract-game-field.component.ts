@@ -142,12 +142,15 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     skill: TileUnitSkill,
   ) {
     const boostedAttack =
-      this.effectsS.getBoostedParameterCover(attackDealer, attackDealer.effects) *
+      this.effectsS.getBoostedParameterCover(attackDealer, attackDealer.effects, 'attack') *
       (skill.dmgM || 0);
     const boostedDefence = this.effectsS.getBoostedParameterCover(
       dmgTaker[enemyIndex],
       dmgTaker[enemyIndex].effects,
+      'defence',
     );
+
+    console.log(boostedDefence, 'boostedDefence');
 
     const damage = this.abstractFieldS.getDamage({
       dmgTaker: { ...dmgTaker[enemyIndex], defence: boostedDefence },

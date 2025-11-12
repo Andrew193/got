@@ -2,6 +2,7 @@ import {
   StoreNames,
   TrainingState,
   TrainingStateUnit,
+  TrainingStateUnitType,
   TrainingVisibilityUnit,
 } from '../store.interfaces';
 import { createFeature, createReducer, on } from '@ngrx/store';
@@ -10,43 +11,44 @@ import { TrainingActions } from '../actions/training.actions';
 import { FieldConfigInitialState, FieldConfigReducer } from './field-config.reducer';
 import { FieldConfigActions } from '../actions/field-config.actions';
 import { makeSelectFieldConfig } from '../selectors/field-config.selectors';
-import { makeCanStartTrainingBattle, makeUnitVisibility } from '../selectors/training.selectors';
+import {
+  makeCanStartTrainingBattle,
+  makeSelectUnits,
+  makeUnitVisibility,
+} from '../selectors/training.selectors';
 import { UnitName } from '../../models/units-related/unit.model';
 
-function selectId(model: { name: UnitName }) {
+function getUnitKey(config: { collection: TrainingStateUnitType; key?: string; name?: string }) {
+  return `${config.collection}:${config.name || config.key}`;
+}
+
+function selectUnitsId(model: TrainingStateUnit) {
+  return getUnitKey(model);
+}
+
+function selectUnitsVisibilityId(model: { name: UnitName }) {
   return model.name;
 }
 
-const aiUnitsAdapter = createEntityAdapter<TrainingStateUnit>({
-  selectId,
-});
-const userUnitsAdapter = createEntityAdapter<TrainingStateUnit>({
-  selectId,
+const unitsAdapter = createEntityAdapter<TrainingStateUnit>({
+  selectId: selectUnitsId,
 });
 
 //Visibility
 const aiUnitsVisibilityAdapter = createEntityAdapter<TrainingVisibilityUnit>({
-  selectId,
+  selectId: selectUnitsVisibilityId,
 });
 const userUnitsVisibilityAdapter = createEntityAdapter<TrainingVisibilityUnit>({
-  selectId,
+  selectId: selectUnitsVisibilityId,
 });
 
 export const TrainingInitialState: TrainingState = {
-  aiUnits: aiUnitsAdapter.getInitialState([]),
-  userUnits: userUnitsAdapter.getInitialState([]),
+  units: unitsAdapter.getInitialState([]),
   fieldConfig: FieldConfigInitialState,
   unitUpdateAllowed: true,
   aiVisibility: aiUnitsVisibilityAdapter.getInitialState([]),
   userVisibility: userUnitsVisibilityAdapter.getInitialState([]),
 };
-
-function getUnitsConfig(isUser: boolean) {
-  const key = isUser ? ('userUnits' as const) : ('aiUnits' as const);
-  const adapter = isUser ? userUnitsAdapter : aiUnitsAdapter;
-
-  return { key, adapter };
-}
 
 function getVisibilityUnitsConfig(isUser: boolean) {
   const key = isUser ? ('userVisibility' as const) : ('aiVisibility' as const);
@@ -75,29 +77,23 @@ export const TrainingFeature = createFeature({
     on(TrainingActions.setUnitUpdate, (state, action) => {
       return { ...state, unitUpdateAllowed: action.canUpdateUnit };
     }),
-    on(TrainingActions.setAIUnits, (state, action) => {
-      return { ...state, aiUnits: aiUnitsAdapter.setAll(action.units, state.aiUnits) };
-    }),
-    on(TrainingActions.setUserUnits, (state, action) => {
-      return { ...state, userUnits: userUnitsAdapter.setAll(action.units, state.userUnits) };
+    on(TrainingActions.setUnits, (state, action) => {
+      return { ...state, units: unitsAdapter.setAll(action.units, state.units) };
     }),
     on(TrainingActions.addUnit, (state, action) => {
-      const { key, adapter } = getUnitsConfig(action.isUser);
-
-      return { ...state, [key]: adapter.addOne(action.data, state[key]) };
+      return { ...state, units: unitsAdapter.addOne(action.data, state.units) };
     }),
     on(TrainingActions.removeUnit, (state, action) => {
-      const { key, adapter } = getUnitsConfig(action.isUser);
-
-      return { ...state, [key]: adapter.removeOne(action.key, state[key]) };
+      return { ...state, units: unitsAdapter.removeOne(getUnitKey(action), state.units) };
     }),
     on(TrainingActions.setUnitCoordinate, (state, action) => {
       if (state.unitUpdateAllowed) {
-        const { key, adapter } = getUnitsConfig(action.isUser);
-
         return {
           ...state,
-          [key]: adapter.updateOne({ id: action.name, changes: action.coordinate }, state[key]),
+          units: unitsAdapter.updateOne(
+            { id: getUnitKey(action), changes: action.coordinate },
+            state.units,
+          ),
         };
       }
 
@@ -109,14 +105,12 @@ export const TrainingFeature = createFeature({
     on(TrainingActions.dropTrainingSelectUnits, state => {
       return {
         ...state,
-        aiUnits: aiUnitsAdapter.removeAll(state.aiUnits),
-        userUnits: userUnitsAdapter.removeAll(state.userUnits),
+        units: unitsAdapter.removeAll(state.units),
       };
     }),
   ),
   extraSelectors: baseSelectors => {
-    const aiSelectors = aiUnitsAdapter.getSelectors(baseSelectors.selectAiUnits);
-    const userSelectors = userUnitsAdapter.getSelectors(baseSelectors.selectUserUnits);
+    const unitsSelectors = unitsAdapter.getSelectors(baseSelectors.selectUnits);
 
     const aiVisibilitySelectors = aiUnitsVisibilityAdapter.getSelectors(
       baseSelectors.selectAiVisibility,
@@ -126,14 +120,12 @@ export const TrainingFeature = createFeature({
     );
 
     return {
-      selectAiUnitsEntities: aiSelectors.selectEntities,
-      selectUserUnitsEntities: userSelectors.selectEntities,
-      selectAiUnits: aiSelectors.selectAll,
-      selectUserUnits: userSelectors.selectAll,
+      selectUnitsEntities: unitsSelectors.selectEntities,
+      selectUnits: (collection: TrainingStateUnitType) =>
+        makeSelectUnits(unitsSelectors.selectAll, collection),
       selectFieldConfig: () =>
         makeSelectFieldConfig(baseSelectors.selectFieldConfig, StoreNames.trainingGround),
-      selectCanStartTrainingBattle: () =>
-        makeCanStartTrainingBattle(aiSelectors.selectAll, userSelectors.selectAll),
+      selectCanStartTrainingBattle: () => makeCanStartTrainingBattle(unitsSelectors.selectAll),
       selectUnitVisibility: (id: UnitName, isUser: boolean) =>
         makeUnitVisibility(
           isUser ? userVisibilitySelectors.selectAll : aiVisibilitySelectors.selectAll,
@@ -145,8 +137,8 @@ export const TrainingFeature = createFeature({
 });
 
 export const {
-  selectAiUnits,
-  selectUserUnits,
+  selectUnits,
+  selectUnitsEntities,
   selectFieldConfig: selectTrainingFieldConfig,
   selectCanStartTrainingBattle,
   selectUnitVisibility,

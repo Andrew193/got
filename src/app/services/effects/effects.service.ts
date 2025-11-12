@@ -87,14 +87,19 @@ export class EffectsService {
     return [...unit.effects, ...(debuffsToSet || [])];
   }
 
-  getBoostedParameterCover(unit: TileUnit, effects: Effect[]) {
+  getBoostedParameterCover(unit: TileUnit, effects: Effect[], parameter?: 'attack' | 'defence') {
     const isAttackHero = unit.heroType === HeroType.ATTACK;
 
-    return this.getBoostedParameter(
-      isAttackHero ? unit.attack : unit.defence,
-      effects,
-      isAttackHero ? this.effects.attackBuff : this.effects.defBuff,
-    );
+    const primaryStat = parameter ? unit[parameter] : isAttackHero ? unit.attack : unit.defence;
+    const buffer = parameter
+      ? parameter === 'attack'
+        ? this.effects.attackBuff
+        : this.effects.defBuff
+      : isAttackHero
+        ? this.effects.attackBuff
+        : this.effects.defBuff;
+
+    return this.getBoostedParameter(primaryStat, effects, buffer);
   }
 
   private getBoostedParameter(parameter: number, effects: Effect[], type: EffectsValues) {

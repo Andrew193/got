@@ -12,7 +12,6 @@ import {
 } from '../../../components/form/enhancedFormConstructor/form-constructor.models';
 import { FormControl } from '@angular/forms';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
-import { selectAiUnits, selectUserUnits } from '../../../store/reducers/training.reducer';
 import { Store } from '@ngrx/store';
 import { GAME_BOARD_FIELD, HeroesSelectNames, TrainingSuf } from '../../../constants';
 import { HeroesFacadeService } from '../heroes/heroes.service';
@@ -22,6 +21,8 @@ import { debounceTime } from 'rxjs/operators';
 import { TrainingActions } from '../../../store/actions/training.actions';
 import { LocalStorageService } from '../../localStorage/local-storage.service';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
+import { TrainingStateUnitType } from '../../../store/store.interfaces';
+import { selectUnits } from '../../../store/reducers/training.reducer';
 
 export enum BarCtxTitle {
   user = 'User Units',
@@ -44,8 +45,8 @@ export class TrainingFacadeService {
 
   private store = inject(Store);
 
-  aiUnits = signal<PreviewUnit[]>([]);
-  userUnits = signal<PreviewUnit[]>([]);
+  [TrainingStateUnitType.aiUnits] = signal<PreviewUnit[]>([]);
+  [TrainingStateUnitType.userUnits] = signal<PreviewUnit[]>([]);
 
   userSelCtx = computed(() => {
     return { title: 'Selected User Units', units: this.userUnits() };
@@ -114,8 +115,10 @@ export class TrainingFacadeService {
     setContext();
 
     effect(() => {
-      const stashedAIUnits = this.store.selectSignal(selectAiUnits)();
-      const stashedUserUnits = this.store.selectSignal(selectUserUnits)();
+      const stashedAIUnits = this.store.selectSignal(selectUnits(TrainingStateUnitType.aiUnits))();
+      const stashedUserUnits = this.store.selectSignal(
+        selectUnits(TrainingStateUnitType.userUnits),
+      )();
 
       const aiUnits = this.aiUnits();
       const userUnits = this.userUnits();
@@ -136,7 +139,7 @@ export class TrainingFacadeService {
   }
 
   getUnitKey(user = true) {
-    return user ? 'userUnits' : 'aiUnits';
+    return user ? TrainingStateUnitType.userUnits : TrainingStateUnitType.aiUnits;
   }
 
   cleanup() {

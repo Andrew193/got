@@ -33,12 +33,21 @@ export class GameService {
   ) {}
 
   getFixedDefence(defence: number, unit: TileUnit) {
-    debugger;
     const defReducedEffect = unit.effects.find(
       (effect): effect is EffectForMult => effect.type === this.eS.effects.defBreak,
     );
 
     return defReducedEffect ? defence * this.eS.getMultForEffect(defReducedEffect) : defence;
+  }
+
+  getFixedAttack(attack: number, unit: TileUnit) {
+    const attackReducedEffect = unit.effects.find((effect): effect is EffectForMult => {
+      return unit.heroType === HeroType.ATTACK
+        ? effect.type === this.eS.effects.attackBreak
+        : effect.type === this.eS.effects.defBreak;
+    });
+
+    return attackReducedEffect ? attack * this.eS.getMultForEffect(attackReducedEffect) : attack;
   }
 
   getCanGetToPosition(
@@ -86,16 +95,6 @@ export class GameService {
     }
 
     return canGetToUnit;
-  }
-
-  getFixedAttack(attack: number, unit: TileUnit) {
-    const attackReducedEffect = unit.effects.find((effect): effect is EffectForMult => {
-      return unit.heroType === HeroType.ATTACK
-        ? effect.type === this.eS.effects.attackBreak
-        : effect.type === this.eS.effects.defBreak;
-    });
-
-    return attackReducedEffect ? attack * this.eS.getMultForEffect(attackReducedEffect) : attack;
   }
 
   //Check buffs ( health restore )

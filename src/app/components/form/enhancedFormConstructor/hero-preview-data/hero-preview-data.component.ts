@@ -4,6 +4,7 @@ import { TrainingSuf } from '../../../../constants';
 import { Coordinate } from '../../../../models/field.model';
 import { Store } from '@ngrx/store';
 import { TrainingActions } from '../../../../store/actions/training.actions';
+import { TrainingStateUnitType } from '../../../../store/store.interfaces';
 
 @Component({
   selector: 'app-hero-preview-data',
@@ -24,7 +25,13 @@ export class HeroPreviewDataComponent implements OnInit, OnDestroy {
     const { coordinate, name, data } = this.getDataForDispatch();
 
     this.store.dispatch(
-      TrainingActions.setUnitCoordinate({ coordinate, isUser: !this.isHighlighted(data), name }),
+      TrainingActions.setUnitCoordinate({
+        coordinate,
+        collection: !this.isHighlighted(data)
+          ? TrainingStateUnitType.userUnits
+          : TrainingStateUnitType.aiUnits,
+        name,
+      }),
     );
   }
 
@@ -34,7 +41,9 @@ export class HeroPreviewDataComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       TrainingActions.setUnitCoordinate({
         coordinate: { x: -1, y: -1 },
-        isUser: !this.isHighlighted(data),
+        collection: !this.isHighlighted(data)
+          ? TrainingStateUnitType.userUnits
+          : TrainingStateUnitType.aiUnits,
         name,
       }),
     );

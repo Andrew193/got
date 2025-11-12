@@ -3,6 +3,7 @@ import {
   StoreNames,
   TrainingStateSelectUnit,
   TrainingStateUnit,
+  TrainingStateUnitType,
   TrainingVisibilityUnit,
 } from '../store.interfaces';
 import { Coordinate } from '../../models/field.model';
@@ -12,12 +13,15 @@ import { Update } from '@ngrx/entity';
 export const TrainingActions = createActionGroup({
   source: StoreNames.trainingGround,
   events: {
-    setAIUnits: props<TrainingStateSelectUnit>(),
-    addUnit: props<{ data: TrainingStateUnit; isUser: boolean }>(),
-    removeUnit: props<{ isUser: boolean; key: UnitName }>(),
-    setUnitCoordinate: props<{ coordinate: Coordinate; name: UnitName; isUser: boolean }>(),
+    setUnits: props<TrainingStateSelectUnit>(),
+    addUnit: props<{ data: TrainingStateUnit }>(),
+    removeUnit: props<{ collection: TrainingStateUnitType; key: UnitName }>(),
+    setUnitCoordinate: props<{
+      coordinate: Coordinate;
+      name: UnitName;
+      collection: TrainingStateUnitType;
+    }>(),
     setUnitUpdate: props<{ canUpdateUnit: boolean }>(),
-    setUserUnits: props<TrainingStateSelectUnit>(),
     dropTrainingSelectUnits: emptyProps(),
     dropTraining: emptyProps(),
     setUnitVisibility: props<{ isUser: boolean; visibility: boolean; name: UnitName }>(),

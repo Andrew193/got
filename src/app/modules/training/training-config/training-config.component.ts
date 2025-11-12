@@ -59,11 +59,9 @@ export class TrainingConfigComponent implements OnInit {
       this[unitKey].update(model => [...model, unit]);
 
       if (toReturn) {
-        this.store.dispatch(TrainingActions.addUnit({ data: unit, isUser: unitKey !== 'aiUnits' }));
+        this.store.dispatch(TrainingActions.addUnit({ data: { ...unit, collection: unitKey } }));
       } else {
-        this.store.dispatch(
-          TrainingActions.removeUnit({ key: unit.name, isUser: unitKey !== 'aiUnits' }),
-        );
+        this.store.dispatch(TrainingActions.removeUnit({ key: unit.name, collection: unitKey }));
       }
 
       return toReturn;

@@ -51,12 +51,17 @@ export type DailyRewardState = {
 };
 
 //Training
-export type TrainingStateUnit = PreviewUnit & Partial<Coordinate>;
+export enum TrainingStateUnitType {
+  userUnits = 'userUnits',
+  aiUnits = 'aiUnits',
+}
+
+export type TrainingStateUnit = PreviewUnit &
+  Partial<Coordinate> & { collection: TrainingStateUnitType };
 export type TrainingVisibilityUnit = Pick<TrainingStateUnit, 'name'> & { visible: boolean };
 
 export interface TrainingState extends FieldConfigState {
-  aiUnits: EntityState<TrainingStateUnit>;
-  userUnits: EntityState<TrainingStateUnit>;
+  units: EntityState<TrainingStateUnit>;
   unitUpdateAllowed: boolean;
   aiVisibility: EntityState<TrainingVisibilityUnit>;
   userVisibility: EntityState<TrainingVisibilityUnit>;

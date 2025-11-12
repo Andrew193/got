@@ -6,14 +6,11 @@ import { TileUnit } from '../../../models/field.model';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
-import {
-  selectAiUnits,
-  selectTrainingFieldConfig,
-  selectUserUnits,
-} from '../../../store/reducers/training.reducer';
+import { selectTrainingFieldConfig, selectUnits } from '../../../store/reducers/training.reducer';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { HeroesSelectNames } from '../../../constants';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
+import { TrainingStateUnitType } from '../../../store/store.interfaces';
 
 @Component({
   selector: 'app-training-battle',
@@ -24,8 +21,8 @@ import { FieldConfigActions } from '../../../store/actions/field-config.actions'
 export class TrainingBattleComponent implements OnDestroy, OnInit {
   store = inject(Store);
 
-  aiUnitsFromStore = this.store.selectSignal(selectAiUnits);
-  userUnitsFromStore = this.store.selectSignal(selectUserUnits);
+  aiUnitsFromStore = this.store.selectSignal(selectUnits(TrainingStateUnitType.aiUnits));
+  userUnitsFromStore = this.store.selectSignal(selectUnits(TrainingStateUnitType.userUnits));
   gridConfig = this.store.selectSignal(selectTrainingFieldConfig());
 
   nav = inject(NavigationService);
