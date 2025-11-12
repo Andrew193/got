@@ -5,10 +5,20 @@
   @include index.mixin-units-container-config;
 }
 
+.cdk-drop-list-container {
+  @include index.mixin-drop-area;
+}
+
 .preview-selected-heroes {
   flex-wrap: nowrap;
   flex-direction: column !important;
   padding: 0px 10px;
+
+  &:has(.cdk-drag-placeholder) {
+    .no-placeholder {
+      display: none;
+    }
+  }
 
   img {
     border-radius: 5px !important;

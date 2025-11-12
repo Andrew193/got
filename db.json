@@ -38,19 +38,14 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 737820,
-        "claimedRewards": [
-          "2",
-          "4",
-          "8",
-          "12"
-        ],
-        "lastLoyaltyBonus": "11/10/2025"
+        "onlineTime": 745680,
+        "claimedRewards": ["2", "4", "8", "12"],
+        "lastLoyaltyBonus": "11/11/2025"
       },
       "currency": {
-        "gold": 3117,
-        "silver": 8056,
-        "copper": 7221248
+        "gold": 3252,
+        "silver": 8362,
+        "copper": 7618382
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -67,9 +62,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 22,
-      "totalDays": 79,
-      "lastLogin": "11/11/2025"
+      "day": 23,
+      "totalDays": 80,
+      "lastLogin": "11/12/2025"
     }
   ],
   "giftTrip": [
@@ -81,7 +76,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "11/11/2025"
+      "lastLogin": "11/12/2025"
     }
   ],
   "deposits": [

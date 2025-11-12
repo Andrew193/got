@@ -90,6 +90,14 @@
   -moz-text-fill-color: transparent;
 }
 
+@mixin drop-area {
+  &:empty {
+    border: 3px dashed #7f7f7f;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
+    min-height: 50px;
+  }
+}
+
 @mixin avatar {
   border-radius: 50%;
   height: 70px;

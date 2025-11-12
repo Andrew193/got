@@ -14,7 +14,7 @@
       (dropped)="dropCover($event)"
       [containerClass]="'no-p mt-2'"
       [units]="_chosenUnits"
-      [title]="'Selected units'"></app-heroes-select-preview>
+      [title]="'Selected Unit'"></app-heroes-select-preview>
   </div>
 
   <aside class="skills-container color-white col-md-12 col-lg p-0">
@@ -28,24 +28,26 @@
   </aside>
 
   <aside class="skills-container active color-white col-md-12 col-lg p-0">
-    <h2 class="w-100 text-center mb-0">Selected skill sets</h2>
-    <div
-      class="h-100"
-      [id]="cdkList2"
-      cdkDropList
-      [cdkDropListData]="matchedPreviewUnits"
-      [cdkDropListConnectedTo]="[cdkList1]"
-      (cdkDropListDropped)="dropCover($event)">
-      @for (unit of matchedPreviewUnits; track unit.name) {
-        <div cdkDrag>
-          <app-skills-render
-            [containerPaddingClasses]="'skill-box mb-1 p-2'"
-            [label]="`${unit.name} - Skills`"
-            [selectedHero]="unit"
-            [convertTextToLowercase]="false"
-            [sliderMode]="true" />
-        </div>
-      }
+    <h2 class="w-100 text-center mb-0">Selected skill set</h2>
+    <div class="flex-grow-1 m-2">
+      <div
+        class="cdk-list-2"
+        [id]="cdkList2"
+        cdkDropList
+        [cdkDropListData]="matchedPreviewUnits"
+        [cdkDropListConnectedTo]="[cdkList1]"
+        (cdkDropListDropped)="dropCover($event)">
+        @for (unit of matchedPreviewUnits; track unit.name) {
+          <div [cdkDragDisabled]="_chosenUnits.length > 0" cdkDrag>
+            <app-skills-render
+              [containerPaddingClasses]="'skill-box mb-1 p-2'"
+              [label]="`${unit.name} - Skills`"
+              [selectedHero]="unit"
+              [convertTextToLowercase]="false"
+              [sliderMode]="true" />
+          </div>
+        }
+      </div>
     </div>
   </aside>
 </div>

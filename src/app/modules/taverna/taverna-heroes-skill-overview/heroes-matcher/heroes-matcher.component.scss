@@ -9,6 +9,8 @@
   background-color: index.$var-metal-dark-1;
   border-radius: 5px;
   border: index.$var-border-2-bronze;
+  display: flex;
+  flex-direction: column;
 
   h2 {
     @include index.mixin-grad-color;
@@ -21,4 +23,9 @@
       background-color: index.$var-metal-dark-1;
     }
   }
+}
+
+.cdk-list-2 {
+  height: 100%;
+  @include index.mixin-drop-area;
 }

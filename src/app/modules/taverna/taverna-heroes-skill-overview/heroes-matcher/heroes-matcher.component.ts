@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DragDropComponent } from '../../../../components/abstract/drag-drop/drag-drop.component';
 import { TavernaFacadeService } from '../../../../services/facades/taverna/taverna.service';
@@ -30,6 +30,8 @@ export class HeroesMatcherComponent extends DragDropComponent {
   addUserUnit = this.facade.addUserUnit;
 
   chosenUnits = this.facade.chosenUnits;
+  synergyUnits = computed(() => {});
+
   matchedPreviewUnits: typeof this.allUnitsForSelect = [];
 
   cdkList1 = 'PREVIEW_LIST';
