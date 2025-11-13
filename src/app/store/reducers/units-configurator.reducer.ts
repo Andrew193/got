@@ -89,7 +89,11 @@ export const UnitsConfiguratorFeature = createFeature({
 
       return state;
     }),
-    on(UnitsConfiguratorFeatureActions.drop, () => UnitsConfiguratorInitialState),
+    on(UnitsConfiguratorFeatureActions.drop, () => {
+      console.log(UnitsConfiguratorInitialState);
+
+      return UnitsConfiguratorInitialState;
+    }),
     on(UnitsConfiguratorFeatureActions.dropSelectUnits, state => {
       return {
         ...state,

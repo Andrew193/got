@@ -46,12 +46,15 @@ export const HeroesSelectFeature = createFeature({
       };
     }),
     on(HeroesSelectActions.resetHeroCollection, (state, action) => {
+      console.log('dfdsfd');
+
       return {
         ...state,
-        selections: heroesSelectAdapter.removeMany(
-          model => model.collection === action.collection,
-          state.selections,
-        ),
+        selections: heroesSelectAdapter.removeMany(model => {
+          debugger;
+
+          return action.collections.includes(model.collection);
+        }, state.selections),
       };
     }),
   ),

@@ -1,18 +1,24 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { PreviewUnit, SelectableUnit, Unit } from '../../../models/units-related/unit.model';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
+import { HeroesSelectNames } from '../../../constants';
+import { Store } from '@ngrx/store';
+import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 
 @Component({
   imports: [],
   template: '',
 })
-export abstract class BasicHeroSelectComponent {
+export abstract class BasicHeroSelectComponent implements OnDestroy {
+  store = inject(Store);
+
   maxHeroes = 5;
   protected heroesService = inject(HeroesFacadeService);
 
   allUnits: Unit[] = [];
   allUnitsForSelect: SelectableUnit[] = [];
   chosenUnits: PreviewUnit[] = [];
+  context: HeroesSelectNames = HeroesSelectNames.userCollection;
 
   protected constructor() {
     this.init();
@@ -35,4 +41,8 @@ export abstract class BasicHeroSelectComponent {
 
     return condition;
   };
+
+  ngOnDestroy() {
+    this.store.dispatch(HeroesSelectActions.resetHeroCollection({ collections: [this.context] }));
+  }
 }

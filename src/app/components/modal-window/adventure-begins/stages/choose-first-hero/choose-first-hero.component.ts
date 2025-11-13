@@ -11,7 +11,6 @@ import { StatsComponent } from '../../../../views/stats/stats.component';
 import { Unit } from '../../../../../models/units-related/unit.model';
 import { HeroesSelectNames, SceneNames } from '../../../../../constants';
 import { HeroesSelectActions } from '../../../../../store/actions/heroes-select.actions';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-choose-first-hero',
@@ -20,8 +19,6 @@ import { Store } from '@ngrx/store';
   styleUrl: './choose-first-hero.component.scss',
 })
 export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implements SceneComponent {
-  store = inject(Store);
-
   bottomSheetRef =
     inject<MatBottomSheetRef<ChooseFirstHeroComponent, SceneContext<SceneNames.firstHero>>>(
       MatBottomSheetRef,
@@ -39,7 +36,7 @@ export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implement
 
   stopScene() {
     this.store.dispatch(
-      HeroesSelectActions.resetHeroCollection({ collection: this.heroesContext }),
+      HeroesSelectActions.resetHeroCollection({ collections: [this.heroesContext] }),
     );
     this.bottomSheetRef.dismiss({ name: this.chosenUnits[0].name, repeat: false });
   }

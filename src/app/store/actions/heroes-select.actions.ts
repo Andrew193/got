@@ -18,6 +18,6 @@ export const HeroesSelectActions = createActionGroup({
       collection: HeroesSelectNames;
       name: RewardValues | HeroesNamesCodes;
     }>(),
-    resetHeroCollection: props<{ collection: HeroesSelectNames }>(),
+    resetHeroCollection: props<{ collections: HeroesSelectNames[] }>(),
   },
 });

@@ -28,6 +28,7 @@ import { hydrationMeta } from './store/meta/hydration.meta';
 import { StoreNames } from './store/store.interfaces';
 import { provideEffects } from '@ngrx/effects';
 import { AssistantEffects } from './store/effects/assistant.effects';
+import { UnitsConfiguratorEffects } from './store/effects/units-configurator.effects';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -79,7 +80,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(undefined, {
       metaReducers: [hydrationMeta([StoreNames.unitsConfigurator])],
     }),
-    provideEffects([AssistantEffects]),
+    provideEffects([AssistantEffects, UnitsConfiguratorEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
