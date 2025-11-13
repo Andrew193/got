@@ -38,7 +38,9 @@ export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implement
   runScene() {}
 
   stopScene() {
-    this.store.dispatch(HeroesSelectActions.resetHeroCollection({ name: this.heroesContext }));
+    this.store.dispatch(
+      HeroesSelectActions.resetHeroCollection({ collection: this.heroesContext }),
+    );
     this.bottomSheetRef.dismiss({ name: this.chosenUnits[0].name, repeat: false });
   }
 

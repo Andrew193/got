@@ -68,7 +68,9 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     this.store.dispatch(
-      HeroesSelectActions.resetHeroCollection({ name: HeroesSelectNames.dailyBossCollection }),
+      HeroesSelectActions.resetHeroCollection({
+        collection: HeroesSelectNames.dailyBossCollection,
+      }),
     );
   }
 }

@@ -47,8 +47,8 @@ export class TavernaFacadeService implements AssistantFacadeService {
         if (model[0]) {
           this.store.dispatch(
             HeroesSelectActions.removeHeroFromCollection({
-              name: this.contextName,
-              itemName: model[0].name,
+              collection: this.contextName,
+              name: model[0].name,
             }),
           );
         }

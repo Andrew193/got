@@ -1,22 +1,23 @@
 import { createActionGroup, props } from '@ngrx/store';
 import { HeroesSelectStateEntity, StoreNames } from '../store.interfaces';
 import { HeroesSelectNames } from '../../constants';
+import { RewardValues } from '../../models/reward-based.model';
+import { HeroesNamesCodes } from '../../models/units-related/unit.model';
 
 export const HeroesSelectActions = createActionGroup({
   source: StoreNames.heroesSelect,
   events: {
     setHeroesSelectState: props<{
-      name: HeroesSelectNames;
       data: HeroesSelectStateEntity[];
     }>(),
     removeHeroFromCollection: props<{
-      name: HeroesSelectNames;
-      itemName: HeroesSelectStateEntity;
+      collection: HeroesSelectNames;
+      name: RewardValues | HeroesNamesCodes;
     }>(),
     addHeroToCollection: props<{
-      name: HeroesSelectNames;
-      itemName: HeroesSelectStateEntity;
+      collection: HeroesSelectNames;
+      name: RewardValues | HeroesNamesCodes;
     }>(),
-    resetHeroCollection: props<{ name: HeroesSelectNames }>(),
+    resetHeroCollection: props<{ collection: HeroesSelectNames }>(),
   },
 });

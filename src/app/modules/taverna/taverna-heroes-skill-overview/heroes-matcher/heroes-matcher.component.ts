@@ -7,6 +7,7 @@ import { HeroesSelectComponent } from '../../../../components/heroes-related/her
 import { HeroesSelectPreviewComponent } from '../../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../../../store/actions/heroes-select.actions';
+import { HeroesSelectStateEntity } from '../../../../store/store.interfaces';
 
 @Component({
   selector: 'app-skills-matcher',
@@ -39,9 +40,9 @@ export class HeroesMatcherComponent extends DragDropComponent {
   cdkList2 = 'SELECTED_LIST';
 
   dropCover(event: CdkDragDrop<typeof this.allUnitsForSelect>) {
-    const context = {
-      name: this.contextName,
-      itemName: event.previousContainer.data[event.previousIndex].name,
+    const context: HeroesSelectStateEntity = {
+      collection: this.contextName,
+      name: event.previousContainer.data[event.previousIndex].name,
     };
 
     if (event.container.id === this.cdkList2) {

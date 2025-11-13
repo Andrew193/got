@@ -72,9 +72,13 @@ export type UnitsConfiguratorSelectUnit = {
 export type DisplayRewardState = Record<DisplayRewardNames, EntityState<DisplayReward>>;
 
 //Heroes select
-export type HeroesSelectStateEntity = RewardValues | HeroesNamesCodes;
+export type HeroesSelectStateEntity = {
+  name: RewardValues | HeroesNamesCodes;
+} & Collection;
 
-export type HeroesSelectState = Record<HeroesSelectNames, EntityState<HeroesSelectStateEntity>>;
+export type HeroesSelectState = {
+  selections: EntityState<HeroesSelectStateEntity>;
+};
 
 //Game Board
 export interface BasicBoardLogRecord extends EntityState<LogRecord> {

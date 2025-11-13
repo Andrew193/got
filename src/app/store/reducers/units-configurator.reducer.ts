@@ -19,7 +19,7 @@ import {
 import { UnitName } from '../../models/units-related/unit.model';
 import { HeroesSelectNames } from '../../constants';
 
-export function getUnitKey(config: { collection: HeroesSelectNames; key?: string; name?: string }) {
+export function getUnitKey(config: { collection: HeroesSelectNames; key?: any; name?: any }) {
   return `${config.collection}:${config.name || config.key}`;
 }
 

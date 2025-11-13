@@ -103,14 +103,12 @@ export class TrainingFacadeService {
     const setContext = (userUnits: UnitName[] = [], aiUnits: UnitName[] = []) => {
       this.store.dispatch(
         HeroesSelectActions.setHeroesSelectState({
-          name: this.userBarCtx.contextName,
-          data: userUnits,
+          data: userUnits.map(el => ({ name: el, collection: this.userBarCtx.contextName })),
         }),
       );
       this.store.dispatch(
         HeroesSelectActions.setHeroesSelectState({
-          name: this.aiBarCtx.contextName,
-          data: aiUnits,
+          data: aiUnits.map(el => ({ name: el, collection: this.aiBarCtx.contextName })),
         }),
       );
     };

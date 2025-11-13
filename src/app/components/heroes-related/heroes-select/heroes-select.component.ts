@@ -72,13 +72,13 @@ export class HeroesSelectComponent implements OnInit {
     const updateCheck = (shouldAdd = true) => {
       if (shouldAdd) {
         this.store.dispatch(
-          HeroesSelectActions.addHeroToCollection({ name: contextName, itemName: unit.name }),
+          HeroesSelectActions.addHeroToCollection({ collection: contextName, name: unit.name }),
         );
-      } else if (units.includes(unit.name)) {
+      } else if (units.find(_ => _.name === unit.name)) {
         this.store.dispatch(
           HeroesSelectActions.removeHeroFromCollection({
-            name: contextName,
-            itemName: unit.name,
+            collection: contextName,
+            name: unit.name,
           }),
         );
       }

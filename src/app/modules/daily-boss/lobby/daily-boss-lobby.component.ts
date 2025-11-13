@@ -82,7 +82,9 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   }
 
   openFight(bossLevel: number) {
-    this.store.dispatch(HeroesSelectActions.resetHeroCollection({ name: this.heroesContext }));
+    this.store.dispatch(
+      HeroesSelectActions.resetHeroCollection({ collection: this.heroesContext }),
+    );
 
     this.nav.goToDailyBossBattle(
       bossLevel,

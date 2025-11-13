@@ -1,7 +1,10 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { HeroesSelectNames } from '../../constants';
 import { HeroesSelectState, HeroesSelectStateEntity } from '../store.interfaces';
-import { chooseHeroesAdapter } from '../reducers/heroes-select.reducer';
+import { heroesSelectAdapter } from '../reducers/heroes-select.reducer';
+import { getUnitKey } from '../reducers/units-configurator.reducer';
+import { RewardValues } from '../../models/reward-based.model';
+import { HeroesNamesCodes } from '../../models/units-related/unit.model';
 
 export type SelectContexts = MemoizedSelector<object, HeroesSelectState>;
 
@@ -13,16 +16,18 @@ const heroesStateCache = new Map<string, MemoizedSelector<object, boolean>>();
 
 export function makeSelectHeroesCollection(
   selectContexts: SelectContexts,
-  name: HeroesSelectNames,
+  collection: HeroesSelectNames,
 ) {
-  let memo = heroesCollectionCache.get(name);
+  let memo = heroesCollectionCache.get(collection);
 
   if (!memo) {
-    const adapter = chooseHeroesAdapter(name);
-    const adapterSelectors = adapter.getSelectors(createSelector(selectContexts, ctx => ctx[name]));
+    const selectionsSelector = heroesSelectAdapter.getSelectors(
+      createSelector(selectContexts, ctx => ctx.selections),
+    );
 
-    memo = adapterSelectors.selectAll;
-    heroesCollectionCache.set(name, memo);
+    memo = createSelector(selectionsSelector.selectAll, ctx => ctx);
+
+    heroesCollectionCache.set(collection, memo);
   }
 
   return memo;
@@ -30,19 +35,19 @@ export function makeSelectHeroesCollection(
 
 export function makeSelectHeroState(
   selectContexts: SelectContexts,
-  collectionName: HeroesSelectNames,
-  itemName: HeroesSelectStateEntity,
+  config: { name: RewardValues | HeroesNamesCodes; collection: HeroesSelectNames },
 ) {
-  const key = `${collectionName}:${itemName}`;
+  const key = getUnitKey(config);
   let memo = heroesStateCache.get(key);
 
   if (!memo) {
-    const adapter = chooseHeroesAdapter(collectionName);
-    const adapterSelectors = adapter.getSelectors(
-      createSelector(selectContexts, ctx => ctx[collectionName]),
+    const adapterSelectors = heroesSelectAdapter.getSelectors(
+      createSelector(selectContexts, ctx => ctx.selections),
     );
 
-    memo = createSelector(adapterSelectors.selectAll, state => state.includes(itemName));
+    memo = createSelector(adapterSelectors.selectAll, state => {
+      return !!state.find(_ => _.name === config.name && _.collection === config.collection);
+    });
     heroesStateCache.set(key, memo);
   }
 
