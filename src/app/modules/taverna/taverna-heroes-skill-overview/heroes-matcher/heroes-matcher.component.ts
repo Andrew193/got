@@ -26,6 +26,7 @@ export class HeroesMatcherComponent extends DragDropComponent {
   store = inject(Store);
 
   contextName = this.facade.contextName;
+
   allUnitsForSelect = this.facade.getTileUnits();
   addUserUnit = this.facade.addUserUnit;
 

@@ -17,11 +17,11 @@ export enum TrainingSuf {
 }
 
 export enum HeroesSelectNames {
-  user,
-  ai,
-  dailyBoss,
-  firstBattle,
-  heroesMatcher,
+  userCollection = 'userCollection',
+  aiCollection = 'aiCollection',
+  heroesMatcherCollection = 'heroesMatcherCollection',
+  dailyBossCollection = 'dailyBossCollection',
+  firstBattleCollection = 'firstBattleCollection',
 }
 
 export const API_ENDPOINTS = {

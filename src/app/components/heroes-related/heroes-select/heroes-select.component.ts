@@ -56,11 +56,12 @@ export class HeroesSelectComponent implements OnInit {
 
   ngOnInit() {
     const contextName = this.contextName();
-    const isUser = this.isUser();
+
+    console.log(contextName, 'contextName');
 
     this.units = this.store.selectSignal(selectHeroesCollection(contextName));
 
-    this.facade.init(isUser);
+    this.facade.init(contextName);
   }
 
   unitClick(unit: SelectableUnit) {

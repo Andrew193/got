@@ -11,7 +11,7 @@ import {
 import { ContentService, ContentTypes } from '../../abstract/content/content-service.service';
 import { TileUnit } from '../../../models/field.model';
 import { HeroesHelperService } from './helpers/heroes-helper.service';
-import { TrainingStateUnit } from '../../../store/store.interfaces';
+import { UnitsConfiguratorStateUnit } from '../../../store/store.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -812,7 +812,7 @@ export class HeroesFacadeService extends ContentService {
 
   getUnitsForTrainingBattle(
     getUser: boolean,
-    unitsToCompare: TrainingStateUnit[],
+    unitsToCompare: UnitsConfiguratorStateUnit[],
     allUnits = this.getAllHeroes(),
   ) {
     return unitsToCompare.map(_ => {

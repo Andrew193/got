@@ -33,7 +33,7 @@ export const routes: Routes = [
         path: frontRoutes.training,
         loadChildren: () =>
           import('./modules/training/training.module').then(m => m.TrainingModule),
-        providers: [StateConfigs.trainingGround],
+        providers: [StateConfigs.unitsConfigurator],
       },
       {
         path: frontRoutes.dailyBoss,

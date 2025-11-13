@@ -5,11 +5,11 @@ import { HeroesSelectComponent } from '../../../components/heroes-related/heroes
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
-import { TrainingActions } from '../../../store/actions/training.actions';
+import { UnitsConfiguratorFeatureActions } from '../../../store/actions/units-configurator.actions';
 import {
-  selectCanStartTrainingBattle,
+  selectCanStartBattle,
   selectTrainingFieldConfig,
-} from '../../../store/reducers/training.reducer';
+} from '../../../store/reducers/units-configurator.reducer';
 import { EnhancedFormConstructorComponent } from '../../../components/form/enhancedFormConstructor/enhanced-form-constructor/enhanced-form-constructor.component';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 import { TrainingFacadeService } from '../../../services/facades/training/training.service';
@@ -32,10 +32,10 @@ export class TrainingConfigComponent implements OnInit {
   nav = inject(NavigationService);
   facade = inject(TrainingFacadeService);
   gridConfig = this.store.selectSignal(selectTrainingFieldConfig());
-  canStartFight = this.store.select(selectCanStartTrainingBattle());
+  canStartFight = this.store.select(selectCanStartBattle());
 
-  aiUnits = this.facade.aiUnits;
-  userUnits = this.facade.userUnits;
+  aiCollection = this.facade.aiCollection;
+  userCollection = this.facade.userCollection;
   userSelCtx = this.facade.userSelCtx;
   aiSelCtx = this.facade.aiSelCtx;
   allUnitsForFieldConfig = this.facade.allUnitsForFieldConfig;
@@ -59,9 +59,13 @@ export class TrainingConfigComponent implements OnInit {
       this[unitKey].update(model => [...model, unit]);
 
       if (toReturn) {
-        this.store.dispatch(TrainingActions.addUnit({ data: { ...unit, collection: unitKey } }));
+        this.store.dispatch(
+          UnitsConfiguratorFeatureActions.addUnit({ data: { ...unit, collection: unitKey } }),
+        );
       } else {
-        this.store.dispatch(TrainingActions.removeUnit({ key: unit.name, collection: unitKey }));
+        this.store.dispatch(
+          UnitsConfiguratorFeatureActions.removeUnit({ key: unit.name, collection: unitKey }),
+        );
       }
 
       return toReturn;
@@ -78,7 +82,7 @@ export class TrainingConfigComponent implements OnInit {
   };
 
   openFight() {
-    this.store.dispatch(TrainingActions.setUnitUpdate({ canUpdateUnit: false }));
+    this.store.dispatch(UnitsConfiguratorFeatureActions.setUnitUpdate({ canUpdateUnit: false }));
     this.store.dispatch(FieldConfigActions.setFieldConfig(this.gridConfig()));
     this.nav.goToTrainingBattle();
   }
@@ -89,6 +93,6 @@ export class TrainingConfigComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(TrainingActions.setUnitUpdate({ canUpdateUnit: true }));
+    this.store.dispatch(UnitsConfiguratorFeatureActions.setUnitUpdate({ canUpdateUnit: true }));
   }
 }

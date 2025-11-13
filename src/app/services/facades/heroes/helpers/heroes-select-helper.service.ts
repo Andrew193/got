@@ -1,10 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { TavernaFacadeService } from '../../taverna/taverna.service';
 import { Store } from '@ngrx/store';
-import { TrainingActions } from '../../../../store/actions/training.actions';
+import { UnitsConfiguratorFeatureActions } from '../../../../store/actions/units-configurator.actions';
 import { Unit } from '../../../../models/units-related/unit.model';
-import { TrainingVisibilityUnit } from '../../../../store/store.interfaces';
+import { UnitsConfiguratorVisibilityUnit } from '../../../../store/store.interfaces';
 import { Update } from '@ngrx/entity';
+import { HeroesSelectNames } from '../../../../constants';
+import { getUnitKey } from '../../../../store/reducers/units-configurator.reducer';
 
 @Injectable()
 export class HeroesSelectFacadeService {
@@ -23,36 +25,42 @@ export class HeroesSelectFacadeService {
     this.filteredOptions = config.filteredOptions;
   }
 
-  init(isUser: boolean) {
+  init(collection: HeroesSelectNames) {
     this.store.dispatch(
-      TrainingActions.setUnitArrayVisibility({
-        isUser: isUser,
-        data: this.getVisibilityArray(this.helper.unitOptions, true),
+      UnitsConfiguratorFeatureActions.setUnitArrayVisibility({
+        collection: collection,
+        data: this.getVisibilityArray(this.helper.unitOptions, true, collection),
       }),
     );
 
-    this.watchFilteredOptions(isUser);
+    this.watchFilteredOptions(collection);
   }
 
-  watchFilteredOptions(isUser: boolean) {
+  watchFilteredOptions(collection: HeroesSelectNames) {
     this.filteredOptions.subscribe(res => {
       const parsed = this.helper.unitOptions.map(_ => {
         return {
           changes: { visible: res.includes(_.name) },
-          id: _.name,
-        } satisfies Update<TrainingVisibilityUnit>;
+          id: getUnitKey({ ..._, collection }),
+        } satisfies Update<UnitsConfiguratorVisibilityUnit>;
       });
 
       this.store.dispatch(
-        TrainingActions.updateUnitArrayVisibility({
-          isUser: isUser,
+        UnitsConfiguratorFeatureActions.updateUnitArrayVisibility({
+          collection: collection,
           data: parsed,
         }),
       );
     });
   }
 
-  getVisibilityArray(units: Unit[], visible: boolean): TrainingVisibilityUnit[] {
-    return units.map(el => ({ name: el.name, visible }) satisfies TrainingVisibilityUnit);
+  getVisibilityArray(
+    units: Unit[],
+    visible: boolean,
+    collection: HeroesSelectNames,
+  ): UnitsConfiguratorVisibilityUnit[] {
+    return units.map(
+      el => ({ name: el.name, visible, collection }) satisfies UnitsConfiguratorVisibilityUnit,
+    );
   }
 }

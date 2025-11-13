@@ -150,8 +150,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
       'defence',
     );
 
-    console.log(boostedDefence, 'boostedDefence');
-
     const damage = this.abstractFieldS.getDamage({
       dmgTaker: { ...dmgTaker[enemyIndex], defence: boostedDefence },
       attackDealer: { ...attackDealer, attack: boostedAttack },

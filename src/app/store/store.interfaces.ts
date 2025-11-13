@@ -13,7 +13,7 @@ import { AssistantMemory } from '../models/interfaces/assistant.interface';
 export enum StoreNames {
   lobby = 'lobby',
   dailyReward = 'dailyReward',
-  trainingGround = 'trainingGround',
+  unitsConfigurator = 'unitsConfigurator',
   displayReward = 'displayReward',
   heroesSelect = 'heroesSelect',
   gameBoard = 'gameBoard',
@@ -29,7 +29,7 @@ export enum DisplayRewardNames {
 export type StoreType = {
   [StoreNames.lobby]: LobbyState;
   [StoreNames.dailyReward]: DailyRewardState;
-  [StoreNames.trainingGround]: TrainingState;
+  [StoreNames.unitsConfigurator]: UnitsConfiguratorState;
   [StoreNames.displayReward]: DisplayRewardState;
   [StoreNames.gameBoard]: BasicBoardState;
 };
@@ -50,25 +50,22 @@ export type DailyRewardState = {
   isHeroPreview: boolean;
 };
 
-//Training
-export enum TrainingStateUnitType {
-  userUnits = 'userUnits',
-  aiUnits = 'aiUnits',
-}
+//Units Configurator
+export type Collection = { collection: HeroesSelectNames };
 
-export type TrainingStateUnit = PreviewUnit &
-  Partial<Coordinate> & { collection: TrainingStateUnitType };
-export type TrainingVisibilityUnit = Pick<TrainingStateUnit, 'name'> & { visible: boolean };
+export type UnitsConfiguratorStateUnit = PreviewUnit & Partial<Coordinate> & Collection;
+export type UnitsConfiguratorVisibilityUnit = Pick<UnitsConfiguratorStateUnit, 'name'> & {
+  visible: boolean;
+} & Collection;
 
-export interface TrainingState extends FieldConfigState {
-  units: EntityState<TrainingStateUnit>;
+export interface UnitsConfiguratorState extends FieldConfigState {
+  units: EntityState<UnitsConfiguratorStateUnit>;
   unitUpdateAllowed: boolean;
-  aiVisibility: EntityState<TrainingVisibilityUnit>;
-  userVisibility: EntityState<TrainingVisibilityUnit>;
+  unitsVisibility: EntityState<UnitsConfiguratorVisibilityUnit>;
 }
 
-export type TrainingStateSelectUnit = {
-  units: TrainingStateUnit[];
+export type UnitsConfiguratorSelectUnit = {
+  units: UnitsConfiguratorStateUnit[];
 };
 
 //Display reward

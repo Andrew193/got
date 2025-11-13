@@ -77,7 +77,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     provideStore(undefined, {
-      metaReducers: [hydrationMeta([StoreNames.trainingGround])],
+      metaReducers: [hydrationMeta([StoreNames.unitsConfigurator])],
     }),
     provideEffects([AssistantEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),

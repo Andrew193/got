@@ -30,15 +30,17 @@ export function makeSelectHeroesCollection(
 
 export function makeSelectHeroState(
   selectContexts: SelectContexts,
-  name: HeroesSelectNames,
+  collectionName: HeroesSelectNames,
   itemName: HeroesSelectStateEntity,
 ) {
-  const key = `${name}:${itemName}`;
+  const key = `${collectionName}:${itemName}`;
   let memo = heroesStateCache.get(key);
 
   if (!memo) {
-    const adapter = chooseHeroesAdapter(name);
-    const adapterSelectors = adapter.getSelectors(createSelector(selectContexts, ctx => ctx[name]));
+    const adapter = chooseHeroesAdapter(collectionName);
+    const adapterSelectors = adapter.getSelectors(
+      createSelector(selectContexts, ctx => ctx[collectionName]),
+    );
 
     memo = createSelector(adapterSelectors.selectAll, state => state.includes(itemName));
     heroesStateCache.set(key, memo);

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { selectHeroState } from '../../../../store/reducers/heroes-select.reducer';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { HeroesSelectNames } from '../../../../constants';
-import { selectUnitVisibility } from '../../../../store/reducers/training.reducer';
+import { selectUnitVisibility } from '../../../../store/reducers/units-configurator.reducer';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -27,9 +27,9 @@ export class HeroSelectTileComponent implements OnInit {
 
   ngOnInit() {
     const name = this.unit().name;
+    const collectionName = this.collectionName();
 
-    this.selected = this.store.selectSignal(selectHeroState(this.collectionName(), name));
-
-    this.visible = this.store.select(selectUnitVisibility(name, this.isUser()));
+    this.selected = this.store.selectSignal(selectHeroState(collectionName, name));
+    this.visible = this.store.select(selectUnitVisibility({ name, collection: collectionName }));
   }
 }

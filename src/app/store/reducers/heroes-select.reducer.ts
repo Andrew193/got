@@ -29,20 +29,20 @@ const heroesMatcherAdapter = createEntityAdapter<HeroesSelectStateEntity>({
 });
 
 export const HeroesSelectInitialState: HeroesSelectState = {
-  [HeroesSelectNames.ai]: aiAdapter.getInitialState(),
-  [HeroesSelectNames.dailyBoss]: dailyBossAdapter.getInitialState(),
-  [HeroesSelectNames.user]: userAdapter.getInitialState(),
-  [HeroesSelectNames.firstBattle]: firstBattleAdapter.getInitialState(),
-  [HeroesSelectNames.heroesMatcher]: heroesMatcherAdapter.getInitialState(),
+  [HeroesSelectNames.aiCollection]: aiAdapter.getInitialState(),
+  [HeroesSelectNames.dailyBossCollection]: dailyBossAdapter.getInitialState(),
+  [HeroesSelectNames.userCollection]: userAdapter.getInitialState(),
+  [HeroesSelectNames.firstBattleCollection]: firstBattleAdapter.getInitialState(),
+  [HeroesSelectNames.heroesMatcherCollection]: heroesMatcherAdapter.getInitialState(),
 };
 
 export function chooseHeroesAdapter(name: HeroesSelectNames) {
   return {
-    [HeroesSelectNames.ai]: aiAdapter,
-    [HeroesSelectNames.dailyBoss]: dailyBossAdapter,
-    [HeroesSelectNames.user]: userAdapter,
-    [HeroesSelectNames.firstBattle]: firstBattleAdapter,
-    [HeroesSelectNames.heroesMatcher]: heroesMatcherAdapter,
+    [HeroesSelectNames.aiCollection]: aiAdapter,
+    [HeroesSelectNames.dailyBossCollection]: dailyBossAdapter,
+    [HeroesSelectNames.userCollection]: userAdapter,
+    [HeroesSelectNames.firstBattleCollection]: firstBattleAdapter,
+    [HeroesSelectNames.heroesMatcherCollection]: heroesMatcherAdapter,
   }[name];
 }
 
@@ -75,8 +75,8 @@ export const HeroesSelectFeature = createFeature({
     const selectBranch = baseSelectors.selectHeroesSelectState;
 
     return {
-      selectHeroState: (name: HeroesSelectNames, itemName: HeroesSelectStateEntity) =>
-        makeSelectHeroState(selectBranch, name, itemName),
+      selectHeroState: (collectionName: HeroesSelectNames, itemName: HeroesSelectStateEntity) =>
+        makeSelectHeroState(selectBranch, collectionName, itemName),
       selectHeroesCollection: (name: HeroesSelectNames) =>
         makeSelectHeroesCollection(selectBranch, name),
     };

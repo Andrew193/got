@@ -34,7 +34,7 @@ export class TavernaFacadeService implements AssistantFacadeService {
   getTileUnits = () => this.heroesService.getTileUnits();
 
   //Heroes matcher
-  contextName = HeroesSelectNames.heroesMatcher;
+  contextName = HeroesSelectNames.heroesMatcherCollection;
   chosenUnits = signal<PreviewUnit[]>([]);
 
   public addUserUnit = (unit: SelectableUnit): boolean => {

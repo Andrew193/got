@@ -18,11 +18,10 @@ import { HeroesFacadeService } from '../heroes/heroes.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { TrainingActions } from '../../../store/actions/training.actions';
+import { UnitsConfiguratorFeatureActions } from '../../../store/actions/units-configurator.actions';
 import { LocalStorageService } from '../../localStorage/local-storage.service';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
-import { TrainingStateUnitType } from '../../../store/store.interfaces';
-import { selectUnits } from '../../../store/reducers/training.reducer';
+import { selectUnits } from '../../../store/reducers/units-configurator.reducer';
 
 export enum BarCtxTitle {
   user = 'User Units',
@@ -45,14 +44,14 @@ export class TrainingFacadeService {
 
   private store = inject(Store);
 
-  [TrainingStateUnitType.aiUnits] = signal<PreviewUnit[]>([]);
-  [TrainingStateUnitType.userUnits] = signal<PreviewUnit[]>([]);
+  aiCollection = signal<PreviewUnit[]>([]);
+  userCollection = signal<PreviewUnit[]>([]);
 
   userSelCtx = computed(() => {
-    return { title: 'Selected User Units', units: this.userUnits() };
+    return { title: 'Selected User Units', units: this.userCollection() };
   });
   aiSelCtx = computed(() => {
-    return { title: 'Selected AI Units', units: this.aiUnits() };
+    return { title: 'Selected AI Units', units: this.aiCollection() };
   });
 
   allUnitsForFieldConfig = computed(() => {
@@ -60,8 +59,8 @@ export class TrainingFacadeService {
       array.map(_ => ({ ..._, name: `${_.name} ${suf}` }));
 
     const units: AppEntity<PreviewUnit>[] = [
-      ...sanitize(this.aiUnits(), TrainingSuf.ai),
-      ...sanitize(this.userUnits(), TrainingSuf.user),
+      ...sanitize(this.aiCollection(), TrainingSuf.ai),
+      ...sanitize(this.userCollection(), TrainingSuf.user),
     ].map(_ => {
       return {
         alias: _.name,
@@ -86,9 +85,13 @@ export class TrainingFacadeService {
   userBarCtx: BarCtx = {
     isUser: true,
     title: BarCtxTitle.user,
-    contextName: HeroesSelectNames.user,
+    contextName: HeroesSelectNames.userCollection,
   };
-  aiBarCtx: BarCtx = { isUser: false, title: BarCtxTitle.ai, contextName: HeroesSelectNames.ai };
+  aiBarCtx: BarCtx = {
+    isUser: false,
+    title: BarCtxTitle.ai,
+    contextName: HeroesSelectNames.aiCollection,
+  };
 
   private readonly allUnits: Unit[] = [];
   allUnitsForSelect: SelectableUnit[] = [];
@@ -115,13 +118,13 @@ export class TrainingFacadeService {
     setContext();
 
     effect(() => {
-      const stashedAIUnits = this.store.selectSignal(selectUnits(TrainingStateUnitType.aiUnits))();
+      const stashedAIUnits = this.store.selectSignal(selectUnits(HeroesSelectNames.aiCollection))();
       const stashedUserUnits = this.store.selectSignal(
-        selectUnits(TrainingStateUnitType.userUnits),
+        selectUnits(HeroesSelectNames.userCollection),
       )();
 
-      const aiUnits = this.aiUnits();
-      const userUnits = this.userUnits();
+      const aiUnits = this.aiCollection();
+      const userUnits = this.userCollection();
 
       if (
         aiUnits.length !== stashedAIUnits.length ||
@@ -132,18 +135,18 @@ export class TrainingFacadeService {
           stashedAIUnits.map(el => el.name),
         );
 
-        this.aiUnits.set(stashedAIUnits);
-        this.userUnits.set(stashedUserUnits);
+        this.aiCollection.set(stashedAIUnits);
+        this.userCollection.set(stashedUserUnits);
       }
     });
   }
 
-  getUnitKey(user = true) {
-    return user ? TrainingStateUnitType.userUnits : TrainingStateUnitType.aiUnits;
+  getUnitKey(user = true): HeroesSelectNames.userCollection | HeroesSelectNames.aiCollection {
+    return user ? HeroesSelectNames.userCollection : HeroesSelectNames.aiCollection;
   }
 
   cleanup() {
-    this.store.dispatch(TrainingActions.dropTraining());
+    this.store.dispatch(UnitsConfiguratorFeatureActions.drop());
     this.store.dispatch(FieldConfigActions.setFieldConfig(GAME_BOARD_FIELD));
 
     setTimeout(() => {

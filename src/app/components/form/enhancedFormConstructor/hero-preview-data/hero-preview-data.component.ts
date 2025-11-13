@@ -1,10 +1,9 @@
 import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import { PreviewUnit, UnitName } from '../../../../models/units-related/unit.model';
-import { TrainingSuf } from '../../../../constants';
+import { HeroesSelectNames, TrainingSuf } from '../../../../constants';
 import { Coordinate } from '../../../../models/field.model';
 import { Store } from '@ngrx/store';
-import { TrainingActions } from '../../../../store/actions/training.actions';
-import { TrainingStateUnitType } from '../../../../store/store.interfaces';
+import { UnitsConfiguratorFeatureActions } from '../../../../store/actions/units-configurator.actions';
 
 @Component({
   selector: 'app-hero-preview-data',
@@ -25,11 +24,9 @@ export class HeroPreviewDataComponent implements OnInit, OnDestroy {
     const { coordinate, name, data } = this.getDataForDispatch();
 
     this.store.dispatch(
-      TrainingActions.setUnitCoordinate({
+      UnitsConfiguratorFeatureActions.setUnitCoordinate({
         coordinate,
-        collection: !this.isHighlighted(data)
-          ? TrainingStateUnitType.userUnits
-          : TrainingStateUnitType.aiUnits,
+        collection: this.getCollection(data),
         name,
       }),
     );
@@ -39,14 +36,18 @@ export class HeroPreviewDataComponent implements OnInit, OnDestroy {
     const { name, data } = this.getDataForDispatch();
 
     this.store.dispatch(
-      TrainingActions.setUnitCoordinate({
+      UnitsConfiguratorFeatureActions.setUnitCoordinate({
         coordinate: { x: -1, y: -1 },
-        collection: !this.isHighlighted(data)
-          ? TrainingStateUnitType.userUnits
-          : TrainingStateUnitType.aiUnits,
+        collection: this.getCollection(data),
         name,
       }),
     );
+  }
+
+  getCollection(data: PreviewUnit) {
+    return !this.isHighlighted(data)
+      ? HeroesSelectNames.userCollection
+      : HeroesSelectNames.aiCollection;
   }
 
   getDataForDispatch() {

@@ -28,7 +28,7 @@ export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implement
     );
 
   override maxHeroes = 1;
-  heroesContext = HeroesSelectNames.firstBattle;
+  heroesContext = HeroesSelectNames.firstBattleCollection;
 
   constructor() {
     super();

@@ -37,7 +37,8 @@ import { LoaderService } from '../../../services/resolver-loader/loader.service'
 export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   store = inject(Store);
   nav = inject(NavigationService);
-  heroesContext = HeroesSelectNames.dailyBoss;
+  heroesContext = HeroesSelectNames.dailyBossCollection;
+
   loaderService = inject(LoaderService);
   loader = this.loaderService.getPageLoader(frontRoutes.dailyBoss);
 
