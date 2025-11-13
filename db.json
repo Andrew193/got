@@ -3,9 +3,9 @@
     {
       "config": {
         "columnsConfig": {
-          "attack": 100,
-          "defence": 412,
-          "health": 256
+          "attack": 410,
+          "defence": 100,
+          "health": 250
         },
         "pageSize": 25
       },
@@ -38,7 +38,7 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 774480,
+        "onlineTime": 779400,
         "claimedRewards": [
           "2",
           "4",

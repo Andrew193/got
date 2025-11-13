@@ -82,7 +82,6 @@ export class LoaderService implements InitInterface {
   }
 
   private ensure(page: string): BehaviorSubject<boolean> {
-    console.log(page);
     if (!this.pageLoaderMap.has(page)) {
       this.pageLoaderMap.set(page, new BehaviorSubject<boolean>(true));
     }

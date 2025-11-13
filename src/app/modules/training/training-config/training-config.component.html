@@ -52,6 +52,7 @@
   <div class="col-lg-6 col-md-12">
     <app-heroes-select
       [title]="title"
+      [containerClass]="'no-p'"
       [contextName]="contextName"
       [isUser]="isUser"
       [allHeroes]="allUnitsForSelect"
@@ -61,6 +62,9 @@
 
 <ng-template #selectedUnitsBar let-units="units" let-title="title">
   <div class="col-lg-6 col-md-12">
-    <app-heroes-select-preview [units]="units" [title]="title"></app-heroes-select-preview>
+    <app-heroes-select-preview
+      [containerClass]="'no-p'"
+      [units]="units"
+      [title]="title"></app-heroes-select-preview>
   </div>
 </ng-template>

@@ -180,7 +180,6 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
     healer: TileUnit,
     units: TileUnit[],
   ) {
-    debugger;
     const healedHealth = healer.maxHealth * (skill.healM as number);
 
     const getNewHealth = (unit: TileUnit) => {

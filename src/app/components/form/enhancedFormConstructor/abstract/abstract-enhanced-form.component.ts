@@ -190,7 +190,6 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
         })
         .filter((item): item is AppEntity<T> => item !== undefined);
     });
-    debugger;
   }
 
   addAllFieldsToFormGroup() {

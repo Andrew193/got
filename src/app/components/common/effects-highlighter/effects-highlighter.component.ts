@@ -55,8 +55,6 @@ export class EffectsHighlighterComponent {
   }
 
   private effectsWords = computed(() => {
-    console.log([this.wordsToHighlight(), this.heroService.helper.getEffectsToHighlight()].flat());
-
     return [this.wordsToHighlight(), this.heroService.helper.getEffectsToHighlight()].flat();
   });
 

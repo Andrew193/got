@@ -48,7 +48,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       getTargetTile,
     } = params;
 
-    debugger;
     if (skill.addBuffsBeforeAttack) {
       this.addBuffToUnit(attackerTeam, attackerIndex, skill);
     }
@@ -192,7 +191,6 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
   }
 
   updateGridUnits(unitsArray: TileUnit[]) {
-    console.log('create 2');
     this.gameConfig = this.unitService.updateGridUnits(unitsArray, this.gameConfig);
   }
 

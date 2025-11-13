@@ -13,7 +13,6 @@ export class FormEnhancedActions<T> extends AbstractActions<T> {
 
   override saveAction(): void {
     if (this.formGroup.invalid) {
-      console.log(this.formGroup);
       this._snackBar.open('Your form is invalid. Validate it first!', '', SNACKBAR_CONFIG);
     } else {
       super.saveAction(this.formGroup.getRawValue());

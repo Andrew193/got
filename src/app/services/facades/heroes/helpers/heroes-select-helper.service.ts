@@ -7,6 +7,7 @@ import { UnitsConfiguratorVisibilityUnit } from '../../../../store/store.interfa
 import { Update } from '@ngrx/entity';
 import { HeroesSelectNames } from '../../../../constants';
 import { getUnitKey } from '../../../../store/reducers/units-configurator.reducer';
+import { debounceTime } from 'rxjs/operators';
 
 @Injectable()
 export class HeroesSelectFacadeService {
@@ -37,7 +38,7 @@ export class HeroesSelectFacadeService {
   }
 
   watchFilteredOptions(collection: HeroesSelectNames) {
-    this.filteredOptions.subscribe(res => {
+    this.filteredOptions.pipe(debounceTime(500)).subscribe(res => {
       const parsed = this.helper.unitOptions.map(_ => {
         return {
           changes: { visible: res.includes(_.name) },

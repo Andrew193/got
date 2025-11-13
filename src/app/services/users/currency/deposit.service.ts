@@ -32,9 +32,7 @@ export class DepositService
       {
         returnObs: true,
         url: this.url,
-        callback: res => {
-          console.log(res);
-        },
+        callback: () => {},
       },
     );
   }

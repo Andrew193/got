@@ -146,7 +146,6 @@ export class AnchorPointEnhancedContextMenuActions<T> extends ProtoActions {
     const formControl = formGroup.get(alias);
     const matrix = this.tileOps.mtx;
 
-    debugger;
     if (matrix.tiles.size) {
       if (formControl) {
         const activePlaceHolders = formControl.value;
