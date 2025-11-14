@@ -1,3 +1,9 @@
 :host:has(.invisible) {
   display: none;
 }
+
+.disabled {
+  background-color: unset;
+  opacity: 0.6;
+  cursor: default;
+}

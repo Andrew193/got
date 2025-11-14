@@ -1,7 +1,7 @@
 @use './index' as index;
 
 @mixin c-v-gray {
-  background-color: gray !important;
+  background-color: gray;
 }
 
 .disabled {

@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { PreviewUnit, SelectableUnit } from '../../../models/units-related/unit.model';
+import {
+  AddUserUnitCallbackReturnValue,
+  PreviewUnit,
+  SelectableUnit,
+} from '../../../models/units-related/unit.model';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
@@ -49,7 +53,7 @@ export class TrainingConfigComponent implements OnInit {
 
   allUnitsForSelect = this.facade.allUnitsForSelect;
 
-  public addUserUnit = (unit: SelectableUnit, user = true): boolean => {
+  public addUserUnit = (unit: SelectableUnit, user = true): AddUserUnitCallbackReturnValue => {
     const unitKey = this.getUnitKey(user);
 
     const currentUnits = this[unitKey]();
@@ -68,7 +72,7 @@ export class TrainingConfigComponent implements OnInit {
         );
       }
 
-      return toReturn;
+      return { shouldAdd: toReturn } satisfies AddUserUnitCallbackReturnValue;
     };
 
     const addNew = index === -1 && currentUnits.length < 5;

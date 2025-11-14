@@ -12,8 +12,11 @@
     'with-background': _config.withBackground,
   }">
   @if (_title) {
-    <p class="col-12 text-center banner no-top b-t-l-r-i b-t-r-r-i" [class]="_titleClass">
+    <p
+      class="col-12 text-center banner no-top b-t-l-r-i b-t-r-r-i position-relative"
+      [class]="_titleClass">
       <span class="store-title">{{ _title }}</span>
+      <ng-content select="header-icon" />
     </p>
   }
   <nav [class]="_navClass">

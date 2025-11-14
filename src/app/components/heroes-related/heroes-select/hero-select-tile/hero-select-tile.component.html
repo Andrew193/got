@@ -1,10 +1,15 @@
 @let _unit = unit();
 @let _isUser = isUser();
 @let _selected = selected();
-@let _visible = visible | async;
+@let _tileConfig = tileConfig | async;
 
-@if (_visible) {
-  <div class="m-1" (click)="unitClick.emit(_unit)">
+@if (_tileConfig && _tileConfig.visible) {
+  <div
+    class="m-1"
+    [ngClass]="{
+      disabled: !_tileConfig.active,
+    }"
+    (click)="unitClick.emit(_unit)">
     <img
       [src]="_unit.imgSrc"
       [alt]="_unit.name"

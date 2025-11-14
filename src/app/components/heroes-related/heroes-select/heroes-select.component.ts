@@ -8,7 +8,10 @@ import {
   signal,
   Signal,
 } from '@angular/core';
-import { SelectableUnit } from '../../../models/units-related/unit.model';
+import {
+  AddUserUnitCallbackReturnValue,
+  SelectableUnit,
+} from '../../../models/units-related/unit.model';
 import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { HeroSelectTileComponent } from './hero-select-tile/hero-select-tile.component';
@@ -50,7 +53,8 @@ export class HeroesSelectComponent implements OnInit {
   isUser = input(false);
   showSearchInput = input(true);
 
-  @Input() addUserUnit: (unit: SelectableUnit, isUser?: boolean) => boolean = () => true;
+  @Input() addUserUnit: (unit: SelectableUnit, isUser?: boolean) => AddUserUnitCallbackReturnValue =
+    () => ({ shouldAdd: true });
 
   units: Signal<HeroesSelectStateEntity[]> = signal([]);
 
@@ -67,16 +71,20 @@ export class HeroesSelectComponent implements OnInit {
     const contextName = this.contextName();
     const units = this.units();
 
-    const updateCheck = (shouldAdd = true) => {
+    const updateCheck = (shouldAddConfig: AddUserUnitCallbackReturnValue = { shouldAdd: true }) => {
+      const { shouldAdd, name } = shouldAddConfig;
+
       if (shouldAdd) {
         this.store.dispatch(
           HeroesSelectActions.addHeroToCollection({ collection: contextName, name: unit.name }),
         );
-      } else if (units.find(_ => _.name === unit.name)) {
+      }
+
+      if (!shouldAdd || units.find(_ => _.name === unit.name) || name) {
         this.store.dispatch(
           HeroesSelectActions.removeHeroFromCollection({
             collection: contextName,
-            name: unit.name,
+            name: name || unit.name,
           }),
         );
       }

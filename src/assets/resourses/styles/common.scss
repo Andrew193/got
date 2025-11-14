@@ -119,6 +119,14 @@ a.fake-link {
   background-color: transparent !important;
 }
 
+button.stores-placeholder-header-icon {
+  --mdc-icon-button-state-layer-size: 28px !important;
+  position: absolute;
+  top: 0;
+  right: 4px;
+  padding: 3px !important;
+}
+
 .oath {
   margin: 12px;
   padding: 10px 12px;

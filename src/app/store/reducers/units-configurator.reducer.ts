@@ -2,8 +2,8 @@ import {
   StoreNames,
   Collection,
   UnitsConfiguratorStateUnit,
-  UnitsConfiguratorVisibilityUnit,
   UnitsConfiguratorState,
+  UnitsConfiguratorUnitConfig,
 } from '../store.interfaces';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { createEntityAdapter } from '@ngrx/entity';
@@ -13,8 +13,8 @@ import { FieldConfigActions } from '../actions/field-config.actions';
 import { makeSelectFieldConfig } from '../selectors/field-config.selectors';
 import {
   makeCanStartBattle,
+  makeSelectUnitConfig,
   makeSelectUnits,
-  makeUnitVisibility,
 } from '../selectors/units-configurator.selectors';
 import { UnitName } from '../../models/units-related/unit.model';
 import { HeroesSelectNames } from '../../constants';
@@ -34,7 +34,7 @@ function selectUnitsVisibilityId(model: { name: UnitName } & Collection) {
 const unitsAdapter = createEntityAdapter<UnitsConfiguratorStateUnit>({
   selectId: selectUnitsId,
 });
-const unitsVisibilityAdapter = createEntityAdapter<UnitsConfiguratorVisibilityUnit>({
+const unitsConfigAdapter = createEntityAdapter<UnitsConfiguratorUnitConfig>({
   selectId: selectUnitsVisibilityId,
 });
 
@@ -42,7 +42,7 @@ export const UnitsConfiguratorInitialState: UnitsConfiguratorState = {
   units: unitsAdapter.getInitialState([]),
   fieldConfig: FieldConfigInitialState,
   unitUpdateAllowed: true,
-  unitsVisibility: unitsVisibilityAdapter.getInitialState([]),
+  unitsConfig: unitsConfigAdapter.getInitialState([]),
 };
 
 export const UnitsConfiguratorFeature = createFeature({
@@ -52,16 +52,22 @@ export const UnitsConfiguratorFeature = createFeature({
     on(FieldConfigActions.setFieldConfig, (state, action) => {
       return { ...state, fieldConfig: FieldConfigReducer(state.fieldConfig, action) };
     }),
-    on(UnitsConfiguratorFeatureActions.setUnitArrayVisibility, (state, action) => {
+    on(UnitsConfiguratorFeatureActions.setUnitArrayConfig, (state, action) => {
       return {
         ...state,
-        unitsVisibility: unitsVisibilityAdapter.addMany(action.data, state.unitsVisibility),
+        unitsConfig: unitsConfigAdapter.addMany(action.data, state.unitsConfig),
       };
     }),
-    on(UnitsConfiguratorFeatureActions.updateUnitArrayVisibility, (state, action) => {
+    on(UnitsConfiguratorFeatureActions.updateUnitArrayConfig, (state, action) => {
       return {
         ...state,
-        unitsVisibility: unitsVisibilityAdapter.updateMany(action.data, state.unitsVisibility),
+        unitsConfig: unitsConfigAdapter.updateMany(action.data, state.unitsConfig),
+      };
+    }),
+    on(UnitsConfiguratorFeatureActions.updateUnitConfig, (state, action) => {
+      return {
+        ...state,
+        unitsConfig: unitsConfigAdapter.updateOne(action.data, state.unitsConfig),
       };
     }),
     on(UnitsConfiguratorFeatureActions.setUnitUpdate, (state, action) => {
@@ -103,9 +109,7 @@ export const UnitsConfiguratorFeature = createFeature({
   ),
   extraSelectors: baseSelectors => {
     const unitsSelectors = unitsAdapter.getSelectors(baseSelectors.selectUnits);
-    const unitsVisibilitySelectors = unitsVisibilityAdapter.getSelectors(
-      baseSelectors.selectUnitsVisibility,
-    );
+    const unitsConfigSelectors = unitsConfigAdapter.getSelectors(baseSelectors.selectUnitsConfig);
 
     return {
       selectUnitsEntities: unitsSelectors.selectEntities,
@@ -114,8 +118,8 @@ export const UnitsConfiguratorFeature = createFeature({
       selectFieldConfig: () =>
         makeSelectFieldConfig(baseSelectors.selectFieldConfig, StoreNames.unitsConfigurator),
       selectCanStartBattle: () => makeCanStartBattle(unitsSelectors.selectAll),
-      selectUnitVisibility: (unit: { name: UnitName; collection: HeroesSelectNames }) =>
-        makeUnitVisibility(unitsVisibilitySelectors.selectAll, unit),
+      selectUnitConfig: (unit: { name: UnitName; collection: HeroesSelectNames }) =>
+        makeSelectUnitConfig(unitsConfigSelectors.selectAll, unit),
     };
   },
 });
@@ -124,5 +128,5 @@ export const {
   selectUnits,
   selectFieldConfig: selectTrainingFieldConfig,
   selectCanStartBattle,
-  selectUnitVisibility,
+  selectUnitConfig,
 } = UnitsConfiguratorFeature;

@@ -140,3 +140,8 @@ export enum HeroesNamesCodes {
   DailyBossVersion1 = 'Gromirt Flame',
   Ranger = 'Ranger',
 }
+
+export type AddUserUnitCallbackReturnValue = {
+  shouldAdd: boolean;
+  name?: UnitName;
+};

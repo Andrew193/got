@@ -7,7 +7,15 @@ import { HeroesSelectComponent } from '../../../../components/heroes-related/her
 import { HeroesSelectPreviewComponent } from '../../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../../../store/actions/heroes-select.actions';
-import { HeroesSelectStateEntity } from '../../../../store/store.interfaces';
+import {
+  HeroesSelectStateEntity,
+  UnitsConfiguratorUnitConfig,
+} from '../../../../store/store.interfaces';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { UnitsConfiguratorFeatureActions } from '../../../../store/actions/units-configurator.actions';
+import { getUnitKey } from '../../../../store/reducers/units-configurator.reducer';
+import { UnitName } from '../../../../models/units-related/unit.model';
 
 @Component({
   selector: 'app-skills-matcher',
@@ -18,6 +26,8 @@ import { HeroesSelectStateEntity } from '../../../../store/store.interfaces';
     HeroesSelectComponent,
     HeroesSelectPreviewComponent,
     CdkDropListGroup,
+    MatIcon,
+    MatIconButton,
   ],
   templateUrl: './heroes-matcher.component.html',
   styleUrl: './heroes-matcher.component.scss',
@@ -40,25 +50,58 @@ export class HeroesMatcherComponent extends DragDropComponent {
   cdkList2 = 'SELECTED_LIST';
 
   dropCover(event: CdkDragDrop<typeof this.allUnitsForSelect>) {
+    const targetElement = event.previousContainer.data[event.previousIndex];
+    let active = false;
     const context: HeroesSelectStateEntity = {
       collection: this.contextName,
-      name: event.previousContainer.data[event.previousIndex].name,
+      name: targetElement.name,
     };
 
     if (event.container.id === this.cdkList2) {
-      const shouldRemove = this.matchedPreviewUnits.find(
-        el => el.name === event.previousContainer.data[event.previousIndex].name,
-      );
+      const shouldRemove = this.matchedPreviewUnits.find(el => el.name === context.name);
 
-      !shouldRemove && this.store.dispatch(HeroesSelectActions.removeHeroFromCollection(context));
+      if (!shouldRemove) {
+        this.store.dispatch(HeroesSelectActions.removeHeroFromCollection(context));
+        active = false;
+      }
     } else {
-      const shouldAdd = this.chosenUnits().find(
-        el => el.name === event.previousContainer.data[event.previousIndex].name,
-      );
+      const shouldAdd = this.chosenUnits().find(el => el.name === context.name);
 
-      !shouldAdd && this.store.dispatch(HeroesSelectActions.addHeroToCollection(context));
+      if (!shouldAdd) {
+        this.store.dispatch(HeroesSelectActions.addHeroToCollection(context));
+        active = true;
+      }
     }
 
+    this.updateUnitConfigCover(active, context);
     this.drop(event);
+  }
+
+  updateUnitConfigCover(
+    active: boolean,
+    context: HeroesSelectStateEntity,
+    additional?: Pick<UnitsConfiguratorUnitConfig, 'visible'>,
+  ) {
+    this.store.dispatch(
+      UnitsConfiguratorFeatureActions.updateUnitConfig({
+        collection: context.collection,
+        data: {
+          id: getUnitKey(context),
+          changes: {
+            active,
+            ...(additional || {}),
+          },
+        },
+      }),
+    );
+  }
+
+  removeElementFromRightContainer(name: UnitName) {
+    const context = { collection: this.contextName, name };
+
+    this.store.dispatch(HeroesSelectActions.removeHeroFromCollection(context));
+    this.updateUnitConfigCover(true, context, { visible: true });
+
+    this.matchedPreviewUnits = this.matchedPreviewUnits.filter(_ => _.name !== name);
   }
 }

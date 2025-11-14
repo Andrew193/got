@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { selectHeroState } from '../../../../store/reducers/heroes-select.reducer';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { HeroesSelectNames } from '../../../../constants';
-import { selectUnitVisibility } from '../../../../store/reducers/units-configurator.reducer';
 import { Observable, of } from 'rxjs';
+import { selectUnitConfig } from '../../../../store/reducers/units-configurator.reducer';
+import { UnitsConfiguratorUnitConfig } from '../../../../store/store.interfaces';
 
 @Component({
   selector: 'app-hero-select-tile',
@@ -20,7 +21,10 @@ export class HeroSelectTileComponent implements OnInit {
   isUser = input.required<boolean>();
   collectionName = input.required<HeroesSelectNames>();
 
-  visible: Observable<boolean> = of(true);
+  tileConfig: Observable<Required<Pick<UnitsConfiguratorUnitConfig, 'visible' | 'active'>>> = of({
+    visible: true,
+    active: true,
+  });
   selected: Signal<boolean> = signal(false);
 
   unitClick = output<SelectableUnit>();
@@ -30,6 +34,6 @@ export class HeroSelectTileComponent implements OnInit {
     const collectionName = this.collectionName();
 
     this.selected = this.store.selectSignal(selectHeroState(collectionName, name));
-    this.visible = this.store.select(selectUnitVisibility({ name, collection: collectionName }));
+    this.tileConfig = this.store.select(selectUnitConfig({ name, collection: collectionName }));
   }
 }

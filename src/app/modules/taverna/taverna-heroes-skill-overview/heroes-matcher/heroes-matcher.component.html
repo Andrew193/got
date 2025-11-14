@@ -14,7 +14,9 @@
       (dropped)="dropCover($event)"
       [containerClass]="'no-p mt-2'"
       [units]="_chosenUnits"
-      [title]="'Selected Unit'"></app-heroes-select-preview>
+      [title]="
+        _chosenUnits.length ? _chosenUnits[0].name : 'Selected Unit'
+      "></app-heroes-select-preview>
   </div>
 
   <aside class="skills-container color-white col-md-12 col-lg p-0">
@@ -44,7 +46,15 @@
               [label]="`${unit.name} - Skills`"
               [selectedHero]="unit"
               [convertTextToLowercase]="false"
-              [sliderMode]="true" />
+              [sliderMode]="true">
+              <button
+                class="stores-placeholder-header-icon"
+                (click)="removeElementFromRightContainer(unit.name)"
+                mat-icon-button
+                ngProjectAs="slider-mode-content">
+                <mat-icon>close</mat-icon>
+              </button>
+            </app-skills-render>
           </div>
         }
       </div>

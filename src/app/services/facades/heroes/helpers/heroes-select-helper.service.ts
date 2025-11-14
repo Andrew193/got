@@ -3,11 +3,11 @@ import { TavernaFacadeService } from '../../taverna/taverna.service';
 import { Store } from '@ngrx/store';
 import { UnitsConfiguratorFeatureActions } from '../../../../store/actions/units-configurator.actions';
 import { Unit } from '../../../../models/units-related/unit.model';
-import { UnitsConfiguratorVisibilityUnit } from '../../../../store/store.interfaces';
 import { Update } from '@ngrx/entity';
 import { HeroesSelectNames } from '../../../../constants';
 import { getUnitKey } from '../../../../store/reducers/units-configurator.reducer';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, skip } from 'rxjs/operators';
+import { UnitsConfiguratorUnitConfig } from '../../../../store/store.interfaces';
 
 @Injectable()
 export class HeroesSelectFacadeService {
@@ -28,9 +28,9 @@ export class HeroesSelectFacadeService {
 
   init(collection: HeroesSelectNames) {
     this.store.dispatch(
-      UnitsConfiguratorFeatureActions.setUnitArrayVisibility({
+      UnitsConfiguratorFeatureActions.setUnitArrayConfig({
         collection: collection,
-        data: this.getVisibilityArray(this.helper.unitOptions, true, collection),
+        data: this.getConfigArray(this.helper.unitOptions, true, true, collection),
       }),
     );
 
@@ -38,16 +38,16 @@ export class HeroesSelectFacadeService {
   }
 
   watchFilteredOptions(collection: HeroesSelectNames) {
-    this.filteredOptions.pipe(debounceTime(500)).subscribe(res => {
+    this.filteredOptions.pipe(debounceTime(500), skip(1)).subscribe(res => {
       const parsed = this.helper.unitOptions.map(_ => {
         return {
           changes: { visible: res.includes(_.name) },
           id: getUnitKey({ ..._, collection }),
-        } satisfies Update<UnitsConfiguratorVisibilityUnit>;
+        } satisfies Update<UnitsConfiguratorUnitConfig>;
       });
 
       this.store.dispatch(
-        UnitsConfiguratorFeatureActions.updateUnitArrayVisibility({
+        UnitsConfiguratorFeatureActions.updateUnitArrayConfig({
           collection: collection,
           data: parsed,
         }),
@@ -55,13 +55,14 @@ export class HeroesSelectFacadeService {
     });
   }
 
-  getVisibilityArray(
+  getConfigArray(
     units: Unit[],
     visible: boolean,
+    active: boolean,
     collection: HeroesSelectNames,
-  ): UnitsConfiguratorVisibilityUnit[] {
+  ): UnitsConfiguratorUnitConfig[] {
     return units.map(
-      el => ({ name: el.name, visible, collection }) satisfies UnitsConfiguratorVisibilityUnit,
+      el => ({ name: el.name, visible, collection, active }) satisfies UnitsConfiguratorUnitConfig,
     );
   }
 }

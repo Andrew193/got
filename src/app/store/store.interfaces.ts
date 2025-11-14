@@ -54,14 +54,15 @@ export type DailyRewardState = {
 export type Collection = { collection: HeroesSelectNames };
 
 export type UnitsConfiguratorStateUnit = PreviewUnit & Partial<Coordinate> & Collection;
-export type UnitsConfiguratorVisibilityUnit = Pick<UnitsConfiguratorStateUnit, 'name'> & {
+export type UnitsConfiguratorUnitConfig = Pick<UnitsConfiguratorStateUnit, 'name'> & {
   visible: boolean;
+  active: boolean;
 } & Collection;
 
 export interface UnitsConfiguratorState extends FieldConfigState {
   units: EntityState<UnitsConfiguratorStateUnit>;
   unitUpdateAllowed: boolean;
-  unitsVisibility: EntityState<UnitsConfiguratorVisibilityUnit>;
+  unitsConfig: EntityState<UnitsConfiguratorUnitConfig>;
 }
 
 export type UnitsConfiguratorSelectUnit = {

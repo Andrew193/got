@@ -7,7 +7,12 @@ import {
 import { map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
-import { PreviewUnit, SelectableUnit, Unit } from '../../../models/units-related/unit.model';
+import {
+  AddUserUnitCallbackReturnValue,
+  PreviewUnit,
+  SelectableUnit,
+  Unit,
+} from '../../../models/units-related/unit.model';
 import {
   DataSource,
   FilterValue,
@@ -19,7 +24,6 @@ import { TableService } from '../../table/table.service';
 import { TavernaAssistantService } from './helpers/taverna-assistant.service';
 import { AssistantFacadeService } from '../../../models/interfaces/assistant.interface';
 import { HeroesSelectNames } from '../../../constants';
-import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -37,27 +41,20 @@ export class TavernaFacadeService implements AssistantFacadeService {
   contextName = HeroesSelectNames.heroesMatcherCollection;
   chosenUnits = signal<PreviewUnit[]>([]);
 
-  public addUserUnit = (unit: SelectableUnit): boolean => {
+  public addUserUnit = (unit: SelectableUnit): AddUserUnitCallbackReturnValue => {
     const index = this.chosenUnits().findIndex(el => el.name === unit.name);
 
     if (index !== -1) {
-      this.chosenUnits.update(model => model.filter((_, i) => _.name !== unit.name));
+      this.chosenUnits.update(model => model.filter(_ => _.name !== unit.name));
+
+      return { shouldAdd: false };
     } else {
-      this.chosenUnits.update(model => {
-        if (model[0]) {
-          this.store.dispatch(
-            HeroesSelectActions.removeHeroFromCollection({
-              collection: this.contextName,
-              name: model[0].name,
-            }),
-          );
-        }
+      const pervSelection = this.chosenUnits()[0];
 
-        return [this.heroesService.getPreviewUnit(unit.name)];
-      });
+      this.chosenUnits.update(() => [this.heroesService.getPreviewUnit(unit.name)]);
+
+      return pervSelection ? { shouldAdd: true, name: pervSelection.name } : { shouldAdd: true };
     }
-
-    return index === -1;
   };
 
   //Root taverna

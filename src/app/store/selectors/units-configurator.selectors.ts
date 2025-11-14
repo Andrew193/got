@@ -1,11 +1,11 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import { UnitsConfiguratorStateUnit, UnitsConfiguratorVisibilityUnit } from '../store.interfaces';
+import { UnitsConfiguratorStateUnit, UnitsConfiguratorUnitConfig } from '../store.interfaces';
 import { getUnitKey } from '../reducers/units-configurator.reducer';
 import { UnitName } from '../../models/units-related/unit.model';
 import { HeroesSelectNames } from '../../constants';
 
 export type SelectContexts = MemoizedSelector<object, UnitsConfiguratorStateUnit[]>;
-type SelectVisibilityContexts = MemoizedSelector<object, UnitsConfiguratorVisibilityUnit[]>;
+type SelectConfigContexts = MemoizedSelector<object, UnitsConfiguratorUnitConfig[]>;
 
 let canStartBattleCache: MemoizedSelector<object, boolean> | null = null;
 const selectUnitsSelectorCache = new Map<
@@ -13,15 +13,18 @@ const selectUnitsSelectorCache = new Map<
   MemoizedSelector<object, UnitsConfiguratorStateUnit[]>
 >();
 
-const unitsVisibilityCache = new Map<string, MemoizedSelector<object, boolean>>();
+const unitsConfigCache = new Map<
+  string,
+  MemoizedSelector<object, Pick<UnitsConfiguratorUnitConfig, 'visible' | 'active'>>
+>();
 
-export function makeUnitVisibility(
-  selectContexts: SelectVisibilityContexts,
+export function makeSelectUnitConfig(
+  selectContexts: SelectConfigContexts,
   unit: { name: UnitName; collection: HeroesSelectNames },
 ) {
   const key = getUnitKey(unit);
 
-  let selector = unitsVisibilityCache.get(key);
+  let selector = unitsConfigCache.get(key);
 
   if (!selector) {
     selector = createSelector(selectContexts, ctx => {
@@ -29,9 +32,9 @@ export function makeUnitVisibility(
         _ => _.name === unit.name && _.collection === unit.collection,
       )[0];
 
-      return foundUnit ? foundUnit.visible : false;
+      return { active: foundUnit.active, visible: foundUnit.visible };
     });
-    unitsVisibilityCache.set(key, selector);
+    unitsConfigCache.set(key, selector);
   }
 
   return selector;

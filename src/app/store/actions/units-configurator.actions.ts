@@ -3,7 +3,7 @@ import {
   StoreNames,
   UnitsConfiguratorSelectUnit,
   UnitsConfiguratorStateUnit,
-  UnitsConfiguratorVisibilityUnit,
+  UnitsConfiguratorUnitConfig,
 } from '../store.interfaces';
 import { Coordinate } from '../../models/field.model';
 import { UnitName } from '../../models/units-related/unit.model';
@@ -24,17 +24,18 @@ export const UnitsConfiguratorFeatureActions = createActionGroup({
     setUnitUpdate: props<{ canUpdateUnit: boolean }>(),
     dropSelectUnits: emptyProps(),
     drop: emptyProps(),
-    setUnitVisibility: props<{
-      config: { collection: HeroesSelectNames; name: UnitName };
-      visibility: boolean;
-    }>(),
-    setUnitArrayVisibility: props<{
+    setUnitConfig: props<UnitsConfiguratorUnitConfig>(),
+    setUnitArrayConfig: props<{
       collection: HeroesSelectNames;
-      data: UnitsConfiguratorVisibilityUnit[];
+      data: UnitsConfiguratorUnitConfig[];
     }>(),
-    updateUnitArrayVisibility: props<{
+    updateUnitArrayConfig: props<{
       collection: HeroesSelectNames;
-      data: Update<UnitsConfiguratorVisibilityUnit>[];
+      data: Update<UnitsConfiguratorUnitConfig>[];
+    }>(),
+    updateUnitConfig: props<{
+      collection: HeroesSelectNames;
+      data: Update<UnitsConfiguratorUnitConfig>;
     }>(),
   },
 });

@@ -12,6 +12,10 @@
 
 <div class="skills-container" [class]="_containerPaddingClasses">
   <app-basic-stores-placeholder [title]="_showLabel ? _label : ''" [config]="_placeholderConfig">
+    <ng-container ngProjectAs="header-icon">
+      <ng-content select="slider-mode-content" />
+    </ng-container>
+
     @if (_sliderMode) {
       <mat-tab-group class="skills-tabs">
         @for (skill of hero.skills; track skill.name + $index) {
