@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   TavernaActivities,
@@ -7,12 +7,7 @@ import {
 import { map, Observable, of, startWith } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
-import {
-  AddUserUnitCallbackReturnValue,
-  PreviewUnit,
-  SelectableUnit,
-  Unit,
-} from '../../../models/units-related/unit.model';
+import { Unit } from '../../../models/units-related/unit.model';
 import {
   DataSource,
   FilterValue,
@@ -23,39 +18,35 @@ import { TavernaHeroesTableHelperService } from './helpers/heroes-table-helper.s
 import { TableService } from '../../table/table.service';
 import { TavernaAssistantService } from './helpers/taverna-assistant.service';
 import { AssistantFacadeService } from '../../../models/interfaces/assistant.interface';
-import { HeroesSelectNames } from '../../../constants';
 import { Store } from '@ngrx/store';
+import { HeroesMatcherService } from './helpers/heroes-matcher.service';
 
 @Injectable()
 export class TavernaFacadeService implements AssistantFacadeService {
   nav = inject(NavigationService);
+  heroesMatcherService = inject(HeroesMatcherService);
   store = inject(Store);
 
-  protected heroesService = inject(HeroesFacadeService);
+  heroesService = inject(HeroesFacadeService);
   private heroesTableHelper = inject(TavernaHeroesTableHelperService);
   assistantService = inject(TavernaAssistantService);
 
   getTileUnits = () => this.heroesService.getTileUnits();
 
   //Heroes matcher
-  contextName = HeroesSelectNames.heroesMatcherCollection;
-  chosenUnits = signal<PreviewUnit[]>([]);
+  heroesMatcherForm = this.heroesMatcherService.getForm();
+  onUiErrorNames = this.heroesMatcherService.onUiErrorNames;
+  contextName = this.heroesMatcherService.contextName;
+  templateOptions$ = this.heroesMatcherService.templateOptions$;
 
-  public addUserUnit = (unit: SelectableUnit): AddUserUnitCallbackReturnValue => {
-    const index = this.chosenUnits().findIndex(el => el.name === unit.name);
+  addUserUnit = this.heroesMatcherService.addUserUnit;
+  saveHeroesMatcherFormTemplate = this.heroesMatcherService.saveHeroesMatcherFormTemplate;
+  loadHeroesMatcherFormTemplate = this.heroesMatcherService.loadHeroesMatcherFormTemplate;
+  removeHeroesMatcherFormTemplate = this.heroesMatcherService.removeHeroesMatcherFormTemplate;
 
-    if (index !== -1) {
-      this.chosenUnits.update(model => model.filter(_ => _.name !== unit.name));
-
-      return { shouldAdd: false };
-    } else {
-      const pervSelection = this.chosenUnits()[0];
-
-      this.chosenUnits.update(() => [this.heroesService.getPreviewUnit(unit.name)]);
-
-      return pervSelection ? { shouldAdd: true, name: pervSelection.name } : { shouldAdd: true };
-    }
-  };
+  chosenUnits = this.heroesMatcherService.chosenUnits;
+  matchedPreviewUnits = this.heroesMatcherService.matchedPreviewUnits;
+  synergyUnits = this.heroesMatcherService.synergyUnits;
 
   //Root taverna
   readonly activities: TavernaActivities[] = [

@@ -14,6 +14,7 @@ import { makeSelectFieldConfig } from '../selectors/field-config.selectors';
 import {
   makeCanStartBattle,
   makeSelectUnitConfig,
+  makeSelectUnitConfigs,
   makeSelectUnits,
 } from '../selectors/units-configurator.selectors';
 import { UnitName } from '../../models/units-related/unit.model';
@@ -74,7 +75,7 @@ export const UnitsConfiguratorFeature = createFeature({
       return { ...state, unitUpdateAllowed: action.canUpdateUnit };
     }),
     on(UnitsConfiguratorFeatureActions.setUnits, (state, action) => {
-      return { ...state, units: unitsAdapter.addMany(action.units, state.units) };
+      return { ...state, units: unitsAdapter.setAll(action.units, state.units) };
     }),
     on(UnitsConfiguratorFeatureActions.addUnit, (state, action) => {
       return { ...state, units: unitsAdapter.addOne(action.data, state.units) };
@@ -95,8 +96,22 @@ export const UnitsConfiguratorFeature = createFeature({
 
       return state;
     }),
-    on(UnitsConfiguratorFeatureActions.drop, () => {
-      console.log(UnitsConfiguratorInitialState);
+    on(UnitsConfiguratorFeatureActions.drop, (state, action) => {
+      if (action.collections && Array.isArray(action.collections)) {
+        return {
+          ...state,
+          // @ts-ignore
+          units: unitsAdapter.removeMany(
+            _ => action.collections.includes(_.collection),
+            state.units,
+          ),
+          // @ts-ignore
+          unitsConfig: unitsConfigAdapter.removeMany(
+            _ => action.collections.includes(_.collection),
+            state.unitsConfig,
+          ),
+        };
+      }
 
       return UnitsConfiguratorInitialState;
     }),
@@ -120,6 +135,8 @@ export const UnitsConfiguratorFeature = createFeature({
       selectCanStartBattle: () => makeCanStartBattle(unitsSelectors.selectAll),
       selectUnitConfig: (unit: { name: UnitName; collection: HeroesSelectNames }) =>
         makeSelectUnitConfig(unitsConfigSelectors.selectAll, unit),
+      selectAllUnitConfigs: (collection: HeroesSelectNames) =>
+        makeSelectUnitConfigs(unitsConfigSelectors.selectAll, collection),
     };
   },
 });
@@ -129,4 +146,5 @@ export const {
   selectFieldConfig: selectTrainingFieldConfig,
   selectCanStartBattle,
   selectUnitConfig,
+  selectAllUnitConfigs,
 } = UnitsConfiguratorFeature;

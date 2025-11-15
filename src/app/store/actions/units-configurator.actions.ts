@@ -23,7 +23,7 @@ export const UnitsConfiguratorFeatureActions = createActionGroup({
     }>(),
     setUnitUpdate: props<{ canUpdateUnit: boolean }>(),
     dropSelectUnits: emptyProps(),
-    drop: emptyProps(),
+    drop: props<{ collections?: HeroesSelectNames[] }>(),
     setUnitConfig: props<UnitsConfiguratorUnitConfig>(),
     setUnitArrayConfig: props<{
       collection: HeroesSelectNames;

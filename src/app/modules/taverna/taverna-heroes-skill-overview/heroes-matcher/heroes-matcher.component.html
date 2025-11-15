@@ -1,6 +1,10 @@
 @let _chosenUnits = chosenUnits();
+@let _matchedPreviewUnits = matchedPreviewUnits();
+@let _synergyUnits = synergyUnits();
 
 <div cdkDropListGroup class="row gap-2 m-0 matcher-container">
+  <app-heroes-matcher-actions class="p-0" />
+
   <div class="col-12 p-2">
     <p class="color-white banner w-100 p-2 mb-0">
       The selected hero's abilities will be displayed here. When selecting a hero, heroes with which
@@ -8,15 +12,35 @@
       column on the right.
     </p>
 
-    <app-heroes-select-preview
-      [dropListId]="cdkList1"
-      [connectTo]="[cdkList2]"
-      (dropped)="dropCover($event)"
-      [containerClass]="'no-p mt-2'"
-      [units]="_chosenUnits"
-      [title]="
-        _chosenUnits.length ? _chosenUnits[0].name : 'Selected Unit'
-      "></app-heroes-select-preview>
+    <div class="row m-0 g-2">
+      <div class="col">
+        <app-heroes-select-preview
+          [dropListId]="cdkList1"
+          [connectTo]="[cdkList2]"
+          (dropped)="dropCover($event)"
+          [containerClass]="'no-p mt-2'"
+          [units]="_chosenUnits"
+          [title]="
+            _chosenUnits.length ? _chosenUnits[0].name : 'Selected Unit'
+          "></app-heroes-select-preview>
+      </div>
+
+      <div class="col">
+        @if (_synergyUnits.length) {
+          <app-heroes-select-preview
+            [dropListId]="cdkList1"
+            [connectTo]="[cdkList2]"
+            [containerClass]="'no-p mt-2'"
+            [units]="_synergyUnits"
+            [title]="'Synergy Units'"></app-heroes-select-preview>
+        } @else {
+          <p
+            class="color-white text-center w-100 p-2 mb-0 h-100 d-flex justify-content-center align-items-center">
+            You will see the synergy units here.
+          </p>
+        }
+      </div>
+    </div>
   </div>
 
   <aside class="skills-container color-white col-md-12 col-lg p-0">
@@ -36,10 +60,10 @@
         class="cdk-list-2"
         [id]="cdkList2"
         cdkDropList
-        [cdkDropListData]="matchedPreviewUnits"
+        [cdkDropListData]="_matchedPreviewUnits"
         [cdkDropListConnectedTo]="[cdkList1]"
         (cdkDropListDropped)="dropCover($event)">
-        @for (unit of matchedPreviewUnits; track unit.name) {
+        @for (unit of _matchedPreviewUnits; track unit.name) {
           <div [cdkDragDisabled]="_chosenUnits.length > 0" cdkDrag>
             <app-skills-render
               [containerPaddingClasses]="'skill-box mb-1 p-2'"

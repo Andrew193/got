@@ -18,6 +18,25 @@ const unitsConfigCache = new Map<
   MemoizedSelector<object, Pick<UnitsConfiguratorUnitConfig, 'visible' | 'active'>>
 >();
 
+const unitsConfigsCache = new Map<
+  HeroesSelectNames,
+  MemoizedSelector<object, UnitsConfiguratorUnitConfig[]>
+>();
+
+export function makeSelectUnitConfigs(
+  selectContexts: SelectConfigContexts,
+  collection: HeroesSelectNames,
+) {
+  let selector = unitsConfigsCache.get(collection);
+
+  if (!selector) {
+    selector = createSelector(selectContexts, ctx => ctx.filter(_ => _.collection === collection));
+    unitsConfigsCache.set(collection, selector);
+  }
+
+  return selector;
+}
+
 export function makeSelectUnitConfig(
   selectContexts: SelectConfigContexts,
   unit: { name: UnitName; collection: HeroesSelectNames },
@@ -32,7 +51,7 @@ export function makeSelectUnitConfig(
         _ => _.name === unit.name && _.collection === unit.collection,
       )[0];
 
-      return { active: foundUnit.active, visible: foundUnit.visible };
+      return { active: foundUnit?.active ?? true, visible: foundUnit?.visible ?? true };
     });
     unitsConfigCache.set(key, selector);
   }

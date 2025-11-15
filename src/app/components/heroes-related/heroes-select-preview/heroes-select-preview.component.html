@@ -3,6 +3,7 @@
 @let _title = title();
 @let _dropListId = dropListId();
 @let _connectTo = connectTo();
+@let _dragActive = dragActive();
 
 <div class="heroes-container">
   <div class="col-12 units-config-inner-container" [class]="_containerClass">
@@ -13,9 +14,9 @@
         [cdkDropListData]="options"
         [cdkDropListConnectedTo]="_connectTo"
         (cdkDropListDropped)="dropped.emit($event)"
-        class="row gap-2 m-0 p-0 preview-selected-heroes">
+        class="row gap-2 m-0 p-2 preview-selected-heroes">
         @for (unit of options; track unit.name) {
-          <div cdkDrag [cdkDragDisabled]="!_dropListId" class="row m-0">
+          <div cdkDrag [cdkDragDisabled]="!_dropListId || !_dragActive" class="row m-0">
             <div class="col-auto position-relative cursor-pointer">
               <app-image
                 (click)="drawer.toggle()"

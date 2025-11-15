@@ -116,10 +116,8 @@ export class TrainingFacadeService {
     setContext();
 
     effect(() => {
-      const stashedAIUnits = this.store.selectSignal(selectUnits(HeroesSelectNames.aiCollection))();
-      const stashedUserUnits = this.store.selectSignal(
-        selectUnits(HeroesSelectNames.userCollection),
-      )();
+      const stashedAIUnits = this.store.selectSignal(selectUnits(this.aiBarCtx.contextName))();
+      const stashedUserUnits = this.store.selectSignal(selectUnits(this.userBarCtx.contextName))();
 
       const aiUnits = this.aiCollection();
       const userUnits = this.userCollection();
@@ -144,7 +142,11 @@ export class TrainingFacadeService {
   }
 
   cleanup() {
-    this.store.dispatch(UnitsConfiguratorFeatureActions.drop());
+    this.store.dispatch(
+      UnitsConfiguratorFeatureActions.drop({
+        collections: [this.userBarCtx.contextName, this.aiBarCtx.contextName],
+      }),
+    );
     this.store.dispatch(FieldConfigActions.setFieldConfig(GAME_BOARD_FIELD));
 
     setTimeout(() => {

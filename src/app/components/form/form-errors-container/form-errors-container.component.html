@@ -2,7 +2,7 @@
   (validationService.isFormInvalid(form, checkErrors) && showErrors) ||
   (errors.length && form.touched && showErrors)
 ) {
-  <div class="alert alert-danger">
+  <div class="alert alert-danger mb-0">
     <span>Please, fix following error(s): </span>
     <ul class="pl-30 mt-10">
       @for (error of errors; track $index) {

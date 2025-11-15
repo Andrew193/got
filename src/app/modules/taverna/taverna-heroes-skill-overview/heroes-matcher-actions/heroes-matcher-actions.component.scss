@@ -1,0 +1,7 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
+.actions-container {
+  background-color: index.$var-metal-dark-1;
+
+  @include index.mixin-got-btn;
+}

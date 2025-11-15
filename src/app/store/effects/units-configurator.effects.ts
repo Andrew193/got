@@ -12,9 +12,12 @@ export class UnitsConfiguratorEffects {
   cleanSelectionAfterDrop = createEffect(() => {
     return this.actions$.pipe(
       ofType(UnitsConfiguratorFeatureActions.drop),
-      map(() =>
+      map(action =>
         HeroesSelectActions.resetHeroCollection({
-          collections: [HeroesSelectNames.aiCollection, HeroesSelectNames.userCollection],
+          collections: action.collections || [
+            HeroesSelectNames.aiCollection,
+            HeroesSelectNames.userCollection,
+          ],
         }),
       ),
     );

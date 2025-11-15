@@ -85,6 +85,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
+      synergy: [HeroesNamesCodes.TargaryenKnight],
     };
   }
 
@@ -148,6 +149,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
+      synergy: [HeroesNamesCodes.LadyOfDragonStone],
     };
   }
 
@@ -186,6 +188,7 @@ export class HeroesFacadeService extends ContentService {
         }),
       ],
       effects: [],
+      synergy: [HeroesNamesCodes.BrownWolf],
     };
   }
 
@@ -239,6 +242,12 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
+      synergy: [
+        HeroesNamesCodes.IceRiverHunter,
+        HeroesNamesCodes.Giant,
+        HeroesNamesCodes.JonKing,
+        HeroesNamesCodes.FreeTrapper,
+      ],
     };
   }
 
@@ -266,6 +275,11 @@ export class HeroesFacadeService extends ContentService {
         }),
       ],
       effects: [],
+      synergy: [
+        HeroesNamesCodes.WhiteWolf,
+        HeroesNamesCodes.FreeTrapper,
+        HeroesNamesCodes.IceRiverHunter,
+      ],
     };
   }
 
@@ -296,6 +310,14 @@ export class HeroesFacadeService extends ContentService {
         }),
       ],
       effects: [],
+      synergy: [
+        HeroesNamesCodes.BrownWolf,
+        HeroesNamesCodes.Giant,
+        HeroesNamesCodes.RelinaShow,
+        HeroesNamesCodes.WhiteWolf,
+        HeroesNamesCodes.JonKing,
+        HeroesNamesCodes.FreeTrapper,
+      ],
     };
   }
 
@@ -352,6 +374,13 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: [],
+      synergy: [
+        HeroesNamesCodes.Giant,
+        HeroesNamesCodes.Priest,
+        HeroesNamesCodes.WhiteWolf,
+        HeroesNamesCodes.BrownWolf,
+        HeroesNamesCodes.IceRiverHunter,
+      ],
     };
   }
 
@@ -403,6 +432,15 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: [],
+      synergy: [
+        HeroesNamesCodes.IceRiverHunter,
+        HeroesNamesCodes.Priest,
+        HeroesNamesCodes.WhiteWolf,
+        HeroesNamesCodes.BrownWolf,
+        HeroesNamesCodes.JonKing,
+        HeroesNamesCodes.Giant,
+        HeroesNamesCodes.RelinaShow,
+      ],
     };
   }
 
@@ -449,6 +487,14 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: [],
+      synergy: [
+        HeroesNamesCodes.JonKing,
+        HeroesNamesCodes.Priest,
+        HeroesNamesCodes.BrownWolf,
+        HeroesNamesCodes.WhiteWolf,
+        HeroesNamesCodes.IceRiverHunter,
+        HeroesNamesCodes.FreeTrapper,
+      ],
     };
   }
 
@@ -508,6 +554,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: [],
+      synergy: [HeroesNamesCodes.WhiteWalkerCapitan, HeroesNamesCodes.WhiteWalkerGeneral],
     };
   }
 
@@ -554,6 +601,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
+      synergy: [HeroesNamesCodes.NightKing, HeroesNamesCodes.WhiteWalkerCapitan],
     };
   }
 
@@ -598,6 +646,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: [],
+      synergy: [HeroesNamesCodes.WhiteWalkerGeneral, HeroesNamesCodes.NightKing],
     };
   }
 
@@ -661,6 +710,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
+      synergy: [HeroesNamesCodes.Giant],
     };
   }
 
@@ -722,6 +772,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
+      synergy: [],
     };
   }
 
@@ -763,6 +814,7 @@ export class HeroesFacadeService extends ContentService {
         description: skill.description,
         passive: skill.passive,
       })),
+      synergy: unit.synergy,
     };
   }
 

@@ -27,5 +27,10 @@
 
 .cdk-list-2 {
   height: 100%;
+  &:not(:empty) {
+    max-height: 400px;
+    overflow: auto;
+  }
+
   @include index.mixin-drop-area;
 }

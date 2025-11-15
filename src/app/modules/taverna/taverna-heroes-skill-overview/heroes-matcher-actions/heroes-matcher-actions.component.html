@@ -1,0 +1,43 @@
+<div class="actions-container color-white p-2">
+  <form [formGroup]="form" class="row m-0 g-2">
+    <div class="col">
+      <app-text-input
+        [controlName]="'newTemplate'"
+        [placeholder]="'Enter new template name'"
+        [showLabel]="false" />
+      <button
+        class="got-toggle mt-2 w-100"
+        [disabled]="!form.value.newTemplate || form.invalid"
+        (click)="saveHeroesMatcherFormTemplate()">
+        Save Template
+      </button>
+    </div>
+    <div class="col">
+      <app-autocomplete-mat-input
+        [controlName]="'template'"
+        [filteredOptions]="templateOptions$"
+        [placeholder]="'Search template'"
+        [showLabel]="false" />
+      <div class="row m-0 g-2">
+        <div class="col">
+          <button
+            class="got-toggle w-100"
+            [disabled]="!form.value.template"
+            (click)="loadHeroesMatcherFormTemplate()">
+            Load
+          </button>
+        </div>
+        <div class="col">
+          <button
+            class="got-toggle w-100"
+            [disabled]="!form.value.template"
+            (click)="removeHeroesMatcherFormTemplate()">
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <app-form-errors-container [form]="form" [uiErrorsNames]="onUiErrorNames" />
+  </form>
+</div>

@@ -61,7 +61,6 @@ export class TrainingConfigComponent implements OnInit {
 
     const update = (unit: PreviewUnit, toReturn: boolean) => {
       this[unitKey].update(model => [...model, unit]);
-
       if (toReturn) {
         this.store.dispatch(
           UnitsConfiguratorFeatureActions.addUnit({ data: { ...unit, collection: unitKey } }),

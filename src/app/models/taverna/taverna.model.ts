@@ -5,6 +5,11 @@ export type TavernaHeroesBarSearchForm = {
   unitName: FormControl<string>;
 };
 
+export type TavernaHeroesMatcherFrom = {
+  newTemplate: FormControl<string>;
+  template: FormControl<string | null>;
+};
+
 export type TavernaActivities = {
   label: string;
   imgSrc: string;

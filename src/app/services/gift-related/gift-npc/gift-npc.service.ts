@@ -125,6 +125,7 @@ export class GiftNpcService implements RewardComponentInterface {
         },
       ],
       effects: [],
+      synergy: [],
       ...unit,
     };
   }
@@ -156,6 +157,7 @@ export class GiftNpcService implements RewardComponentInterface {
       description: description || 'Сундук со случайной наградой. Был давно потерян в этих краях.',
       skills: [],
       effects: [],
+      synergy: [],
     };
   }
 }

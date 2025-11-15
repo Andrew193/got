@@ -42,6 +42,7 @@ export interface Unit extends Coordinate {
   fullImgSrc?: string;
   skills: Skill[];
   effects: Effect[];
+  synergy: UnitName[];
 }
 
 export type UnitBasicStats = Pick<
@@ -73,7 +74,7 @@ export type SelectableUnit = Pick<Unit, 'name' | 'imgSrc'>;
 export type PreviewUnit = SelectableUnit & {
   description: Unit['description'];
   skills: Pick<Skill, 'imgSrc' | 'name' | 'description' | 'passive'>[];
-};
+} & Pick<Unit, 'synergy'>;
 
 export interface UnitConfig {
   level: number;
