@@ -100,13 +100,14 @@ export const UnitsConfiguratorFeature = createFeature({
       if (action.collections && Array.isArray(action.collections)) {
         return {
           ...state,
-          // @ts-ignore
           units: unitsAdapter.removeMany(
+            // @ts-ignore
             _ => action.collections.includes(_.collection),
             state.units,
           ),
-          // @ts-ignore
+
           unitsConfig: unitsConfigAdapter.removeMany(
+            // @ts-ignore
             _ => action.collections.includes(_.collection),
             state.unitsConfig,
           ),

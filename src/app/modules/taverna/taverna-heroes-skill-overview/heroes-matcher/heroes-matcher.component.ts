@@ -110,5 +110,11 @@ export class HeroesMatcherComponent extends DragDropComponent {
     this.updateUnitConfigCover(true, context, { visible: true });
 
     this.matchedPreviewUnits.update(model => model.filter(_ => _.name !== name));
+
+    const chosenUnit = this.chosenUnits()[0];
+
+    if (chosenUnit) {
+      this.chosenUnits.update(() => [this.facade.heroesService.getPreviewUnit(chosenUnit.name)]);
+    }
   }
 }
