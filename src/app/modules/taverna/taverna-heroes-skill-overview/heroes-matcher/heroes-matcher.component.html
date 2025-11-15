@@ -45,6 +45,7 @@
 
   <aside class="skills-container color-white col-md-12 col-lg p-0">
     <app-heroes-select
+      #unitsSelects
       [title]="'Units'"
       [containerClass]="'no-p'"
       [contextName]="contextName"
@@ -54,10 +55,11 @@
   </aside>
 
   <aside class="skills-container active color-white col-md-12 col-lg p-0">
-    <h2 class="w-100 text-center mb-0">Selected skill set</h2>
-    <div class="flex-grow-1 m-2">
+    <h2 class="w-100 text-center mb-0">Selected Unit Set</h2>
+    <div class="flex-grow-1">
       <div
         class="cdk-list-2"
+        [ngStyle]="{ maxHeight: `${secondListHeight}px` }"
         [id]="cdkList2"
         cdkDropList
         [cdkDropListData]="_matchedPreviewUnits"
@@ -67,6 +69,7 @@
           <div [cdkDragDisabled]="_chosenUnits.length > 0" cdkDrag>
             <app-skills-render
               [containerPaddingClasses]="'skill-box mb-1 p-2'"
+              [storesInnerDivClass]="'m-0 pb-2'"
               [label]="`${unit.name} - Skills`"
               [selectedHero]="unit"
               [convertTextToLowercase]="false"

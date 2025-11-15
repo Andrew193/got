@@ -10,8 +10,13 @@
 @let _renderBySentence = renderBySentence();
 @let _label = label();
 
+@let _storesInnerDivClass = storesInnerDivClass();
+
 <div class="skills-container" [class]="_containerPaddingClasses">
-  <app-basic-stores-placeholder [title]="_showLabel ? _label : ''" [config]="_placeholderConfig">
+  <app-basic-stores-placeholder
+    [title]="_showLabel ? _label : ''"
+    [innerDivClass]="_storesInnerDivClass"
+    [config]="_placeholderConfig">
     <ng-container ngProjectAs="header-icon">
       <ng-content select="slider-mode-content" />
     </ng-container>

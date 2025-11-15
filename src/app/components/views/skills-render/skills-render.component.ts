@@ -35,4 +35,5 @@ export class SkillsRenderComponent {
   containerPaddingClasses = input<string>('ps-2 pe-2');
   convertTextToLowercase = input<boolean>(true);
   renderBySentence = input<boolean>(false);
+  storesInnerDivClass = input<string>('');
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, viewChild } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DragDropComponent } from '../../../../components/abstract/drag-drop/drag-drop.component';
 import { TavernaFacadeService } from '../../../../services/facades/taverna/taverna.service';
@@ -17,6 +17,7 @@ import { UnitsConfiguratorFeatureActions } from '../../../../store/actions/units
 import { getUnitKey } from '../../../../store/reducers/units-configurator.reducer';
 import { UnitName } from '../../../../models/units-related/unit.model';
 import { HeroesMatcherActionsComponent } from '../heroes-matcher-actions/heroes-matcher-actions.component';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-skills-matcher',
@@ -30,13 +31,17 @@ import { HeroesMatcherActionsComponent } from '../heroes-matcher-actions/heroes-
     MatIcon,
     MatIconButton,
     HeroesMatcherActionsComponent,
+    NgStyle,
   ],
   templateUrl: './heroes-matcher.component.html',
   styleUrl: './heroes-matcher.component.scss',
 })
-export class HeroesMatcherComponent extends DragDropComponent {
+export class HeroesMatcherComponent extends DragDropComponent implements AfterViewInit {
   facade = inject(TavernaFacadeService);
   store = inject(Store);
+
+  unitsSelects = viewChild.required<HeroesSelectComponent>('unitsSelects');
+  secondListHeight = 0;
 
   contextName = this.facade.contextName;
 
@@ -51,7 +56,6 @@ export class HeroesMatcherComponent extends DragDropComponent {
   cdkList2 = 'SELECTED_LIST';
 
   dropCover(event: CdkDragDrop<typeof this.allUnitsForSelect>) {
-    debugger;
     const targetElement = event.previousContainer.data[event.previousIndex];
     const containerId = event.container.id;
     const prevContainerId = event.previousContainer.id;
@@ -116,5 +120,13 @@ export class HeroesMatcherComponent extends DragDropComponent {
     if (chosenUnit) {
       this.chosenUnits.update(() => [this.facade.heroesService.getPreviewUnit(chosenUnit.name)]);
     }
+  }
+
+  getContainerHeight() {
+    return this.unitsSelects().innerContainer().nativeElement.offsetHeight;
+  }
+
+  ngAfterViewInit() {
+    this.secondListHeight = this.getContainerHeight();
   }
 }

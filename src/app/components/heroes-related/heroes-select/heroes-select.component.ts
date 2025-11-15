@@ -1,12 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   inject,
   input,
   Input,
   OnInit,
   signal,
   Signal,
+  viewChild,
 } from '@angular/core';
 import {
   AddUserUnitCallbackReturnValue,
@@ -44,6 +46,7 @@ export class HeroesSelectComponent implements OnInit {
   facade = inject(HeroesSelectFacadeService);
   formGroup = this.facade.formGroup;
   filteredOptions = this.facade.filteredOptions;
+  innerContainer = viewChild.required<ElementRef<HTMLDivElement>>('innerContainer');
 
   contextName = input.required<HeroesSelectNames>();
 

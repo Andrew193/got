@@ -8,23 +8,25 @@
 <div class="d-flex justify-content-center heroes-select-container">
   <div class="col-12 units-config-inner-container" [class]="_containerClass">
     <app-basic-stores-placeholder [title]="_title">
-      @if (_showSearchInput) {
-        <form [formGroup]="formGroup" class="p-2">
-          <app-autocomplete-mat-input
-            [showLabel]="false"
-            [placeholder]="'I summon...'"
-            [filteredOptions]="filteredOptions"
-            [controlName]="'unitName'"></app-autocomplete-mat-input>
-        </form>
-      }
-      <div class="flex-row justify-content-evenly">
-        @for (unit of options; track unit.name) {
-          <app-hero-select-tile
-            [collectionName]="_contextName"
-            (unitClick)="unitClick($event)"
-            [isUser]="_isUser"
-            [unit]="unit" />
+      <div #innerContainer>
+        @if (_showSearchInput) {
+          <form [formGroup]="formGroup" class="p-2 w-100">
+            <app-autocomplete-mat-input
+              [showLabel]="false"
+              [placeholder]="'I summon...'"
+              [filteredOptions]="filteredOptions"
+              [controlName]="'unitName'"></app-autocomplete-mat-input>
+          </form>
         }
+        <div class="flex-row justify-content-evenly">
+          @for (unit of options; track unit.name) {
+            <app-hero-select-tile
+              [collectionName]="_contextName"
+              (unitClick)="unitClick($event)"
+              [isUser]="_isUser"
+              [unit]="unit" />
+          }
+        </div>
       </div>
     </app-basic-stores-placeholder>
   </div>
