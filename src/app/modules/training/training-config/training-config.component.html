@@ -50,6 +50,8 @@
 
 <ng-template #unitsBar let-isUser="isUser" let-title="title" let-contextName="contextName">
   <div class="col-lg-6 col-md-12">
+    <app-training-config-matcher-cover [heroesMatcherContextName]="contextName" />
+
     <app-heroes-select
       [title]="title"
       [containerClass]="'no-p'"

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -7,6 +7,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   template: '',
 })
 export class DragDropComponent {
+  cdr = inject(ChangeDetectorRef);
+
   dropSideEffect() {}
 
   drop(event: CdkDragDrop<any>) {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import {
   AddUserUnitCallbackReturnValue,
   PreviewUnit,
@@ -17,6 +17,24 @@ import {
 import { EnhancedFormConstructorComponent } from '../../../components/form/enhancedFormConstructor/enhanced-form-constructor/enhanced-form-constructor.component';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 import { TrainingFacadeService } from '../../../services/facades/training/training.service';
+import { HeroesMatcherActionsComponent } from '../../taverna/taverna-heroes-skill-overview/heroes-matcher-actions/heroes-matcher-actions.component';
+import { HEROES_MATCHER_FACADE } from '../../../models/tokens';
+import { TrainingHeroesMatcherService } from '../../../services/facades/training/training-heroes-matcher.service';
+import { HeroesMatcherService } from '../../../services/facades/taverna/helpers/heroes-matcher.service';
+import { HeroesSelectNames } from '../../../constants';
+
+@Component({
+  selector: 'app-training-config-matcher-cover',
+  templateUrl: './training-config-matcher-cover.component.html',
+  providers: [
+    HeroesMatcherService,
+    { provide: HEROES_MATCHER_FACADE, useClass: TrainingHeroesMatcherService },
+  ],
+  imports: [HeroesMatcherActionsComponent],
+})
+export class TrainingMatcherCover {
+  heroesMatcherContextName = input(HeroesSelectNames.heroesMatcherCollection);
+}
 
 @Component({
   selector: 'app-training-config',
@@ -26,6 +44,7 @@ import { TrainingFacadeService } from '../../../services/facades/training/traini
     NgTemplateOutlet,
     EnhancedFormConstructorComponent,
     AsyncPipe,
+    TrainingMatcherCover,
   ],
   templateUrl: './training-config.component.html',
   styleUrl: './training-config.component.scss',

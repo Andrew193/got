@@ -1,6 +1,6 @@
 import { computed, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TavernaHeroesMatcherFrom } from '../../../../models/taverna/taverna.model';
+import { HeroesMatcherFrom } from '../../../../models/taverna/taverna.model';
 import { HeroesSelectNames, MATCHER_TOKEN, SNACKBAR_CONFIG } from '../../../../constants';
 import {
   selectAllUnitConfigs,
@@ -17,31 +17,37 @@ import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../../../store/actions/heroes-select.actions';
 import { LocalStorageService } from '../../../localStorage/local-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HeroesMatcherInterface } from '../../../../models/interfaces/heroes-matcher.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HeroesMatcherService {
+export class HeroesMatcherService implements HeroesMatcherInterface {
   private heroesService = inject(HeroesFacadeService);
   private localStorageService = inject(LocalStorageService);
   private store = inject(Store);
   private snackBar = inject(MatSnackBar);
 
-  public saveHeroesMatcherFormTemplate = () => {
-    if (this.heroesMatcherForm.value.newTemplate) {
+  public saveHeroesMatcherFormTemplate = (templateName?: string) => {
+    const name = this.heroesMatcherForm.value.newTemplate || templateName;
+
+    if (name) {
       const config = this.getUnitsConfig();
       const existing = this.getTemplates();
 
       this.localStorageService.setItem(MATCHER_TOKEN, {
         ...existing,
-        [this.heroesMatcherForm.value.newTemplate]: config,
+        [name]: config,
       });
 
       this.openSnackBarCover(
-        `Template has been ${existing[this.heroesMatcherForm.value.newTemplate] ? 'updates' : 'created'} successfully!`,
+        `Template has been ${existing[name] ? 'updates' : 'created'} successfully!`,
       );
-      this.getForm().patchValue({ newTemplate: '' });
-      this.setTemplateOptions();
+
+      if (!templateName) {
+        this.getForm().patchValue({ newTemplate: '' });
+        this.setTemplateOptions();
+      }
     }
   };
 
@@ -122,7 +128,7 @@ export class HeroesMatcherService {
     >;
   }
 
-  private heroesMatcherForm = new FormGroup<TavernaHeroesMatcherFrom>({
+  private heroesMatcherForm = new FormGroup<HeroesMatcherFrom>({
     newTemplate: new FormControl('', {
       nonNullable: true,
       validators: [Validators.minLength(5), Validators.maxLength(20)],

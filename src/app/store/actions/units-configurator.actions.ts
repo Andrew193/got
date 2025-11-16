@@ -15,6 +15,7 @@ export const UnitsConfiguratorFeatureActions = createActionGroup({
   events: {
     setUnits: props<UnitsConfiguratorSelectUnit>(),
     addUnit: props<{ data: UnitsConfiguratorStateUnit }>(),
+    addUnits: props<{ data: UnitsConfiguratorStateUnit[] }>(),
     removeUnit: props<{ collection: HeroesSelectNames; key: UnitName }>(),
     setUnitCoordinate: props<{
       coordinate: Coordinate;

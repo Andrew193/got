@@ -8,11 +8,21 @@ import { NavigationService } from '../../../../services/facades/navigation/navig
   styleUrl: './taverna-pages-footer.component.scss',
 })
 export class TavernaPagesFooterComponent {
+  nav = inject(NavigationService);
+
   showTavernButton = input(true);
   showMainPageButton = input(true);
 
-  nav = inject(NavigationService);
+  backToMainPageCallback = input(() => {});
+  backToTavernCallback = input(() => {});
 
-  backToTavern = () => this.nav.goToTaverna();
-  backToMainPage = () => this.nav.goToMainPage();
+  backToTavern = () => {
+    this.backToTavernCallback()();
+    this.nav.goToTaverna();
+  };
+
+  backToMainPage = () => {
+    this.backToMainPageCallback()();
+    this.nav.goToMainPage();
+  };
 }

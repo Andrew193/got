@@ -127,6 +127,9 @@ export class HeroesMatcherComponent extends DragDropComponent implements AfterVi
   }
 
   ngAfterViewInit() {
-    this.secondListHeight = this.getContainerHeight();
+    setTimeout(() => {
+      this.secondListHeight = this.getContainerHeight();
+      this.cdr.markForCheck();
+    });
   }
 }

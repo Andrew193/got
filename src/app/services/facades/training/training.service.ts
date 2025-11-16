@@ -97,6 +97,8 @@ export class TrainingFacadeService {
   allUnitsForSelect: SelectableUnit[] = [];
 
   constructor() {
+    let inited = false;
+
     this.allUnits = this.heroesService.getAllHeroes();
     this.allUnitsForSelect = this.heroesService.helper.getSelectableUnit(this.allUnits);
 
@@ -126,10 +128,13 @@ export class TrainingFacadeService {
         aiUnits.length !== stashedAIUnits.length ||
         userUnits.length !== stashedUserUnits.length
       ) {
-        setContext(
-          stashedUserUnits.map(el => el.name),
-          stashedAIUnits.map(el => el.name),
-        );
+        if (!inited) {
+          setContext(
+            stashedUserUnits.map(el => el.name),
+            stashedAIUnits.map(el => el.name),
+          );
+          inited = true;
+        }
 
         this.aiCollection.set(stashedAIUnits);
         this.userCollection.set(stashedUserUnits);

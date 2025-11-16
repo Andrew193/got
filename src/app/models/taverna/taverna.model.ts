@@ -5,7 +5,7 @@ export type TavernaHeroesBarSearchForm = {
   unitName: FormControl<string>;
 };
 
-export type TavernaHeroesMatcherFrom = {
+export type HeroesMatcherFrom = {
   newTemplate: FormControl<string>;
   template: FormControl<string>;
 };

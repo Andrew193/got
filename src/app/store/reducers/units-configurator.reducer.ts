@@ -80,6 +80,9 @@ export const UnitsConfiguratorFeature = createFeature({
     on(UnitsConfiguratorFeatureActions.addUnit, (state, action) => {
       return { ...state, units: unitsAdapter.addOne(action.data, state.units) };
     }),
+    on(UnitsConfiguratorFeatureActions.addUnits, (state, action) => {
+      return { ...state, units: unitsAdapter.addMany(action.data, state.units) };
+    }),
     on(UnitsConfiguratorFeatureActions.removeUnit, (state, action) => {
       return { ...state, units: unitsAdapter.removeOne(getUnitKey(action), state.units) };
     }),

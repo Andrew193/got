@@ -21,9 +21,10 @@ import { AssistantFacadeService } from '../../../models/interfaces/assistant.int
 import { Store } from '@ngrx/store';
 import { HeroesMatcherService } from './helpers/heroes-matcher.service';
 import { LocalFiltersService } from '../../local-filters/local-filters.service';
+import { HeroesMatcherInterfaceFacade } from '../../../models/interfaces/heroes-matcher.interface';
 
 @Injectable()
-export class TavernaFacadeService implements AssistantFacadeService {
+export class TavernaFacadeService implements AssistantFacadeService, HeroesMatcherInterfaceFacade {
   nav = inject(NavigationService);
   localFiltersService = inject(LocalFiltersService);
   heroesMatcherService = inject(HeroesMatcherService);

@@ -1,24 +1,40 @@
-<div class="actions-container color-white p-2">
+@let _showNewTemplate = showNewTemplate();
+@let _showRemoveTemplateBtn = showRemoveTemplateBtn();
+
+<div
+  class="actions-container color-white"
+  [ngClass]="{
+    'p-2': _showRemoveTemplateBtn,
+    'p-0': !_showRemoveTemplateBtn,
+  }">
   <form [formGroup]="form" class="row m-0 g-2">
-    <div class="col">
-      <app-text-input
-        [controlName]="'newTemplate'"
-        [placeholder]="'Enter new template name'"
-        [showLabel]="false" />
-      <button
-        class="got-toggle mt-2 w-100"
-        [disabled]="!form.value.newTemplate || form.invalid"
-        (click)="saveHeroesMatcherFormTemplate()">
-        Save Template
-      </button>
-    </div>
+    @if (_showNewTemplate) {
+      <div class="col">
+        <app-text-input
+          [controlName]="'newTemplate'"
+          [placeholder]="'Enter new template name'"
+          [showLabel]="false" />
+        <button
+          class="got-toggle mt-2 w-100"
+          [disabled]="!form.value.newTemplate || form.invalid"
+          (click)="saveHeroesMatcherFormTemplate()">
+          Create/Update Template
+        </button>
+      </div>
+    }
+
     <div class="col">
       <app-autocomplete-mat-input
         [controlName]="'template'"
         [filteredOptions]="filteredTemplateOptions"
         [placeholder]="'Search template'"
         [showLabel]="false" />
-      <div class="row m-0 g-2">
+      <div
+        class="row m-0"
+        [ngClass]="{
+          'g-2': _showRemoveTemplateBtn,
+          'g-0 mt-2': !_showRemoveTemplateBtn,
+        }">
         <div class="col">
           <button
             class="got-toggle w-100"
@@ -27,14 +43,26 @@
             Load
           </button>
         </div>
-        <div class="col">
-          <button
-            class="got-toggle w-100"
-            [disabled]="!form.value.template"
-            (click)="removeHeroesMatcherFormTemplate()">
-            Remove
-          </button>
-        </div>
+
+        @if (_showRemoveTemplateBtn) {
+          <div class="col">
+            <button
+              class="got-toggle w-100"
+              [disabled]="!form.value.template"
+              (click)="removeHeroesMatcherFormTemplate()">
+              Remove
+            </button>
+          </div>
+
+          <div class="col">
+            <button
+              class="got-toggle w-100"
+              [disabled]="!form.value.template"
+              (click)="saveHeroesMatcherFormTemplate(form.value.template)">
+              Update
+            </button>
+          </div>
+        }
       </div>
     </div>
 

@@ -1,6 +1,7 @@
 import { InjectionToken, Provider } from '@angular/core';
 import { ContentService } from '../services/abstract/content/content-service.service';
 import { AssistantFacadeService, AssistantMemory } from './interfaces/assistant.interface';
+import { HeroesMatcherInterfaceFacade } from './interfaces/heroes-matcher.interface';
 
 export const DYNAMIC_COMPONENT_DATA = new InjectionToken<unknown>('DYNAMIC_COMPONENT_DATA');
 export const PAGINATION_SERVICE = new InjectionToken<ContentService>('PAGINATION_SERVICE');
@@ -10,7 +11,11 @@ export function provideDynamicData<T>(data: T): Provider {
   return { provide: DYNAMIC_COMPONENT_DATA, useValue: data };
 }
 
-//Assistant related
+//Heroes matcher
+export const HEROES_MATCHER_FACADE = new InjectionToken<HeroesMatcherInterfaceFacade>(
+  'HEROES_MATCHER_FACADE',
+);
 
+//Assistant related
 export const ASSISTANT_FACADE = new InjectionToken<AssistantFacadeService>('ASSISTANT_FACADE');
 export const ASSISTANT_MEMORY_TYPE = new InjectionToken<AssistantMemory>('ASSISTANT_MEMORY_TYPE');
