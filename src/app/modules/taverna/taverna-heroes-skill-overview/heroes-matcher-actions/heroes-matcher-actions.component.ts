@@ -25,5 +25,5 @@ export class HeroesMatcherActionsComponent {
   loadHeroesMatcherFormTemplate = this.facade.loadHeroesMatcherFormTemplate;
   removeHeroesMatcherFormTemplate = this.facade.removeHeroesMatcherFormTemplate;
 
-  templateOptions$ = this.facade.templateOptions$;
+  filteredTemplateOptions = this.facade.filteredTemplateOptions;
 }

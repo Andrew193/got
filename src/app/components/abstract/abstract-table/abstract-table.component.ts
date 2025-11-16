@@ -76,8 +76,6 @@ export abstract class AbstractTableComponent<T>
 
     sortEvent.subscribe(() => (this.paginator.pageIndex = 0));
 
-    this.filterForm.valueChanges.subscribe(console.log);
-
     merge(this.sort.sortChange, this.paginator.page, this.filterForm.valueChanges, this.sort$)
       .pipe(
         switchMap(() => {

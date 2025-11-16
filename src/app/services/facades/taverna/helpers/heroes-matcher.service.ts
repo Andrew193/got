@@ -17,7 +17,6 @@ import { Store } from '@ngrx/store';
 import { HeroesSelectActions } from '../../../../store/actions/heroes-select.actions';
 import { LocalStorageService } from '../../../localStorage/local-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -123,24 +122,20 @@ export class HeroesMatcherService {
     >;
   }
 
-  private heroesMatcherForm = new FormGroup<TavernaHeroesMatcherFrom>(
-    {
-      newTemplate: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.minLength(5), Validators.maxLength(20)],
-      }),
-      template: new FormControl(''),
-    },
-    { updateOn: 'blur' },
-  );
+  private heroesMatcherForm = new FormGroup<TavernaHeroesMatcherFrom>({
+    newTemplate: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.minLength(5), Validators.maxLength(20)],
+    }),
+    template: new FormControl('', { nonNullable: true }),
+  });
 
   getForm() {
     return this.heroesMatcherForm;
   }
 
   contextName = HeroesSelectNames.heroesMatcherCollection;
-  templateOptionsSubject = new BehaviorSubject<string[]>([]);
-  templateOptions$ = this.templateOptionsSubject.asObservable();
+  templateOptions: string[] = [];
 
   selectAllUnitConfig = this.store.selectSignal(selectAllUnitConfigs(this.contextName));
   getTileUnits = () => this.heroesService.getTileUnits();
@@ -185,9 +180,7 @@ export class HeroesMatcherService {
   }
 
   setTemplateOptions() {
-    const templates = this.getTemplates();
-
-    this.templateOptionsSubject.next(Object.keys(templates));
+    this.templateOptions = Object.keys(this.getTemplates());
   }
 
   restoreDataFromLocalStorage(

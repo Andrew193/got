@@ -4,7 +4,7 @@ import {
   TavernaActivities,
   TavernaHeroesBarSearchForm,
 } from '../../../models/taverna/taverna.model';
-import { map, Observable, of, startWith } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
 import { Unit } from '../../../models/units-related/unit.model';
@@ -20,10 +20,12 @@ import { TavernaAssistantService } from './helpers/taverna-assistant.service';
 import { AssistantFacadeService } from '../../../models/interfaces/assistant.interface';
 import { Store } from '@ngrx/store';
 import { HeroesMatcherService } from './helpers/heroes-matcher.service';
+import { LocalFiltersService } from '../../local-filters/local-filters.service';
 
 @Injectable()
 export class TavernaFacadeService implements AssistantFacadeService {
   nav = inject(NavigationService);
+  localFiltersService = inject(LocalFiltersService);
   heroesMatcherService = inject(HeroesMatcherService);
   store = inject(Store);
 
@@ -37,7 +39,11 @@ export class TavernaFacadeService implements AssistantFacadeService {
   heroesMatcherForm = this.heroesMatcherService.getForm();
   onUiErrorNames = this.heroesMatcherService.onUiErrorNames;
   contextName = this.heroesMatcherService.contextName;
-  templateOptions$ = this.heroesMatcherService.templateOptions$;
+
+  filteredTemplateOptions = this.localFiltersService.filterOptionsByValueCover(
+    this.heroesMatcherService.templateOptions,
+    this.heroesMatcherForm.get('template'),
+  );
 
   addUserUnit = this.heroesMatcherService.addUserUnit;
   saveHeroesMatcherFormTemplate = this.heroesMatcherService.saveHeroesMatcherFormTemplate;
@@ -79,10 +85,9 @@ export class TavernaFacadeService implements AssistantFacadeService {
   isExpanded = this.heroesTableHelper.isExpanded;
   trackBy = this.heroesTableHelper.trackBy;
 
-  private options: string[] = [];
   private readonly originalOptions: Unit[] = [];
-
-  filteredOptions: Observable<string[]> = of([]);
+  private options: string[] = [];
+  filteredOptions: Observable<typeof this.options> = of([]);
 
   private readonly _heroBarFormGroup;
 
@@ -95,18 +100,11 @@ export class TavernaFacadeService implements AssistantFacadeService {
     this.datasource = new TavernaTableDatabase(this.originalOptions);
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
   init() {
     this.options = this.originalOptions.map(hero => hero.name);
-
-    this.filteredOptions = this._heroBarFormGroup.get('unitName')!.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
+    this.filteredOptions = this.localFiltersService.filterOptionsByValueCover(
+      this.options,
+      this._heroBarFormGroup.get('unitName'),
     );
 
     return {

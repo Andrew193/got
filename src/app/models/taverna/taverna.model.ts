@@ -7,7 +7,7 @@ export type TavernaHeroesBarSearchForm = {
 
 export type TavernaHeroesMatcherFrom = {
   newTemplate: FormControl<string>;
-  template: FormControl<string | null>;
+  template: FormControl<string>;
 };
 
 export type TavernaActivities = {
