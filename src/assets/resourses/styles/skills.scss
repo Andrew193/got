@@ -30,6 +30,10 @@
     object-fit: cover;
     border-radius: 5px;
   }
+
+  @include index.anim-border-glow(dynamic-border) {
+    border-radius: 5px;
+  }
 }
 
 .highlight-effect {

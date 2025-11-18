@@ -7,12 +7,12 @@ import { HeroesSelectComponent } from '../../../components/heroes-related/heroes
 import { BossDifficulty, DailyBossService } from '../../../services/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { TileUnit } from '../../../models/field.model';
-import { BossRewardCurrency, BossRewardsConfig } from '../../../models/reward-based.model';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { BasicHeroSelectComponent } from '../../../components/abstract/basic-hero-select/basic-hero-select.component';
-import { CURRENCY_NAMES, frontRoutes, HeroesSelectNames } from '../../../constants';
+import { frontRoutes, HeroesSelectNames } from '../../../constants';
 import { PageLoaderComponent } from '../../../components/views/page-loader/page-loader.component';
+import { TrainingMatcherCover } from '../../training/training-config/training-config.component';
 import { LoaderService } from '../../../services/resolver-loader/loader.service';
 
 @Component({
@@ -28,57 +28,37 @@ import { LoaderService } from '../../../services/resolver-loader/loader.service'
     MatTab,
     MatTabLabel,
     PageLoaderComponent,
+    TrainingMatcherCover,
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
 })
 export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   nav = inject(NavigationService);
-  override context = HeroesSelectNames.dailyBossCollection;
-
-  loaderService = inject(LoaderService);
+  dailyBossService = inject(DailyBossService);
+  private loaderService = inject(LoaderService);
   loader = this.loaderService.getPageLoader(frontRoutes.dailyBoss);
 
-  selectedHero!: Unit;
-  selectedTileHero!: TileUnit;
+  override context = HeroesSelectNames.dailyBossCollection;
 
-  config: { level: BossDifficulty; heading: string }[] = [
-    { level: BossDifficulty.easy, heading: 'Super Easy' },
-    { level: BossDifficulty.normal, heading: 'Easy' },
-    { level: BossDifficulty.hard, heading: 'Medium' },
-    { level: BossDifficulty.very_hard, heading: 'Hard' },
-  ];
-
-  constructor(public dailyBossService: DailyBossService) {
+  constructor() {
     super();
-    this.selectedHero = this.heroesService.getDailyBossVersion1();
-    this.selectedTileHero = this.heroesService.getTileUnit(this.selectedHero);
   }
 
-  bossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
-    const reward = this.dailyBossService.bossReward[level];
-    const coins: BossRewardCurrency[] = [
-      CURRENCY_NAMES.copper,
-      CURRENCY_NAMES.silver,
-      CURRENCY_NAMES.gold,
-    ];
+  selectedHero: Unit = this.heroesService.getDailyBossVersion1();
+  selectedTileHero: TileUnit = this.heroesService.getTileUnit(this.selectedHero);
+  config = this.dailyBossService.difficultyConfigs;
 
-    return coins.map(type => ({
-      base: reward[type],
-      win: reward[`${type}Win`],
-      dmg: reward[`${type}DMG`],
-      alias: type,
-    }));
-  }
+  getBossReward = (level: BossDifficulty) => this.dailyBossService.getBossReward(level);
 
-  upBoss(version: number) {
+  upBoss(version: BossDifficulty) {
     return this.heroesService.helper.getEquipmentForUnit({
       ...this.selectedHero,
       ...this.dailyBossService.uppBoss(version),
     });
   }
 
-  openFight(bossLevel: number) {
+  openFight(bossLevel: BossDifficulty) {
     this.nav.goToDailyBossBattle(
       bossLevel,
       this.chosenUnits.map(el => el.name),

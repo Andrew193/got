@@ -31,9 +31,13 @@
 
       <div class="records-container p-2">
         @for (record of _records; track record.id) {
-          @let _selectedResponse = !record.request && shouldHighlightSelectedTags(record.keywords);
+          @let _selectedResponse =
+            !record.request ? shouldHighlightSelectedTags(record.keywords) : [];
 
-          <app-response-holder-body [record]="record" [selectedResponse]="_selectedResponse" />
+          <app-response-holder-body
+            (chipClicked)="chipClicked($event)"
+            [record]="record"
+            [selectedKeywords]="_selectedResponse" />
         }
 
         @if (!_records.length) {

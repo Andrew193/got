@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BossReward } from '../../models/reward-based.model';
+import { BossReward, BossRewardCurrency, BossRewardsConfig } from '../../models/reward-based.model';
+import { CURRENCY_NAMES } from '../../constants';
 
 export enum BossDifficulty {
   easy,
@@ -8,11 +9,16 @@ export enum BossDifficulty {
   very_hard,
 }
 
+type DifficultyConfig = {
+  level: BossDifficulty;
+  heading: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class DailyBossService {
-  bossReward: Record<BossDifficulty, BossReward> = {
+  private bossReward: Record<BossDifficulty, BossReward> = {
     [BossDifficulty.easy]: {
       copper: 10000,
       copperWin: 100000,
@@ -59,6 +65,22 @@ export class DailyBossService {
     },
   };
 
+  getBossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
+    const reward = this.bossReward[level];
+    const coins: BossRewardCurrency[] = [
+      CURRENCY_NAMES.copper,
+      CURRENCY_NAMES.silver,
+      CURRENCY_NAMES.gold,
+    ];
+
+    return coins.map(type => ({
+      base: reward[type],
+      win: reward[`${type}Win`],
+      dmg: reward[`${type}DMG`],
+      alias: type,
+    }));
+  }
+
   uppBoss(version: BossDifficulty) {
     const versions: Record<BossDifficulty, any> = {
       [BossDifficulty.easy]: {},
@@ -90,4 +112,11 @@ export class DailyBossService {
 
     return versions[version];
   }
+
+  difficultyConfigs: DifficultyConfig[] = [
+    { level: BossDifficulty.easy, heading: 'Super Easy' },
+    { level: BossDifficulty.normal, heading: 'Easy' },
+    { level: BossDifficulty.hard, heading: 'Medium' },
+    { level: BossDifficulty.very_hard, heading: 'Hard' },
+  ];
 }

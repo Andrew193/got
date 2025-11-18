@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { EffectsHighlighterComponent } from '../../../common/effects-highlighter/effects-highlighter.component';
 import { MatChip, MatChipSet } from '@angular/material/chips';
 import { AssistantRecord } from '../../../../store/store.interfaces';
 import { ASSISTANT_FACADE, ASSISTANT_MEMORY_TYPE } from '../../../../models/tokens';
 import { AssistantResponseHolderBodyComponent } from '../../../../models/interfaces/assistant.interface';
+import { Keyword } from '../../../../models/taverna/taverna.model';
 
 @Component({
   selector: 'app-response-holder-body',
@@ -18,11 +19,18 @@ export class ResponseHolderBodyComponent implements AssistantResponseHolderBodyC
   assistantMemoryType = inject(ASSISTANT_MEMORY_TYPE);
 
   memoryKeys = this.facade.assistantService.assistant.getMemoryKeys();
+  chipClicked = output<string>();
 
   constructor() {
     this.facade.assistantService.assistant.setMemoryType(this.assistantMemoryType);
   }
 
-  selectedResponse = input(false);
+  selectedKeywords = input<Keyword[]>([]);
   record = input.required<AssistantRecord>();
+
+  selectedResponse = computed(() => this.selectedKeywords().length > 0);
+
+  chipSelected(tag: string) {
+    return !!this.selectedKeywords().find(_ => _.word === tag);
+  }
 }

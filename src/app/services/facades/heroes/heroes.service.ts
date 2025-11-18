@@ -451,7 +451,7 @@ export class HeroesFacadeService extends ContentService {
       ...this.helper.getBasicUserConfig(),
       ...this.helper.getHeroBasicStats(HeroesNamesCodes.Giant),
       heroType: HeroType.ATTACK,
-      rarity: Rarity.LEGENDARY,
+      rarity: Rarity.EPIC,
       imgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
       name: HeroesNamesCodes.Giant,
@@ -885,6 +885,7 @@ export class HeroesFacadeService extends ContentService {
         fullImgSrc: value.fullImgSrc,
         rank: value.rank,
         level: value.level,
+        rarity: value.rarity,
       }));
     }
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, viewChild } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DragDropComponent } from '../../../../components/abstract/drag-drop/drag-drop.component';
 import { TavernaFacadeService } from '../../../../services/facades/taverna/taverna.service';
@@ -37,6 +37,7 @@ import { NgStyle } from '@angular/common';
   styleUrl: './heroes-matcher.component.scss',
 })
 export class HeroesMatcherComponent extends DragDropComponent implements AfterViewInit {
+  cdr = inject(ChangeDetectorRef);
   facade = inject(TavernaFacadeService);
   store = inject(Store);
 

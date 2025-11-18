@@ -33,7 +33,9 @@
   @if (!_record.request) {
     <mat-chip-set aria-label="request keywords">
       @for (tag of _record.keywords; track tag) {
-        <mat-chip>{{ tag }}</mat-chip>
+        <mat-chip [highlighted]="chipSelected(tag)" (click)="chipClicked.emit(tag)">{{
+          tag
+        }}</mat-chip>
       }
     </mat-chip-set>
   }

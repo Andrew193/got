@@ -8,7 +8,7 @@ export type UnitName = HeroesNamesCodes | RewardValues;
 
 export interface Unit extends Coordinate {
   rank: number;
-  rarity: number;
+  rarity: Rarity;
   healer?: boolean;
   onlyHealer?: boolean;
   heroType: number;

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { AssistantRecord } from '../../store/store.interfaces';
 import { OnDestroy, OutputEmitterRef, Signal } from '@angular/core';
 import { Keyword } from '../taverna/taverna.model';
-import { MatChipSelectionChange } from '@angular/material/chips';
 
 export enum AssistantMemory {
   taverna,
@@ -55,7 +54,7 @@ export interface AssistantResponseHolderBodyComponent
   record: Signal<AssistantRecord>;
 }
 
-export interface AssistantResponseHolderKeywordsBarComponent<T = MatChipSelectionChange> {
+export interface AssistantResponseHolderKeywordsBarComponent<T = Keyword> {
   allKeywords: Observable<Keyword[]>;
   optionChange: (event: T) => void;
   assistantMemoryType: AssistantMemory;

@@ -31,19 +31,19 @@
             {{ rewardHero.description }}
           </p>
 
-          <div class="flex-row">
-            <div class="mt-2 p-2 justify-content-center align-items-center">
-              <app-stats
-                [selectedHero]="rewardHero"
-                [statsContainerClass]="'color-white'"></app-stats>
-            </div>
+          <div class="mt-2 p-2 justify-content-center align-items-center">
+            <app-stats
+              [selectedHero]="rewardHero"
+              [statsContainerClass]="'color-white'"></app-stats>
+          </div>
 
-            <div style="font-weight: bold">
-              <div class="m-1 color-white">
-                <app-skills-render
-                  [selectedHero]="tileRewardHero"
-                  [showSkillName]="true"></app-skills-render>
-              </div>
+          <div style="font-weight: bold">
+            <div class="m-1 color-white">
+              <app-skills-render
+                [convertTextToLowercase]="false"
+                [storesInnerDivClass]="'p-2'"
+                [selectedHero]="tileRewardHero"
+                [showSkillName]="true"></app-skills-render>
             </div>
           </div>
         </div>

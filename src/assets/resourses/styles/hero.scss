@@ -12,7 +12,23 @@
   cursor: pointer;
   text-align: center;
   background: index.$var-background-color-main;
-  box-shadow: index.$var-box-shadow;
+
+  &.common-shadow {
+    box-shadow: index.$var-box-shadow;
+  }
+
+  &.rare-shadow {
+    box-shadow: index.$var-rare-box-shadow;
+  }
+
+  &.epic-shadow {
+    box-shadow: index.$var-epic-box-shadow;
+  }
+
+  &.legendary-shadow {
+    box-shadow: index.$var-legendary-box-shadow;
+  }
+
   color: white !important;
   transition: background-color ease 0.5s;
   position: relative;

@@ -18,8 +18,9 @@
         <div class="col mt-0">
           <div
             class="card hero-card d-flex align-items-center h-100"
+            [class]="getRarityShadowClass(hero)"
             (click)="openHeroPreview(hero.name)">
-            <img class="card-img-top taverna" src="{{ hero.fullImgSrc }}" alt="{{ hero.name }}" />
+            <img class="card-img-top taverna" [src]="hero.fullImgSrc" [alt]="hero.name" />
             <div class="level">
               <div class="position-relative">
                 <img

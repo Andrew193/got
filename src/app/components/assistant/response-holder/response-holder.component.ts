@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   selectAllKeywords,
@@ -15,6 +22,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ResponseHolderKeywordsFilterComponent } from './response-holder-keywords-filter/response-holder-keywords-filter.component';
 import { ResponseHolderBodyComponent } from './response-holder-body/response-holder-body.component';
 import { AssistantResponseHolderComponent } from '../../../models/interfaces/assistant.interface';
+import { Keyword } from '../../../models/taverna/taverna.model';
 
 @Component({
   selector: 'app-response-holder',
@@ -36,8 +44,10 @@ import { AssistantResponseHolderComponent } from '../../../models/interfaces/ass
 export class ResponseHolderComponent implements AssistantResponseHolderComponent {
   store = inject(Store);
   activeKeywords = signal<string[]>([]);
+  keywordsBar = viewChild.required(ResponseHolderKeywordsBarComponent);
 
   isLoading = this.store.select(selectRecordsLoading());
+
   allKeywords = this.store.selectSignal(selectAllKeywords);
   records = this.store.selectSignal(selectAssistantRecords);
   filteredRecords = computed(() =>
@@ -49,7 +59,7 @@ export class ResponseHolderComponent implements AssistantResponseHolderComponent
   shouldHighlightSelectedTags(responseKeywords: string[]) {
     const activeKeywords = this.allKeywords().filter(keyword => keyword.active);
 
-    return activeKeywords.some(activeKeyword => responseKeywords.includes(activeKeyword.word));
+    return activeKeywords.filter(activeKeyword => responseKeywords.includes(activeKeyword.word));
   }
 
   shouldShowResponseBasedOnActiveFilters(responseKeywords: string[]) {
@@ -58,5 +68,18 @@ export class ResponseHolderComponent implements AssistantResponseHolderComponent
 
   filtersChange(activeKeywords: string[]) {
     this.activeKeywords.set(activeKeywords);
+  }
+
+  chipClicked(chip: string) {
+    const clickedChip = this.allKeywords().find(_ => _.word === chip);
+
+    if (clickedChip) {
+      const event = {
+        active: clickedChip.active,
+        word: clickedChip.word,
+      };
+
+      this.keywordsBar().optionChange(event as Keyword);
+    }
   }
 }

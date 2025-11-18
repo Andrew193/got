@@ -10,6 +10,8 @@
             <app-rating ngProjectAs="reward-avatar-container" [rating]="selectedHero.rank" />
           </app-stats>
           <app-skills-render
+            [convertTextToLowercase]="false"
+            [storesInnerDivClass]="'p-2'"
             [selectedHero]="selectedTileHero"
             [showSkillName]="true"></app-skills-render>
         </div>
@@ -50,7 +52,7 @@
       <p class="ps-2 col">{{ desc }}</p>
     </div>
     <div
-      class="eq-stats col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center mb-0 p-2 position-relative">
+      class="eq-stats col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center mb-0 position-relative">
       @for (part of gearParts; track part.alias) {
         <ng-container
           [ngTemplateOutlet]="itemTemplatePart"

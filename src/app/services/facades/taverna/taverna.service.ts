@@ -7,7 +7,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
 import { HeroesFacadeService } from '../heroes/heroes.service';
-import { Unit } from '../../../models/units-related/unit.model';
+import { Rarity, Unit } from '../../../models/units-related/unit.model';
 import {
   DataSource,
   FilterValue,
@@ -125,6 +125,18 @@ export class TavernaFacadeService implements AssistantFacadeService, HeroesMatch
 
   getAssistantFormGroup() {
     return this.assistantService.getForm();
+  }
+
+  //Heroes bar
+  getRarityShadowClass(unit: Pick<Unit, 'rarity'>) {
+    const rarityMap: Record<Rarity, string> = {
+      [Rarity.COMMON]: 'common-shadow',
+      [Rarity.RARE]: 'rare-shadow',
+      [Rarity.EPIC]: 'epic-shadow',
+      [Rarity.LEGENDARY]: 'legendary-shadow',
+    };
+
+    return rarityMap[unit.rarity];
   }
 }
 

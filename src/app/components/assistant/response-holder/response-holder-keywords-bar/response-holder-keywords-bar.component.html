@@ -6,7 +6,7 @@
       <mat-chip-option
         [value]="keyword.word"
         [selected]="keyword.active"
-        (selectionChange)="optionChange($event)">
+        (click)="optionChange(keyword)">
         {{ keyword.word }}
       </mat-chip-option>
     }

@@ -57,6 +57,7 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
   }
 
   getRank = this.heroesService.helper.getRank;
+  getRarityShadowClass = this.helper.getRarityShadowClass;
 
   openHeroPreview(name: string) {
     this.helper.nav.goToHeroPreview(name);
