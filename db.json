@@ -16,72 +16,83 @@
   ],
   "users": [
     {
-      "id": "4b82",
-      "login": "admin",
-      "password": "admin",
-      "online": {
-        "onlineTime": 0,
-        "claimedRewards": []
-      }
-    },
-    {
-      "id": "2ac5",
-      "login": "test",
-      "password": "test",
-      "online": {
-        "onlineTime": 60,
-        "claimedRewards": []
-      }
-    },
-    {
       "id": "e046",
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 872880,
+        "onlineTime": 874860,
         "claimedRewards": [
           "2",
           "4",
           "8",
           "12"
         ],
-        "lastLoyaltyBonus": "11/18/2025"
+        "lastLoyaltyBonus": "11/19/2025"
       },
       "currency": {
-        "gold": 770,
-        "silver": 1024,
-        "copper": 86775
+        "gold": 852,
+        "silver": 1766,
+        "copper": 306863
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
+    },
+    {
+      "id": "0adb",
+      "login": "rest2",
+      "password": "rest2",
+      "online": {
+        "onlineTime": 0,
+        "claimedRewards": [],
+        "lastLoyaltyBonus": ""
+      },
+      "currency": {
+        "gold": 300,
+        "silver": 1000,
+        "copper": 15000
+      },
+      "createdAt": 1763569807014,
+      "depositId": "d08d"
     }
   ],
   "dailyReward": [
     {
-      "id": "6fe2",
-      "userId": "2ac5",
-      "day": 25,
-      "totalDays": 25,
-      "lastLogin": "12/13/2024"
-    },
-    {
       "id": "ab59",
       "userId": "e046",
+      "day": 1,
+      "totalDays": 86,
+      "lastLogin": "11/19/2025"
+    },
+    {
+      "id": "8ba4",
+      "userId": "0adb",
       "day": 0,
-      "totalDays": 85,
-      "lastLogin": "11/18/2025"
+      "totalDays": 0,
+      "lastLogin": "01/01/1970"
     }
   ],
   "giftTrip": [
     {
-      "id": "6fe2",
-      "userId": "2ac5",
-      "lastLogin": "10/29/2024"
+      "id": "16b0",
+      "userId": "e046",
+      "lastLogin": "11/19/2025"
     },
+    {
+      "id": "98ea",
+      "lastLogin": "01/01/1970",
+      "userId": "0adb"
+    }
+  ],
+  "dailyBoss": [
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "11/18/2025"
+      "lastLogin": "11/19/2025"
+    },
+    {
+      "id": "ebaf",
+      "lastLogin": "01/01/1970",
+      "userId": "0adb"
     }
   ],
   "deposits": [
@@ -93,6 +104,15 @@
       "silver": 57000,
       "id": "61ec",
       "userId": "e046"
+    },
+    {
+      "id": "d08d",
+      "copper": 0,
+      "depositDay": 0,
+      "duration": 0,
+      "gold": 0,
+      "silver": 0,
+      "userId": "0adb"
     }
   ]
 }

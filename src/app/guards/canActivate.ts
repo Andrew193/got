@@ -37,6 +37,15 @@ class PermissionsService {
 
     return of(canActivate || this.router.createUrlTree([frontRoutes.base]));
   }
+
+  canActivateDailyBoss(): Observable<boolean | UrlTree> | Promise<boolean> | boolean {
+    const canActivate = this.notificationService.getNotification(
+      NotificationType.daily_boss,
+      this.notifications(),
+    );
+
+    return of(canActivate || this.router.createUrlTree([frontRoutes.base]));
+  }
 }
 
 export const AuthGuard: CanActivateFn = ():
@@ -51,4 +60,11 @@ export const GiftGuard: CanActivateFn = ():
   | Promise<boolean>
   | boolean => {
   return inject(PermissionsService).canActivateGift();
+};
+
+export const DailyBossGuard: CanActivateFn = ():
+  | Observable<boolean | UrlTree>
+  | Promise<boolean>
+  | boolean => {
+  return inject(PermissionsService).canActivateDailyBoss();
 };

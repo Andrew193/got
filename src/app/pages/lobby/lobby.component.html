@@ -4,8 +4,8 @@
       <app-basic-stores-placeholder title="Routes">
         <mat-list class="pt-0 pb-0">
           @for (route of pageRoutes; track route.name) {
-            <mat-list-item class="position-relative">
-              <a [routerLink]="route.url" class="list-group-item h-100 w-100" mat-line>
+            <mat-list-item class="position-relative p-0">
+              <a [routerLink]="route.url" class="list-group-item h-100 w-100 p-2" mat-line>
                 <span class="d-flex">
                   <app-image
                     [source]="'assets/resourses/imgs/nav_icons/' + route.src"

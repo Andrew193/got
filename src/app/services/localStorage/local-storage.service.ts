@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { USER_TOKEN } from '../../constants';
+import { User } from '../users/users.interfaces';
 
 function isJsonString(jsonString: string) {
   try {
@@ -43,6 +44,12 @@ export class LocalStorageService extends BasicLocalStorage {
     }
 
     return '';
+  }
+
+  getUserId() {
+    const user = this.getItem(USER_TOKEN) as User;
+
+    return user.id;
   }
 
   setItem(key: BasicLocalStorageNamesKeys, value: any) {

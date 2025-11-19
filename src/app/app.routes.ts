@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { SiteComponent } from './pages/site/site.component';
 import { LobbyComponent } from './pages/lobby/lobby.component';
-import { AuthGuard, GiftGuard } from './guards/canActivate';
+import { AuthGuard, DailyBossGuard, GiftGuard } from './guards/canActivate';
 import { frontRoutes } from './constants';
 import { TestResolver } from './test.resolver';
 import { StateConfigs } from './store/store.config';
@@ -37,6 +37,7 @@ export const routes: Routes = [
       },
       {
         path: frontRoutes.dailyBoss,
+        canActivate: [DailyBossGuard],
         loadChildren: () =>
           import('./modules/daily-boss/daily-boss.module').then(m => m.DailyBossModule),
       },

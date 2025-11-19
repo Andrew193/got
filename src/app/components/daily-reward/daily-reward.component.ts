@@ -77,7 +77,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     public usersService: UsersService,
     private render2: Renderer2,
   ) {
-    this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays || 1);
+    this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays, 7);
     document.body.style.overflow = 'hidden';
   }
 
@@ -97,7 +97,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
         ...(config || this.dailyRewardConfig),
         userId: config.userId,
       };
-      this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays || 1);
+      this.month = this.dailyRewardService.monthReward(this.dailyRewardConfig.totalDays, 7);
     });
   }
 

@@ -17,7 +17,7 @@ import { LoaderService } from './services/resolver-loader/loader.service';
 import { NotificationsService } from './services/notifications/notifications.service';
 import { OnlineService } from './services/online/online.service';
 import { InitInterface } from './models/interfaces/init.interface';
-import { concatAll, firstValueFrom, from } from 'rxjs';
+import { concatAll, finalize, firstValueFrom, from } from 'rxjs';
 import { STEP_DEFAULT_ORDER } from './constants';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InitStep } from './models/init.model';
@@ -29,6 +29,8 @@ import { StoreNames } from './store/store.interfaces';
 import { provideEffects } from '@ngrx/effects';
 import { AssistantEffects } from './store/effects/assistant.effects';
 import { UnitsConfiguratorEffects } from './store/effects/units-configurator.effects';
+import { LocalStorageService } from './services/localStorage/local-storage.service';
+import { ModalWindowService } from './services/modal/modal-window.service';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -56,6 +58,9 @@ export function AppInitializerFunction(_steps?: InitStep[]) {
 
   try {
     steps = inject(APP_INIT_STEPS);
+    const localStorage = inject(LocalStorageService);
+
+    ModalWindowService.frozen = localStorage.getUserId() == null;
   } catch (error) {
     steps = _steps || [];
   }
@@ -64,7 +69,14 @@ export function AppInitializerFunction(_steps?: InitStep[]) {
     .sort((a, b) => (a.order || STEP_DEFAULT_ORDER) - (b.order || STEP_DEFAULT_ORDER))
     .map(step => step.task());
 
-  return firstValueFrom(from(stepsResults).pipe(concatAll()));
+  return firstValueFrom(
+    from(stepsResults).pipe(
+      concatAll(),
+      finalize(() => {
+        ModalWindowService.frozen = false;
+      }),
+    ),
+  );
 }
 
 export const appConfig: ApplicationConfig = {

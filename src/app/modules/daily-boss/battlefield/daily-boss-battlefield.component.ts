@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ActivatedRoute } from '@angular/router';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
-import { DailyBossService } from '../../../services/daily-boss/daily-boss.service';
+import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
 import { TileUnit } from '../../../models/field.model';
 
 @Component({
@@ -16,7 +16,7 @@ export class DailyBossBattlefieldComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private dailyBossService: DailyBossService,
+    private dailyBossService: DailyBossFacadeService,
     private heroesService: HeroesFacadeService,
   ) {
     this.route.params.subscribe(value => {

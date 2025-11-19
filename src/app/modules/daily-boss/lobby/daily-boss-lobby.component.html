@@ -1,6 +1,8 @@
 <div class="page-container">
   <app-page-loader [loader]="loader" />
 
+  <button (click)="collectAndLeave()">Click</button>
+
   <div class="row ms-2 me-2 mb-2 g-2">
     <div class="col-lg-6 col-sm-12">
       <app-stats [selectedHero]="selectedHero"></app-stats>

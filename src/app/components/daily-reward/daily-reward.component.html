@@ -15,7 +15,7 @@
       }
 
       <!-- Rewards List -->
-      @if (!_isHeroPreview && dailyRewardConfig.totalDays) {
+      @if (!_isHeroPreview && dailyRewardConfig.id) {
         <app-rewards-calendar
           [rewardPool]="month"
           [claimReward]="claimReward"

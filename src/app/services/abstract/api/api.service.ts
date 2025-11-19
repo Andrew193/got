@@ -3,8 +3,6 @@ import { BehaviorSubject, map, Observable, pipe, Subscription, tap } from 'rxjs'
 import { HttpClient } from '@angular/common/http';
 import { LocalStorageService } from '../../localStorage/local-storage.service';
 import { IdEntity } from '../../../models/common.model';
-import { USER_TOKEN } from '../../../constants';
-import { User } from '../../users/users.interfaces';
 import { PutPostMetaOf } from '../../../models/api.model';
 
 type TapParser<T> = (config: T) => void;
@@ -70,15 +68,11 @@ export abstract class ApiService<T> {
   }
 
   private getUserId() {
-    const user = this.localStorageService.getItem(USER_TOKEN) as User;
-
-    return user.id;
+    return this.localStorageService.getUserId();
   }
 
   get userId() {
-    if (!this._userId) {
-      this._userId = this.getUserId();
-    }
+    this._userId = this.getUserId();
 
     return this._userId;
   }

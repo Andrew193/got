@@ -12,11 +12,13 @@ import { InitTaskObs } from '../../models/init.model';
 import { ConfigInterface } from '../../models/interfaces/config.interface';
 import { GetConfig } from '../../models/common.model';
 import { DepositService } from '../users/currency/deposit.service';
+import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
 
 export enum NotificationType {
   daily_reward,
   gift_store,
   deposit,
+  daily_boss,
 }
 
 @Injectable({
@@ -25,24 +27,29 @@ export enum NotificationType {
 export class NotificationsService implements InitInterface {
   private dailyRewardService = inject(DailyRewardService);
   private giftService = inject(GiftService);
+  private dailyBossService = inject(DailyBossApiService);
   private depositService = inject(DepositService);
 
   private modalWindowService = inject(ModalWindowService);
 
   private initNotificationConfig = new Map()
     .set(NotificationType.daily_reward, false)
+    .set(NotificationType.daily_boss, false)
     .set(NotificationType.gift_store, false);
 
   private notifications: BehaviorSubject<NotificationConfigMap> =
-    new BehaviorSubject<NotificationConfigMap>(this.initNotificationConfig);
+    new BehaviorSubject<NotificationConfigMap>(new Map(this.initNotificationConfig));
 
   readonly $notifications = this.notifications.asObservable();
 
   init() {
+    this.drop();
+
     try {
       const services: { api: ConfigInterface<GetConfig>; type: NotificationType }[] = [
         { api: this.dailyRewardService, type: NotificationType.daily_reward },
         { api: this.giftService, type: NotificationType.gift_store },
+        { api: this.dailyBossService, type: NotificationType.daily_boss },
         { api: this.depositService, type: NotificationType.deposit },
       ];
 
@@ -53,6 +60,8 @@ export class NotificationsService implements InitInterface {
               this.notificationsValue(el.type, true);
             } else if (config['depositDay']) {
               this.notificationsValue(el.type, true);
+            } else {
+              this.notificationsValue(el.type, false);
             }
           })
           .subscribe();
@@ -79,6 +88,8 @@ export class NotificationsService implements InitInterface {
   }
 
   getNotification(key: NotificationType, notificationMap: NotificationConfigMap | undefined) {
+    debugger;
+
     return notificationMap ? notificationMap.get(key) : false;
   }
 
@@ -91,5 +102,9 @@ export class NotificationsService implements InitInterface {
     });
 
     this.modalWindowService.openModal(config);
+  }
+
+  drop() {
+    this.notifications.next(this.initNotificationConfig);
   }
 }

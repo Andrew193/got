@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation/validation.service';
 import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
@@ -12,6 +12,8 @@ import { ModalWindowComponent } from '../../components/modal-window/modal-window
 import { AppInitializerFunction } from '../../app.config';
 import { APP_INIT_STEPS } from '../../injection-tokens';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { tap } from 'rxjs';
+import { User } from '../../services/users/users.interfaces';
 
 @Component({
   selector: 'app-login-page',
@@ -29,6 +31,8 @@ export class LoginPageComponent implements OnInit {
   nav = inject(NavigationService);
   facade = inject(LoginFacadeService);
   private snackBar = inject(MatSnackBar);
+  cdr = inject(ChangeDetectorRef);
+
   showModalComponent = false;
 
   form;
@@ -60,15 +64,14 @@ export class LoginPageComponent implements OnInit {
       this.snackBar.open(data.message, '', SNACKBAR_CONFIG);
     } else {
       this.showModalComponent = false;
+      this.cdr.detectChanges();
 
-      setTimeout(() => {
-        this.localStorageService.setItem(USER_TOKEN, data);
+      this.localStorageService.setItem(USER_TOKEN, data);
 
-        AppInitializerFunction(this.steps).finally(() => {
-          this.form.enable();
-          this.nav.goToMainPage();
-        });
-      }, 0);
+      AppInitializerFunction(this.steps).finally(() => {
+        this.form.enable();
+        this.nav.goToMainPage();
+      });
     }
   }
 
@@ -78,15 +81,27 @@ export class LoginPageComponent implements OnInit {
     if (this.createUser) {
       this.facade.openAdventureBegins(this.submitInnerFunction);
     } else {
-      this.facade.openAdventureBegins(this.submitInnerFunction);
+      this.submitInnerFunction();
     }
   }
 
   submitInnerFunction = () => {
+    const callback = (data: Error | User) => {
+      setTimeout(() => {
+        this.processing.call(this, data);
+      }, 1000);
+    };
+
     this.validationService.validateFormAndSubmit(
       this.form,
-      this.usersService.login(this.form.value, this.processing.bind(this)),
-      this.usersService.createUser(this.form.value, this.processing.bind(this)),
+      this.usersService.login(this.form.value, callback),
+      this.usersService
+        .createUser(this.form.value, () => {})
+        .pipe(
+          tap({
+            next: callback,
+          }),
+        ),
       !this.createUser,
     );
   };

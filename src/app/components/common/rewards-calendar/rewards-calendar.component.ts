@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgForOf } from '@angular/common';
 import { trackByIndex } from '../../../helpers';
 import { RewardCoinComponent } from '../../views/reward-coin/reward-coin.component';
@@ -9,6 +9,7 @@ import { DayReward } from '../../daily-reward/daily-reward.component';
   imports: [NgForOf, RewardCoinComponent],
   templateUrl: './rewards-calendar.component.html',
   styleUrl: './rewards-calendar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RewardsCalendarComponent {
   chainMode = input<boolean>(false);

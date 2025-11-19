@@ -3,7 +3,7 @@
     <form class="flex-row m-5" [formGroup]="form">
       <section class="col-12 p-3">
         <div class="text-center mode-switcher got-toggle" (click)="switchMode()">
-          <span>{{ createUser ? 'Sign up' : 'Sign in' }}</span>
+          <span>{{ createUser ? 'Join' : 'Come back' }}</span>
         </div>
         <div class="mt-2">
           <app-text-input [label]="'Login'" [controlName]="'login'" />

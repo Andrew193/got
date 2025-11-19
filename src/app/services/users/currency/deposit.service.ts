@@ -17,7 +17,7 @@ export class DepositService
 
   private url = `/${API_ENDPOINTS.deposits}`;
 
-  initDepositForNewUser(userId: string) {
+  initConfigForNewUser(userId: string) {
     return this.http.post<DepositCurrency>(this.url, {
       ...this.helper.initialDepositCurrency,
       userId,

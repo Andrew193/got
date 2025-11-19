@@ -4,7 +4,10 @@ import { Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
-import { BossDifficulty, DailyBossService } from '../../../services/daily-boss/daily-boss.service';
+import {
+  BossDifficulty,
+  DailyBossFacadeService,
+} from '../../../services/facades/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { TileUnit } from '../../../models/field.model';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
@@ -35,8 +38,9 @@ import { LoaderService } from '../../../services/resolver-loader/loader.service'
 })
 export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   nav = inject(NavigationService);
-  dailyBossService = inject(DailyBossService);
+  dailyBossService = inject(DailyBossFacadeService);
   private loaderService = inject(LoaderService);
+
   loader = this.loaderService.getPageLoader(frontRoutes.dailyBoss);
 
   override context = HeroesSelectNames.dailyBossCollection;
@@ -67,5 +71,9 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
 
   goToMainPage() {
     this.nav.goToMainPage();
+  }
+
+  collectAndLeave() {
+    this.dailyBossService.collectReward();
   }
 }

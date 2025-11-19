@@ -26,6 +26,7 @@ export enum HeroesSelectNames {
 
 export const API_ENDPOINTS = {
   gift: 'giftTrip',
+  dailyBoss: 'dailyBoss',
   daily: 'dailyReward',
   users: 'users',
   deposits: 'deposits',

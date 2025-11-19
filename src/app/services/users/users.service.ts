@@ -14,12 +14,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrencyDifComponent } from '../../components/modal-window/currency/currency-dif/currency-dif.component';
 import { NavigationService } from '../facades/navigation/navigation.service';
 import { DepositService } from './currency/deposit.service';
+import { GiftService } from '../gift-related/gift/gift.service';
+import { DailyRewardService } from '../daily-reward/daily-reward.service';
+import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService extends ApiService<User> {
   depositService = inject(DepositService);
+  giftService = inject(GiftService);
+  dailyRewardService = inject(DailyRewardService);
+  dailyBossApiService = inject(DailyBossApiService);
+
   nav = inject(NavigationService);
   localStorage = inject(LocalStorageService);
 
@@ -43,34 +50,41 @@ export class UsersService extends ApiService<User> {
   }
 
   createUser<F extends (user: User) => void>(user: Partial<User>, callback: F) {
+    const deposit$ = (user: User) =>
+      this.depositService.initConfigForNewUser(user.id).pipe(
+        switchMap(value =>
+          this.putPostCover(
+            { ...user, depositId: value.id || '' },
+            {
+              returnObs: true,
+              url: this.url,
+              callback: () => {},
+            },
+          ).pipe(
+            map(response => (Array.isArray(response) ? response[0] : response)),
+            switchMap(depositResponse =>
+              gift$(user).pipe(
+                switchMap(() =>
+                  dailyReward$(user).pipe(
+                    switchMap(() => dailyBoss$(user).pipe(map(() => depositResponse))),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    const gift$ = (user: User) => this.giftService.initConfigForNewUser(user.id);
+    const dailyReward$ = (user: User) => this.dailyRewardService.initConfigForNewUser(user.id);
+    const dailyBoss$ = (user: User) => this.dailyBossApiService.initConfigForNewUser(user.id);
+
     return this.putPostCover(this.basicUser(user), {
       returnObs: true,
       url: this.url,
       callback: callback,
     }).pipe(
       map(value => (Array.isArray(value) ? value[0] : value)),
-      switchMap(user =>
-        this.depositService
-          .initDepositForNewUser(user.id)
-          .pipe(
-            switchMap(value =>
-              this.putPostCover(
-                { ...user, depositId: value.id || '' },
-                {
-                  returnObs: true,
-                  url: this.url,
-                  callback: () => {},
-                },
-              ),
-            ),
-          )
-          .pipe(map(response => (Array.isArray(response) ? response[0] : response))),
-      ),
-      tap({
-        next: user => {
-          callback(user);
-        },
-      }),
+      switchMap(user => deposit$(user)),
     );
   }
 
@@ -170,6 +184,8 @@ export class UsersService extends ApiService<User> {
 
   logout() {
     this.localStorage.removeItem(USER_TOKEN);
+    this.user.next(null);
+    this.data.next({} as User);
     this.nav.goToLogin();
   }
 

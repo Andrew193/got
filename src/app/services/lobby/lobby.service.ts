@@ -115,6 +115,7 @@ export class LobbyService {
       name: 'Daily Boss',
       src: 'UI_Avatar_Unit_PolarBear',
       click: () => this.nav.goToDailyBoss(),
+      notification: NotificationType.daily_boss,
     },
   ];
 

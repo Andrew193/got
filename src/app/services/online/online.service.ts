@@ -19,6 +19,7 @@ export class OnlineService implements InitInterface {
   private userService = inject(UsersService);
   private localStorageService = inject(LocalStorageService);
   private tickCounter = 0;
+  interval!: ReturnType<typeof setInterval>;
 
   init() {
     try {
@@ -26,7 +27,7 @@ export class OnlineService implements InitInterface {
       this.flushTimerHelper();
 
       //Track time for flushTimerHelper
-      setInterval(() => {
+      this.interval = setInterval(() => {
         this.incrementLocalBuffer(TIME.oneMinuteSeconds);
         this.tickCounter++;
 
@@ -57,6 +58,12 @@ export class OnlineService implements InitInterface {
 
   private flushTimerHelper() {
     const stored = this.localBuffer;
+
+    this.tickCounter = 0;
+
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
 
     if (stored > 0) {
       this.userService.updateOnline({ time: stored });

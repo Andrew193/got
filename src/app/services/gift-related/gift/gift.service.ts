@@ -21,6 +21,13 @@ export class GiftService extends ApiService<GiftConfig> implements ConfigInterfa
       .pipe(this.basicResponseTapParser(callback));
   }
 
+  initConfigForNewUser(userId: string) {
+    return this.http.post<GiftConfig>(this.url, {
+      lastLogin: '01/01/1970',
+      userId,
+    });
+  }
+
   claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {
     this.putPostCover(giftConfig, { url: this.url, callback, returnObs: false });
   }

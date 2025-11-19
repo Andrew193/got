@@ -1,6 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BossReward, BossRewardCurrency, BossRewardsConfig } from '../../models/reward-based.model';
-import { CURRENCY_NAMES } from '../../constants';
+import { inject, Injectable } from '@angular/core';
+import {
+  BossReward,
+  BossRewardCurrency,
+  BossRewardsConfig,
+} from '../../../models/reward-based.model';
+import { CURRENCY_NAMES, TODAY } from '../../../constants';
+import { DailyBossApiService } from './daily-boss-api.service';
+import { Currency } from '../../users/users.interfaces';
+import { UsersService } from '../../users/users.service';
+import { tap } from 'rxjs';
+import { NotificationsService, NotificationType } from '../../notifications/notifications.service';
+import { NavigationService } from '../navigation/navigation.service';
 
 export enum BossDifficulty {
   easy,
@@ -17,7 +27,12 @@ type DifficultyConfig = {
 @Injectable({
   providedIn: 'root',
 })
-export class DailyBossService {
+export class DailyBossFacadeService {
+  api = inject(DailyBossApiService);
+  nav = inject(NavigationService);
+  usersService = inject(UsersService);
+  notificationService = inject(NotificationsService);
+
   private bossReward: Record<BossDifficulty, BossReward> = {
     [BossDifficulty.easy]: {
       copper: 10000,
@@ -64,6 +79,13 @@ export class DailyBossService {
       goldDMG: 2000000,
     },
   };
+
+  difficultyConfigs: DifficultyConfig[] = [
+    { level: BossDifficulty.easy, heading: 'Super Easy' },
+    { level: BossDifficulty.normal, heading: 'Easy' },
+    { level: BossDifficulty.hard, heading: 'Medium' },
+    { level: BossDifficulty.very_hard, heading: 'Hard' },
+  ];
 
   getBossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
     const reward = this.bossReward[level];
@@ -113,10 +135,28 @@ export class DailyBossService {
     return versions[version];
   }
 
-  difficultyConfigs: DifficultyConfig[] = [
-    { level: BossDifficulty.easy, heading: 'Super Easy' },
-    { level: BossDifficulty.normal, heading: 'Easy' },
-    { level: BossDifficulty.hard, heading: 'Medium' },
-    { level: BossDifficulty.very_hard, heading: 'Hard' },
-  ];
+  collectReward() {
+    const reward: Currency = {
+      gold: 0,
+      silver: 0,
+      copper: 0,
+    };
+
+    const newCurrency = this.usersService.updateCurrency(reward, {
+      returnObs: true,
+    });
+
+    newCurrency
+      .pipe(
+        tap({
+          next: () => {
+            this.api.claimDailyBossReward({ lastLogin: TODAY }, () => {
+              this.notificationService.notificationsValue(NotificationType.daily_boss, false);
+              this.nav.goToMainPage();
+            });
+          },
+        }),
+      )
+      .subscribe();
+  }
 }

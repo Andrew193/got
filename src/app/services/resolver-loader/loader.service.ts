@@ -61,6 +61,8 @@ export class LoaderService implements InitInterface {
   }
 
   init() {
+    this.subsCount.clear();
+
     try {
       this.router.events.subscribe(e => {
         if (e instanceof ResolveStart || e instanceof GuardsCheckStart) {
