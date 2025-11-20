@@ -62,9 +62,11 @@ export function makeSelectUnitConfig(
 export function makeCanStartBattle(selectUnits: SelectContexts) {
   if (!canStartBattleCache) {
     canStartBattleCache = createSelector(selectUnits, units => {
-      return units.every(el => {
-        return el.x != -1 && el.y != -1 && el.x != null && el.y != null;
-      });
+      return units
+        .filter(_ =>
+          [HeroesSelectNames.aiCollection, HeroesSelectNames.userCollection].includes(_.collection),
+        )
+        .every(el => el.x != -1 && el.y != -1 && el.x != null && el.y != null);
     });
   }
 

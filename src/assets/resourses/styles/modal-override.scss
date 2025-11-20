@@ -11,6 +11,10 @@
   @include an.glow-pulse-border;
 }
 
+.mat-mdc-dialog-panel:has(app-after-battle) {
+  width: 100%;
+}
+
 .cdk-global-overlay-wrapper:has(app-adventure-begins) {
   backdrop-filter: brightness(0.5);
 }

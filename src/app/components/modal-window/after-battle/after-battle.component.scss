@@ -1,0 +1,15 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+:host {
+  width: 100%;
+}
+
+.inner-container {
+  background: url('../../../../assets/resourses/imgs/background/sansa.webp') no-repeat top;
+  background-size: cover;
+  box-shadow: index.$var-box-shadow;
+  position: relative;
+  padding-top: 1px;
+
+  @include index.mixin-got-btn;
+}

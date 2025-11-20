@@ -25,6 +25,9 @@ import { LobbyService } from '../../services/lobby/lobby.service';
 import { ShortcutService } from '../../services/facades/shortcut/shortcut.service';
 import { BasicStoresHolderComponent } from '../../components/views/basic-stores-holder/basic-stores-holder.component';
 import { ContainerLabelComponent } from '../../components/views/container-label/container-label.component';
+import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
+import { ModalWindowService } from '../../services/modal/modal-window.service';
+import { AfterBattleComponent } from '../../components/modal-window/after-battle/after-battle.component';
 
 export type Route = {
   name: string;
@@ -122,6 +125,7 @@ export class UserComponent implements AfterContentInit {
 export class LobbyComponent implements OnInit {
   shortcutService = inject(ShortcutService);
   destroyRef = inject(DestroyRef);
+  modalWindowService = inject(ModalWindowService);
 
   helper = inject(LobbyService);
   nav = inject(NavigationService);
@@ -135,5 +139,14 @@ export class LobbyComponent implements OnInit {
 
   ngOnInit() {
     this.shortcutService.init(this.helper.notation, { destroyRef: this.destroyRef });
+
+    const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
+      open: true,
+      strategy: ModalStrategiesTypes.component,
+      component: AfterBattleComponent,
+      data: {},
+    });
+
+    //this.modalWindowService.openModal(modalConfig);
   }
 }

@@ -4,7 +4,7 @@ import {
   BossRewardCurrency,
   BossRewardsConfig,
 } from '../../../models/reward-based.model';
-import { CURRENCY_NAMES, TODAY } from '../../../constants';
+import { CURRENCY_NAMES, HeroesSelectNames, TODAY } from '../../../constants';
 import { DailyBossApiService } from './daily-boss-api.service';
 import { Currency } from '../../users/users.interfaces';
 import { UsersService } from '../../users/users.service';
@@ -12,6 +12,8 @@ import { tap } from 'rxjs';
 import { NotificationsService, NotificationType } from '../../notifications/notifications.service';
 import { NavigationService } from '../navigation/navigation.service';
 import { NumbersService } from '../../numbers/numbers.service';
+import { UnitsConfiguratorFeatureActions } from '../../../store/actions/units-configurator.actions';
+import { Store } from '@ngrx/store';
 
 export enum BossDifficulty {
   easy,
@@ -31,6 +33,7 @@ type DifficultyConfig = {
 export class DailyBossFacadeService {
   api = inject(DailyBossApiService);
   nav = inject(NavigationService);
+  store = inject(Store);
   usersService = inject(UsersService);
   numberService = inject(NumbersService);
   notificationService = inject(NotificationsService);
@@ -160,6 +163,11 @@ export class DailyBossFacadeService {
           next: () => {
             this.api.claimDailyBossReward({ lastLogin: TODAY }, () => {
               this.notificationService.notificationsValue(NotificationType.daily_boss, false);
+              this.store.dispatch(
+                UnitsConfiguratorFeatureActions.drop({
+                  collections: [HeroesSelectNames.dailyBossCollection],
+                }),
+              );
               this.nav.goToMainPage();
             });
           },

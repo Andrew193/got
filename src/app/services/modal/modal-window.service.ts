@@ -22,9 +22,10 @@ export class ModalWindowService {
   modalConfig$ = this._modalConfig.asObservable();
 
   openModal(modalConfig: ModalConfig) {
-    console.log(ModalWindowService.frozen, 'ModalWindowService.frozen', modalConfig);
     if (!ModalWindowService.frozen) {
-      this._modalConfig.next(modalConfig);
+      setTimeout(() => {
+        this._modalConfig.next(modalConfig);
+      });
     }
   }
 

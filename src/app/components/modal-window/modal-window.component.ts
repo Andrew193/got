@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ModalWindowComponent implements OnInit {
   dialog = inject(MatDialog);
-  dialogRef!: ReturnType<typeof this.dialog.open>;
+  dialogRefs = new Map<string, ReturnType<typeof this.dialog.open>>();
 
   @ViewChild('template', { static: true }) modalTemplate: any;
 
@@ -21,6 +21,7 @@ export class ModalWindowComponent implements OnInit {
   destroyRef = inject(DestroyRef);
 
   strategy!: ModalStrategy;
+  contextConfig!: ReturnType<typeof this.getContextConfig>;
 
   initConfig: ModalConfig = { ...this.modalWindowService.init };
   modalConfig: ModalConfig = this.initConfig;
@@ -32,6 +33,7 @@ export class ModalWindowComponent implements OnInit {
         if (newConfig.config.open) {
           this.strategy = ModalStrategies[newConfig.config.strategy];
           this.modalConfig = newConfig;
+
           this.openModal(this.modalTemplate);
         } else {
           this.modalConfig = this.initConfig;
@@ -40,26 +42,40 @@ export class ModalWindowComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<void>) {
-    this.dialogRef = this.dialog.open(template, {
+    const dialogId = crypto.randomUUID();
+
+    this.contextConfig = this.getContextConfig(dialogId);
+
+    const dialogRef = this.dialog.open(template, {
       disableClose: true,
       position: {
         top: '50px',
       },
     });
 
-    this.dialogRef.afterClosed().subscribe();
+    this.dialogRefs.set(dialogId, dialogRef);
+    this.dialogRefs.get(dialogId)!.afterClosed().subscribe();
   }
 
-  get contextConfig() {
+  getContextConfig(dialogId: string) {
     return {
       ...this.modalConfig,
-      close: this.close,
+      close: () => this.close(dialogId),
     };
   }
 
-  public close = () => {
-    this.modalConfig.config.callback?.();
-    this.dialogRef.close();
+  public close = (dialogId: string) => {
+    if (this.modalConfig.config.callback) {
+      this.modalConfig.config.callback();
+    }
+
+    const dialogRef = this.dialogRefs.get(dialogId);
+
+    if (dialogRef) {
+      dialogRef.close();
+      this.dialogRefs.delete(dialogId);
+    }
+
     this.modalWindowService.dropModal();
   };
 }
