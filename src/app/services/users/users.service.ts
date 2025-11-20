@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { ApiService } from '../abstract/api/api.service';
 import {
@@ -52,6 +52,7 @@ export class UsersService extends ApiService<User> {
   createUser<F extends (user: User) => void>(user: Partial<User>, callback: F) {
     const deposit$ = (user: User) =>
       this.depositService.initConfigForNewUser(user.id).pipe(
+        delay(250),
         switchMap(value =>
           this.putPostCover(
             { ...user, depositId: value.id || '' },
@@ -64,8 +65,10 @@ export class UsersService extends ApiService<User> {
             map(response => (Array.isArray(response) ? response[0] : response)),
             switchMap(depositResponse =>
               gift$(user).pipe(
+                delay(250),
                 switchMap(() =>
                   dailyReward$(user).pipe(
+                    delay(250),
                     switchMap(() => dailyBoss$(user).pipe(map(() => depositResponse))),
                   ),
                 ),

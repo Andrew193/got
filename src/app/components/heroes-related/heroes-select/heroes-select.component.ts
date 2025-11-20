@@ -83,7 +83,11 @@ export class HeroesSelectComponent implements OnInit {
         );
       }
 
-      if (!shouldAdd || units.find(_ => _.name === unit.name) || name) {
+      if (
+        !shouldAdd ||
+        units.find(_ => _.name === unit.name && _.collection === contextName) ||
+        name
+      ) {
         this.store.dispatch(
           HeroesSelectActions.removeHeroFromCollection({
             collection: contextName,

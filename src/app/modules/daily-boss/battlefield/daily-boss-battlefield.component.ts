@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ActivatedRoute } from '@angular/router';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
-import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
-import { TileUnit } from '../../../models/field.model';
+import {
+  BossDifficulty,
+  DailyBossFacadeService,
+} from '../../../services/facades/daily-boss/daily-boss.service';
+import { TileUnit, TileUnitWithReward } from '../../../models/field.model';
+import { UnitName } from '../../../models/units-related/unit.model';
 
 @Component({
   selector: 'app-battlefield',
@@ -11,27 +15,34 @@ import { TileUnit } from '../../../models/field.model';
   templateUrl: './daily-boss-battlefield.component.html',
 })
 export class DailyBossBattlefieldComponent {
+  dailyBossService = inject(DailyBossFacadeService);
+
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
+  level: BossDifficulty = BossDifficulty.easy;
 
   constructor(
     private route: ActivatedRoute,
-    private dailyBossService: DailyBossFacadeService,
     private heroesService: HeroesFacadeService,
   ) {
     this.route.params.subscribe(value => {
-      const temp = this.heroesService.helper.getEquipmentForUnit({
-        ...this.heroesService.getDailyBossVersion1(),
-        user: false,
-        ...this.dailyBossService.uppBoss(value['bossLevel']),
-      });
+      if (value['bossLevel']) {
+        this.level = +value['bossLevel'];
 
-      this.aiUnits = [this.heroesService.getTileUnit(temp)];
+        const temp = this.heroesService.helper.getEquipmentForUnit({
+          ...this.heroesService.getDailyBossVersion1(),
+          user: false,
+          ...this.dailyBossService.uppBoss(this.level),
+        });
+
+        this.aiUnits = [this.heroesService.getTileUnit(temp)];
+      }
     });
+
     this.route.queryParams.subscribe(value => {
-      const temp = (value['units'] as string[]).map((el, index) => {
+      const temp = (Array.from(value['units']) as UnitName[]).map((_, index) => {
         return {
-          ...this.heroesService.getUnitByName(el),
+          ...this.heroesService.getUnitByName(_),
           y: 0,
           x: 1 + index,
         };
@@ -40,4 +51,12 @@ export class DailyBossBattlefieldComponent {
       this.userUnits = temp.map(el => this.heroesService.getTileUnit(el));
     });
   }
+
+  gameResultsRedirect = (realAiUnits: TileUnit[] | TileUnitWithReward[], win: boolean) => {
+    this.dailyBossService.collectReward(
+      this.level,
+      realAiUnits[0].maxHealth - realAiUnits[0].health,
+      win,
+    );
+  };
 }

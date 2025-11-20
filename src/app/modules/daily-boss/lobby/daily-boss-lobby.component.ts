@@ -53,7 +53,8 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   selectedTileHero: TileUnit = this.heroesService.getTileUnit(this.selectedHero);
   config = this.dailyBossService.difficultyConfigs;
 
-  getBossReward = (level: BossDifficulty) => this.dailyBossService.getBossReward(level);
+  getBossRewardDescription = (level: BossDifficulty) =>
+    this.dailyBossService.getBossRewardDescription(level);
 
   upBoss(version: BossDifficulty) {
     return this.heroesService.helper.getEquipmentForUnit({
@@ -71,9 +72,5 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
 
   goToMainPage() {
     this.nav.goToMainPage();
-  }
-
-  collectAndLeave() {
-    this.dailyBossService.collectReward();
   }
 }

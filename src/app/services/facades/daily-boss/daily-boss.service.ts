@@ -11,6 +11,7 @@ import { UsersService } from '../../users/users.service';
 import { tap } from 'rxjs';
 import { NotificationsService, NotificationType } from '../../notifications/notifications.service';
 import { NavigationService } from '../navigation/navigation.service';
+import { NumbersService } from '../../numbers/numbers.service';
 
 export enum BossDifficulty {
   easy,
@@ -31,6 +32,7 @@ export class DailyBossFacadeService {
   api = inject(DailyBossApiService);
   nav = inject(NavigationService);
   usersService = inject(UsersService);
+  numberService = inject(NumbersService);
   notificationService = inject(NotificationsService);
 
   private bossReward: Record<BossDifficulty, BossReward> = {
@@ -87,7 +89,7 @@ export class DailyBossFacadeService {
     { level: BossDifficulty.very_hard, heading: 'Hard' },
   ];
 
-  getBossReward(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
+  getBossRewardDescription(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
     const reward = this.bossReward[level];
     const coins: BossRewardCurrency[] = [
       CURRENCY_NAMES.copper,
@@ -135,11 +137,17 @@ export class DailyBossFacadeService {
     return versions[version];
   }
 
-  collectReward() {
+  collectReward(level: BossDifficulty, dmg: number, win: boolean) {
+    const targetBossConfig = this.bossReward[level];
+
+    const copperTimes = this.numberService.roundDown(dmg / targetBossConfig.copperDMG, 0);
+    const silverTimes = this.numberService.roundDown(dmg / targetBossConfig.silverDMG, 0);
+    const goldTimes = this.numberService.roundDown(dmg / targetBossConfig.goldDMG, 0);
+
     const reward: Currency = {
-      gold: 0,
-      silver: 0,
-      copper: 0,
+      gold: goldTimes * targetBossConfig.gold + (win ? targetBossConfig.goldWin : 0),
+      silver: silverTimes * targetBossConfig.silver + (win ? targetBossConfig.silverWin : 0),
+      copper: copperTimes * targetBossConfig.copper + (win ? targetBossConfig.copperWin : 0),
     };
 
     const newCurrency = this.usersService.updateCurrency(reward, {

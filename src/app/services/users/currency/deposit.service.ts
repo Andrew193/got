@@ -1,28 +1,18 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../abstract/api/api.service';
 import { Currency, DepositCurrency } from '../users.interfaces';
 import { API_ENDPOINTS } from '../../../constants';
-import { ConfigInterface } from '../../../models/interfaces/config.interface';
 import { CurrencyHelperService } from './helper/currency-helper.service';
 import { map } from 'rxjs';
+import { BaseConfigApiService } from '../../abstract/base-config-api/base-config-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DepositService
-  extends ApiService<DepositCurrency>
-  implements ConfigInterface<DepositCurrency>
-{
+export class DepositService extends BaseConfigApiService<DepositCurrency> {
   helper = inject(CurrencyHelperService);
 
-  private url = `/${API_ENDPOINTS.deposits}`;
-
-  initConfigForNewUser(userId: string) {
-    return this.http.post<DepositCurrency>(this.url, {
-      ...this.helper.initialDepositCurrency,
-      userId,
-    });
-  }
+  override url = `/${API_ENDPOINTS.deposits}`;
+  override iniConfig = this.helper.initialDepositCurrency;
 
   submitDeposit(deposit: Currency, days: number) {
     const newDeposit = this.helper.makeNewDeposit(deposit, days);
@@ -48,15 +38,5 @@ export class DepositService
         callback: () => {},
       },
     ).pipe(map(() => deposit));
-  }
-
-  getConfig(callback: (config: DepositCurrency) => void) {
-    return this.http
-      .get<DepositCurrency[]>(this.url, {
-        params: {
-          userId: this.userId,
-        },
-      })
-      .pipe(this.basicResponseTapParser(callback));
   }
 }

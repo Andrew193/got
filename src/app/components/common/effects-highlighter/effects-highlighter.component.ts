@@ -61,8 +61,6 @@ export class EffectsHighlighterComponent {
   private effectsRegex = computed(() => {
     const words = this.effectsWords();
 
-    console.log(words, 'words');
-
     if (!words.length) return null;
 
     const body = words.map(escapeRegex).join('|');
@@ -111,8 +109,6 @@ export class EffectsHighlighterComponent {
       return res;
     } else {
       const row = highlight(text);
-
-      console.log(row, 'row');
 
       return [row.length ? row : [{ text, hint: false }]];
     }
