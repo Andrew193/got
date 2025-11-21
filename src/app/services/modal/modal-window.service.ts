@@ -1,36 +1,79 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ModalConfig, ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
+import { ModalConfig } from '../../components/modal-window/modal-interfaces';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ModalDialogRefs } from '../../models/modal.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ModalWindowService {
   static frozen = false;
+  dialog = inject(MatDialog);
 
-  init: ModalConfig = {
-    headerMessage: '',
-    headerClass: '',
-    closeBtnLabel: '',
-    config: {
-      open: false,
-      callback: () => {},
-      strategy: ModalStrategiesTypes.base,
-    },
-  };
-  private _modalConfig: BehaviorSubject<ModalConfig> = new BehaviorSubject<ModalConfig>(this.init);
+  dialogRefs = new Map<string, ModalDialogRefs>();
+  selectedDialogRef: number | null = null;
+
+  private _modalConfig: BehaviorSubject<ModalConfig | null> =
+    new BehaviorSubject<ModalConfig | null>(null);
   modalConfig$ = this._modalConfig.asObservable();
 
   openModal(modalConfig: ModalConfig) {
     if (!ModalWindowService.frozen) {
+      const dialogId = crypto.randomUUID();
+
       setTimeout(() => {
-        this._modalConfig.next(modalConfig);
+        this._modalConfig.next({ ...modalConfig, dialogId });
       });
+
+      return dialogId;
     }
+
+    return '';
   }
 
   dropModal() {
-    this._modalConfig.next(this.init);
+    this._modalConfig.next(null);
+  }
+
+  isModalTabSelected = (i: null | number) => {
+    return this.selectedDialogRef === i;
+  };
+
+  private getOverlayPane(ref: MatDialogRef<unknown>): HTMLElement | null {
+    const overlayRef = (ref as any)._ref.overlayRef;
+
+    return overlayRef?.overlayElement.parentElement ?? null;
+  }
+
+  bringToFront = (dialogId: string, index: number) => {
+    this.dialogRefs.forEach(ref => {
+      const pane = this.getOverlayPane(ref.dialogRef);
+
+      if (pane) {
+        pane.classList.remove('dialog-on-top');
+      }
+    });
+
+    const ref = this.dialogRefs.get(dialogId);
+
+    if (!ref) return;
+
+    const pane = this.getOverlayPane(ref.dialogRef);
+
+    if (!pane) return;
+
+    pane.classList.add('dialog-on-top');
+    this.selectedDialogRef = index;
+  };
+
+  removeDialogFromRefs(key = '') {
+    const dialogRef = this.dialogRefs.get(key)?.dialogRef;
+
+    if (dialogRef) {
+      dialogRef.close();
+      this.dialogRefs.delete(key);
+    }
   }
 
   getModalConfig<T>(
@@ -38,26 +81,24 @@ export class ModalWindowService {
     headerMessage = '',
     closeBtnLabel = '',
     config: {
-      open: boolean;
       callback?: () => void;
       strategy: number;
       component?: any;
       modalRootClass?: string;
       data?: T;
     },
-  ): ModalConfig<T> {
+  ) {
     return {
       headerClass: headerClass,
       headerMessage: headerMessage,
       closeBtnLabel: closeBtnLabel,
       config: {
         callback: config.callback,
-        open: config.open,
         strategy: config.strategy,
         component: config.component,
         modalRootClass: config.modalRootClass,
         data: config.data,
       },
-    };
+    } as ModalConfig<T>;
   }
 }

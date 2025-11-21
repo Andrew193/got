@@ -38,8 +38,14 @@ textarea {
   );
 }
 
-.mat-mdc-dialog-surface {
+div.mat-mdc-dialog-surface {
   overflow-y: unset !important;
+  --mdc-dialog-container-color: transparent;
+  box-shadow: none;
+}
+
+.cdk-global-overlay-wrapper.dialog-on-top {
+  z-index: 10000;
 }
 
 .cdk-overlay-pane.mat-mdc-dialog-panel {

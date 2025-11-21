@@ -23,16 +23,16 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './modal-deposit.component.html',
   styleUrl: './modal-deposit.component.scss',
 })
-export class DepositModalComponent implements HasFooterHost {
+export class DepositModalComponent implements Partial<HasFooterHost> {
+  @ViewChild('footerHost', { read: ViewContainerRef, static: true })
+  footerHost!: ViewContainerRef;
+
   dialogRef = inject(MatDialogRef<DepositModalComponent>);
 
   timeService = inject(TimeService);
   depositFacadeService = inject(DepositFacadeService);
   currencyHelperService = inject(CurrencyHelperService);
   helper = inject(IronBankHelperService);
-
-  @ViewChild('footerHost', { read: ViewContainerRef, static: true })
-  footerHost!: ViewContainerRef;
 
   _data = inject<DepositConfig>(DYNAMIC_COMPONENT_DATA);
   deposit: Observable<DepositCurrency> = this.depositFacadeService.$deposit;

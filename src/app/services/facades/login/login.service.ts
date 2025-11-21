@@ -8,10 +8,10 @@ import { AdventureBeginsComponent } from '../../../components/modal-window/adven
 })
 export class LoginFacadeService {
   private modalWindowService = inject(ModalWindowService);
+  dialogId = '';
 
   openAdventureBegins(callback: () => void) {
     const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
-      open: true,
       strategy: ModalStrategiesTypes.component,
       component: AdventureBeginsComponent,
       data: {
@@ -19,6 +19,12 @@ export class LoginFacadeService {
       },
     });
 
-    this.modalWindowService.openModal(modalConfig);
+    this.dialogId = this.modalWindowService.openModal(modalConfig);
+
+    return this.dialogId;
+  }
+
+  closeAdventureBeginsDialog() {
+    this.modalWindowService.removeDialogFromRefs(this.dialogId);
   }
 }

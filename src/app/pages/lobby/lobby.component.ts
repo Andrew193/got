@@ -141,7 +141,6 @@ export class LobbyComponent implements OnInit {
     this.shortcutService.init(this.helper.notation, { destroyRef: this.destroyRef });
 
     const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
-      open: true,
       strategy: ModalStrategiesTypes.component,
       component: AfterBattleComponent,
       data: {},

@@ -1,5 +1,24 @@
-<div class="inner-container">
+<div class="inner-container p-2">
   <div class="footer-cover">
     <ng-template #footerHost></ng-template>
   </div>
+
+  <section class="main-content">
+    <div class="banner">
+      <h4>{{ data.headerMessage }}</h4>
+    </div>
+
+    <div class="rewards-bar">
+      @if (data.rewards) {
+      } @else {
+        <p>No Rewards for this Battle</p>
+      }
+    </div>
+
+    <footer>
+      <button class="got-toggle" (click)="data.close()">
+        {{ data.closeBtnLabel }}
+      </button>
+    </footer>
+  </section>
 </div>

@@ -17,7 +17,7 @@ import { TimeService } from '../../../services/time/time.service';
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
 })
-export class NotificationComponent implements OnInit, HasFooterHost {
+export class NotificationComponent implements OnInit, Partial<HasFooterHost> {
   @ViewChild('footerHost', { read: ViewContainerRef, static: true })
   footerHost!: ViewContainerRef;
   destroyRef = inject(DestroyRef);

@@ -1,2 +1,22 @@
-.dynamic-cover {
+@use '../../../assets/resourses/styles/index' as index;
+
+.modal-window-actions {
+  position: fixed;
+  top: 10px;
+  z-index: 1001;
+  width: calc(100% - 20px);
+  margin: 0 10px;
+
+  .m-w-btn {
+    outline: none;
+    background-color: #393939;
+    border: none;
+    color: white;
+    height: 35px;
+
+    &.active {
+      background-color: #686868;
+      color: index.$var-basic-golden;
+    }
+  }
 }

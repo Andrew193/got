@@ -1,8 +1,8 @@
-import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
-import { HasFooterHost } from '../modal-interfaces';
+import { Component, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { HasFooterHost, ModalBase } from '../modal-interfaces';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DepositConfig } from '../../../models/iron-bank.model';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
+import { Coin } from '../../../models/reward-based.model';
 
 @Component({
   selector: 'app-after-battle',
@@ -10,10 +10,14 @@ import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
   templateUrl: './after-battle.component.html',
   styleUrl: './after-battle.component.scss',
 })
-export class AfterBattleComponent implements HasFooterHost {
+export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit {
   @ViewChild('footerHost', { read: ViewContainerRef, static: true })
   footerHost!: ViewContainerRef;
 
   dialogRef = inject(MatDialogRef<AfterBattleComponent>);
-  data = inject<DepositConfig>(DYNAMIC_COMPONENT_DATA);
+  data = inject<ModalBase & { close: () => void; rewards?: Coin[] }>(DYNAMIC_COMPONENT_DATA);
+
+  ngOnInit() {
+    console.log(this.data);
+  }
 }

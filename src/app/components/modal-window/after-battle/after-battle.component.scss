@@ -5,11 +5,37 @@
 }
 
 .inner-container {
-  background: url('../../../../assets/resourses/imgs/background/sansa.webp') no-repeat top;
+  background: url('../../../../assets/resourses/imgs/background/battle-arena.jpeg') no-repeat top;
   background-size: cover;
   box-shadow: index.$var-box-shadow;
   position: relative;
   padding-top: 1px;
+  height: 400px;
 
   @include index.mixin-got-btn;
+}
+
+.main-content {
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+
+  h4 {
+    @include index.mixin-grad-color;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .banner {
+    width: 100%;
+    opacity: 0.8;
+    padding: 10px 0;
+  }
+}
+
+.rewards-bar {
+  flex-grow: 1;
 }

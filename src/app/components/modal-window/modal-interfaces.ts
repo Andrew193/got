@@ -4,14 +4,18 @@ import { ComponentModalStrategy } from './strategies/component-modal-strategy/co
 
 export interface HasFooterHost {
   footerHost: ViewContainerRef;
+  name: string;
 }
 
-export interface ModalConfig<T = unknown> {
+export interface ModalBase {
   headerClass: string;
   headerMessage: string;
   closeBtnLabel: string;
+}
+
+export interface ModalConfig<T = unknown> extends ModalBase {
+  dialogId: string;
   config: {
-    open: boolean;
     callback?: () => void;
     strategy: number;
     modalRootClass?: string;

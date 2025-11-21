@@ -88,14 +88,11 @@ export class NotificationsService implements InitInterface {
   }
 
   getNotification(key: NotificationType, notificationMap: NotificationConfigMap | undefined) {
-    debugger;
-
     return notificationMap ? notificationMap.get(key) : false;
   }
 
   private showPossibleActivities() {
     const config = this.modalWindowService.getModalConfig('', '', '', {
-      open: true,
       callback: () => {},
       strategy: ModalStrategiesTypes.component,
       component: NotificationComponent,

@@ -67,12 +67,6 @@ aside {
   right: calc(var(--bs-gutter-x) * 0.5);
 }
 
-.footer-cover {
-  display: inline;
-  position: absolute;
-  right: 0px;
-}
-
 @keyframes fadeInHero {
   to {
     opacity: 1;

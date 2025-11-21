@@ -3,18 +3,20 @@ import { ModalWindowService } from '../../services/modal/modal-window.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DynamicHostComponent } from './dynamic-host/dynamic-host.component';
 import { ModalConfig, ModalStrategies, ModalStrategy } from './modal-interfaces';
-import { MatDialog } from '@angular/material/dialog';
+import { NgClass } from '@angular/common';
+import { filter } from 'rxjs';
+import { modalWindowsNames } from '../../names';
+import { MatFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { ModalDialogRefs } from '../../models/modal.model';
 
 @Component({
   selector: 'app-modal-window',
-  imports: [DynamicHostComponent],
+  imports: [DynamicHostComponent, NgClass, MatIcon, MatFabButton],
   templateUrl: './modal-window.component.html',
   styleUrl: './modal-window.component.scss',
 })
 export class ModalWindowComponent implements OnInit {
-  dialog = inject(MatDialog);
-  dialogRefs = new Map<string, ReturnType<typeof this.dialog.open>>();
-
   @ViewChild('template', { static: true }) modalTemplate: any;
 
   modalWindowService = inject(ModalWindowService);
@@ -23,59 +25,64 @@ export class ModalWindowComponent implements OnInit {
   strategy!: ModalStrategy;
   contextConfig!: ReturnType<typeof this.getContextConfig>;
 
-  initConfig: ModalConfig = { ...this.modalWindowService.init };
-  modalConfig: ModalConfig = this.initConfig;
+  isModalTabSelected = this.modalWindowService.isModalTabSelected;
+  bringToFront = this.modalWindowService.bringToFront;
+  dialogRefs = this.modalWindowService.dialogRefs;
 
   ngOnInit(): void {
     this.modalWindowService.modalConfig$
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.destroyRef), filter(Boolean))
       .subscribe(newConfig => {
-        if (newConfig.config.open) {
-          this.strategy = ModalStrategies[newConfig.config.strategy];
-          this.modalConfig = newConfig;
-
-          this.openModal(this.modalTemplate);
-        } else {
-          this.modalConfig = this.initConfig;
-        }
+        this.strategy = ModalStrategies[newConfig.config.strategy];
+        this.openModal(
+          this.modalTemplate,
+          modalWindowsNames[newConfig.config.component?.name || ''],
+          newConfig,
+        );
+        this.modalWindowService.dropModal();
       });
   }
 
-  openModal(template: TemplateRef<void>) {
-    const dialogId = crypto.randomUUID();
+  openModal(
+    template: TemplateRef<void>,
+    refConfig: Omit<ModalDialogRefs, 'dialogRef'> = {
+      name: 'Modal window',
+      icon: 'notifications_active',
+    },
+    modalConfig: ModalConfig<unknown>,
+  ) {
+    this.contextConfig = this.getContextConfig(modalConfig);
 
-    this.contextConfig = this.getContextConfig(dialogId);
-
-    const dialogRef = this.dialog.open(template, {
+    const dialogRef = this.modalWindowService.dialog.open(template, {
       disableClose: true,
       position: {
-        top: '50px',
+        top: '75px',
       },
     });
 
-    this.dialogRefs.set(dialogId, dialogRef);
-    this.dialogRefs.get(dialogId)!.afterClosed().subscribe();
+    this.modalWindowService.dialogRefs.set(modalConfig.dialogId, { dialogRef, ...refConfig });
+    dialogRef.afterClosed().subscribe();
   }
 
-  getContextConfig(dialogId: string) {
+  get dialogsContainers() {
+    if (this.modalWindowService.selectedDialogRef == null) {
+      this.modalWindowService.selectedDialogRef = this.modalWindowService.dialogRefs.size - 1;
+    }
+
+    return Array.from(this.modalWindowService.dialogRefs.entries());
+  }
+
+  getContextConfig(modalConfig: ModalConfig<unknown>) {
     return {
-      ...this.modalConfig,
-      close: () => this.close(dialogId),
+      ...modalConfig,
+      close: () => this.close(modalConfig),
+      data: Object.assign(modalConfig.config.data || {}, { close: () => this.close(modalConfig) }),
     };
   }
 
-  public close = (dialogId: string) => {
-    if (this.modalConfig.config.callback) {
-      this.modalConfig.config.callback();
-    }
+  public close = (modalConfig: ModalConfig<unknown>) => {
+    modalConfig.config.callback && modalConfig.config.callback();
 
-    const dialogRef = this.dialogRefs.get(dialogId);
-
-    if (dialogRef) {
-      dialogRef.close();
-      this.dialogRefs.delete(dialogId);
-    }
-
-    this.modalWindowService.dropModal();
+    this.modalWindowService.removeDialogFromRefs(modalConfig.dialogId);
   };
 }

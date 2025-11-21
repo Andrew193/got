@@ -1,5 +1,24 @@
+@if (dialogRefs.size > 1) {
+  @let containerKeys = dialogsContainers;
+
+  <div class="modal-window-actions p-2 d-flex align-items-center gap-2 banner">
+    @for (container of containerKeys; track $index; let i = $index) {
+      <button
+        mat-fab
+        extended
+        class="m-w-btn"
+        [ngClass]="{
+          active: isModalTabSelected(i),
+        }"
+        (click)="bringToFront(container[0], i)">
+        <mat-icon>{{ container[1].icon }}</mat-icon>
+        {{ container[1].name }}
+      </button>
+    }
+  </div>
+}
+
 <ng-template #template>
-  <app-dynamic-modal-host
-    [strategy]="strategy"
-    [strategyModalData]="contextConfig"></app-dynamic-modal-host>
+  <app-dynamic-modal-host [strategy]="strategy" [strategyModalData]="contextConfig">
+  </app-dynamic-modal-host>
 </ng-template>

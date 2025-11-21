@@ -41,7 +41,6 @@ export class DepositFacadeService {
 
   showDepositModal(depositConfig: DepositConfig = this.getCurrentDepositConfig()) {
     const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
-      open: true,
       strategy: ModalStrategiesTypes.component,
       component: DepositModalComponent,
       data: depositConfig,

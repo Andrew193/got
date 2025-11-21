@@ -1,7 +1,10 @@
 @use './animations' as an;
 
-.mat-mdc-dialog-panel:has(app-modal-deposit) {
-  width: 500px !important;
+.footer-cover {
+  display: inline;
+  position: absolute;
+  right: 0;
+  color: white;
 }
 
 .mat-mdc-dialog-panel:has(app-adventure-begins) {
@@ -11,8 +14,12 @@
   @include an.glow-pulse-border;
 }
 
+.mat-mdc-dialog-panel:has(app-modal-deposit) {
+  width: 500px;
+}
+
 .mat-mdc-dialog-panel:has(app-after-battle) {
-  width: 100%;
+  width: 70%;
 }
 
 .cdk-global-overlay-wrapper:has(app-adventure-begins) {

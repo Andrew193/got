@@ -10,6 +10,7 @@ import { GameResultsRedirectType, Position, TileUnit } from '../../../models/fie
 import { HeroType } from '../../../models/units-related/unit.model';
 import { Store } from '@ngrx/store';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
+import { AfterBattleComponent } from '../../../components/modal-window/after-battle/after-battle.component';
 
 @Injectable({
   providedIn: 'root',
@@ -217,11 +218,12 @@ export class GameService {
         this.gameResult.headerMessage,
         this.gameResult.closeBtnLabel,
         {
-          open: true,
           callback: () => {
             callback(realAiUnits, !allUserUnitsDead);
           },
-          strategy: ModalStrategiesTypes.base,
+          strategy: ModalStrategiesTypes.component,
+          component: AfterBattleComponent,
+          data: this.gameResult,
         },
       );
 

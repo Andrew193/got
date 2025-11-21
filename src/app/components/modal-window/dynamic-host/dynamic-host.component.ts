@@ -10,8 +10,7 @@ export class DynamicHostComponent implements OnInit {
   strategy = input.required<ModalStrategy>();
   strategyModalData = input.required<ExtendedModalConfig>();
 
-  @ViewChild('vc', { read: ViewContainerRef, static: true })
-  vc!: ViewContainerRef;
+  @ViewChild('vc', { read: ViewContainerRef, static: true }) vc!: ViewContainerRef;
 
   ngOnInit() {
     this.createCustomModalComponent(this.strategy());
@@ -19,6 +18,6 @@ export class DynamicHostComponent implements OnInit {
 
   createCustomModalComponent(strategy: ModalStrategy) {
     this.vc.clear();
-    const componentRef = strategy.render(this.vc, this.strategyModalData());
+    strategy.render(this.vc, this.strategyModalData());
   }
 }

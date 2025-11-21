@@ -88,6 +88,7 @@ export class LoginPageComponent implements OnInit {
   submitInnerFunction = () => {
     const callback = (data: Error | User) => {
       setTimeout(() => {
+        this.facade.closeAdventureBeginsDialog();
         this.processing.call(this, data);
       }, 1000);
     };
