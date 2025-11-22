@@ -17,7 +17,7 @@ import {
 import { GiftConfig } from '../../models/gift.model';
 import { UsersService } from '../../services/users/users.service';
 import { Currency } from '../../services/users/users.interfaces';
-import { TileUnit, TileUnitWithReward } from '../../models/field.model';
+import { GameResultsRedirectType, TileUnit, TileUnitWithReward } from '../../models/field.model';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { DisplayRewardNames } from '../../store/store.interfaces';
 import { Store } from '@ngrx/store';
@@ -65,8 +65,6 @@ export class GiftStoreComponent implements OnInit {
     this.userUnits = [
       this.npcService.convertToTileUnit(this.npcService.getUserForNPC({ x: 0, y: 0 })),
     ];
-    this.aiUnits = [];
-
     this.aiUnits = this.npcService
       .getGiftNPC()
       .map(el => ({
@@ -94,7 +92,7 @@ export class GiftStoreComponent implements OnInit {
       });
   }
 
-  collectAndLeave(loot: DisplayReward[]) {
+  getReward(loot: DisplayReward[]) {
     const reward: Currency = {
       gold: 0,
       silver: 0,
@@ -113,9 +111,16 @@ export class GiftStoreComponent implements OnInit {
       reward[name] = reward[name] + el.amount;
     });
 
-    const newCurrency = this.usersService.updateCurrency(reward, {
-      returnObs: true,
-    });
+    return reward;
+  }
+
+  collectAndLeave = () => {
+    const newCurrency = this.usersService.updateCurrency(
+      this.rewardService.mostResentRewardCurrency,
+      {
+        returnObs: true,
+      },
+    );
 
     newCurrency
       .pipe(
@@ -135,20 +140,25 @@ export class GiftStoreComponent implements OnInit {
         }),
       )
       .subscribe();
-  }
-
-  goToMainPage() {
-    this.nav.goToMainPage();
-  }
+  };
 
   public gameResultsRedirect = (realAiUnits: TileUnitWithReward[] | TileUnit[]) => {
     const loot = this.aiUnits.map((el, index) => ({
       ...el.reward,
       amount: !realAiUnits[index].health ? el.reward.amount : 0,
+      flipped: true,
     }));
 
     this.store.dispatch(
       DisplayRewardActions.setDisplayRewardState({ name: this.contextName, data: loot }),
     );
+
+    this.rewardService.mostResentRewardCurrency = this.getReward(loot);
   };
+
+  battleEndFlag(data: Parameters<GameResultsRedirectType>) {
+    this.gameResultsRedirect(data[0]);
+  }
+
+  goToMainPage = () => this.nav.goToMainPage();
 }

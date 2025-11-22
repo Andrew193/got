@@ -8,15 +8,25 @@
       <h4>{{ data.headerMessage }}</h4>
     </div>
 
-    <div class="rewards-bar">
-      @if (data.rewards) {
-      } @else {
-        <p>No Rewards for this Battle</p>
-      }
+    <div class="rewards-bar w-100 p-3">
+      <div class="banner row gap-2 g-2">
+        @for (reward of rewards; track reward.class) {
+          <div class="col">
+            <app-reward-coin
+              [imageContainerClass]="'mb-2'"
+              [containerClass]="
+                'd-flex flex-column align-items-center h-100 justify-content-between'
+              "
+              [coinConfig]="reward"></app-reward-coin>
+          </div>
+        } @empty {
+          <p>No Rewards for this Battle</p>
+        }
+      </div>
     </div>
 
-    <footer>
-      <button class="got-toggle" (click)="data.close()">
+    <footer class="w-100">
+      <button class="got-toggle w-100" (click)="data.close()">
         {{ data.closeBtnLabel }}
       </button>
     </footer>

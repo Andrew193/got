@@ -4,8 +4,9 @@ import { NumbersService } from '../numbers/numbers.service';
 import { RewardValues } from '../../models/reward-based.model';
 import { REWARD } from '../../constants';
 import { Id } from '../../models/common.model';
+import { Currency } from '../users/users.interfaces';
 
-export type Reward = {
+export type RewardBox = {
   probability: number;
   name: RewardValues;
 };
@@ -48,6 +49,7 @@ export const basicRewardNames: RewardNames = {
 })
 export class RewardService {
   private numberService = inject(NumbersService);
+  heroService = inject(HeroesFacadeService);
 
   readonly rewardNames: RewardNames = basicRewardNames;
 
@@ -58,21 +60,41 @@ export class RewardService {
     { name: this.rewardNames.gold, ...REWARD.gold },
   ];
 
-  constructor(private heroService: HeroesFacadeService) {}
+  private _mostResentRewardCurrency!: Currency;
 
-  getReward(amountOfRewards: 1, items: Reward[]): DisplayReward;
-  getReward(amountOfRewards: number, items: Reward[]): DisplayReward[];
-  getReward(amountOfRewards = 1, items: Reward[]): DisplayReward | DisplayReward[] {
+  constructor() {
+    this.resetMostResentRewardCurrency();
+  }
+
+  resetMostResentRewardCurrency() {
+    this.mostResentRewardCurrency = {
+      copper: 0,
+      silver: 0,
+      gold: 0,
+    };
+  }
+
+  set mostResentRewardCurrency(data: Currency) {
+    this._mostResentRewardCurrency = data;
+  }
+
+  get mostResentRewardCurrency() {
+    return this._mostResentRewardCurrency;
+  }
+
+  getReward(amountOfRewards: 1, items: RewardBox[]): DisplayReward;
+  getReward(amountOfRewards: number, items: RewardBox[]): DisplayReward[];
+  getReward(amountOfRewards = 1, items: RewardBox[]): DisplayReward | DisplayReward[] {
     let rewards: DisplayReward[] = [];
 
     for (let i = 0; i < amountOfRewards; i++) {
-      rewards = [...rewards, this.getLoot(items)];
+      rewards = [...rewards, this.getLootFromBoxes(items)];
     }
 
     return amountOfRewards === 1 ? rewards[0] : rewards;
   }
 
-  openBox(items: Reward[]): Reward {
+  openBox(items: RewardBox[]): RewardBox {
     const rand = Math.random();
     const suitableRewards = [];
 
@@ -87,11 +109,11 @@ export class RewardService {
     return sortedRewards[sortedRewards.length - 1] || items[0];
   }
 
-  getLoot(items: Reward[]) {
+  getLootFromBoxes(items: RewardBox[]) {
     return this.getLootForReward(this.openBox(items));
   }
 
-  getLootForReward(item: Reward): DisplayReward {
+  getLootForReward(item: RewardBox): DisplayReward {
     const loot = this.rewardLoot.filter(reward => reward.name === item.name)[0];
 
     if (
@@ -121,7 +143,7 @@ export class RewardService {
     return RewardService.getDisplayRewardBase(item, 1, { src: '' });
   }
 
-  static getDisplayRewardBase(item: Reward, amount: number, config?: Partial<{ src: string }>) {
+  static getDisplayRewardBase(item: RewardBox, amount: number, config?: Partial<{ src: string }>) {
     return {
       amount: amount,
       name: item.name,

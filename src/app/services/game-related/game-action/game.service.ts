@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, OutputEmitterRef } from '@angular/core';
 import { createDeepCopy } from '../../../helpers';
 import { ModalWindowService } from '../../modal/modal-window.service';
 import { EffectsService } from '../../effects/effects.service';
@@ -196,7 +196,12 @@ export class GameService {
     };
   }
 
-  checkCloseFight(userUnits: TileUnit[], aiUnits: TileUnit[], callback: GameResultsRedirectType) {
+  checkCloseFight(
+    userUnits: TileUnit[],
+    aiUnits: TileUnit[],
+    callback: GameResultsRedirectType,
+    rewardSetter: OutputEmitterRef<Parameters<GameResultsRedirectType>>,
+  ) {
     const realUserUnits = userUnits[0].user ? userUnits : aiUnits;
     const realAiUnits = !aiUnits[0].user ? aiUnits : userUnits;
 
@@ -204,6 +209,8 @@ export class GameService {
     const allAiUnitsDead = this.isDead(realAiUnits);
 
     if (allUserUnitsDead || allAiUnitsDead) {
+      rewardSetter.emit([realAiUnits, !allUserUnitsDead]);
+
       this.gameResult = {
         headerClass: allUserUnitsDead ? 'red-b' : 'green-b',
         headerMessage: allUserUnitsDead ? 'You lost' : 'You won',
@@ -228,7 +235,11 @@ export class GameService {
       );
 
       this.modalWindowService.openModal(config);
+
+      return true;
     }
+
+    return false;
   }
 
   isDead(units: TileUnit[]) {

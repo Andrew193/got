@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { DisplayReward, Reward, RewardService } from '../../reward/reward.service';
+import { DisplayReward, RewardBox, RewardService } from '../../reward/reward.service';
 import { DisplayRewardActions } from '../../../store/actions/display-reward.actions';
 import { Store } from '@ngrx/store';
 import { DisplayRewardNames } from '../../../store/store.interfaces';
@@ -18,7 +18,7 @@ export class SummonTreeService {
 
   loader = this.loaderService.getPageLoader(frontRoutes.summonTree);
 
-  items: Reward[] = [
+  items: RewardBox[] = [
     { name: this.rewardService.rewardNames.copper, probability: 0.7 },
     { name: this.rewardService.rewardNames.silver, probability: 0.45 },
     { name: this.rewardService.rewardNames.shards, probability: 0.2 },

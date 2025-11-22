@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+  OnDestroy,
+  output,
+} from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
@@ -35,11 +42,13 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
   @Input() aiUnits: TileUnit[] = [];
   @Input() battleMode = true;
   @Input() gameResultsRedirect: GameResultsRedirectType = () => {};
+  battleEndFlag = output<Parameters<GameResultsRedirectType>>();
 
   autoFight = false;
 
   log = this.store.select(selectBattleLog());
   turnUser = true;
+  over = false;
   turnCount = 0;
   maxTurnCount = 20;
   _turnCount: BehaviorSubject<number> = new BehaviorSubject<number>(1);

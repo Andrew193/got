@@ -2,16 +2,17 @@
 
 <div class="inner-container">
   <h4 class="text-center mt-2 mb-0 banner">
-    <span class="caption"
-      >Explore the Gift and reap the harvest. Be extremely careful because sometimes there are
-      wildlings here</span
-    >
+    <span class="caption">
+      Explore the Gift and reap the harvest. Be extremely careful because sometimes there are
+      wildlings here
+    </span>
   </h4>
   <div class="flex-row harvest-container">
     <div class="col-lg-12 col-md-12">
       <app-game-entry-point
         [aiUnits]="aiUnits"
-        [gameResultsRedirect]="gameResultsRedirect"
+        (battleEndFlag)="battleEndFlag($event)"
+        [gameResultsRedirect]="collectAndLeave"
         [userUnits]="userUnits"
         [battleMode]="true">
         <ng-container ngProjectAs="bottom-navigation">
@@ -19,17 +20,12 @@
             Refresh field (load new rewards)
           </button>
           <button class="got-toggle ms-1" (click)="goToMainPage()">Back to Castle Black</button>
-          @if (_loot.length) {
-            <button class="got-toggle got-toggle-green ms-1" (click)="collectAndLeave(_loot)">
-              Collect loot and leave
-            </button>
-          }
         </ng-container>
       </app-game-entry-point>
     </div>
     @if (_loot.length) {
       <div class="col-lg-12 col-md-12 mt-3">
-        <app-display-reward [contextName]="contextName"></app-display-reward>
+        <app-display-reward [showTotalBar]="false" [contextName]="contextName"></app-display-reward>
       </div>
     }
   </div>

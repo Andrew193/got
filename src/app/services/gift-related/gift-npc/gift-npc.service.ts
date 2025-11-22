@@ -3,7 +3,7 @@ import { HeroesFacadeService } from '../../facades/heroes/heroes.service';
 import {
   basicRewardNames,
   DisplayReward,
-  Reward,
+  RewardBox,
   RewardService,
 } from '../../reward/reward.service';
 import {
@@ -24,18 +24,18 @@ import { GIFT_STORE_NPC_AMOUNT } from '../../../constants';
 export class GiftNpcService implements RewardComponentInterface {
   numberService = inject(NumbersService);
 
-  items: Reward[] = [
+  items: RewardBox[] = [
     { name: this.rewardService.rewardNames.copper, probability: 0.7 },
     { name: this.rewardService.rewardNames.chest, probability: 0.3 },
   ];
 
-  specialGiftItems: Reward[] = [
+  specialGiftItems: RewardBox[] = [
     { name: this.rewardService.rewardNames.gold, probability: 0.2 },
     { name: this.rewardService.rewardNames.chest, probability: 0.3 },
     { name: this.rewardService.rewardNames.silver, probability: 0.5 },
   ];
 
-  chestItems: Reward[] = [
+  chestItems: RewardBox[] = [
     { name: this.rewardService.rewardNames.gold, probability: 0.4 },
     { name: this.rewardService.rewardNames.copper, probability: 0.2 },
     { name: this.rewardService.rewardNames.silver, probability: 0.4 },

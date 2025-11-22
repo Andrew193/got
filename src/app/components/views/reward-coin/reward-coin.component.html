@@ -1,10 +1,11 @@
 @let coin = coinConfig();
-@let _convertToPercentage = convertToPercentage();
 
+@let _convertToPercentage = convertToPercentage();
 @let _imageContainerClass = imageContainerClass();
+@let _containerClass = containerClass();
 
 @if (coin) {
-  <span class="fw-bold {{ coin.class }}">
+  <span class="fw-bold {{ coin.class }} {{ _containerClass }}">
     <span [class]="_imageContainerClass">
       <app-image [source]="coin.imgSrc" [useFixSize]="useFixSize()" [alt]="coin.alt"></app-image>
     </span>

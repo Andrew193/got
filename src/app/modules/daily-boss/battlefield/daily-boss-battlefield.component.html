@@ -1,5 +1,6 @@
 @if (aiUnits.length && userUnits.length) {
   <app-game-entry-point
+    (battleEndFlag)="getReward($event)"
     [gameResultsRedirect]="gameResultsRedirect"
     [aiUnits]="aiUnits"
     [userUnits]="userUnits"></app-game-entry-point>

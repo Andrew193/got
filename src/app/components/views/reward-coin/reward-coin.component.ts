@@ -13,5 +13,6 @@ export class RewardCoinComponent {
   useFixSize = input<boolean>(false);
   coinConfig = input.required<Coin>();
   imageContainerClass = input('');
+  containerClass = input('');
   convertToPercentage = input(false);
 }

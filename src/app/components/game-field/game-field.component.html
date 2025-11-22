@@ -110,7 +110,7 @@
       </div>
     </aside>
   </main>
-  <div class="d-flex actions">
+  <fieldset [disabled]="over" class="d-flex actions">
     @if (!autoFight) {
       <button class="got-toggle got-toggle-green" (click)="startAutoFight(false)">Auto Play</button>
       <button class="ms-1 got-toggle got-toggle-green" (click)="startAutoFight(false, true)">
@@ -118,7 +118,7 @@
       </button>
     }
     <ng-content select="bottom-navigation"></ng-content>
-  </div>
+  </fieldset>
 </div>
 
 <ng-template #asideUnits let-units="units">

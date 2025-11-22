@@ -140,7 +140,7 @@ export class DailyBossFacadeService {
     return versions[version];
   }
 
-  collectReward(level: BossDifficulty, dmg: number, win: boolean) {
+  getRewardToCollect(level: BossDifficulty, dmg: number, win: boolean) {
     const targetBossConfig = this.bossReward[level];
 
     const copperTimes = this.numberService.roundDown(dmg / targetBossConfig.copperDMG, 0);
@@ -153,6 +153,10 @@ export class DailyBossFacadeService {
       copper: copperTimes * targetBossConfig.copper + (win ? targetBossConfig.copperWin : 0),
     };
 
+    return reward;
+  }
+
+  collectReward(reward: Currency) {
     const newCurrency = this.usersService.updateCurrency(reward, {
       returnObs: true,
     });

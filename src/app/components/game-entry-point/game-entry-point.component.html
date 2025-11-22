@@ -7,6 +7,7 @@
     [aiUnits]="_ai"
     [userUnits]="_user"
     [battleMode]="mode"
+    (battleEndFlag)="battleEndFlag.emit($event)"
     [gameResultsRedirect]="gameResultsRedirect">
     <ng-container ngProjectAs="bottom-navigation">
       <ng-content select="bottom-navigation"></ng-content>

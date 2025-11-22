@@ -1,4 +1,4 @@
-import { DisplayReward, Reward, RewardNames } from '../services/reward/reward.service';
+import { DisplayReward, RewardBox, RewardNames } from '../services/reward/reward.service';
 import { IdEntity, LastLogin } from './common.model';
 import { Cur } from './iron-bank.model';
 
@@ -9,7 +9,7 @@ export interface DailyReward extends IdEntity, LastLogin {
 }
 
 export interface RewardComponentInterface {
-  items: Reward[];
+  items: RewardBox[];
   rewards: DisplayReward[];
 }
 

@@ -5,6 +5,7 @@ import {
   input,
   Input,
   model,
+  output,
   viewChild,
 } from '@angular/core';
 import { GameFieldComponent } from '../game-field/game-field.component';
@@ -24,6 +25,8 @@ export class GameEntryPointComponent<T extends TileUnit> {
   userUnits = model<TileUnit[]>([]);
   aiUnits = model<T[]>([]);
   battleMode = input(true);
+
+  battleEndFlag = output<Parameters<GameResultsRedirectType>>();
 
   constructor() {
     effect(() => {

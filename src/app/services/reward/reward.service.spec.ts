@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { Reward, RewardService } from './reward.service';
-import { HeroesService } from '../facades/heroes/heroes.service';
+import { RewardBox, RewardService } from './reward.service';
+import { HeroesFacadeService } from '../facades/heroes/heroes.service';
 import { HeroesNamesCodes, Unit } from '../../models/units-related/unit.model';
 import { Currency } from '../users/users.interfaces';
 import { REWARD } from '../../constants';
@@ -8,7 +8,7 @@ import { CurrencyHelperService } from '../users/currency/helper/currency-helper.
 
 describe('RewardService', () => {
   let rewardService: RewardService;
-  let heroServiceSpy: jasmine.SpyObj<HeroesService>;
+  let heroServiceSpy: jasmine.SpyObj<HeroesFacadeService>;
   let currencyHelperService: CurrencyHelperService;
 
   beforeEach(() => {
@@ -48,6 +48,7 @@ describe('RewardService', () => {
         effects: [],
         x: 0,
         y: 0,
+        synergy: [],
       },
     ];
 
@@ -56,7 +57,7 @@ describe('RewardService', () => {
     TestBed.configureTestingModule({
       providers: [
         RewardService,
-        { provide: HeroesService, useValue: heroServiceSpy },
+        { provide: HeroesFacadeService, useValue: heroServiceSpy },
         CurrencyHelperService,
       ],
     });
@@ -115,7 +116,7 @@ describe('RewardService', () => {
   });
 
   it('RewardService should give reward', () => {
-    const rewards: Reward[] = [
+    const rewards: RewardBox[] = [
       {
         probability: 1,
         name: 'Copper',
@@ -128,7 +129,7 @@ describe('RewardService', () => {
   });
 
   it('RewardService should open box', () => {
-    const rewards: Reward[] = [
+    const rewards: RewardBox[] = [
       {
         probability: 0,
         name: 'Copper',
@@ -151,7 +152,7 @@ describe('RewardService', () => {
   });
 
   it('RewardService should return loot', () => {
-    const rewards: Reward[] = [
+    const rewards: RewardBox[] = [
       {
         probability: 0.01,
         name: 'Copper',
@@ -162,7 +163,7 @@ describe('RewardService', () => {
       },
     ];
 
-    const loot = rewardService.getLoot(rewards);
+    const loot = rewardService.getLootFromBoxes(rewards);
 
     expect(loot.name).toBe('Gold');
     expect(loot.amount).toBeGreaterThanOrEqual(REWARD.gold.min);

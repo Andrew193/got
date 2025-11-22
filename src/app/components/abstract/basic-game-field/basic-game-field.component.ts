@@ -138,7 +138,12 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       canMove: false,
       skills: updatedSkills,
     };
-    this.gameActionService.checkCloseFight(this.userUnits, this.aiUnits, this.gameResultsRedirect);
+    this.over = this.gameActionService.checkCloseFight(
+      this.userUnits,
+      this.aiUnits,
+      this.gameResultsRedirect,
+      this.battleEndFlag,
+    );
     this.updateGridUnits([...this.aiUnits, ...this.userUnits]);
     this.dropEnemy();
     this.checkAiMoves(true);
@@ -460,7 +465,12 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     // Update game state
     this.updateField(userUnits, aiUnits);
     this.turnUser = true;
-    this.gameActionService.checkCloseFight(userUnits, aiUnits, this.gameResultsRedirect);
+    this.over = this.gameActionService.checkCloseFight(
+      userUnits,
+      aiUnits,
+      this.gameResultsRedirect,
+      this.battleEndFlag,
+    );
   }
 
   updateField<T extends ReturnType<typeof this.getAiLeadingUnits>>(userUnits: T, aiUnits: T) {

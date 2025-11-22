@@ -8,6 +8,7 @@ import {
 } from '../../../services/facades/daily-boss/daily-boss.service';
 import { TileUnit, TileUnitWithReward } from '../../../models/field.model';
 import { UnitName } from '../../../models/units-related/unit.model';
+import { RewardService } from '../../../services/reward/reward.service';
 
 @Component({
   selector: 'app-battlefield',
@@ -16,6 +17,7 @@ import { UnitName } from '../../../models/units-related/unit.model';
 })
 export class DailyBossBattlefieldComponent {
   dailyBossService = inject(DailyBossFacadeService);
+  rewardService = inject(RewardService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -52,11 +54,15 @@ export class DailyBossBattlefieldComponent {
     });
   }
 
-  gameResultsRedirect = (realAiUnits: TileUnit[] | TileUnitWithReward[], win: boolean) => {
-    this.dailyBossService.collectReward(
+  getReward([realAiUnits, win]: [realAiUnits: TileUnit[] | TileUnitWithReward[], win: boolean]) {
+    this.rewardService.mostResentRewardCurrency = this.dailyBossService.getRewardToCollect(
       this.level,
       realAiUnits[0].maxHealth - realAiUnits[0].health,
       win,
     );
+  }
+
+  gameResultsRedirect = () => {
+    this.dailyBossService.collectReward(this.rewardService.mostResentRewardCurrency);
   };
 }
