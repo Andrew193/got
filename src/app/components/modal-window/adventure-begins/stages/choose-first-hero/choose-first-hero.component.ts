@@ -8,9 +8,10 @@ import { BasicHeroSelectComponent } from '../../../../abstract/basic-hero-select
 import { HeroesSelectComponent } from '../../../../heroes-related/heroes-select/heroes-select.component';
 import { HeroesSelectPreviewComponent } from '../../../../heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { StatsComponent } from '../../../../views/stats/stats.component';
-import { Unit } from '../../../../../models/units-related/unit.model';
+import { PreviewUnit, Unit } from '../../../../../models/units-related/unit.model';
 import { HeroesSelectNames, SceneNames } from '../../../../../constants';
 import { HeroesSelectActions } from '../../../../../store/actions/heroes-select.actions';
+import { selectUnits } from '../../../../../store/reducers/units-configurator.reducer';
 
 @Component({
   selector: 'app-choose-first-hero',
@@ -18,14 +19,19 @@ import { HeroesSelectActions } from '../../../../../store/actions/heroes-select.
   templateUrl: './choose-first-hero.component.html',
   styleUrl: './choose-first-hero.component.scss',
 })
-export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implements SceneComponent {
+export class ChooseFirstHeroComponent
+  extends BasicHeroSelectComponent<PreviewUnit>
+  implements SceneComponent
+{
   bottomSheetRef =
     inject<MatBottomSheetRef<ChooseFirstHeroComponent, SceneContext<SceneNames.firstHero>>>(
       MatBottomSheetRef,
     );
 
   override maxHeroes = 1;
+
   heroesContext = HeroesSelectNames.firstBattleCollection;
+  chosenUnits = this.store.selectSignal(selectUnits(this.heroesContext));
 
   constructor() {
     super();
@@ -38,11 +44,11 @@ export class ChooseFirstHeroComponent extends BasicHeroSelectComponent implement
     this.store.dispatch(
       HeroesSelectActions.resetHeroCollection({ collections: [this.heroesContext] }),
     );
-    this.bottomSheetRef.dismiss({ name: this.chosenUnits[0].name, repeat: false });
+    this.bottomSheetRef.dismiss({ name: this.chosenUnits()[0].name, repeat: false });
   }
 
   getSelectedHero() {
-    const chosenUnit = this.chosenUnits[0];
+    const chosenUnit = this.chosenUnits()[0];
 
     if (chosenUnit) {
       return this.allUnits.find(el => el.name === chosenUnit.name) as Unit;

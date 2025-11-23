@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { StatsComponent } from '../../../components/views/stats/stats.component';
-import { Unit } from '../../../models/units-related/unit.model';
+import { PreviewUnit, Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
@@ -17,6 +17,7 @@ import { frontRoutes, HeroesSelectNames } from '../../../constants';
 import { PageLoaderComponent } from '../../../components/views/page-loader/page-loader.component';
 import { TrainingMatcherCover } from '../../training/training-config/training-config.component';
 import { LoaderService } from '../../../services/resolver-loader/loader.service';
+import { selectUnits } from '../../../store/reducers/units-configurator.reducer';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -36,14 +37,15 @@ import { LoaderService } from '../../../services/resolver-loader/loader.service'
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
 })
-export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
+export class DailyBossLobbyComponent extends BasicHeroSelectComponent<PreviewUnit> {
   nav = inject(NavigationService);
   dailyBossService = inject(DailyBossFacadeService);
-  private loaderService = inject(LoaderService);
 
+  private loaderService = inject(LoaderService);
   loader = this.loaderService.getPageLoader(frontRoutes.dailyBoss);
 
   override context = HeroesSelectNames.dailyBossCollection;
+  chosenUnits = this.store.selectSignal(selectUnits(this.context));
 
   constructor() {
     super();
@@ -66,7 +68,7 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent {
   openFight(bossLevel: BossDifficulty) {
     this.nav.goToDailyBossBattle(
       bossLevel,
-      this.chosenUnits.map(el => el.name),
+      this.chosenUnits().map(el => el.name),
     );
   }
 

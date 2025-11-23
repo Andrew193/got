@@ -1,4 +1,5 @@
 @let _selectedHero = getSelectedHero();
+@let _chosenUnits = chosenUnits();
 
 <div class="inner-container">
   <p class="color-white">
@@ -18,9 +19,9 @@
       [contextName]="heroesContext"
       [containerClass]="'border-radius-none border-end-0'"
       [addUserUnit]="addUserUnit"></app-heroes-select>
-    @if (chosenUnits.length) {
+    @if (_chosenUnits.length) {
       <app-heroes-select-preview
-        [units]="chosenUnits"
+        [units]="_chosenUnits"
         [containerClass]="
           'border-radius-none border-end-0 color-white'
         "></app-heroes-select-preview>
@@ -35,7 +36,7 @@
     }
   </div>
 
-  @if (chosenUnits.length) {
+  @if (_chosenUnits.length) {
     <button (click)="stopScene()" class="got-toggle mt-2 w-100">I am Sure</button>
   } @else {
     <p class="tip mt-2">Your real adventure will begin right after you choose your first hero.</p>

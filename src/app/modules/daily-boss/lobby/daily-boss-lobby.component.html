@@ -1,3 +1,5 @@
+@let _chosenUnits = chosenUnits();
+
 <div class="page-container">
   <app-page-loader [loader]="loader" />
   <div class="row ms-2 me-2 mb-2 g-2">
@@ -71,9 +73,9 @@
           [containerClass]="'border-radius-none border-end-0 no-p'"
           [addUserUnit]="addUserUnit"></app-heroes-select>
 
-        @if (chosenUnits.length) {
+        @if (_chosenUnits.length) {
           <app-heroes-select-preview
-            [units]="chosenUnits"
+            [units]="_chosenUnits"
             [containerClass]="'border-radius-none border-end-0'"></app-heroes-select-preview>
         }
       </div>
