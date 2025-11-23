@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
-import { HasFooterHost } from '../modal-interfaces';
+import { DynamicComponentConfig, HasFooterHost } from '../modal-interfaces';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import {
   DepositHintComponent,
@@ -34,7 +34,7 @@ export class DepositModalComponent implements Partial<HasFooterHost> {
   currencyHelperService = inject(CurrencyHelperService);
   helper = inject(IronBankHelperService);
 
-  _data = inject<DepositConfig>(DYNAMIC_COMPONENT_DATA);
+  _data = inject<DynamicComponentConfig<DepositConfig>>(DYNAMIC_COMPONENT_DATA);
   deposit: Observable<DepositCurrency> = this.depositFacadeService.$deposit;
   newCoins: Coin[] = [];
 

@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
-import { HasFooterHost } from '../modal-interfaces';
+import { DynamicComponentConfig, HasFooterHost } from '../modal-interfaces';
 import { SceneRunnerService } from '../../../services/facades/scene-runner/scene-runner.service';
 import { ScenesRunnerHost } from '../../../models/interfaces/scenes/scene.interface';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
@@ -15,7 +15,7 @@ export type Callback = {
   styleUrl: './adventure-begins.component.scss',
 })
 export class AdventureBeginsComponent implements Partial<HasFooterHost>, ScenesRunnerHost {
-  _data = inject<Callback>(DYNAMIC_COMPONENT_DATA);
+  _data = inject<DynamicComponentConfig<Callback>>(DYNAMIC_COMPONENT_DATA);
   scenesHelper = inject(ScenariosHelperService);
   runner = inject(SceneRunnerService);
 

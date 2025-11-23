@@ -76,7 +76,9 @@ export class ModalWindowComponent implements OnInit {
     return {
       ...modalConfig,
       close: () => this.close(modalConfig),
-      data: Object.assign(modalConfig.config.data || {}, { close: () => this.close(modalConfig) }),
+      config: Object.assign({}, modalConfig.config, {
+        data: Object.assign({}, modalConfig.config.data, { close: () => this.close(modalConfig) }),
+      }),
     };
   }
 

@@ -13,6 +13,7 @@ export interface NotificationActivity {
     alt: string;
   };
   desc: string;
+  action?: () => void;
 }
 
 export type NotificationConfigMap = Map<NotificationType, boolean>;

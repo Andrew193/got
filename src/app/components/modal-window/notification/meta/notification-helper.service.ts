@@ -11,6 +11,7 @@ import { BaseLoyaltyBonus } from '../../../../services/daily-reward/daily-reward
 import { NumbersService } from '../../../../services/numbers/numbers.service';
 import { Coin } from '../../../../models/reward-based.model';
 import { Cur } from '../../../../models/iron-bank.model';
+import { LobbyService } from '../../../../services/lobby/lobby.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,10 @@ export class NotificationHelperService {
   userService = inject(UsersService);
   timeService = inject(TimeService);
   numbersService = inject(NumbersService);
+  lobbyService = inject(LobbyService);
 
-  private activities: NotificationActivity[] = NotificationActivities;
+  private activities: NotificationActivity[] = (() =>
+    NotificationActivities(this.lobbyService.nav, this.lobbyService))();
 
   private labels: Record<number, string> = {
     0: '2 hours',
@@ -68,6 +71,8 @@ export class NotificationHelperService {
     this.activities = this.activities.map((el, index) =>
       index === i ? { ...el, flipped: !el.flipped } : el,
     );
+
+    return this.activities;
   }
 
   public claimed = (i: number) => {

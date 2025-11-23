@@ -17,7 +17,7 @@ export interface ModalConfig<T = unknown> extends ModalBase {
   dialogId: string;
   config: {
     callback?: () => void;
-    strategy: number;
+    strategy: ModalStrategiesTypes;
     modalRootClass?: string;
     component?: HasFooterHost;
     data?: T;
@@ -28,12 +28,14 @@ export interface ExtendedModalConfig<T = unknown> extends ModalConfig<T> {
   close: () => void;
 }
 
+export type DynamicComponentConfig<T> = Pick<ExtendedModalConfig, 'close'> & T;
+
 export enum ModalStrategiesTypes {
   base,
   component,
 }
 
-export const ModalStrategies: Record<number, ModalStrategy> = {
+export const ModalStrategies: Record<ModalStrategiesTypes, ModalStrategy> = {
   [ModalStrategiesTypes.base]: new BasicModalStrategy(),
   [ModalStrategiesTypes.component]: new ComponentModalStrategy(),
 };
