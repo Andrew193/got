@@ -55,6 +55,14 @@
             [source]="skill.imgSrc"
             [alt]="skill.name"
             [renderAsBackground]="_showAsBackground" />
+
+          @if (skill.passive) {
+            <div
+              class="skill-disabled"
+              style="top: 0px; left: 0px; max-height: unset; max-width: unset">
+              <i aria-hidden="true">P</i>
+            </div>
+          }
         </div>
       </div>
     }

@@ -93,14 +93,20 @@ export class LoginPageComponent implements OnInit {
       }, 1000);
     };
 
+    const disabledFormCover = (callback: () => void) => {
+      this.form.disable({ emitEvent: false });
+
+      return callback();
+    };
+
     this.validationService.validateFormAndSubmit(
       this.form,
-      this.usersService.login(this.form.value, callback),
+      this.usersService.login(this.form.value, _ => disabledFormCover(() => callback(_))),
       this.usersService
         .createUser(this.form.value, () => {})
         .pipe(
           tap({
-            next: callback,
+            next: _ => disabledFormCover(() => callback(_)),
           }),
         ),
       !this.createUser,

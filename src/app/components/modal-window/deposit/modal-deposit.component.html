@@ -39,14 +39,16 @@
 
       <div class="color-white row m-0 p-0 mt-2">
         <span class="col-lg-6 col-md-12 text-center">
-          Your deposit will last for: <b>{{ _deposit.duration || _data.days }}</b> days.
+          Your deposit will last for:
+          <b style="color: darkred">{{ _deposit.duration || _data.days }}</b> days.
         </span>
         <span class="col-lg-6 col-md-12 text-center">
           You submitted your deposit: <b>{{ getDepositDay(_deposit.depositDay) }}</b>
         </span>
         <span class="col-12 text-center">
           @if (_remainingDepositTime !== 0) {
-            You can collect your money in: <b>{{ _remainingDepositTime.hours }}</b> hours.
+            You can collect your money in:
+            <b style="color: darkred">{{ _remainingDepositTime.hours }}</b> hours.
             <button class="got-toggle-green got-toggle p-2" (click)="getDeposit(true)">
               Cancel this Deposit
             </button>

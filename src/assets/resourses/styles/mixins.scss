@@ -141,7 +141,7 @@
   @include h-100-w-100;
   height: calc(100vh - 90px);
   @include anim.delayed-element;
-  z-index: 1001;
+  z-index: 1000;
   background-color: var.$metal-dark-1;
 }
 
