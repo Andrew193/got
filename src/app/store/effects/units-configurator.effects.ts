@@ -22,4 +22,15 @@ export class UnitsConfiguratorEffects {
       ),
     );
   });
+
+  clearUnitsConfigurationAfterSelectionDrop = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(HeroesSelectActions.resetHeroCollection),
+      map(action =>
+        UnitsConfiguratorFeatureActions.resetHeroCollection({
+          collections: action.collections,
+        }),
+      ),
+    );
+  });
 }

@@ -5,7 +5,7 @@
 @let _gridConfig = gridConfig();
 @let _allUnitsForFieldConfig = allUnitsForFieldConfig();
 @let _canStartFight = canStartFight | async;
-@let _showField = showField | async;
+<!--@let _showField = showField | async;-->
 
 <div>
   <h3 class="text-center banner">Configure your training</h3>
@@ -38,14 +38,12 @@
     </ng-container>
   </div>
 
-  @if (_gridConfig && _showField) {
-    <app-enhanced-form-constructor
-      [colQty]="_gridConfig.columns"
-      [dragAllowed]="false"
-      [formName]="formName"
-      [rowQty]="_gridConfig.rows"
-      [allFields]="_allUnitsForFieldConfig" />
-  }
+  <app-enhanced-form-constructor
+    [colQty]="_gridConfig.columns"
+    [dragAllowed]="false"
+    [formName]="formName"
+    [rowQty]="_gridConfig.rows"
+    [allFields]="_allUnitsForFieldConfig" />
 </div>
 
 <ng-template #unitsBar let-isUser="isUser" let-title="title" let-contextName="contextName">

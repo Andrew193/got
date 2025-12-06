@@ -1,6 +1,7 @@
 import { Tile } from '../../components/form/enhancedFormConstructor/form-constructor.models';
 import { TileEnhancedOperations } from '../../components/form/enhancedFormConstructor/abstract/tile-enhanced-operations';
 import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AbstractEnhancedFormComponent } from '../../components/form/enhancedFormConstructor/abstract/abstract-enhanced-form.component';
 
 type ResizeConfig<T> = {
   enabled: boolean;
@@ -53,6 +54,13 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
     this.r.setStyle(this.handleEl, 'opacity', this.cfg.enabled ? '0.7' : '0');
     this.r.appendChild(this.host.nativeElement, this.handleEl);
 
+    function getRawFix(rawSpan: number) {
+      const marginPx = rawSpan > 1 ? AbstractEnhancedFormComponent.tileMargin * rawSpan - 1 : 0;
+      const mPx = rawSpan > 1 ? 2 * rawSpan - 1 : 0;
+
+      return marginPx + mPx;
+    }
+
     const down = this.r.listen(this.handleEl, 'pointerdown', (e: PointerEvent) => {
       if (!this.cfg?.enabled) return;
       e.preventDefault();
@@ -67,8 +75,11 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
       this.startW = rect.width;
       this.startH = rect.height;
 
-      this.baseCellW = this.cfg.cellW ?? this.startW / Math.max(1, this.cfg.tile.xSpan);
-      this.baseCellH = this.cfg.cellH ?? this.startH / Math.max(1, this.cfg.tile.ySpan);
+      const rawXSpan = Math.max(1, this.cfg.tile.xSpan);
+      const rawYSpan = Math.max(1, this.cfg.tile.ySpan);
+
+      this.baseCellW = Math.round(this.cfg.cellW ?? (this.startW - getRawFix(rawXSpan)) / rawXSpan);
+      this.baseCellH = Math.round(this.cfg.cellH ?? (this.startH - getRawFix(rawYSpan)) / rawYSpan);
 
       this.resizing = true;
       this.toggleUserSelect(true);
@@ -86,8 +97,16 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
       const rawXSpan = Math.max(1, Math.round(nextW / this.baseCellW));
       const rawYSpan = Math.max(1, Math.round(nextH / this.baseCellH));
 
-      this.r.setStyle(this.host.nativeElement, 'width', `${rawXSpan * this.baseCellW}px`);
-      this.r.setStyle(this.host.nativeElement, 'height', `${rawYSpan * this.baseCellH}px`);
+      this.r.setStyle(
+        this.host.nativeElement,
+        'width',
+        `${rawXSpan * this.baseCellW + getRawFix(rawXSpan)}px`,
+      );
+      this.r.setStyle(
+        this.host.nativeElement,
+        'height',
+        `${rawYSpan * this.baseCellH + getRawFix(rawYSpan)}px`,
+      );
       this.r.setStyle(this.host.nativeElement, 'zIndex', 10000);
     });
 
@@ -110,8 +129,16 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
       } catch (tileError) {
         const tile = tileError as Tile<T>;
 
-        this.r.setStyle(this.host.nativeElement, 'width', `${tile.xSpan * this.baseCellW}px`);
-        this.r.setStyle(this.host.nativeElement, 'height', `${tile.ySpan * this.baseCellH}px`);
+        this.r.setStyle(
+          this.host.nativeElement,
+          'width',
+          `${tile.xSpan * this.baseCellW + getRawFix(tile.xSpan)}px`,
+        );
+        this.r.setStyle(
+          this.host.nativeElement,
+          'height',
+          `${tile.ySpan * this.baseCellH + getRawFix(tile.ySpan)}px`,
+        );
       }
     });
 

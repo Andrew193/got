@@ -7,6 +7,7 @@ import {
   Rarity,
   Unit,
   UnitConfig,
+  UnitName,
 } from '../../../models/units-related/unit.model';
 import { ContentService, ContentTypes } from '../../abstract/content/content-service.service';
 import { TileUnit } from '../../../models/field.model';
@@ -18,10 +19,19 @@ import { UnitsConfiguratorStateUnit } from '../../../store/store.interfaces';
 })
 export class HeroesFacadeService extends ContentService {
   helper = inject(HeroesHelperService);
+  allUnits: Unit[] = [];
+
+  constructor() {
+    super();
+    this.allUnits = this.getAllHeroes();
+  }
 
   getLadyOfDragonStone(): Unit {
     const passiveBuffs = [this.helper.eS.getEffect(this.helper.effects.healthRestore, 1)];
-    const effects = [this.helper.eS.getEffect(this.helper.effects.healthRestore)];
+    const effects = [
+      this.helper.eS.getEffect(this.helper.effects.healthRestore),
+      this.helper.eS.getEffect(this.helper.effects.burning, 20),
+    ];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
 
     return {
@@ -47,7 +57,6 @@ export class HeroesFacadeService extends ContentService {
           attackInRangeM: 1.35,
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 2, 3)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak, 5)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Drakarys',
@@ -68,7 +77,6 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.defBreak, 2),
           ],
           inRangeDebuffs: [...this.helper.eS.getEffect(this.helper.effects.bleeding, 2, 2)],
-          description: '',
         }),
         {
           name: 'Targaryen',
@@ -86,6 +94,67 @@ export class HeroesFacadeService extends ContentService {
       ],
       effects: effects,
       synergy: [HeroesNamesCodes.TargaryenKnight],
+    };
+  }
+
+  getRedKeepAlchemist(): Unit {
+    const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
+
+    return {
+      ...this.helper.getBasicUserConfig(),
+      ...this.helper.getHeroBasicStats(HeroesNamesCodes.RedKeepAlchemist),
+      heroType: HeroType.ATTACK,
+      rarity: Rarity.EPIC,
+      imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/UI_Avatar_Unit_12.png',
+      fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/UI_UnitFull_12.png',
+      name: HeroesNamesCodes.RedKeepAlchemist,
+      description:
+        "Rejected from the Alchemist's Guild, this unique fighter brings both fire and fury to a melee or ranged battle.",
+      skills: [
+        getAndSetSkillDescription({
+          name: 'Throw Wildfire',
+          imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/skills/rka_a1.png',
+          dmgM: 2.8,
+          cooldown: 0,
+          remainingCooldown: 0,
+          debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 2, 2)],
+          activateDebuffs: [this.helper.effects.burning, this.helper.effects.bleeding],
+        }),
+        getAndSetSkillDescription({
+          name: 'Burning Embers',
+          imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/skills/rka_a2.png',
+          dmgM: 1.9,
+          cooldown: 3,
+          remainingCooldown: 0,
+          attackInRange: true,
+          attackRange: 2,
+          addBuffsBeforeAttack: false,
+          attackInRangeM: 1.9,
+          buffs: [
+            this.helper.eS.getEffect(this.helper.effects.attackBuff, 3),
+            this.helper.eS.getEffect(this.helper.effects.defBuff, 3),
+          ],
+          debuffs: [
+            ...this.helper.eS.getEffect(this.helper.effects.burning, 2, 3),
+            ...this.helper.eS.getEffect(this.helper.effects.bleeding, 2, 3),
+          ],
+          inRangeDebuffs: [
+            ...this.helper.eS.getEffect(this.helper.effects.burning, 2, 2),
+            ...this.helper.eS.getEffect(this.helper.effects.bleeding, 2, 2),
+          ],
+          activateDebuffs: [this.helper.effects.burning, this.helper.effects.bleeding],
+        }),
+        {
+          name: 'Unstable',
+          imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/skills/rka_a3.png',
+          buffs: [],
+          passive: true,
+          restoreSkill: false,
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RedKeepAlchemist),
+        },
+      ],
+      effects: [],
+      synergy: [HeroesNamesCodes.TargaryenKnight, HeroesNamesCodes.LadyOfDragonStone],
     };
   }
 
@@ -116,7 +185,6 @@ export class HeroesFacadeService extends ContentService {
           attackInRangeM: 1.1,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.attackBreak)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.attackBreak)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'For the King',
@@ -134,7 +202,6 @@ export class HeroesFacadeService extends ContentService {
           ],
           addBuffsBeforeAttack: false,
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak)],
-          description: '',
         }),
         {
           name: 'Crown Shield',
@@ -175,7 +242,6 @@ export class HeroesFacadeService extends ContentService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.bleeding, 1)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Torn wound',
@@ -184,7 +250,6 @@ export class HeroesFacadeService extends ContentService {
           cooldown: 3,
           remainingCooldown: 0,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak)],
-          description: '',
         }),
       ],
       effects: [],
@@ -217,7 +282,6 @@ export class HeroesFacadeService extends ContentService {
           remainingCooldown: 0,
           healAll: true,
           heal: true,
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Great Healing',
@@ -231,7 +295,6 @@ export class HeroesFacadeService extends ContentService {
           attackInRangeM: 0.9,
           healAll: true,
           heal: true,
-          description: '',
         }),
         {
           name: 'Lokrand',
@@ -271,7 +334,6 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
-          description: '',
         }),
       ],
       effects: [],
@@ -306,7 +368,6 @@ export class HeroesFacadeService extends ContentService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
-          description: '',
         }),
       ],
       effects: [],
@@ -349,7 +410,6 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.root),
           ],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.attackBreak)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Ambush',
@@ -364,13 +424,12 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.bleeding),
             this.helper.eS.getEffect(this.helper.effects.defBreak),
           ],
-          description: '',
         }),
         {
           name: 'Warrior',
           imgSrc: '../../../assets/resourses/imgs/heroes/relina-snow/skills/relia_p.png',
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RelinaShow, []),
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RelinaShow),
         },
       ],
       effects: [],
@@ -407,7 +466,6 @@ export class HeroesFacadeService extends ContentService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.poison, 1)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Trap',
@@ -422,13 +480,12 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.bleeding),
             this.helper.eS.getEffect(this.helper.effects.defBreak),
           ],
-          description: '',
         }),
         {
           name: 'A free man',
           imgSrc: '../../../assets/resourses/imgs/heroes/free-trapper/skills/free_arc_passive.png',
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.FreeTrapper, []),
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.FreeTrapper),
         },
       ],
       effects: [],
@@ -465,7 +522,6 @@ export class HeroesFacadeService extends ContentService {
           cooldown: 0,
           remainingCooldown: 0,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.attackBreak)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Crusher',
@@ -476,14 +532,13 @@ export class HeroesFacadeService extends ContentService {
           buffs: [this.helper.eS.getEffect(this.helper.effects.attackBuff)],
           addBuffsBeforeAttack: false,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak)],
-          description: '',
         }),
         {
           name: 'Giant',
           imgSrc: '../../../assets/resourses/imgs/icons/aura.png',
           passive: true,
           restoreSkill: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Giant, []),
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Giant),
         },
       ],
       effects: [],
@@ -525,7 +580,6 @@ export class HeroesFacadeService extends ContentService {
           attackInRangeM: 1.5,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'The chilling frost',
@@ -543,14 +597,13 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.defBreak),
           ],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defDestroy)],
-          description: '',
         }),
         {
           name: 'The Night King',
           imgSrc: '../../../assets/resourses/imgs/heroes/night_king/skills/night_king_p_s.png',
           buffs: [this.helper.eS.getEffect(this.helper.effects.attackBuff, 1)],
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.NightKing, []),
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.NightKing),
         },
       ],
       effects: [],
@@ -586,7 +639,6 @@ export class HeroesFacadeService extends ContentService {
           attackRange: 20,
           attackInRangeM: 1.4,
           debuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak, 1)],
-          description: '',
         }),
         {
           name: 'White Walker',
@@ -631,7 +683,6 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.9,
           cooldown: 0,
           remainingCooldown: 0,
-          description: '',
         }),
         {
           name: 'White Walker',
@@ -676,7 +727,6 @@ export class HeroesFacadeService extends ContentService {
           attackInRange: true,
           attackRange: 1,
           attackInRangeM: 1.1,
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Blade of the Pioneer',
@@ -694,7 +744,6 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.attackBreak, 3),
           ],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.bleeding)],
-          description: '',
         }),
         {
           name: 'Justice',
@@ -739,7 +788,6 @@ export class HeroesFacadeService extends ContentService {
           attackInRangeM: 2.35,
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 2, 2)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak)],
-          description: '',
         }),
         getAndSetSkillDescription({
           name: 'Healing by fire',
@@ -759,7 +807,6 @@ export class HeroesFacadeService extends ContentService {
             this.helper.eS.getEffect(this.helper.effects.bleeding, 3),
             this.helper.eS.getEffect(this.helper.effects.defDestroy, 3),
           ],
-          description: '',
         }),
         {
           name: 'Soul of Flame',
@@ -794,6 +841,7 @@ export class HeroesFacadeService extends ContentService {
       this.getRelinaShow(),
       this.getPriest(),
       this.getDailyBossVersion1(),
+      this.getRedKeepAlchemist(),
     ];
 
     return returnNames
@@ -848,24 +896,19 @@ export class HeroesFacadeService extends ContentService {
   }
 
   getUnitByName(name: string, config?: UnitConfig) {
-    const allUnits = this.getAllHeroes();
-    const userUnit = allUnits.filter(unit => unit.name === name)[0];
+    const userUnit = this.allUnits.filter(unit => unit.name === name)[0];
 
     return this.helper.getEquipmentForUnit({ ...userUnit, ...(config || {}) });
   }
 
-  getTileUnitSkills() {
-    return this.getTileUnits().map(el => el.skills);
-  }
-
   getTileUnits() {
-    return this.getAllHeroes().map(el => this.getTileUnit(el));
+    return this.allUnits.map(el => this.getTileUnit(el));
   }
 
   getUnitsForTrainingBattle(
     getUser: boolean,
     unitsToCompare: UnitsConfiguratorStateUnit[],
-    allUnits = this.getAllHeroes(),
+    allUnits = this.allUnits,
   ) {
     return unitsToCompare.map(_ => {
       const el = allUnits.find(el => el.name === _.name) as Unit;
@@ -874,13 +917,19 @@ export class HeroesFacadeService extends ContentService {
     });
   }
 
+  getParamFromUnitByName(name: UnitName, param: keyof Unit) {
+    const unit = this.allUnits.find(_ => _.name === name);
+
+    return unit ? unit[param] : '';
+  }
+
   getInitialHeroes() {
     return [this.getWhiteWolf(), this.getIceRiverHunter()];
   }
 
   getContent(contentType = ContentTypes.USER_UNITS) {
     if (contentType === ContentTypes.USER_UNITS) {
-      return this.getAllHeroes().map(value => ({
+      return this.allUnits.map(value => ({
         ...this.getPreviewUnit(value.name),
         fullImgSrc: value.fullImgSrc,
         rank: value.rank,

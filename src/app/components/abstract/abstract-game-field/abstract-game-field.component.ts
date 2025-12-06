@@ -1,18 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Input,
-  OnDestroy,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { BehaviorSubject } from 'rxjs';
 import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
 import { UnitService } from '../../../services/unit/unit.service';
 import { EffectsService } from '../../../services/effects/effects.service';
 import {
-  GameFieldVars,
   GameResultsRedirectType,
   Position,
   Tile,
@@ -22,6 +14,8 @@ import {
 import { Store } from '@ngrx/store';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { selectBattleLog } from '../../../store/reducers/game-board.reducer';
+import { EffectsValues } from '../../../constants';
+import { BattleEndBase } from '../basic-game-end/basic-game-end.component';
 
 export interface GameField {
   gameField: Tile[][];
@@ -35,14 +29,13 @@ export interface GameField {
   styleUrl: './abstract-game-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export abstract class AbstractGameFieldComponent extends GameFieldVars implements OnDestroy {
+export abstract class AbstractGameFieldComponent extends BattleEndBase implements OnDestroy {
   store = inject(Store);
 
   @Input() userUnits: TileUnit[] = [];
   @Input() aiUnits: TileUnit[] = [];
   @Input() battleMode = true;
   @Input() gameResultsRedirect: GameResultsRedirectType = () => {};
-  battleEndFlag = output<Parameters<GameResultsRedirectType>>();
 
   autoFight = false;
 
@@ -107,7 +100,7 @@ export abstract class AbstractGameFieldComponent extends GameFieldVars implement
   abstract checkDebuffs(
     unit: TileUnit,
     decreaseRestoreCooldown: boolean,
-    canRestoreHealth: boolean,
+    workWith: EffectsValues[] | null,
   ): TileUnit;
 
   universalRangeAttack(

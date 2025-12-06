@@ -37,14 +37,7 @@ export class HeroPreviewComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       if (params['name']) {
-        this.selectedHero = this.facade.getUnitByName(params['name'], {
-          level: 1,
-          rank: 1,
-          eq1Level: 1,
-          eq2Level: 1,
-          eq3Level: 1,
-          eq4Level: 1,
-        });
+        this.selectedHero = this.facade.getUnitByName(params['name']);
 
         this.selectedTileHero = this.facade.getTileUnit(this.selectedHero);
       } else {

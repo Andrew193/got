@@ -19,6 +19,7 @@ import {
 } from '../selectors/units-configurator.selectors';
 import { UnitName } from '../../models/units-related/unit.model';
 import { HeroesSelectNames } from '../../constants';
+import { heroesSelectAdapter } from './heroes-select.reducer';
 
 export function getUnitKey(config: { collection: HeroesSelectNames; key?: any; name?: any }) {
   return `${config.collection}:${config.name || config.key}`;
@@ -85,6 +86,15 @@ export const UnitsConfiguratorFeature = createFeature({
     }),
     on(UnitsConfiguratorFeatureActions.removeUnit, (state, action) => {
       return { ...state, units: unitsAdapter.removeOne(getUnitKey(action), state.units) };
+    }),
+    on(UnitsConfiguratorFeatureActions.resetHeroCollection, (state, action) => {
+      return {
+        ...state,
+        units: heroesSelectAdapter.removeMany(
+          model => action.collections.includes(model.collection),
+          state.units,
+        ),
+      };
     }),
     on(UnitsConfiguratorFeatureActions.setUnitCoordinate, (state, action) => {
       if (state.unitUpdateAllowed) {

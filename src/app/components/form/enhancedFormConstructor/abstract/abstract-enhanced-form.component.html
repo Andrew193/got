@@ -24,7 +24,7 @@
         color="warn"
         matTooltip="Clear all tiles"
         matTooltipPosition="above"
-        (click)="tileOps.clearAllTiles(apCtxMenuActions.apFormGroup, apCtxMenuActions.onOffAlias)"
+        (click)="clearAllTiles()"
         [disabled]="!mtx.tiles.size || !isFormCtrOn">
         <mat-icon>delete_sweep</mat-icon>
       </button>
@@ -96,7 +96,7 @@
                             <div
                               class="form-item-separator"
                               [ngStyle]="{
-                                width: (isFormCtrOn ? 2 : 1) * multiplier * tileMargin + 'px',
+                                width: (isFormCtrOn ? 2 : 1) * multiplier * margin + 'px',
                               }"></div>
                           }
                           <div
@@ -136,8 +136,8 @@
                             [ngStyle]="{
                               width:
                                 (last
-                                  ? (isFormCtrOn ? 2 : 1) * multiplier * tileMargin
-                                  : (isFormCtrOn ? 4 : 2) * multiplier * tileMargin) + 'px',
+                                  ? (isFormCtrOn ? 2 : 1) * multiplier * margin
+                                  : (isFormCtrOn ? 4 : 2) * multiplier * margin) + 'px',
                             }"></div>
                         </ng-container>
                       }

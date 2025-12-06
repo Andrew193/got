@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../../components/modal-window/modal-interfaces';
-import { TileUnit } from '../../../models/field.model';
+import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { Store } from '@ngrx/store';
@@ -13,6 +13,7 @@ import {
 import { HeroesSelectActions } from '../../../store/actions/heroes-select.actions';
 import { HeroesSelectNames } from '../../../constants';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
+import { RewardService } from '../../../services/reward/reward.service';
 
 @Component({
   selector: 'app-training-battle',
@@ -29,6 +30,7 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
 
   nav = inject(NavigationService);
   heroesService = inject(HeroesFacadeService);
+  rewardService = inject(RewardService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -41,8 +43,12 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
       const userUnits = this.heroesService.getUnitsForTrainingBattle(true, userUnitsFromStore);
       const aiUnits = this.heroesService.getUnitsForTrainingBattle(false, aiUnitsFromStore);
 
-      this.aiUnits = aiUnits.map(el => this.heroesService.getTileUnit(el));
-      this.userUnits = userUnits.map(el => this.heroesService.getTileUnit(el));
+      this.aiUnits = aiUnits.map(el =>
+        this.heroesService.getTileUnit(this.heroesService.helper.getEquipmentForUnit(el)),
+      );
+      this.userUnits = userUnits.map(el =>
+        this.heroesService.getTileUnit(this.heroesService.helper.getEquipmentForUnit(el)),
+      );
     } else {
       this.redirectToTraining();
     }
@@ -62,8 +68,13 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   }
 
   public victoryRedirect = () => {
+    console.log('ffff', this.rewardService.mostResentRewardCurrency);
     this.nav.goToTraining();
   };
+
+  battleEndHandler(data: Parameters<GameResultsRedirectType>) {
+    this.rewardService.setMostResentRewardCurrencyBasedOnDMG(data);
+  }
 
   ngOnDestroy() {
     this.store.dispatch(

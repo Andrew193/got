@@ -2,6 +2,7 @@
   <app-game-entry-point
     [aiUnits]="aiUnits"
     [userUnits]="userUnits"
+    (battleEndFlag)="battleEndHandler($event)"
     [gameResultsRedirect]="victoryRedirect">
     <ng-container ngProjectAs="bottom-navigation">
       <button class="ms-1 got-toggle got-toggle-red" (click)="victoryRedirect()">

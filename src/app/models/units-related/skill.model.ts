@@ -1,8 +1,10 @@
 import { Effect } from '../effect.model';
+import { EffectsValues } from '../../constants';
 
 export type Skill = {
   debuffs?: Effect[];
   inRangeDebuffs?: Effect[];
+  activateDebuffs?: EffectsValues[];
   buffs?: Effect[];
   addBuffsBeforeAttack?: boolean;
   name: string;

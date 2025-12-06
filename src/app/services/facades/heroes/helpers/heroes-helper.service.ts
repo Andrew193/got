@@ -14,6 +14,8 @@ import { NumbersService } from '../../../numbers/numbers.service';
 import { Skill } from '../../../../models/units-related/skill.model';
 import { Effect } from '../../../../models/effect.model';
 
+type SkillForDescriptionCreation = Omit<Skill, 'description'>;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -176,8 +178,8 @@ export class HeroesHelperService {
         attackRange: 2,
         rankBoost: 1.3,
         dmgReducedBy: 0.25,
-        canCross: 2,
-        maxCanCross: 2,
+        canCross: 0,
+        maxCanCross: 0,
         health: 11237,
         healthIncrement: 195,
         maxHealth: 11237,
@@ -189,6 +191,24 @@ export class HeroesHelperService {
         willpower: 35,
         ignoredDebuffs: [this.effects.burning, this.effects.bleeding],
         reducedDmgFromDebuffs: [this.effects.poison],
+      },
+      [HeroesNamesCodes.RedKeepAlchemist]: {
+        attackRange: 4,
+        rankBoost: 1.2,
+        dmgReducedBy: 0,
+        canCross: 4,
+        maxCanCross: 4,
+        health: 6237,
+        healthIncrement: 95,
+        maxHealth: 6237,
+        attack: 2899,
+        attackIncrement: 43,
+        defence: 685,
+        defenceIncrement: 4,
+        rage: 80,
+        willpower: 0,
+        ignoredDebuffs: [this.effects.burning, this.effects.bleeding, this.effects.poison],
+        reducedDmgFromDebuffs: [],
       },
       [HeroesNamesCodes.TargaryenKnight]: {
         attackRange: 1,
@@ -449,7 +469,7 @@ export class HeroesHelperService {
 
   getPassiveSkillDescription(
     unitType: HeroesNamesCodes,
-    effects: Effect[],
+    effects: Effect[] = [],
     passiveEffects?: Effect[],
   ) {
     const base = this.getHeroBasicStats(unitType);
@@ -488,15 +508,17 @@ export class HeroesHelperService {
   }
 
   getAndSetSkillDescription(heroType: HeroType) {
-    return (skill: Skill) => {
+    return (skill: SkillForDescriptionCreation) => {
       let description = '';
 
+      // @ts-ignore
       let dmgPersent = this.numberService.convertToPersent(!skill.passive ? skill.dmgM : 0);
       const primaryStat = heroType === HeroType.DEFENCE ? 'defence' : 'attack';
 
       description += `Deals ${dmgPersent}% of ${primaryStat} damage to an enemy.`;
 
       if (skill.heal) {
+        // @ts-ignore
         dmgPersent = this.numberService.convertToPersent(skill.healM);
         description += `Before attacking, restores ${skill.healAll ? 'all allies' : 'an ally'} health equal to ${dmgPersent}% of ${skill.healAll ? 'their' : `this ally`} maximum health.`;
       }
@@ -514,8 +536,9 @@ export class HeroesHelperService {
       }
 
       if (skill.attackInRange) {
+        // @ts-ignore
         dmgPersent = this.numberService.convertToPersent(skill.attackInRangeM);
-
+        // @ts-ignore
         description += `Also attacks enemies within ${skill.attackRange} ${skill.attackRange > 1 ? 'cells' : 'cell'} radius for ${dmgPersent}% of ${primaryStat}.`;
       }
 
@@ -525,9 +548,11 @@ export class HeroesHelperService {
         description += `Applies to them: ${debuffsConfig}.`;
       }
 
-      skill.description = description.replaceAll('.', '. ');
+      if (skill.activateDebuffs && skill.activateDebuffs.length) {
+        description += `Activates: ${skill.activateDebuffs.join(',')}. On the target.`;
+      }
 
-      return skill;
+      return { ...skill, description: description.replaceAll('.', '. ') } as Skill;
     };
   }
 

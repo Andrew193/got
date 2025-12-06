@@ -38,5 +38,6 @@ export const UnitsConfiguratorFeatureActions = createActionGroup({
       collection: HeroesSelectNames;
       data: Update<UnitsConfiguratorUnitConfig>;
     }>(),
+    resetHeroCollection: props<{ collections: HeroesSelectNames[] }>(),
   },
 });

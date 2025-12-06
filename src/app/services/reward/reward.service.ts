@@ -5,10 +5,35 @@ import { RewardValues } from '../../models/reward-based.model';
 import { REWARD } from '../../constants';
 import { Id } from '../../models/common.model';
 import { Currency } from '../users/users.interfaces';
+import { GameResultsRedirectType } from '../../models/field.model';
+import { Rarity } from '../../models/units-related/unit.model';
 
 export type RewardBox = {
   probability: number;
   name: RewardValues;
+};
+
+const DmgRewardMap: Record<Rarity, Currency> = {
+  [Rarity.COMMON]: {
+    copper: 0.0001,
+    silver: 0.00001,
+    gold: 0.0000001,
+  },
+  [Rarity.RARE]: {
+    copper: 0.0002,
+    silver: 0.00002,
+    gold: 0.0000002,
+  },
+  [Rarity.EPIC]: {
+    copper: 0.001,
+    silver: 0.0001,
+    gold: 0.00001,
+  },
+  [Rarity.LEGENDARY]: {
+    copper: 0.002,
+    silver: 0.0002,
+    gold: 0.00002,
+  },
 };
 
 export type DisplayReward = {
@@ -64,6 +89,38 @@ export class RewardService {
 
   constructor() {
     this.resetMostResentRewardCurrency();
+  }
+
+  setMostResentRewardCurrencyBasedOnDMG(data: Parameters<GameResultsRedirectType>): Currency {
+    const [units, victory] = data;
+    const reward: Currency = {
+      copper: 0,
+      silver: 0,
+      gold: 0,
+    };
+
+    units.forEach(unit => {
+      const rewardConfigForThisUnit =
+        DmgRewardMap[this.heroService.getParamFromUnitByName(unit.name, 'rarity') as Rarity];
+      const lostHealth = unit.maxHealth - unit.health;
+
+      reward.copper += this.numberService.toFixed(
+        lostHealth * rewardConfigForThisUnit.copper * (victory ? 3 : 1),
+        0,
+      );
+      reward.silver += this.numberService.toFixed(
+        lostHealth * rewardConfigForThisUnit.silver * (victory ? 3 : 1),
+        0,
+      );
+      reward.gold += this.numberService.toFixed(
+        lostHealth * rewardConfigForThisUnit.gold * (victory ? 3 : 1),
+        0,
+      );
+    });
+
+    this.mostResentRewardCurrency = reward;
+
+    return this.mostResentRewardCurrency;
   }
 
   resetMostResentRewardCurrency() {

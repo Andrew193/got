@@ -6,7 +6,7 @@ import { GameService } from '../../../services/game-related/game-action/game.ser
 import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
 import { createDeepCopy } from '../../../helpers';
 import { AbstractGameFieldComponent } from '../abstract-game-field/abstract-game-field.component';
-import { BATTLE_SPEED } from '../../../constants';
+import { BATTLE_SPEED, EffectsValues } from '../../../constants';
 import { Position, Tile, TilesToHighlight, TileUnit } from '../../../models/field.model';
 
 interface ExecuteActionParams {
@@ -52,6 +52,14 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       this.addBuffToUnit(attackerTeam, attackerIndex, skill);
     }
 
+    if (skill.activateDebuffs?.length) {
+      defenderTeam[defenderIndex] = this.checkDebuffs(
+        structuredClone(defenderTeam[defenderIndex]),
+        true,
+        skill.activateDebuffs,
+      );
+    }
+
     let attacker = attackerTeam[attackerIndex];
 
     if (attacker.healer && skill.healAll) {
@@ -92,7 +100,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     const idx =
       typeof findSkillIndex === 'number' ? findSkillIndex : findSkillIndex(attacker.skills, skill);
 
-    const canUpdate = !(attacker.rage > defenderTeam[defenderIndex].willpower);
+    const canAddEffects = !(attacker.rage > defenderTeam[defenderIndex].willpower);
 
     const skills = this.updateSkillsCooldown(
       createDeepCopy(attacker.skills),
@@ -101,7 +109,7 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
       idx,
       skill,
       isAiMove,
-      canUpdate,
+      canAddEffects,
     );
 
     return {
@@ -448,12 +456,12 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
 
     // Apply debuff damage
     for (let i = 0; i < userUnits.length; i++) {
-      userUnits[i] = this.checkDebuffs(structuredClone(userUnits[i]), true);
+      userUnits[i] = this.checkDebuffs(structuredClone(userUnits[i]), true, null);
     }
 
     if (!this.autoFight) {
       for (let i = 0; i < aiUnits.length; i++) {
-        aiUnits[i] = this.checkDebuffs(structuredClone(aiUnits[i]), !aiMove);
+        aiUnits[i] = this.checkDebuffs(structuredClone(aiUnits[i]), !aiMove, null);
       }
 
       // Check passive skills if AI just moved
@@ -575,11 +583,12 @@ export abstract class BasicGameFieldComponent extends AbstractGameFieldComponent
     this.finishAiTurn(aiMove);
   }
 
-  checkDebuffs(unit: TileUnit, decreaseRestoreCooldown = true) {
+  checkDebuffs(unit: TileUnit, decreaseRestoreCooldown = true, workWith: EffectsValues[] | null) {
     const response = this.gameActionService.checkDebuffs(
       unit,
       !this.autoFight ? true : decreaseRestoreCooldown,
       this.battleMode,
+      workWith,
     );
 
     unit = response.unit;

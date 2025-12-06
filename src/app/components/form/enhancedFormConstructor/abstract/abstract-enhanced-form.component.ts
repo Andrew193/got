@@ -55,8 +55,9 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
   protected readonly DATA_SOURCES = DATA_SOURCES;
   CONTROL_TYPE = CONTROL_TYPE;
 
-  tileMargin = 3;
+  static tileMargin = 3;
   multiplier = 2;
+  margin = AbstractEnhancedFormComponent.tileMargin;
 
   draggedTile!: Tile<T>;
   isTileDraggable = true;
@@ -83,6 +84,10 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
   rowHeight = 85;
 
   public mtx!: FormMatrix<T>;
+
+  clearAllTiles() {
+    this.tileOps.clearAllTiles(this.apCtxMenuActions.apFormGroup, this.apCtxMenuActions.onOffAlias);
+  }
 
   resetFormMtx(colQty: number, rowQty: number) {
     this.colQty.set(colQty);
@@ -128,7 +133,7 @@ export abstract class AbstractEnhancedFormComponent<T> implements OnInit {
     return {
       colQty: this.colQty(),
       rowHeight: this.rowHeight,
-      tileMargin: this.tileMargin,
+      tileMargin: AbstractEnhancedFormComponent.tileMargin,
     };
   });
 

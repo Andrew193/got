@@ -3,6 +3,7 @@ import { Effect } from '../effect.model';
 import { DisplayReward } from '../../services/reward/reward.service';
 import { Coordinate } from '../field.model';
 import { RewardValues } from '../reward-based.model';
+import { EffectsValues } from '../../constants';
 
 export type UnitName = HeroesNamesCodes | RewardValues;
 
@@ -22,8 +23,8 @@ export interface Unit extends Coordinate {
   attackIncrement: number;
   defenceIncrement: number;
   dmgReducedBy: number;
-  ignoredDebuffs: string[];
-  reducedDmgFromDebuffs: string[];
+  ignoredDebuffs: EffectsValues[];
+  reducedDmgFromDebuffs: EffectsValues[];
   user: boolean;
   imgSrc: string;
   canMove: boolean;
@@ -126,6 +127,7 @@ export type GetTileConfig = {
 
 export enum HeroesNamesCodes {
   LadyOfDragonStone = 'Daenerys Targaryen (Lady of Dragonstone)',
+  RedKeepAlchemist = 'Red Keep Alchemist',
   TargaryenKnight = 'Targaryen Knight',
   WhiteWolf = 'White Wolf',
   Priest = 'Priest',
