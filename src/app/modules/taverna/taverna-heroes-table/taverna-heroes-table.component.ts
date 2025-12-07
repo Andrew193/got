@@ -34,7 +34,7 @@ export class TavernaHeroesTableComponent extends AbstractTableComponent<Unit> {
       className: 'text-left-i',
       filter: {
         filterType: CONTROL_TYPE.TEXT,
-        disabled: true,
+        disabled: false,
       },
       visible: false,
     },

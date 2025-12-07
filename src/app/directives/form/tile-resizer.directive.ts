@@ -61,6 +61,19 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
       return marginPx + mPx;
     }
 
+    const getMeta = (e: PointerEvent) => {
+      const dx = e.clientX - this.startX;
+      const dy = e.clientY - this.startY;
+
+      const nextW = Math.max(1, this.startW + dx);
+      const nextH = Math.max(1, this.startH + dy);
+
+      const rawXSpan = Math.max(1, Math.round(nextW / this.baseCellW));
+      const rawYSpan = Math.max(1, Math.round(nextH / this.baseCellH));
+
+      return { rawXSpan, rawYSpan };
+    };
+
     const down = this.r.listen(this.handleEl, 'pointerdown', (e: PointerEvent) => {
       if (!this.cfg?.enabled) return;
       e.preventDefault();
@@ -88,14 +101,7 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
     const move = this.r.listen('window', 'pointermove', (e: PointerEvent) => {
       if (!this.resizing) return;
 
-      const dx = e.clientX - this.startX;
-      const dy = e.clientY - this.startY;
-
-      const nextW = Math.max(1, this.startW + dx);
-      const nextH = Math.max(1, this.startH + dy);
-
-      const rawXSpan = Math.max(1, Math.round(nextW / this.baseCellW));
-      const rawYSpan = Math.max(1, Math.round(nextH / this.baseCellH));
+      const { rawXSpan, rawYSpan } = getMeta(e);
 
       this.r.setStyle(
         this.host.nativeElement,
@@ -114,18 +120,10 @@ export class TileResizeDirective<T> implements OnInit, OnDestroy {
       if (!this.resizing) return;
       this.resizing = false;
       this.toggleUserSelect(false);
-
-      const dx = e.clientX - this.startX;
-      const dy = e.clientY - this.startY;
-
-      const finalW = Math.max(1, this.startW + dx);
-      const finalH = Math.max(1, this.startH + dy);
-
-      const newXSpan = Math.max(1, Math.round(finalW / this.baseCellW));
-      const newYSpan = Math.max(1, Math.round(finalH / this.baseCellH));
+      const { rawXSpan, rawYSpan } = getMeta(e);
 
       try {
-        this.cfg.tileOps.editTile(this.cfg.y, this.cfg.x, newYSpan, newXSpan, { hz: 0, vt: 0 });
+        this.cfg.tileOps.editTile(this.cfg.y, this.cfg.x, rawYSpan, rawXSpan, { hz: 0, vt: 0 });
       } catch (tileError) {
         const tile = tileError as Tile<T>;
 

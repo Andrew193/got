@@ -14,6 +14,7 @@ import { HeroesSelectActions } from '../../../store/actions/heroes-select.action
 import { HeroesSelectNames } from '../../../constants';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 import { RewardService } from '../../../services/reward/reward.service';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-training-battle',
@@ -31,6 +32,7 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   nav = inject(NavigationService);
   heroesService = inject(HeroesFacadeService);
   rewardService = inject(RewardService);
+  usersService = inject(UsersService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -61,14 +63,14 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   redirectToTraining() {
     this.modalService.openModal(
       this.modalService.getModalConfig('red-b', 'Something went wrong', 'Ok', {
-        callback: this.victoryRedirect,
+        callback: () => this.nav.goToTraining(),
         strategy: ModalStrategiesTypes.base,
       }),
     );
   }
 
   public victoryRedirect = () => {
-    console.log('ffff', this.rewardService.mostResentRewardCurrency);
+    this.usersService.updateCurrency(this.rewardService.mostResentRewardCurrency);
     this.nav.goToTraining();
   };
 

@@ -121,13 +121,19 @@ export class TrainingFacadeService {
       const stashedAIUnits = this.store.selectSignal(selectUnits(this.aiBarCtx.contextName))();
       const stashedUserUnits = this.store.selectSignal(selectUnits(this.userBarCtx.contextName))();
 
+      function areEqual(a: PreviewUnit[], b: PreviewUnit[]) {
+        if (a.length !== b.length) return false;
+
+        const mapA = a.map(x => x.name).sort();
+        const mapB = b.map(x => x.name).sort();
+
+        return mapA.every((name, i) => name === mapB[i]);
+      }
+
       const aiUnits = this.aiCollection();
       const userUnits = this.userCollection();
 
-      if (
-        aiUnits.length !== stashedAIUnits.length ||
-        userUnits.length !== stashedUserUnits.length
-      ) {
+      if (!areEqual(userUnits, stashedUserUnits) || !areEqual(aiUnits, stashedAIUnits)) {
         if (!inited) {
           setContext(
             stashedUserUnits.map(el => el.name),

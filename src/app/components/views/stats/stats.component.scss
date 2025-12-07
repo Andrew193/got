@@ -10,7 +10,13 @@
 .stat-p-container {
   display: inline-flex;
   flex-basis: 100px;
-  justify-content: flex-start;
+  justify-content: space-between;
+}
+
+.stats-line {
+  font-weight: bold;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 .stats-container {

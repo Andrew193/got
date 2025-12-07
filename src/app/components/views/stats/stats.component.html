@@ -9,19 +9,29 @@
     <ng-content select="reward-avatar-container" />
   </div>
   <div
-    class="stats flex-column w-auto {{ _statsContainerClass }}"
+    class="stats flex-column w-auto gap-1 {{ _statsContainerClass }}"
     [ngClass]="{
-      'stats-table': _tableMode,
+      'stats-table row m-0': _tableMode,
       'flex-column': !_tableMode,
     }">
     <ng-template #statRow let-icon="icon" let-value="value" let-desc="desc" let-key="key">
-      <div class="flex-row" style="font-weight: bold">
-        <p class="m-0 col-auto stat-p-container">
+      <div
+        [ngClass]="{
+          'row gap-2 m-0': !_tableMode,
+          col: _tableMode,
+        }"
+        class="p-1 stats-line">
+        <p
+          [ngClass]="{
+            'd-flex justify-content-around': _tableMode,
+            'stat-p-container': !_tableMode,
+          }"
+          class="m-0 h-100">
           <img [src]="icon" [alt]="icon" />
           <span [class]="key">{{ value }}</span>
         </p>
         @if (!_tableMode) {
-          <span class="col d-block text-start">{{ desc }}</span>
+          <span style="line-height: 30px" class="col d-block text-start">{{ desc }}</span>
         }
       </div>
     </ng-template>
