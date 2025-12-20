@@ -100,7 +100,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
 
     let attacker = attackerTeam[attackerIndex];
 
-    if (attacker.healer && skill.healAll) {
+    if (attacker.healer && skill.heal && skill.heal.healAll) {
       this.makeHealerMove(null, skill, attacker, attackerTeam);
     }
 

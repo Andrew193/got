@@ -41,7 +41,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.LEGENDARY,
       imgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_Avatar.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/lds/UI_HeroFull_Daenerys_2.png',
-      name: HeroesNamesCodes.LadyOfDragonStone,
       description:
         "As her influence grows, Daenerys's ability to channel the fire of her heart through her people drives her to perform great feats of war.",
       skills: [
@@ -109,7 +108,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.EPIC,
       imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/UI_Avatar_Unit_12.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_archer/UI_UnitFull_12.png',
-      name: HeroesNamesCodes.RedKeepAlchemist,
       description:
         "Rejected from the Alchemist's Guild, this unique fighter brings both fire and fury to a melee or ranged battle.",
       skills: [
@@ -172,7 +170,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.EPIC,
       imgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_Avatar_Unit_21.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/targaryen_knight/UI_UnitFull_21.png',
-      name: HeroesNamesCodes.TargaryenKnight,
       description:
         'A versatile Targaryen warrior from the Crownlands, this knight excels in both offense and defense.',
       skills: [
@@ -236,7 +233,6 @@ export class HeroesFacadeService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaDireWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaDireWolf.png',
-      name: HeroesNamesCodes.WhiteWolf,
       description:
         'The alpha of the pack beyond the wall. Strikes terror into the hearts of men and inflicts terrible wounds in anger.',
       skills: [
@@ -275,32 +271,33 @@ export class HeroesFacadeService extends ContentService {
       onlyHealer: false,
       imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_Avatar_Unit_Lokrand.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/healer-w/UI_HeroFull_Lokrand_1.png',
-      name: HeroesNamesCodes.Priest,
       description: 'The priest beyond the wall.',
       skills: [
         getAndSetSkillDescription({
           name: 'Wound dressing',
           imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/skills/health_restore_buff.png',
           dmgM: 0.35,
-          healM: 0.1,
           cooldown: 0,
           remainingCooldown: 0,
-          healAll: true,
-          heal: true,
+          heal: {
+            healAll: true,
+            healM: 0.1,
+          },
         }),
         getAndSetSkillDescription({
           name: 'Great Healing',
           imgSrc: '../../../assets/resourses/imgs/heroes/healer-w/skills/healer_2skill.png',
           dmgM: 1.9,
-          healM: 0.25,
           cooldown: 5,
           remainingCooldown: 0,
           attackInRange: {
             attackRange: 3,
             attackInRangeM: 0.9,
           },
-          healAll: true,
-          heal: true,
+          heal: {
+            healM: 0.25,
+            healAll: true,
+          },
           extendsBuffs: [this.helper.effects.attackBuff, this.helper.effects.defBuff],
         }),
         {
@@ -332,7 +329,6 @@ export class HeroesFacadeService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/wolf/UI_Avatar_Unit_AlphaWolf.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/wolf/UI_Icon_Avatar_FullBody_AlphaWolf.png',
-      name: HeroesNamesCodes.BrownWolf,
       description: 'The wolf of the pack beyond the wall.',
       skills: [
         getAndSetSkillDescription({
@@ -364,7 +360,6 @@ export class HeroesFacadeService extends ContentService {
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Avatar_Unit_IceRiverHunters.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/iceriver_hunter/UI_Icon_Avatar_FullBody_Wildling_02_IceRiverHunters.png',
-      name: HeroesNamesCodes.IceRiverHunter,
       description:
         'A young hunter from the lands beyond the wall. The icy river is his hunting ground.',
       skills: [
@@ -399,7 +394,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.LEGENDARY,
       imgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_Avatar_Unit_Thosa_RelinaSnow.png',
       fullImgSrc: 'assets/resourses/imgs/heroes/relina-snow/UI_HeroFull_Relina_1.png',
-      name: HeroesNamesCodes.RelinaShow,
       description:
         'Relina Snow is a warrior of the Enchanted Forest. A skilled and cunning fighter.',
       skills: [
@@ -464,7 +458,6 @@ export class HeroesFacadeService extends ContentService {
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
-      name: HeroesNamesCodes.FreeTrapper,
       description:
         'A Free Folk archer has studied the art of assassination since birth. He is a master of natural poisons and knows how to set traps for animals and people.',
       skills: [
@@ -521,7 +514,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.EPIC,
       imgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Avatar_Unit_Giant.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/giant/UI_Icon_Avatar_FullBody_Giant.png',
-      name: HeroesNamesCodes.Giant,
       description:
         'An incredibly powerful enemy. A mythical creature from legends. Its hide is almost impenetrable by weapons, but it is vulnerable to debuffs.',
       skills: [
@@ -574,7 +566,6 @@ export class HeroesFacadeService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/night_king/UI_Avatar_Unit_WhiteWalker.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/night_king/UI_Icon_Avatar_FullBody_WhiteWalker.png',
-      name: HeroesNamesCodes.NightKing,
       description:
         'A terrible enemy. The most powerful of the White Walkers and the king of the Land of Eternal Winter. Created to protect ' +
         'the living, he now seeks to plunge the world into darkness and eternal night.',
@@ -636,7 +627,6 @@ export class HeroesFacadeService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker1.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker2.png',
-      name: HeroesNamesCodes.WhiteWalkerGeneral,
       description:
         'A terrible enemy. A powerful white walker and commander of the Night King army. Created by his ' +
         'master to destroy the living, he now seeks to plunge the world into darkness and eternal night.',
@@ -685,7 +675,6 @@ export class HeroesFacadeService extends ContentService {
       imgSrc: '../../../assets/resourses/imgs/heroes/white_walker/UI_Avatar_Unit_WhiteWalker2.png',
       fullImgSrc:
         '../../../assets/resourses/imgs/heroes/white_walker/UI_Icon_Avatar_FullBody_WhiteWalker3.png',
-      name: HeroesNamesCodes.WhiteWalkerCapitan,
       description:
         'A terrible enemy. The weakest white walker and captain of the Night Kings army. Created by his master to destroy the living,' +
         ' he now seeks to plunge the world into darkness and eternal night.',
@@ -726,7 +715,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.LEGENDARY,
       imgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_Avatar_Unit_JonKingNorth.png',
       fullImgSrc: '../../../assets/resourses/imgs/heroes/jon_king/UI_HeroFull_JonSnow_3.png',
-      name: HeroesNamesCodes.JonKing,
       description:
         'A strong, true leader, Jon Snow countless victories on the battlefield led his peers to recognize him as the King in the North.',
       skills: [
@@ -789,7 +777,6 @@ export class HeroesFacadeService extends ContentService {
       rarity: Rarity.LEGENDARY,
       imgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Avatar_Unit_GromyrtheFlame.png',
       fullImgSrc: '../../../assets/resourses/imgs/boss/v1/UI_Boss_CutIn_Pic_1.png',
-      name: HeroesNamesCodes.DailyBossVersion1,
       description: '',
       skills: [
         getAndSetSkillDescription({
@@ -809,15 +796,16 @@ export class HeroesFacadeService extends ContentService {
           name: 'Healing by fire',
           imgSrc: '../../../assets/resourses/imgs/boss/v1/skills/boss_s2.png',
           dmgM: 1.4,
-          healM: 0.01,
           cooldown: 3,
           remainingCooldown: 0,
           attackInRange: {
             attackRange: 2,
             attackInRangeM: 1.1,
           },
-          healAll: true,
-          heal: true,
+          heal: {
+            healAll: true,
+            healM: 0.01,
+          },
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 3, 4)],
           inRangeDebuffs: [
             this.helper.eS.getEffect(this.helper.effects.defBreak, 3),

@@ -69,6 +69,7 @@ export type UnitBasicStats = Pick<
   | 'willpower'
   | 'ignoredDebuffs'
   | 'reducedDmgFromDebuffs'
+  | 'name'
 >;
 
 export interface UnitWithReward extends Unit {

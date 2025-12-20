@@ -173,7 +173,7 @@ export class HeroesHelperService {
   }
 
   getHeroBasicStats(unitType: HeroesNamesCodes): UnitBasicStats {
-    const configMap: Record<HeroesNamesCodes, UnitBasicStats> = {
+    const configMap: Record<HeroesNamesCodes, Omit<UnitBasicStats, 'name'>> = {
       [HeroesNamesCodes.LadyOfDragonStone]: {
         attackRange: 2,
         rankBoost: 1.3,
@@ -464,7 +464,7 @@ export class HeroesHelperService {
       },
     };
 
-    return configMap[unitType];
+    return { ...configMap[unitType], name: unitType };
   }
 
   getPassiveSkillDescription(
@@ -518,28 +518,21 @@ export class HeroesHelperService {
       description += `Deals ${dmgPersent}% of ${primaryStat} damage to an enemy.`;
 
       if (skill.heal) {
-        // @ts-ignore
-        dmgPersent = this.numberService.convertToPersent(skill.healM);
-        description += `Before attacking, restores ${skill.healAll ? 'all allies' : 'an ally'} health equal to ${dmgPersent}% of ${skill.healAll ? 'their' : `this ally`} maximum health.`;
+        dmgPersent = this.numberService.convertToPersent(skill.heal.healM);
+        description += `Before attacking, restores ${skill.heal.healAll ? 'all allies' : 'an ally'} health equal to ${dmgPersent}% of ${skill.heal.healAll ? 'their' : `this ally`} maximum health.`;
       }
 
       if (skill.buffs) {
-        const buffsConfig = this.convertEffectsToDescriptionString(skill.buffs);
-
-        description += `Receives: ${buffsConfig} ${skill.addBuffsBeforeAttack ? 'before attack' : 'after attack'}.`;
+        description += `Receives: ${this.convertEffectsToDescriptionString(skill.buffs)} ${skill.addBuffsBeforeAttack ? 'before attack' : 'after attack'}.`;
       }
 
       if (skill.debuffs?.length) {
-        const debuffsConfig = this.convertEffectsToDescriptionString(skill.debuffs);
-
-        description += `Applies to them: ${debuffsConfig}.`;
+        description += `Applies to them: ${this.convertEffectsToDescriptionString(skill.debuffs)}.`;
       }
 
       if (skill.attackInRange) {
-        // @ts-ignore
-        dmgPersent = this.numberService.convertToPersent(skill.attackInRangeM);
-        // @ts-ignore
-        description += `Also attacks enemies within ${skill.attackRange} ${skill.attackRange > 1 ? 'cells' : 'cell'} radius for ${dmgPersent}% of ${primaryStat}.`;
+        dmgPersent = this.numberService.convertToPersent(skill.attackInRange.attackInRangeM);
+        description += `Also attacks enemies within ${skill.attackInRange.attackRange} ${skill.attackInRange.attackRange > 1 ? 'cells' : 'cell'} radius for ${dmgPersent}% of ${primaryStat}.`;
       }
 
       if (skill.inRangeDebuffs) {

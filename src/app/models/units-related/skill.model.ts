@@ -19,16 +19,16 @@ export type Skill = {
 
 export type SkillCooldown =
   | {
-      passive?: undefined;
+      passive: true;
+      dmgM?: never;
+      cooldown?: never;
+      remainingCooldown?: never;
+    }
+  | {
+      passive?: false | undefined;
       dmgM: number;
       cooldown: number;
       remainingCooldown: number;
-    }
-  | {
-      passive: true;
-      dmgM?: number;
-      cooldown?: number;
-      remainingCooldown?: number;
     };
 
 export type SkillHealConfig =
@@ -38,9 +38,10 @@ export type SkillHealConfig =
       healAll?: boolean;
     }
   | {
-      heal: true;
-      healM: number;
-      healAll: boolean;
+      heal: {
+        healM: number;
+        healAll: boolean;
+      };
     };
 
 export type SkillRangeConfig =

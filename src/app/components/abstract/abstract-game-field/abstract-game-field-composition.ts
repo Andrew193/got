@@ -200,20 +200,22 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
     healer: TileUnit,
     units: TileUnit[],
   ) {
-    const healedHealth = healer.maxHealth * (skill.healM as number);
+    if (skill.heal && skill.heal.healAll) {
+      const healedHealth = healer.maxHealth * skill.heal.healM;
 
-    const getNewHealth = (unit: TileUnit) => {
-      return unit.health + healedHealth > unit.maxHealth
-        ? unit.maxHealth
-        : unit.health + healedHealth;
-    };
+      const getNewHealth = (unit: TileUnit) => {
+        return unit.health + healedHealth > unit.maxHealth
+          ? unit.maxHealth
+          : unit.health + healedHealth;
+      };
 
-    if (targetIndex) {
-      units[targetIndex].health = getNewHealth(units[targetIndex]);
-    } else {
-      units.forEach(unit => {
-        unit.health = getNewHealth(unit);
-      });
+      if (targetIndex) {
+        units[targetIndex].health = getNewHealth(units[targetIndex]);
+      } else {
+        units.forEach(unit => {
+          unit.health = getNewHealth(unit);
+        });
+      }
     }
   }
 
