@@ -178,8 +178,8 @@ export class HeroesHelperService {
         attackRange: 2,
         rankBoost: 1.3,
         dmgReducedBy: 0.25,
-        canCross: 0,
-        maxCanCross: 0,
+        canCross: 2,
+        maxCanCross: 2,
         health: 11237,
         healthIncrement: 195,
         maxHealth: 11237,
@@ -550,6 +550,10 @@ export class HeroesHelperService {
 
       if (skill.activateDebuffs && skill.activateDebuffs.length) {
         description += `Activates: ${skill.activateDebuffs.join(',')}. On the target.`;
+      }
+
+      if (skill.extendsBuffs && skill.extendsBuffs.length) {
+        description += `Extends the duration of: ${skill.extendsBuffs.join(',')}. On the team.`;
       }
 
       return { ...skill, description: description.replaceAll('.', '. ') } as Skill;

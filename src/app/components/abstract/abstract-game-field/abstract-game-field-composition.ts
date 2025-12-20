@@ -111,7 +111,7 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
 
   abstract attack(skill: Skill): void;
 
-  abstract checkDebuffs(
+  abstract checkEffects(
     unit: TileUnit,
     decreaseRestoreCooldown: boolean,
     workWith: EffectsValues[] | null,
@@ -128,7 +128,7 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
       const tilesInRange = this.abstractFieldS.getFieldsInRadius(
         this.gameConfig,
         this.unitS.getPositionFromCoordinate(clickedEnemy as TileUnit),
-        skill.attackRange as number,
+        skill.attackInRange.attackRange,
         true,
       );
       const enemiesInRange: TileUnit[] = tilesInRange

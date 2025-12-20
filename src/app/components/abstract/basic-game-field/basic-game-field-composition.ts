@@ -75,11 +75,27 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     }
 
     if (skill.activateDebuffs?.length) {
-      defenderTeam[defenderIndex] = this.checkDebuffs(
+      defenderTeam[defenderIndex] = this.checkEffects(
         structuredClone(defenderTeam[defenderIndex]),
         true,
         skill.activateDebuffs,
       );
+    }
+
+    if (skill.extendsBuffs?.length) {
+      GameService.extendEffectDurationBy = 1;
+
+      attackerTeam.forEach((attackerTeamUnit, index) => {
+        if (attackerTeamUnit.name !== attackerTeam[attackerIndex].name) {
+          attackerTeam[index] = this.checkEffects(
+            structuredClone(attackerTeamUnit),
+            true,
+            skill.extendsBuffs as EffectsValues[],
+          );
+        }
+      });
+
+      GameService.extendEffectDurationBy = 0;
     }
 
     let attacker = attackerTeam[attackerIndex];
@@ -478,12 +494,12 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
 
     // Apply debuff damage
     for (let i = 0; i < userUnits.length; i++) {
-      userUnits[i] = this.checkDebuffs(structuredClone(userUnits[i]), true, null);
+      userUnits[i] = this.checkEffects(structuredClone(userUnits[i]), true, null);
     }
 
     if (!this.autoFight) {
       for (let i = 0; i < aiUnits.length; i++) {
-        aiUnits[i] = this.checkDebuffs(structuredClone(aiUnits[i]), !aiMove, null);
+        aiUnits[i] = this.checkEffects(structuredClone(aiUnits[i]), !aiMove, null);
       }
 
       // Check passive skills if AI just moved
@@ -605,8 +621,8 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     this.finishAiTurn(aiMove);
   }
 
-  checkDebuffs(unit: TileUnit, decreaseRestoreCooldown = true, workWith: EffectsValues[] | null) {
-    const response = this.gameActionService.checkDebuffs(
+  checkEffects(unit: TileUnit, decreaseRestoreCooldown = true, workWith: EffectsValues[] | null) {
+    const response = this.gameActionService.checkEffects(
       unit,
       !this.autoFight ? true : decreaseRestoreCooldown,
       this.battleMode,

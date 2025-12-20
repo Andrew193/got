@@ -70,8 +70,9 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   }
 
   public victoryRedirect = () => {
-    this.usersService.updateCurrency(this.rewardService.mostResentRewardCurrency);
-    this.nav.goToTraining();
+    this.usersService
+      .updateCurrency(this.rewardService.mostResentRewardCurrency)
+      .subscribe(() => this.nav.goToTraining());
   };
 
   battleEndHandler(data: Parameters<GameResultsRedirectType>) {

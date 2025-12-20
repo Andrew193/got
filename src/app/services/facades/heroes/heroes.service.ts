@@ -30,7 +30,7 @@ export class HeroesFacadeService extends ContentService {
     const passiveBuffs = [this.helper.eS.getEffect(this.helper.effects.healthRestore, 1)];
     const effects = [
       this.helper.eS.getEffect(this.helper.effects.healthRestore),
-      this.helper.eS.getEffect(this.helper.effects.burning, 20),
+      this.helper.eS.getEffect(this.helper.effects.attackBuff, 2),
     ];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
 
@@ -52,9 +52,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.8,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 2,
-          attackInRangeM: 1.35,
+          attackInRange: {
+            attackRange: 2,
+            attackInRangeM: 1.35,
+          },
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 2, 3)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak, 5)],
         }),
@@ -64,10 +65,11 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2.9,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 3,
+          attackInRange: {
+            attackRange: 3,
+            attackInRangeM: 1.9,
+          },
           addBuffsBeforeAttack: true,
-          attackInRangeM: 1.9,
           buffs: [
             this.helper.eS.getEffect(this.helper.effects.attackBuff, 3),
             this.helper.eS.getEffect(this.helper.effects.defBuff, 3),
@@ -126,10 +128,11 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.9,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 2,
+          attackInRange: {
+            attackRange: 2,
+            attackInRangeM: 1.9,
+          },
           addBuffsBeforeAttack: false,
-          attackInRangeM: 1.9,
           buffs: [
             this.helper.eS.getEffect(this.helper.effects.attackBuff, 3),
             this.helper.eS.getEffect(this.helper.effects.defBuff, 3),
@@ -180,9 +183,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.1,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 1,
-          attackInRangeM: 1.1,
+          attackInRange: {
+            attackRange: 1,
+            attackInRangeM: 1.1,
+          },
           debuffs: [this.helper.eS.getEffect(this.helper.effects.attackBreak)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.attackBreak)],
         }),
@@ -193,9 +197,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.3,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 2,
-          attackInRangeM: 1.3,
+          attackInRange: {
+            attackRange: 2,
+            attackInRangeM: 1.3,
+          },
           buffs: [
             this.helper.eS.getEffect(this.helper.effects.defBuff),
             this.helper.eS.getEffect(this.helper.effects.healthRestore, 1),
@@ -290,11 +295,13 @@ export class HeroesFacadeService extends ContentService {
           healM: 0.25,
           cooldown: 5,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 3,
-          attackInRangeM: 0.9,
+          attackInRange: {
+            attackRange: 3,
+            attackInRangeM: 0.9,
+          },
           healAll: true,
           heal: true,
+          extendsBuffs: [this.helper.effects.attackBuff, this.helper.effects.defBuff],
         }),
         {
           name: 'Lokrand',
@@ -402,9 +409,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.9,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackInRangeM: 0,
-          attackRange: 20,
+          attackInRange: {
+            attackInRangeM: 0,
+            attackRange: 20,
+          },
           debuffs: [
             this.helper.eS.getEffect(this.helper.effects.poison),
             this.helper.eS.getEffect(this.helper.effects.root),
@@ -417,9 +425,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 1.5,
           cooldown: 2,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 3,
-          attackInRangeM: 1.15,
+          attackInRange: {
+            attackRange: 3,
+            attackInRangeM: 1.15,
+          },
           debuffs: [
             this.helper.eS.getEffect(this.helper.effects.bleeding),
             this.helper.eS.getEffect(this.helper.effects.defBreak),
@@ -473,9 +482,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 1,
-          attackInRangeM: 0.5,
+          attackInRange: {
+            attackRange: 1,
+            attackInRangeM: 0.5,
+          },
           debuffs: [
             this.helper.eS.getEffect(this.helper.effects.bleeding),
             this.helper.eS.getEffect(this.helper.effects.defBreak),
@@ -575,9 +585,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2.4,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 20,
-          attackInRangeM: 1.5,
+          attackInRange: {
+            attackRange: 20,
+            attackInRangeM: 1.5,
+          },
           debuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
         }),
@@ -587,9 +598,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 4.2,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 20,
-          attackInRangeM: 3.3,
+          attackInRange: {
+            attackRange: 20,
+            attackInRangeM: 3.3,
+          },
           buffs: [this.helper.eS.getEffect(this.helper.effects.attackBuff)],
           addBuffsBeforeAttack: true,
           debuffs: [
@@ -635,9 +647,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2.7,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 20,
-          attackInRangeM: 1.4,
+          attackInRange: {
+            attackRange: 20,
+            attackInRangeM: 1.4,
+          },
           debuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak, 1)],
         }),
         {
@@ -724,9 +737,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 1,
-          attackInRangeM: 1.1,
+          attackInRange: {
+            attackRange: 1,
+            attackInRangeM: 1.1,
+          },
         }),
         getAndSetSkillDescription({
           name: 'Blade of the Pioneer',
@@ -735,9 +749,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 3.1,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 1,
-          attackInRangeM: 2.5,
+          attackInRange: {
+            attackRange: 1,
+            attackInRangeM: 2.5,
+          },
           debuffs: [
             this.helper.eS.getEffect(this.helper.effects.defBreak, 3),
             this.helper.eS.getEffect(this.helper.effects.bleeding, 3),
@@ -783,9 +798,10 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2.8,
           cooldown: 0,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 1,
-          attackInRangeM: 2.35,
+          attackInRange: {
+            attackRange: 1,
+            attackInRangeM: 2.35,
+          },
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 2, 2)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak)],
         }),
@@ -796,9 +812,10 @@ export class HeroesFacadeService extends ContentService {
           healM: 0.01,
           cooldown: 3,
           remainingCooldown: 0,
-          attackInRange: true,
-          attackRange: 2,
-          attackInRangeM: 1.1,
+          attackInRange: {
+            attackRange: 2,
+            attackInRangeM: 1.1,
+          },
           healAll: true,
           heal: true,
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 3, 4)],

@@ -157,7 +157,6 @@ export class DailyBossFacadeService {
   }
 
   collectReward(reward: Currency) {
-    debugger;
     const newCurrency = this.usersService.updateCurrency(reward);
 
     newCurrency
@@ -166,7 +165,6 @@ export class DailyBossFacadeService {
           next: () => {
             this.api
               .claimDailyBossReward({ lastLogin: TODAY }, () => {
-                console.log(';l;l;l;l');
                 this.notificationService.notificationsValue(NotificationType.daily_boss, false);
                 this.store.dispatch(
                   UnitsConfiguratorFeatureActions.drop({

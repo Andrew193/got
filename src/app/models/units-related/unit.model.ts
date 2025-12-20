@@ -7,16 +7,21 @@ import { EffectsValues } from '../../constants';
 
 export type UnitName = HeroesNamesCodes | RewardValues;
 
-export interface Unit extends Coordinate {
+export interface UnitConfig {
+  level: number;
+  rank: number;
+  eq1Level: number;
+  eq2Level: number;
+  eq3Level: number;
+  eq4Level: number;
+}
+
+export interface Unit extends Coordinate, UnitConfig {
   rank: number;
   rarity: Rarity;
   healer?: boolean;
   onlyHealer?: boolean;
   heroType: number;
-  eq1Level: number;
-  eq2Level: number;
-  eq3Level: number;
-  eq4Level: number;
   level: number;
   rankBoost: number;
   healthIncrement: number;
@@ -76,15 +81,6 @@ export type PreviewUnit = SelectableUnit & {
   description: Unit['description'];
   skills: Pick<Skill, 'imgSrc' | 'name' | 'description' | 'passive'>[];
 } & Pick<Unit, 'synergy'>;
-
-export interface UnitConfig {
-  level: number;
-  rank: number;
-  eq1Level: number;
-  eq2Level: number;
-  eq3Level: number;
-  eq4Level: number;
-}
 
 export enum HeroType {
   ATTACK,

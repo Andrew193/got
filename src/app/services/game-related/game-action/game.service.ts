@@ -18,6 +18,7 @@ import { EffectsValues } from '../../../constants';
 })
 export class GameService {
   store = inject(Store);
+  static extendEffectDurationBy = 0;
 
   private gameResult = {
     headerMessage: '',
@@ -245,7 +246,7 @@ export class GameService {
     return units.every(userUnit => !userUnit.health);
   }
 
-  checkDebuffs(
+  checkEffects(
     unit: TileUnit,
     decreaseCooldown = true,
     battleMode: boolean,
@@ -276,44 +277,47 @@ export class GameService {
     if (unit.health) {
       unit.effects.forEach((effect: Effect, i, array) => {
         const processing = (decreaseDurationCooldown = true) => {
-          const newDuration = decreaseDurationCooldown
-            ? decreaseCooldown
-              ? effect.duration - 1
-              : effect.duration
-            : effect.duration;
+          const newDuration =
+            (decreaseDurationCooldown
+              ? decreaseCooldown
+                ? effect.duration - 1
+                : effect.duration
+              : effect.duration) + GameService.extendEffectDurationBy;
 
           if (effect.duration > 0) {
             array[i] = { ...effect, duration: newDuration };
 
-            if (effect.restore) {
-              this.checkEffectsForHealthRestore(unit);
-            } else {
-              if (!effect.passive) {
-                const additionalDmg = this.getReducedDmgForEffects(
-                  unit,
-                  this.eS.getDebuffDmg(effect.type, unit.health, effect.m),
-                  effect,
-                );
-
-                if (additionalDmg) {
-                  this.store.dispatch(
-                    GameBoardActions.logEvent(
-                      structuredClone({
-                        config: {
-                          damage: null,
-                          newHealth: null,
-                          addDmg: additionalDmg,
-                          battleMode: battleMode,
-                        },
-                        isUser: unit.user,
-                        skill: effect,
-                        unit: unit,
-                      }),
-                    ),
+            if (!GameService.extendEffectDurationBy) {
+              if (effect.restore) {
+                this.checkEffectsForHealthRestore(unit);
+              } else {
+                if (!effect.passive) {
+                  const additionalDmg = this.getReducedDmgForEffects(
+                    unit,
+                    this.eS.getDebuffDmg(effect.type, unit.health, effect.m),
+                    effect,
                   );
-                }
 
-                unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
+                  if (additionalDmg) {
+                    this.store.dispatch(
+                      GameBoardActions.logEvent(
+                        structuredClone({
+                          config: {
+                            damage: null,
+                            newHealth: null,
+                            addDmg: additionalDmg,
+                            battleMode: battleMode,
+                          },
+                          isUser: unit.user,
+                          skill: effect,
+                          unit: unit,
+                        }),
+                      ),
+                    );
+                  }
+
+                  unit.health = this.eS.getHealthAfterDmg(unit.health, additionalDmg);
+                }
               }
             }
           }

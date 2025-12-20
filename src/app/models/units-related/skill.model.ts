@@ -5,6 +5,7 @@ export type Skill = {
   debuffs?: Effect[];
   inRangeDebuffs?: Effect[];
   activateDebuffs?: EffectsValues[];
+  extendsBuffs?: EffectsValues[];
   buffs?: Effect[];
   addBuffsBeforeAttack?: boolean;
   name: string;
@@ -49,9 +50,10 @@ export type SkillRangeConfig =
       attackInRangeM?: number;
     }
   | {
-      attackInRange: true;
-      attackRange: number;
-      attackInRangeM: number;
+      attackInRange: {
+        attackRange: number;
+        attackInRangeM: number;
+      };
     };
 
 export interface SkillSrc {
