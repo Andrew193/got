@@ -18,17 +18,21 @@ export class DepositFacadeService {
   private modalWindowService = inject(ModalWindowService);
   private userService = inject(UsersService);
 
-  $deposit = this.depositService._data;
+  $deposit = this.depositService._data$;
 
-  depositAvailable = this.$deposit.pipe(map(value => value.depositDay === 0));
+  depositAvailable = this.$deposit.pipe(map(value => (value ? value.depositDay === 0 : false)));
 
   depositCurrency(config: DepositConfig) {
     return this.depositService.submitDeposit(config.currency, config.days).pipe(
-      map(value => (Array.isArray(value) ? value[0] : value)),
+      map(value => {
+        debugger;
+
+        return Array.isArray(value) ? value[0] : value;
+      }),
       switchMap(value => {
         const parsed = Object.fromEntries(Object.entries(value).map(el => [el[0], el[1] * -1]));
 
-        return this.userService.updateCurrency(parsed as DepositCurrency, { returnObs: true });
+        return this.userService.updateCurrency(parsed as DepositCurrency);
       }),
     );
   }
@@ -36,10 +40,10 @@ export class DepositFacadeService {
   getDeposit(currency: Currency) {
     return this.depositService
       .withdrawDeposit()
-      .pipe(switchMap(() => this.userService.updateCurrency(currency, { returnObs: true })));
+      .pipe(switchMap(() => this.userService.updateCurrency(currency)));
   }
 
-  showDepositModal(depositConfig: DepositConfig = this.getCurrentDepositConfig()) {
+  showDepositModal(depositConfig: DepositConfig | null) {
     const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
       strategy: ModalStrategiesTypes.component,
       component: DepositModalComponent,
@@ -52,9 +56,11 @@ export class DepositFacadeService {
   getCurrentDepositConfig() {
     const depositCurrency = this.depositService.getStaticData();
 
-    return this.ironBankDepositHelperService.getDepositConfig(
-      depositCurrency,
-      depositCurrency.duration,
-    );
+    return depositCurrency
+      ? this.ironBankDepositHelperService.getDepositConfig(
+          depositCurrency,
+          depositCurrency.duration,
+        )
+      : depositCurrency;
   }
 }

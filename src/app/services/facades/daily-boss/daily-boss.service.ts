@@ -157,23 +157,25 @@ export class DailyBossFacadeService {
   }
 
   collectReward(reward: Currency) {
-    const newCurrency = this.usersService.updateCurrency(reward, {
-      returnObs: true,
-    });
+    debugger;
+    const newCurrency = this.usersService.updateCurrency(reward);
 
     newCurrency
       .pipe(
         tap({
           next: () => {
-            this.api.claimDailyBossReward({ lastLogin: TODAY }, () => {
-              this.notificationService.notificationsValue(NotificationType.daily_boss, false);
-              this.store.dispatch(
-                UnitsConfiguratorFeatureActions.drop({
-                  collections: [HeroesSelectNames.dailyBossCollection],
-                }),
-              );
-              this.nav.goToMainPage();
-            });
+            this.api
+              .claimDailyBossReward({ lastLogin: TODAY }, () => {
+                console.log(';l;l;l;l');
+                this.notificationService.notificationsValue(NotificationType.daily_boss, false);
+                this.store.dispatch(
+                  UnitsConfiguratorFeatureActions.drop({
+                    collections: [HeroesSelectNames.dailyBossCollection],
+                  }),
+                );
+                this.nav.goToMainPage();
+              })
+              .subscribe();
           },
         }),
       )

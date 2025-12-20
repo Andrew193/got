@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, delay, map, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, switchMap, tap } from 'rxjs';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { ApiService } from '../abstract/api/api.service';
 import {
@@ -57,7 +57,6 @@ export class UsersService extends ApiService<User> {
           this.putPostCover(
             { ...user, depositId: value.id || '' },
             {
-              returnObs: true,
               url: this.url,
               callback: () => {},
             },
@@ -82,11 +81,14 @@ export class UsersService extends ApiService<User> {
     const dailyBoss$ = (user: User) => this.dailyBossApiService.initConfigForNewUser(user.id);
 
     return this.putPostCover(this.basicUser(user), {
-      returnObs: true,
       url: this.url,
       callback: callback,
     }).pipe(
-      map(value => (Array.isArray(value) ? value[0] : value)),
+      map(value => {
+        debugger;
+
+        return Array.isArray(value) ? value[0] : value;
+      }),
       switchMap(user => deposit$(user)),
     );
   }
@@ -117,13 +119,12 @@ export class UsersService extends ApiService<User> {
       );
   }
 
-  updateCurrency<R extends boolean = false>(
+  updateCurrency(
     newCurrency: Currency,
-    config: { returnObs?: R; hardSet?: boolean } = {
-      returnObs: false as R,
+    config: { hardSet?: boolean } = {
       hardSet: false,
     },
-  ): R extends true ? Observable<User | User[]> : Subscription {
+  ): Observable<User | User[]> {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
     const payload: User = {
@@ -135,11 +136,9 @@ export class UsersService extends ApiService<User> {
       },
     };
 
-    const returnObs = (config.returnObs ?? false) as R;
-
-    return this.putPostCover<R, User>(payload, {
+    return this.putPostCover<User>(payload, {
       url: this.url,
-      callback: (response: User) => {
+      callback: response => {
         this.localStorage.setItem(BasicLocalStorage.names.user, response);
         this.user.next(response);
         this._snackBar.openFromComponent(CurrencyDifComponent, {
@@ -147,7 +146,6 @@ export class UsersService extends ApiService<User> {
           data: { old: user.currency, new: response.currency },
         });
       },
-      returnObs,
     });
   }
 
@@ -188,14 +186,11 @@ export class UsersService extends ApiService<User> {
   logout() {
     this.localStorage.removeItem(USER_TOKEN);
     this.user.next(null);
-    this.data.next({} as User);
+    this._data.set(null);
     this.nav.goToLogin();
   }
 
-  updateOnline(
-    config: { time?: number; claimed?: number; lastLoyaltyBonus?: string },
-    returnObs = false,
-  ) {
+  updateOnline(config: { time?: number; claimed?: number; lastLoyaltyBonus?: string }) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
 
     const data: User = {
@@ -233,7 +228,6 @@ export class UsersService extends ApiService<User> {
         this.localStorage.setItem(BasicLocalStorage.names.user, response);
         this.user.next(response as User);
       },
-      returnObs: returnObs,
     });
   }
 }

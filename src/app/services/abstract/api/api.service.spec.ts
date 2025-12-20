@@ -63,7 +63,6 @@ describe('ApiService', () => {
         expect(res.createdAt).toBe(now + TIME.oneMinuteMilliseconds);
         expect(httpClientSpy.post).toHaveBeenCalled();
       },
-      returnObs: false,
     });
 
     //Manual
@@ -78,7 +77,6 @@ describe('ApiService', () => {
             expect(res.id).toBe(user.id);
             done();
           },
-          returnObs: true,
         },
       )
       .subscribe();

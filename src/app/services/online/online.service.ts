@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, switchMap, timer } from 'rxjs';
+import { of, switchMap, timer } from 'rxjs';
 import { UsersService } from '../users/users.service';
 import { BasicLocalStorage, LocalStorageService } from '../localStorage/local-storage.service';
 import { TIME } from './online.contrants';
@@ -39,15 +39,7 @@ export class OnlineService implements InitInterface {
 
       //Add 10 minutes to online time
       timer(TIME.tenMinutesMilliseconds, TIME.tenMinutesMilliseconds)
-        .pipe(
-          switchMap(
-            () =>
-              this.userService.updateOnline(
-                { time: TIME.tenMinuteSeconds },
-                true,
-              ) as Observable<any>,
-          ),
-        )
+        .pipe(switchMap(() => this.userService.updateOnline({ time: TIME.tenMinuteSeconds })))
         .subscribe();
 
       return of({ ok: true, message: 'Online has been inited' } satisfies InitTaskObs);

@@ -56,8 +56,8 @@ export class GiftStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.giftService._data.subscribe(config => {
-      this.giftConfig = { ...config, userId: config.userId };
+    this.giftService._data$.subscribe(config => {
+      config && (this.giftConfig = { ...config, userId: config.userId });
     });
   }
 
@@ -117,9 +117,6 @@ export class GiftStoreComponent implements OnInit {
   collectAndLeave = () => {
     const newCurrency = this.usersService.updateCurrency(
       this.rewardService.mostResentRewardCurrency,
-      {
-        returnObs: true,
-      },
     );
 
     newCurrency

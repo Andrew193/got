@@ -89,7 +89,7 @@ export class IronBankComponent implements OnInit {
   }
 
   showCurrentDeposit() {
-    this.depositFacade.showDepositModal();
+    this.depositFacade.showDepositModal(this.depositFacade.getCurrentDepositConfig());
   }
 
   get depositOptions() {

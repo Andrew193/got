@@ -23,6 +23,6 @@ export class DailyRewardService extends BaseConfigApiService<DailyReward> {
   };
 
   claimDailyReward(reward: DailyReward, callback: (newConfig: IdEntity) => void) {
-    this.putPostCover(reward, { url: this.url, callback, returnObs: false });
+    this.putPostCover(reward, { url: this.url, callback }).subscribe();
   }
 }

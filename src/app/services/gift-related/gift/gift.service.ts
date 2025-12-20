@@ -11,6 +11,6 @@ export class GiftService extends BaseConfigApiService<GiftConfig> {
   override url = `/${API_ENDPOINTS.gift}`;
 
   claimGiftReward(giftConfig: GiftConfig, callback: (newConfig: IdEntity) => void) {
-    this.putPostCover(giftConfig, { url: this.url, callback, returnObs: false });
+    this.putPostCover(giftConfig, { url: this.url, callback }).subscribe();
   }
 }

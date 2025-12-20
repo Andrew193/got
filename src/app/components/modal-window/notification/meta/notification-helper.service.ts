@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { NotificationActivity, StepsReward } from '../../../../models/notification.model';
 import { Currency, User } from '../../../../services/users/users.interfaces';
 import { DayReward } from '../../../daily-reward/daily-reward.component';
-import { concatMap, map, Observable, of } from 'rxjs';
+import { concatMap, map, of } from 'rxjs';
 import { UsersService } from '../../../../services/users/users.service';
 import { NotificationActivities } from './notification-constants';
 import { TODAY } from '../../../../constants';
@@ -100,24 +100,16 @@ export class NotificationHelperService {
     const currentHour = +labels[i].split(' ')[0];
 
     if (onlineTime >= currentHour) {
-      const getReward = this.userService.updateCurrency(
-        {
-          copper: reward.copperCoin || 0,
-          silver: reward.silverCoin || 0,
-          gold: reward.goldCoin || 0,
-        },
-        { returnObs: true },
-      ) as Observable<any>;
+      const getReward = this.userService.updateCurrency({
+        copper: reward.copperCoin || 0,
+        silver: reward.silverCoin || 0,
+        gold: reward.goldCoin || 0,
+      });
 
       getReward
         .pipe(
           concatMap(res =>
-            of(res).pipe(
-              concatMap(
-                () =>
-                  this.userService.updateOnline({ claimed: currentHour }, true) as Observable<any>,
-              ),
-            ),
+            of(res).pipe(concatMap(() => this.userService.updateOnline({ claimed: currentHour }))),
           ),
         )
         .subscribe();
@@ -133,19 +125,12 @@ export class NotificationHelperService {
       totalReward[key] += part.amount || 0;
     });
 
-    const getReward = this.userService.updateCurrency(totalReward, {
-      returnObs: true,
-    }) as Observable<any>;
+    const getReward = this.userService.updateCurrency(totalReward);
 
     getReward
       .pipe(
         concatMap(res =>
-          of(res).pipe(
-            concatMap(
-              () =>
-                this.userService.updateOnline({ lastLoyaltyBonus: TODAY }, true) as Observable<any>,
-            ),
-          ),
+          of(res).pipe(concatMap(() => this.userService.updateOnline({ lastLoyaltyBonus: TODAY }))),
         ),
       )
       .subscribe();

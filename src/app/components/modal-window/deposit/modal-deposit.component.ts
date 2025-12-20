@@ -6,13 +6,11 @@ import {
   DifferenceMode,
 } from '../../../pages/iron-bank/deposit/hint/deposit-hint.component';
 import { IronBankHelperService } from '../../../pages/iron-bank/helper/iron-bank-helper.service';
-import { DepositCurrency } from '../../../services/users/users.interfaces';
 import { DepositConfig } from '../../../models/iron-bank.model';
 import { CurrencyHelperService } from '../../../services/users/currency/helper/currency-helper.service';
 import { MatDivider } from '@angular/material/divider';
 import { DepositFacadeService } from '../../../services/facades/deposit/deposit.service';
 import { AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs';
 import { TimeService } from '../../../services/time/time.service';
 import { Coin } from '../../../models/reward-based.model';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -35,7 +33,7 @@ export class DepositModalComponent implements Partial<HasFooterHost> {
   helper = inject(IronBankHelperService);
 
   _data = inject<DynamicComponentConfig<DepositConfig>>(DYNAMIC_COMPONENT_DATA);
-  deposit: Observable<DepositCurrency> = this.depositFacadeService.$deposit;
+  deposit = this.depositFacadeService.$deposit;
   newCoins: Coin[] = [];
 
   getCoins() {

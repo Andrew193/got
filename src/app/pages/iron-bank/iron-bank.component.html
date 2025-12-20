@@ -44,7 +44,7 @@
         navClass="placeholder-container h-100"
         innerDivClass="m-0 h-100">
         <div class="stores w-100 m-0 p-0">
-          <fieldset [disabled]="!depositAvailable" class="h-100">
+          <fieldset [disabled]="!depositAvailable" class="h-100 w-100">
             <app-deposit
               [(form)]="depositForm"
               [copperMax]="getMax(user, 'copper')"

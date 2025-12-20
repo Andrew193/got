@@ -5,7 +5,7 @@ type PutPostMetaBase<T> = {
   callback: (res: T) => void;
 };
 
-export type PutPostMetaOf<T, R extends boolean> = PutPostMetaBase<T> & { returnObs: R };
+export type PutPostMetaOf<T> = PutPostMetaBase<T>;
 
 export type ParamToCheck = 'userId';
 

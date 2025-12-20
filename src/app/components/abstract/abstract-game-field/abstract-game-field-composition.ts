@@ -1,21 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
-import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
-import { BehaviorSubject } from 'rxjs';
-import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
-import { UnitService } from '../../../services/unit/unit.service';
-import { EffectsService } from '../../../services/effects/effects.service';
+import { Store } from '@ngrx/store';
 import {
+  GameFieldVars,
   GameResultsRedirectType,
   Position,
   Tile,
   TilesToHighlight,
   TileUnit,
 } from '../../../models/field.model';
-import { Store } from '@ngrx/store';
-import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { selectBattleLog } from '../../../store/reducers/game-board.reducer';
+import { BehaviorSubject } from 'rxjs';
+import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
+import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
+import { UnitService } from '../../../services/unit/unit.service';
+import { EffectsService } from '../../../services/effects/effects.service';
+import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { EffectsValues } from '../../../constants';
-import { BattleEndBase } from '../basic-game-end/basic-game-end.component';
+import { HeroType } from '../../../models/units-related/unit.model';
 
 export interface GameField {
   gameField: Tile[][];
@@ -23,23 +23,16 @@ export interface GameField {
   possibleMoves: Position[];
 }
 
-@Component({
-  selector: 'app-abstract-game-field',
-  template: '',
-  styleUrl: './abstract-game-field.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export abstract class AbstractGameFieldComponent extends BattleEndBase implements OnDestroy {
-  store = inject(Store);
+export abstract class AbstractGameFieldComposition extends GameFieldVars {
+  //Units config
+  userUnits: TileUnit[] = [];
+  aiUnits: TileUnit[] = [];
 
-  @Input() userUnits: TileUnit[] = [];
-  @Input() aiUnits: TileUnit[] = [];
-  @Input() battleMode = true;
-  @Input() gameResultsRedirect: GameResultsRedirectType = () => {};
-
+  //Meta
+  battleMode = true;
   autoFight = false;
 
-  log = this.store.select(selectBattleLog());
+  log;
   turnUser = true;
   over = false;
   turnCount = 0;
@@ -53,19 +46,40 @@ export abstract class AbstractGameFieldComponent extends BattleEndBase implement
   selectedEntity: TileUnit | null = null;
   possibleAttackMoves: Position[] = [];
 
+  //Endgame
+  gameResultsRedirect: GameResultsRedirectType = () => {};
+
+  //Servants
+  store;
+  abstractFieldS;
+  unitS;
+  effectsS;
+
   constructor(
-    private abstractFieldS: AbstractFieldService,
-    private unitS: UnitService,
-    private effectsS: EffectsService,
+    abstractFieldS: AbstractFieldService,
+    unitS: UnitService,
+    effectsS: EffectsService,
+    store: Store<any>,
   ) {
     super();
+
+    this.abstractFieldS = abstractFieldS;
+    this.unitS = unitS;
+    this.effectsS = effectsS;
+    this.store = store;
+
+    this.log = this.store.select(selectBattleLog());
+
+    //Init turn counter
     this._turnCount.subscribe(newTurn => {
       this.turnCount = newTurn;
+
+      console.log(this);
     });
   }
 
   recreateGameConfig(newUserUnit: TileUnit[], newAiUnit: TileUnit[]) {
-    this.ngOnDestroy();
+    this.resetState();
 
     if (newUserUnit) {
       this.userUnits = [...newUserUnit];
@@ -144,8 +158,11 @@ export abstract class AbstractGameFieldComponent extends BattleEndBase implement
     skill: TileUnitSkill,
   ) {
     const boostedAttack =
-      this.effectsS.getBoostedParameterCover(attackDealer, attackDealer.effects, 'attack') *
-      (skill.dmgM || 0);
+      this.effectsS.getBoostedParameterCover(
+        attackDealer,
+        attackDealer.effects,
+        attackDealer.heroType === HeroType.ATTACK ? 'attack' : 'defence',
+      ) * (skill.dmgM || 0);
     const boostedDefence = this.effectsS.getBoostedParameterCover(
       dmgTaker[enemyIndex],
       dmgTaker[enemyIndex].effects,
@@ -172,6 +189,7 @@ export abstract class AbstractGameFieldComponent extends BattleEndBase implement
           unit: dmgTaker[enemyIndex],
         }),
       );
+
       dmgTaker[enemyIndex] = { ...dmgTaker[enemyIndex], health: newHealth };
     }
   }
@@ -243,7 +261,7 @@ export abstract class AbstractGameFieldComponent extends BattleEndBase implement
     return enemyClicked ? clickedTile : null;
   }
 
-  ngOnDestroy() {
+  resetState() {
     this.turnUser = true;
     this.turnCount = 0;
     this.clickedEnemy = null;

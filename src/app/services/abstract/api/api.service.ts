@@ -1,9 +1,10 @@
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, pipe, Subscription, tap } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { map, Observable, pipe, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { LocalStorageService } from '../../localStorage/local-storage.service';
 import { IdEntity } from '../../../models/common.model';
 import { PutPostMetaOf } from '../../../models/api.model';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 type TapParser<T> = (config: T) => void;
 
@@ -11,22 +12,20 @@ type TapParser<T> = (config: T) => void;
   providedIn: 'root',
 })
 export abstract class ApiService<T> {
-  protected data = new BehaviorSubject<T>({} as T);
-  _data = this.data.asObservable();
-
   protected http = inject(HttpClient);
   protected localStorageService = inject(LocalStorageService);
 
-  protected _userId = '0';
+  protected _data = signal<T | null>(null);
+  _data$ = toObservable(this._data);
 
-  constructor() {
-    this._userId = this.getUserId();
+  get userId() {
+    return this.localStorageService.getUserId();
   }
 
-  protected putPostCover<R extends boolean, E extends IdEntity>(
+  protected putPostCover<E extends IdEntity>(
     entity: E,
-    meta: PutPostMetaOf<T, R>,
-  ): R extends true ? Observable<T | T[]> : Subscription {
+    meta: PutPostMetaOf<T>,
+  ): Observable<T | T[]> {
     const url = entity.id ? `${meta.url}/${entity.id}` : meta.url;
     const body = entity.id
       ? entity
@@ -39,41 +38,23 @@ export abstract class ApiService<T> {
         })();
 
     const req$ = entity.id ? this.http.put<T>(url, body) : this.http.post<T>(url, body);
-    const parsed$ = req$.pipe(this.basicResponseTapParser(meta.callback));
 
-    return (meta.returnObs ? parsed$ : parsed$.subscribe()) as any;
+    return req$.pipe(this.basicResponseTapParser(meta.callback)) as any;
   }
 
   protected basicResponseTapParser(callback: TapParser<T>) {
     return pipe(
-      map((response: T[] | T | undefined) => (Array.isArray(response) ? response[0] : response)),
+      map((response: T | T[] | null) => (Array.isArray(response) ? response[0] : response)),
       tap({
-        next: (response: T | undefined) => {
-          if (response) {
-            this.data.next(response);
-            callback(response);
-          } else {
-            this.data.next({} as T);
-          }
-        },
-        error: error => {
-          console.log(error);
+        next: (response: T | null) => {
+          this._data.set(response);
+          response && callback(response);
         },
       }),
     );
   }
 
   getStaticData() {
-    return this.data.getValue();
-  }
-
-  private getUserId() {
-    return this.localStorageService.getUserId();
-  }
-
-  get userId() {
-    this._userId = this.getUserId();
-
-    return this._userId;
+    return this._data();
   }
 }

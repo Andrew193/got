@@ -91,16 +91,18 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rewardHero = this.heroService.getPriest();
     this.tileRewardHero = this.heroService.getTileUnit(this.rewardHero);
 
-    this.dailyRewardService._data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => {
-      this.dailyRewardConfig = {
-        ...(config || this.dailyRewardConfig),
-        userId: config.userId,
-      };
+    this.dailyRewardService._data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => {
+      if (config) {
+        this.dailyRewardConfig = {
+          ...(config || this.dailyRewardConfig),
+          userId: config.userId,
+        };
 
-      this.month = this.dailyRewardService.monthReward(
-        this.dailyRewardConfig.totalDays - Number(this.dailyRewardConfig.lastLogin === TODAY),
-        7,
-      );
+        this.month = this.dailyRewardService.monthReward(
+          this.dailyRewardConfig.totalDays - Number(this.dailyRewardConfig.lastLogin === TODAY),
+          7,
+        );
+      }
     });
   }
 
@@ -114,13 +116,16 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
           lastLogin: TODAY,
         },
         newConfig => {
-          this.usersService.updateCurrency({
-            copper: reward.copperCoin || 0,
-            silver: reward.silverCoin || 0,
-            gold: reward.goldCoin || 0,
-          });
-          this.dailyRewardConfig = newConfig as DailyReward;
-          this.notificationService.notificationsValue(NotificationType.daily_reward, false);
+          this.usersService
+            .updateCurrency({
+              copper: reward.copperCoin || 0,
+              silver: reward.silverCoin || 0,
+              gold: reward.goldCoin || 0,
+            })
+            .subscribe(() => {
+              this.dailyRewardConfig = newConfig as DailyReward;
+              this.notificationService.notificationsValue(NotificationType.daily_reward, false);
+            });
         },
       );
     }

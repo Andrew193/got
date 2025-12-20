@@ -22,13 +22,12 @@ export class TableApiService<T> extends ApiService<TableConfigApiResponse<T>> {
         ...(id ? { id } : {}),
       },
       {
-        returnObs: false,
         url: this.url,
         callback: () => {
-          //this._snackBar.open("Saved")
+          this._snackBar.open('Saved');
         },
       },
-    );
+    ).subscribe();
   }
 
   getTableConfig(tableName: TABLE_NAMES) {
@@ -38,7 +37,7 @@ export class TableApiService<T> extends ApiService<TableConfigApiResponse<T>> {
           ? configs.filter(config => {
               return config.userId === this.userId && config.tableName === tableName;
             })[0]
-          : undefined;
+          : null;
       }),
       this.basicResponseTapParser(() => {}),
     );

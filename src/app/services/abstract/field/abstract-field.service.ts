@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { GameField } from '../../../components/abstract/abstract-game-field/abstract-game-field.component';
 import { GameFieldVars, Position, Tile, TileUnit } from '../../../models/field.model';
 import { Store } from '@ngrx/store';
 import { selectGameFieldConfig } from '../../../store/reducers/game-board.reducer';
+import { GameField } from '../../../components/abstract/abstract-game-field/abstract-game-field-composition';
 
 @Injectable({
   providedIn: 'root',

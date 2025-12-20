@@ -25,8 +25,6 @@ export class GameService {
     closeBtnLabel: '',
     callback: () => {},
   };
-  private aiUnits: TileUnit[] = [];
-  private userUnits: TileUnit[] = [];
 
   constructor(
     private unitService: UnitService,
@@ -385,11 +383,11 @@ export class GameService {
     this.selectSkillsAndRecountCooldown(units, units[index]);
   }
 
-  getAiLeadingUnits(aiMove: boolean) {
-    return this[aiMove ? 'aiUnits' : 'userUnits'];
+  getAiLeadingUnits(aiMove: boolean, aiUnits: TileUnit[], userUnits: TileUnit[]) {
+    return aiMove ? aiUnits : userUnits;
   }
 
-  getUserLeadingUnits(aiMove: boolean) {
-    return this[aiMove ? 'userUnits' : 'aiUnits'];
+  getUserLeadingUnits(aiMove: boolean, aiUnits: TileUnit[], userUnits: TileUnit[]) {
+    return aiMove ? userUnits : aiUnits;
   }
 }

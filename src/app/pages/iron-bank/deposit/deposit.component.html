@@ -1,34 +1,24 @@
 @let _form = form();
-@let _copperMax = copperMax();
-@let _silverMax = silverMax();
-@let _goldMax = goldMax();
+@let _inputsConfig = inputsConfig();
 @let _depositOptions = depositOptions();
 @let _uiErrorsNames = uiErrorsNames();
 
-<div class="row gap-2 m-0 store-row p-2">
-  <form [formGroup]="_form" class="w-100">
-    <div class="row m-0 g-2">
-      <span class="col-2 mb-0 deposit-label color-white">Duration:</span>
-      <div class="col-10 ps-2 pe-3">
-        <app-slider [controlName]="'days'" [options]="_depositOptions" />
-      </div>
+<form [formGroup]="_form" class="row gap-2 m-0 store-row p-2">
+  <div class="row ignore-direction m-0 gap-2">
+    <span class="col-auto mb-0 deposit-label color-white">Duration:</span>
+    <div class="col ps-2 pe-3">
+      <app-slider [controlName]="'days'" [options]="_depositOptions" />
     </div>
+  </div>
 
-    <div class="row m-0 gap-2">
+  <div class="row ignore-direction m-0 gap-2">
+    @for (input of _inputsConfig; track input.label) {
       <div class="col p-0">
-        <app-number-input [max]="_copperMax" [label]="'Copper: '" [controlName]="'copper'">
+        <app-number-input [max]="input.max" [label]="input.label" [controlName]="input.type">
         </app-number-input>
       </div>
-      <div class="col p-0">
-        <app-number-input [max]="_silverMax" [label]="'Silver: '" [controlName]="'silver'">
-        </app-number-input>
-      </div>
-      <div class="col p-0">
-        <app-number-input [max]="_goldMax" [label]="'Gold: '" [controlName]="'gold'">
-        </app-number-input>
-      </div>
-    </div>
-  </form>
+    }
+  </div>
 
   @if (_form.valid) {
     <section class="w-100">
@@ -44,6 +34,5 @@
       [form]="_form"
       [uiErrorsNames]="_uiErrorsNames"></app-form-errors-container>
   }
-
   <ng-content />
-</div>
+</form>

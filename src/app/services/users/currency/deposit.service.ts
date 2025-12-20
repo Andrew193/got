@@ -18,9 +18,8 @@ export class DepositService extends BaseConfigApiService<DepositCurrency> {
     const newDeposit = this.helper.makeNewDeposit(deposit, days);
 
     return this.putPostCover(
-      { ...newDeposit, id: this.data.getValue().id, userId: this.userId },
+      { ...newDeposit, id: this.getStaticData()?.id, userId: this.userId },
       {
-        returnObs: true,
         url: this.url,
         callback: () => {},
       },
@@ -28,12 +27,11 @@ export class DepositService extends BaseConfigApiService<DepositCurrency> {
   }
 
   withdrawDeposit() {
-    const deposit = this.data.getValue();
+    const deposit = this.getStaticData();
 
     return this.putPostCover(
-      { ...this.helper.initialDepositCurrency, id: deposit.id, userId: this.userId },
+      { ...this.helper.initialDepositCurrency, id: deposit?.id, userId: this.userId },
       {
-        returnObs: true,
         url: this.url,
         callback: () => {},
       },

@@ -14,9 +14,9 @@ export class DailyBossApiService extends BaseConfigApiService<DailyBossConfig> {
     dailyBossConfig: Partial<DailyBossConfig>,
     callback: (newConfig: IdEntity) => void,
   ) {
-    this.putPostCover(
+    return this.putPostCover(
       { ...this.getStaticData(), ...dailyBossConfig },
-      { url: this.url, callback, returnObs: false },
+      { url: this.url, callback: callback },
     );
   }
 }

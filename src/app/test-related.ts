@@ -4,16 +4,12 @@ import {
   BasicLocalStorage,
   BasicLocalStorageNamesKeys,
 } from './services/localStorage/local-storage.service';
-import { ALL_EFFECTS, EffectsValues, frontRoutes } from './constants';
+import { ALL_EFFECTS, EffectsValues } from './constants';
 import { Injectable } from '@angular/core';
 import { ApiService } from './services/abstract/api/api.service';
 import { IdEntity } from './models/common.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PutPostMetaOf } from './models/api.model';
-
-//Config
-
-export const fakeFrontRoutes = structuredClone(frontRoutes);
 
 //Effects
 
@@ -101,10 +97,7 @@ export class FakeLocalStorage extends BasicLocalStorage {
 
 @Injectable()
 export class TestApiService<T> extends ApiService<T> {
-  public save<R extends boolean>(
-    entity: IdEntity,
-    meta: PutPostMetaOf<T, R>,
-  ): R extends true ? Observable<T | T[]> : Subscription {
+  public save(entity: IdEntity, meta: PutPostMetaOf<T>): Observable<T | T[]> {
     return this.putPostCover(entity, meta) as any;
   }
 }

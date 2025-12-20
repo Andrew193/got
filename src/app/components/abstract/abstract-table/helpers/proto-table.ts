@@ -146,7 +146,7 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
     this.tableService.api.saveUpdateTableConfig(
       this.tableService.createTableConfig(tableConfig, this.itemsPerPage),
       this.tableName,
-      this.tableConfig().id,
+      this.tableConfig()?.id,
     );
   }
 

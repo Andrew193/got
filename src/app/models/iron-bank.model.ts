@@ -9,6 +9,23 @@ export enum CurEnum {
 
 export type Cur = 'COPPER' | 'SILVER' | 'GOLD';
 
+export type DepositInput = {
+  max: number;
+} & (
+  | {
+      type: 'copper';
+      label: 'Copper:';
+    }
+  | {
+      type: 'silver';
+      label: 'Silver:';
+    }
+  | {
+      type: 'gold';
+      label: 'Gold:';
+    }
+);
+
 export interface CurMeta {
   valueInCopper: number;
   decimals: number;

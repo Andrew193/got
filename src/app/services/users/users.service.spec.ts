@@ -182,11 +182,8 @@ describe('UsersService', () => {
 
     httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
 
-    const add$ = userService.updateCurrency(newCurrency, {
-      returnObs: true,
-    }) as Observable<User>;
+    const add$ = userService.updateCurrency(newCurrency) as Observable<User>;
     const reset$ = userService.updateCurrency(newCurrency, {
-      returnObs: true,
       hardSet: true,
     }) as Observable<User>;
 
@@ -220,11 +217,11 @@ describe('UsersService', () => {
 
     httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
 
-    const onOnlineEmpty$ = userService.updateOnline(newOnline, true) as Observable<User>;
-    const onOnline600$ = userService.updateOnline(
-      { ...newOnline, claimed: 23 },
-      true,
-    ) as Observable<User>;
+    const onOnlineEmpty$ = userService.updateOnline(newOnline) as Observable<User>;
+    const onOnline600$ = userService.updateOnline({
+      ...newOnline,
+      claimed: 23,
+    }) as Observable<User>;
 
     const array = [onOnlineEmpty$, onOnline600$] as const;
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, output } from '@angular/core';
 import { GameFieldService } from '../../services/game-related/game-field/game-field.service';
 import { GameService } from '../../services/game-related/game-action/game.service';
 import { EffectsService } from '../../services/effects/effects.service';
@@ -15,6 +15,8 @@ import {
   CdkVirtualForOf,
   CdkVirtualScrollViewport,
 } from '@angular/cdk/scrolling';
+import { GameResultsRedirectType, TileUnit } from '../../models/field.model';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-game-field',
@@ -38,12 +40,20 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameFieldComponent extends BasicGameFieldComponent {
+  @Input() override userUnits: TileUnit[] = [];
+  @Input() override aiUnits: TileUnit[] = [];
+  @Input() override battleMode = true;
+  @Input() override gameResultsRedirect: GameResultsRedirectType = () => {};
+
+  override battleEndFlag = output<Parameters<GameResultsRedirectType>>();
+
   constructor(
     fieldService: GameFieldService,
     unitService: UnitService,
     effectsService: EffectsService,
     gameActionService: GameService,
+    store: Store,
   ) {
-    super(fieldService, unitService, effectsService, gameActionService);
+    super(fieldService, unitService, effectsService, gameActionService, store);
   }
 }
