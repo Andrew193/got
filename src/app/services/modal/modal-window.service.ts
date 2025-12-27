@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ModalConfig } from '../../components/modal-window/modal-interfaces';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalDialogRefs } from '../../models/modal.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { ModalDialogRefs } from '../../models/modal.model';
 export class ModalWindowService {
   static frozen = false;
   dialog = inject(MatDialog);
+  snackBar = inject(MatSnackBar);
 
   dialogRefs = new Map<string, ModalDialogRefs>();
   selectedDialogRef: number | null = null;
@@ -41,19 +43,33 @@ export class ModalWindowService {
   };
 
   private getOverlayPane(ref: MatDialogRef<unknown>): HTMLElement | null {
+    debugger;
     const overlayRef = (ref as any)._ref.overlayRef;
 
-    return overlayRef?.overlayElement.parentElement ?? null;
+    return overlayRef?.overlayElement?.parentElement ?? null;
   }
 
   bringToFront = (dialogId: string, index: number) => {
+    let wasFixed = false;
+
     this.dialogRefs.forEach(ref => {
       const pane = this.getOverlayPane(ref.dialogRef);
 
       if (pane) {
         pane.classList.remove('dialog-on-top');
+      } else if (!pane && ref.modalConfig) {
+        this.removeDialogFromRefs(dialogId);
+        this.openModal(ref.modalConfig);
+        wasFixed = true;
       }
     });
+
+    if (wasFixed) {
+      this.snackBar.open(
+        'Your modal window data is corrupted. We had to reopen some or all of them. This may have changed the order of your modal windows. ' +
+          'The main cause is using history. Close modal windows before using history, and this will not happen again. Thank you for your understanding.',
+      );
+    }
 
     const ref = this.dialogRefs.get(dialogId);
 
@@ -68,6 +84,7 @@ export class ModalWindowService {
   };
 
   removeDialogFromRefs(key = '') {
+    debugger;
     const dialogRef = this.dialogRefs.get(key)?.dialogRef;
 
     if (dialogRef) {

@@ -1,6 +1,7 @@
 import { Unit } from './units-related/unit.model';
 import { TileUnitSkill } from './units-related/skill.model';
 import { DisplayReward } from '../services/reward/reward.service';
+import { Currency } from '../services/users/users.interfaces';
 
 export interface Position {
   i: number;
@@ -64,4 +65,5 @@ export class GameFieldVars {
 export type GameResultsRedirectType = (
   realAiUnits: TileUnit[] | TileUnitWithReward[],
   win: boolean,
+  reward?: Currency,
 ) => void;

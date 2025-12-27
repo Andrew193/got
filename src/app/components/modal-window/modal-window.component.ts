@@ -45,7 +45,7 @@ export class ModalWindowComponent implements OnInit {
 
   openModal(
     template: TemplateRef<void>,
-    refConfig: Omit<ModalDialogRefs, 'dialogRef'> = {
+    refConfig: Omit<ModalDialogRefs, 'dialogRef' | 'modalConfig'> = {
       name: 'Modal window',
       icon: 'notifications_active',
     },
@@ -60,7 +60,11 @@ export class ModalWindowComponent implements OnInit {
       },
     });
 
-    this.modalWindowService.dialogRefs.set(modalConfig.dialogId, { dialogRef, ...refConfig });
+    this.modalWindowService.dialogRefs.set(modalConfig.dialogId, {
+      dialogRef,
+      ...refConfig,
+      modalConfig,
+    });
     dialogRef.afterClosed().subscribe();
   }
 
@@ -73,6 +77,8 @@ export class ModalWindowComponent implements OnInit {
   }
 
   getContextConfig(modalConfig: ModalConfig<unknown>) {
+    debugger;
+
     return {
       ...modalConfig,
       close: () => this.close(modalConfig),
@@ -83,6 +89,7 @@ export class ModalWindowComponent implements OnInit {
   }
 
   public close = (modalConfig: ModalConfig<unknown>) => {
+    debugger;
     modalConfig.config.callback && modalConfig.config.callback();
 
     this.modalWindowService.removeDialogFromRefs(modalConfig.dialogId);

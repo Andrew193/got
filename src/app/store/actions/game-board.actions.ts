@@ -4,6 +4,7 @@ import { TilesToHighlight, TileUnit } from '../../models/field.model';
 import { LogConfig, LogRecord } from '../../models/logger.model';
 import { TileUnitSkill } from '../../models/units-related/skill.model';
 import { Effect } from '../../models/effect.model';
+import { Currency } from '../../services/users/users.interfaces';
 
 export const GameBoardActions = createActionGroup({
   source: StoreNames.gameBoard,
@@ -16,6 +17,7 @@ export const GameBoardActions = createActionGroup({
       unit: TileUnit;
       message?: string;
     }>(),
+    setBattleReward: props<{ data: Currency }>(),
     logRecord: props<LogRecord>(),
     toggleTrackLog: emptyProps(),
     setTrackLog: props<{ newState: boolean }>(),

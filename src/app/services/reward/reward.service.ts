@@ -7,6 +7,8 @@ import { Id } from '../../models/common.model';
 import { Currency } from '../users/users.interfaces';
 import { GameResultsRedirectType } from '../../models/field.model';
 import { Rarity } from '../../models/units-related/unit.model';
+import { Store } from '@ngrx/store';
+import { GameBoardActions } from '../../store/actions/game-board.actions';
 
 export type RewardBox = {
   probability: number;
@@ -73,6 +75,7 @@ export const basicRewardNames: RewardNames = {
   providedIn: 'root',
 })
 export class RewardService {
+  store = inject(Store);
   private numberService = inject(NumbersService);
   heroService = inject(HeroesFacadeService);
 
@@ -119,6 +122,7 @@ export class RewardService {
     });
 
     this.mostResentRewardCurrency = reward;
+    this.store.dispatch(GameBoardActions.setBattleReward({ data: this.mostResentRewardCurrency }));
 
     return this.mostResentRewardCurrency;
   }

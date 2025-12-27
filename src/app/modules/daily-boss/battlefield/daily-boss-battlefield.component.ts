@@ -6,7 +6,7 @@ import {
   BossDifficulty,
   DailyBossFacadeService,
 } from '../../../services/facades/daily-boss/daily-boss.service';
-import { TileUnit, TileUnitWithReward } from '../../../models/field.model';
+import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { UnitName } from '../../../models/units-related/unit.model';
 import { RewardService } from '../../../services/reward/reward.service';
 
@@ -54,7 +54,7 @@ export class DailyBossBattlefieldComponent {
     });
   }
 
-  getReward([realAiUnits, win]: [realAiUnits: TileUnit[] | TileUnitWithReward[], win: boolean]) {
+  getReward([realAiUnits, win]: Parameters<GameResultsRedirectType>) {
     this.rewardService.mostResentRewardCurrency = this.dailyBossService.getRewardToCollect(
       this.level,
       realAiUnits[0].maxHealth - realAiUnits[0].health,

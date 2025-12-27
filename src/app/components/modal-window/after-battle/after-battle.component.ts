@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { DynamicComponentConfig, HasFooterHost, ModalBase } from '../modal-interfaces';
+import { AfterBattleModal, DynamicComponentConfig, HasFooterHost } from '../modal-interfaces';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { RewardService } from '../../../services/reward/reward.service';
 import { CurrencyHelperService } from '../../../services/users/currency/helper/currency-helper.service';
@@ -15,14 +15,14 @@ import { RewardCoinComponent } from '../../views/reward-coin/reward-coin.compone
 export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit, OnDestroy {
   @ViewChild('footerHost', { read: ViewContainerRef, static: true }) footerHost!: ViewContainerRef;
 
-  data = inject<DynamicComponentConfig<ModalBase>>(DYNAMIC_COMPONENT_DATA);
+  data = inject<DynamicComponentConfig<AfterBattleModal>>(DYNAMIC_COMPONENT_DATA);
   rewardService = inject(RewardService);
   currencyHelperService = inject(CurrencyHelperService);
   rewards: Coin[] = [];
 
   ngOnInit() {
     this.rewards = this.currencyHelperService.convertCurrencyToCoin(
-      this.rewardService.mostResentRewardCurrency,
+      this.data.reward || this.rewardService.mostResentRewardCurrency,
     );
   }
 

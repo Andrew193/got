@@ -4,7 +4,10 @@ import { DepositModalComponent } from './components/modal-window/deposit/modal-d
 import { NotificationComponent } from './components/modal-window/notification/notification.component';
 import { ModalDialogRefs } from './models/modal.model';
 
-export const modalWindowsNames: Record<string, Omit<ModalDialogRefs, 'dialogRef'>> = {
+export const modalWindowsNames: Record<
+  string,
+  Omit<ModalDialogRefs, 'dialogRef' | 'modalConfig'>
+> = {
   [AdventureBeginsComponent.name]: { name: 'Deposit Information', icon: 'directions_run' },
   [AfterBattleComponent.name]: { name: 'Battle Information', icon: 'castle' },
   [DepositModalComponent.name]: { name: 'Deposit Information', icon: 'currency_exchange' },

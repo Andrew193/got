@@ -5,6 +5,7 @@ import { createEntityAdapter } from '@ngrx/entity';
 import { Coordinate, TilesToHighlight } from '../../models/field.model';
 import {
   makeSelectBattleLog,
+  makeSelectBattleReward,
   makeSelectTilesToHighlightArray,
   makeSelectTileToHighlight,
 } from '../selectors/game-board.selectors';
@@ -28,6 +29,11 @@ export const GameBoardInitialState: BasicBoardState = {
   tilesToHighlight: tilesToHighlightAdapter.getInitialState(),
   battleLog: logAdapter.getInitialState({ keepTrack: true }),
   fieldConfig: FieldConfigInitialState,
+  reward: {
+    copper: 0,
+    silver: 0,
+    gold: 0,
+  },
 };
 
 const loggerHelper = new BaseGameLoggerService();
@@ -38,6 +44,9 @@ export const GameBoardFeature = createFeature({
     GameBoardInitialState,
     on(FieldConfigActions.setFieldConfig, (state, action) => {
       return { ...state, fieldConfig: FieldConfigReducer(state.fieldConfig, action) };
+    }),
+    on(GameBoardActions.setBattleReward, (state, action) => {
+      return { ...state, reward: action.data };
     }),
     on(GameBoardActions.setTilesToHighlight, (state, action) => {
       return {
@@ -77,6 +86,7 @@ export const GameBoardFeature = createFeature({
       selectTileToHighlight: (tile: Coordinate) =>
         makeSelectTileToHighlight(selectGameBoardState, tile),
       selectBattleLog: () => makeSelectBattleLog(selectGameBoardState),
+      selectBattleReward: () => makeSelectBattleReward(selectGameBoardState),
       selectFieldConfig: () =>
         makeSelectFieldConfig(baseSelectors.selectFieldConfig, StoreNames.gameBoard),
     };
@@ -86,5 +96,6 @@ export const GameBoardFeature = createFeature({
 export const {
   selectTileToHighlight,
   selectBattleLog,
+  selectBattleReward,
   selectFieldConfig: selectGameFieldConfig,
 } = GameBoardFeature;

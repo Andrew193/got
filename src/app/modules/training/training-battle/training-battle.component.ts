@@ -15,6 +15,7 @@ import { HeroesSelectNames } from '../../../constants';
 import { FieldConfigActions } from '../../../store/actions/field-config.actions';
 import { RewardService } from '../../../services/reward/reward.service';
 import { UsersService } from '../../../services/users/users.service';
+import { Currency } from '../../../services/users/users.interfaces';
 
 @Component({
   selector: 'app-training-battle',
@@ -69,9 +70,13 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
     );
   }
 
-  public victoryRedirect = () => {
+  public victoryRedirect: GameResultsRedirectType = (_, __, currency) => {
+    this._victoryRedirect(currency);
+  };
+
+  protected _victoryRedirect = (currency?: Currency) => {
     this.usersService
-      .updateCurrency(this.rewardService.mostResentRewardCurrency)
+      .updateCurrency(currency || this.rewardService.mostResentRewardCurrency)
       .subscribe(() => this.nav.goToTraining());
   };
 

@@ -1,6 +1,7 @@
 import { ComponentRef, ViewContainerRef } from '@angular/core';
 import { BasicModalStrategy } from './strategies/basic-modal-strategy/basic-modal-strategy';
 import { ComponentModalStrategy } from './strategies/component-modal-strategy/component-modal-strategy';
+import { Currency } from '../../services/users/users.interfaces';
 
 export interface HasFooterHost {
   footerHost: ViewContainerRef;
@@ -11,6 +12,10 @@ export interface ModalBase {
   headerClass: string;
   headerMessage: string;
   closeBtnLabel: string;
+}
+
+export interface AfterBattleModal extends ModalBase {
+  reward: Currency;
 }
 
 export interface ModalConfig<T = unknown> extends ModalBase {

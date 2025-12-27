@@ -1,4 +1,4 @@
-import { inject, Injectable, OutputEmitterRef } from '@angular/core';
+import { effect, inject, Injectable, OutputEmitterRef } from '@angular/core';
 import { createDeepCopy } from '../../../helpers';
 import { ModalWindowService } from '../../modal/modal-window.service';
 import { EffectsService } from '../../effects/effects.service';
@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { AfterBattleComponent } from '../../../components/modal-window/after-battle/after-battle.component';
 import { EffectsValues } from '../../../constants';
+import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ import { EffectsValues } from '../../../constants';
 export class GameService {
   store = inject(Store);
   static extendEffectDurationBy = 0;
+  rewardSetterResolveSubject = this.store.selectSignal(selectBattleReward());
 
   private gameResult = {
     headerMessage: '',
@@ -27,11 +29,53 @@ export class GameService {
     callback: () => {},
   };
 
+  private _allUserUnitsDead: boolean | null = null;
+  private _realAiUnits: TileUnit[] = [];
+  private _callback: GameResultsRedirectType = () => {};
+
   constructor(
     private unitService: UnitService,
     private eS: EffectsService,
     private modalWindowService: ModalWindowService,
-  ) {}
+  ) {
+    effect(() => {
+      const _rewardSetterResolveSubject = this.rewardSetterResolveSubject();
+
+      if (this._allUserUnitsDead !== null) {
+        this.gameResult = {
+          headerClass: this._allUserUnitsDead ? 'red-b' : 'green-b',
+          headerMessage: this._allUserUnitsDead ? 'You lost' : 'You won',
+          closeBtnLabel: this._allUserUnitsDead ? 'Try again later' : 'Great',
+          callback: () => {
+            this._callback(this._realAiUnits, !this._allUserUnitsDead, _rewardSetterResolveSubject);
+          },
+        };
+
+        const config = this.modalWindowService.getModalConfig(
+          this.gameResult.headerClass,
+          this.gameResult.headerMessage,
+          this.gameResult.closeBtnLabel,
+          {
+            callback: () => {
+              this._callback(
+                this._realAiUnits,
+                !this._allUserUnitsDead,
+                _rewardSetterResolveSubject,
+              );
+            },
+            strategy: ModalStrategiesTypes.component,
+            component: AfterBattleComponent,
+            data: {
+              ...this.gameResult,
+              reward: _rewardSetterResolveSubject,
+            },
+          },
+        );
+
+        this.modalWindowService.openModal(config);
+      }
+    });
+  }
 
   getFixedDefence(defence: number, unit: TileUnit) {
     const defReducedEffect = unit.effects.find(
@@ -209,32 +253,11 @@ export class GameService {
     const allAiUnitsDead = this.isDead(realAiUnits);
 
     if (allUserUnitsDead || allAiUnitsDead) {
+      this._allUserUnitsDead = allUserUnitsDead;
+      this._realAiUnits = realAiUnits;
+      this._callback = callback;
+
       rewardSetter.emit([realAiUnits, !allUserUnitsDead]);
-
-      this.gameResult = {
-        headerClass: allUserUnitsDead ? 'red-b' : 'green-b',
-        headerMessage: allUserUnitsDead ? 'You lost' : 'You won',
-        closeBtnLabel: allUserUnitsDead ? 'Try again later' : 'Great',
-        callback: () => {
-          callback(realAiUnits, !allUserUnitsDead);
-        },
-      };
-
-      const config = this.modalWindowService.getModalConfig(
-        this.gameResult.headerClass,
-        this.gameResult.headerMessage,
-        this.gameResult.closeBtnLabel,
-        {
-          callback: () => {
-            callback(realAiUnits, !allUserUnitsDead);
-          },
-          strategy: ModalStrategiesTypes.component,
-          component: AfterBattleComponent,
-          data: this.gameResult,
-        },
-      );
-
-      this.modalWindowService.openModal(config);
 
       return true;
     }

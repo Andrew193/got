@@ -5,7 +5,7 @@
     (battleEndFlag)="battleEndHandler($event)"
     [gameResultsRedirect]="victoryRedirect">
     <ng-container ngProjectAs="bottom-navigation">
-      <button class="ms-1 got-toggle got-toggle-red" (click)="victoryRedirect()">
+      <button class="ms-1 got-toggle got-toggle-red" (click)="_victoryRedirect()">
         Back to Training Ground
       </button>
     </ng-container>

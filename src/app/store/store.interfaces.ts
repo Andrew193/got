@@ -7,6 +7,7 @@ import { Coordinate, TilesToHighlight } from '../models/field.model';
 import { LogRecord } from '../models/logger.model';
 import { Keyword } from '../models/taverna/taverna.model';
 import { AssistantMemory } from '../models/interfaces/assistant.interface';
+import { Currency } from '../services/users/users.interfaces';
 
 //Store
 
@@ -94,6 +95,7 @@ export type FieldConfig = {
 export interface BasicBoardState extends FieldConfigState {
   tilesToHighlight: EntityState<TilesToHighlight>;
   battleLog: BasicBoardLogRecord;
+  reward: Currency;
 }
 
 //Assistant
