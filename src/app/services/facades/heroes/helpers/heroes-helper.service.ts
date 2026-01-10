@@ -546,7 +546,7 @@ export class HeroesHelperService {
       }
 
       if (skill.extendsBuffs && skill.extendsBuffs.length) {
-        description += `Extends the duration of: ${skill.extendsBuffs.join(',')}. On the team.`;
+        description += `Extends the duration of: ${skill.extendsBuffs.join(',')}. On the team by ${skill.extendsBuffsBy || 1} turn(s).`;
       }
 
       return { ...skill, description: description.replaceAll('.', '. ') } as Skill;

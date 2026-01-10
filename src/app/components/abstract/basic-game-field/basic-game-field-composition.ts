@@ -83,7 +83,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     }
 
     if (skill.extendsBuffs?.length) {
-      GameService.extendEffectDurationBy = 1;
+      GameService.extendEffectDurationBy = skill.extendsBuffsBy || 1;
 
       attackerTeam.forEach((attackerTeamUnit, index) => {
         if (attackerTeamUnit.name !== attackerTeam[attackerIndex].name) {

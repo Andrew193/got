@@ -23,12 +23,12 @@
       "online": {
         "onlineTime": 1056240,
         "claimedRewards": ["2", "4", "8", "12"],
-        "lastLoyaltyBonus": "12/27/2025"
+        "lastLoyaltyBonus": "01/10/2026"
       },
       "currency": {
-        "gold": 1926,
-        "silver": 5241,
-        "copper": 3461777
+        "gold": 2207,
+        "silver": 6404,
+        "copper": 4359467
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -38,23 +38,23 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 12,
-      "totalDays": 97,
-      "lastLogin": "12/27/2025"
+      "day": 13,
+      "totalDays": 98,
+      "lastLogin": "01/10/2026"
     }
   ],
   "giftTrip": [
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "12/27/2025"
+      "lastLogin": "01/10/2026"
     }
   ],
   "dailyBoss": [
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "12/27/2025"
+      "lastLogin": "01/10/2026"
     }
   ],
   "deposits": [

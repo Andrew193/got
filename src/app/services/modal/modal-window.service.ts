@@ -43,7 +43,6 @@ export class ModalWindowService {
   };
 
   private getOverlayPane(ref: MatDialogRef<unknown>): HTMLElement | null {
-    debugger;
     const overlayRef = (ref as any)._ref.overlayRef;
 
     return overlayRef?.overlayElement?.parentElement ?? null;

@@ -14,6 +14,8 @@ import { NavigationService } from '../navigation/navigation.service';
 import { NumbersService } from '../../numbers/numbers.service';
 import { UnitsConfiguratorFeatureActions } from '../../../store/actions/units-configurator.actions';
 import { Store } from '@ngrx/store';
+import { GameBoardActions } from '../../../store/actions/game-board.actions';
+import { RewardService } from '../../reward/reward.service';
 
 export enum BossDifficulty {
   easy,
@@ -33,6 +35,7 @@ type DifficultyConfig = {
 export class DailyBossFacadeService {
   api = inject(DailyBossApiService);
   nav = inject(NavigationService);
+  rewardService = inject(RewardService);
   store = inject(Store);
   usersService = inject(UsersService);
   numberService = inject(NumbersService);
@@ -152,6 +155,9 @@ export class DailyBossFacadeService {
       silver: silverTimes * targetBossConfig.silver + (win ? targetBossConfig.silverWin : 0),
       copper: copperTimes * targetBossConfig.copper + (win ? targetBossConfig.copperWin : 0),
     };
+
+    this.rewardService.mostResentRewardCurrency = reward;
+    this.store.dispatch(GameBoardActions.setBattleReward({ data: reward }));
 
     return reward;
   }

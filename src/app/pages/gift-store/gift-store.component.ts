@@ -23,6 +23,7 @@ import { DisplayRewardNames } from '../../store/store.interfaces';
 import { Store } from '@ngrx/store';
 import { DisplayRewardActions } from '../../store/actions/display-reward.actions';
 import { selectCardCollection } from '../../store/reducers/display-reward.reducer';
+import { GameBoardActions } from '../../store/actions/game-board.actions';
 
 @Component({
   selector: 'app-gift-store',
@@ -151,6 +152,11 @@ export class GiftStoreComponent implements OnInit {
     );
 
     this.rewardService.mostResentRewardCurrency = this.getReward(loot);
+    this.store.dispatch(
+      GameBoardActions.setBattleReward({ data: this.rewardService.mostResentRewardCurrency }),
+    );
+
+    return this.rewardService.mostResentRewardCurrency;
   };
 
   battleEndFlag(data: Parameters<GameResultsRedirectType>) {

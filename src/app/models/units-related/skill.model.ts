@@ -6,6 +6,7 @@ export type Skill = {
   inRangeDebuffs?: Effect[];
   activateDebuffs?: EffectsValues[];
   extendsBuffs?: EffectsValues[];
+  extendsBuffsBy?: number;
   buffs?: Effect[];
   addBuffsBeforeAttack?: boolean;
   name: string;

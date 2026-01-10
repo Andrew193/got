@@ -73,8 +73,6 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
     //Init turn counter
     this._turnCount.subscribe(newTurn => {
       this.turnCount = newTurn;
-
-      console.log(this);
     });
   }
 

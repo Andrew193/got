@@ -55,7 +55,7 @@ export class DailyBossBattlefieldComponent {
   }
 
   getReward([realAiUnits, win]: Parameters<GameResultsRedirectType>) {
-    this.rewardService.mostResentRewardCurrency = this.dailyBossService.getRewardToCollect(
+    return this.dailyBossService.getRewardToCollect(
       this.level,
       realAiUnits[0].maxHealth - realAiUnits[0].health,
       win,

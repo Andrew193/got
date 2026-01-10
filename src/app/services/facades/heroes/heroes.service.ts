@@ -299,6 +299,7 @@ export class HeroesFacadeService extends ContentService {
             healAll: true,
           },
           extendsBuffs: [this.helper.effects.attackBuff, this.helper.effects.defBuff],
+          extendsBuffsBy: 2,
         }),
         {
           name: 'Lokrand',
