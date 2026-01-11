@@ -4,10 +4,14 @@ import { Effect, EffectForMult } from '../../models/effect.model';
 import {
   ALL_EFFECTS,
   ALL_EFFECTS_MULTIPLIERS,
+  ALL_MECHANICS,
   ALL_MOBILITY_EFFECTS_MULTIPLIERS,
   Effects,
   effectsDescriptions,
   EffectsValues,
+  Mechanics,
+  mechanicsDescriptions,
+  MechanicsValues,
   MobilityEffects,
 } from '../../constants';
 import { NumbersService } from '../numbers/numbers.service';
@@ -21,8 +25,10 @@ export class EffectsService {
   private numberService = inject(NumbersService);
 
   effects: Effects = structuredClone(ALL_EFFECTS);
+  mechanics: Mechanics = structuredClone(ALL_MECHANICS);
 
   effectsDescriptions: Record<EffectsValues, string> = effectsDescriptions(this.effects);
+  mechanicsDescriptions: Record<MechanicsValues, string> = mechanicsDescriptions(this.mechanics);
 
   get effectsToHighlight() {
     return Object.values(this.effects);

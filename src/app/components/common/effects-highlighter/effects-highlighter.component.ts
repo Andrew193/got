@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { MatTooltip } from '@angular/material/tooltip';
-import { EffectsValues } from '../../../constants';
+import { EffectsValues, MechanicsValues } from '../../../constants';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 type Chunk = { text: string; hint: boolean; desc?: string };
@@ -55,7 +55,11 @@ export class EffectsHighlighterComponent {
   }
 
   private effectsWords = computed(() => {
-    return [this.wordsToHighlight(), this.heroService.helper.getEffectsToHighlight()].flat();
+    return [
+      this.wordsToHighlight(),
+      this.heroService.helper.getEffectsToHighlight(),
+      this.heroService.helper.getMechanicsToHighlight(),
+    ].flat();
   });
 
   private effectsRegex = computed(() => {
@@ -73,7 +77,11 @@ export class EffectsHighlighterComponent {
     const cache = new Map<string, string | undefined>();
 
     for (const w of this.effectsWords()) {
-      cache.set(w, this.heroService.helper.getEffectsDescription(w as EffectsValues));
+      cache.set(
+        w,
+        this.heroService.helper.getEffectsDescription(w as EffectsValues) ||
+          this.heroService.helper.getMechanicsDescription(w as MechanicsValues),
+      );
     }
 
     return cache;

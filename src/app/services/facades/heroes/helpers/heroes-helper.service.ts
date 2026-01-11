@@ -8,7 +8,7 @@ import {
   Unit,
   UnitBasicStats,
 } from '../../../../models/units-related/unit.model';
-import { EffectsValues } from '../../../../constants';
+import { EffectsValues, MechanicsValues } from '../../../../constants';
 import { EffectsService } from '../../../effects/effects.service';
 import { NumbersService } from '../../../numbers/numbers.service';
 import { Skill } from '../../../../models/units-related/skill.model';
@@ -164,8 +164,16 @@ export class HeroesHelperService {
     return this.eS.effectsToHighlight;
   }
 
+  getMechanicsToHighlight() {
+    return ['Activates', 'Extends'];
+  }
+
   getEffectsDescription(effect: EffectsValues) {
     return this.eS.effectsDescriptions[effect];
+  }
+
+  getMechanicsDescription(mechanic: MechanicsValues) {
+    return this.eS.mechanicsDescriptions[mechanic];
   }
 
   getSelectableUnit(units: Unit[]): SelectableUnit[] {

@@ -63,7 +63,9 @@ export class ResponseHolderComponent implements AssistantResponseHolderComponent
   }
 
   shouldShowResponseBasedOnActiveFilters(responseKeywords: string[]) {
-    return this.activeKeywords().some(el => responseKeywords.includes(el));
+    return (
+      this.activeKeywords().some(el => responseKeywords.includes(el)) || !responseKeywords.length
+    );
   }
 
   filtersChange(activeKeywords: string[]) {

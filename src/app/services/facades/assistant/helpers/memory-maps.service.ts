@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AssistantMemory, Memory } from '../../../../models/interfaces/assistant.interface';
-import { ALL_EFFECTS, DEFENCE_REDUCTION, effectsDescriptions } from '../../../../constants';
+import {
+  ALL_EFFECTS,
+  ALL_MECHANICS,
+  DEFENCE_REDUCTION,
+  effectsDescriptions,
+  mechanicsDescriptions,
+} from '../../../../constants';
 
 export type SynonymsMap = Record<string, string[]>;
 
@@ -39,6 +45,8 @@ export class MemoryMapsService {
       'There are 4 levels of rarity: Legendary, Epic, Rare and Common. Their power level is indicated by order.',
     type: `There are two types of heroes: Attack and Defence. Attack heroes deal damage, but they have low health
     and defense. Defense heroes are support heroes, but that doesn't mean they can't deal damage.`,
+    activates: mechanicsDescriptions(ALL_MECHANICS)[ALL_MECHANICS.activates],
+    extends: mechanicsDescriptions(ALL_MECHANICS)[ALL_MECHANICS.extends],
   };
 
   getMemory(type: AssistantMemory) {

@@ -135,6 +135,11 @@ export const ALL_EFFECTS = {
   root: 'Root',
 } as const;
 
+export const ALL_MECHANICS = {
+  activates: 'Activates',
+  extends: 'Extends',
+};
+
 export const effectsDescriptions: (effects: Effects) => Record<EffectsValues, string> = (
   effects: Effects,
 ) => ({
@@ -157,9 +162,21 @@ export const effectsDescriptions: (effects: Effects) => Record<EffectsValues, st
   [effects.defDestroy]: 'Defense decreases by 50 points per turn.',
 });
 
+export const mechanicsDescriptions: (effects: Mechanics) => Record<MechanicsValues, string> = (
+  mechanics: Mechanics,
+) => ({
+  [mechanics.activates]: `If a skill activates effects, it means the hero receives buffs or debuffs from the effect, but the effect's timer doesn't decrease. Only active effects, such as Attack Bonus, can be activated.`,
+  [mechanics.extends]: `If a skill extends effects, it means that the effect's timer increases.`,
+});
+
 export type Effects = typeof ALL_EFFECTS;
 export type EffectsKey = keyof Effects;
 export type EffectsValues = Effects[EffectsKey];
+
+export type Mechanics = typeof ALL_MECHANICS;
+export type MechanicsKey = keyof Mechanics;
+export type MechanicsValues = Mechanics[MechanicsKey];
+
 export type MobilityEffects = Extract<
   EffectsValues,
   typeof ALL_EFFECTS.root | typeof ALL_EFFECTS.freezing
