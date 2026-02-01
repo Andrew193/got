@@ -1,8 +1,9 @@
 import moment from 'moment';
 import { RewardLootConstant } from './models/reward-based.model';
 import { Currency } from './services/users/users.interfaces';
-import { ParamCheckConfig, ParamToCheck } from './models/api.model';
+import { ParamCheckConfig, ParamsToCheck } from './models/api.model';
 import { StoresConfig } from './models/stores/stores.model';
+import { delay, of, switchMap } from 'rxjs';
 
 export enum SceneNames {
   welcome,
@@ -33,16 +34,36 @@ export const API_ENDPOINTS = {
   tables: 'tables',
 };
 
-export const PARAMS_TO_CHECK: Record<ParamToCheck, ParamCheckConfig> = {
-  userId: {
-    reaction: PARAMS_TO_CHECK_REACTION.empty,
-    violation: ['undefined'],
-  },
-} as const;
+// **************** paramsCheckerInterceptor ****************
 
 export const enum PARAMS_TO_CHECK_REACTION {
   empty,
+  replace,
+  throwError,
+  log,
+  sendFixRequest,
 }
+
+export const PARAMS_TO_CHECK: Record<ParamsToCheck, ParamCheckConfig> = {
+  userId: {
+    reaction: PARAMS_TO_CHECK_REACTION.replace,
+    violation: ['undefined'],
+    fixer: req => {
+      const newReq = req.clone({
+        params: req.params.set('userId', 32),
+      });
+
+      return of(6000).pipe(
+        delay(6000),
+        switchMap(() => of(newReq)),
+      );
+    },
+  },
+  dsaContractId: {
+    reaction: PARAMS_TO_CHECK_REACTION.log,
+    violation: ['undefined', 'null', '0', '-1'],
+  },
+} as const;
 
 export const enum TABLE_NAMES {
   taverna_hero_table = 'TavernaHeroesTable',
