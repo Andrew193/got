@@ -4,13 +4,14 @@ import { RewardsCalendarComponent } from '../../common/rewards-calendar/rewards-
 import { DayReward } from '../../daily-reward/daily-reward.component';
 import { DailyRewardService } from '../../../services/daily-reward/daily-reward.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NotificationActivity, StepsReward } from '../../../models/notification.model';
+import { NotificationActivity } from '../../../models/notification.model';
 import { NotificationHelperService } from './meta/notification-helper.service';
 import { DynamicComponentConfig, HasFooterHost } from '../modal-interfaces';
 import { RewardCoinComponent } from '../../views/reward-coin/reward-coin.component';
 import { AsyncPipe, PercentPipe } from '@angular/common';
 import { TimeService } from '../../../services/time/time.service';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
+import { MAX_REWARD_TIME } from '../../../constants';
 
 @Component({
   selector: 'app-notification',
@@ -26,6 +27,7 @@ export class NotificationComponent implements OnInit, Partial<HasFooterHost> {
   helper = inject(NotificationHelperService);
   timeService = inject(TimeService);
   data = inject<DynamicComponentConfig<{}>>(DYNAMIC_COMPONENT_DATA);
+  convertToHoursOrMilliseconds = TimeService.convertToHoursOrMilliseconds;
 
   constructor() {
     this.steps = this.dailyRewardService.getWeekReward(10, 5);
@@ -33,7 +35,7 @@ export class NotificationComponent implements OnInit, Partial<HasFooterHost> {
   }
 
   steps: DayReward[] = [];
-  stepsRewardConfig: StepsReward = this.helper.getStepsRewardConfig();
+  stepsRewardConfig = this.helper.getStepsRewardConfig();
 
   //Activities
   activities;
@@ -49,9 +51,11 @@ export class NotificationComponent implements OnInit, Partial<HasFooterHost> {
   }
 
   //Hooks
-  ngOnInit(): void {
+  ngOnInit() {
     this.helper.userService.$user.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(model => {
-      model && (this.stepsRewardConfig = this.helper.configStepsRewardConfig(model));
+      model && this.helper.configStepsRewardConfig(model);
     });
   }
+
+  protected readonly MAX_REWARD_TIME = MAX_REWARD_TIME;
 }

@@ -7,8 +7,8 @@ import { TIME } from '../online/online.contrants';
   providedIn: 'root',
 })
 export class TimeService {
-  convertToHours(time: number) {
-    return Math.floor(time / 3600);
+  static convertToHoursOrMilliseconds(time: number, hours = true) {
+    return Math.floor(hours ? time / 3600 : time * 3600);
   }
 
   getTotalPlaytime(createdAt: number) {
@@ -17,9 +17,17 @@ export class TimeService {
 
     const toReturn = this.getDiff(createdMoment, now);
 
-    // console.log("Created at:", createdMoment.format("YYYY-MM-DD HH:mm:ss"));
-    // console.log("Now:", now.format("YYYY-MM-DD HH:mm:ss"));
-    // console.log("Difference:", toReturn.diffInDays, "days,", toReturn.diffInHours, "hours,", toReturn.diffInMinutes, "minutes");
+    console.log('Created at:', createdMoment.format('YYYY-MM-DD HH:mm:ss'));
+    console.log('Now:', now.format('YYYY-MM-DD HH:mm:ss'));
+    console.log(
+      'Difference:',
+      toReturn.diffInDays,
+      'days,',
+      toReturn.diffInHours,
+      'hours,',
+      toReturn.diffInMinutes,
+      'minutes',
+    );
 
     return toReturn;
   }
@@ -53,11 +61,11 @@ export class TimeService {
     if (remaining <= 0) {
       return 0;
     } else {
-      const hours = Math.floor(remaining / (1000 * 60 * 60));
-      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / TIME.oneMinuteMilliseconds);
+      const hours = Math.floor(remaining / TIME.toMsConstant);
+      const minutes = Math.floor((remaining % TIME.toMsConstant) / TIME.oneMinuteMilliseconds);
       const seconds = Math.floor((remaining % TIME.oneMinuteMilliseconds) / 1000);
 
-      //console.log(`Осталось: ${hours} ч ${minutes} мин ${seconds} сек`);
+      console.log(`Remaining time: ${hours} ч ${minutes} мин ${seconds} сек`);
 
       return {
         hours,

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { NotificationActivity, StepsReward } from '../../../../models/notification.model';
 import { Currency, User } from '../../../../services/users/users.interfaces';
 import { DayReward } from '../../../daily-reward/daily-reward.component';
@@ -18,12 +18,12 @@ import { LobbyService } from '../../../../services/lobby/lobby.service';
 })
 export class NotificationHelperService {
   userService = inject(UsersService);
-  timeService = inject(TimeService);
   numbersService = inject(NumbersService);
   lobbyService = inject(LobbyService);
 
   private activities: NotificationActivity[] = (() =>
     NotificationActivities(this.lobbyService.nav, this.lobbyService))();
+  convertToHoursOrMilliseconds = TimeService.convertToHoursOrMilliseconds;
 
   private labels: Record<number, string> = {
     0: '2 hours',
@@ -33,30 +33,30 @@ export class NotificationHelperService {
     4: '24 hours',
   };
 
-  private baseStepsRewardConfig: StepsReward = {
+  private readonly baseStepsRewardConfig = signal<StepsReward>({
     time: 0,
     claimedRewards: [],
-  };
+  });
 
   checkAvailableRewards(config: any) {
-    const hours = this.timeService.convertToHours(config.time);
+    const hours = this.convertToHoursOrMilliseconds(config.time);
 
     return Object.values(this.labels)
       .map(label => +label.split(' ')[0])
       .filter(step => hours >= step && !config.claimedRewards.includes(step));
   }
 
-  configStepsRewardConfig(model: User): StepsReward {
-    this.baseStepsRewardConfig = {
+  configStepsRewardConfig(model: User) {
+    this.baseStepsRewardConfig.set({
       time: model.online.onlineTime,
       claimedRewards: model.online.claimedRewards,
-    };
+    });
 
     return this.getStepsRewardConfig();
   }
 
   getStepsRewardConfig() {
-    return { ...this.baseStepsRewardConfig };
+    return this.baseStepsRewardConfig;
   }
 
   getLabels() {
@@ -76,11 +76,11 @@ export class NotificationHelperService {
   }
 
   public claimed = (i: number) => {
-    return !!this.baseStepsRewardConfig.claimedRewards[i];
+    return !!this.baseStepsRewardConfig().claimedRewards[i];
   };
 
   public rewardClass = (i: number) => {
-    return this.baseStepsRewardConfig.claimedRewards.length === i ? 'today' : '';
+    return this.baseStepsRewardConfig().claimedRewards.length === i ? 'today' : '';
   };
 
   get canGetLoyaltyBonus() {
@@ -94,7 +94,7 @@ export class NotificationHelperService {
   }
 
   public claimReward = (reward: DayReward, i: number) => {
-    const onlineTime = this.timeService.convertToHours(this.baseStepsRewardConfig.time);
+    const onlineTime = this.convertToHoursOrMilliseconds(this.baseStepsRewardConfig().time);
     const labels = this.getLabels();
 
     const currentHour = +labels[i].split(' ')[0];

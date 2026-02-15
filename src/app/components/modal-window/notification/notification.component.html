@@ -1,6 +1,6 @@
 @let canGetLoyaltyBonus = helper.canGetLoyaltyBonus | async;
 @let user = helper.userService.$user | async;
-
+@let _stepsRewardConfig = stepsRewardConfig();
 @let played = timeService.getTotalPlaytime(user?.createdAt || 0);
 
 <div class="inner-container stores flip-items-container d-block">
@@ -63,12 +63,12 @@
       <div class="position-relative row">
         <p class="text col-10">
           You can collect rewards for playing online. Every session counts, you don't have to play
-          24 hours straight to get all the rewards.
+          {{ MAX_REWARD_TIME }} hours straight to get all the rewards.
         </p>
         <p class="online-time col-2">
           Online:
           <span style="color: darkred">
-            {{ timeService.convertToHours(stepsRewardConfig.time) }}
+            {{ convertToHoursOrMilliseconds(_stepsRewardConfig.time) }}
           </span>
           hour(s)
         </p>

@@ -14,7 +14,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { Router } from '@angular/router';
-import { frontRoutes, USER_TOKEN } from '../../constants';
+import { frontRoutes, MAX_REWARD_TIME, USER_TOKEN } from '../../constants';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Currency, User } from './users.interfaces';
 import { Online } from '../online/online.service';
@@ -210,7 +210,7 @@ describe('UsersService', () => {
 
   it('UsersService can update online', done => {
     const newOnline: Online = {
-      claimed: 24,
+      claimed: MAX_REWARD_TIME,
       lastLoyaltyBonus: '',
       time: 600,
     };

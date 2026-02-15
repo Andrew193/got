@@ -24,11 +24,7 @@ export class DepositFacadeService {
 
   depositCurrency(config: DepositConfig) {
     return this.depositService.submitDeposit(config.currency, config.days).pipe(
-      map(value => {
-        debugger;
-
-        return Array.isArray(value) ? value[0] : value;
-      }),
+      map(value => (Array.isArray(value) ? value[0] : value)),
       switchMap(value => {
         const parsed = Object.fromEntries(Object.entries(value).map(el => [el[0], el[1] * -1]));
 

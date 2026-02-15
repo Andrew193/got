@@ -85,6 +85,7 @@ export const TODAY = moment().format(DATE_FORMAT);
 export const GIFT_STORE_NPC_AMOUNT = 10;
 export const STEP_DEFAULT_ORDER = 100;
 export const LOGIN_ERROR = 'Login or password is wrong. Try again.';
+export const MAX_REWARD_TIME = 24;
 
 export const BASIC_CURRENCY: Currency = {
   gold: 300,

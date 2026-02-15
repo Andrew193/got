@@ -83,7 +83,6 @@ export class ModalWindowService {
   };
 
   removeDialogFromRefs(key = '') {
-    debugger;
     const dialogRef = this.dialogRefs.get(key)?.dialogRef;
 
     if (dialogRef) {

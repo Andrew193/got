@@ -77,8 +77,6 @@ export class ModalWindowComponent implements OnInit {
   }
 
   getContextConfig(modalConfig: ModalConfig<unknown>) {
-    debugger;
-
     return {
       ...modalConfig,
       close: () => this.close(modalConfig),
@@ -89,7 +87,6 @@ export class ModalWindowComponent implements OnInit {
   }
 
   public close = (modalConfig: ModalConfig<unknown>) => {
-    debugger;
     modalConfig.config.callback && modalConfig.config.callback();
 
     this.modalWindowService.removeDialogFromRefs(modalConfig.dialogId);

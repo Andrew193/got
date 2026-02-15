@@ -6,6 +6,7 @@ import {
   API_ENDPOINTS,
   BASIC_CURRENCY,
   LOGIN_ERROR,
+  MAX_REWARD_TIME,
   SNACKBAR_CONFIG,
   USER_TOKEN,
 } from '../../constants';
@@ -17,6 +18,7 @@ import { DepositService } from './currency/deposit.service';
 import { GiftService } from '../gift-related/gift/gift.service';
 import { DailyRewardService } from '../daily-reward/daily-reward.service';
 import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
+import { TimeService } from '../time/time.service';
 
 @Injectable({
   providedIn: 'root',
@@ -84,11 +86,7 @@ export class UsersService extends ApiService<User> {
       url: this.url,
       callback: callback,
     }).pipe(
-      map(value => {
-        debugger;
-
-        return Array.isArray(value) ? value[0] : value;
-      }),
+      map(value => (Array.isArray(value) ? value[0] : value)),
       switchMap(user => deposit$(user)),
     );
   }
@@ -192,16 +190,16 @@ export class UsersService extends ApiService<User> {
 
   updateOnline(config: { time?: number; claimed?: number; lastLoyaltyBonus?: string }) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
-
     const data: User = {
       ...user,
       online: {
         ...user.online,
-        ...(config.time || config.claimed === 24
+        ...(config.time || config.claimed === MAX_REWARD_TIME
           ? {
               onlineTime:
-                config.claimed === 24
-                  ? 0
+                config.claimed === MAX_REWARD_TIME
+                  ? user.online.onlineTime -
+                    TimeService.convertToHoursOrMilliseconds(MAX_REWARD_TIME, false)
                   : user.online.onlineTime +
                     (
                       config as {
@@ -213,7 +211,7 @@ export class UsersService extends ApiService<User> {
         ...(config.claimed
           ? {
               claimedRewards:
-                config.claimed === 24
+                config.claimed === MAX_REWARD_TIME
                   ? []
                   : [...user.online.claimedRewards, config.claimed.toString()],
             }
