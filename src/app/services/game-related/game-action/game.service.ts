@@ -54,7 +54,9 @@ export class GameService {
         const config = this.modalWindowService.getModalConfig(
           this.gameResult.headerClass,
           this.gameResult.headerMessage,
-          this.gameResult.closeBtnLabel,
+          {
+            closeBtnLabel: this.gameResult.closeBtnLabel,
+          },
           {
             callback: () => {
               this._callback(

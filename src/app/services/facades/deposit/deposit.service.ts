@@ -40,11 +40,16 @@ export class DepositFacadeService {
   }
 
   showDepositModal(depositConfig: DepositConfig | null) {
-    const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
-      strategy: ModalStrategiesTypes.component,
-      component: DepositModalComponent,
-      data: depositConfig,
-    });
+    const modalConfig = this.modalWindowService.getModalConfig(
+      '',
+      '',
+      { closeBtnLabel: '' },
+      {
+        strategy: ModalStrategiesTypes.component,
+        component: DepositModalComponent,
+        data: depositConfig,
+      },
+    );
 
     this.modalWindowService.openModal(modalConfig);
   }

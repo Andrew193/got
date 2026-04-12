@@ -1,11 +1,12 @@
 import { Component, Injector, Input, ViewContainerRef } from '@angular/core';
 import { ExtendedModalConfig, HasFooterHost, ModalStrategy } from '../../modal-interfaces';
 import { provideDynamicData } from '../../../../models/tokens';
+import { MatDialogClose } from '@angular/material/dialog';
 
 @Component({
-  imports: [],
+  imports: [MatDialogClose],
   template:
-    '<div class="p-2"><i class="material-icons cursor-pointer" (click)="close()">close</i></div>',
+    '<div class="p-2"><i class="material-icons cursor-pointer" mat-dialog-close="true">close</i></div>',
 })
 class ComponentModalStrategyFooter {
   @Input({ required: true }) close!: () => void;

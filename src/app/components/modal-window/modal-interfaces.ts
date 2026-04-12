@@ -8,10 +8,15 @@ export interface HasFooterHost {
   name: string;
 }
 
+export type ModalBaseLabels = {
+  closeBtnLabel: string;
+  declineBtnLabel?: string;
+};
+
 export interface ModalBase {
   headerClass: string;
   headerMessage: string;
-  closeBtnLabel: string;
+  labels: ModalBaseLabels;
 }
 
 export interface AfterBattleModal extends ModalBase {
@@ -21,7 +26,7 @@ export interface AfterBattleModal extends ModalBase {
 export interface ModalConfig<T = unknown> extends ModalBase {
   dialogId: string;
   config: {
-    callback?: () => void;
+    callback?: (response?: boolean) => void;
     strategy: ModalStrategiesTypes;
     modalRootClass?: string;
     component?: HasFooterHost;
@@ -30,7 +35,7 @@ export interface ModalConfig<T = unknown> extends ModalBase {
 }
 
 export interface ExtendedModalConfig<T = unknown> extends ModalConfig<T> {
-  close: () => void;
+  close: (response: boolean) => void;
 }
 
 export type DynamicComponentConfig<T> = Pick<ExtendedModalConfig, 'close'> & T;

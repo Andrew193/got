@@ -2,6 +2,10 @@
 
 .header-avatar-popper {
   min-width: 210px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
   @include index.mixin-got-btn;
 

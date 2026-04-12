@@ -2,6 +2,11 @@
 
 @include index.anim-border-glow(inner-modal-root);
 
+mat-dialog-actions {
+  display: flex;
+  gap: 5px;
+}
+
 .inner-modal-root {
   &:after,
   &:before {

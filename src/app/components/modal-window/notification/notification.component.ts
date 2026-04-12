@@ -46,7 +46,7 @@ export class NotificationComponent implements OnInit, Partial<HasFooterHost> {
 
   activityCover(event: MouseEvent, activity: NotificationActivity) {
     event.stopPropagation();
-    this.data.close();
+    this.data.close(true);
     activity.action && activity.action();
   }
 

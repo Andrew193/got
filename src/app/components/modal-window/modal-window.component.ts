@@ -65,7 +65,9 @@ export class ModalWindowComponent implements OnInit {
       ...refConfig,
       modalConfig,
     });
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe((response = true) => {
+      this.contextConfig.close(response);
+    });
   }
 
   get dialogsContainers() {
@@ -79,15 +81,15 @@ export class ModalWindowComponent implements OnInit {
   getContextConfig(modalConfig: ModalConfig<unknown>) {
     return {
       ...modalConfig,
-      close: () => this.close(modalConfig),
+      close: (response?: boolean) => this.close(modalConfig, response),
       config: Object.assign({}, modalConfig.config, {
         data: Object.assign({}, modalConfig.config.data, { close: () => this.close(modalConfig) }),
       }),
     };
   }
 
-  public close = (modalConfig: ModalConfig<unknown>) => {
-    modalConfig.config.callback && modalConfig.config.callback();
+  public close = (modalConfig: ModalConfig<unknown>, response?: boolean) => {
+    modalConfig.config.callback && modalConfig.config.callback(response);
 
     this.modalWindowService.removeDialogFromRefs(modalConfig.dialogId);
   };

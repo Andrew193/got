@@ -6,9 +6,15 @@
       <h4 class="modal-title pull-left color-white">{{ _modalConfig.headerMessage }}</h4>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button class="got-toggle got-toggle-green" (click)="_modalConfig.close()">
-        {{ _modalConfig.closeBtnLabel }}
+      <button class="got-toggle got-toggle-green" [mat-dialog-close]="true">
+        {{ _modalConfig.labels.closeBtnLabel }}
       </button>
+
+      @if (_modalConfig.labels.declineBtnLabel) {
+        <button class="got-toggle got-toggle-red" [mat-dialog-close]="false">
+          {{ _modalConfig.labels.declineBtnLabel }}
+        </button>
+      }
     </mat-dialog-actions>
   </div>
 </div>

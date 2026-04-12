@@ -11,13 +11,18 @@ export class LoginFacadeService {
   dialogId = '';
 
   openAdventureBegins(callback: () => void) {
-    const modalConfig = this.modalWindowService.getModalConfig('', '', '', {
-      strategy: ModalStrategiesTypes.component,
-      component: AdventureBeginsComponent,
-      data: {
-        callback: callback,
+    const modalConfig = this.modalWindowService.getModalConfig(
+      '',
+      '',
+      { closeBtnLabel: '' },
+      {
+        strategy: ModalStrategiesTypes.component,
+        component: AdventureBeginsComponent,
+        data: {
+          callback: callback,
+        },
       },
-    });
+    );
 
     this.dialogId = this.modalWindowService.openModal(modalConfig);
 

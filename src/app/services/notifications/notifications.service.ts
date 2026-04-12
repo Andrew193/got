@@ -19,6 +19,7 @@ export enum NotificationType {
   gift_store,
   deposit,
   daily_boss,
+  header,
 }
 
 @Injectable({
@@ -35,7 +36,8 @@ export class NotificationsService implements InitInterface {
   private initNotificationConfig = new Map()
     .set(NotificationType.daily_reward, false)
     .set(NotificationType.daily_boss, false)
-    .set(NotificationType.gift_store, false);
+    .set(NotificationType.gift_store, false)
+    .set(NotificationType.header, true);
 
   private notifications: BehaviorSubject<NotificationConfigMap> =
     new BehaviorSubject<NotificationConfigMap>(new Map(this.initNotificationConfig));
@@ -91,12 +93,17 @@ export class NotificationsService implements InitInterface {
     return notificationMap ? notificationMap.get(key) : false;
   }
 
-  private showPossibleActivities() {
-    const config = this.modalWindowService.getModalConfig('', '', '', {
-      callback: () => {},
-      strategy: ModalStrategiesTypes.component,
-      component: NotificationComponent,
-    });
+  showPossibleActivities() {
+    const config = this.modalWindowService.getModalConfig(
+      '',
+      '',
+      { closeBtnLabel: '' },
+      {
+        callback: () => {},
+        strategy: ModalStrategiesTypes.component,
+        component: NotificationComponent,
+      },
+    );
 
     this.modalWindowService.openModal(config);
   }

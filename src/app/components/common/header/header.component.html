@@ -1,11 +1,14 @@
 @let coins = getDisplayCurrency();
 
 <nav class="d-flex flex-row align-content-center justify-content-between">
-  <img
-    class="user-header-avatar navbar-brand"
-    [src]="'./assets/resourses/imgs/UI_Avatar_Unit_Alvar.png'"
-    alt="avatar"
-    [matMenuTriggerFor]="menu" />
+  <div class="position-relative">
+    <img
+      class="user-header-avatar navbar-brand"
+      [src]="'./assets/resourses/imgs/UI_Avatar_Unit_Alvar.png'"
+      alt="avatar"
+      [matMenuTriggerFor]="menu" />
+    <app-notification-marker [notificationType]="headerNotificationType" />
+  </div>
   <div class="d-flex currency-bar align-items-center">
     @for (coin of coins; track coin.alias) {
       <div class="d-flex align-items-center">
@@ -20,7 +23,13 @@
 </nav>
 
 <mat-menu #menu="matMenu">
-  <div class="header-avatar-popper" mat-menu-item>
-    <button class="got-toggle cursor-pointer" (click)="logOut()">Log out</button>
+  <div class="header-avatar-popper">
+    <button class="got-toggle cursor-pointer" mat-menu-item (click)="showPossibleActivities()">
+      Activities
+    </button>
+    <mat-divider />
+    <button class="got-toggle cursor-pointer" mat-menu-item (click)="openLogoutDialog()">
+      Log out
+    </button>
   </div>
 </mat-menu>

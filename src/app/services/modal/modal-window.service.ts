@@ -1,9 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ModalConfig } from '../../components/modal-window/modal-interfaces';
+import { ModalBaseLabels, ModalConfig } from '../../components/modal-window/modal-interfaces';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalDialogRefs } from '../../models/modal.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+export enum ModalWindowHeaders {
+  confirm = 'Confirm',
+}
+
+export enum ModalWindowBodyMessages {
+  confirm_logout = 'Do you really want to log out?',
+}
+
+export enum ModalWindowButtons {
+  yes = 'Yes',
+  no = 'No',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -94,9 +107,9 @@ export class ModalWindowService {
   getModalConfig<T>(
     headerClass = '',
     headerMessage = '',
-    closeBtnLabel = '',
+    labels: ModalBaseLabels,
     config: {
-      callback?: () => void;
+      callback?: (response: boolean) => void;
       strategy: number;
       component?: any;
       modalRootClass?: string;
@@ -106,7 +119,7 @@ export class ModalWindowService {
     return {
       headerClass: headerClass,
       headerMessage: headerMessage,
-      closeBtnLabel: closeBtnLabel,
+      labels,
       config: {
         callback: config.callback,
         strategy: config.strategy,

@@ -63,10 +63,15 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
 
   redirectToTraining() {
     this.modalService.openModal(
-      this.modalService.getModalConfig('red-b', 'Something went wrong', 'Ok', {
-        callback: () => this.nav.goToTraining(),
-        strategy: ModalStrategiesTypes.base,
-      }),
+      this.modalService.getModalConfig(
+        'red-b',
+        'Something went wrong',
+        { closeBtnLabel: 'Ok' },
+        {
+          callback: () => this.nav.goToTraining(),
+          strategy: ModalStrategiesTypes.base,
+        },
+      ),
     );
   }
 
