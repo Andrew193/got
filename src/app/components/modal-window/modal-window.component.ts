@@ -2,7 +2,12 @@ import { Component, DestroyRef, inject, OnInit, TemplateRef, ViewChild } from '@
 import { ModalWindowService } from '../../services/modal/modal-window.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DynamicHostComponent } from './dynamic-host/dynamic-host.component';
-import { ModalConfig, ModalStrategies, ModalStrategy } from './modal-interfaces';
+import {
+  ModalConfig,
+  ModalStrategies,
+  ModalStrategy,
+  DynamicComponentConfig,
+} from './modal-interfaces';
 import { NgClass } from '@angular/common';
 import { filter } from 'rxjs';
 import { modalWindowsNames } from '../../names';
@@ -79,12 +84,21 @@ export class ModalWindowComponent implements OnInit {
   }
 
   getContextConfig(modalConfig: ModalConfig<unknown>) {
+    const dynamicData: Pick<DynamicComponentConfig<unknown>, 'close' | 'labels'> = {
+      close: (response?: boolean) => this.close(modalConfig, response),
+      labels: modalConfig.labels,
+    };
+
     return {
       ...modalConfig,
       close: (response?: boolean) => this.close(modalConfig, response),
-      config: Object.assign({}, modalConfig.config, {
-        data: Object.assign({}, modalConfig.config.data, { close: () => this.close(modalConfig) }),
-      }),
+      config: {
+        ...modalConfig.config,
+        data: {
+          ...(modalConfig.config?.data ?? {}),
+          ...dynamicData,
+        },
+      },
     };
   }
 

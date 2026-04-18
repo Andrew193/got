@@ -18,14 +18,12 @@ function hasFooterHost(instance: any): instance is HasFooterHost {
 
 export class ComponentModalStrategy<T> implements ModalStrategy {
   render(vc: ViewContainerRef, modalConfig: ExtendedModalConfig<T>) {
-    console.log(modalConfig, 'modalConfig.config.data');
     const customInjector = Injector.create({
       providers: [provideDynamicData<T>(modalConfig.config.data as T)],
       parent: vc.injector,
     });
 
-    // @ts-ignore
-    const componentRef = vc.createComponent(modalConfig.config.component, {
+    const componentRef = vc.createComponent(modalConfig.config.component!, {
       injector: customInjector,
     });
     let footerRef;

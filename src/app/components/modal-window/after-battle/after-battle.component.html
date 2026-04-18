@@ -24,7 +24,7 @@
     </div>
 
     <footer class="w-100">
-      <button class="got-toggle w-100" (click)="data.close(true)">
+      <button class="got-toggle w-100" [mat-dialog-close]="true">
         {{ data.labels.closeBtnLabel }}
       </button>
     </footer>

@@ -10,7 +10,10 @@ import { GameResultsRedirectType, Position, TileUnit } from '../../../models/fie
 import { HeroType } from '../../../models/units-related/unit.model';
 import { Store } from '@ngrx/store';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
-import { AfterBattleComponent } from '../../../components/modal-window/after-battle/after-battle.component';
+import {
+  AfterBattleComponent,
+  AfterBattleData,
+} from '../../../components/modal-window/after-battle/after-battle.component';
 import { EffectsValues } from '../../../constants';
 import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
 
@@ -25,7 +28,6 @@ export class GameService {
   private gameResult = {
     headerMessage: '',
     headerClass: '',
-    closeBtnLabel: '',
     callback: () => {},
   };
 
@@ -45,7 +47,6 @@ export class GameService {
         this.gameResult = {
           headerClass: this._allUserUnitsDead ? 'red-b' : 'green-b',
           headerMessage: this._allUserUnitsDead ? 'You lost' : 'You won',
-          closeBtnLabel: this._allUserUnitsDead ? 'Try again later' : 'Great',
           callback: () => {
             this._callback(this._realAiUnits, !this._allUserUnitsDead, _rewardSetterResolveSubject);
           },
@@ -55,7 +56,7 @@ export class GameService {
           this.gameResult.headerClass,
           this.gameResult.headerMessage,
           {
-            closeBtnLabel: this.gameResult.closeBtnLabel,
+            closeBtnLabel: this._allUserUnitsDead ? 'Try again later' : 'Great',
           },
           {
             callback: () => {
@@ -68,13 +69,12 @@ export class GameService {
             strategy: ModalStrategiesTypes.component,
             component: AfterBattleComponent,
             data: {
-              ...this.gameResult,
               reward: _rewardSetterResolveSubject,
-            },
+              headerMessage: this.gameResult.headerMessage,
+              headerClass: this.gameResult.headerClass,
+            } satisfies AfterBattleData,
           },
         );
-
-        console.log(config, 'config');
 
         this.modalWindowService.openModal(config);
       }

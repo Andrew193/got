@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ModalBaseLabels, ModalConfig } from '../../components/modal-window/modal-interfaces';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -111,7 +111,7 @@ export class ModalWindowService {
     config: {
       callback?: (response: boolean) => void;
       strategy: number;
-      component?: any;
+      component?: Type<any>;
       modalRootClass?: string;
       data?: T;
     },
