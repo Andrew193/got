@@ -2,10 +2,10 @@ import { inject, Injectable, signal } from '@angular/core';
 import { NotificationActivity, StepsReward } from '../../../../models/notification.model';
 import { Currency, User } from '../../../../services/users/users.interfaces';
 import { DayReward } from '../../../daily-reward/daily-reward.component';
-import { concatMap, map, of } from 'rxjs';
+import { catchError, concatMap, EMPTY, finalize, map, of } from 'rxjs';
 import { UsersService } from '../../../../services/users/users.service';
 import { NotificationActivities } from './notification-constants';
-import { TODAY } from '../../../../constants';
+import { MAX_REWARD_TIME, TODAY, USER_TOKEN } from '../../../../constants';
 import { TimeService } from '../../../../services/time/time.service';
 import { BaseLoyaltyBonus } from '../../../../services/daily-reward/daily-reward-constants';
 import { NumbersService } from '../../../../services/numbers/numbers.service';
@@ -33,10 +33,68 @@ export class NotificationHelperService {
     4: '24 hours',
   };
 
+  isCollectingAll = signal<boolean>(false);
+
   private readonly baseStepsRewardConfig = signal<StepsReward>({
     time: 0,
     claimedRewards: [],
   });
+
+  hasNextCycleRewards(): boolean {
+    return this.convertToHoursOrMilliseconds(this.baseStepsRewardConfig().time) > MAX_REWARD_TIME;
+  }
+
+  collectAllRewards(steps: DayReward[]): void {
+    const config = this.baseStepsRewardConfig();
+    const totalHours = this.convertToHoursOrMilliseconds(config.time);
+    const fullCycles = Math.floor(totalHours / MAX_REWARD_TIME);
+
+    if (fullCycles < 1) {
+      return;
+    }
+
+    const chain = Object.values(this.labels).map(l => +l.split(' ')[0]);
+
+    // Суммируем награды всех циклов: оставшиеся шаги текущего + все шаги (fullCycles - 1) полных циклов
+    const totalReward: Currency = { copper: 0, silver: 0, gold: 0 };
+
+    const remainingCurrentCycle = this.checkAvailableRewards(config);
+
+    remainingCurrentCycle.forEach(hour => {
+      const idx = chain.indexOf(hour);
+      const reward = steps[idx];
+
+      totalReward.copper += reward.copperCoin || 0;
+      totalReward.silver += reward.silverCoin || 0;
+      totalReward.gold += reward.goldCoin || 0;
+    });
+
+    for (let i = 0; i < fullCycles - 1; i++) {
+      steps.forEach(reward => {
+        totalReward.copper += reward.copperCoin || 0;
+        totalReward.silver += reward.silverCoin || 0;
+        totalReward.gold += reward.goldCoin || 0;
+      });
+    }
+
+    this.isCollectingAll.set(true);
+
+    this.userService
+      .updateCurrency(totalReward)
+      .pipe(
+        concatMap(() => this.userService.updateOnline({ collectAll: { cycles: fullCycles } })),
+        catchError(() => EMPTY),
+        finalize(() => {
+          this.isCollectingAll.set(false);
+          const user = this.userService.localStorage.getItem(USER_TOKEN) as User;
+
+          if (user) {
+            this.configStepsRewardConfig(user);
+          }
+        }),
+      )
+      .subscribe();
+  }
 
   checkAvailableRewards(config: any) {
     const hours = this.convertToHoursOrMilliseconds(config.time);

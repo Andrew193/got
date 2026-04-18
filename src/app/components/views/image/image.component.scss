@@ -15,3 +15,11 @@
   background-repeat: no-repeat !important;
   background-size: cover !important;
 }
+
+@media (max-width: 1440px) {
+  img[alt='copper'],
+  img[alt='silver'],
+  img[alt='gold'] {
+    width: 23px;
+  }
+}

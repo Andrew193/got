@@ -24,6 +24,8 @@ export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit, OnD
     this.rewards = this.currencyHelperService.convertCurrencyToCoin(
       this.data.reward || this.rewardService.mostResentRewardCurrency,
     );
+
+    console.log(this.data);
   }
 
   ngOnDestroy() {

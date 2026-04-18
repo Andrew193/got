@@ -2,5 +2,5 @@
 
 <mat-form-field class="w-100">
   <mat-label>{{ label }}</mat-label>
-  <input matInput type="number" [formControlName]="_name" />
+  <input matInput [imask]="POSITIVE_NUMBER_MASK" [unmask]="'typed'" [formControlName]="_name" />
 </mat-form-field>

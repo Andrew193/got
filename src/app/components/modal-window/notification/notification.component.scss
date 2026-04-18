@@ -51,13 +51,19 @@ aside {
 
 .online-time {
   font-weight: 600;
-  text-align: right;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
 .text {
   font-weight: 500;
   color: white;
   text-shadow: 1px 1px 1px #000000;
+}
+
+.back-img {
+  min-width: 210px;
 }
 
 .tip {
@@ -70,5 +76,11 @@ aside {
 @keyframes fadeInHero {
   to {
     opacity: 1;
+  }
+}
+
+@media (max-width: 1000px) {
+  .back-img {
+    display: none;
   }
 }

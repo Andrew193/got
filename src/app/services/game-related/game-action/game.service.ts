@@ -74,6 +74,8 @@ export class GameService {
           },
         );
 
+        console.log(config, 'config');
+
         this.modalWindowService.openModal(config);
       }
     });

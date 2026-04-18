@@ -176,16 +176,6 @@ body {
   }
 }
 
-@media (max-width: 1024px) {
-  .glow-box {
-    left: 0%;
-    height: 95%;
-  }
-  #hero-in-frame {
-    background-size: contain !important;
-  }
-}
-
 .nav-item .active {
   box-shadow: index.$var-box-shadow;
   border: none !important;
@@ -218,4 +208,14 @@ body {
 
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media (max-width: 1024px) {
+  .glow-box {
+    left: 0%;
+    height: 95%;
+  }
+  #hero-in-frame {
+    background-size: contain !important;
+  }
 }

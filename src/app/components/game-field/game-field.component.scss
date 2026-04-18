@@ -152,6 +152,10 @@
   }
 }
 
+.example-viewport {
+  height: 200px;
+}
+
 @media (max-width: 968px) {
   main {
     > div {
@@ -162,8 +166,4 @@
       order: 1;
     }
   }
-}
-
-.example-viewport {
-  height: 200px;
 }

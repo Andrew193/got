@@ -48,7 +48,7 @@
   </div>
 
   <div class="row">
-    <div class="col-2 d-none d-md-block" style="min-width: 210px">
+    <div class="col-2 back-img">
       <div class="glow-box step-container">
         <div class="hero-in-frame text-center hero position-relative" id="hero-in-frame">
           <app-image
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <aside class="col step-rewards position-relative">
+    <aside class="col step-rewards position-relative mt-2">
       <div class="position-relative row">
         <p class="text col-10">
           You can collect rewards for playing online. Every session counts, you don't have to play
@@ -81,6 +81,15 @@
         [rewardCoins]="dailyRewardService.rewardCoins"
         [rewardBackLabels]="helper.getLabels()"
         [chainMode]="true"></app-rewards-calendar>
+
+      @if (helper.hasNextCycleRewards()) {
+        <button
+          class="got-toggle mb-2"
+          [disabled]="helper.isCollectingAll()"
+          (click)="helper.collectAllRewards(steps)">
+          Collect All
+        </button>
+      }
 
       <div class="row">
         <div class="col-auto" style="min-width: 150px">

@@ -15,9 +15,7 @@ import { Keyword } from '../../../../models/taverna/taverna.model';
   styleUrl: './response-holder-keywords-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResponseHolderKeywordsBarComponent
-  implements AssistantResponseHolderKeywordsBarComponent
-{
+export class ResponseHolderKeywordsBarComponent implements AssistantResponseHolderKeywordsBarComponent {
   store = inject(Store);
   assistantMemoryType = inject(ASSISTANT_MEMORY_TYPE);
   allKeywords = this.store.select(selectAllKeywords);

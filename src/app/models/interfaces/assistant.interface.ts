@@ -44,13 +44,17 @@ export interface AssistantRequestInputComponent extends Pick<AssistantServiceUse
   isLoading: Observable<boolean>;
 }
 
-export interface AssistantResponseHolderComponent
-  extends Pick<AssistantRequestInputComponent, 'isLoading'> {
+export interface AssistantResponseHolderComponent extends Pick<
+  AssistantRequestInputComponent,
+  'isLoading'
+> {
   records: Signal<AssistantRecord[]>;
 }
 
-export interface AssistantResponseHolderBodyComponent
-  extends Pick<AssistantRequestInputComponent, 'facade'> {
+export interface AssistantResponseHolderBodyComponent extends Pick<
+  AssistantRequestInputComponent,
+  'facade'
+> {
   record: Signal<AssistantRecord>;
 }
 

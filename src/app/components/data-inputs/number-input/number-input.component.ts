@@ -8,10 +8,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ViewProviderComponent } from '../../abstract/abstract-control/view-provider/view-provider.component';
+import { POSITIVE_NUMBER_MASK } from '../../../masks';
+import { IMaskDirective } from 'angular-imask';
 
 @Component({
   selector: 'app-number-input',
-  imports: [MatFormField, MatInput, MatLabel, MatFormField, ReactiveFormsModule],
+  imports: [MatFormField, MatInput, MatLabel, MatFormField, ReactiveFormsModule, IMaskDirective],
   templateUrl: './number-input.component.html',
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,6 +21,7 @@ import { ViewProviderComponent } from '../../abstract/abstract-control/view-prov
 })
 export class NumberInputComponent extends ViewProviderComponent implements OnInit {
   max = input<number>(999999);
+  POSITIVE_NUMBER_MASK = POSITIVE_NUMBER_MASK;
   private baseValidators: ValidatorFn[] = [];
 
   constructor() {

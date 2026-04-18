@@ -18,9 +18,7 @@ import {
   styleUrl: './response-holder-keywords-filter.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResponseHolderKeywordsFilterComponent
-  implements AssistantResponseHolderKeywordsFilterComponent
-{
+export class ResponseHolderKeywordsFilterComponent implements AssistantResponseHolderKeywordsFilterComponent {
   store = inject(Store);
   filtersChange = output<string[]>();
 

@@ -188,12 +188,28 @@ export class UsersService extends ApiService<User> {
     this.nav.goToLogin();
   }
 
-  updateOnline(config: { time?: number; claimed?: number; lastLoyaltyBonus?: string }) {
+  updateOnline(config: {
+    time?: number;
+    claimed?: number;
+    lastLoyaltyBonus?: string;
+    collectAll?: { cycles: number };
+  }) {
     const user = this.localStorage.getItem(USER_TOKEN) as User;
     const data: User = {
       ...user,
       online: {
         ...user.online,
+        ...(config.collectAll
+          ? {
+              onlineTime:
+                user.online.onlineTime -
+                TimeService.convertToHoursOrMilliseconds(
+                  MAX_REWARD_TIME * config.collectAll.cycles,
+                  false,
+                ),
+              claimedRewards: [],
+            }
+          : {}),
         ...(config.time || config.claimed === MAX_REWARD_TIME
           ? {
               onlineTime:
