@@ -14,8 +14,9 @@ import {
   output,
   Output,
   Renderer2,
+  DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+
 import { TableColumns } from '../../../models/table/abstract-table.model';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 
