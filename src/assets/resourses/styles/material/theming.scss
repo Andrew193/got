@@ -40,7 +40,7 @@ textarea {
 
 div.mat-mdc-dialog-surface {
   overflow-y: unset !important;
-  --mdc-dialog-container-color: transparent;
+  --mat-dialog-container-color: transparent;
   box-shadow: none;
 }
 
@@ -95,7 +95,7 @@ mat-bottom-sheet-container {
 }
 
 :root {
-  --mdc-outlined-text-field-focus-outline-color: transparent;
+  --mat-form-field-outlined-focus-outline-color: transparent;
 
   @include mat.sidenav-overrides(
     (
