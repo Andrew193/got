@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AfterBattleComponent } from './after-battle.component';
@@ -14,7 +15,7 @@ describe('AfterBattleComponent', () => {
     headerMessage: 'You won',
     labels: { closeBtnLabel: 'Great' },
     reward: { gold: 74, silver: 71, copper: 154461 },
-    close: jasmine.createSpy('close'),
+    close: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -26,12 +27,12 @@ describe('AfterBattleComponent', () => {
           provide: RewardService,
           useValue: {
             mostResentRewardCurrency: {},
-            resetMostResentRewardCurrency: jasmine.createSpy(),
+            resetMostResentRewardCurrency: vi.fn(),
           },
         },
         {
           provide: CurrencyHelperService,
-          useValue: { convertCurrencyToCoin: jasmine.createSpy().and.returnValue([]) },
+          useValue: { convertCurrencyToCoin: vi.fn().mockReturnValue([]) },
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],

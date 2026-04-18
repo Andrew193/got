@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
@@ -12,11 +13,11 @@ describe('ValidationService', () => {
   let updateCallback: Observable<unknown[]>;
   let createCallback: Observable<unknown>;
 
-  let updateCallbackSpy = jasmine.createSpy('updateCallback');
-  let createCallbackSpy = jasmine.createSpy('createCallback');
+  let updateCallbackSpy = vi.fn();
+  let createCallbackSpy = vi.fn();
 
   function spyCover<R extends boolean>(
-    callback: jasmine.Spy<jasmine.Func>,
+    callback: ReturnType<typeof vi.fn>,
     isArray: R,
   ): R extends true ? Observable<unknown[]> : Observable<unknown> {
     return of(isArray ? [fakeUser] : fakeUser).pipe(
@@ -33,8 +34,8 @@ describe('ValidationService', () => {
       providers: [ValidationService],
     });
 
-    updateCallbackSpy = jasmine.createSpy('updateCallback');
-    createCallbackSpy = jasmine.createSpy('createCallback');
+    updateCallbackSpy = vi.fn();
+    createCallbackSpy = vi.fn();
 
     updateCallback = spyCover(updateCallbackSpy, true);
     createCallback = spyCover(createCallbackSpy, false);
@@ -52,7 +53,7 @@ describe('ValidationService', () => {
   });
 
   it('ValidationService should see invalid form', () => {
-    const callbackSpy = jasmine.createSpy('callback', () => {
+    const callbackSpy = vi.fn(() => {
       console.log('Called');
     });
 
@@ -75,9 +76,9 @@ describe('ValidationService', () => {
     const errCtrl = formGroup.get('error') as FormControl;
     const arrayElementCtrl = (formGroup.get('array') as FormArray).controls.at(0) as FormControl;
 
-    const nameUvvSpy = spyOn(nameCtrl, 'updateValueAndValidity').and.callThrough();
-    const errUvvSpy = spyOn(errCtrl, 'updateValueAndValidity').and.callThrough();
-    const arrayElementCtrlSpy = spyOn(arrayElementCtrl, 'updateValueAndValidity').and.callThrough();
+    const nameUvvSpy = vi.spyOn(nameCtrl, 'updateValueAndValidity');
+    const errUvvSpy = vi.spyOn(errCtrl, 'updateValueAndValidity');
+    const arrayElementCtrlSpy = vi.spyOn(arrayElementCtrl, 'updateValueAndValidity');
 
     const result = validationService.validateAllFormFields(formGroup);
 

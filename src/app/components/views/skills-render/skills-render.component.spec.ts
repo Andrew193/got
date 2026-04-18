@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SkillsRenderComponent } from './skills-render.component';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';

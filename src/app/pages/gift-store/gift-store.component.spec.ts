@@ -1,3 +1,5 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+// TODO: manual migration required — transformation produced invalid TypeScript
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GiftStoreComponent } from './gift-store.component';
 import { GiftService } from '../../services/gift-related/gift/gift.service';
@@ -14,10 +16,10 @@ import { fakeUser } from '../../test-related';
 describe('GiftStoreComponent', () => {
   let component: GiftStoreComponent;
   let fixture: ComponentFixture<GiftStoreComponent>;
-  let giftServiceSpy: jasmine.SpyObj<GiftService>;
-  let usersServiceSpy: jasmine.SpyObj<UsersService>;
-  let notificationsServiceSpy: jasmine.SpyObj<NotificationsService>;
-  let activatedRouteSpy: jasmine.SpyObj<ActivatedRoute>;
+  let giftServiceSpy: { [K in keyof GiftService]: ReturnType<typeof vi.fn> };
+  let usersServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
+  let notificationsServiceSpy: { [K in keyof NotificationsService]: ReturnType<typeof vi.fn> };
+  let activatedRouteSpy: { [K in keyof ActivatedRoute]: ReturnType<typeof vi.fn> };
 
   const dailyReward: GiftConfig = {
     lastLogin: '',
@@ -25,12 +27,10 @@ describe('GiftStoreComponent', () => {
   };
 
   beforeEach(async () => {
-    giftServiceSpy = jasmine.createSpyObj('GiftService', [''], {
-      _data: of(dailyReward),
-    });
-    usersServiceSpy = jasmine.createSpyObj('UsersService', ['updateCurrency']);
-    notificationsServiceSpy = jasmine.createSpyObj('NotificationsService', ['notificationsValue']);
-    activatedRouteSpy = jasmine.createSpyObj('ActivatedRoute', ['']);
+    giftServiceSpy = { _data: of(dailyReward) };
+    usersServiceSpy = { updateCurrency: vi.fn() };
+    notificationsServiceSpy = { notificationsValue: vi.fn() };
+    activatedRouteSpy = {};
 
     await TestBed.configureTestingModule({
       imports: [GiftStoreComponent],

@@ -1,5 +1,6 @@
-import { TimeService } from './time.service';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { TimeService } from './time.service';
 
 describe('TimeService', () => {
   let timeService: TimeService;
@@ -10,6 +11,10 @@ describe('TimeService', () => {
     });
 
     timeService = TestBed.inject(TimeService);
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 
   it('TimeService should be created', () => {
@@ -27,11 +32,11 @@ describe('TimeService', () => {
   });
 
   it('TimeService should give difference', () => {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     const now = new Date(Date.UTC(2024, 0, 1, 0, 0, 0));
 
-    jasmine.clock().mockDate(now);
+    vi.setSystemTime(now);
 
     const createdAt = Date.now();
     let diff = timeService.getTotalPlaytime(createdAt);
@@ -40,17 +45,17 @@ describe('TimeService', () => {
     expect([diff.diffInDays, diff.diffInHours, diff.diffInMinutes]).toEqual([0, 0, 0]);
 
     //Tick time 1 hour
-    jasmine.clock().tick(60 * 60 * 1000);
+    vi.advanceTimersByTime(60 * 60 * 1000);
 
     diff = timeService.getTotalPlaytime(createdAt);
     expect([diff.diffInHours, diff.diffInMinutes]).toEqual([1, 60]);
 
     //Tick time 1 day
-    jasmine.clock().tick(60 * 60 * 1000 * 23);
+    vi.advanceTimersByTime(60 * 60 * 1000 * 23);
 
     diff = timeService.getTotalPlaytime(createdAt);
     expect(diff.diffInDays).toBe(1);
 
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 });

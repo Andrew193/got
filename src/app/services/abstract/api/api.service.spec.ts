@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { User } from '../../users/users.interfaces';
 import { FakeLocalStorage, fakeUser, TestApiService } from '../../../test-related';
 import { TestBed } from '@angular/core/testing';
@@ -9,19 +10,19 @@ import { TIME } from '../../online/online.contrants';
 
 describe('ApiService', () => {
   let apiService: TestApiService<User>;
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let httpClientSpy: { [K in keyof HttpClient]: ReturnType<typeof vi.fn> };
 
   const user = fakeUser;
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['put', 'post']);
+    httpClientSpy = { put: vi.fn(), post: vi.fn() };
 
     function putPost(url: string, body: IdEntity) {
       return of(body) as any;
     }
 
-    httpClientSpy.put.and.callFake(putPost);
-    httpClientSpy.post.and.callFake(putPost);
+    httpClientSpy.put.mockImplementation(putPost);
+    httpClientSpy.post.mockImplementation(putPost);
 
     TestBed.configureTestingModule({
       providers: [
@@ -40,19 +41,23 @@ describe('ApiService', () => {
     apiService = TestBed.inject(TestApiService);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('ApiService should be created', () => {
     expect(apiService).toBeTruthy();
   });
 
   it('ApiService should put data (and return an observable)', done => {
-    jasmine.clock().install();
+    vi.useFakeTimers();
     const date = new Date(Date.UTC(2025, 0, 1, 0, 0, 0));
 
-    jasmine.clock().mockDate(date);
+    vi.setSystemTime(date);
 
     const now = Date.now();
 
-    jasmine.clock().tick(TIME.oneMinuteMilliseconds);
+    vi.advanceTimersByTime(TIME.oneMinuteMilliseconds);
 
     const partialUser: Partial<User> = { login: 'test', password: 'test' };
 
@@ -81,6 +86,6 @@ describe('ApiService', () => {
       )
       .subscribe();
 
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 });

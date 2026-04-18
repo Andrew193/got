@@ -1,3 +1,5 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+// TODO: manual migration required — transformation produced invalid TypeScript
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyDifComponent } from './currency-dif.component';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
@@ -9,7 +11,7 @@ import { DebugElement } from '@angular/core';
 describe('CurrencyDifComponent', () => {
   let component: CurrencyDifComponent;
   let fixture: ComponentFixture<CurrencyDifComponent>;
-  let matSnackBarRef: jasmine.SpyObj<MatSnackBarRef<any>>;
+  let matSnackBarRef: { [K in keyof MatSnackBarRef<any>]: ReturnType<typeof vi.fn> };
   const oldCoins: Currency = {
     gold: 10,
     silver: 100,
@@ -22,7 +24,7 @@ describe('CurrencyDifComponent', () => {
   };
 
   beforeEach(async () => {
-    matSnackBarRef = jasmine.createSpyObj('MatSnackBarRef', ['dismissWithAction']);
+    matSnackBarRef = { dismissWithAction: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [CurrencyDifComponent],

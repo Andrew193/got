@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { SiteComponent } from './site.component';
 import { UsersService } from '../../services/users/users.service';
@@ -11,14 +12,14 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
 describe('SiteComponent', () => {
   let component: SiteComponent;
   let fixture: ComponentFixture<SiteComponent>;
-  let usersServiceSpy: jasmine.SpyObj<UsersService>;
-  let navigationServiceSpy: jasmine.SpyObj<NavigationService>;
+  let usersServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
+  let navigationServiceSpy: { [K in keyof NavigationService]: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
-    navigationServiceSpy = jasmine.createSpyObj('NavigationService', ['goToLogin']);
+    navigationServiceSpy = { goToLogin: vi.fn() };
 
-    usersServiceSpy = jasmine.createSpyObj('UsersService', ['isAuth']);
-    usersServiceSpy.isAuth.and.returnValue(false);
+    usersServiceSpy = { isAuth: vi.fn() };
+    usersServiceSpy.isAuth.mockReturnValue(false);
 
     await TestBed.configureTestingModule({
       imports: [SiteComponent],

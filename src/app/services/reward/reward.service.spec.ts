@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { RewardBox, RewardService } from './reward.service';
 import { HeroesFacadeService } from '../facades/heroes/heroes.service';
@@ -8,7 +9,7 @@ import { CurrencyHelperService } from '../users/currency/helper/currency-helper.
 
 describe('RewardService', () => {
   let rewardService: RewardService;
-  let heroServiceSpy: jasmine.SpyObj<HeroesFacadeService>;
+  let heroServiceSpy: { [K in keyof HeroesFacadeService]: ReturnType<typeof vi.fn> };
   let currencyHelperService: CurrencyHelperService;
 
   beforeEach(() => {
@@ -52,7 +53,7 @@ describe('RewardService', () => {
       },
     ];
 
-    heroServiceSpy = jasmine.createSpyObj('HeroesHelperService', ['getAllHeroes']);
+    heroServiceSpy = { getAllHeroes: vi.fn() };
 
     TestBed.configureTestingModule({
       providers: [
@@ -75,7 +76,7 @@ describe('RewardService', () => {
       return units;
     }
 
-    heroServiceSpy.getAllHeroes.and.callFake(getAllHeroes);
+    heroServiceSpy.getAllHeroes.mockImplementation(getAllHeroes);
   });
 
   it('RewardService should be created', () => {

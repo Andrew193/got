@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { EffectsService } from '../../effects/effects.service';
 import { getEffectFake, getFakeEffectMap } from '../../../test-related';
@@ -8,10 +9,11 @@ import { HeroesFacadeService } from './heroes.service';
 
 describe('HeroesHelperService', () => {
   let service: HeroesFacadeService;
-  let effectsMock: jasmine.SpyObj<EffectsService>;
+  let effectsMock: { [K in keyof EffectsService]: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    effectsMock = jasmine.createSpyObj('EffectsService', ['getEffect'], {
+    effectsMock = {
+      getEffect: vi.fn(),
       effectsToHighlight: [ALL_EFFECTS.burning, ALL_EFFECTS.freezing],
       effects: createDeepCopy(ALL_EFFECTS),
       effectsDescriptions: {
@@ -19,11 +21,11 @@ describe('HeroesHelperService', () => {
         [ALL_EFFECTS.freezing]: 'The hero is frozen and can only move 1 cell per turn.',
       },
       effectsMap: getFakeEffectMap(),
-    });
+    };
 
     const getEffect = getEffectFake(effectsMock.effectsMap);
 
-    effectsMock.getEffect.and.callFake(getEffect);
+    effectsMock.getEffect.mockImplementation(getEffect);
 
     TestBed.configureTestingModule({
       providers: [HeroesFacadeService, { provide: EffectsService, useValue: effectsMock }],
@@ -39,7 +41,7 @@ describe('HeroesHelperService', () => {
     const allEffects = service.helper.effects;
 
     expect(allEffects).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         burning: 'Burning',
         freezing: 'Freezing',
         healthRestore: 'Recovery',
@@ -50,7 +52,7 @@ describe('HeroesHelperService', () => {
   it('HeroesHelperService returns effects to highlight', () => {
     const effectsToHighlight = service.helper.getEffectsToHighlight();
 
-    expect(effectsToHighlight).toEqual(jasmine.arrayContaining(['Burning', 'Freezing']));
+    expect(effectsToHighlight).toEqual(expect.arrayContaining(['Burning', 'Freezing']));
   });
 
   it('HeroesHelperService gives correct effect description', () => {

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { Component, Injector, ViewContainerRef, ViewChild } from '@angular/core';
 import { ComponentModalStrategy } from './component-modal-strategy';
@@ -23,7 +24,7 @@ function makeExtendedConfig(data: Record<string, unknown>): ExtendedModalConfig 
     headerMessage: 'You won',
     labels: { closeBtnLabel: 'Great' },
     dialogId: 'test-id',
-    close: jasmine.createSpy('close'),
+    close: vi.fn(),
     config: {
       strategy: ModalStrategiesTypes.component,
       component: TestDynamicComponent as any,
@@ -46,7 +47,7 @@ describe('ComponentModalStrategy', () => {
 
   describe('Property 7: DYNAMIC_COMPONENT_DATA contains all config.data fields', () => {
     it('injects close and labels from config.data into the component', () => {
-      const closeSpy = jasmine.createSpy('close');
+      const closeSpy = vi.fn();
       const labels = { closeBtnLabel: 'Great' };
       const data = { close: closeSpy, labels, reward: { gold: 10 } };
 
@@ -67,10 +68,10 @@ describe('ComponentModalStrategy', () => {
     it('parameterized: various data shapes are injected correctly', () => {
       const parentInjector = TestBed.inject(Injector);
       const testCases = [
-        { close: jasmine.createSpy(), labels: { closeBtnLabel: 'OK' } },
-        { close: jasmine.createSpy(), labels: { closeBtnLabel: 'Great' }, reward: {} },
+        { close: vi.fn(), labels: { closeBtnLabel: 'OK' } },
+        { close: vi.fn(), labels: { closeBtnLabel: 'Great' }, reward: {} },
         {
-          close: jasmine.createSpy(),
+          close: vi.fn(),
           labels: { closeBtnLabel: 'Try again later', declineBtnLabel: 'No' },
         },
       ];

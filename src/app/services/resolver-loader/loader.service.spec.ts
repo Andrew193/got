@@ -1,21 +1,22 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { LoaderService } from './loader.service';
 import { Renderer2, RendererFactory2 } from '@angular/core';
 
 describe('LoaderService', () => {
   let loaderService: LoaderService;
-  let rendererFactory2Spy: jasmine.SpyObj<RendererFactory2>;
-  let rendererSpy: jasmine.SpyObj<Renderer2>;
+  let rendererFactory2Spy: { [K in keyof RendererFactory2]: ReturnType<typeof vi.fn> };
+  let rendererSpy: { [K in keyof Renderer2]: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    rendererFactory2Spy = jasmine.createSpyObj('RendererFactory2', ['createRenderer']);
-    rendererSpy = jasmine.createSpyObj('Renderer2', ['addClass', 'removeClass']);
+    rendererFactory2Spy = { createRenderer: vi.fn() };
+    rendererSpy = { addClass: vi.fn(), removeClass: vi.fn() };
 
-    rendererSpy.addClass.and.callFake(() => {});
+    rendererSpy.addClass.mockImplementation(() => {});
 
-    rendererSpy.removeClass.and.callFake(() => {});
+    rendererSpy.removeClass.mockImplementation(() => {});
 
-    rendererFactory2Spy.createRenderer.and.returnValue(rendererSpy);
+    rendererFactory2Spy.createRenderer.mockReturnValue(rendererSpy);
 
     TestBed.configureTestingModule({
       providers: [LoaderService, { provide: RendererFactory2, useValue: rendererFactory2Spy }],

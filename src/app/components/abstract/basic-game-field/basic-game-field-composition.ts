@@ -12,9 +12,13 @@ import {
 } from '../../../models/field.model';
 import { createDeepCopy } from '../../../helpers';
 import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
-import { BATTLE_SPEED, EffectsValues } from '../../../constants';
+import { EffectsValues } from '../../../constants';
 import { ChangeDetectorRef, OutputEmitterRef } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { BattleStateService } from '../../../services/game-related/battle-state/battle-state.service';
+import { AutoFightService } from '../../../services/game-related/auto-fight/auto-fight.service';
+import { BattleResultService } from '../../../services/game-related/battle-result/battle-result.service';
+import { AiTurnService } from '../../../services/game-related/ai-turn/ai-turn.service';
 
 interface ExecuteActionParams {
   attackerTeam: TileUnit[];
@@ -28,14 +32,22 @@ interface ExecuteActionParams {
 }
 
 export class BasicGameFieldComposition extends AbstractGameFieldComposition {
+  // Expose observables for template use
+  readonly turnCount$ = this.battleStateS.turnCount$;
+  readonly turnUser$ = this.battleStateS.turnUser$;
+
   constructor(
     private fieldService: GameFieldService,
     private unitService: UnitService,
     private eS: EffectsService,
     private gameActionService: GameService,
+    protected override battleStateS: BattleStateService,
+    protected autoFightS: AutoFightService,
+    protected battleResultS: BattleResultService,
+    protected aiTurnS: AiTurnService,
     override store: Store<any>,
   ) {
-    super(fieldService, unitService, eS, store);
+    super(fieldService, unitService, eS, battleStateS, store);
   }
 
   battleEndFlag!: OutputEmitterRef<Parameters<GameResultsRedirectType>>;
@@ -184,12 +196,18 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       canMove: false,
       skills: updatedSkills,
     };
-    this.over = this.gameActionService.checkCloseFight(
-      this.userUnits,
-      this.aiUnits,
-      this.gameResultsRedirect,
-      this.battleEndFlag,
-    );
+    const result = this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits);
+
+    if (result.battleEnded) {
+      this.battleResultS.showBattleResult(
+        result,
+        this.aiUnits,
+        this.gameResultsRedirect,
+        this.battleEndFlag,
+      );
+    }
+
+    this.over = result.battleEnded;
     this.updateGridUnits([...this.aiUnits, ...this.userUnits]);
     this.dropEnemy();
     this.checkAiMoves(true);
@@ -430,13 +448,28 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     );
 
     if (userFinishedTurn && !this.gameActionService.isDead(this.aiUnits)) {
-      this._turnCount.next(this.turnCount + 1);
+      this.battleStateS.incrementTurnCount();
+
+      // Check if max turns reached
+      const result = this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits);
+
+      if (result.battleEnded) {
+        this.battleResultS.showBattleResult(
+          result,
+          this.aiUnits,
+          this.gameResultsRedirect,
+          this.battleEndFlag,
+        );
+
+        return;
+      }
+
       if (this.battleMode) {
         this.dropEnemy();
-        this.turnUser = false;
+        this.battleStateS.setTurnUser(false);
         this.attackUser(aiMove);
       } else {
-        this.turnUser = true;
+        this.battleStateS.setTurnUser(true);
         this.finishAiTurn(true);
       }
     }
@@ -445,7 +478,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   startAutoFight(fastFight = false, oneTick = false) {
     this.autoFight = true;
 
-    const tick = () => {
+    this.autoFightS.startAutoFight(fastFight, () => {
       this.attackUser(false);
       this.fieldService.resetMoveAndAttack(this.userUnits, false);
       this.checkAiMoves(true);
@@ -458,17 +491,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       }
 
       return false;
-    };
-
-    if (fastFight) {
-      for (let i = 0; ; i++) {
-        if (tick()) break;
-      }
-    } else {
-      const interval = setInterval(() => {
-        tick() && clearInterval(interval);
-      }, BATTLE_SPEED);
-    }
+    });
   }
 
   checkAutoFightEnd() {
@@ -510,13 +533,19 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
 
     // Update game state
     this.updateField(userUnits, aiUnits);
-    this.turnUser = true;
-    this.over = this.gameActionService.checkCloseFight(
-      userUnits,
-      aiUnits,
-      this.gameResultsRedirect,
-      this.battleEndFlag,
-    );
+    this.battleStateS.setTurnUser(true);
+    const result = this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits);
+
+    if (result.battleEnded) {
+      this.battleResultS.showBattleResult(
+        result,
+        this.aiUnits,
+        this.gameResultsRedirect,
+        this.battleEndFlag,
+      );
+    }
+
+    this.over = result.battleEnded;
   }
 
   updateField<T extends ReturnType<typeof this.getAiLeadingUnits>>(userUnits: T, aiUnits: T) {
@@ -531,91 +560,14 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     const aiUnits = this.getAiLeadingUnits(aiMove);
     const userUnits = this.getUserLeadingUnits(aiMove);
 
-    const moveAiUnit = (index: number, aiUnit: TileUnit, userUnit: TileUnit) => {
-      const aiPos = this.unitService.getPositionFromCoordinate(aiUnit);
-      const userPos = this.unitService.getPositionFromCoordinate(userUnit);
-
-      //this.updateField(userUnits, aiUnits);
-      const path = this.fieldService.getShortestPathCover(
-        this.fieldService.getGridFromField(this.gameConfig),
-        aiPos,
-        userPos,
-        true,
-        false,
-        true,
-      );
-      const moveTo = this.gameActionService.getCanGetToPosition(aiUnit, path, userPos);
-
-      aiUnits[index] = {
-        ...aiUnits[index],
-        canMove: false,
-        x: moveTo.i,
-        y: moveTo.j,
-      };
-    };
-
-    const updateAiAfterAttack = (index: number, updatedSkills?: TileUnitSkill[]) => {
-      aiUnits[index] = {
-        ...aiUnits[index],
-        canAttack: false,
-        skills: updatedSkills ?? aiUnits[index].skills,
-      };
-      //this.updateField(userUnits, aiUnits);
-    };
-
-    const performAttack = (userIndex: number, aiSkill: TileUnitSkill, index: number) => {
-      const { skills: updatedSkills } = this.executeAction({
-        attackerTeam: aiUnits,
-        defenderTeam: userUnits,
-        attackerIndex: index,
-        defenderIndex: userIndex,
-        skill: aiSkill,
-        isAiMove: aiMove,
-        findSkillIndex: (skills, s) => this.unitService.findSkillIndex(skills, s),
-        getTargetTile: (defTeam, defIdx) => defTeam[defIdx] as unknown as TileUnit,
-      });
-
-      updateAiAfterAttack(index, updatedSkills);
-    };
-
-    const makeAiMove = (aiUnit: TileUnit, index: number) => {
-      if (!aiUnit.health || !aiUnit.canMove) return;
-
-      const orderedTargets = this.unitService.orderUnitsByDistance(aiUnit, userUnits) as TileUnit[];
-
-      for (const userUnit of orderedTargets) {
-        if (!userUnit.health) continue;
-
-        moveAiUnit(index, aiUnit, userUnit);
-
-        const enemyPosition = this.getEnemyWhenCannotMove(aiUnits[index], userUnits);
-
-        if (enemyPosition) {
-          const userIndex = this.unitService.findUnitIndex(
-            userUnits,
-            this.unitService.getCoordinateFromPosition(enemyPosition),
-          );
-          const aiSkill = this.fieldService.chooseAiSkill(aiUnit.skills);
-
-          if (aiSkill) {
-            performAttack(userIndex, aiSkill, index);
-
-            return;
-          }
-        }
-
-        updateAiAfterAttack(index); // no valid enemy or skill
-
-        return;
-      }
-    };
-
-    // Apply passive buffs to all AI units
-    this.gameActionService.checkPassiveSkills(aiUnits);
-
-    for (let i = 0; i < aiUnits.length; i++) {
-      this.gameActionService.aiUnitAttack(i, aiUnits, makeAiMove.bind(this));
-    }
+    // Use AiTurnService to execute all AI unit turns
+    this.aiTurnS.executeAiTurn(aiUnits, userUnits, this.gameConfig, {
+      makeAttackMove: this.makeAttackMove.bind(this),
+      addEffectToUnit: this.addEffectToUnit.bind(this),
+      universalRangeAttack: this.universalRangeAttack.bind(this),
+      updateSkillCooldowns: (skills, skill) =>
+        this.updateSkillsCooldown(skills, userUnits, 0, 0, skill, true, true),
+    });
 
     // Finish AI turn — same behavior
     this.finishAiTurn(aiMove);

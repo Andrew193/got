@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DepositModalComponent } from './modal-deposit.component';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -9,7 +10,7 @@ import { DepositConfig } from '../../../models/iron-bank.model';
 describe('DepositModalComponent', () => {
   let component: DepositModalComponent;
   let fixture: ComponentFixture<DepositModalComponent>;
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let httpClientSpy: { [K in keyof HttpClient]: ReturnType<typeof vi.fn> };
   const data: DepositConfig = {
     currency: {
       gold: 10,
@@ -20,7 +21,7 @@ describe('DepositModalComponent', () => {
   };
 
   beforeEach(async () => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put']);
+    httpClientSpy = { get: vi.fn(), post: vi.fn(), put: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [DepositModalComponent],

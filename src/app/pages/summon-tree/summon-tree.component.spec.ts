@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { SummonTreeComponent } from './summon-tree.component';
 import {
@@ -16,16 +17,14 @@ describe('SummonTreeComponent', () => {
   let component: SummonTreeComponent;
   let fixture: ComponentFixture<SummonTreeComponent>;
   //Providers
-  let rewardServiceSpy: jasmine.SpyObj<RewardService>;
+  let rewardServiceSpy: { [K in keyof RewardService]: ReturnType<typeof vi.fn> };
   let location: Location;
 
   beforeEach(async () => {
-    rewardServiceSpy = jasmine.createSpyObj('RewardService', ['getReward'], {
-      rewardNames: basicRewardNames,
-    });
+    rewardServiceSpy = { getReward: vi.fn(), rewardNames: basicRewardNames };
 
     // @ts-ignore
-    rewardServiceSpy.getReward.and.callFake(amountOfRewards => {
+    rewardServiceSpy.getReward.mockImplementation(amountOfRewards => {
       const result: DisplayReward[] = new Array(amountOfRewards)
         .fill({
           name: 'Copper',

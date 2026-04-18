@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { OnlineService } from './online.service';
 import { LocalStorageService } from '../localStorage/local-storage.service';
@@ -9,13 +10,13 @@ import { FakeLocalStorage, fakeUser } from '../../test-related';
 
 describe('OnlineService', () => {
   let onlineService: OnlineService;
-  let userServiceSpy: jasmine.SpyObj<UsersService>;
+  let userServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     const user = createDeepCopy(fakeUser);
 
-    userServiceSpy = jasmine.createSpyObj('UsersService', ['updateOnline']);
-    userServiceSpy.updateOnline.and.returnValue(of(user));
+    userServiceSpy = { updateOnline: vi.fn() };
+    userServiceSpy.updateOnline.mockReturnValue(of(user));
 
     TestBed.configureTestingModule({
       providers: [
@@ -60,7 +61,7 @@ describe('OnlineService', () => {
     //4) Get to 10 minutes
     tick(TIME.oneMinuteMilliseconds * 9);
     expect(userServiceSpy.updateOnline).toHaveBeenCalledWith(
-      jasmine.objectContaining({ time: 600 }),
+      expect.objectContaining({ time: 600 }),
       true,
     );
   }));

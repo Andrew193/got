@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GiftService } from './gift.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
@@ -10,20 +11,20 @@ import { FakeLocalStorage, fakeUser } from '../../../test-related';
 
 describe('GiftService', () => {
   let giftService: GiftService;
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let httpClientSpy: { [K in keyof HttpClient]: ReturnType<typeof vi.fn> };
   const giftConfig: GiftConfig = {
     lastLogin: '12/13/2024',
     userId: fakeUser.id,
   };
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put']);
+    httpClientSpy = { get: vi.fn(), post: vi.fn(), put: vi.fn() };
 
-    httpClientSpy.get.and.returnValue(of([giftConfig]));
-    httpClientSpy.post.and.callFake((url: string, body: Partial<User>) => {
+    httpClientSpy.get.mockReturnValue(of([giftConfig]));
+    httpClientSpy.post.mockImplementation((url: string, body: Partial<User>) => {
       return of(body) as any;
     });
-    httpClientSpy.put.and.returnValue(of(fakeUser));
+    httpClientSpy.put.mockReturnValue(of(fakeUser));
 
     TestBed.configureTestingModule({
       providers: [
@@ -36,18 +37,22 @@ describe('GiftService', () => {
     giftService = TestBed.inject(GiftService);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('GiftService should be created', () => {
     expect(giftService).toBeTruthy();
   });
 
   it('GiftService should claim reward', done => {
-    jasmine.clock().install();
+    vi.useFakeTimers();
     const date = new Date(Date.UTC(2000, 0, 1, 0, 0, 0));
 
-    jasmine.clock().mockDate(date);
+    vi.setSystemTime(date);
 
-    const callbackSpy = jasmine.createSpy('callback').and.callFake((response: User) => {
-      expect(response.createdAt).toEqual(jasmine.any(Number));
+    const callbackSpy = vi.fn().mockImplementation((response: User) => {
+      expect(response.createdAt).toEqual(expect.any(Number));
       expect(response.createdAt).toBeTruthy();
       done();
     });
@@ -56,20 +61,20 @@ describe('GiftService', () => {
 
     giftService.claimGiftReward(giftConfig, callbackSpy);
 
-    jasmine.clock().tick(TIME.oneMinuteMilliseconds);
+    vi.advanceTimersByTime(TIME.oneMinuteMilliseconds);
 
     expect(callbackSpy).toHaveBeenCalledWith({
       lastLogin: '12/13/2024',
       userId: '1',
-      createdAt: jasmine.any(Number),
+      createdAt: expect.any(Number),
     });
     expect(now + TIME.oneMinuteMilliseconds).toBe(Date.now());
 
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('GiftService should return config', done => {
-    const callbackSpy = jasmine.createSpy('callback');
+    const callbackSpy = vi.fn();
 
     giftService.getConfig(callbackSpy).subscribe({
       next: response => {

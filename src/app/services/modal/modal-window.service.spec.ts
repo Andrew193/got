@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,8 +21,8 @@ describe('ModalWindowService', () => {
     TestBed.configureTestingModule({
       providers: [
         ModalWindowService,
-        { provide: MatDialog, useValue: { open: jasmine.createSpy() } },
-        { provide: MatSnackBar, useValue: { open: jasmine.createSpy() } },
+        { provide: MatDialog, useValue: { open: vi.fn() } },
+        { provide: MatSnackBar, useValue: { open: vi.fn() } },
       ],
     });
     service = TestBed.inject(ModalWindowService);

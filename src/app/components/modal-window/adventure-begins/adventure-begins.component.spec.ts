@@ -1,7 +1,7 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdventureBeginsComponent, Callback } from './adventure-begins.component';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
-import Spy = jasmine.Spy;
 import { MatDialogRef } from '@angular/material/dialog';
 import { FakeMatDialogRef } from '../../../test-related';
 
@@ -11,7 +11,7 @@ describe('AdventureBeginsComponent', () => {
   let callbackSpy: Spy;
 
   beforeEach(async () => {
-    callbackSpy = jasmine.createSpy('callback', () => {
+    callbackSpy = vi.fn(() => {
       console.log('Adventure Begins Callback');
     });
 

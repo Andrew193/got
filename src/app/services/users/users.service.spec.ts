@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { UsersService } from './users.service';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
@@ -22,9 +23,9 @@ import { fakeUser } from '../../test-related';
 
 describe('UsersService', () => {
   let userService: UsersService;
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
-  let routerSpy: jasmine.SpyObj<Router>;
-  let localStorageSpy: jasmine.SpyObj<LocalStorageService>;
+  let httpClientSpy: { [K in keyof HttpClient]: ReturnType<typeof vi.fn> };
+  let routerSpy: { [K in keyof Router]: ReturnType<typeof vi.fn> };
+  let localStorageSpy: { [K in keyof LocalStorageService]: ReturnType<typeof vi.fn> };
 
   const userBase = { login: 'test', password: 'test' };
 
@@ -33,19 +34,18 @@ describe('UsersService', () => {
   }
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put']);
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    localStorageSpy = jasmine.createSpyObj(
-      'LocalStorageService',
-      ['removeItem', 'getItem', 'setItem'],
-      {
-        names: {
-          user: 'user',
-        },
+    httpClientSpy = { get: vi.fn(), post: vi.fn(), put: vi.fn() };
+    routerSpy = { navigate: vi.fn() };
+    localStorageSpy = {
+      removeItem: vi.fn(),
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      names: {
+        user: 'user',
       },
-    );
+    };
 
-    localStorageSpy.getItem.and.callFake(key => {
+    localStorageSpy.getItem.mockImplementation(key => {
       if (key === USER_TOKEN) {
         return fakeUser;
       }
@@ -78,7 +78,7 @@ describe('UsersService', () => {
   it('UsersService creates a user', done => {
     const user = userService.basicUser(userBase);
 
-    httpClientSpy.post.and.returnValue(of(user));
+    httpClientSpy.post.mockReturnValue(of(user));
 
     userService.createUser(userBase, actionHandler).subscribe({
       next: res => {
@@ -90,7 +90,7 @@ describe('UsersService', () => {
   });
 
   it('UsersService can not create a user', done => {
-    httpClientSpy.post.and.returnValue(
+    httpClientSpy.post.mockReturnValue(
       throwError(
         () =>
           new HttpErrorResponse({
@@ -114,7 +114,7 @@ describe('UsersService', () => {
   it('UsersService logins a user', done => {
     const user = userService.basicUser(userBase);
 
-    httpClientSpy.get.and.returnValue(of([user]));
+    httpClientSpy.get.mockReturnValue(of([user]));
 
     const login$ = userService.login(user, actionHandler).pipe(
       map(res => res[0]),
@@ -130,8 +130,8 @@ describe('UsersService', () => {
     login$.subscribe(response => {
       //Login check
       expect(httpClientSpy.get).toHaveBeenCalledWith(
-        jasmine.any(String),
-        jasmine.objectContaining({ params: jasmine.objectContaining(userBase) }),
+        expect.any(String),
+        expect.objectContaining({ params: expect.objectContaining(userBase) }),
       );
       expect(response.login).toEqual(user);
 
@@ -143,7 +143,7 @@ describe('UsersService', () => {
   });
 
   it('UsersService can not login a user', done => {
-    httpClientSpy.get.and.returnValue(
+    httpClientSpy.get.mockReturnValue(
       throwError(() => new HttpErrorResponse({ status: 401, statusText: 'Login error' })),
     );
 
@@ -180,7 +180,7 @@ describe('UsersService', () => {
       copper: 100,
     };
 
-    httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
+    httpClientSpy.put.mockImplementation((url: string, body: User) => of(body) as any);
 
     const add$ = userService.updateCurrency(newCurrency) as Observable<User>;
     const reset$ = userService.updateCurrency(newCurrency, {
@@ -215,7 +215,7 @@ describe('UsersService', () => {
       time: 600,
     };
 
-    httpClientSpy.put.and.callFake((url: string, body: User) => of(body) as any);
+    httpClientSpy.put.mockImplementation((url: string, body: User) => of(body) as any);
 
     const onOnlineEmpty$ = userService.updateOnline(newOnline) as Observable<User>;
     const onOnline600$ = userService.updateOnline({
@@ -259,7 +259,7 @@ describe('UsersService', () => {
         : response;
     }
 
-    httpClientSpy.get.and.callFake((url: string) => {
+    httpClientSpy.get.mockImplementation((url: string) => {
       const response = getResponse(url);
 
       return response instanceof HttpErrorResponse

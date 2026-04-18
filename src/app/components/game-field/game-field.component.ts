@@ -17,6 +17,10 @@ import {
 } from '@angular/cdk/scrolling';
 import { GameResultsRedirectType, TileUnit } from '../../models/field.model';
 import { Store } from '@ngrx/store';
+import { BattleStateService } from '../../services/game-related/battle-state/battle-state.service';
+import { AutoFightService } from '../../services/game-related/auto-fight/auto-fight.service';
+import { BattleResultService } from '../../services/game-related/battle-result/battle-result.service';
+import { AiTurnService } from '../../services/game-related/ai-turn/ai-turn.service';
 
 @Component({
   selector: 'app-game-field',
@@ -52,8 +56,22 @@ export class GameFieldComponent extends BasicGameFieldComponent {
     unitService: UnitService,
     effectsService: EffectsService,
     gameActionService: GameService,
+    battleStateS: BattleStateService,
+    autoFightS: AutoFightService,
+    battleResultS: BattleResultService,
+    aiTurnS: AiTurnService,
     store: Store,
   ) {
-    super(fieldService, unitService, effectsService, gameActionService, store);
+    super(
+      fieldService,
+      unitService,
+      effectsService,
+      gameActionService,
+      battleStateS,
+      autoFightS,
+      battleResultS,
+      aiTurnS,
+      store,
+    );
   }
 }

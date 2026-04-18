@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { GameLoggerService } from './logger.service';
 import { LogConfig } from '../../../models/logger.model';

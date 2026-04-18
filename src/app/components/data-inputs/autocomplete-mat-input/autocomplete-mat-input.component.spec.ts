@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AutocompleteMatInputComponent } from './autocomplete-mat-input.component';
 import { HarnessLoader } from '@angular/cdk/testing';

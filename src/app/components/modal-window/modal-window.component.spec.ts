@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
@@ -8,14 +9,14 @@ import { ModalConfig, ModalStrategiesTypes } from './modal-interfaces';
 
 const mockModalWindowService = {
   modalConfig$: of(null),
-  dropModal: jasmine.createSpy('dropModal'),
+  dropModal: vi.fn(),
   dialog: {
-    open: jasmine.createSpy('open').and.returnValue({ afterClosed: () => of(true) }),
+    open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }),
   },
   dialogRefs: new Map(),
   selectedDialogRef: null,
   isModalTabSelected: () => false,
-  bringToFront: jasmine.createSpy('bringToFront'),
+  bringToFront: vi.fn(),
 };
 
 describe('ModalWindowComponent', () => {
@@ -118,7 +119,7 @@ describe('ModalWindowComponent', () => {
   });
 
   it('Property 4: data.close(true) invokes config.callback with true', () => {
-    const callback = jasmine.createSpy('callback');
+    const callback = vi.fn();
     const config: ModalConfig = {
       headerClass: 'green-b',
       headerMessage: 'You won',
@@ -134,7 +135,7 @@ describe('ModalWindowComponent', () => {
   });
 
   it('Property 4: data.close(false) invokes config.callback with false', () => {
-    const callback = jasmine.createSpy('callback');
+    const callback = vi.fn();
     const config: ModalConfig = {
       headerClass: 'green-b',
       headerMessage: 'You won',
@@ -150,7 +151,7 @@ describe('ModalWindowComponent', () => {
   });
 
   it('Property 4: data.close() with no argument invokes config.callback with undefined', () => {
-    const callback = jasmine.createSpy('callback');
+    const callback = vi.fn();
     const config: ModalConfig = {
       headerClass: 'green-b',
       headerMessage: 'You won',

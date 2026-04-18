@@ -1,9 +1,10 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GameService } from './game.service';
 import { TestBed } from '@angular/core/testing';
 import { EffectsService } from '../../effects/effects.service';
 import { createDeepCopy } from '../../../helpers';
 import { ALL_EFFECTS } from '../../../constants';
-import { HeroesService } from '../../facades/heroes/heroes.service';
+import { HeroesFacadeService } from '../../facades/heroes/heroes.service';
 import { Position, TileUnit } from '../../../models/field.model';
 import { LogRecord } from '../../../models/logger.model';
 import { ModalWindowService } from '../../modal/modal-window.service';
@@ -11,17 +12,14 @@ import { getEffectFake, getFakeEffectMap } from '../../../test-related';
 
 describe('GameService', () => {
   let gameService: GameService;
-  let effectServiceSpy: jasmine.SpyObj<EffectsService>;
-  let heroesService: HeroesService;
+  let effectServiceSpy: { [K in keyof EffectsService]: ReturnType<typeof vi.fn> };
+  let heroesService: HeroesFacadeService;
   let testUnit: TileUnit;
-  let modalWindowServiceSpy: jasmine.SpyObj<ModalWindowService>;
+  let modalWindowServiceSpy: { [K in keyof ModalWindowService]: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    modalWindowServiceSpy = jasmine.createSpyObj('ModalWindowService', [
-      'getModalConfig',
-      'openModal',
-    ]);
-    modalWindowServiceSpy.getModalConfig.and.callFake(
+    modalWindowServiceSpy = { getModalConfig: vi.fn(), openModal: vi.fn() };
+    modalWindowServiceSpy.getModalConfig.mockImplementation(
       (headerClass = '', headerMessage = '', closeBtnLabel = '', config) => {
         return {
           headerClass,
@@ -32,49 +30,44 @@ describe('GameService', () => {
       },
     );
 
-    effectServiceSpy = jasmine.createSpyObj(
-      'EffectsService',
-      [
-        'getMultForEffect',
-        'getNumberForCommonEffects',
-        'getHealthAfterRestore',
-        'getEffect',
-        'recountStatsBasedOnEffect',
-        'getDebuffDmg',
-        'getHealthAfterDmg',
-      ],
-      {
-        effects: createDeepCopy(ALL_EFFECTS),
-        effectsMap: getFakeEffectMap(),
-      },
-    );
+    effectServiceSpy = {
+      getMultForEffect: vi.fn(),
+      getNumberForCommonEffects: vi.fn(),
+      getHealthAfterRestore: vi.fn(),
+      getEffect: vi.fn(),
+      recountStatsBasedOnEffect: vi.fn(),
+      getDebuffDmg: vi.fn(),
+      getHealthAfterDmg: vi.fn(),
+      effects: createDeepCopy(ALL_EFFECTS),
+      effectsMap: getFakeEffectMap(),
+    };
 
-    effectServiceSpy.getHealthAfterDmg.and.callFake((health, dmg) => {
+    effectServiceSpy.getHealthAfterDmg.mockImplementation((health, dmg) => {
       return Math.round(Math.max(health - dmg, 0));
     });
-    effectServiceSpy.getDebuffDmg.and.returnValue(10);
-    effectServiceSpy.getMultForEffect.and.returnValue(1);
-    effectServiceSpy.recountStatsBasedOnEffect.and.callFake((effect, unit) => {
+    effectServiceSpy.getDebuffDmg.mockReturnValue(10);
+    effectServiceSpy.getMultForEffect.mockReturnValue(1);
+    effectServiceSpy.recountStatsBasedOnEffect.mockImplementation((effect, unit) => {
       return { unit, message: 'test' };
     });
-    effectServiceSpy.getNumberForCommonEffects.and.returnValue(1);
-    effectServiceSpy.getHealthAfterRestore.and.callFake(health => health);
+    effectServiceSpy.getNumberForCommonEffects.mockReturnValue(1);
+    effectServiceSpy.getHealthAfterRestore.mockImplementation(health => health);
 
     const getEffect = getEffectFake(effectServiceSpy.effectsMap);
 
-    effectServiceSpy.getEffect.and.callFake(getEffect);
+    effectServiceSpy.getEffect.mockImplementation(getEffect);
 
     TestBed.configureTestingModule({
       providers: [
         GameService,
-        HeroesService,
+        HeroesFacadeService,
         { provide: EffectsService, useValue: effectServiceSpy },
         { provide: ModalWindowService, useValue: modalWindowServiceSpy },
       ],
     });
 
     gameService = TestBed.inject(GameService);
-    heroesService = TestBed.inject(HeroesService);
+    heroesService = TestBed.inject(HeroesFacadeService);
 
     testUnit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
   });
@@ -138,15 +131,15 @@ describe('GameService', () => {
     testUnit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
     testUnit = { ...testUnit, health: 1000 };
 
-    effectServiceSpy.getNumberForCommonEffects.and.returnValue(10);
+    effectServiceSpy.getNumberForCommonEffects.mockReturnValue(10);
     gameService.checkPassiveSkills([testUnit], logs);
 
     expect(1010).toBe(testUnit.health);
     expect(logs.length).toBe(1);
 
-    const expected = jasmine.objectContaining({
-      info: jasmine.any(Boolean),
-      imgSrc: jasmine.any(String),
+    const expected = expect.objectContaining({
+      info: expect.any(Boolean),
+      imgSrc: expect.any(String),
       message: `Игрок ${testUnit.name} восстановил 10 ед. !`,
     });
 
@@ -167,7 +160,7 @@ describe('GameService', () => {
   });
 
   it('GameService should close a fight', () => {
-    const callbackSpy = jasmine.createSpy('callback');
+    const callbackSpy = vi.fn();
 
     gameService.checkCloseFight([testUnit], [testUnit], callbackSpy);
 
@@ -181,7 +174,7 @@ describe('GameService', () => {
       headerClass: 'red-b',
       headerMessage: 'You lost',
       closeBtnLabel: 'Try again later',
-      config: jasmine.any(Object),
+      config: expect.any(Object),
     });
 
     //AI looses
@@ -194,7 +187,7 @@ describe('GameService', () => {
       headerClass: 'green-b',
       headerMessage: 'You won',
       closeBtnLabel: 'Great',
-      config: jasmine.any(Object),
+      config: expect.any(Object),
     });
   });
 

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SliderComponent } from './slider.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';

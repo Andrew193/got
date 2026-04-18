@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { EffectsService } from './effects.service';
 import { Effect } from '../../models/effect.model';
@@ -74,12 +75,12 @@ describe('EffectsService', () => {
 
     const result2 = effectsService.getEffect(ALL_EFFECTS.attackBuff, 1);
     const testEffect = {
-      duration: jasmine.any(Number),
-      imgSrc: jasmine.any(String),
+      duration: expect.any(Number),
+      imgSrc: expect.any(String),
       m: ALL_EFFECTS_MULTIPLIERS[ALL_EFFECTS.attackBuff],
       type: ALL_EFFECTS.attackBuff,
     };
 
-    expect(result2).toEqual(jasmine.objectContaining(testEffect));
+    expect(result2).toEqual(expect.objectContaining(testEffect));
   });
 });

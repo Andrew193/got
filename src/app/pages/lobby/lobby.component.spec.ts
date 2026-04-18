@@ -1,3 +1,5 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+// TODO: manual migration required — transformation produced invalid TypeScript
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LobbyComponent } from './lobby.component';
 import { ActivatedRoute } from '@angular/router';
@@ -15,10 +17,10 @@ import { MatListHarness } from '@angular/material/list/testing';
 describe('LobbyComponent', () => {
   let component: LobbyComponent;
   let fixture: ComponentFixture<LobbyComponent>;
-  let activatedRouteSpy: jasmine.SpyObj<ActivatedRoute>;
-  let notificationsServiceSpy: jasmine.SpyObj<NotificationsService>;
-  let dailyRewardServiceSpy: jasmine.SpyObj<DailyRewardService>;
-  let usersServiceSpy: jasmine.SpyObj<UsersService>;
+  let activatedRouteSpy: { [K in keyof ActivatedRoute]: ReturnType<typeof vi.fn> };
+  let notificationsServiceSpy: { [K in keyof NotificationsService]: ReturnType<typeof vi.fn> };
+  let dailyRewardServiceSpy: { [K in keyof DailyRewardService]: ReturnType<typeof vi.fn> };
+  let usersServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
   let loader: HarnessLoader;
 
   const dailyReward: DailyReward = {
@@ -29,24 +31,18 @@ describe('LobbyComponent', () => {
   };
 
   beforeEach(async () => {
-    usersServiceSpy = jasmine.createSpyObj('UsersService', ['updateCurrency']);
+    usersServiceSpy = { updateCurrency: vi.fn() };
 
-    dailyRewardServiceSpy = jasmine.createSpyObj(
-      'DailyRewardService',
-      ['monthReward', 'claimDailyReward'],
-      {
-        _data: of(dailyReward),
-      },
-    );
+    dailyRewardServiceSpy = {
+      monthReward: vi.fn(),
+      claimDailyReward: vi.fn(),
+      _data: of(dailyReward),
+    };
 
-    activatedRouteSpy = jasmine.createSpyObj('ActivatedRoute', [''], {
-      data: of({ test: 'rest' }),
-    });
+    activatedRouteSpy = { data: of({ test: 'rest' }) };
 
-    notificationsServiceSpy = jasmine.createSpyObj('NotificationsService', ['getNotification'], {
-      $notifications: of(new Map()),
-    });
-    notificationsServiceSpy.getNotification.and.callFake((key, notificationMap) => {
+    notificationsServiceSpy = { getNotification: vi.fn(), $notifications: of(new Map()) };
+    notificationsServiceSpy.getNotification.mockImplementation((key, notificationMap) => {
       return notificationMap ? notificationMap.get(key) : false;
     });
 

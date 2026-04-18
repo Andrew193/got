@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginPageComponent } from './login-page.component';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
@@ -19,7 +20,7 @@ import { LoginFacadeService } from '../../services/facades/login/login.service';
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
-  let userServiceSpy: jasmine.SpyObj<UsersService>;
+  let userServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
   let location: Location;
   let localStorage: LocalStorageService;
   const initSteps: InitStep[] = [
@@ -30,16 +31,16 @@ describe('LoginPageComponent', () => {
       },
     },
   ];
-  let facade: jasmine.SpyObj<LoginFacadeService>;
+  let facade: { [K in keyof LoginFacadeService]: ReturnType<typeof vi.fn> };
 
   let inputs: TextInputComponent[];
 
   beforeEach(async () => {
-    facade = jasmine.createSpyObj('LoginFacadeService', ['openAdventureBegins']);
+    facade = { openAdventureBegins: vi.fn() };
 
-    userServiceSpy = jasmine.createSpyObj('UsersService', ['isAuth', 'createUser', 'login']);
+    userServiceSpy = { isAuth: vi.fn(), createUser: vi.fn(), login: vi.fn() };
 
-    userServiceSpy.isAuth.and.returnValue(false);
+    userServiceSpy.isAuth.mockReturnValue(false);
 
     function processCreateLogin<T extends (param: User) => void>(
       user: Partial<User>,
@@ -52,13 +53,13 @@ describe('LoginPageComponent', () => {
       return toReturn;
     }
 
-    userServiceSpy.createUser.and.callFake((user, callback) => {
+    userServiceSpy.createUser.mockImplementation((user, callback) => {
       const toReturn = processCreateLogin(user, callback);
 
       return of(toReturn);
     });
 
-    userServiceSpy.login.and.callFake((user, callback) => {
+    userServiceSpy.login.mockImplementation((user, callback) => {
       const toReturn = processCreateLogin(user, callback);
 
       return of([toReturn]);

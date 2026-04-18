@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { GameFieldService } from './game-field.service';
 import { GameService } from '../game-action/game.service';
@@ -8,19 +9,16 @@ import { Position } from '../../../models/field.model';
 
 describe('GameFieldService', () => {
   let gameFieldService: GameFieldService;
-  let gameActionServiceSpy: jasmine.SpyObj<GameService>;
+  let gameActionServiceSpy: { [K in keyof GameService]: ReturnType<typeof vi.fn> };
   let heroesService: HeroesService;
 
   beforeEach(() => {
-    gameActionServiceSpy = jasmine.createSpyObj('GameService', [
-      'getFixedDefence',
-      'getFixedAttack',
-    ]);
+    gameActionServiceSpy = { getFixedDefence: vi.fn(), getFixedAttack: vi.fn() };
 
-    gameActionServiceSpy.getFixedDefence.and.callFake(defence => {
+    gameActionServiceSpy.getFixedDefence.mockImplementation(defence => {
       return defence;
     });
-    gameActionServiceSpy.getFixedAttack.and.callFake(attack => {
+    gameActionServiceSpy.getFixedAttack.mockImplementation(attack => {
       return attack;
     });
 
@@ -65,9 +63,9 @@ describe('GameFieldService', () => {
     let chosenSkill = gameFieldService.chooseAiSkill(skills);
 
     expect(chosenSkill).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         dmgM: 100,
-        name: jasmine.any(String),
+        name: expect.any(String),
         cooldown: 3,
       }),
     );
@@ -77,9 +75,9 @@ describe('GameFieldService', () => {
     chosenSkill = gameFieldService.chooseAiSkill(skills);
 
     expect(chosenSkill).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         dmgM: 10,
-        name: jasmine.any(String),
+        name: expect.any(String),
         cooldown: 0,
       }),
     );

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { UnitService } from './unit.service';
 import { EffectsService } from '../effects/effects.service';
@@ -140,7 +141,7 @@ describe('UnitService', () => {
 
     const getEffectsWithIgnoreFilterSpy = jasmine
       .createSpy('getEffectsWithIgnoreFilter')
-      .and.callFake(effectsService.getEffectsWithIgnoreFilter);
+      .mockImplementation(effectsService.getEffectsWithIgnoreFilter);
 
     const updatedUnit = unitService.addEffectToUnit(
       units,
@@ -151,8 +152,8 @@ describe('UnitService', () => {
     );
 
     expect(getEffectsWithIgnoreFilterSpy).toHaveBeenCalledWith(
-      jasmine.objectContaining(units[0]),
-      jasmine.objectContaining(testSkill),
+      expect.objectContaining(units[0]),
+      expect.objectContaining(testSkill),
       false,
     );
 

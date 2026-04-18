@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { PreloadingStrategyService } from './preloading-strategy.service';
 import { UsersService } from '../users/users.service';
@@ -9,14 +10,12 @@ import { fakeUser } from '../../test-related';
 
 describe('PreloadingStrategyService', () => {
   let preloadingStrategyService: PreloadingStrategyService;
-  let usersServiceSpy: jasmine.SpyObj<UsersService>;
+  let usersServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     const user = createDeepCopy(fakeUser);
 
-    usersServiceSpy = jasmine.createSpyObj('UsersService', [], {
-      $user: of(user),
-    });
+    usersServiceSpy = { $user: of(user) };
 
     TestBed.configureTestingModule({
       providers: [PreloadingStrategyService, { provide: UsersService, useValue: usersServiceSpy }],
@@ -30,9 +29,9 @@ describe('PreloadingStrategyService', () => {
   });
 
   it('PreloadingStrategyService should execute preload', done => {
-    const loadSpy = jasmine.createSpy('load');
+    const loadSpy = vi.fn();
 
-    loadSpy.and.returnValue(of(true));
+    loadSpy.mockReturnValue(of(true));
 
     const testRoute: Route = {
       path: frontRoutes.taverna,

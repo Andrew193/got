@@ -6,14 +6,18 @@
     "start": "ng serve --proxy-config conf/proxy.conf.json --no-hmr",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "server": "json-server --watch db.json --port 4567",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",
     "fix": "npm run lint:fix && prettier --write .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "migrate": "tsx scripts/migrate-to-vitest.ts"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +45,7 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.4.8",
     "@angular-devkit/build-angular": "^19.2.15",
     "@angular-devkit/core": "^20.3.6",
     "@angular-eslint/eslint-plugin": "^20.3.0",
@@ -49,23 +54,22 @@
     "@angular/cli": "^19.2.15",
     "@angular/compiler-cli": "^19.2.14",
     "@angular/localize": "^19.2.14",
-    "@types/jasmine": "~5.1.0",
+    "@vitest/spy": "^4.1.4",
+    "@vitest/ui": "^4.1.4",
     "angular-eslint": "20.3.0",
     "eslint": "^9.35.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-unused-imports": "^4.2.0",
+    "fast-check": "^4.7.0",
     "husky": "^9.1.7",
-    "jasmine-core": "~5.1.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "jsdom": "^29.0.2",
     "lint-staged": "^16.2.0",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "4.1.0",
+    "tsx": "^4.21.0",
     "typescript": "~5.5.4",
-    "typescript-eslint": "8.40.0"
+    "typescript-eslint": "8.40.0",
+    "vitest": "^4.1.4"
   },
   "lint-staged": {
     "*.{ts,html}": [

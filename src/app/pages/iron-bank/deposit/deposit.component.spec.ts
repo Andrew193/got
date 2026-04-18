@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DepositComponent } from './deposit.component';
 import { CurrencyHelperService } from '../../../services/users/currency/helper/currency-helper.service';

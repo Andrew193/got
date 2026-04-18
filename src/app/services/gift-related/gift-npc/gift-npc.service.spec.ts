@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { GiftNpcService } from './gift-npc.service';
 import { NumbersService } from '../../numbers/numbers.service';
@@ -6,17 +7,16 @@ import { basicRewardNames, RewardService } from '../../reward/reward.service';
 
 describe('GiftNpcService', () => {
   let giftNpcService: GiftNpcService;
-  let heroServiceSpy: jasmine.SpyObj<HeroesService>;
-  let rewardServiceSpy: jasmine.SpyObj<RewardService>;
+  let heroServiceSpy: { [K in keyof HeroesService]: ReturnType<typeof vi.fn> };
+  let rewardServiceSpy: { [K in keyof RewardService]: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
-    heroServiceSpy = jasmine.createSpyObj('HeroesHelperService', [
-      'getFreeTrapper',
-      'getBasicUserConfig',
-    ]);
-    rewardServiceSpy = jasmine.createSpyObj('RewardService', ['getReward', 'getBasicUserConfig'], {
+    heroServiceSpy = { getFreeTrapper: vi.fn(), getBasicUserConfig: vi.fn() };
+    rewardServiceSpy = {
+      getReward: vi.fn(),
+      getBasicUserConfig: vi.fn(),
       rewardNames: basicRewardNames,
-    });
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -39,25 +39,25 @@ describe('GiftNpcService', () => {
     giftNpcService.getSpecialGiftReward();
 
     const array = Array(giftNpcService.specialGiftItems.length).fill(
-      jasmine.objectContaining({
-        name: jasmine.any(String),
-        probability: jasmine.any(Number),
+      expect.objectContaining({
+        name: expect.any(String),
+        probability: expect.any(Number),
       }),
     );
 
-    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(jasmine.any(Number), array);
+    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(expect.any(Number), array);
   });
 
   it('GiftNpcService should open a chest', () => {
     giftNpcService.getChestReward();
 
     const array = Array(giftNpcService.chestItems.length).fill(
-      jasmine.objectContaining({
-        name: jasmine.any(String),
-        probability: jasmine.any(Number),
+      expect.objectContaining({
+        name: expect.any(String),
+        probability: expect.any(Number),
       }),
     );
 
-    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(jasmine.any(Number), array);
+    expect(rewardServiceSpy.getReward).toHaveBeenCalledWith(expect.any(Number), array);
   });
 });

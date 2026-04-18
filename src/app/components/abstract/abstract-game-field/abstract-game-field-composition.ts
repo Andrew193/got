@@ -8,7 +8,6 @@ import {
   TileUnit,
 } from '../../../models/field.model';
 import { selectBattleLog } from '../../../store/reducers/game-board.reducer';
-import { BehaviorSubject } from 'rxjs';
 import { Skill, TileUnitSkill } from '../../../models/units-related/skill.model';
 import { AbstractFieldService } from '../../../services/abstract/field/abstract-field.service';
 import { UnitService } from '../../../services/unit/unit.service';
@@ -16,6 +15,7 @@ import { EffectsService } from '../../../services/effects/effects.service';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { EffectsValues } from '../../../constants';
 import { HeroType } from '../../../models/units-related/unit.model';
+import { BattleStateService } from '../../../services/game-related/battle-state/battle-state.service';
 
 export interface GameField {
   gameField: Tile[][];
@@ -33,11 +33,7 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
   autoFight = false;
 
   log;
-  turnUser = true;
   over = false;
-  turnCount = 0;
-  maxTurnCount = 20;
-  _turnCount: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   showAttackBar = false;
   skillsInAttackBar: TileUnitSkill[] = [];
 
@@ -54,11 +50,26 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
   abstractFieldS;
   unitS;
   effectsS;
+  protected battleStateS;
+
+  // Getters for backward compatibility
+  get turnUser(): boolean {
+    return this.battleStateS.turnUser;
+  }
+
+  get turnCount(): number {
+    return this.battleStateS.turnCount;
+  }
+
+  get maxTurnCount(): number {
+    return this.battleStateS.maxTurnCount;
+  }
 
   constructor(
     abstractFieldS: AbstractFieldService,
     unitS: UnitService,
     effectsS: EffectsService,
+    battleStateS: BattleStateService,
     store: Store<any>,
   ) {
     super();
@@ -66,14 +77,10 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
     this.abstractFieldS = abstractFieldS;
     this.unitS = unitS;
     this.effectsS = effectsS;
+    this.battleStateS = battleStateS;
     this.store = store;
 
     this.log = this.store.select(selectBattleLog());
-
-    //Init turn counter
-    this._turnCount.subscribe(newTurn => {
-      this.turnCount = newTurn;
-    });
   }
 
   recreateGameConfig(newUserUnit: TileUnit[], newAiUnit: TileUnit[]) {
@@ -172,6 +179,13 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
       attackDealer: { ...attackDealer, attack: boostedAttack },
     });
 
+    // Track damage for battle result determination
+    if (attackDealer.user) {
+      this.battleStateS.addUserDamage(damage);
+    } else {
+      this.battleStateS.addAiDamage(damage);
+    }
+
     if (dmgTaker[enemyIndex].health) {
       const newHealth = this.effectsS.getHealthAfterDmg(dmgTaker[enemyIndex].health, damage);
 
@@ -262,16 +276,14 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
   }
 
   resetState() {
-    this.turnUser = true;
-    this.turnCount = 0;
     this.clickedEnemy = null;
     this.selectedEntity = null;
     this.possibleAttackMoves = [];
     this.ignoreMove = false;
     this.skillsInAttackBar = [];
     this.showAttackBar = false;
-    this._turnCount.next(1);
     this.autoFight = false;
+    this.battleStateS.resetBattleState();
     this.store.dispatch(GameBoardActions.dropLog());
   }
 }
