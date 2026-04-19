@@ -76,6 +76,8 @@ export abstract class BasicHeroSelectComponent<T extends PreviewUnit> implements
   };
 
   ngOnDestroy() {
-    this.store.dispatch(HeroesSelectActions.resetHeroCollection({ collections: [this.context] }));
+    console.log('dfdfdfdff');
+
+    this.store.dispatch(UnitsConfiguratorFeatureActions.drop({ collections: [this.context] }));
   }
 }

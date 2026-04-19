@@ -1,0 +1,67 @@
+.battle-card {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    border-color: #888;
+  }
+
+  &.selected {
+    border-color: #c8a84b;
+    background-color: rgba(200, 168, 75, 0.15);
+  }
+
+  &.is-boss {
+    border-color: #8b0000;
+    background-color: rgba(139, 0, 0, 0.2);
+
+    &.selected {
+      border-color: #ff4444;
+      background-color: rgba(255, 68, 68, 0.2);
+    }
+  }
+
+  &__header {
+    margin-bottom: 4px;
+  }
+
+  &__label {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #aaa;
+
+    .is-boss & {
+      color: #ff6666;
+    }
+  }
+
+  &__img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &__name {
+    font-size: 11px;
+    margin: 4px 0 2px;
+    color: #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__level {
+    font-size: 10px;
+    color: #aaa;
+    margin: 0;
+  }
+}

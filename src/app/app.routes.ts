@@ -42,6 +42,12 @@ export const routes: Routes = [
           import('./modules/daily-boss/daily-boss.module').then(m => m.DailyBossModule),
       },
       {
+        path: frontRoutes.campaign,
+        loadChildren: () =>
+          import('./modules/campaign/campaign.module').then(m => m.CampaignModule),
+        providers: [StateConfigs.unitsConfigurator],
+      },
+      {
         path: frontRoutes.summonTree,
         loadComponent: () =>
           import('./pages/summon-tree/summon-tree.component').then(c => c.SummonTreeComponent),

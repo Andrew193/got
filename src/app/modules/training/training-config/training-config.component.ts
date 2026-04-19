@@ -115,6 +115,11 @@ export class TrainingConfigComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(
+      UnitsConfiguratorFeatureActions.drop({
+        collections: [this.getUnitKey(false), this.getUnitKey()],
+      }),
+    );
     this.store.dispatch(UnitsConfiguratorFeatureActions.setUnitUpdate({ canUpdateUnit: true }));
   }
 }

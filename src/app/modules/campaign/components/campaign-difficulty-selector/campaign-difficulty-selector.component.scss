@@ -1,0 +1,36 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
+.difficulty-selector {
+  @include index.mixin-got-btn;
+
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.difficulty-btn {
+  padding: 8px 20px;
+  border: 2px solid #555;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+
+  &:hover {
+    border-color: #888;
+    color: #fff;
+  }
+
+  &.active {
+    border-color: #c8a84b;
+    background-color: rgba(200, 168, 75, 0.2);
+    color: #c8a84b;
+  }
+}

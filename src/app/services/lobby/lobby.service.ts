@@ -156,9 +156,8 @@ export class LobbyService {
     },
     {
       name: 'Beyond the Wall',
-      url: '#',
+      url: frontRoutes.campaign,
       src: 'wall.png',
-      closed: true,
     },
   ];
 }

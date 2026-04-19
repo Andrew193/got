@@ -172,8 +172,14 @@ export class AiTurnService {
     const aiUnit = aiUnits[aiUnitIndex];
     const targetIndex = this.unitService.findUnitIndex(userUnits, target);
 
-    // Choose skill
+    // Choose skill — may be undefined if all skills are passive or on cooldown
     const skill = this.chooseSkill(aiUnit);
+
+    if (!skill) {
+      aiUnits[aiUnitIndex] = { ...aiUnit, canAttack: false };
+
+      return;
+    }
 
     // Execute attack
     callbacks.makeAttackMove(targetIndex, userUnits, aiUnit, skill);

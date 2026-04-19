@@ -23,6 +23,7 @@ export enum HeroesSelectNames {
   heroesMatcherCollection = 'heroesMatcherCollection',
   dailyBossCollection = 'dailyBossCollection',
   firstBattleCollection = 'firstBattleCollection',
+  campaignCollection = 'campaignCollection',
 }
 
 export const API_ENDPOINTS = {
@@ -141,6 +142,8 @@ export const frontRoutes = {
   summonTree: 'summon-tree',
   giftStore: 'gift-lands',
   root: '/',
+  campaign: 'campaign',
+  campaignBattle: 'battle',
 };
 
 export const ALL_EFFECTS = {

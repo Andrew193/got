@@ -5,7 +5,6 @@
 @let _gridConfig = gridConfig();
 @let _allUnitsForFieldConfig = allUnitsForFieldConfig();
 @let _canStartFight = canStartFight | async;
-<!--@let _showField = showField | async;-->
 
 <div>
   <h3 class="text-center banner">Configure your training</h3>
@@ -47,7 +46,7 @@
 </div>
 
 <ng-template #unitsBar let-isUser="isUser" let-title="title" let-contextName="contextName">
-  <div class="col-lg-6 col-md-12">
+  <div class="col-lg-6 col-md-12 col-sm-12">
     <app-training-config-matcher-cover [heroesMatcherContextName]="contextName" />
 
     <app-heroes-select
@@ -61,7 +60,7 @@
 </ng-template>
 
 <ng-template #selectedUnitsBar let-units="units" let-title="title">
-  <div class="col-lg-6 col-md-12">
+  <div class="col-lg-6 col-md-12 col-sm-12">
     <app-heroes-select-preview
       [containerClass]="'no-p'"
       [units]="units"

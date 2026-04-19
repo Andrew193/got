@@ -1,0 +1,49 @@
+<div class="campaign-lobby page-container">
+  <div class="campaign-lobby__header p-2">
+    <h2 class="campaign-lobby__title">Beyond the Wall</h2>
+    <p class="campaign-lobby__subtitle">
+      Choose your difficulty and battle your way through the campaign
+    </p>
+  </div>
+
+  <div class="p-2">
+    <app-campaign-difficulty-selector
+      [configs]="difficultyConfigs"
+      [selected]="selectedDifficulty()"
+      (difficultySelected)="selectDifficulty($event)" />
+  </div>
+
+  @if (selectedDifficulty() !== null) {
+    <div class="campaign-lobby__content p-2">
+      <app-campaign-screen
+        [battles]="currentScreenBattles()"
+        [selectedBattleId]="selectedBattle()?.id ?? null"
+        (battleSelected)="onBattleSelected($event)" />
+
+      <mat-paginator
+        [length]="screensCount"
+        [pageSize]="1"
+        [pageIndex]="currentPage()"
+        [hidePageSize]="true"
+        (page)="onPageChanged($event)" />
+
+      <div class="campaign-lobby__actions row g-2 mt-2">
+        <div class="col-8">
+          <button class="w-100 got-toggle" (click)="goBack()">Back to Castle</button>
+        </div>
+        <div class="col-4">
+          <button
+            class="w-100 got-toggle got-toggle-red"
+            [disabled]="!isFightEnabled()"
+            (click)="openFightModal()">
+            Fight
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="campaign-lobby__placeholder p-4 text-center">
+      <p>Select a difficulty to begin your campaign</p>
+    </div>
+  }
+</div>

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HeroesFacadeService } from '../../facades/heroes/heroes.service';
+import { HeroesFacadeService, HeroesSrcMap } from '../../facades/heroes/heroes.service';
 import {
   basicRewardNames,
   DisplayReward,
@@ -93,21 +93,21 @@ export class GiftNpcService implements RewardComponentInterface {
   }
 
   getUserForNPC(unit: Partial<Unit> = {}): Unit {
+    const scrs = HeroesSrcMap[HeroesNamesCodes.Ranger];
+
     return {
       ...this.heroService.helper.getBasicUserConfig(),
       ...this.heroService.helper.getHeroBasicStats(HeroesNamesCodes.Ranger),
       rarity: Rarity.COMMON,
       heroType: HeroType.ATTACK,
-      imgSrc:
-        '../../../assets/resourses/imgs/heroes/free-trapper/UI_Avatar_Unit_FreeFolksTrappers.png',
-      fullImgSrc:
-        '../../../assets/resourses/imgs/heroes/free-trapper/UI_Icon_Avatar_FullBody_Wildling_08_FreeFolksTrappers.png',
+      imgSrc: scrs.imgSrc,
+      fullImgSrc: scrs.fullImgSrc,
       name: HeroesNamesCodes.Ranger,
       description: 'Night Watch Ranger.',
       skills: [
         {
           name: 'Collect',
-          imgSrc: '../../../assets/resourses/imgs/icons/open.png',
+          imgSrc: scrs.skill1Src,
           dmgM: 1,
           cooldown: 0,
           remainingCooldown: 0,
@@ -116,7 +116,7 @@ export class GiftNpcService implements RewardComponentInterface {
         },
         {
           name: 'Hit',
-          imgSrc: '../../../assets/resourses/imgs/icons/open.png',
+          imgSrc: scrs.skill2Src || '',
           dmgM: 2.2,
           cooldown: 2,
           remainingCooldown: 0,

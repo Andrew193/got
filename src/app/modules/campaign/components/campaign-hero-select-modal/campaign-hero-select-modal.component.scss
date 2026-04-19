@@ -1,0 +1,38 @@
+@use '../../../../../assets/resourses/styles/vars.scss' as var;
+
+.hero-select-modal {
+  min-width: 400px;
+  background-color: var.$metal-dark-1;
+  overflow: auto;
+  max-height: 80vh;
+
+  .hero-select-modal-inner-content {
+    padding: 16px;
+  }
+
+  &__header {
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 0 0 4px;
+    font-size: 18px;
+    color: #c8a84b;
+  }
+
+  &__subtitle {
+    margin: 0 0 4px;
+    font-size: 13px;
+    color: #aaa;
+  }
+
+  &__opponent {
+    margin: 0;
+    font-size: 13px;
+    color: #ccc;
+  }
+
+  &__footer {
+    margin-top: 16px;
+  }
+}

@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+
 import { frontRoutes, frontRoutes as FrontRoutes } from '../../../constants';
 import { Router } from '@angular/router';
+import { CampaignBattleState } from '../../../modules/campaign/campaign-battlefield/campaign-battlefield.component';
 
 @Injectable({
   providedIn: 'root',
@@ -70,5 +72,13 @@ export class NavigationService {
         name,
       },
     });
+  }
+
+  goToCampaign() {
+    this.router.navigateByUrl(FrontRoutes.campaign);
+  }
+
+  goToCampaignBattle(state: CampaignBattleState) {
+    this.router.navigate([FrontRoutes.campaign, FrontRoutes.campaignBattle], { state });
   }
 }

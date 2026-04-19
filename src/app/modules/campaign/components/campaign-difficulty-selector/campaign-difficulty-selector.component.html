@@ -1,0 +1,10 @@
+<div class="difficulty-selector">
+  @for (config of configs(); track config.level) {
+    <button
+      class="difficulty-btn"
+      [ngClass]="{ active: selected() === config.level }"
+      (click)="select(config.level)">
+      {{ config.heading }}
+    </button>
+  }
+</div>

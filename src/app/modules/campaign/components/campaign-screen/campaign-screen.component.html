@@ -1,0 +1,8 @@
+<div class="campaign-screen">
+  @for (battle of battles(); track battle.id) {
+    <app-campaign-battle-card
+      [battle]="battle"
+      [isSelected]="isSelected()(battle)"
+      (cardClicked)="onBattleClicked($event)" />
+  }
+</div>

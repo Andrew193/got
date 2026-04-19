@@ -1,0 +1,24 @@
+<div
+  class="battle-card"
+  [ngClass]="{ 'is-boss': battle().isBoss, selected: isSelected() }"
+  (click)="onClick()">
+  <div class="battle-card__header">
+    <span class="battle-card__label">
+      @if (battle().isBoss) {
+        👑 BOSS
+      } @else {
+        Battle {{ battle().battleIndex + 1 }}
+      }
+    </span>
+  </div>
+  <div class="battle-card__avatar">
+    <img
+      [src]="battle().baseOpponent.src"
+      [alt]="battle().baseOpponent.name"
+      class="battle-card__img" />
+  </div>
+  <div class="battle-card__info">
+    <p class="battle-card__name">{{ battle().baseOpponent.name }}</p>
+    <p class="battle-card__level">Lv. {{ battle().baseOpponent.level }}</p>
+  </div>
+</div>

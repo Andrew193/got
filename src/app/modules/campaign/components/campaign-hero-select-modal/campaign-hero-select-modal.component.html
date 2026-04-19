@@ -1,0 +1,43 @@
+<div class="hero-select-modal">
+  <div class="footer-cover">
+    <ng-template #footerHost></ng-template>
+  </div>
+
+  <div class="hero-select-modal-inner-content">
+    <div class="hero-select-modal__header">
+      <h3 class="hero-select-modal__title">
+        @if (data.battleConfig.isBoss) {
+          👑 Boss Battle
+        } @else {
+          Battle {{ data.battleConfig.battleIndex + 1 }}
+        }
+      </h3>
+      <p class="hero-select-modal__subtitle">
+        Select up to {{ data.battleConfig.maxUserUnits }} hero(es)
+      </p>
+      <p class="hero-select-modal__opponent">
+        Opponent: <strong>{{ data.battleConfig.baseOpponent.name }}</strong> — Lv.
+        {{ data.battleConfig.baseOpponent.level }}
+      </p>
+    </div>
+
+    <app-heroes-select
+      [allHeroes]="allUnitsForSelect"
+      [isUser]="true"
+      [contextName]="context"
+      [addUserUnit]="addUserUnit" />
+
+    @if (chosenUnits().length) {
+      <app-heroes-select-preview [units]="chosenUnits()" />
+    }
+
+    <div class="hero-select-modal__footer">
+      <button
+        class="got-toggle got-toggle-red w-100"
+        [disabled]="!isFightReady()"
+        (click)="fight()">
+        Fight
+      </button>
+    </div>
+  </div>
+</div>

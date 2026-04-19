@@ -1,0 +1,32 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.campaign-lobby {
+  @include index.mixin-got-btn;
+  @include index.mixin-page-container;
+
+  &__header {
+    border-bottom: 1px solid #333;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    margin: 0 0 4px;
+    font-size: 24px;
+    color: #c8a84b;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 13px;
+    color: #888;
+  }
+
+  &__placeholder {
+    color: #666;
+    font-style: italic;
+  }
+
+  &__actions {
+    margin-top: 16px;
+  }
+}
