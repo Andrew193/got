@@ -17,8 +17,8 @@ describe('HeroesHelperService', () => {
       effectsToHighlight: [ALL_EFFECTS.burning, ALL_EFFECTS.freezing],
       effects: createDeepCopy(ALL_EFFECTS),
       effectsDescriptions: {
-        [ALL_EFFECTS.burning]: 'Deals damage to the enemy equal to 10% of their health every turn.',
-        [ALL_EFFECTS.freezing]: 'The hero is frozen and can only move 1 cell per turn.',
+        [ALL_EFFECTS.burning]: 'Наносит противнику урон в размере 10% от его здоровья каждый ход.',
+        [ALL_EFFECTS.freezing]: 'Герой заморожен и может двигаться только на 1 клетку за ход.',
       },
       effectsMap: getFakeEffectMap(),
     };

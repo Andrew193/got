@@ -175,54 +175,49 @@ describe('BattleStateService', () => {
   });
 
   describe('observables', () => {
-    it('turnCount$ should emit updated value after incrementTurnCount', done => {
+    it('turnCount$ should emit updated value after incrementTurnCount', () => {
       const values: number[] = [];
 
       service.turnCount$.subscribe(v => values.push(v));
       service.incrementTurnCount();
 
       expect(values).toContain(2);
-      done();
     });
 
-    it('turnUser$ should emit updated value after setTurnUser', done => {
+    it('turnUser$ should emit updated value after setTurnUser', () => {
       const values: boolean[] = [];
 
       service.turnUser$.subscribe(v => values.push(v));
       service.setTurnUser(false);
 
       expect(values).toContain(false);
-      done();
     });
 
-    it('userTotalDamage$ should emit updated value after addUserDamage', done => {
+    it('userTotalDamage$ should emit updated value after addUserDamage', () => {
       const values: number[] = [];
 
       service.userTotalDamage$.subscribe(v => values.push(v));
       service.addUserDamage(150);
 
       expect(values).toContain(150);
-      done();
     });
 
-    it('aiTotalDamage$ should emit updated value after addAiDamage', done => {
+    it('aiTotalDamage$ should emit updated value after addAiDamage', () => {
       const values: number[] = [];
 
       service.aiTotalDamage$.subscribe(v => values.push(v));
       service.addAiDamage(250);
 
       expect(values).toContain(250);
-      done();
     });
 
-    it('battleActive$ should emit updated value after setBattleActive', done => {
+    it('battleActive$ should emit updated value after setBattleActive', () => {
       const values: boolean[] = [];
 
       service.battleActive$.subscribe(v => values.push(v));
       service.setBattleActive(true);
 
       expect(values).toContain(true);
-      done();
     });
   });
 });

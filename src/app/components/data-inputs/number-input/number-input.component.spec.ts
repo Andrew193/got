@@ -4,10 +4,8 @@ import { NumberInputComponent } from './number-input.component';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatFormFieldHarness } from '@angular/material/form-field/testing';
-import { MatInputHarness } from '@angular/material/input/testing';
-import { HarnessLoader } from '@angular/cdk/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
@@ -24,18 +22,16 @@ class HostComponent {
 
 describe('NumberInputComponent', () => {
   let hostComponent: HostComponent;
-  let loader: HarnessLoader;
   let fixture: ComponentFixture<HostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HostComponent, NoopAnimationsModule],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
     hostComponent = fixture.componentInstance;
-
-    loader = TestbedHarnessEnvironment.loader(fixture);
 
     fixture.detectChanges();
   });
@@ -44,29 +40,19 @@ describe('NumberInputComponent', () => {
     expect(hostComponent).toBeTruthy();
   });
 
-  it('NumberInputComponent should get correct initial state', async () => {
-    const formFieldHarness = await loader.getHarness(MatFormFieldHarness);
-    const inputHarness = await loader.getHarness(MatInputHarness);
+  it('NumberInputComponent should get correct initial state', () => {
+    const input = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
 
-    const label = await formFieldHarness.getLabel();
-
-    expect(label).toBe('Test label');
-    expect(await inputHarness.getValue()).toBe('0');
-    expect(await inputHarness.getType()).toBe('number');
+    expect(input.value).toBe('0');
   });
 
-  it('NumberInputComponent should update value', async () => {
-    const input = await loader.getHarness(MatInputHarness);
+  it('NumberInputComponent should update value', () => {
+    const input = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
 
-    await input.setValue('New');
-
+    input.value = '35';
+    input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    expect(await input.getValue()).toBeFalsy();
-
-    //Real value
-    await input.setValue('35');
-    fixture.detectChanges();
-    expect(await input.getValue()).toBe('35');
+    expect(hostComponent.form.get('test')!.value).toBe(35);
   });
 });

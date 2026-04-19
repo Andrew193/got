@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { UnitService } from './unit.service';
 import { EffectsService } from '../effects/effects.service';
@@ -139,9 +139,9 @@ describe('UnitService', () => {
       debuffs: [...effectsService.getEffect(effectsService.effects.burning, 2, 3)],
     };
 
-    const getEffectsWithIgnoreFilterSpy = jasmine
-      .createSpy('getEffectsWithIgnoreFilter')
-      .mockImplementation(effectsService.getEffectsWithIgnoreFilter);
+    const getEffectsWithIgnoreFilterSpy = vi
+      .fn()
+      .mockImplementation(effectsService.getEffectsWithIgnoreFilter.bind(effectsService));
 
     const updatedUnit = unitService.addEffectToUnit(
       units,

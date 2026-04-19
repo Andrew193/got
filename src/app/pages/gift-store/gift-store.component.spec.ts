@@ -12,6 +12,8 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { DisplayRewardComponent } from '../../components/display-reward/display-reward.component';
 import { By } from '@angular/platform-browser';
 import { fakeUser } from '../../test-related';
+import { provideMockStore } from '@ngrx/store/testing';
+import { DisplayRewardInitialState } from '../../store/reducers/display-reward.reducer';
 
 describe('GiftStoreComponent', () => {
   let component: GiftStoreComponent;
@@ -27,7 +29,7 @@ describe('GiftStoreComponent', () => {
   };
 
   beforeEach(async () => {
-    giftServiceSpy = { _data: of(dailyReward) };
+    giftServiceSpy = { _data$: of(dailyReward) };
     usersServiceSpy = { updateCurrency: vi.fn() };
     notificationsServiceSpy = { notificationsValue: vi.fn() };
     activatedRouteSpy = {};
@@ -52,6 +54,14 @@ describe('GiftStoreComponent', () => {
           useValue: activatedRouteSpy,
         },
         provideNoopAnimations(),
+        provideMockStore({
+          initialState: {
+            displayReward: DisplayRewardInitialState,
+            gameBoard: {
+              fieldConfig: { rows: 7, columns: 10 },
+            },
+          },
+        }),
       ],
     }).compileComponents();
 
@@ -67,8 +77,8 @@ describe('GiftStoreComponent', () => {
   it('GiftStoreComponent should init layout', () => {
     const displayReward = fixture.debugElement.query(By.directive(DisplayRewardComponent));
 
-    expect(component.aiUnits.every(el => !el.user)).toBeTrue();
-    expect(component.userUnits.every(el => el.user)).toBeTrue();
+    expect(component.aiUnits.every(el => !el.user)).toBe(true);
+    expect(component.userUnits.every(el => el.user)).toBe(true);
     expect(displayReward).toBeNull();
     expect(component.loot.length).toBe(0);
   });

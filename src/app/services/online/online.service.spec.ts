@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { OnlineService } from './online.service';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { UsersService } from '../users/users.service';
@@ -33,7 +33,9 @@ describe('OnlineService', () => {
     expect(onlineService).toBeTruthy();
   });
 
-  it('OnlineService should give local buffer', fakeAsync(() => {
+  it('OnlineService should give local buffer', () => {
+    vi.useFakeTimers();
+
     let buffer = onlineService.localBuffer;
 
     //1) Correct local buffer
@@ -50,19 +52,20 @@ describe('OnlineService', () => {
 
     expect(buffer).toBe(0);
 
-    userServiceSpy.updateOnline.calls.reset();
+    userServiceSpy.updateOnline.mockClear();
 
     //3) Tick 1 minute
-    tick(TIME.oneMinuteMilliseconds);
+    vi.advanceTimersByTime(TIME.oneMinuteMilliseconds);
 
     buffer = onlineService.localBuffer;
     expect(buffer).toBe(TIME.oneMinuteSeconds);
 
     //4) Get to 10 minutes
-    tick(TIME.oneMinuteMilliseconds * 9);
+    vi.advanceTimersByTime(TIME.oneMinuteMilliseconds * 9);
     expect(userServiceSpy.updateOnline).toHaveBeenCalledWith(
       expect.objectContaining({ time: 600 }),
-      true,
     );
-  }));
+
+    vi.useRealTimers();
+  });
 });

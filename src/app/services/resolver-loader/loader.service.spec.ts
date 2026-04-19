@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { LoaderService } from './loader.service';
 import { Renderer2, RendererFactory2 } from '@angular/core';
 
@@ -26,21 +26,21 @@ describe('LoaderService', () => {
 
     TestBed.flushEffects();
 
-    rendererSpy.addClass.calls.reset();
-    rendererSpy.removeClass.calls.reset();
+    rendererSpy.addClass.mockClear();
+    rendererSpy.removeClass.mockClear();
   });
 
   it('LoaderService should be created', () => {
     expect(loaderService).toBeTruthy();
   });
 
-  it('LoaderService check start/stop', fakeAsync(() => {
+  it('LoaderService check start/stop', () => {
     //Add loader
     loaderService.start();
 
     TestBed.flushEffects();
 
-    expect(loaderService.isLoading()).toBeTrue();
+    expect(loaderService.isLoading()).toBe(true);
     expect(rendererSpy.addClass).toHaveBeenCalled();
 
     //Remove loader
@@ -48,7 +48,7 @@ describe('LoaderService', () => {
 
     TestBed.flushEffects();
 
-    expect(loaderService.isLoading()).toBeFalse();
+    expect(loaderService.isLoading()).toBe(false);
     expect(rendererSpy.removeClass).toHaveBeenCalled();
-  }));
+  });
 });

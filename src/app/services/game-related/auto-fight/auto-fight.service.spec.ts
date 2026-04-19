@@ -149,13 +149,12 @@ describe('AutoFightService', () => {
       expect(service.stopAutoFight).toHaveBeenCalled();
     });
 
-    it('should stop active auto-fight', done => {
+    it('should stop active auto-fight', () => {
       service.startAutoFight(false, () => false);
       expect(service.isAutoFightActive()).toBe(true);
 
       service.ngOnDestroy();
       expect(service.isAutoFightActive()).toBe(false);
-      done();
     });
   });
 

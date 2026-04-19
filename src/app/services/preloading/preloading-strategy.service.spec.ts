@@ -28,7 +28,7 @@ describe('PreloadingStrategyService', () => {
     expect(preloadingStrategyService).toBeTruthy();
   });
 
-  it('PreloadingStrategyService should execute preload', done => {
+  it('PreloadingStrategyService should execute preload', () => {
     const loadSpy = vi.fn();
 
     loadSpy.mockReturnValue(of(true));
@@ -44,12 +44,14 @@ describe('PreloadingStrategyService', () => {
     const okTest$ = preloadingStrategyService.preload(testRoute, loadSpy);
     const notOkTest$ = preloadingStrategyService.preload(wrongTestRoute, loadSpy);
 
-    concat(okTest$, notOkTest$)
-      .pipe(toArray())
-      .subscribe(([ok, notOk]) => {
-        expect(ok).toBeUndefined();
-        expect(notOk).toBeUndefined();
-        done();
-      });
+    return new Promise<void>(resolve => {
+      concat(okTest$, notOkTest$)
+        .pipe(toArray())
+        .subscribe(([ok, notOk]) => {
+          expect(ok).toBeUndefined();
+          expect(notOk).toBeUndefined();
+          resolve();
+        });
+    });
   });
 });

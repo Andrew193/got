@@ -1,4 +1,4 @@
-import { AssistantRecord, AssistantState, StoreNames } from '../store.interfaces';
+import { AssistantRecord, AssistantRecords, AssistantState, StoreNames } from '../store.interfaces';
 import { createEntityAdapter } from '@ngrx/entity';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { AssistantActions } from '../actions/assistant.actions';
@@ -12,7 +12,7 @@ export const assistantKeywordsAdapter = createEntityAdapter<Keyword>({
 
 const assistantRecordsInitialState = assistantRecordsAdapter.getInitialState({
   loading: false,
-});
+}) satisfies AssistantRecords;
 const assistantKeywordsInitialState = assistantKeywordsAdapter.getInitialState();
 
 export const AssistantInitialState: AssistantState = {

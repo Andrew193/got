@@ -947,3 +947,5 @@ export class HeroesFacadeService extends ContentService {
     return [];
   }
 }
+
+export { HeroesFacadeService as HeroesService };

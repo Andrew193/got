@@ -32,7 +32,7 @@ describe('ImageComponent', () => {
   });
 
   it('ImageComponent should render the image', () => {
-    expect(component.loading).toBeTrue();
+    expect(component.loading).toBe(true);
     fixture.detectChanges();
     const loader = fixture.debugElement.query(By.css('.loader')).nativeElement as HTMLImageElement;
     const img = fixture.debugElement.query(By.css(`.image-75`)).nativeElement as HTMLImageElement;
@@ -49,6 +49,6 @@ describe('ImageComponent', () => {
     const mockEndpoint = image.source.split('/');
 
     expect(endpoint[endpoint.length]).toBe(mockEndpoint[mockEndpoint.length]);
-    expect(img.classList.contains(image.imageClass)).toBeTrue();
+    expect(img.classList.contains(image.imageClass)).toBe(true);
   });
 });

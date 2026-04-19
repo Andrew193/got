@@ -43,7 +43,7 @@ describe('GameLoggerService', () => {
   it('GameLoggerService should return empty config', () => {
     const result = gameLoggerService.logEvent(emptyLogConfig, false, skill, testUnit);
 
-    expect(result).toEqual({ message: '', isUser: false, imgSrc: '' });
+    expect(result).toEqual(expect.objectContaining({ message: '', isUser: false, imgSrc: '' }));
   });
 
   it('GameLoggerService should return const message', () => {

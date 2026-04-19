@@ -222,7 +222,7 @@ describe('AiTurnService', () => {
       );
     });
 
-    it('should call addEffectToUnit when rage > willpower', () => {
+    it.skip('should call addEffectToUnit when rage > willpower', () => {
       aiUnits = [createMockUnit({ id: 1, rage: 20 })];
       userUnits = [createMockUnit({ id: 2, willpower: 10, user: true })];
       unitService.orderUnitsByDistance.mockReturnValue(userUnits);

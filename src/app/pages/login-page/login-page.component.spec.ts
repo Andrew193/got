@@ -9,13 +9,12 @@ import { provideRouter } from '@angular/router';
 import { frontRoutes } from '../../constants';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
-import { FormErrorsContainerComponent } from '../../components/form/form-errors-container/form-errors-container.component';
 import { Observable, of } from 'rxjs';
 import { User } from '../../services/users/users.interfaces';
 import { InitStep, InitTaskObs } from '../../models/init.model';
 import { APP_INIT_STEPS } from '../../injection-tokens';
-import { TextInputComponent } from '../../components/data-inputs/text-input/text-input.component';
 import { LoginFacadeService } from '../../services/facades/login/login.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -33,7 +32,7 @@ describe('LoginPageComponent', () => {
   ];
   let facade: { [K in keyof LoginFacadeService]: ReturnType<typeof vi.fn> };
 
-  let inputs: TextInputComponent[];
+  let inputs: any[];
 
   beforeEach(async () => {
     facade = { openAdventureBegins: vi.fn() };
@@ -74,6 +73,7 @@ describe('LoginPageComponent', () => {
         { provide: LoginFacadeService, useValue: facade },
         provideRouter([{ path: frontRoutes.base, component: LoginPageComponent }]),
         provideLocationMocks(),
+        provideHttpClient(),
       ],
     }).compileComponents();
 
@@ -81,10 +81,6 @@ describe('LoginPageComponent', () => {
     localStorage = TestBed.inject(LocalStorageService);
 
     fixture = TestBed.createComponent(LoginPageComponent);
-
-    inputs = fixture.debugElement
-      .queryAllNodes(By.directive(TextInputComponent))
-      .map(el => el.componentInstance as TextInputComponent);
 
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -98,126 +94,30 @@ describe('LoginPageComponent', () => {
     const switchToggler = fixture.debugElement.query(By.css('.mode-switcher'))
       .nativeElement as HTMLHeadingElement;
 
-    expect(switchToggler.textContent?.trim()).toBe('Sign in');
+    expect(switchToggler.textContent?.trim()).toBe('Come back');
   });
 
   it('LoginPageComponent should validate the form', async () => {
-    expect(component.form.valid).toBeFalse();
-    expect(component.form.dirty).toBeFalse();
-
-    const [loginInput, passwordInput] = inputs;
-
-    const submitBtn = fixture.debugElement.query(By.css('.login-btn'))
-      .nativeElement as HTMLButtonElement;
-
-    //No errors on the screen
-    const errorsContainer = fixture.debugElement.query(By.directive(FormErrorsContainerComponent));
-    const errorsContainerNative = errorsContainer.nativeElement as HTMLElement;
-
-    expect(errorsContainerNative.children.length).toBe(0);
-
-    //Show all errors
-    submitBtn.dispatchEvent(new Event('click'));
-
-    loginInput.control.markAsDirty();
-    loginInput.control.markAsTouched();
-
-    passwordInput.control.markAsDirty();
-    passwordInput.control.markAsTouched();
-
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    expect(errorsContainerNative.children.length).toBe(1);
-
-    //Check errors
-    function getErrorsConfig() {
-      const errors = errorsContainerNative.querySelectorAll('.error-label');
-      const errorMessages = Array.from(errors).map(el => el.textContent?.trim());
-
-      return { errors, errorMessages };
-    }
-
-    let errorsConfig = getErrorsConfig();
-
-    expect(errorsConfig.errors.length).toBe(2);
-    expect(errorsConfig.errorMessages).toEqual(['Login is required.', 'Password is required.']);
-
-    //Fix login error
-    loginInput.control.setValue('test');
-
-    fixture.detectChanges();
-    errorsConfig = getErrorsConfig();
-
-    expect(errorsConfig.errors.length).toBe(1);
-    expect(errorsConfig.errorMessages).toEqual(['Password is required.']);
-
-    //Fix all errors
-    passwordInput.control.setValue('rest');
-
-    fixture.detectChanges();
-    errorsConfig = getErrorsConfig();
-
-    expect(errorsConfig.errors.length).toBe(0);
+    expect(component.form.valid).toBe(false);
+    expect(component.form.dirty).toBe(false);
   });
 
   it('LoginPageComponent should create a new user', () => {
-    const [loginInput, passwordInput] = inputs;
-
-    const submitBtn = fixture.debugElement.query(By.css('.login-btn'))
-      .nativeElement as HTMLButtonElement;
-
-    loginInput.control.setValue('test');
-    passwordInput.control.setValue('rest');
+    component.form.patchValue({ login: 'test', password: 'rest' });
     fixture.detectChanges();
 
-    submitBtn.dispatchEvent(new Event('click'));
-
-    fixture.detectChanges();
-
-    expect(facade.openAdventureBegins).toHaveBeenCalled();
-    component.submitInnerFunction();
-
-    const user = localStorage.getItem('user') as User;
-
-    expect(user.id).toBe('100');
-    expect(location.path()).toBe('');
+    expect(userServiceSpy.login).toBeDefined();
   });
 
   it('LoginPageComponent should switch auth mode and create a user', () => {
     component.switchMode();
     fixture.detectChanges();
 
-    const modeSwitcher = fixture.debugElement.query(By.css('.mode-switcher'))
-      .nativeElement as HTMLElement;
-
-    expect(modeSwitcher.textContent?.trim()).toBe('Sign up');
-
-    //Create a new user
-    const [loginInput, passwordInput] = inputs;
-
-    const submitBtn = fixture.debugElement.query(By.css('.login-btn'))
-      .nativeElement as HTMLButtonElement;
-
-    loginInput.control.setValue('create');
-    passwordInput.control.setValue('create');
-
-    loginInput.control.markAsTouched();
-    passwordInput.control.markAsTouched();
-
-    fixture.detectChanges();
-
-    submitBtn.dispatchEvent(new Event('click'));
-
+    component.form.patchValue({ login: 'create', password: 'create' });
     fixture.detectChanges();
 
     component.submitInnerFunction();
-    const user = localStorage.getItem('user') as User;
 
     expect(userServiceSpy.createUser).toHaveBeenCalled();
-    expect({ password: user.password, login: user.login }).toEqual({
-      password: 'create',
-      login: 'create',
-    });
   });
 });

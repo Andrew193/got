@@ -24,8 +24,8 @@ describe('TimeService', () => {
   it('TimeService should convert seconds to hours', () => {
     const tenHoursInSeconds = 36000;
 
-    const tenHours = timeService.convertToHours(tenHoursInSeconds);
-    const fiveHours = timeService.convertToHours(tenHoursInSeconds / 2);
+    const tenHours = TimeService.convertToHoursOrMilliseconds(tenHoursInSeconds);
+    const fiveHours = TimeService.convertToHoursOrMilliseconds(tenHoursInSeconds / 2);
 
     expect(tenHours).toBe(10);
     expect(fiveHours).toBe(5);

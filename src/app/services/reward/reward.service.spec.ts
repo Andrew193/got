@@ -6,6 +6,7 @@ import { HeroesNamesCodes, Unit } from '../../models/units-related/unit.model';
 import { Currency } from '../users/users.interfaces';
 import { REWARD } from '../../constants';
 import { CurrencyHelperService } from '../users/currency/helper/currency-helper.service';
+import { provideStore } from '@ngrx/store';
 
 describe('RewardService', () => {
   let rewardService: RewardService;
@@ -60,6 +61,7 @@ describe('RewardService', () => {
         RewardService,
         { provide: HeroesFacadeService, useValue: heroServiceSpy },
         CurrencyHelperService,
+        provideStore(),
       ],
     });
 
@@ -99,7 +101,7 @@ describe('RewardService', () => {
       return correctMinMax && rewardNames.includes(loot.name);
     });
 
-    expect(correctSignature).toBeTrue();
+    expect(correctSignature).toBe(true);
   });
 
   it('RewardService should convert currency to coin', () => {

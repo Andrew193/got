@@ -3,13 +3,24 @@ import { AbstractFieldService } from './abstract-field.service';
 import { TestBed } from '@angular/core/testing';
 import { Position, TileUnit } from '../../../models/field.model';
 import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { GAME_BOARD_FIELD } from '../../../constants';
 
 describe('AbstractFieldService', () => {
   let service: AbstractFieldService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AbstractFieldService],
+      providers: [
+        AbstractFieldService,
+        provideMockStore({
+          initialState: {
+            gameBoard: {
+              fieldConfig: { rows: GAME_BOARD_FIELD.rows, columns: GAME_BOARD_FIELD.columns },
+            },
+          },
+        }),
+      ],
     });
 
     service = TestBed.inject(AbstractFieldService);
@@ -23,15 +34,15 @@ describe('AbstractFieldService', () => {
     const field = service.getDefaultGameField();
 
     expect(field.length).toBe(7);
-    expect(field.every(innerArray => innerArray.length === 10)).toBeTrue();
-    expect(field.every(innerArray => innerArray.every(el => el.active))).toBeTrue();
+    expect(field.every(innerArray => innerArray.length === 10)).toBe(true);
+    expect(field.every(innerArray => innerArray.every(el => el.active))).toBe(true);
   });
 
   it('AbstractFieldService should return grid from field', () => {
     const field = service.getDefaultGameField();
     let grid = service.getGridFromField(field);
 
-    expect(grid.every(row => row.every(el => el === 0))).toBeTrue();
+    expect(grid.every(row => row.every(el => el === 0))).toBe(true);
 
     const entity: TileUnit = {
       x: 0,
@@ -197,6 +208,6 @@ describe('AbstractFieldService', () => {
       .map(el => !!mustBe.find(inner => inner.i === el.i && inner.j === el.j))
       .every(Boolean);
 
-    expect(result).toBeTrue();
+    expect(result).toBe(true);
   });
 });

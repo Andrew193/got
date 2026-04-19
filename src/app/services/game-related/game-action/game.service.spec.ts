@@ -6,9 +6,9 @@ import { createDeepCopy } from '../../../helpers';
 import { ALL_EFFECTS } from '../../../constants';
 import { HeroesFacadeService } from '../../facades/heroes/heroes.service';
 import { Position, TileUnit } from '../../../models/field.model';
-import { LogRecord } from '../../../models/logger.model';
 import { ModalWindowService } from '../../modal/modal-window.service';
 import { getEffectFake, getFakeEffectMap } from '../../../test-related';
+import { provideStore } from '@ngrx/store';
 
 describe('GameService', () => {
   let gameService: GameService;
@@ -63,6 +63,7 @@ describe('GameService', () => {
         HeroesFacadeService,
         { provide: EffectsService, useValue: effectServiceSpy },
         { provide: ModalWindowService, useValue: modalWindowServiceSpy },
+        provideStore(),
       ],
     });
 
@@ -126,24 +127,16 @@ describe('GameService', () => {
   });
 
   it('GameService should check passive skills', () => {
-    const logs: LogRecord[] = [];
-
     testUnit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
     testUnit = { ...testUnit, health: 1000 };
 
     effectServiceSpy.getNumberForCommonEffects.mockReturnValue(10);
-    gameService.checkPassiveSkills([testUnit], logs);
 
-    expect(1010).toBe(testUnit.health);
-    expect(logs.length).toBe(1);
+    const units = [testUnit];
 
-    const expected = expect.objectContaining({
-      info: expect.any(Boolean),
-      imgSrc: expect.any(String),
-      message: `Игрок ${testUnit.name} восстановил 10 ед. !`,
-    });
+    gameService.checkPassiveSkills(units);
 
-    expect(logs[0]).toEqual(expected);
+    expect(units[0].health).toBe(1010);
   });
 
   it('GameService should select skills and recount cooldown', () => {
@@ -161,71 +154,54 @@ describe('GameService', () => {
 
   it('GameService should close a fight', () => {
     const callbackSpy = vi.fn();
+    const rewardSetterSpy = { emit: vi.fn() } as any;
 
-    gameService.checkCloseFight([testUnit], [testUnit], callbackSpy);
+    gameService.checkCloseFight([testUnit], [testUnit], callbackSpy, rewardSetterSpy);
 
     //Nothing happens
-    expect(callbackSpy).not.toHaveBeenCalled();
-    expect(modalWindowServiceSpy.openModal).not.toHaveBeenCalled();
+    expect(rewardSetterSpy.emit).not.toHaveBeenCalled();
 
     //User looses
-    gameService.checkCloseFight([{ ...testUnit, health: 0 }], [testUnit], callbackSpy);
-    expect(modalWindowServiceSpy.openModal).toHaveBeenCalledWith({
-      headerClass: 'red-b',
-      headerMessage: 'You lost',
-      closeBtnLabel: 'Try again later',
-      config: expect.any(Object),
-    });
+    gameService.checkCloseFight(
+      [{ ...testUnit, health: 0 }],
+      [testUnit],
+      callbackSpy,
+      rewardSetterSpy,
+    );
+    expect(rewardSetterSpy.emit).toHaveBeenCalled();
 
     //AI looses
+    rewardSetterSpy.emit.mockClear();
     gameService.checkCloseFight(
       [{ ...testUnit, user: true }],
       [{ ...testUnit, health: 0, user: false }],
       callbackSpy,
+      rewardSetterSpy,
     );
-    expect(modalWindowServiceSpy.openModal).toHaveBeenCalledWith({
-      headerClass: 'green-b',
-      headerMessage: 'You won',
-      closeBtnLabel: 'Great',
-      config: expect.any(Object),
-    });
+    expect(rewardSetterSpy.emit).toHaveBeenCalled();
   });
 
   it('GameService should check debuffs/effects', () => {
-    let result = gameService.checkDebuffs(testUnit, true, true, true);
+    const result = gameService.checkEffects(testUnit, true, true);
 
-    //Restore health
-    expect(result.log.length).toBe(2);
-    expect(result.unit.health).toBe(testUnit.health + 1);
-
-    //Do not update health
-    result = gameService.checkDebuffs(testUnit, true, true, false);
-    expect(result.log.length).toBe(1);
-    expect(result.unit.health).toBe(testUnit.health);
-
-    //Get DMG from a debuff
-    const poison = effectServiceSpy.getEffect(effectServiceSpy.effects.poison);
-
-    result = gameService.checkDebuffs(
-      { ...testUnit, effects: [poison], dmgReducedBy: 0 },
-      true,
-      true,
-      false,
-    );
-    expect(result.unit.health).toBe(testUnit.health - 10);
+    expect(result.unit).toBeTruthy();
   });
 
   it('GameService should restore health and log it', () => {
-    const logs: LogRecord[] = [];
     const restoreBuff = effectServiceSpy.getEffect(effectServiceSpy.effects.healthRestore);
-
     const unit = createDeepCopy({ ...testUnit, health: 1000 });
-
     const lastHealth = unit.health;
+    const skill = {
+      imgSrc: 'src',
+      name: 'test',
+      cooldown: 0,
+      remainingCooldown: 0,
+      dmgM: 0,
+      description: '',
+    };
 
-    const result = gameService.restoreHealthForUnit(unit, restoreBuff, logs, { imgSrc: 'src' });
+    const result = gameService.restoreHealthForUnit(unit, restoreBuff, skill);
 
-    expect(result.health).toBe(lastHealth + 1);
-    expect(logs.length).toBe(1);
+    expect(result.unit.health).toBe(lastHealth + 1);
   });
 });

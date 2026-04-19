@@ -4,8 +4,7 @@ import { TextInputComponent } from './text-input.component';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader } from '@angular/cdk/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -22,18 +21,16 @@ class HostComponent {
 
 describe('TextInputComponent', () => {
   let hostComponent: HostComponent;
-  let loader: HarnessLoader;
   let fixture: ComponentFixture<HostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HostComponent, NoopAnimationsModule],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
     hostComponent = fixture.componentInstance;
-
-    loader = TestbedHarnessEnvironment.loader(fixture);
 
     fixture.detectChanges();
   });

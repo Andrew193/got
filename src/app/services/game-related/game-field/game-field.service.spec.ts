@@ -6,6 +6,7 @@ import { Skill } from '../../../models/units-related/skill.model';
 import { HeroesService } from '../../facades/heroes/heroes.service';
 import { NumbersService } from '../../numbers/numbers.service';
 import { Position } from '../../../models/field.model';
+import { provideStore } from '@ngrx/store';
 
 describe('GameFieldService', () => {
   let gameFieldService: GameFieldService;
@@ -28,6 +29,7 @@ describe('GameFieldService', () => {
         HeroesService,
         NumbersService,
         { provide: GameService, useValue: gameActionServiceSpy },
+        provideStore(),
       ],
     });
 
@@ -141,7 +143,7 @@ describe('GameFieldService', () => {
     //Should be ok
     let canReachPosition = gameFieldService.canReachPosition(grid, start, end);
 
-    expect(canReachPosition).toBeTrue();
+    expect(canReachPosition).toBe(true);
 
     //Should be not ok
     canReachPosition = gameFieldService.canReachPosition(grid, start, {
@@ -149,6 +151,6 @@ describe('GameFieldService', () => {
       i: 4,
     });
 
-    expect(canReachPosition).toBeFalse();
+    expect(canReachPosition).toBe(false);
   });
 });

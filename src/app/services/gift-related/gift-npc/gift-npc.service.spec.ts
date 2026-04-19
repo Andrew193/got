@@ -28,7 +28,7 @@ describe('GiftNpcService', () => {
     });
 
     giftNpcService = TestBed.inject(GiftNpcService);
-    rewardServiceSpy.getReward.calls.reset();
+    vi.clearAllMocks();
   });
 
   it('GiftNpcService should be created', () => {

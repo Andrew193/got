@@ -91,6 +91,10 @@ export class FakeLocalStorage extends BasicLocalStorage {
   removeItem(key: BasicLocalStorageNamesKeys) {
     this.store.delete(key);
   }
+
+  getUserId() {
+    return fakeUser.id;
+  }
 }
 
 //Test api service

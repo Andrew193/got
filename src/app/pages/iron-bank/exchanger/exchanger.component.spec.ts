@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AllowedToOptions, Cur, CurEnum, ExchangerForm } from '../../../models/iron-bank.model';
 import { Coin } from '../../../models/reward-based.model';
 import { CURRENCY_NAMES } from '../../../constants';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('ExchangerComponent', () => {
   let component: ExchangerComponent;
@@ -43,6 +44,7 @@ describe('ExchangerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ExchangerComponent],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExchangerComponent);

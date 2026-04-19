@@ -60,7 +60,7 @@ describe('ValidationService', () => {
     let invalid = validationService.isFormInvalid(formGroup, callbackSpy);
 
     expect(callbackSpy).toHaveBeenCalled();
-    expect(invalid).toBeFalse();
+    expect(invalid).toBe(false);
 
     //How mark as dirty/touched
     formGroup.markAsDirty();
@@ -85,23 +85,23 @@ describe('ValidationService', () => {
     expect(result).toBe(formGroup);
 
     //Worked with name
-    expect(nameCtrl.dirty).toBeTrue();
-    expect(nameCtrl.touched).toBeTrue();
+    expect(nameCtrl.dirty).toBe(true);
+    expect(nameCtrl.touched).toBe(true);
     expect(nameUvvSpy).toHaveBeenCalledWith({ onlySelf: true });
 
     //Worked with error
-    expect(errCtrl.dirty).toBeTrue();
-    expect(errCtrl.touched).toBeTrue();
+    expect(errCtrl.dirty).toBe(true);
+    expect(errCtrl.touched).toBe(true);
     expect(errUvvSpy).toHaveBeenCalledWith({ onlySelf: true });
 
     //Check recursion
-    expect(arrayElementCtrl.dirty).toBeTrue();
-    expect(arrayElementCtrl.touched).toBeTrue();
+    expect(arrayElementCtrl.dirty).toBe(true);
+    expect(arrayElementCtrl.touched).toBe(true);
     expect(arrayElementCtrlSpy).toHaveBeenCalledWith({ onlySelf: true });
 
     //General
     expect(valueBefore).toEqual(formGroup.value);
-    expect(formGroup.invalid).toBeTrue();
+    expect(formGroup.invalid).toBe(true);
   });
 
   it('ValidationService should validate and submit form. Default', () => {
@@ -110,7 +110,7 @@ describe('ValidationService', () => {
     //The Form is invalid. Nothing happens
     expect(updateCallbackSpy).not.toHaveBeenCalled();
     expect(createCallbackSpy).not.toHaveBeenCalled();
-    expect(formGroup.disabled).toBeFalse();
+    expect(formGroup.disabled).toBe(false);
   });
 
   it('ValidationService should validate and submit form. Update', () => {
@@ -124,7 +124,7 @@ describe('ValidationService', () => {
 
     validationService.validateFormAndSubmit(formGroup, updateCallback, createCallback, true);
 
-    expect(formGroup.disabled).toBeTrue();
+    expect(formGroup.disabled).toBe(true);
     expect(updateCallbackSpy).toHaveBeenCalled();
   });
 
@@ -140,7 +140,7 @@ describe('ValidationService', () => {
     //The form is valid. Check creation
     validationService.validateFormAndSubmit(formGroup, updateCallback, createCallback, false);
 
-    expect(formGroup.disabled).toBeTrue();
+    expect(formGroup.disabled).toBe(true);
     expect(createCallbackSpy).toHaveBeenCalled();
   });
 });

@@ -10,6 +10,7 @@ import { ModalConfig, ModalStrategiesTypes } from './modal-interfaces';
 const mockModalWindowService = {
   modalConfig$: of(null),
   dropModal: vi.fn(),
+  removeDialogFromRefs: vi.fn(),
   dialog: {
     open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }),
   },

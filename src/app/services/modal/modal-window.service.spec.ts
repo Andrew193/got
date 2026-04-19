@@ -72,7 +72,7 @@ describe('ModalWindowService', () => {
       });
       service.openModal(makeConfig());
 
-      expect(emitted).toBeFalse();
+      expect(emitted).toBe(false);
     });
 
     it('dialogRefs size is unchanged when frozen', () => {

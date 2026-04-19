@@ -24,7 +24,12 @@ export default defineConfig({
     },
     reporters: ['default'],
     css: true,
-    isolate: false,
+    pool: 'vmForks',
+    poolOptions: {
+      vmForks: {
+        singleFork: true,
+      },
+    },
   },
   define: {
     'import.meta.vitest': undefined,

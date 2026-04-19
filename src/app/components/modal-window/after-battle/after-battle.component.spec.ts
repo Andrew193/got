@@ -5,6 +5,7 @@ import { AfterBattleComponent } from './after-battle.component';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { RewardService } from '../../../services/reward/reward.service';
 import { CurrencyHelperService } from '../../../services/users/currency/helper/currency-helper.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('AfterBattleComponent', () => {
   let component: AfterBattleComponent;
@@ -17,6 +18,8 @@ describe('AfterBattleComponent', () => {
     reward: { gold: 74, silver: 71, copper: 154461 },
     close: vi.fn(),
   };
+
+  const mockDialogRef = { close: vi.fn() };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,6 +37,7 @@ describe('AfterBattleComponent', () => {
           provide: CurrencyHelperService,
           useValue: { convertCurrencyToCoin: vi.fn().mockReturnValue([]) },
         },
+        { provide: MatDialogRef, useValue: mockDialogRef },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -63,6 +67,7 @@ describe('AfterBattleComponent', () => {
     const button = fixture.nativeElement.querySelector('button.got-toggle');
 
     button.click();
-    expect(mockData.close).toHaveBeenCalledWith(true);
+    fixture.detectChanges();
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
 });

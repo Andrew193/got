@@ -6,6 +6,7 @@ import { IronBankHelperService } from '../helper/iron-bank-helper.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DepositForm } from '../../../models/iron-bank.model';
 import { CURRENCY_NAMES } from '../../../constants';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('DepositComponent', () => {
   let component: DepositComponent;
@@ -35,7 +36,7 @@ describe('DepositComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [DepositComponent],
-      providers: [CurrencyHelperService, IronBankHelperService],
+      providers: [CurrencyHelperService, IronBankHelperService, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DepositComponent);

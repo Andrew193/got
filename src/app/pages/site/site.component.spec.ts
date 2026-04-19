@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SiteComponent } from './site.component';
 import { UsersService } from '../../services/users/users.service';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
@@ -8,6 +8,7 @@ import { HeaderComponent } from '../../components/common/header/header.component
 import { By } from '@angular/platform-browser';
 import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SiteComponent', () => {
   let component: SiteComponent;
@@ -36,6 +37,7 @@ describe('SiteComponent', () => {
           provide: NavigationService,
           useValue: navigationServiceSpy,
         },
+        provideHttpClient(),
       ],
     }).compileComponents();
 
@@ -48,10 +50,10 @@ describe('SiteComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('SiteComponent should redirect an unauthorized user', fakeAsync(() => {
-    tick();
-    expect(navigationServiceSpy.goToLogin.calls.count()).toBe(1);
-  }));
+  it('SiteComponent should redirect an unauthorized user', async () => {
+    await new Promise(resolve => setTimeout(resolve, 0));
+    expect(navigationServiceSpy.goToLogin.mock.calls.length).toBe(1);
+  });
 
   it('SiteComponent should have both: header and modal window', () => {
     const header = fixture.debugElement.query(By.directive(HeaderComponent));
