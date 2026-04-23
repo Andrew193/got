@@ -24,6 +24,9 @@ export class BattleResultService {
   private modalWindowService = inject(ModalWindowService);
   private store = inject(Store);
 
+  /** When true, showBattleResult skips opening the modal (headless simulation mode). */
+  headlessMode = false;
+
   checkBattleEnd(userUnits: TileUnit[], aiUnits: TileUnit[]): BattleEndResult {
     // Guard against null/undefined unit arrays
     if (!userUnits || !aiUnits) {
@@ -86,6 +89,8 @@ export class BattleResultService {
 
     // Emit reward calculation — this triggers the store update
     rewardSetter.emit([realAiUnits, userWon]);
+
+    if (this.headlessMode) return;
 
     const headerClass = userWon ? 'green-b' : 'red-b';
     const headerMessage = this.getHeaderMessage(result);

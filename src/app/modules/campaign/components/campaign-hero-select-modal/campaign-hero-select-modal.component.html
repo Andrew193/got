@@ -34,12 +34,24 @@
     }
 
     <div class="hero-select-modal__footer">
-      <button
-        class="got-toggle got-toggle-red w-100"
-        [disabled]="!isFightReady()"
-        (click)="fight()">
-        Fight
-      </button>
+      <div class="row g-2">
+        <div class="col-6">
+          <button
+            class="got-toggle w-100"
+            [disabled]="!isFightReady() || isSimulating()"
+            (click)="autoFight()">
+            {{ isSimulating() ? '...' : 'Skip Fight' }}
+          </button>
+        </div>
+        <div class="col-6">
+          <button
+            class="got-toggle got-toggle-red w-100"
+            [disabled]="!isFightReady()"
+            (click)="fight()">
+            Fight
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

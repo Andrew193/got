@@ -57,6 +57,7 @@ export class ModalWindowComponent implements OnInit {
     modalConfig: ModalConfig<unknown>,
   ) {
     this.contextConfig = this.getContextConfig(modalConfig);
+    const close = this.close.bind(this, modalConfig);
 
     const dialogRef = this.modalWindowService.dialog.open(template, {
       disableClose: true,
@@ -70,8 +71,9 @@ export class ModalWindowComponent implements OnInit {
       ...refConfig,
       modalConfig,
     });
+
     dialogRef.afterClosed().subscribe((response = true) => {
-      this.contextConfig.close(response);
+      close(response);
     });
   }
 

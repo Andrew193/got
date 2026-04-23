@@ -3,7 +3,6 @@ import { BossReward } from '../../../models/reward-based.model';
 import { HeroesSelectNames, TODAY } from '../../../constants';
 import { DailyBossApiService } from './daily-boss-api.service';
 import { Currency } from '../../users/users.interfaces';
-import { UsersService } from '../../users/users.service';
 import { tap } from 'rxjs';
 import { NotificationsService, NotificationType } from '../../notifications/notifications.service';
 import { NavigationService } from '../navigation/navigation.service';
@@ -25,7 +24,6 @@ export class DailyBossFacadeService extends BattleRewardsService {
   nav = inject(NavigationService);
   rewardService = inject(RewardService);
   store = inject(Store);
-  usersService = inject(UsersService);
   numberService = inject(NumbersService);
   notificationService = inject(NotificationsService);
 

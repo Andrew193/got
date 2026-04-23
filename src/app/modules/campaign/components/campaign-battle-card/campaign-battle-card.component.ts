@@ -12,10 +12,15 @@ import { CampaignBattleConfig } from '../../models/campaign.models';
 export class CampaignBattleCardComponent {
   battle = input.required<CampaignBattleConfig>();
   isSelected = input<boolean>(false);
+  isLocked = input<boolean>(false);
 
   cardClicked = output<CampaignBattleConfig>();
 
   onClick() {
+    if (this.isLocked()) {
+      return;
+    }
+
     this.cardClicked.emit(this.battle());
   }
 }

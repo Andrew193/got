@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   BattleRewardsConfig,
   BattleRewardCurrency,
   BossReward,
 } from '../../../models/reward-based.model';
 import { CURRENCY_NAMES } from '../../../constants';
+import { UsersService } from '../../users/users.service';
 
 export enum BossDifficulty {
   easy,
@@ -22,6 +23,8 @@ type DifficultyConfig = {
   providedIn: 'root',
 })
 export abstract class BattleRewardsService {
+  usersService = inject(UsersService);
+
   difficultyConfigs: DifficultyConfig[] = [
     { level: BossDifficulty.easy, heading: 'Super Easy' },
     { level: BossDifficulty.normal, heading: 'Easy' },

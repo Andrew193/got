@@ -12,6 +12,7 @@ import { CampaignBattleCardComponent } from '../campaign-battle-card/campaign-ba
 export class CampaignScreenComponent {
   battles = input.required<CampaignBattleConfig[]>();
   selectedBattleId = input<string | null>(null);
+  unlockedBattleId = input<string | null>(null);
 
   battleSelected = output<CampaignBattleConfig>();
 
@@ -19,6 +20,12 @@ export class CampaignScreenComponent {
     const id = this.selectedBattleId();
 
     return (battle: CampaignBattleConfig) => battle.id === id;
+  });
+
+  isLocked = computed(() => {
+    const unlockedId = this.unlockedBattleId();
+
+    return (battle: CampaignBattleConfig) => battle.id !== unlockedId;
   });
 
   onBattleClicked(battle: CampaignBattleConfig) {

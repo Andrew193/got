@@ -6,7 +6,7 @@ export class AutoFightService implements OnDestroy {
   private intervalRef: ReturnType<typeof setInterval> | null = null;
   private autoFightActive = false;
 
-  startAutoFight(fastFight: boolean, executeTurn: () => boolean): void {
+  startAutoFight(fastFight: boolean, executeTurn: () => boolean) {
     // Guard against double-start
     if (this.autoFightActive) {
       this.stopAutoFight();
@@ -40,7 +40,7 @@ export class AutoFightService implements OnDestroy {
     return executeTurn();
   }
 
-  stopAutoFight(): void {
+  stopAutoFight() {
     this.autoFightActive = false;
 
     if (this.intervalRef) {
@@ -53,7 +53,7 @@ export class AutoFightService implements OnDestroy {
     return this.autoFightActive;
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.stopAutoFight();
   }
 }

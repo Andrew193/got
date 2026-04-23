@@ -6,10 +6,21 @@
     </p>
   </div>
 
+  @if (isLoading()) {
+    <div class="campaign-lobby__loading p-4 text-center">
+      <p>Loading campaign progress...</p>
+    </div>
+  } @else if (progressError()) {
+    <div class="campaign-lobby__error p-4 text-center">
+      <p class="text-danger">{{ progressError() }}</p>
+    </div>
+  }
+
   <div class="p-2">
     <app-campaign-difficulty-selector
       [configs]="difficultyConfigs"
       [selected]="selectedDifficulty()"
+      [unlockedDifficulties]="unlockedDifficulties()"
       (difficultySelected)="selectDifficulty($event)" />
   </div>
 
@@ -18,6 +29,7 @@
       <app-campaign-screen
         [battles]="currentScreenBattles()"
         [selectedBattleId]="selectedBattle()?.id ?? null"
+        [unlockedBattleId]="unlockedBattleIdForCurrentScreen()"
         (battleSelected)="onBattleSelected($event)" />
 
       <mat-paginator
@@ -46,8 +58,4 @@
       <p>Select a difficulty to begin your campaign</p>
     </div>
   }
-
-  <div class="col-6">
-    <button class="me-2 got-toggle w-100" (click)="goToMainPage()">Back to Castle Black</button>
-  </div>
 </div>

@@ -34,4 +34,15 @@
     background-color: index.$var-dirty-golden;
     color: index.$var-gold;
   }
+
+  &.locked {
+    cursor: not-allowed;
+    opacity: 0.4;
+    filter: grayscale(1);
+
+    &:hover {
+      border-color: #555;
+      color: #ccc;
+    }
+  }
 }

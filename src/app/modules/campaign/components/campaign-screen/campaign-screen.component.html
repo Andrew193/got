@@ -3,6 +3,7 @@
     <app-campaign-battle-card
       [battle]="battle"
       [isSelected]="isSelected()(battle)"
+      [isLocked]="isLocked()(battle)"
       (cardClicked)="onBattleClicked($event)" />
   }
 </div>

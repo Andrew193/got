@@ -227,10 +227,13 @@ export class CampaignFacadeService extends BattleRewardsService {
     difficulty: BossDifficulty,
     userUnits: UnitName[],
     aiUnits: HeroesNamesCodes[],
+    userId: string,
   ) {
     const { name, ...aiUnitConfig } = config.baseOpponent;
     const state: CampaignBattleState = {
       isCampaign: true,
+      battleId: config.id,
+      userId,
       userUnitNames: userUnits,
       aiUnitNames: aiUnits,
       aiUnitConfig: aiUnitConfig,

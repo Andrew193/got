@@ -23,3 +23,14 @@ export type CampaignDifficultyConfig = {
   difficulty: BossDifficulty;
   screens: CampaignScreenConfig[]; // всегда 5 экранов
 };
+
+export type DifficultyProgress = {
+  screenIndex: number;
+  battleIndex: number;
+};
+
+export type UserProgress = {
+  userId: string;
+  unlockedDifficulties: string[];
+  difficulties: Record<string, DifficultyProgress>;
+};

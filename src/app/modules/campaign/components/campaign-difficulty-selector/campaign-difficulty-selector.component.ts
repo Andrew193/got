@@ -17,10 +17,12 @@ type DifficultyConfig = {
 export class CampaignDifficultySelectorComponent {
   configs = input.required<DifficultyConfig[]>();
   selected = input<BossDifficulty | null>(null);
+  unlockedDifficulties = input<BossDifficulty[]>([]);
 
   difficultySelected = output<BossDifficulty>();
 
   select(level: BossDifficulty) {
+    if (!this.unlockedDifficulties().includes(level)) return;
     this.difficultySelected.emit(level);
   }
 }
