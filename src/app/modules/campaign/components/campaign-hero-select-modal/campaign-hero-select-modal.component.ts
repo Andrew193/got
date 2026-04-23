@@ -1,7 +1,11 @@
 import { Component, computed, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { DYNAMIC_COMPONENT_DATA } from '../../../../models/tokens';
 import { CampaignBattleConfig } from '../../models/campaign.models';
-import { HeroesNamesCodes, PreviewUnit } from '../../../../models/units-related/unit.model';
+import {
+  HeroesNamesCodes,
+  PreviewUnit,
+  UnitName,
+} from '../../../../models/units-related/unit.model';
 import { BasicHeroSelectComponent } from '../../../../components/abstract/basic-hero-select/basic-hero-select.component';
 import { HeroesSelectNames } from '../../../../constants';
 import { selectUnits } from '../../../../store/reducers/units-configurator.reducer';
@@ -13,7 +17,7 @@ import { HasFooterHost } from '../../../../components/modal-window/modal-interfa
 export type CampaignHeroSelectModalData = {
   battleConfig: CampaignBattleConfig;
   difficulty: number;
-  onFight: (userUnits: string[], aiUnits: HeroesNamesCodes[]) => void;
+  onFight: (userUnits: UnitName[], aiUnits: HeroesNamesCodes[]) => void;
   close?: (response?: boolean) => void;
 };
 

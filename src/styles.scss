@@ -48,6 +48,11 @@ body {
   scrollbar-width: thin;
 }
 
+html.cdk-global-scrollblock {
+  overflow-y: hidden;
+  height: stretch;
+}
+
 html:has(.page-loader) {
   overflow: hidden;
 }

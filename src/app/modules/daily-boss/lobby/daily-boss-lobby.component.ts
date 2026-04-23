@@ -4,10 +4,7 @@ import { PreviewUnit, Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
-import {
-  BossDifficulty,
-  DailyBossFacadeService,
-} from '../../../services/facades/daily-boss/daily-boss.service';
+import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
 import { TileUnit } from '../../../models/field.model';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
@@ -18,6 +15,7 @@ import { PageLoaderComponent } from '../../../components/views/page-loader/page-
 import { TrainingMatcherCover } from '../../training/training-config/training-config.component';
 import { LoaderService } from '../../../services/resolver-loader/loader.service';
 import { selectUnits } from '../../../store/reducers/units-configurator.reducer';
+import { BossDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 @Component({
   selector: 'app-daily-boss-lobby',

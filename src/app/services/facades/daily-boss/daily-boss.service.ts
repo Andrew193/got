@@ -1,10 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  BossReward,
-  BossRewardCurrency,
-  BossRewardsConfig,
-} from '../../../models/reward-based.model';
-import { CURRENCY_NAMES, HeroesSelectNames, TODAY } from '../../../constants';
+import { BossReward } from '../../../models/reward-based.model';
+import { HeroesSelectNames, TODAY } from '../../../constants';
 import { DailyBossApiService } from './daily-boss-api.service';
 import { Currency } from '../../users/users.interfaces';
 import { UsersService } from '../../users/users.service';
@@ -16,23 +12,15 @@ import { UnitsConfiguratorFeatureActions } from '../../../store/actions/units-co
 import { Store } from '@ngrx/store';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { RewardService } from '../../reward/reward.service';
-
-export enum BossDifficulty {
-  easy,
-  normal,
-  hard,
-  very_hard,
-}
-
-type DifficultyConfig = {
-  level: BossDifficulty;
-  heading: string;
-};
+import {
+  BattleRewardsService,
+  BossDifficulty,
+} from '../../abstract/battle-rewards/battle-rewards.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DailyBossFacadeService {
+export class DailyBossFacadeService extends BattleRewardsService {
   api = inject(DailyBossApiService);
   nav = inject(NavigationService);
   rewardService = inject(RewardService);
@@ -41,7 +29,7 @@ export class DailyBossFacadeService {
   numberService = inject(NumbersService);
   notificationService = inject(NotificationsService);
 
-  private bossReward: Record<BossDifficulty, BossReward> = {
+  bossReward: Record<BossDifficulty, BossReward> = {
     [BossDifficulty.easy]: {
       copper: 10000,
       copperWin: 100000,
@@ -87,29 +75,6 @@ export class DailyBossFacadeService {
       goldDMG: 2000000,
     },
   };
-
-  difficultyConfigs: DifficultyConfig[] = [
-    { level: BossDifficulty.easy, heading: 'Super Easy' },
-    { level: BossDifficulty.normal, heading: 'Easy' },
-    { level: BossDifficulty.hard, heading: 'Medium' },
-    { level: BossDifficulty.very_hard, heading: 'Hard' },
-  ];
-
-  getBossRewardDescription(level: BossDifficulty): BossRewardsConfig<BossRewardCurrency> {
-    const reward = this.bossReward[level];
-    const coins: BossRewardCurrency[] = [
-      CURRENCY_NAMES.copper,
-      CURRENCY_NAMES.silver,
-      CURRENCY_NAMES.gold,
-    ];
-
-    return coins.map(type => ({
-      base: reward[type],
-      win: reward[`${type}Win`],
-      dmg: reward[`${type}DMG`],
-      alias: type,
-    }));
-  }
 
   uppBoss(version: BossDifficulty) {
     const versions: Record<BossDifficulty, any> = {

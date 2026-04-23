@@ -1,9 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import {
-  BossDifficulty,
-  DailyBossFacadeService,
-} from '../../../services/facades/daily-boss/daily-boss.service';
+import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
 import { CampaignFacadeService } from '../services/campaign-facade.service';
 import { CampaignBattleConfig } from '../models/campaign.models';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
@@ -15,7 +12,8 @@ import {
   CampaignHeroSelectModalComponent,
   CampaignHeroSelectModalData,
 } from '../components/campaign-hero-select-modal/campaign-hero-select-modal.component';
-import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
+import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.model';
+import { BossDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 const SCREENS_COUNT = 5;
 
@@ -68,6 +66,10 @@ export class CampaignLobbyComponent {
     this.selectedBattle.set(null);
   }
 
+  goToMainPage() {
+    this.nav.goToMainPage();
+  }
+
   onBattleSelected(battle: CampaignBattleConfig) {
     const current = this.selectedBattle();
 
@@ -91,7 +93,7 @@ export class CampaignLobbyComponent {
           data: {
             battleConfig: selectedBattle,
             difficulty,
-            onFight: (userUnits: string[], aiUnits: HeroesNamesCodes[]) => {
+            onFight: (userUnits: UnitName[], aiUnits: HeroesNamesCodes[]) => {
               this.campaignFacade.startBattle(selectedBattle, difficulty, userUnits, aiUnits);
             },
           },

@@ -986,7 +986,7 @@ export class HeroesFacadeService extends ContentService {
       : units.map(unit => this.helper.getEquipmentForUnit(unit));
   }
 
-  getPreviewUnit(unitName: string): PreviewUnit {
+  getPreviewUnit(unitName: UnitName): PreviewUnit {
     const unit = this.getUnitByName(unitName);
 
     return {
@@ -1034,7 +1034,7 @@ export class HeroesFacadeService extends ContentService {
     };
   }
 
-  getUnitByName(name: string, config?: UnitConfig) {
+  getUnitByName(name: UnitName, config?: UnitConfig) {
     const userUnit = this.allUnits.filter(unit => unit.name === name)[0];
 
     return this.helper.getEquipmentForUnit({ ...userUnit, ...(config || {}) });

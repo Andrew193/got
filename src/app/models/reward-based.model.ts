@@ -13,24 +13,24 @@ export interface RewardComponentInterface {
   rewards: DisplayReward[];
 }
 
-export type BossRewardCurrency = Lowercase<Cur>;
+export type BattleRewardCurrency = Lowercase<Cur>;
 
-export type BossRewardsConfig<T extends BossRewardCurrency> = {
+export type BattleRewardsConfig<T extends BattleRewardCurrency> = {
   [P in T]: Record<'base' | 'win' | 'dmg', number> & Record<'alias', P>;
 }[T][];
 
 export type BossReward = Record<
-  BossRewardCurrency | `${BossRewardCurrency}Win` | `${BossRewardCurrency}DMG`,
+  BattleRewardCurrency | `${BattleRewardCurrency}Win` | `${BattleRewardCurrency}DMG`,
   number
 >;
 
 export type RewardValues = RewardNames[keyof RewardNames];
 export type RewardKeys = keyof RewardNames;
-export type RewardKeysForLoot = Extract<RewardKeys, BossRewardCurrency | 'shards'>;
+export type RewardKeysForLoot = Extract<RewardKeys, BattleRewardCurrency | 'shards'>;
 
 export type RewardLootConstant = Record<RewardKeysForLoot, { min: number; max: number }>;
 
-export type CoinNames = Lowercase<Extract<RewardValues, Capitalize<BossRewardCurrency>>>;
+export type CoinNames = Lowercase<Extract<RewardValues, Capitalize<BattleRewardCurrency>>>;
 
 export interface Coin {
   class: CoinNames;

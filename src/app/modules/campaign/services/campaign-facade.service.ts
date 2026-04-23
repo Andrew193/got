@@ -1,15 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-
-import {
-  BossDifficulty,
-  DailyBossFacadeService,
-} from '../../../services/facades/daily-boss/daily-boss.service';
-import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
+import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.model';
 import { BossReward } from '../../../models/reward-based.model';
 import { CampaignBattleConfig, CampaignScreenConfig } from '../models/campaign.models';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { CampaignBattleState } from '../campaign-battlefield/campaign-battlefield.component';
 import { HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
+import {
+  BattleRewardsService,
+  BossDifficulty,
+} from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 type DifficultyParams = {
   baseLevelForDifficulty: number;
@@ -89,7 +88,7 @@ const OPPONENT_POOLS: HeroesNamesCodes[][] = [
     HeroesNamesCodes.FreeTrapper,
     HeroesNamesCodes.BrownWolf,
     HeroesNamesCodes.Priest,
-    HeroesNamesCodes.Ranger,
+    HeroesNamesCodes.WhiteWolf,
   ],
   [
     HeroesNamesCodes.IceRiverHunter,
@@ -113,7 +112,8 @@ const OPPONENT_POOLS: HeroesNamesCodes[][] = [
     HeroesNamesCodes.NightKing,
     HeroesNamesCodes.WhiteWalkerGeneral,
     HeroesNamesCodes.JonKing,
-    HeroesNamesCodes.DailyBossVersion1,
+    HeroesNamesCodes.RedKeepAlchemist,
+    HeroesNamesCodes.LadyOfDragonStone,
   ],
 ];
 
@@ -134,16 +134,15 @@ const MAX_USER_UNITS_REGULAR: Record<BossDifficulty, number> = {
 };
 
 // maxUserUnits for boss battles per screen
-const MAX_USER_UNITS_BOSS: number[] = [1, 2, 3, 3, 4];
+const MAX_USER_UNITS_BOSS: number[] = [2, 2, 3, 3, 4];
 
 @Injectable({ providedIn: 'root' })
-export class CampaignFacadeService {
-  private dailyBossFacade = inject(DailyBossFacadeService);
+export class CampaignFacadeService extends BattleRewardsService {
+  override bossReward: Record<BossDifficulty, BossReward> = {} as Record<
+    BossDifficulty,
+    BossReward
+  >;
   private nav = inject(NavigationService);
-
-  get difficultyConfigs() {
-    return this.dailyBossFacade.difficultyConfigs;
-  }
 
   getScreens(difficulty: BossDifficulty): CampaignScreenConfig[] {
     const params = DIFFICULTY_PARAMS[difficulty];
@@ -226,7 +225,7 @@ export class CampaignFacadeService {
   startBattle(
     config: CampaignBattleConfig,
     difficulty: BossDifficulty,
-    userUnits: string[],
+    userUnits: UnitName[],
     aiUnits: HeroesNamesCodes[],
   ) {
     const { name, ...aiUnitConfig } = config.baseOpponent;

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { DynamicComponentConfig, HasFooterHost } from '../modal-interfaces';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { RewardService } from '../../../services/reward/reward.service';
@@ -20,7 +20,7 @@ export type AfterBattleData = {
   templateUrl: './after-battle.component.html',
   styleUrl: './after-battle.component.scss',
 })
-export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit, OnDestroy {
+export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit {
   @ViewChild('footerHost', { read: ViewContainerRef, static: true }) footerHost!: ViewContainerRef;
 
   data = inject<DynamicComponentConfig<AfterBattleData>>(DYNAMIC_COMPONENT_DATA);
@@ -32,9 +32,5 @@ export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit, OnD
     this.rewards = this.currencyHelperService.convertCurrencyToCoin(
       this.data.reward || this.rewardService.mostResentRewardCurrency,
     );
-  }
-
-  ngOnDestroy() {
-    this.rewardService.resetMostResentRewardCurrency();
   }
 }

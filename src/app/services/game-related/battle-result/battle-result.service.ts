@@ -80,7 +80,6 @@ export class BattleResultService {
     callback: GameResultsRedirectType,
     rewardSetter: OutputEmitterRef<Parameters<GameResultsRedirectType>>,
   ): void {
-    debugger;
     if (!result.battleEnded) return;
 
     const userWon = result.winner === 'user';

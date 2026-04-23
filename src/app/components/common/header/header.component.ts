@@ -4,7 +4,6 @@ import { DecimalPipe } from '@angular/common';
 import { CURRENCY_NAMES, USER_TOKEN } from '../../../constants';
 import { UsersService } from '../../../services/users/users.service';
 import { User } from '../../../services/users/users.interfaces';
-import { BossRewardCurrency } from '../../../models/reward-based.model';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { NotificationMarkerComponent } from '../../../directives/notification-marker/notification-marker.component';
 import {
@@ -19,6 +18,7 @@ import {
   ModalWindowService,
 } from '../../../services/modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../modal-window/modal-interfaces';
+import { BattleRewardCurrency } from '../../../models/reward-based.model';
 
 @Component({
   selector: 'app-header',
@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
     return this.user.currency;
   }
 
-  getDisplayCurrency(): Record<'alias' | 'amount', BossRewardCurrency | number>[] {
+  getDisplayCurrency(): Record<'alias' | 'amount', BattleRewardCurrency | number>[] {
     const currency = this.currency;
 
     return [

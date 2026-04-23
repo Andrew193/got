@@ -12,12 +12,14 @@
           Battle {{ data.battleConfig.battleIndex + 1 }}
         }
       </h3>
-      <p class="hero-select-modal__subtitle">
-        Select up to {{ data.battleConfig.maxUserUnits }} hero(es)
-      </p>
-      <p class="hero-select-modal__opponent">
-        Opponent: <strong>{{ data.battleConfig.baseOpponent.name }}</strong> — Lv.
-        {{ data.battleConfig.baseOpponent.level }}
+      <p class="header-p">
+        <span class="hero-select-modal__subtitle">
+          Select up to {{ data.battleConfig.maxUserUnits }} hero(es)
+        </span>
+        <span class="hero-select-modal__opponent">
+          Opponent: <strong>{{ data.battleConfig.baseOpponent.name }}</strong> — Lv.
+          {{ data.battleConfig.baseOpponent.level }}
+        </span>
       </p>
     </div>
 

@@ -4,8 +4,8 @@ import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.ser
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { RewardService } from '../../../services/reward/reward.service';
 import { UsersService } from '../../../services/users/users.service';
-import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
-import { HeroesNamesCodes, UnitConfig } from '../../../models/units-related/unit.model';
+import { Coordinate, GameResultsRedirectType, TileUnit } from '../../../models/field.model';
+import { HeroesNamesCodes, UnitConfig, UnitName } from '../../../models/units-related/unit.model';
 import { BossReward } from '../../../models/reward-based.model';
 import { Store } from '@ngrx/store';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
@@ -13,15 +13,13 @@ import { Currency } from '../../../services/users/users.interfaces';
 
 export type CampaignBattleState = {
   isCampaign: true;
-  userUnitNames: string[];
+  userUnitNames: UnitName[];
   aiUnitNames: HeroesNamesCodes[];
   aiUnitConfig: UnitConfig;
   reward: BossReward;
 };
 
-// Field dimensions: rows=7 (x: 0-6), columns=10 (y: 0-9)
-// User side: columns 0-3 (left), AI side: columns 6-9 (right)
-const AI_POSITIONS: { x: number; y: number }[] = [
+const AI_POSITIONS: Coordinate[] = [
   { x: 3, y: 8 },
   { x: 2, y: 7 },
   { x: 4, y: 7 },
@@ -29,7 +27,7 @@ const AI_POSITIONS: { x: number; y: number }[] = [
   { x: 5, y: 8 },
 ];
 
-const USER_POSITIONS: { x: number; y: number }[] = [
+const USER_POSITIONS: Coordinate[] = [
   { x: 3, y: 1 },
   { x: 2, y: 2 },
   { x: 4, y: 2 },
@@ -62,7 +60,6 @@ export class CampaignBattlefieldComponent {
   userUnits: TileUnit[] = [];
 
   constructor() {
-    debugger;
     const state = history.state as CampaignBattleState | null;
 
     if (!state?.isCampaign || !state.userUnitNames?.length || !state.aiUnitNames?.length) {
@@ -71,28 +68,20 @@ export class CampaignBattlefieldComponent {
       return;
     }
 
-    this.userUnits = state.userUnitNames.map((name, index) => {
-      const pos = USER_POSITIONS[index] ?? { x: index, y: 1 };
-
+    const getTileUnitCover = (name: UnitName, pos: Coordinate, isUser = true) => {
       return this.heroesService.getTileUnit(this.heroesService.getUnitByName(name), {
-        user: true,
+        user: isUser,
         x: pos.x,
         y: pos.y,
       });
-    });
+    };
 
-    this.aiUnits = state.aiUnitNames.map((aiUnitName, index) => {
-      const pos = AI_POSITIONS[index] ?? { x: index % 5, y: 8 };
-
-      return this.heroesService.getTileUnit(
-        this.heroesService.getUnitByName(aiUnitName, state.aiUnitConfig),
-        {
-          user: false,
-          x: pos.x,
-          y: pos.y,
-        },
-      );
-    });
+    this.userUnits = state.userUnitNames.map((name, index) =>
+      getTileUnitCover(name, USER_POSITIONS[index] ?? { x: index, y: 1 }),
+    );
+    this.aiUnits = state.aiUnitNames.map((name, index) =>
+      getTileUnitCover(name, AI_POSITIONS[index] ?? { x: index % 5, y: 8 }, false),
+    );
   }
 
   onBattleEnd([aiUnits, win]: Parameters<GameResultsRedirectType>) {
@@ -108,9 +97,9 @@ export class CampaignBattlefieldComponent {
     this.store.dispatch(GameBoardActions.setBattleReward({ data: currency }));
   }
 
-  gameResultsRedirect: GameResultsRedirectType = () => {
+  gameResultsRedirect: GameResultsRedirectType = (_, __, currency) => {
     this.usersService
-      .updateCurrency(this.rewardService.mostResentRewardCurrency)
+      .updateCurrency(currency || this.rewardService.mostResentRewardCurrency)
       .subscribe(() => this.nav.goToCampaign());
   };
 

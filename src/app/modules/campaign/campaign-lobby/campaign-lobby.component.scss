@@ -3,9 +3,14 @@
 .campaign-lobby {
   @include index.mixin-got-btn;
   @include index.mixin-page-container;
+  color: white;
+
+  div:has(app-campaign-difficulty-selector) {
+    border-bottom: 1px solid #333;
+    border-top: 1px solid #333;
+  }
 
   &__header {
-    border-bottom: 1px solid #333;
     margin-bottom: 8px;
   }
 
@@ -18,11 +23,11 @@
   &__subtitle {
     margin: 0;
     font-size: 13px;
-    color: #888;
+    font-weight: 400;
   }
 
   &__placeholder {
-    color: #666;
+    font-weight: 400;
     font-style: italic;
   }
 

@@ -1,3 +1,5 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
 .battle-card {
   cursor: pointer;
   border: 2px solid transparent;
@@ -14,12 +16,12 @@
   }
 
   &.selected {
-    border-color: #c8a84b;
+    border-color: index.$var-gold;
     background-color: rgba(200, 168, 75, 0.15);
   }
 
   &.is-boss {
-    border-color: #8b0000;
+    border-color: index.$var-deap-red;
     background-color: rgba(139, 0, 0, 0.2);
 
     &.selected {
@@ -36,10 +38,10 @@
     font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
-    color: #aaa;
+    color: index.$var-basic-golden;
 
     .is-boss & {
-      color: #ff6666;
+      color: index.$var-deap-bright-red;
     }
   }
 

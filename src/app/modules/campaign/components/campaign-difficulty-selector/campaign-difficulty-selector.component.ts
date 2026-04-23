@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { BossDifficulty } from '../../../../services/facades/daily-boss/daily-boss.service';
+import { BossDifficulty } from '../../../../services/abstract/battle-rewards/battle-rewards.service';
 
 type DifficultyConfig = {
   level: BossDifficulty;

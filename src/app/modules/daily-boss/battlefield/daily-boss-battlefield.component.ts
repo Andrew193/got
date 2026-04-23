@@ -2,13 +2,11 @@ import { Component, inject } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { ActivatedRoute } from '@angular/router';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
-import {
-  BossDifficulty,
-  DailyBossFacadeService,
-} from '../../../services/facades/daily-boss/daily-boss.service';
+import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
 import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { UnitName } from '../../../models/units-related/unit.model';
 import { RewardService } from '../../../services/reward/reward.service';
+import { BossDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 @Component({
   selector: 'app-battlefield',
