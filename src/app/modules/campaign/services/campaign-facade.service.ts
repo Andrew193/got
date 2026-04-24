@@ -7,7 +7,7 @@ import { CampaignBattleState } from '../campaign-battlefield/campaign-battlefiel
 import { HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
 import {
   BattleRewardsService,
-  BossDifficulty,
+  BattleDifficulty,
 } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 type DifficultyParams = {
@@ -22,8 +22,8 @@ type DifficultyParams = {
   rewardMultiplier: number;
 };
 
-const DIFFICULTY_PARAMS: Record<BossDifficulty, DifficultyParams> = {
-  [BossDifficulty.easy]: {
+const DIFFICULTY_PARAMS: Record<BattleDifficulty, DifficultyParams> = {
+  [BattleDifficulty.easy]: {
     baseLevelForDifficulty: 1,
     screenLevelStep: 3,
     battleLevelStep: 1,
@@ -34,7 +34,7 @@ const DIFFICULTY_PARAMS: Record<BossDifficulty, DifficultyParams> = {
     eqScreenStep: 0,
     rewardMultiplier: 1,
   },
-  [BossDifficulty.normal]: {
+  [BattleDifficulty.normal]: {
     baseLevelForDifficulty: 10,
     screenLevelStep: 5,
     battleLevelStep: 2,
@@ -45,7 +45,7 @@ const DIFFICULTY_PARAMS: Record<BossDifficulty, DifficultyParams> = {
     eqScreenStep: 0,
     rewardMultiplier: 3,
   },
-  [BossDifficulty.hard]: {
+  [BattleDifficulty.hard]: {
     baseLevelForDifficulty: 25,
     screenLevelStep: 8,
     battleLevelStep: 3,
@@ -56,7 +56,7 @@ const DIFFICULTY_PARAMS: Record<BossDifficulty, DifficultyParams> = {
     eqScreenStep: 10,
     rewardMultiplier: 9,
   },
-  [BossDifficulty.very_hard]: {
+  [BattleDifficulty.very_hard]: {
     baseLevelForDifficulty: 45,
     screenLevelStep: 12,
     battleLevelStep: 5,
@@ -126,11 +126,11 @@ const BOSS_NAMES: HeroesNamesCodes[] = [
 ];
 
 // maxUserUnits for regular battles (battleIndex 0-4)
-const MAX_USER_UNITS_REGULAR: Record<BossDifficulty, number> = {
-  [BossDifficulty.easy]: 1,
-  [BossDifficulty.normal]: 2,
-  [BossDifficulty.hard]: 3,
-  [BossDifficulty.very_hard]: 4,
+const MAX_USER_UNITS_REGULAR: Record<BattleDifficulty, number> = {
+  [BattleDifficulty.easy]: 1,
+  [BattleDifficulty.normal]: 2,
+  [BattleDifficulty.hard]: 3,
+  [BattleDifficulty.very_hard]: 4,
 };
 
 // maxUserUnits for boss battles per screen
@@ -138,13 +138,13 @@ const MAX_USER_UNITS_BOSS: number[] = [2, 2, 3, 3, 4];
 
 @Injectable({ providedIn: 'root' })
 export class CampaignFacadeService extends BattleRewardsService {
-  override bossReward: Record<BossDifficulty, BossReward> = {} as Record<
-    BossDifficulty,
+  override bossReward: Record<BattleDifficulty, BossReward> = {} as Record<
+    BattleDifficulty,
     BossReward
   >;
   private nav = inject(NavigationService);
 
-  getScreens(difficulty: BossDifficulty): CampaignScreenConfig[] {
+  getScreens(difficulty: BattleDifficulty): CampaignScreenConfig[] {
     const params = DIFFICULTY_PARAMS[difficulty];
     const screens: CampaignScreenConfig[] = [];
 
@@ -188,7 +188,7 @@ export class CampaignFacadeService extends BattleRewardsService {
         const reward = this.buildReward(params.rewardMultiplier, screenMultiplier, isBoss);
 
         screen.push({
-          id: `${BossDifficulty[difficulty]}-s${screenIndex}-b${battleIndex}`,
+          id: `${BattleDifficulty[difficulty]}-s${screenIndex}-b${battleIndex}`,
           screenIndex,
           battleIndex,
           isBoss,
@@ -224,7 +224,7 @@ export class CampaignFacadeService extends BattleRewardsService {
 
   startBattle(
     config: CampaignBattleConfig,
-    difficulty: BossDifficulty,
+    difficulty: BattleDifficulty,
     userUnits: UnitName[],
     aiUnits: HeroesNamesCodes[],
     userId: string,

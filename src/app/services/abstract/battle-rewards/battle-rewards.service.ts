@@ -7,15 +7,24 @@ import {
 import { CURRENCY_NAMES } from '../../../constants';
 import { UsersService } from '../../users/users.service';
 
-export enum BossDifficulty {
+export enum BattleDifficulty {
   easy,
   normal,
   hard,
   very_hard,
 }
 
+export const BattleDifficultyNumbers = {
+  easy: 0,
+  normal: 1,
+  hard: 2,
+  very_hard: 3,
+} as const;
+
+export type BattleDifficultyNumbersKeys = keyof typeof BattleDifficultyNumbers;
+
 type DifficultyConfig = {
-  level: BossDifficulty;
+  level: BattleDifficulty;
   heading: string;
 };
 
@@ -26,15 +35,15 @@ export abstract class BattleRewardsService {
   usersService = inject(UsersService);
 
   difficultyConfigs: DifficultyConfig[] = [
-    { level: BossDifficulty.easy, heading: 'Super Easy' },
-    { level: BossDifficulty.normal, heading: 'Easy' },
-    { level: BossDifficulty.hard, heading: 'Medium' },
-    { level: BossDifficulty.very_hard, heading: 'Hard' },
+    { level: BattleDifficulty.easy, heading: 'Super Easy' },
+    { level: BattleDifficulty.normal, heading: 'Easy' },
+    { level: BattleDifficulty.hard, heading: 'Medium' },
+    { level: BattleDifficulty.very_hard, heading: 'Hard' },
   ];
 
-  abstract bossReward: Record<BossDifficulty, BossReward>;
+  abstract bossReward: Record<BattleDifficulty, BossReward>;
 
-  getBossRewardDescription(level: BossDifficulty): BattleRewardsConfig<BattleRewardCurrency> {
+  getBossRewardDescription(level: BattleDifficulty): BattleRewardsConfig<BattleRewardCurrency> {
     const reward = this.bossReward[level];
     const coins: BattleRewardCurrency[] = [
       CURRENCY_NAMES.copper,

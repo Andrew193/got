@@ -6,7 +6,7 @@ import { DailyBossFacadeService } from '../../../services/facades/daily-boss/dai
 import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { UnitName } from '../../../models/units-related/unit.model';
 import { RewardService } from '../../../services/reward/reward.service';
-import { BossDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 @Component({
   selector: 'app-battlefield',
@@ -19,7 +19,7 @@ export class DailyBossBattlefieldComponent {
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
-  level: BossDifficulty = BossDifficulty.easy;
+  level: BattleDifficulty = BattleDifficulty.easy;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,7 +27,7 @@ export class DailyBossBattlefieldComponent {
   ) {
     this.route.params.subscribe(value => {
       if (value['bossLevel']) {
-        this.level = +value['bossLevel'];
+        this.level = value['bossLevel'];
 
         const temp = this.heroesService.helper.getEquipmentForUnit({
           ...this.heroesService.getDailyBossVersion1(),

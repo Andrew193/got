@@ -13,7 +13,7 @@ import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { RewardService } from '../../reward/reward.service';
 import {
   BattleRewardsService,
-  BossDifficulty,
+  BattleDifficulty,
 } from '../../abstract/battle-rewards/battle-rewards.service';
 
 @Injectable({
@@ -27,8 +27,8 @@ export class DailyBossFacadeService extends BattleRewardsService {
   numberService = inject(NumbersService);
   notificationService = inject(NotificationsService);
 
-  bossReward: Record<BossDifficulty, BossReward> = {
-    [BossDifficulty.easy]: {
+  bossReward: Record<BattleDifficulty, BossReward> = {
+    [BattleDifficulty.easy]: {
       copper: 10000,
       copperWin: 100000,
       copperDMG: 2500,
@@ -39,7 +39,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
       goldWin: 50,
       goldDMG: 35000,
     },
-    [BossDifficulty.normal]: {
+    [BattleDifficulty.normal]: {
       copper: 30000,
       copperWin: 300000,
       copperDMG: 25000,
@@ -50,7 +50,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
       goldWin: 300,
       goldDMG: 350000,
     },
-    [BossDifficulty.hard]: {
+    [BattleDifficulty.hard]: {
       copper: 90000,
       copperWin: 1000000,
       copperDMG: 150000,
@@ -61,7 +61,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
       goldWin: 1000,
       goldDMG: 500000,
     },
-    [BossDifficulty.very_hard]: {
+    [BattleDifficulty.very_hard]: {
       copper: 300000,
       copperWin: 2300000,
       copperDMG: 250000,
@@ -74,10 +74,10 @@ export class DailyBossFacadeService extends BattleRewardsService {
     },
   };
 
-  uppBoss(version: BossDifficulty) {
-    const versions: Record<BossDifficulty, any> = {
-      [BossDifficulty.easy]: {},
-      [BossDifficulty.normal]: {
+  uppBoss(version: BattleDifficulty) {
+    const versions: Record<BattleDifficulty, any> = {
+      [BattleDifficulty.easy]: {},
+      [BattleDifficulty.normal]: {
         level: 20,
         rank: 2,
         eq1Level: 50,
@@ -85,7 +85,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
         eq3Level: 50,
         eq4Level: 50,
       },
-      [BossDifficulty.hard]: {
+      [BattleDifficulty.hard]: {
         level: 40,
         rank: 4,
         eq1Level: 100,
@@ -93,7 +93,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
         eq3Level: 100,
         eq4Level: 100,
       },
-      [BossDifficulty.very_hard]: {
+      [BattleDifficulty.very_hard]: {
         level: 60,
         rank: 6,
         eq1Level: 200,
@@ -106,7 +106,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
     return versions[version];
   }
 
-  getRewardToCollect(level: BossDifficulty, dmg: number, win: boolean) {
+  getRewardToCollect(level: BattleDifficulty, dmg: number, win: boolean) {
     const targetBossConfig = this.bossReward[level];
 
     const copperTimes = this.numberService.roundDown(dmg / targetBossConfig.copperDMG, 0);

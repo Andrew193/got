@@ -1,6 +1,6 @@
 import { HeroesNamesCodes, UnitConfig } from '../../../models/units-related/unit.model';
 import { BossReward } from '../../../models/reward-based.model';
-import { BossDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 export type CampaignBattleConfig = {
   id: string; // уникальный ID: `${difficulty}-s${screen}-b${battle}`
@@ -20,7 +20,7 @@ export type CampaignBattleConfig = {
 export type CampaignScreenConfig = CampaignBattleConfig[];
 
 export type CampaignDifficultyConfig = {
-  difficulty: BossDifficulty;
+  difficulty: BattleDifficulty;
   screens: CampaignScreenConfig[]; // всегда 5 экранов
 };
 

@@ -1,6 +1,10 @@
 import { Component, computed, input, output } from '@angular/core';
 import { CampaignBattleConfig } from '../../models/campaign.models';
 import { CampaignBattleCardComponent } from '../campaign-battle-card/campaign-battle-card.component';
+import {
+  BattleDifficultyNumbers,
+  BattleDifficultyNumbersKeys,
+} from '../../../../services/abstract/battle-rewards/battle-rewards.service';
 
 @Component({
   selector: 'app-campaign-screen',
@@ -23,9 +27,24 @@ export class CampaignScreenComponent {
   });
 
   isLocked = computed(() => {
-    const unlockedId = this.unlockedBattleId();
+    const unlockedId = this.unlockedBattleId() || '';
 
-    return (battle: CampaignBattleConfig) => battle.id !== unlockedId;
+    return (battleConfig: CampaignBattleConfig) => {
+      if (battleConfig.id && unlockedId) {
+        const [difficulty, screen, battle] = battleConfig.id.split('-');
+        const [selectedDifficulty, selectedScreen, selectedBattle] = unlockedId.split('-');
+
+        const dIndex =
+          BattleDifficultyNumbers[selectedDifficulty as BattleDifficultyNumbersKeys] >=
+          BattleDifficultyNumbers[difficulty as BattleDifficultyNumbersKeys];
+        const sIndex = selectedScreen.replace(/\D/g, '') >= screen.replace(/\D/g, '');
+        const bIndex = selectedBattle.replace(/\D/g, '') >= battle.replace(/\D/g, '');
+
+        return !(dIndex && sIndex && bIndex);
+      }
+
+      return true;
+    };
   });
 
   onBattleClicked(battle: CampaignBattleConfig) {

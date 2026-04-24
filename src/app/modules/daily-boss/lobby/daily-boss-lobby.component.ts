@@ -15,7 +15,7 @@ import { PageLoaderComponent } from '../../../components/views/page-loader/page-
 import { TrainingMatcherCover } from '../../training/training-config/training-config.component';
 import { LoaderService } from '../../../services/resolver-loader/loader.service';
 import { selectUnits } from '../../../store/reducers/units-configurator.reducer';
-import { BossDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -53,17 +53,17 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent<PreviewUni
   selectedTileHero: TileUnit = this.heroesService.getTileUnit(this.selectedHero);
   config = this.dailyBossService.difficultyConfigs;
 
-  getBossRewardDescription = (level: BossDifficulty) =>
+  getBossRewardDescription = (level: BattleDifficulty) =>
     this.dailyBossService.getBossRewardDescription(level);
 
-  upBoss(version: BossDifficulty) {
+  upBoss(version: BattleDifficulty) {
     return this.heroesService.helper.getEquipmentForUnit({
       ...this.selectedHero,
       ...this.dailyBossService.uppBoss(version),
     });
   }
 
-  openFight(bossLevel: BossDifficulty) {
+  openFight(bossLevel: BattleDifficulty) {
     this.nav.goToDailyBossBattle(
       bossLevel,
       this.chosenUnits().map(el => el.name),

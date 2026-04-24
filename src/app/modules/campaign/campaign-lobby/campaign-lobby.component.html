@@ -24,38 +24,48 @@
       (difficultySelected)="selectDifficulty($event)" />
   </div>
 
-  @if (selectedDifficulty() !== null) {
-    <div class="campaign-lobby__content p-2">
-      <app-campaign-screen
-        [battles]="currentScreenBattles()"
-        [selectedBattleId]="selectedBattle()?.id ?? null"
-        [unlockedBattleId]="unlockedBattleIdForCurrentScreen()"
-        (battleSelected)="onBattleSelected($event)" />
+  <div class="campaign-lobby__content p-2">
+    @if (selectedDifficulty() !== null) {
+      @let selectedBattleId = selectedBattle()?.id || null;
+      @let unlockedBattleId = unlockedBattleIdForCurrentScreen();
 
-      <mat-paginator
-        [length]="screensCount"
-        [pageSize]="1"
-        [pageIndex]="currentPage()"
-        [hidePageSize]="true"
-        (page)="onPageChanged($event)" />
+      <section class="mb-2 pb-2">
+        <app-campaign-screen
+          [battles]="currentScreenBattles()"
+          [selectedBattleId]="selectedBattleId"
+          [unlockedBattleId]="unlockedBattleId"
+          (battleSelected)="onBattleSelected($event)" />
 
-      <div class="campaign-lobby__actions row g-2 mt-2">
-        <div class="col-8">
-          <button class="w-100 got-toggle" (click)="goBack()">Back to Castle</button>
-        </div>
-        <div class="col-4">
-          <button
-            class="w-100 got-toggle got-toggle-red"
-            [disabled]="!isFightEnabled()"
-            (click)="openFightModal()">
-            Fight
-          </button>
-        </div>
+        <mat-paginator
+          class="ms-2 me-2"
+          [length]="screensCount"
+          [pageSize]="1"
+          [pageIndex]="currentPage()"
+          [hidePageSize]="true"
+          (page)="onPageChanged($event)" />
+      </section>
+    } @else {
+      <div class="campaign-lobby__placeholder p-4 text-center">
+        <p class="mb-0">Select a difficulty to begin your campaign</p>
+      </div>
+    }
+    <div class="campaign-lobby__actions row g-2 mt-0">
+      <div class="col-8 mt-0">
+        <button class="w-100 got-toggle" (click)="goBack()">Back to Castle</button>
+      </div>
+      <div class="col-4 mt-0">
+        <button
+          class="w-100 got-toggle got-toggle-red"
+          [disabled]="!isFightEnabled()"
+          (click)="openFightModal()">
+          Fight
+        </button>
       </div>
     </div>
-  } @else {
-    <div class="campaign-lobby__placeholder p-4 text-center">
-      <p>Select a difficulty to begin your campaign</p>
-    </div>
-  }
+
+    <p class="oath mt-3">
+      To unlock new levels, you must win the previous one at least once in the "Hand" mode. The
+      "Skip Fight" button does not count.
+    </p>
+  </div>
 </div>

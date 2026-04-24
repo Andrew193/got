@@ -1,5 +1,12 @@
 @use '../../../../../assets/resourses/styles/index' as index;
 
+:host {
+  &:not(:has(.locked)) {
+    box-shadow: index.$var-box-shadow-out;
+    border-radius: 8px;
+  }
+}
+
 .battle-card {
   cursor: pointer;
   border: 2px solid transparent;
@@ -61,6 +68,7 @@
     height: 60px;
     object-fit: cover;
     border-radius: 50%;
+    box-shadow: index.$var-box-shadow;
   }
 
   &__name {

@@ -20,10 +20,11 @@ import { GameBoardActions } from '../../../../store/actions/game-board.actions';
 import { Coordinate, TileUnit } from '../../../../models/field.model';
 import { AI_POSITIONS, USER_POSITIONS } from '../../campaign.constants';
 import { calcCampaignReward } from '../../campaign.utils';
+import { BattleDifficulty } from '../../../../services/abstract/battle-rewards/battle-rewards.service';
 
 export type CampaignHeroSelectModalData = {
   battleConfig: CampaignBattleConfig;
-  difficulty: number;
+  difficulty: BattleDifficulty;
   onFight: (userUnits: UnitName[], aiUnits: HeroesNamesCodes[]) => void;
   onAutoFight: (userUnits: UnitName[], aiUnits: HeroesNamesCodes[]) => void;
   close?: (response?: boolean) => void;

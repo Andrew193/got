@@ -1,0 +1,7 @@
+@if (aiUnits.length && userUnits.length) {
+  <app-game-entry-point
+    [aiUnits]="aiUnits"
+    [userUnits]="userUnits"
+    (battleEndFlag)="onBattleEnd($event)"
+    [gameResultsRedirect]="gameResultsRedirect" />
+}

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { frontRoutes, frontRoutes as FrontRoutes } from '../../../constants';
 import { Router } from '@angular/router';
 import { CampaignBattleState } from '../../../modules/campaign/campaign-battlefield/campaign-battlefield.component';
+import { BattleDifficulty } from '../../abstract/battle-rewards/battle-rewards.service';
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +59,7 @@ export class NavigationService {
     this.router.navigate([FrontRoutes.training, FrontRoutes.trainingBattle]);
   }
 
-  goToDailyBossBattle(level: number, units: string[]) {
+  goToDailyBossBattle(level: BattleDifficulty, units: string[]) {
     this.router.navigate([FrontRoutes.dailyBoss, FrontRoutes.dailyBossBattle, level], {
       queryParams: {
         units: units,

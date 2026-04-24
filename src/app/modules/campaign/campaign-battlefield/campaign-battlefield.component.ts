@@ -27,15 +27,8 @@ export type CampaignBattleState = {
   selector: 'app-campaign-battlefield',
   standalone: true,
   imports: [GameEntryPointComponent],
-  template: `
-    @if (aiUnits.length && userUnits.length) {
-      <app-game-entry-point
-        [aiUnits]="aiUnits"
-        [userUnits]="userUnits"
-        (battleEndFlag)="onBattleEnd($event)"
-        [gameResultsRedirect]="gameResultsRedirect" />
-    }
-  `,
+  templateUrl: './campaign-battlefield.component.html',
+  styleUrl: './campaign-battlefield.component.scss',
 })
 export class CampaignBattlefieldComponent {
   private heroesService = inject(HeroesFacadeService);

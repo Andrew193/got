@@ -1,11 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { CampaignBattleConfig } from '../../models/campaign.models';
+import { ContainerLabelComponent } from '../../../../components/views/container-label/container-label.component';
 
 @Component({
   selector: 'app-campaign-battle-card',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, ContainerLabelComponent],
   templateUrl: './campaign-battle-card.component.html',
   styleUrl: './campaign-battle-card.component.scss',
 })

@@ -1004,8 +1004,6 @@ export class HeroesFacadeService extends ContentService {
   }
 
   getTileUnit(unit: Unit, config?: GetTileConfig): TileUnit {
-    debugger;
-
     return {
       onlyHealer: unit.onlyHealer || false,
       rage: unit.rage,

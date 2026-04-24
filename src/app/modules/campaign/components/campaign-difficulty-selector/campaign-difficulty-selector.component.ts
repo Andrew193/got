@@ -1,9 +1,9 @@
 import { Component, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { BossDifficulty } from '../../../../services/abstract/battle-rewards/battle-rewards.service';
+import { BattleDifficulty } from '../../../../services/abstract/battle-rewards/battle-rewards.service';
 
 type DifficultyConfig = {
-  level: BossDifficulty;
+  level: BattleDifficulty;
   heading: string;
 };
 
@@ -16,12 +16,12 @@ type DifficultyConfig = {
 })
 export class CampaignDifficultySelectorComponent {
   configs = input.required<DifficultyConfig[]>();
-  selected = input<BossDifficulty | null>(null);
-  unlockedDifficulties = input<BossDifficulty[]>([]);
+  selected = input<BattleDifficulty | null>(null);
+  unlockedDifficulties = input<BattleDifficulty[]>([]);
 
-  difficultySelected = output<BossDifficulty>();
+  difficultySelected = output<BattleDifficulty>();
 
-  select(level: BossDifficulty) {
+  select(level: BattleDifficulty) {
     if (!this.unlockedDifficulties().includes(level)) return;
     this.difficultySelected.emit(level);
   }

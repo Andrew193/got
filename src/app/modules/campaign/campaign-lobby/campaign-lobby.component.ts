@@ -14,7 +14,7 @@ import {
 import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.model';
 import {
   BattleRewardsService,
-  BossDifficulty,
+  BattleDifficulty,
 } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 import {
   AfterBattleComponent,
@@ -35,7 +35,7 @@ const SCREENS_COUNT = 5;
   styleUrl: './campaign-lobby.component.scss',
 })
 export class CampaignLobbyComponent extends BattleRewardsService implements OnInit {
-  bossReward: Record<BossDifficulty, BossReward> = {} as Record<BossDifficulty, BossReward>;
+  bossReward: Record<BattleDifficulty, BossReward> = {} as Record<BattleDifficulty, BossReward>;
   private campaignFacade = inject(CampaignFacadeService);
   private modalWindowService = inject(ModalWindowService);
   private nav = inject(NavigationService);
@@ -44,7 +44,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
 
   readonly screensCount = SCREENS_COUNT;
 
-  selectedDifficulty = signal<BossDifficulty | null>(null);
+  selectedDifficulty = signal<BattleDifficulty | null>(null);
   currentPage = signal<number>(0);
   selectedBattle = signal<CampaignBattleConfig | null>(null);
   userProgress = signal<UserProgress | null>(null);
@@ -75,7 +75,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
 
     if (!progress || difficulty === null) return null;
 
-    const diffKey = BossDifficulty[difficulty];
+    const diffKey = BattleDifficulty[difficulty];
     const diffProgress = progress.difficulties[diffKey];
 
     if (!diffProgress) return null;
@@ -84,12 +84,14 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
     return `${diffKey}-s${diffProgress.screenIndex}-b${diffProgress.battleIndex}`;
   });
 
-  unlockedDifficulties = computed<BossDifficulty[]>(() => {
+  unlockedDifficulties = computed<BattleDifficulty[]>(() => {
     const progress = this.userProgress();
 
     if (!progress) return [];
 
-    return progress.unlockedDifficulties.map(d => BossDifficulty[d as keyof typeof BossDifficulty]);
+    return progress.unlockedDifficulties.map(
+      d => BattleDifficulty[d as keyof typeof BattleDifficulty],
+    );
   });
 
   ngOnInit() {
@@ -108,7 +110,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
     });
   }
 
-  selectDifficulty(level: BossDifficulty) {
+  selectDifficulty(level: BattleDifficulty) {
     this.selectedDifficulty.set(level);
     this.currentPage.set(0);
     this.selectedBattle.set(null);
@@ -120,10 +122,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   }
 
   onBattleSelected(battle: CampaignBattleConfig) {
-    if (battle.id !== this.unlockedBattleIdForCurrentScreen()) return;
-    const current = this.selectedBattle();
-
-    this.selectedBattle.set(current?.id === battle.id ? null : battle);
+    this.selectedBattle.update(current => (current?.id === battle.id ? null : battle));
   }
 
   openFightModal() {
