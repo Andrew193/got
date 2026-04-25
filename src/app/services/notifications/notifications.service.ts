@@ -13,6 +13,7 @@ import { ConfigInterface } from '../../models/interfaces/config.interface';
 import { GetConfig } from '../../models/common.model';
 import { DepositService } from '../users/currency/deposit.service';
 import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
+import { HeroProgressService } from '../facades/hero-progress/hero-progress.service';
 
 export enum NotificationType {
   daily_reward,
@@ -20,6 +21,7 @@ export enum NotificationType {
   deposit,
   daily_boss,
   header,
+  hero_progress,
 }
 
 @Injectable({
@@ -30,6 +32,7 @@ export class NotificationsService implements InitInterface {
   private giftService = inject(GiftService);
   private dailyBossService = inject(DailyBossApiService);
   private depositService = inject(DepositService);
+  private heroProgressService = inject(HeroProgressService);
 
   private modalWindowService = inject(ModalWindowService);
 
@@ -37,7 +40,8 @@ export class NotificationsService implements InitInterface {
     .set(NotificationType.daily_reward, false)
     .set(NotificationType.daily_boss, false)
     .set(NotificationType.gift_store, false)
-    .set(NotificationType.header, true);
+    .set(NotificationType.header, true)
+    .set(NotificationType.hero_progress, false);
 
   private notifications: BehaviorSubject<NotificationConfigMap> =
     new BehaviorSubject<NotificationConfigMap>(new Map(this.initNotificationConfig));
@@ -53,6 +57,7 @@ export class NotificationsService implements InitInterface {
         { api: this.giftService, type: NotificationType.gift_store },
         { api: this.dailyBossService, type: NotificationType.daily_boss },
         { api: this.depositService, type: NotificationType.deposit },
+        { api: this.heroProgressService, type: NotificationType.hero_progress },
       ];
 
       services.forEach(el => {

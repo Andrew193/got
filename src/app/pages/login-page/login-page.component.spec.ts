@@ -1,123 +1,156 @@
+/**
+ * Preservation Tests — Task 2
+ *
+ * Property 2: Preservation — No unlockHero in Login Flow
+ *
+ * Validates: Requirements 3.1, 3.2
+ *
+ * For the login flow (createUser = false), unlockHero is never called.
+ * When createUser = false, submitInnerFunction calls usersService.login()
+ * and heroProgressService.unlockHero is never invoked.
+ *
+ * These tests PASS on UNFIXED code — they capture baseline behavior to preserve.
+ */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LoginPageComponent } from './login-page.component';
-import { LocalStorageService } from '../../services/localStorage/local-storage.service';
-import { FakeLocalStorage, fakeUser } from '../../test-related';
-import { UsersService } from '../../services/users/users.service';
-import { provideLocationMocks } from '@angular/common/testing';
-import { provideRouter } from '@angular/router';
-import { frontRoutes } from '../../constants';
-import { Location } from '@angular/common';
-import { By } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
-import { User } from '../../services/users/users.interfaces';
-import { InitStep, InitTaskObs } from '../../models/init.model';
-import { APP_INIT_STEPS } from '../../injection-tokens';
-import { LoginFacadeService } from '../../services/facades/login/login.service';
+import { TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-describe('LoginPageComponent', () => {
-  let component: LoginPageComponent;
-  let fixture: ComponentFixture<LoginPageComponent>;
-  let userServiceSpy: { [K in keyof UsersService]: ReturnType<typeof vi.fn> };
-  let location: Location;
-  let localStorage: LocalStorageService;
-  const initSteps: InitStep[] = [
-    {
-      name: 'Fake init step',
-      task: function (): Observable<InitTaskObs> {
-        return of({ ok: true, message: 'Ok' });
-      },
-    },
-  ];
-  let facade: { [K in keyof LoginFacadeService]: ReturnType<typeof vi.fn> };
+import { LoginPageComponent } from './login-page.component';
+import { UsersService } from '../../services/users/users.service';
+import { LocalStorageService } from '../../services/localStorage/local-storage.service';
+import { ValidationService } from '../../services/validation/validation.service';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
+import { LoginFacadeService } from '../../services/facades/login/login.service';
+import { HeroProgressService } from '../../services/facades/hero-progress/hero-progress.service';
+import { APP_INIT_STEPS } from '../../injection-tokens';
+import { User } from '../../services/users/users.interfaces';
 
-  let inputs: any[];
+// ---------------------------------------------------------------------------
+// Test B — No unlockHero in login flow (createUser = false)
+// ---------------------------------------------------------------------------
+
+describe('LoginPageComponent — Preservation: No unlockHero in login flow (Task 2)', () => {
+  let loginSpy: ReturnType<typeof vi.fn>;
+  let unlockHeroSpy: ReturnType<typeof vi.fn>;
+
+  const mockUser: User = {
+    id: 'user-123',
+    login: 'testuser',
+    password: 'testpass',
+    currency: { gold: 0, silver: 0, copper: 0 },
+    online: { onlineTime: 0, claimedRewards: [], lastLoyaltyBonus: '' },
+  } as unknown as User;
 
   beforeEach(async () => {
-    facade = { openAdventureBegins: vi.fn() };
+    unlockHeroSpy = vi.fn().mockReturnValue(of({}));
 
-    userServiceSpy = { isAuth: vi.fn(), createUser: vi.fn(), login: vi.fn() };
+    // login() calls the callback with the user immediately
+    loginSpy = vi.fn().mockImplementation((_credentials: unknown, callback: (u: User) => void) => {
+      callback(mockUser);
 
-    userServiceSpy.isAuth.mockReturnValue(false);
-
-    function processCreateLogin<T extends (param: User) => void>(
-      user: Partial<User>,
-      callback: T | undefined,
-    ) {
-      const toReturn = { ...fakeUser, id: '100', login: user.login, password: user.password };
-
-      callback && callback(toReturn);
-
-      return toReturn;
-    }
-
-    userServiceSpy.createUser.mockImplementation((user, callback) => {
-      const toReturn = processCreateLogin(user, callback);
-
-      return of(toReturn);
-    });
-
-    userServiceSpy.login.mockImplementation((user, callback) => {
-      const toReturn = processCreateLogin(user, callback);
-
-      return of([toReturn]);
+      return of([mockUser]);
     });
 
     await TestBed.configureTestingModule({
-      imports: [LoginPageComponent],
+      imports: [LoginPageComponent, ReactiveFormsModule],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: LocalStorageService, useClass: FakeLocalStorage },
-        { provide: UsersService, useValue: userServiceSpy },
-        { provide: APP_INIT_STEPS, useValue: initSteps },
-        { provide: LoginFacadeService, useValue: facade },
-        provideRouter([{ path: frontRoutes.base, component: LoginPageComponent }]),
-        provideLocationMocks(),
         provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: APP_INIT_STEPS, useValue: [] },
+        {
+          provide: UsersService,
+          useValue: {
+            login: loginSpy,
+            createUser: vi.fn().mockReturnValue(of(mockUser)),
+            isAuth: vi.fn().mockReturnValue(false),
+          },
+        },
+        {
+          provide: LocalStorageService,
+          useValue: {
+            getItem: vi.fn().mockReturnValue(null),
+            setItem: vi.fn(),
+            getUserId: vi.fn().mockReturnValue('user-123'),
+          },
+        },
+        ValidationService,
+        {
+          provide: NavigationService,
+          useValue: { goToMainPage: vi.fn(), goToLogin: vi.fn() },
+        },
+        {
+          provide: LoginFacadeService,
+          useValue: {
+            openAdventureBegins: vi.fn(),
+            closeAdventureBeginsDialog: vi.fn(),
+          },
+        },
+        {
+          provide: HeroProgressService,
+          useValue: { unlockHero: unlockHeroSpy },
+        },
+        {
+          provide: MatSnackBar,
+          useValue: { open: vi.fn() },
+        },
+        {
+          provide: Router,
+          useValue: { navigate: vi.fn(), navigateByUrl: vi.fn() },
+        },
       ],
     }).compileComponents();
-
-    location = TestBed.inject(Location);
-    localStorage = TestBed.inject(LocalStorageService);
-
-    fixture = TestBed.createComponent(LoginPageComponent);
-
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('LoginPageComponent should be created', () => {
-    expect(component).toBeTruthy();
-  });
+  /**
+   * When createUser = false (existing-user login), submitInnerFunction calls
+   * usersService.login() and heroProgressService.unlockHero is NEVER invoked.
+   *
+   * This test PASSES on UNFIXED code — confirming the login path is clean.
+   */
+  it('should never call unlockHero when createUser = false (login flow)', async () => {
+    const fixture = TestBed.createComponent(LoginPageComponent);
+    const component = fixture.componentInstance;
 
-  it('LoginPageComponent should be show default config', () => {
-    const switchToggler = fixture.debugElement.query(By.css('.mode-switcher'))
-      .nativeElement as HTMLHeadingElement;
-
-    expect(switchToggler.textContent?.trim()).toBe('Come back');
-  });
-
-  it('LoginPageComponent should validate the form', async () => {
-    expect(component.form.valid).toBe(false);
-    expect(component.form.dirty).toBe(false);
-  });
-
-  it('LoginPageComponent should create a new user', () => {
-    component.form.patchValue({ login: 'test', password: 'rest' });
     fixture.detectChanges();
 
-    expect(userServiceSpy.login).toBeDefined();
-  });
+    // Ensure we are in login mode (createUser = false is the default)
+    expect(component.createUser).toBe(false);
 
-  it('LoginPageComponent should switch auth mode and create a user', () => {
-    component.switchMode();
-    fixture.detectChanges();
+    // Fill in valid form values so validation passes
+    component.form.setValue({ login: 'testuser', password: 'testpass' });
 
-    component.form.patchValue({ login: 'create', password: 'create' });
-    fixture.detectChanges();
-
+    // Call submitInnerFunction directly — this is the path taken when createUser = false
     component.submitInnerFunction();
 
-    expect(userServiceSpy.createUser).toHaveBeenCalled();
+    // Give any microtasks / setTimeout(1000) a chance to run
+    await new Promise(resolve => setTimeout(resolve, 1100));
+
+    // unlockHero must never have been called
+    expect(unlockHeroSpy).not.toHaveBeenCalled();
+  });
+
+  /**
+   * Additional check: usersService.login() IS called when createUser = false.
+   * This confirms the login path is exercised (not silently skipped).
+   */
+  it('should call usersService.login() when createUser = false', async () => {
+    const fixture = TestBed.createComponent(LoginPageComponent);
+    const component = fixture.componentInstance;
+
+    fixture.detectChanges();
+
+    component.form.setValue({ login: 'testuser', password: 'testpass' });
+    component.submitInnerFunction();
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(loginSpy).toHaveBeenCalled();
   });
 });

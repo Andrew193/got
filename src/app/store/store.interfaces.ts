@@ -1,4 +1,8 @@
-import { HeroesNamesCodes, PreviewUnit } from '../models/units-related/unit.model';
+import {
+  HeroesNamesCodes,
+  PlayerHeroesProgress,
+  PreviewUnit,
+} from '../models/units-related/unit.model';
 import { DisplayReward } from '../services/reward/reward.service';
 import { RewardValues } from '../models/reward-based.model';
 import { HeroesSelectNames } from '../constants';
@@ -19,6 +23,7 @@ export enum StoreNames {
   heroesSelect = 'heroesSelect',
   gameBoard = 'gameBoard',
   assistant = 'assistant',
+  heroProgress = 'heroProgress',
 }
 
 export enum DisplayRewardNames {
@@ -33,6 +38,7 @@ export type StoreType = {
   [StoreNames.unitsConfigurator]: UnitsConfiguratorState;
   [StoreNames.displayReward]: DisplayRewardState;
   [StoreNames.gameBoard]: BasicBoardState;
+  [StoreNames.heroProgress]: HeroProgressState;
 };
 
 export type FieldConfigState = {
@@ -116,4 +122,11 @@ export type AssistantKeywords = EntityState<Keyword>;
 export type AssistantState = {
   records: AssistantRecords;
   keywords: AssistantKeywords;
+};
+
+//Hero Progress
+export type HeroProgressState = {
+  progress: PlayerHeroesProgress | null;
+  loaded: boolean;
+  error: string | null;
 };

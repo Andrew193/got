@@ -13,6 +13,9 @@ import { ContentService, ContentTypes } from '../../abstract/content/content-ser
 import { TileUnit } from '../../../models/field.model';
 import { HeroesHelperService } from './helpers/heroes-helper.service';
 import { UnitsConfiguratorStateUnit } from '../../../store/store.interfaces';
+import { Store } from '@ngrx/store';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 
 export type HeroesSrcMapData = {
   imgSrc: string;
@@ -152,7 +155,10 @@ export const HeroesSrcMap: Record<HeroesNamesCodes, HeroesSrcMapData> = {
 })
 export class HeroesFacadeService extends ContentService {
   helper = inject(HeroesHelperService);
+  private store = inject(Store);
   allUnits: Unit[] = [];
+
+  private unlockedHeroes = toSignal(this.store.select(selectUnlockedHeroes), { initialValue: [] });
 
   constructor() {
     super();
@@ -1034,6 +1040,24 @@ export class HeroesFacadeService extends ContentService {
 
   getUnitByName(name: UnitName, config?: UnitConfig) {
     const userUnit = this.allUnits.filter(unit => unit.name === name)[0];
+
+    // If no explicit config provided, check if this hero is unlocked and use stored progress
+    if (!config) {
+      const unlockedRecord = this.unlockedHeroes().find(h => h.heroName === name);
+
+      if (unlockedRecord) {
+        const storedConfig: UnitConfig = {
+          level: unlockedRecord.level,
+          rank: unlockedRecord.rank,
+          eq1Level: unlockedRecord.eq1Level,
+          eq2Level: unlockedRecord.eq2Level,
+          eq3Level: unlockedRecord.eq3Level,
+          eq4Level: unlockedRecord.eq4Level,
+        };
+
+        return this.helper.getEquipmentForUnit({ ...userUnit, ...storedConfig });
+      }
+    }
 
     return this.helper.getEquipmentForUnit({ ...userUnit, ...(config || {}) });
   }

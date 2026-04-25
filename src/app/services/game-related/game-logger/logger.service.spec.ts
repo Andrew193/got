@@ -5,6 +5,9 @@ import { LogConfig } from '../../../models/logger.model';
 import { Skill } from '../../../models/units-related/skill.model';
 import { HeroesService } from '../../facades/heroes/heroes.service';
 import { TileUnit } from '../../../models/field.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../../store/store.interfaces';
 
 describe('GameLoggerService', () => {
   let gameLoggerService: GameLoggerService;
@@ -27,7 +30,13 @@ describe('GameLoggerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GameLoggerService, HeroesService],
+      providers: [
+        GameLoggerService,
+        HeroesService,
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
+      ],
     });
 
     gameLoggerService = TestBed.inject(GameLoggerService);

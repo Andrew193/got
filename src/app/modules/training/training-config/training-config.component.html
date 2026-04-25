@@ -54,7 +54,7 @@
       [containerClass]="'no-p'"
       [contextName]="contextName"
       [isUser]="isUser"
-      [allHeroes]="allUnitsForSelect"
+      [allHeroes]="isUser ? allUserUnitsForSelect() : allUnitsForSelect"
       [addUserUnit]="addUserUnit"></app-heroes-select>
   </div>
 </ng-template>

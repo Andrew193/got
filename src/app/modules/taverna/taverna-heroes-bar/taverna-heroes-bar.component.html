@@ -16,10 +16,11 @@
     <div class="row p-0 m-0 g-2 heroes">
       @for (hero of returnedArray; track hero.name) {
         <div class="col mt-0">
+          @let _isHeroLocked = isHeroLocked(hero.name);
           <div
-            class="card hero-card d-flex align-items-center h-100"
+            class="card hero-card d-flex align-items-center h-100 position-relative"
             [class]="getRarityShadowClass(hero)"
-            (click)="openHeroPreview(hero.name)">
+            (click)="openHeroPreview(hero.name, _isHeroLocked)">
             <img class="card-img-top taverna" [src]="hero.fullImgSrc" [alt]="hero.name" />
             <div class="level">
               <div class="position-relative">
@@ -32,6 +33,10 @@
               </div>
             </div>
             <app-rating ngProjectAs="reward-avatar-container" [rating]="hero.rank" />
+
+            @if (_isHeroLocked) {
+              <app-container-label [size]="25" class="color-white" />
+            }
           </div>
         </div>
       }

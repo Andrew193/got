@@ -6,6 +6,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HeroesFacadeService } from '../facades/heroes/heroes.service';
 import { Skill } from '../../models/units-related/skill.model';
 import { Coordinate, Position, Tile, TileUnit } from '../../models/field.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../store/store.interfaces';
 
 describe('UnitService', () => {
   let unitService: UnitService;
@@ -15,7 +18,15 @@ describe('UnitService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UnitService, EffectsService, DomSanitizer, HeroesFacadeService],
+      providers: [
+        UnitService,
+        EffectsService,
+        DomSanitizer,
+        HeroesFacadeService,
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
+      ],
     });
 
     unitService = TestBed.inject(UnitService);

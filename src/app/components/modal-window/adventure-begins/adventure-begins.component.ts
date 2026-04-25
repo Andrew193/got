@@ -1,12 +1,14 @@
 import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { DynamicComponentConfig, HasFooterHost } from '../modal-interfaces';
 import { SceneRunnerService } from '../../../services/facades/scene-runner/scene-runner.service';
-import { ScenesRunnerHost } from '../../../models/interfaces/scenes/scene.interface';
+import { SceneContext, ScenesRunnerHost } from '../../../models/interfaces/scenes/scene.interface';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { ScenariosHelperService } from './helpers/scenarios-helper.service';
+import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
+import { SceneNames } from '../../../constants';
 
 export type Callback = {
-  callback: () => void;
+  callback: (heroName: HeroesNamesCodes) => void;
 };
 
 @Component({
@@ -27,9 +29,12 @@ export class AdventureBeginsComponent implements Partial<HasFooterHost>, ScenesR
   playSequences() {
     this.inProgress = true;
 
-    this.runner.init(this.scenesHelper.adventureScenario).subscribe(() => {
+    this.runner.init(this.scenesHelper.adventureScenario).subscribe(contexts => {
       this.inProgress = false;
-      this._data.callback();
+      const firstBattleCtx = contexts?.[2] as SceneContext<SceneNames.firstBattle>;
+      const heroName = firstBattleCtx?.name as HeroesNamesCodes;
+
+      this._data.callback(heroName);
     });
   }
 }

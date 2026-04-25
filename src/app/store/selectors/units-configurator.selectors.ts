@@ -74,10 +74,17 @@ export function makeCanStartBattle(selectUnits: SelectContexts) {
 }
 
 export function makeSelectUnits(selectUnits: SelectContexts, collection: HeroesSelectNames) {
+  debugger;
+  console.log('dfdsfdsf');
+
   let fromCache = selectUnitsSelectorCache.get(collection);
 
   if (!fromCache) {
-    fromCache = createSelector(selectUnits, ctx => ctx.filter(el => el.collection === collection));
+    fromCache = createSelector(selectUnits, ctx =>
+      ctx.filter(el => {
+        return el.collection === collection;
+      }),
+    );
     selectUnitsSelectorCache.set(collection, fromCache);
   }
 

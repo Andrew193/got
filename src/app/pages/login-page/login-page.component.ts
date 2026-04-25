@@ -14,6 +14,8 @@ import { APP_INIT_STEPS } from '../../injection-tokens';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs';
 import { User } from '../../services/users/users.interfaces';
+import { HeroesNamesCodes } from '../../models/units-related/unit.model';
+import { HeroProgressService } from '../../services/facades/hero-progress/hero-progress.service';
 
 @Component({
   selector: 'app-login-page',
@@ -32,6 +34,7 @@ export class LoginPageComponent implements OnInit {
   facade = inject(LoginFacadeService);
   private snackBar = inject(MatSnackBar);
   cdr = inject(ChangeDetectorRef);
+  private heroProgressService = inject(HeroProgressService);
 
   showModalComponent = false;
 
@@ -58,7 +61,7 @@ export class LoginPageComponent implements OnInit {
     this.showModalComponent = true;
   }
 
-  processing<T>(data: T) {
+  processing<T>(data: T, heroName?: HeroesNamesCodes) {
     if (data instanceof Error) {
       this.form.enable();
       this.snackBar.open(data.message, '', SNACKBAR_CONFIG);
@@ -67,6 +70,14 @@ export class LoginPageComponent implements OnInit {
       this.cdr.detectChanges();
 
       this.localStorageService.setItem(USER_TOKEN, data);
+
+      if (this.createUser && heroName) {
+        const userId = this.localStorageService.getUserId();
+
+        this.heroProgressService.unlockHero(userId, heroName).subscribe({
+          error: () => this.snackBar.open('Failed to unlock hero.', '', SNACKBAR_CONFIG),
+        });
+      }
 
       AppInitializerFunction(this.steps).finally(() => {
         this.form.enable();
@@ -79,17 +90,17 @@ export class LoginPageComponent implements OnInit {
     this.showModalComponent = true;
 
     if (this.createUser) {
-      this.facade.openAdventureBegins(this.submitInnerFunction);
+      this.facade.openAdventureBegins(heroName => this.submitInnerFunction(heroName));
     } else {
       this.submitInnerFunction();
     }
   }
 
-  submitInnerFunction = () => {
+  submitInnerFunction = (heroName?: HeroesNamesCodes) => {
     const callback = (data: Error | User) => {
       setTimeout(() => {
         this.facade.closeAdventureBeginsDialog();
-        this.processing.call(this, data);
+        this.processing.call(this, data, heroName);
       }, 1000);
     };
 

@@ -6,6 +6,9 @@ import { FakeMatDialogRef } from '../../../test-related';
 import { HttpClient } from '@angular/common/http';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { DepositConfig } from '../../../models/iron-bank.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../../store/store.interfaces';
 
 describe('DepositModalComponent', () => {
   let component: DepositModalComponent;
@@ -38,6 +41,9 @@ describe('DepositModalComponent', () => {
           provide: DYNAMIC_COMPONENT_DATA,
           useValue: data,
         },
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
       ],
     }).compileComponents();
 

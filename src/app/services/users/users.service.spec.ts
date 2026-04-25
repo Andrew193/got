@@ -20,6 +20,9 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Currency, User } from './users.interfaces';
 import { Online } from '../online/online.service';
 import { fakeUser } from '../../test-related';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../store/store.interfaces';
 
 describe('UsersService', () => {
   let userService: UsersService;
@@ -59,6 +62,9 @@ describe('UsersService', () => {
         { provide: HttpClient, useValue: httpClientSpy },
         { provide: Router, useValue: routerSpy },
         { provide: LocalStorageService, useValue: localStorageSpy },
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
       ],
     });
 
@@ -80,6 +86,7 @@ describe('UsersService', () => {
     const user = userService.basicUser(userBase);
 
     httpClientSpy.post.mockReturnValue(of(user));
+    httpClientSpy.get.mockReturnValue(of({ userId: user.id, heroes: [] }));
 
     return new Promise<void>(resolve => {
       userService.createUser(userBase, actionHandler).subscribe({

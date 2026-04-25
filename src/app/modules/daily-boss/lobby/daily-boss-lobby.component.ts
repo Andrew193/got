@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { StatsComponent } from '../../../components/views/stats/stats.component';
 import { PreviewUnit, Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
@@ -16,6 +16,7 @@ import { TrainingMatcherCover } from '../../training/training-config/training-co
 import { LoaderService } from '../../../services/resolver-loader/loader.service';
 import { selectUnits } from '../../../store/reducers/units-configurator.reducer';
 import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 
 @Component({
   selector: 'app-daily-boss-lobby',
@@ -35,7 +36,10 @@ import { BattleDifficulty } from '../../../services/abstract/battle-rewards/batt
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
 })
-export class DailyBossLobbyComponent extends BasicHeroSelectComponent<PreviewUnit> {
+export class DailyBossLobbyComponent
+  extends BasicHeroSelectComponent<PreviewUnit>
+  implements OnInit
+{
   nav = inject(NavigationService);
   dailyBossService = inject(DailyBossFacadeService);
 
@@ -45,8 +49,18 @@ export class DailyBossLobbyComponent extends BasicHeroSelectComponent<PreviewUni
   override context = HeroesSelectNames.dailyBossCollection;
   chosenUnits = this.store.selectSignal(selectUnits(this.context));
 
+  private unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
+
   constructor() {
     super();
+  }
+
+  ngOnInit() {
+    const unlockedUnits = this.unlockedHeroes()
+      .map(record => this.heroesService.getUnitByName(record.heroName))
+      .filter(Boolean);
+
+    this.init(unlockedUnits);
   }
 
   selectedHero: Unit = this.heroesService.getDailyBossVersion1();

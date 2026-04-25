@@ -8,7 +8,7 @@ export const modalWindowsNames: Record<
   string,
   Omit<ModalDialogRefs, 'dialogRef' | 'modalConfig'>
 > = {
-  [AdventureBeginsComponent.name]: { name: 'Deposit Information', icon: 'directions_run' },
+  [AdventureBeginsComponent.name]: { name: 'Welcome to the Nights Watch', icon: 'directions_run' },
   [AfterBattleComponent.name]: { name: 'Battle Information', icon: 'castle' },
   [DepositModalComponent.name]: { name: 'Deposit Information', icon: 'currency_exchange' },
   [NotificationComponent.name]: { name: 'Notification Information', icon: 'notifications_active' },

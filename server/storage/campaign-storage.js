@@ -1,27 +1,20 @@
 'use strict';
 
-const express = require('express');
-const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 
-const app = express();
-const PORT = 4568;
-const PROGRESS_FILE = path.join(__dirname, 'campaign-progress.json');
-
-// --- Middleware ---
-app.use(cors({ origin: 'http://localhost:4200' }));
-app.use(express.json());
-
-// --- Init storage ---
-if (!fs.existsSync(PROGRESS_FILE)) {
-  fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ progress: [] }, null, 2), 'utf8');
-}
+const PROGRESS_FILE = path.join(__dirname, '../db/campaign-progress.json');
 
 // --- Constants ---
 const DIFFICULTY_ORDER = ['easy', 'normal', 'hard', 'very_hard'];
-
 const BATTLE_ID_REGEX = /^(easy|normal|hard|very_hard)-s[0-4]-b[0-5]$/;
+
+// --- Init storage ---
+function initCampaignStorage() {
+  if (!fs.existsSync(PROGRESS_FILE)) {
+    fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ progress: [] }, null, 2), 'utf8');
+  }
+}
 
 // --- Pure logic functions ---
 
@@ -33,10 +26,9 @@ function parseBattleId(battleId) {
   if (!isValidBattleId(battleId)) return null;
 
   const parts = battleId.split('-');
-  // difficulty may be "very_hard" (two parts) or single word
-  const bPart = parts[parts.length - 1]; // e.g. "b3"
-  const sPart = parts[parts.length - 2]; // e.g. "s2"
-  const difficulty = parts.slice(0, parts.length - 2).join('-'); // e.g. "very_hard"
+  const bPart = parts[parts.length - 1];
+  const sPart = parts[parts.length - 2];
+  const difficulty = parts.slice(0, parts.length - 2).join('-');
 
   return {
     difficulty,
@@ -72,7 +64,6 @@ function nextProgress(userProgress, difficulty, screenIndex, battleIndex) {
     const nextDifficulty = DIFFICULTY_ORDER[currentIdx + 1];
 
     if (!nextDifficulty) {
-      // very_hard fully completed — no change
       return updated;
     }
 
@@ -124,60 +115,13 @@ function getOrCreateUser(userId) {
   return { store, user };
 }
 
-// --- Endpoints ---
-
-// GET /api/campaign/progress/:userId
-app.get('/api/campaign/progress/:userId', (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { user } = getOrCreateUser(userId);
-
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: 'Storage error' });
-  }
-});
-
-// POST /api/campaign/progress/:userId/complete-battle
-app.post('/api/campaign/progress/:userId/complete-battle', (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { battleId } = req.body;
-
-    if (!isValidBattleId(battleId)) {
-      return res.status(400).json({ error: 'Invalid battleId format', battleId });
-    }
-
-    const { difficulty, screenIndex, battleIndex } = parseBattleId(battleId);
-    const { store, user } = getOrCreateUser(userId);
-
-    const diffProgress = user.difficulties[difficulty];
-    const expectedBattleId = `${difficulty}-s${diffProgress.screenIndex}-b${diffProgress.battleIndex}`;
-
-    if (battleId !== expectedBattleId) {
-      return res.status(409).json({
-        error: 'Battle out of order',
-        expected: expectedBattleId,
-        received: battleId,
-      });
-    }
-
-    const updatedUser = nextProgress(user, difficulty, screenIndex, battleIndex);
-
-    const idx = store.progress.findIndex(u => u.userId === userId);
-
-    store.progress[idx] = updatedUser;
-    writeProgress(store);
-
-    res.json(updatedUser);
-  } catch (err) {
-    res.status(500).json({ error: 'Storage error' });
-  }
-});
-
-// --- Start ---
-app.listen(PORT, () => {
-  console.log(`Campaign Progress Server running on http://localhost:${PORT}`);
-});
-
-module.exports = { parseBattleId, isValidBattleId, nextProgress };
+module.exports = {
+  initCampaignStorage,
+  parseBattleId,
+  isValidBattleId,
+  nextProgress,
+  readProgress,
+  writeProgress,
+  createInitialUserProgress,
+  getOrCreateUser,
+};

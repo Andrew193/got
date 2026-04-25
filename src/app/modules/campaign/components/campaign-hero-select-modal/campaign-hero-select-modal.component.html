@@ -29,6 +29,12 @@
       [contextName]="context"
       [addUserUnit]="addUserUnit" />
 
+    @if (hasNoHeroes()) {
+      <p class="text-center color-white mt-2">
+        No heroes available. Unlock heroes to start a battle.
+      </p>
+    }
+
     @if (chosenUnits().length) {
       <app-heroes-select-preview [units]="chosenUnits()" />
     }
@@ -38,7 +44,7 @@
         <div class="col-6">
           <button
             class="got-toggle w-100"
-            [disabled]="!isFightReady() || isSimulating()"
+            [disabled]="!isFightReady() || isSimulating() || hasNoHeroes()"
             (click)="autoFight()">
             {{ isSimulating() ? '...' : 'Skip Fight' }}
           </button>
@@ -46,7 +52,7 @@
         <div class="col-6">
           <button
             class="got-toggle got-toggle-red w-100"
-            [disabled]="!isFightReady()"
+            [disabled]="!isFightReady() || hasNoHeroes()"
             (click)="fight()">
             Fight
           </button>

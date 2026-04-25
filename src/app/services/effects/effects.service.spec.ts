@@ -5,6 +5,9 @@ import { Effect } from '../../models/effect.model';
 import { ALL_EFFECTS, ALL_EFFECTS_MULTIPLIERS } from '../../constants';
 import { HeroesService } from '../facades/heroes/heroes.service';
 import { TileUnit } from '../../models/field.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../store/store.interfaces';
 
 describe('EffectsService', () => {
   let effectsService: EffectsService;
@@ -13,7 +16,13 @@ describe('EffectsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [EffectsService, HeroesService],
+      providers: [
+        EffectsService,
+        HeroesService,
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
+      ],
     });
 
     effectsService = TestBed.inject(EffectsService);

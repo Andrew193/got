@@ -17,6 +17,7 @@ export const routes: Routes = [
       StateConfigs.heroesSelect,
       StateConfigs.gameBoard,
       StateConfigs.assistant,
+      StateConfigs.heroProgress,
     ],
     children: [
       {

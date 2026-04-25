@@ -36,5 +36,5 @@ export type SceneContext<T extends SceneNames> = {
   [SceneNames.welcome]: SceneConfig;
   [SceneNames.firstHero]: { name: UnitName } & SceneConfig;
   [SceneNames.firstBattle]: { reward: Currency } & SceneContext<SceneNames.firstHero> & SceneConfig;
-  [SceneNames.finalAuth]: SceneConfig;
+  [SceneNames.finalAuth]: { reward: Currency } & SceneContext<SceneNames.firstHero> & SceneConfig;
 }[T];

@@ -6,6 +6,9 @@ import { createDeepCopy } from '../../../helpers';
 import { ALL_EFFECTS } from '../../../constants';
 import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
 import { HeroesFacadeService } from './heroes.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../../store/store.interfaces';
 
 describe('HeroesHelperService', () => {
   let service: HeroesFacadeService;
@@ -28,7 +31,13 @@ describe('HeroesHelperService', () => {
     effectsMock.getEffect.mockImplementation(getEffect);
 
     TestBed.configureTestingModule({
-      providers: [HeroesFacadeService, { provide: EffectsService, useValue: effectsMock }],
+      providers: [
+        HeroesFacadeService,
+        { provide: EffectsService, useValue: effectsMock },
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
+      ],
     });
     service = TestBed.inject(HeroesFacadeService);
   });

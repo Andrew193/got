@@ -4,6 +4,9 @@ import { StatsComponent } from './stats.component';
 import { HeroesService } from '../../../services/facades/heroes/heroes.service';
 import { Unit } from '../../../models/units-related/unit.model';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../../store/store.interfaces';
 
 describe('StatsComponent', () => {
   let component: StatsComponent;
@@ -14,7 +17,12 @@ describe('StatsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [StatsComponent],
-      providers: [HeroesService],
+      providers: [
+        HeroesService,
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
+      ],
     }).compileComponents();
 
     heroesService = TestBed.inject(HeroesService);

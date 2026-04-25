@@ -9,6 +9,7 @@ import { By } from '@angular/platform-browser';
 import { ModalWindowComponent } from '../../components/modal-window/modal-window.component';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { provideHttpClient } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
 
 describe('SiteComponent', () => {
   let component: SiteComponent;
@@ -38,6 +39,7 @@ describe('SiteComponent', () => {
           useValue: navigationServiceSpy,
         },
         provideHttpClient(),
+        provideStore({}),
       ],
     }).compileComponents();
 

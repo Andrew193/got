@@ -1,4 +1,4 @@
-import { Component, computed, inject, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, computed, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { DYNAMIC_COMPONENT_DATA } from '../../../../models/tokens';
 import { CampaignBattleConfig } from '../../models/campaign.models';
 import {
@@ -21,6 +21,7 @@ import { Coordinate, TileUnit } from '../../../../models/field.model';
 import { AI_POSITIONS, USER_POSITIONS } from '../../campaign.constants';
 import { calcCampaignReward } from '../../campaign.utils';
 import { BattleDifficulty } from '../../../../services/abstract/battle-rewards/battle-rewards.service';
+import { selectUnlockedHeroes } from '../../../../store/selectors/hero-progress.selectors';
 
 export type CampaignHeroSelectModalData = {
   battleConfig: CampaignBattleConfig;
@@ -39,7 +40,7 @@ export type CampaignHeroSelectModalData = {
 })
 export class CampaignHeroSelectModalComponent
   extends BasicHeroSelectComponent<PreviewUnit>
-  implements HasFooterHost
+  implements HasFooterHost, OnInit
 {
   @ViewChild('footerHost', { read: ViewContainerRef, static: true })
   footerHost!: ViewContainerRef;
@@ -57,14 +58,26 @@ export class CampaignHeroSelectModalComponent
   override maxHeroes = this.data.battleConfig.maxUserUnits;
   override chosenUnits = this.store.selectSignal(selectUnits(this.context));
 
+  unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
+
   isFightReady = computed(
     () =>
       this.chosenUnits().length >= 1 &&
       this.chosenUnits().length <= this.data.battleConfig.maxUserUnits,
   );
 
+  hasNoHeroes = computed(() => this.unlockedHeroes().length === 0);
+
   constructor() {
     super();
+  }
+
+  ngOnInit() {
+    const unlockedUnits = this.unlockedHeroes()
+      .map(record => this.heroesService.getUnitByName(record.heroName))
+      .filter(Boolean);
+
+    this.init(unlockedUnits);
   }
 
   get isSimulating() {

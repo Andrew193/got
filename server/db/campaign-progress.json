@@ -21,6 +21,28 @@
           "battleIndex": 0
         }
       }
+    },
+    {
+      "userId": "test-user",
+      "unlockedDifficulties": ["easy"],
+      "difficulties": {
+        "easy": {
+          "screenIndex": 0,
+          "battleIndex": 0
+        },
+        "normal": {
+          "screenIndex": 0,
+          "battleIndex": 0
+        },
+        "hard": {
+          "screenIndex": 0,
+          "battleIndex": 0
+        },
+        "very_hard": {
+          "screenIndex": 0,
+          "battleIndex": 0
+        }
+      }
     }
   ]
 }

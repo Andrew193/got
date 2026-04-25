@@ -1,0 +1,829 @@
+{
+  "progress": [
+    {
+      "userId": "test-user",
+      "heroes": [
+        {
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Red Keep Alchemist",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Targaryen Knight",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "White Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Priest",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Brown Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ice River Hunter",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Relina Snow",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Archer of the Free Folk",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Giant",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Night King",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "General Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Captain Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Jon Snow (King in the North)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Gromirt Flame",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ranger",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        }
+      ]
+    },
+    {
+      "userId": "e046",
+      "heroes": [
+        {
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Red Keep Alchemist",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Targaryen Knight",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "White Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Priest",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Brown Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ice River Hunter",
+          "isUnlocked": true,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Relina Snow",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Archer of the Free Folk",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Giant",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Night King",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "General Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Captain Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Jon Snow (King in the North)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Gromirt Flame",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ranger",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        }
+      ]
+    },
+    {
+      "userId": "undefined",
+      "heroes": [
+        {
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Red Keep Alchemist",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Targaryen Knight",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "White Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Priest",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Brown Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ice River Hunter",
+          "isUnlocked": true,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Relina Snow",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Archer of the Free Folk",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Giant",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Night King",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "General Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Captain Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Jon Snow (King in the North)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Gromirt Flame",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ranger",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        }
+      ]
+    },
+    {
+      "userId": "8931",
+      "heroes": [
+        {
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Red Keep Alchemist",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Targaryen Knight",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "White Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Priest",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Brown Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ice River Hunter",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Relina Snow",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Archer of the Free Folk",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Giant",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Night King",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "General Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Captain Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Jon Snow (King in the North)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Gromirt Flame",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ranger",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        }
+      ]
+    },
+    {
+      "userId": "2ed4",
+      "heroes": [
+        {
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Red Keep Alchemist",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Targaryen Knight",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "White Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Priest",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Brown Wolf",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ice River Hunter",
+          "isUnlocked": true,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Relina Snow",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Archer of the Free Folk",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Giant",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Night King",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "General Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Captain Walker",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Jon Snow (King in the North)",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Gromirt Flame",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        },
+        {
+          "heroName": "Ranger",
+          "isUnlocked": false,
+          "level": 1,
+          "rank": 1,
+          "eq1Level": 1,
+          "eq2Level": 1,
+          "eq3Level": 1,
+          "eq4Level": 1
+        }
+      ]
+    }
+  ]
+}

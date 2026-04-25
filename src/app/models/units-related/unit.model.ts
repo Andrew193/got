@@ -145,3 +145,14 @@ export type AddUserUnitCallbackReturnValue = {
   shouldAdd: boolean;
   name?: UnitName;
 };
+
+export interface HeroProgressRecord extends UnitConfig {
+  heroName: HeroesNamesCodes;
+  isUnlocked: boolean;
+}
+
+export interface PlayerHeroesProgress {
+  userId: string;
+  heroes: HeroProgressRecord[];
+  lastLogin?: string;
+}

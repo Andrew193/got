@@ -8,7 +8,10 @@ import { RatingComponent } from '../../../components/common/rating/rating.compon
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TavernaFacadeService } from '../../../services/facades/taverna/taverna.service';
 import { PAGINATION_SERVICE } from '../../../models/tokens';
-import { Unit } from '../../../models/units-related/unit.model';
+import { HeroesNamesCodes, Unit } from '../../../models/units-related/unit.model';
+import { Store } from '@ngrx/store';
+import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
+import { ContainerLabelComponent } from '../../../components/views/container-label/container-label.component';
 
 @Component({
   selector: 'app-taverna-heroes-bar',
@@ -18,27 +21,28 @@ import { Unit } from '../../../models/units-related/unit.model';
     ReactiveFormsModule,
     RatingComponent,
     MatProgressSpinner,
+    ContainerLabelComponent,
   ],
   providers: [{ provide: PAGINATION_SERVICE, useClass: HeroesFacadeService }],
   templateUrl: './taverna-heroes-bar.component.html',
   styleUrl: './taverna-heroes-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
+export class TavernaHeroesBarComponent extends BasePaginationComponent<
+  Unit & { name: HeroesNamesCodes }
+> {
   helper = inject(TavernaFacadeService);
+  store = inject(Store);
+  private unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
 
   formGroup = this.helper.formGroup;
-  filteredOptions;
-  options;
+  config = this.helper.init();
+  filteredOptions = this.config.filteredOptions;
+  options = this.config.options;
 
   constructor(public heroesService: HeroesFacadeService) {
     super();
-    const config = this.helper.init();
-
-    this.options = config.options;
-    this.filteredOptions = config.filteredOptions;
-
-    config.source$.subscribe(newName => {
+    this.config.source$.subscribe(newName => {
       const openFirstPage = () => {
         this.pageChanged({
           pageSize: this.itemsPerPage,
@@ -56,10 +60,14 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<Unit> {
     });
   }
 
+  isHeroLocked(name: HeroesNamesCodes) {
+    return !this.unlockedHeroes().find(el => el.heroName === name);
+  }
+
   getRank = this.heroesService.helper.getRank;
   getRarityShadowClass = this.helper.getRarityShadowClass;
 
-  openHeroPreview(name: string) {
-    this.helper.nav.goToHeroPreview(name);
+  openHeroPreview(name: string, _isHeroLocked: boolean) {
+    !_isHeroLocked && this.helper.nav.goToHeroPreview(name);
   }
 }

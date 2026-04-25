@@ -6,6 +6,9 @@ import { TileUnit } from '../../../models/field.model';
 import { By } from '@angular/platform-browser';
 import { ImageComponent } from '../image/image.component';
 import { EffectsHighlighterComponent } from '../../common/effects-highlighter/effects-highlighter.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../../store/store.interfaces';
 
 describe('SkillsRenderComponent', () => {
   let component: SkillsRenderComponent;
@@ -16,7 +19,12 @@ describe('SkillsRenderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SkillsRenderComponent],
-      providers: [HeroesFacadeService],
+      providers: [
+        HeroesFacadeService,
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
+      ],
     }).compileComponents();
 
     herosService = TestBed.inject(HeroesFacadeService);

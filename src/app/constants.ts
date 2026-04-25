@@ -48,7 +48,7 @@ export const enum PARAMS_TO_CHECK_REACTION {
 export const PARAMS_TO_CHECK: Record<ParamsToCheck, ParamCheckConfig> = {
   userId: {
     reaction: PARAMS_TO_CHECK_REACTION.replace,
-    violation: ['undefined'],
+    violation: ['undefinedik'],
     fixer: req => {
       const newReq = req.clone({
         params: req.params.set('userId', 32),
@@ -59,10 +59,6 @@ export const PARAMS_TO_CHECK: Record<ParamsToCheck, ParamCheckConfig> = {
         switchMap(() => of(newReq)),
       );
     },
-  },
-  dsaContractId: {
-    reaction: PARAMS_TO_CHECK_REACTION.log,
-    violation: ['undefined', 'null', '0', '-1'],
   },
 } as const;
 

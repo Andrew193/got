@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
 import {
   AddUserUnitCallbackReturnValue,
   PreviewUnit,
@@ -22,6 +22,8 @@ import { HEROES_MATCHER_FACADE } from '../../../models/tokens';
 import { TrainingHeroesMatcherService } from '../../../services/facades/training/training-heroes-matcher.service';
 import { HeroesMatcherService } from '../../../services/facades/taverna/helpers/heroes-matcher.service';
 import { HeroesSelectNames } from '../../../constants';
+import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 
 @Component({
   selector: 'app-training-config-matcher-cover',
@@ -54,6 +56,8 @@ export class TrainingConfigComponent implements OnInit {
   store = inject(Store);
   nav = inject(NavigationService);
   facade = inject(TrainingFacadeService);
+  private heroesService = inject(HeroesFacadeService);
+
   gridConfig = this.store.selectSignal(selectTrainingFieldConfig());
   canStartFight = this.store.select(selectCanStartBattle());
 
@@ -70,7 +74,17 @@ export class TrainingConfigComponent implements OnInit {
 
   getUnitKey = this.facade.getUnitKey;
 
+  // AI collection uses all heroes; user collection uses only unlocked heroes
   allUnitsForSelect = this.facade.allUnitsForSelect;
+
+  private unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
+
+  allUserUnitsForSelect = computed(() =>
+    this.unlockedHeroes()
+      .map(record => this.heroesService.getUnitByName(record.heroName))
+      .filter(Boolean)
+      .map(unit => ({ name: unit.name, imgSrc: unit.imgSrc })),
+  );
 
   public addUserUnit = (unit: SelectableUnit, user = true): AddUserUnitCallbackReturnValue => {
     const unitKey = this.getUnitKey(user);

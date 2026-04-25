@@ -3,10 +3,10 @@
     {
       "config": {
         "columnsConfig": {
-          "name": 912,
-          "attack": 100,
-          "defence": 100,
-          "health": 100
+          "name": 248,
+          "attack": 248,
+          "defence": 248,
+          "health": 248
         },
         "pageSize": 25
       },
@@ -21,40 +21,142 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 59976,
+        "onlineTime": 64776,
         "claimedRewards": [],
         "lastLoyaltyBonus": "04/18/2026"
       },
       "currency": {
-        "gold": 56345,
+        "gold": 56547,
         "silver": 133117,
-        "copper": 119561512
+        "copper": 119677158
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
+    },
+    {
+      "id": "db66",
+      "login": "rest2",
+      "password": "rest",
+      "online": {
+        "onlineTime": 0,
+        "claimedRewards": [],
+        "lastLoyaltyBonus": ""
+      },
+      "currency": {
+        "gold": 300,
+        "silver": 1000,
+        "copper": 15000
+      },
+      "createdAt": 1777053344480,
+      "depositId": "a50a"
+    },
+    {
+      "id": "8931",
+      "login": "rest5",
+      "password": "rest",
+      "online": {
+        "onlineTime": 1800,
+        "claimedRewards": [],
+        "lastLoyaltyBonus": ""
+      },
+      "currency": {
+        "gold": 300,
+        "silver": 1000,
+        "copper": 15000
+      },
+      "createdAt": 1777106602669,
+      "depositId": "7e8e"
+    },
+    {
+      "id": "2ed4",
+      "login": "restвывы",
+      "password": "rest",
+      "online": {
+        "onlineTime": 0,
+        "claimedRewards": [],
+        "lastLoyaltyBonus": ""
+      },
+      "currency": {
+        "gold": 300,
+        "silver": 1000,
+        "copper": 15000
+      },
+      "createdAt": 1777109960914,
+      "depositId": "8111"
     }
   ],
   "dailyReward": [
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 21,
-      "totalDays": 106,
-      "lastLogin": "04/24/2026"
+      "day": 22,
+      "totalDays": 107,
+      "lastLogin": "04/25/2026"
+    },
+    {
+      "id": "c365",
+      "day": 0,
+      "totalDays": 0,
+      "lastLogin": "01/01/1970",
+      "userId": "db66"
+    },
+    {
+      "id": "8657",
+      "day": 0,
+      "totalDays": 0,
+      "lastLogin": "01/01/1970",
+      "userId": "8931"
+    },
+    {
+      "id": "c7eb",
+      "day": 0,
+      "totalDays": 0,
+      "lastLogin": "01/01/1970",
+      "userId": "2ed4"
     }
   ],
   "giftTrip": [
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "04/24/2026"
+      "lastLogin": "04/25/2026"
+    },
+    {
+      "id": "26b5",
+      "lastLogin": "01/01/1970",
+      "userId": "db66"
+    },
+    {
+      "id": "4af3",
+      "lastLogin": "01/01/1970",
+      "userId": "8931"
+    },
+    {
+      "id": "0b22",
+      "lastLogin": "01/01/1970",
+      "userId": "2ed4"
     }
   ],
   "dailyBoss": [
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "04/24/2026"
+      "lastLogin": "04/25/2026"
+    },
+    {
+      "id": "255a",
+      "lastLogin": "01/01/1970",
+      "userId": "db66"
+    },
+    {
+      "id": "4021",
+      "lastLogin": "01/01/1970",
+      "userId": "8931"
+    },
+    {
+      "id": "4fbf",
+      "lastLogin": "01/01/1970",
+      "userId": "2ed4"
     }
   ],
   "deposits": [
@@ -66,6 +168,33 @@
       "silver": 0,
       "id": "61ec",
       "userId": "e046"
+    },
+    {
+      "id": "a50a",
+      "copper": 0,
+      "depositDay": 0,
+      "duration": 0,
+      "gold": 0,
+      "silver": 0,
+      "userId": "db66"
+    },
+    {
+      "id": "7e8e",
+      "copper": 0,
+      "depositDay": 0,
+      "duration": 0,
+      "gold": 0,
+      "silver": 0,
+      "userId": "8931"
+    },
+    {
+      "id": "8111",
+      "copper": 0,
+      "depositDay": 0,
+      "duration": 0,
+      "gold": 0,
+      "silver": 0,
+      "userId": "2ed4"
     }
   ]
 }

@@ -30,8 +30,8 @@ export class ChooseFirstHeroComponent
 
   override maxHeroes = 1;
 
-  heroesContext = HeroesSelectNames.firstBattleCollection;
-  chosenUnits = this.store.selectSignal(selectUnits(this.heroesContext));
+  override context = HeroesSelectNames.firstBattleCollection;
+  chosenUnits = this.store.selectSignal(selectUnits(this.context));
 
   constructor() {
     super();
@@ -41,10 +41,10 @@ export class ChooseFirstHeroComponent
   runScene() {}
 
   stopScene() {
-    this.store.dispatch(
-      HeroesSelectActions.resetHeroCollection({ collections: [this.heroesContext] }),
-    );
-    this.bottomSheetRef.dismiss({ name: this.chosenUnits()[0].name, repeat: false });
+    const chosenUnitName = this.chosenUnits()[0].name;
+
+    this.store.dispatch(HeroesSelectActions.resetHeroCollection({ collections: [this.context] }));
+    this.bottomSheetRef.dismiss({ name: chosenUnitName, repeat: false });
   }
 
   getSelectedHero() {

@@ -7,6 +7,9 @@ import { FakeMatBottomSheetRef } from '../../../../../test-related';
 import { SceneContext } from '../../../../../models/interfaces/scenes/scene.interface';
 import { SceneNames } from '../../../../../constants';
 import { HeroesNamesCodes } from '../../../../../models/units-related/unit.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HeroProgressInitialState } from '../../../../../store/reducers/hero-progress.reducer';
+import { StoreNames } from '../../../../../store/store.interfaces';
 
 describe('FirstBattleComponent', () => {
   let component: FirstBattleComponent;
@@ -28,6 +31,9 @@ describe('FirstBattleComponent', () => {
           provide: MAT_BOTTOM_SHEET_DATA,
           useValue: data,
         },
+        provideMockStore({
+          initialState: { [StoreNames.heroProgress]: HeroProgressInitialState },
+        }),
       ],
     }).compileComponents();
 

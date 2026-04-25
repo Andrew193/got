@@ -11,7 +11,7 @@ export type PutPostMetaOf<T> = PutPostMetaBase<T>;
 
 // **************** Params checker ****************
 
-export type ParamsToCheck = 'userId' | 'dsaContractId';
+export type ParamsToCheck = 'userId';
 
 export type ParamViolation = string;
 
