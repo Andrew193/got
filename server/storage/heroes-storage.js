@@ -62,6 +62,7 @@ function createInitialHeroesProgress(userId) {
       eq2Level: 1,
       eq3Level: 1,
       eq4Level: 1,
+      shards: 0,
     })),
   };
 }
@@ -79,6 +80,20 @@ function getOrCreateHeroesUser(userId) {
     user = createInitialHeroesProgress(userId);
     store.progress.push(user);
     writeHeroesProgress(store);
+  } else {
+    // Lazy migration: add shards: 0 to heroes missing the field
+    let migrated = false;
+
+    user.heroes.forEach(hero => {
+      if (hero.shards === undefined) {
+        hero.shards = 0;
+        migrated = true;
+      }
+    });
+
+    if (migrated) {
+      writeHeroesProgress(store);
+    }
   }
 
   return { store, user };

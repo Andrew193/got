@@ -149,6 +149,7 @@ export type AddUserUnitCallbackReturnValue = {
 export interface HeroProgressRecord extends UnitConfig {
   heroName: HeroesNamesCodes;
   isUnlocked: boolean;
+  shards: number;
 }
 
 export interface PlayerHeroesProgress {

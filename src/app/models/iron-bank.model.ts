@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { Currency } from '../services/users/users.interfaces';
+import { CURRENCY_NAMES } from '../constants';
 
 export enum CurEnum {
   COPPER = 'COPPER',
@@ -13,15 +14,15 @@ export type DepositInput = {
   max: number;
 } & (
   | {
-      type: 'copper';
+      type: typeof CURRENCY_NAMES.copper;
       label: 'Copper:';
     }
   | {
-      type: 'silver';
+      type: typeof CURRENCY_NAMES.silver;
       label: 'Silver:';
     }
   | {
-      type: 'gold';
+      type: typeof CURRENCY_NAMES.gold;
       label: 'Gold:';
     }
 );

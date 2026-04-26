@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { CampaignFacadeService } from '../services/campaign-facade.service';
 import { CampaignBattleConfig } from '../models/campaign.models';
@@ -24,13 +25,27 @@ import { RewardService } from '../../../services/reward/reward.service';
 import { BossReward } from '../../../models/reward-based.model';
 import { CampaignProgressService } from '../services/campaign-progress.service';
 import { UserProgress } from '../models/campaign.models';
+import { PageLoaderComponent } from '../../../components/views/page-loader/page-loader.component';
+import { LoaderService } from '../../../services/resolver-loader/loader.service';
+import { frontRoutes } from '../../../constants';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NgClass } from '@angular/common';
 
 const SCREENS_COUNT = 5;
 
 @Component({
   selector: 'app-campaign-lobby',
   standalone: true,
-  imports: [MatPaginator, CampaignDifficultySelectorComponent, CampaignScreenComponent],
+  imports: [
+    MatPaginator,
+    CampaignDifficultySelectorComponent,
+    CampaignScreenComponent,
+    PageLoaderComponent,
+    ReactiveFormsModule,
+    MatProgressBar,
+    NgClass,
+  ],
   templateUrl: './campaign-lobby.component.html',
   styleUrl: './campaign-lobby.component.scss',
 })
@@ -41,8 +56,30 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   private nav = inject(NavigationService);
   private rewardService = inject(RewardService);
   private campaignProgressService = inject(CampaignProgressService);
+  private loaderService = inject(LoaderService);
+  loader = this.loaderService.getPageLoader(frontRoutes.campaign);
 
   readonly screensCount = SCREENS_COUNT;
+  wonBattlesForm = this.campaignFacade.wonBattlesForm;
+
+  private wonBattlesValues = toSignal(this.wonBattlesForm.valueChanges, {
+    initialValue: this.wonBattlesForm.value,
+  });
+
+  currentWonBattles = computed(() => {
+    const difficulty = this.selectedDifficulty();
+
+    if (difficulty === null) return 0;
+
+    const values = this.wonBattlesValues();
+    const key = BattleDifficulty[difficulty] as keyof typeof values;
+
+    return values[key] ?? 0;
+  });
+
+  progressValue = computed(() => Math.min(100, (this.currentWonBattles() / 10) * 100));
+
+  canCollect = computed(() => this.currentWonBattles() >= 10);
 
   selectedDifficulty = signal<BattleDifficulty | null>(null);
   currentPage = signal<number>(0);
@@ -108,6 +145,8 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
         this.isLoading.set(false);
       },
     });
+
+    this.campaignFacade.loadVictories();
   }
 
   selectDifficulty(level: BattleDifficulty) {
@@ -182,5 +221,14 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
 
   goBack() {
     this.nav.goToMainPage();
+  }
+
+  onCollectReward() {
+    const difficulty = this.selectedDifficulty();
+    const screenIndex = this.currentPage();
+
+    if (difficulty === null) return;
+
+    this.campaignFacade.collectVictoryReward(difficulty, screenIndex);
   }
 }

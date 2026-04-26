@@ -16,6 +16,7 @@ import { UnitsConfiguratorStateUnit } from '../../../store/store.interfaces';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
+import { HeroProgressService } from '../hero-progress/hero-progress.service';
 
 export type HeroesSrcMapData = {
   imgSrc: string;
@@ -155,6 +156,7 @@ export const HeroesSrcMap: Record<HeroesNamesCodes, HeroesSrcMapData> = {
 })
 export class HeroesFacadeService extends ContentService {
   helper = inject(HeroesHelperService);
+  heroProgressService = inject(HeroProgressService);
   private store = inject(Store);
   allUnits: Unit[] = [];
 
@@ -1090,13 +1092,17 @@ export class HeroesFacadeService extends ContentService {
 
   getContent(contentType = ContentTypes.USER_UNITS) {
     if (contentType === ContentTypes.USER_UNITS) {
-      return this.allUnits.map(value => ({
-        ...this.getPreviewUnit(value.name),
-        fullImgSrc: value.fullImgSrc,
-        rank: value.rank,
-        level: value.level,
-        rarity: value.rarity,
-      }));
+      return this.allUnits.map(value => {
+        const progressRecord = this.unlockedHeroes().find(h => h.heroName === value.name);
+
+        return {
+          ...this.getPreviewUnit(value.name),
+          fullImgSrc: value.fullImgSrc,
+          rank: progressRecord?.rank ?? value.rank,
+          level: progressRecord?.level ?? value.level,
+          rarity: value.rarity,
+        };
+      });
     }
 
     return [];

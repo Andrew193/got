@@ -176,7 +176,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 15
         },
         {
           "heroName": "Red Keep Alchemist",
@@ -186,7 +187,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 0
         },
         {
           "heroName": "Targaryen Knight",
@@ -196,7 +198,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 14
         },
         {
           "heroName": "White Wolf",
@@ -206,7 +209,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 38
         },
         {
           "heroName": "Priest",
@@ -216,7 +220,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 26
         },
         {
           "heroName": "Brown Wolf",
@@ -226,7 +231,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 11
         },
         {
           "heroName": "Ice River Hunter",
@@ -236,7 +242,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 4
         },
         {
           "heroName": "Relina Snow",
@@ -246,7 +253,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 0
         },
         {
           "heroName": "Archer of the Free Folk",
@@ -256,7 +264,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 24
         },
         {
           "heroName": "Giant",
@@ -266,7 +275,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 13
         },
         {
           "heroName": "Night King",
@@ -276,7 +286,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 0
         },
         {
           "heroName": "General Walker",
@@ -286,7 +297,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 0
         },
         {
           "heroName": "Captain Walker",
@@ -296,7 +308,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 8
         },
         {
           "heroName": "Jon Snow (King in the North)",
@@ -306,7 +319,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 5
         },
         {
           "heroName": "Gromirt Flame",
@@ -316,7 +330,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 2
         },
         {
           "heroName": "Ranger",
@@ -326,7 +341,8 @@
           "eq1Level": 1,
           "eq2Level": 1,
           "eq3Level": 1,
-          "eq4Level": 1
+          "eq4Level": 1,
+          "shards": 0
         }
       ]
     },

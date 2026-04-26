@@ -5,6 +5,37 @@
   object-fit: contain;
 }
 
+.shards-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: unset;
+  position: absolute;
+  z-index: 2;
+  bottom: 30px;
+  width: 100%;
+  padding: 3px 0px;
+  cursor: pointer;
+
+  b:first-of-type {
+    color: index.$var-deap-red;
+  }
+
+  b:last-of-type {
+    color: index.$var-light-green;
+  }
+
+  &:hover {
+    transform: scale(0.95);
+  }
+
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}
+
 .main-content {
   .heroes {
     height: 400px;

@@ -1,4 +1,5 @@
 <div class="campaign-lobby page-container">
+  <app-page-loader [loader]="loader" />
   <div class="campaign-lobby__header p-2">
     <h2 class="campaign-lobby__title">Beyond the Wall</h2>
     <p class="campaign-lobby__subtitle">
@@ -16,12 +17,28 @@
     </div>
   }
 
-  <div class="p-2">
+  <div class="p-2 position-relative">
     <app-campaign-difficulty-selector
       [configs]="difficultyConfigs"
       [selected]="selectedDifficulty()"
       [unlockedDifficulties]="unlockedDifficulties()"
       (difficultySelected)="selectDifficulty($event)" />
+
+    <div class="chest-container">
+      <div>
+        <p>
+          <b>{{ currentWonBattles() }}</b> / <b>10</b> victories
+        </p>
+        <mat-progress-bar class="example-margin" [mode]="'determinate'" [value]="progressValue()">
+        </mat-progress-bar>
+      </div>
+      <img
+        [ngClass]="{
+          'can-collect': canCollect(),
+        }"
+        (click)="onCollectReward()"
+        [src]="'./assets/resourses/imgs/icons/chest_c.png'" />
+    </div>
   </div>
 
   <div class="campaign-lobby__content p-2">

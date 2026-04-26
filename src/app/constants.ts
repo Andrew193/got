@@ -48,7 +48,7 @@ export const enum PARAMS_TO_CHECK_REACTION {
 export const PARAMS_TO_CHECK: Record<ParamsToCheck, ParamCheckConfig> = {
   userId: {
     reaction: PARAMS_TO_CHECK_REACTION.replace,
-    violation: ['undefinedik'],
+    violation: ['undefined'],
     fixer: req => {
       const newReq = req.clone({
         params: req.params.set('userId', 32),
@@ -223,8 +223,8 @@ export const ALL_MOBILITY_EFFECTS_MULTIPLIERS: Record<MobilityEffects, number> =
 } as const;
 
 export const REWARD: RewardLootConstant = {
-  copper: { min: 10000, max: 40000 },
-  gold: { min: 25, max: 50 },
+  copper: { min: 5000, max: 100000 },
+  gold: { min: 10, max: 150 },
   shards: { min: 1, max: 10 },
   silver: { min: 50, max: 250 },
 };

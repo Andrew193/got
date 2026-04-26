@@ -3,7 +3,7 @@ import { ConfigInterface } from '../../../models/interfaces/config.interface';
 
 export class BaseConfigApiService<T> extends ApiService<T> implements ConfigInterface<T> {
   protected url = `/`;
-  iniConfig: Record<string, any> = {
+  protected iniConfig: Record<string, any> = {
     lastLogin: '01/01/1970',
   };
 

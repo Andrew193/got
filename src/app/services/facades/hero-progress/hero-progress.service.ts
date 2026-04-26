@@ -24,14 +24,9 @@ export const HERO_UNLOCK_ERRORS = {
 export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgress> {
   private store = inject(Store);
 
-  override url = '/api/heroes/progress';
-  override iniConfig = {};
+  protected override url = '/api/heroes/progress';
+  protected override iniConfig = {};
 
-  /**
-   * Override getConfig to match our server's response shape.
-   * The server returns a single PlayerHeroesProgress object (not an array),
-   * and creates the record automatically if it doesn't exist.
-   */
   override getConfig(callback: (config: PlayerHeroesProgress) => void) {
     return this.http.get<PlayerHeroesProgress>(`${this.url}/${this.userId}`).pipe(
       tap({
@@ -48,10 +43,6 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     );
   }
 
-  /**
-   * Override initConfigForNewUser — our server auto-creates the record on GET,
-   * so we just call getConfig with a no-op callback.
-   */
   override initConfigForNewUser(userId: string) {
     return this.http.get<PlayerHeroesProgress>(`${this.url}/${userId}`).pipe(
       tap({
@@ -62,17 +53,10 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     );
   }
 
-  /**
-   * Returns the shard cost for unlocking or ranking up a hero.
-   * Formula: rank * 100
-   */
   getUnlockCost(rank: number): number {
     return rank * 100;
   }
 
-  /**
-   * Unlocks a hero for the current user.
-   */
   unlockHero(userId: string, heroName: HeroesNamesCodes): Observable<PlayerHeroesProgress> {
     return this.http.post<PlayerHeroesProgress>(`${this.url}/${userId}/unlock`, { heroName }).pipe(
       tap({
@@ -83,15 +67,30 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     );
   }
 
-  /**
-   * Updates hero progress fields (level, rank, equipment levels).
-   * Validates ranges before sending to server.
-   */
+  addShards(
+    userId: string,
+    heroName: HeroesNamesCodes,
+    amount: number,
+  ): Observable<PlayerHeroesProgress> {
+    return this.http
+      .patch<PlayerHeroesProgress>(`${this.url}/${userId}/shards`, { heroName, amount })
+      .pipe(
+        tap({
+          next: data => {
+            this.store.dispatch(HeroProgressActions.updateHeroSuccess({ data }));
+          },
+        }),
+      );
+  }
+
   updateHeroProgress(
     userId: string,
     heroName: HeroesNamesCodes,
     patch: Partial<
-      Pick<HeroProgressRecord, 'level' | 'rank' | 'eq1Level' | 'eq2Level' | 'eq3Level' | 'eq4Level'>
+      Pick<
+        HeroProgressRecord,
+        'level' | 'rank' | 'eq1Level' | 'eq2Level' | 'eq3Level' | 'eq4Level' | 'shards'
+      >
     >,
   ): Observable<PlayerHeroesProgress> {
     const validationError = this.validatePatch(patch);
@@ -111,9 +110,6 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
       );
   }
 
-  /**
-   * Extracts a UnitConfig from a HeroProgressRecord.
-   */
   toUnitConfig(record: HeroProgressRecord): UnitConfig {
     return {
       level: record.level,

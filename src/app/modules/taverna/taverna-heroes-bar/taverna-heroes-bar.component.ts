@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutocompleteMatInputComponent } from '../../../components/data-inputs/autocomplete-mat-input/autocomplete-mat-input.component';
@@ -12,6 +12,11 @@ import { HeroesNamesCodes, Unit } from '../../../models/units-related/unit.model
 import { Store } from '@ngrx/store';
 import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 import { ContainerLabelComponent } from '../../../components/views/container-label/container-label.component';
+import { HeroProgressFeature } from '../../../store/reducers/hero-progress.reducer';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+type DataType = Unit & { name: HeroesNamesCodes };
 
 @Component({
   selector: 'app-taverna-heroes-bar',
@@ -28,12 +33,14 @@ import { ContainerLabelComponent } from '../../../components/views/container-lab
   styleUrl: './taverna-heroes-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TavernaHeroesBarComponent extends BasePaginationComponent<
-  Unit & { name: HeroesNamesCodes }
-> {
-  helper = inject(TavernaFacadeService);
-  store = inject(Store);
+export class TavernaHeroesBarComponent extends BasePaginationComponent<DataType> {
+  private helper = inject(TavernaFacadeService);
+  private store = inject(Store);
+  private localStorageService = inject(LocalStorageService);
+  private snackBar = inject(MatSnackBar);
+
   private unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
+  private allHeroes = this.store.selectSignal(HeroProgressFeature.selectProgress);
 
   formGroup = this.helper.formGroup;
   config = this.helper.init();
@@ -42,6 +49,14 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<
 
   constructor(public heroesService: HeroesFacadeService) {
     super();
+
+    effect(() => {
+      this.allHeroes();
+      const freshContent = this.heroesService.getContent() as DataType[];
+
+      this.contentArray = freshContent;
+    });
+
     this.config.source$.subscribe(newName => {
       const openFirstPage = () => {
         this.pageChanged({
@@ -60,14 +75,51 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<
     });
   }
 
+  getRank = this.heroesService.helper.getRank;
+  getRarityShadowClass = this.helper.getRarityShadowClass;
+  getRankCost = this.heroesService.heroProgressService.getUnlockCost;
+
   isHeroLocked(name: HeroesNamesCodes) {
     return !this.unlockedHeroes().find(el => el.heroName === name);
   }
 
-  getRank = this.heroesService.helper.getRank;
-  getRarityShadowClass = this.helper.getRarityShadowClass;
+  getHeroesShards(name: HeroesNamesCodes) {
+    return (this.allHeroes()?.heroes || []).filter(el => el.heroName === name)[0].shards ?? 0;
+  }
 
   openHeroPreview(name: string, _isHeroLocked: boolean) {
     !_isHeroLocked && this.helper.nav.goToHeroPreview(name);
+  }
+
+  upgradeRank(event: PointerEvent, name: HeroesNamesCodes, neededAmountOfShards: number) {
+    event.stopPropagation();
+
+    const userId = this.localStorageService.getUserId();
+    const hero = this.allHeroes()!.heroes.find(el => el.heroName === name);
+
+    if (hero) {
+      if (hero.shards >= neededAmountOfShards) {
+        if (hero.isUnlocked) {
+          this.heroesService.heroProgressService
+            .updateHeroProgress(userId, hero.heroName, {
+              ...hero,
+              rank: hero.rank + 1,
+              shards: hero.shards - neededAmountOfShards,
+            })
+            .subscribe(() => {
+              this.snackBar.open(`Hero "${name}" has been upgraded!`, 'Great');
+            });
+        } else {
+          this.heroesService.heroProgressService.unlockHero(userId, hero.heroName).subscribe(() => {
+            this.snackBar.open(`Hero "${name}" has been unlocked!`, 'Great');
+          });
+        }
+      } else {
+        this.snackBar.open(
+          `Not enough shards to ${hero.isUnlocked ? 'upgrade' : 'unlock'} "${name}"!`,
+          'Oh no',
+        );
+      }
+    }
   }
 }

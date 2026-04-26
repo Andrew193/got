@@ -1,0 +1,12 @@
+<div class="m-0 gap-2 container">
+  <img class="hero-avatar" [src]="data.heroImgSrc" [alt]="data.heroName" />
+  <div class="info">
+    <p class="hero-name">You have recived shards!!!</p>
+    <p class="m-0">{{ data.heroName }}</p>
+    <p class="shards m-0">+{{ data.amount }} shards</p>
+    <p class="rarity m-0 rarity--{{ data.rarity }}">{{ rarityLabels[data.rarity] }}</p>
+  </div>
+  <button class="close-btn" mat-icon-button aria-label="Close snackbar" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

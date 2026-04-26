@@ -12,11 +12,14 @@ import { GameBoardActions } from '../../../store/actions/game-board.actions';
 import { AI_POSITIONS, USER_POSITIONS } from '../campaign.constants';
 import { calcCampaignReward } from '../campaign.utils';
 import { CampaignProgressService } from '../services/campaign-progress.service';
+import { CampaignFacadeService } from '../services/campaign-facade.service';
+import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 
 export type CampaignBattleState = {
   isCampaign: true;
   battleId: string;
   userId: string;
+  difficulty: BattleDifficulty;
   userUnitNames: UnitName[];
   aiUnitNames: HeroesNamesCodes[];
   aiUnitConfig: UnitConfig;
@@ -37,6 +40,7 @@ export class CampaignBattlefieldComponent {
   private usersService = inject(UsersService);
   private store = inject(Store);
   private campaignProgressService = inject(CampaignProgressService);
+  private campaignFacade = inject(CampaignFacadeService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -87,6 +91,7 @@ export class CampaignBattlefieldComponent {
     };
 
     if (win && state?.battleId && state?.userId) {
+      this.campaignFacade.incrementVictoryCounter(state.difficulty);
       this.campaignProgressService
         .completeBattle(state.userId, state.battleId)
         .subscribe({ next: () => doNavigate(), error: () => doNavigate() });

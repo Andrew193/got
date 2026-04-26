@@ -5,6 +5,41 @@
   @include index.mixin-page-container;
   color: white;
 
+  .chest-container {
+    position: absolute;
+    right: 0.5rem;
+    top: 0;
+    transform: translateY(10%);
+    display: flex;
+    gap: 15px;
+
+    mat-progress-bar {
+      width: 100px;
+    }
+
+    b:first-of-type {
+      color: index.$var-deap-red;
+    }
+
+    b:last-of-type {
+      color: index.$var-light-green;
+    }
+
+    img.can-collect {
+      filter: drop-shadow(2px 4px 6px index.$var-light-green);
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  ::ng-deep .loader-holder {
+    background: url('../../../../assets/resourses/imgs/background/btwb.png') no-repeat center;
+    background-size: contain;
+  }
+
   div:has(app-campaign-difficulty-selector) {
     border-bottom: 1px solid #333;
     border-top: 1px solid #333;

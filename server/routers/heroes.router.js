@@ -47,12 +47,7 @@ router.post('/progress/:userId/unlock', (req, res) => {
     }
 
     heroRecord.isUnlocked = true;
-    heroRecord.level = 1;
-    heroRecord.rank = 1;
-    heroRecord.eq1Level = 1;
-    heroRecord.eq2Level = 1;
-    heroRecord.eq3Level = 1;
-    heroRecord.eq4Level = 1;
+    heroRecord.shards -= 100;
 
     const idx = store.progress.findIndex(u => u.userId === userId);
 
@@ -102,13 +97,57 @@ router.patch('/progress/:userId/update', (req, res) => {
       });
     }
 
-    const allowedFields = ['level', 'rank', 'eq1Level', 'eq2Level', 'eq3Level', 'eq4Level'];
+    const allowedFields = [
+      'level',
+      'rank',
+      'eq1Level',
+      'eq2Level',
+      'eq3Level',
+      'eq4Level',
+      'shards',
+    ];
 
     for (const field of allowedFields) {
       if (patch[field] !== undefined) {
         heroRecord[field] = patch[field];
       }
     }
+
+    const idx = store.progress.findIndex(u => u.userId === userId);
+
+    store.progress[idx] = user;
+    writeHeroesProgress(store);
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Storage error' });
+  }
+});
+
+// PATCH /api/heroes/progress/:userId/shards
+// Body: { heroName: string, amount: number }
+// Increments shards for a specific hero
+router.patch('/progress/:userId/shards', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { heroName, amount } = req.body;
+
+    if (!heroName || !ALL_HERO_NAMES.includes(heroName)) {
+      return res.status(400).json({ error: 'Invalid heroName' });
+    }
+
+    if (!Number.isInteger(amount) || amount <= 0) {
+      return res.status(400).json({ error: 'Invalid amount' });
+    }
+
+    const { store, user } = getOrCreateHeroesUser(userId);
+    const heroRecord = user.heroes.find(h => h.heroName === heroName);
+
+    if (!heroRecord) {
+      return res.status(404).json({ error: 'Hero record not found', heroName });
+    }
+
+    heroRecord.shards = (heroRecord.shards ?? 0) + amount;
 
     const idx = store.progress.findIndex(u => u.userId === userId);
 

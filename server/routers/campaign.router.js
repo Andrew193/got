@@ -39,6 +39,16 @@ router.post('/progress/:userId/complete-battle', (req, res) => {
     const diffProgress = user.difficulties[difficulty];
     const expectedBattleId = `${difficulty}-s${diffProgress.screenIndex}-b${diffProgress.battleIndex}`;
 
+    // Check if the battle is already completed (replay allowed)
+    const isAlreadyCompleted =
+      screenIndex < diffProgress.screenIndex ||
+      (screenIndex === diffProgress.screenIndex && battleIndex < diffProgress.battleIndex);
+
+    if (isAlreadyCompleted) {
+      // Replay of a completed battle — return current progress without advancing
+      return res.json(user);
+    }
+
     if (battleId !== expectedBattleId) {
       return res.status(409).json({
         error: 'Battle out of order',

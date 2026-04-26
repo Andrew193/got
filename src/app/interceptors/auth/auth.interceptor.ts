@@ -37,7 +37,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return handle401Response(next, modReq);
       }
 
-      return throwError(() => new Error(error.message));
+      return throwError(() => error.error);
     }),
   );
 };

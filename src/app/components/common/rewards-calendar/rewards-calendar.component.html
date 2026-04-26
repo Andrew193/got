@@ -11,7 +11,7 @@
 
     <div class="p-1 day" [class.claimed]="_claimed(i) && !_chainMode" [class.col]="_chainMode">
       <div
-        class="reward d-flex flex-column p-2 {{ _rewardClass(i) }}"
+        class="reward d-flex flex-column p-1 {{ _rewardClass(i) }}"
         [class.claimed]="_claimed(i) && _chainMode"
         (click)="_claimReward(reward, i)">
         <div class="flip-wrap">

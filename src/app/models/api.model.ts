@@ -29,3 +29,6 @@ export type FailedParamRules = {
 };
 
 export type Source = (typeof DATA_SOURCES)[keyof typeof DATA_SOURCES];
+export type ApiError = {
+  error: string;
+};

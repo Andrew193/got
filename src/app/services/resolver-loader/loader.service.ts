@@ -22,17 +22,19 @@ import { BehaviorSubject, finalize, Observable, of } from 'rxjs';
 import { InitTaskObs } from '../../models/init.model';
 import { frontRoutes } from '../../constants';
 
+type FrontRoute = (typeof frontRoutes)[keyof typeof frontRoutes];
+
 @Injectable({
   providedIn: 'root',
 })
 export class LoaderService implements InitInterface {
-  private pageLoaderMap = new Map<string, BehaviorSubject<boolean>>([
+  private pageLoaderMap = new Map<FrontRoute, BehaviorSubject<boolean>>([
     [frontRoutes.training, new BehaviorSubject<boolean>(true)],
     [frontRoutes.taverna, new BehaviorSubject<boolean>(true)],
     [frontRoutes.summonTree, new BehaviorSubject<boolean>(true)],
     [frontRoutes.dailyBoss, new BehaviorSubject<boolean>(true)],
   ]);
-  private subsCount = new Map<string, number>();
+  private subsCount = new Map<FrontRoute, number>();
 
   private readonly activeCount = signal(0);
   readonly isLoading = computed(() => this.activeCount() > 0);
@@ -84,7 +86,7 @@ export class LoaderService implements InitInterface {
     }
   }
 
-  private ensure(page: string): BehaviorSubject<boolean> {
+  private ensure(page: FrontRoute): BehaviorSubject<boolean> {
     if (!this.pageLoaderMap.has(page)) {
       this.pageLoaderMap.set(page, new BehaviorSubject<boolean>(true));
     }
@@ -92,7 +94,7 @@ export class LoaderService implements InitInterface {
     return this.pageLoaderMap.get(page)!;
   }
 
-  getPageLoader(page: string): Observable<boolean> {
+  getPageLoader(page: FrontRoute): Observable<boolean> {
     const loader$ = this.ensure(page);
 
     const count = (this.subsCount.get(page) ?? 0) + 1;
@@ -117,7 +119,7 @@ export class LoaderService implements InitInterface {
     );
   }
 
-  resetPageLoader(page: string) {
+  resetPageLoader(page: FrontRoute) {
     const loader$ = this.pageLoaderMap.get(page);
 
     if (loader$) loader$.next(true);

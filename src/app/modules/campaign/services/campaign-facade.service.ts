@@ -1,14 +1,29 @@
 import { inject, Injectable } from '@angular/core';
-import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.model';
+import { HeroesNamesCodes, Rarity, UnitName } from '../../../models/units-related/unit.model';
 import { BossReward } from '../../../models/reward-based.model';
 import { CampaignBattleConfig, CampaignScreenConfig } from '../models/campaign.models';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
 import { CampaignBattleState } from '../campaign-battlefield/campaign-battlefield.component';
-import { HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
+import { HeroesService, HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
 import {
   BattleRewardsService,
   BattleDifficulty,
 } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NumbersService } from '../../../services/numbers/numbers.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CampaignVictoriesService } from './campaign-victories.service';
+import { SNACKBAR_CONFIG } from '../../../constants';
+import { ApiError } from '../../../models/api.model';
+import { ShardsDifComponent } from '../../../components/modal-window/currency/shards-dif/shards-dif.component';
+
+export interface ShardsDifData {
+  heroName: HeroesNamesCodes;
+  heroImgSrc: string;
+  amount: number;
+  rarity: Rarity;
+}
 
 type DifficultyParams = {
   baseLevelForDifficulty: number;
@@ -136,13 +151,35 @@ const MAX_USER_UNITS_REGULAR: Record<BattleDifficulty, number> = {
 // maxUserUnits for boss battles per screen
 const MAX_USER_UNITS_BOSS: number[] = [2, 2, 3, 3, 4];
 
+const VICTORY_THRESHOLD = 10;
+
+const DIFFICULTY_SHARD_RARITY: Record<BattleDifficulty, Rarity> = {
+  [BattleDifficulty.easy]: Rarity.COMMON,
+  [BattleDifficulty.normal]: Rarity.RARE,
+  [BattleDifficulty.hard]: Rarity.EPIC,
+  [BattleDifficulty.very_hard]: Rarity.LEGENDARY,
+};
+
 @Injectable({ providedIn: 'root' })
 export class CampaignFacadeService extends BattleRewardsService {
+  private nav = inject(NavigationService);
+  private heroService = inject(HeroesService);
+  private numberService = inject(NumbersService);
+  private localStorageService = inject(LocalStorageService);
+  private snackBar = inject(MatSnackBar);
+  private victoriesService = inject(CampaignVictoriesService);
+
   override bossReward: Record<BattleDifficulty, BossReward> = {} as Record<
     BattleDifficulty,
     BossReward
   >;
-  private nav = inject(NavigationService);
+
+  readonly wonBattlesForm = new FormGroup({
+    easy: new FormControl<number>(0, { nonNullable: true }),
+    normal: new FormControl<number>(0, { nonNullable: true }),
+    hard: new FormControl<number>(0, { nonNullable: true }),
+    very_hard: new FormControl<number>(0, { nonNullable: true }),
+  });
 
   getScreens(difficulty: BattleDifficulty): CampaignScreenConfig[] {
     const params = DIFFICULTY_PARAMS[difficulty];
@@ -234,6 +271,7 @@ export class CampaignFacadeService extends BattleRewardsService {
       isCampaign: true,
       battleId: config.id,
       userId,
+      difficulty,
       userUnitNames: userUnits,
       aiUnitNames: aiUnits,
       aiUnitConfig: aiUnitConfig,
@@ -262,5 +300,74 @@ export class CampaignFacadeService extends BattleRewardsService {
       goldWin: Math.round(BASE_REWARD.goldWin * totalMultiplier),
       goldDMG: Math.round(BASE_REWARD.goldDMG * totalMultiplier),
     };
+  }
+
+  incrementVictoryCounter(difficulty: BattleDifficulty): void {
+    const userId = this.localStorageService.getUserId();
+    const diffKey = BattleDifficulty[difficulty] as keyof typeof this.wonBattlesForm.controls;
+    const control = this.wonBattlesForm.controls[diffKey];
+
+    this.victoriesService.incrementVictory(userId, difficulty).subscribe({
+      next: victories => {
+        control.setValue(victories.difficulties[BattleDifficulty[difficulty]] ?? 0);
+      },
+      error: err => {
+        console.error('Failed to increment victory counter:', err);
+      },
+    });
+  }
+
+  loadVictories(): void {
+    const userId = this.localStorageService.getUserId();
+
+    this.victoriesService.getVictories(userId).subscribe({
+      next: victories => {
+        this.wonBattlesForm.setValue({
+          easy: victories.difficulties['easy'] ?? 0,
+          normal: victories.difficulties['normal'] ?? 0,
+          hard: victories.difficulties['hard'] ?? 0,
+          very_hard: victories.difficulties['very_hard'] ?? 0,
+        });
+      },
+      error: err => {
+        console.error('Failed to load victories:', err);
+      },
+    });
+  }
+
+  collectVictoryReward(difficulty: BattleDifficulty, screenIndex: number): void {
+    const diffKey = BattleDifficulty[difficulty] as keyof typeof this.wonBattlesForm.controls;
+    const control = this.wonBattlesForm.controls[diffKey];
+    const current = control.value;
+
+    if (current < VICTORY_THRESHOLD) {
+      return;
+    }
+
+    const pool = OPPONENT_POOLS[screenIndex];
+    const heroIndex = this.numberService.getNumberInRange(0, pool.length - 1);
+    const heroName = pool[heroIndex];
+    const heroImgSrc = HeroesSrcMap[heroName].imgSrc;
+    const amount = this.numberService.getNumberInRange(0, 10);
+    const rarity = DIFFICULTY_SHARD_RARITY[difficulty];
+    const userId = this.localStorageService.getUserId();
+
+    this.heroService.heroProgressService.addShards(userId, heroName, amount).subscribe({
+      next: () => {
+        this.victoriesService.decrementVictory(userId, difficulty, VICTORY_THRESHOLD).subscribe({
+          next: victories => {
+            control.setValue(victories.difficulties[BattleDifficulty[difficulty]] ?? 0);
+          },
+        });
+        this.snackBar.openFromComponent(ShardsDifComponent, {
+          ...SNACKBAR_CONFIG,
+          data: { heroName, heroImgSrc, amount, rarity } as ShardsDifData,
+        });
+      },
+      error: (err: ApiError) => {
+        this.snackBar.open('Failed to add shards: ' + err.error, 'Ok', SNACKBAR_CONFIG);
+        console.error('Failed to add shards:', err);
+      },
+    });
   }
 }

@@ -17,15 +17,25 @@
       @for (hero of returnedArray; track hero.name) {
         <div class="col mt-0">
           @let _isHeroLocked = isHeroLocked(hero.name);
+          @let _neededAmountOfShards = getRankCost(hero.rank);
+
           <div
             class="card hero-card d-flex align-items-center h-100 position-relative"
             [class]="getRarityShadowClass(hero)"
             (click)="openHeroPreview(hero.name, _isHeroLocked)">
+            <p
+              class="shards-count banner"
+              (click)="upgradeRank($event, hero.name, _neededAmountOfShards)">
+              <span>
+                <b>{{ getHeroesShards(hero.name) }}</b> / <b>{{ _neededAmountOfShards }}</b>
+              </span>
+              <img width="20px" height="20px" src="./assets/resourses/imgs/icons/hero_puzzle.png" />
+            </p>
             <img class="card-img-top taverna" [src]="hero.fullImgSrc" [alt]="hero.name" />
             <div class="level">
               <div class="position-relative">
                 <img
-                  src="assets/resourses/imgs/rank/{{ getRank(hero.level) }}_r.png"
+                  [src]="'./assets/resourses/imgs/rank/' + getRank(hero.level) + '_r.png'"
                   alt="rank level"
                   class="level_rank"
                   [style]="{ height: hero.level === 60 ? '60px' : '' }" />
