@@ -7,6 +7,14 @@
     "target": "http://localhost:4568",
     "secure": false
   },
+  "/api/campaign-victories": {
+    "target": "http://localhost:4568",
+    "secure": false
+  },
+  "/api/watchtower": {
+    "target": "http://localhost:4568",
+    "secure": false
+  },
   "/giftTrip": {
     "target": "http://localhost:4567",
     "secure": false

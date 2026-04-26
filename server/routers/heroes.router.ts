@@ -1,49 +1,53 @@
-'use strict';
+import { Router, type Request, type Response } from 'express';
 
-const express = require('express');
-const {
+import type { HeroProgressPatch } from '../types';
+import {
   ALL_HERO_NAMES,
   getOrCreateHeroesUser,
-  writeHeroesProgress,
   validateHeroProgressPatch,
-} = require('../storage/heroes-storage');
+  writeHeroesProgress,
+} from '../storage/heroes-storage';
 
-const router = express.Router();
+const router = Router();
 
 // GET /api/heroes/progress/:userId
-// Returns PlayerHeroesProgress, creates initial record if not exists
-router.get('/progress/:userId', (req, res) => {
+router.get('/progress/:userId', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const { user } = getOrCreateHeroesUser(userId);
 
     res.json(user);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Storage error' });
   }
 });
 
 // POST /api/heroes/progress/:userId/unlock
 // Body: { heroName: string }
-// Unlocks a hero (sets isUnlocked: true with base config)
-router.post('/progress/:userId/unlock', (req, res) => {
+router.post('/progress/:userId/unlock', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { heroName } = req.body;
+    const { heroName } = req.body as { heroName: string };
 
     if (!heroName || !ALL_HERO_NAMES.includes(heroName)) {
-      return res.status(400).json({ error: 'Invalid heroName', heroName });
+      res.status(400).json({ error: 'Invalid heroName', heroName });
+
+      return;
     }
 
     const { store, user } = getOrCreateHeroesUser(userId);
     const heroRecord = user.heroes.find(h => h.heroName === heroName);
 
     if (!heroRecord) {
-      return res.status(404).json({ error: 'Hero record not found', heroName });
+      res.status(404).json({ error: 'Hero record not found', heroName });
+
+      return;
     }
 
     if (heroRecord.isUnlocked) {
-      return res.status(409).json({ error: 'Hero already unlocked', heroName });
+      res.status(409).json({ error: 'Hero already unlocked', heroName });
+
+      return;
     }
 
     heroRecord.isUnlocked = true;
@@ -55,46 +59,55 @@ router.post('/progress/:userId/unlock', (req, res) => {
     writeHeroesProgress(store);
 
     res.json(user);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Storage error' });
   }
 });
 
 // PATCH /api/heroes/progress/:userId/update
-// Body: { heroName: string, patch: Partial<HeroProgressRecord> }
-// Updates level, rank, or equipment levels for an unlocked hero
-router.patch('/progress/:userId/update', (req, res) => {
+// Body: { heroName: string, patch: HeroProgressPatch }
+router.patch('/progress/:userId/update', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { heroName, patch } = req.body;
+    const { heroName, patch } = req.body as { heroName: string; patch: HeroProgressPatch };
 
     if (!heroName || !ALL_HERO_NAMES.includes(heroName)) {
-      return res.status(400).json({ error: 'Invalid heroName', heroName });
+      res.status(400).json({ error: 'Invalid heroName', heroName });
+
+      return;
     }
 
     if (!patch || typeof patch !== 'object') {
-      return res.status(400).json({ error: 'Missing or invalid patch body' });
+      res.status(400).json({ error: 'Missing or invalid patch body' });
+
+      return;
     }
 
     const { store, user } = getOrCreateHeroesUser(userId);
     const heroRecord = user.heroes.find(h => h.heroName === heroName);
 
     if (!heroRecord) {
-      return res.status(404).json({ error: 'User not found or hero record missing', heroName });
+      res.status(404).json({ error: 'User not found or hero record missing', heroName });
+
+      return;
     }
 
     if (!heroRecord.isUnlocked) {
-      return res.status(403).json({ error: 'Hero is locked', heroName });
+      res.status(403).json({ error: 'Hero is locked', heroName });
+
+      return;
     }
 
     const validation = validateHeroProgressPatch(patch);
 
     if (!validation.valid) {
-      return res.status(400).json({
+      res.status(400).json({
         error: validation.error,
         field: validation.field,
         value: validation.value,
       });
+
+      return;
     }
 
     const allowedFields = [
@@ -105,11 +118,11 @@ router.patch('/progress/:userId/update', (req, res) => {
       'eq3Level',
       'eq4Level',
       'shards',
-    ];
+    ] as const;
 
     for (const field of allowedFields) {
       if (patch[field] !== undefined) {
-        heroRecord[field] = patch[field];
+        heroRecord[field] = patch[field] as never;
       }
     }
 
@@ -119,32 +132,37 @@ router.patch('/progress/:userId/update', (req, res) => {
     writeHeroesProgress(store);
 
     res.json(user);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Storage error' });
   }
 });
 
 // PATCH /api/heroes/progress/:userId/shards
 // Body: { heroName: string, amount: number }
-// Increments shards for a specific hero
-router.patch('/progress/:userId/shards', (req, res) => {
+router.patch('/progress/:userId/shards', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { heroName, amount } = req.body;
+    const { heroName, amount } = req.body as { heroName: string; amount: number };
 
     if (!heroName || !ALL_HERO_NAMES.includes(heroName)) {
-      return res.status(400).json({ error: 'Invalid heroName' });
+      res.status(400).json({ error: 'Invalid heroName' });
+
+      return;
     }
 
     if (!Number.isInteger(amount) || amount <= 0) {
-      return res.status(400).json({ error: 'Invalid amount' });
+      res.status(400).json({ error: 'Invalid amount' });
+
+      return;
     }
 
     const { store, user } = getOrCreateHeroesUser(userId);
     const heroRecord = user.heroes.find(h => h.heroName === heroName);
 
     if (!heroRecord) {
-      return res.status(404).json({ error: 'Hero record not found', heroName });
+      res.status(404).json({ error: 'Hero record not found', heroName });
+
+      return;
     }
 
     heroRecord.shards = (heroRecord.shards ?? 0) + amount;
@@ -155,9 +173,9 @@ router.patch('/progress/:userId/shards', (req, res) => {
     writeHeroesProgress(store);
 
     res.json(user);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Storage error' });
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,0 +1,39 @@
+{
+  "news": [
+    {
+      "id": "news-001",
+      "headers": [
+        {
+          "title": "Update 1.5: New Heroes"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Update 1.5 brings new heroes and improved battle system balance. The Night King receives an attack boost, while Jon Snow becomes more resilient in defense."
+        },
+        {
+          "type": "hero",
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)"
+        },
+        {
+          "type": "table",
+          "columns": [
+            { "alias": "hero", "label": "Hero" },
+            { "alias": "change", "label": "Change" },
+            { "alias": "value", "label": "Value" }
+          ],
+          "rows": [
+            { "hero": "Night King", "change": "Attack", "value": "+15%" },
+            { "hero": "Jon Snow (King in the North)", "change": "Defence", "value": "+10%" },
+            {
+              "hero": "Daenerys Targaryen (Lady of Dragonstone)",
+              "change": "Health",
+              "value": "+5%"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

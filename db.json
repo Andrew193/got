@@ -13,6 +13,19 @@
       "tableName": "TavernaHeroesTable",
       "userId": "e046",
       "id": "18d3"
+    },
+    {
+      "config": {
+        "columnsConfig": {
+          "hero": 609,
+          "change": 609,
+          "value": 609
+        },
+        "pageSize": 5
+      },
+      "tableName": "WatchtowerGenericTable",
+      "userId": "e046",
+      "id": "71a4"
     }
   ],
   "users": [
@@ -21,7 +34,7 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 74376,
+        "onlineTime": 77376,
         "claimedRewards": [],
         "lastLoyaltyBonus": "04/18/2026"
       },

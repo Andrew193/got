@@ -1,0 +1,11 @@
+@use '../../../../assets/resourses/styles/index.scss' as index;
+
+:host {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border-radius: 8px;
+
+  border: index.$var-border-2-bronze;
+  box-shadow: index.$var-box-shadow;
+}

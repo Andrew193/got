@@ -1,0 +1,50 @@
+<div class="watchtower-page">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <p class="loading-text">Loading news...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-container">
+      <p class="error-message">Failed to load news. Please try again later.</p>
+    </div>
+  } @else {
+    <mat-accordion>
+      @for (newsItem of news(); track newsItem.id) {
+        <mat-expansion-panel class="news-panel">
+          @for (header of newsItem.headers; track header.title) {
+            <mat-expansion-panel-header class="news-panel-header">
+              <mat-panel-title class="news-panel-title">
+                {{ header.title }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+          }
+
+          <div class="news-content">
+            @for (block of newsItem.blocks; track $index) {
+              @switch (block.type) {
+                @case ('paragraph') {
+                  <p class="paragraph-block">{{ block.text }}</p>
+                }
+                @case ('table') {
+                  <div class="table-block">
+                    <app-watchtower-generic-table
+                      [expandable]="false"
+                      [resizable]="false"
+                      [showBottomActions]="false"
+                      [columnsInput]="block.columns"
+                      [rowsInput]="block.rows" />
+                  </div>
+                }
+                @case ('hero') {
+                  <div class="hero-block-wrapper">
+                    <app-watchtower-hero-block [heroName]="block.heroName" />
+                  </div>
+                }
+              }
+            }
+          </div>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
+</div>

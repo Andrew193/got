@@ -71,6 +71,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/iron-bank/iron-bank.component').then(c => c.IronBankComponent),
       },
+      {
+        path: frontRoutes.watchtower,
+        loadComponent: () =>
+          import('./pages/watchtower/watchtower.component').then(c => c.WatchtowerComponent),
+      },
     ],
   },
   {

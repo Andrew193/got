@@ -43,6 +43,7 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   //Table config
   tableConfigFetched = new BehaviorSubject<boolean>(false);
   tableConfig = this.tableService.api.getStaticData.bind(this.tableService.api);
+  showBottomActions = input(true);
 
   //Columns
   columns = signal<TableColumns<T>[]>([]);

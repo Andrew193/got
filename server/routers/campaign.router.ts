@@ -1,39 +1,41 @@
-'use strict';
+import { Router, type Request, type Response } from 'express';
 
-const express = require('express');
-const {
-  isValidBattleId,
-  parseBattleId,
+import {
   getOrCreateUser,
+  isValidBattleId,
   nextProgress,
+  parseBattleId,
   writeProgress,
-} = require('../storage/campaign-storage');
+} from '../storage/campaign-storage';
 
-const router = express.Router();
+const router = Router();
 
 // GET /api/campaign/progress/:userId
-router.get('/progress/:userId', (req, res) => {
+router.get('/progress/:userId', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const { user } = getOrCreateUser(userId);
 
     res.json(user);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Storage error' });
   }
 });
 
 // POST /api/campaign/progress/:userId/complete-battle
-router.post('/progress/:userId/complete-battle', (req, res) => {
+router.post('/progress/:userId/complete-battle', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { battleId } = req.body;
+    const { battleId } = req.body as { battleId: string };
 
     if (!isValidBattleId(battleId)) {
-      return res.status(400).json({ error: 'Invalid battleId format', battleId });
+      res.status(400).json({ error: 'Invalid battleId format', battleId });
+
+      return;
     }
 
-    const { difficulty, screenIndex, battleIndex } = parseBattleId(battleId);
+    const parsed = parseBattleId(battleId)!;
+    const { difficulty, screenIndex, battleIndex } = parsed;
     const { store, user } = getOrCreateUser(userId);
 
     const diffProgress = user.difficulties[difficulty];
@@ -46,15 +48,19 @@ router.post('/progress/:userId/complete-battle', (req, res) => {
 
     if (isAlreadyCompleted) {
       // Replay of a completed battle — return current progress without advancing
-      return res.json(user);
+      res.json(user);
+
+      return;
     }
 
     if (battleId !== expectedBattleId) {
-      return res.status(409).json({
+      res.status(409).json({
         error: 'Battle out of order',
         expected: expectedBattleId,
         received: battleId,
       });
+
+      return;
     }
 
     const updatedUser = nextProgress(user, difficulty, screenIndex, battleIndex);
@@ -64,9 +70,9 @@ router.post('/progress/:userId/complete-battle', (req, res) => {
     writeProgress(store);
 
     res.json(updatedUser);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: 'Storage error' });
   }
 });
 
-module.exports = router;
+export default router;

@@ -82,4 +82,8 @@ export class NavigationService {
   goToCampaignBattle(state: CampaignBattleState) {
     this.router.navigate([FrontRoutes.campaign, FrontRoutes.campaignBattle], { state });
   }
+
+  goToWatchtower() {
+    this.router.navigateByUrl(FrontRoutes.watchtower);
+  }
 }

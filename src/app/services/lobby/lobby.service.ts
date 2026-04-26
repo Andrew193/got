@@ -150,9 +150,8 @@ export class LobbyService {
     },
     {
       name: 'Watchtower',
-      url: '#',
+      url: frontRoutes.watchtower,
       src: 'knight.png',
-      closed: true,
     },
     {
       name: 'Beyond the Wall',

@@ -1,0 +1,67 @@
+@use '../../../assets/resourses/styles/index.scss' as index;
+
+.watchtower-page {
+  @include index.mixin-page-container;
+  padding: 1rem;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.error-message {
+  color: index.$var-deap-red;
+  font-size: 1rem;
+  text-align: center;
+}
+
+:host ::ng-deep {
+  .news-panel {
+    border: index.$var-border-2-bronze;
+    margin-bottom: 8px;
+
+    .mat-expansion-panel-header.news-panel-header {
+      background-position: center !important;
+      background: url('../../../assets/resourses/imgs/icons/news.png');
+      position: relative;
+      padding: 1rem 1.5rem !important;
+
+      &:hover {
+        background: url('../../../assets/resourses/imgs/icons/news.png') !important;
+        background-position: center !important;
+      }
+    }
+
+    .mat-expansion-panel-header-title.news-panel-title {
+      position: relative;
+      font-size: 1.25rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .mat-expansion-panel-body {
+      background-color: index.$var-metal-dark-1;
+      padding: 1rem;
+      border-top: index.$var-border-2-bronze;
+    }
+  }
+}
+
+.news-content {
+  padding: 0.5rem 0;
+}
+
+.paragraph-block {
+  color: #ddd;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.table-block,
+.hero-block-wrapper {
+  margin-bottom: 1.5rem;
+}

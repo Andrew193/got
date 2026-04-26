@@ -1,0 +1,12 @@
+@if (heroUnit() && tileUnit()) {
+  <div class="hero-block">
+    <div>
+      <app-stats [selectedHero]="heroUnit()!" />
+    </div>
+    <div>
+      <app-skills-render [storesInnerDivClass]="'p-2 m-0'" [selectedHero]="tileUnit()!" />
+    </div>
+  </div>
+} @else {
+  <div class="hero-not-found">Hero not found</div>
+}

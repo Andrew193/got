@@ -1,12 +1,18 @@
-'use strict';
+import fs from 'fs';
+import path from 'path';
 
-const fs = require('fs');
-const path = require('path');
+import type {
+  HeroProgressPatch,
+  HeroProgressRecord,
+  HeroesStore,
+  UserHeroesProgress,
+  ValidationResult,
+} from '../types';
 
 const HEROES_FILE = path.join(__dirname, '../db/heroes-progress.json');
 
 // All hero names from HeroesNamesCodes enum — must stay in sync with unit.model.ts
-const ALL_HERO_NAMES = [
+export const ALL_HERO_NAMES: string[] = [
   'Daenerys Targaryen (Lady of Dragonstone)',
   'Red Keep Alchemist',
   'Targaryen Knight',
@@ -25,54 +31,49 @@ const ALL_HERO_NAMES = [
   'Ranger',
 ];
 
-// --- Init storage ---
-function initHeroesStorage() {
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
+export function initHeroesStorage(): void {
   if (!fs.existsSync(HEROES_FILE)) {
     fs.writeFileSync(HEROES_FILE, JSON.stringify({ progress: [] }, null, 2), 'utf8');
   }
 }
 
-// --- Storage helpers ---
+// ─── Storage helpers ──────────────────────────────────────────────────────────
 
-function readHeroesProgress() {
+export function readHeroesProgress(): HeroesStore {
   const raw = fs.readFileSync(HEROES_FILE, 'utf8');
 
-  return JSON.parse(raw);
+  return JSON.parse(raw) as HeroesStore;
 }
 
-function writeHeroesProgress(data) {
+export function writeHeroesProgress(data: HeroesStore): void {
   fs.writeFileSync(HEROES_FILE, JSON.stringify(data, null, 2), 'utf8');
 }
 
-/**
- * Creates initial heroes progress for a new user.
- * All heroes start as locked with base config.
- * @param {string} userId
- * @returns {{ userId: string, heroes: object[] }}
- */
-function createInitialHeroesProgress(userId) {
+function createInitialHeroesProgress(userId: string): UserHeroesProgress {
   return {
     userId,
-    heroes: ALL_HERO_NAMES.map(heroName => ({
-      heroName,
-      isUnlocked: false,
-      level: 1,
-      rank: 1,
-      eq1Level: 1,
-      eq2Level: 1,
-      eq3Level: 1,
-      eq4Level: 1,
-      shards: 0,
-    })),
+    heroes: ALL_HERO_NAMES.map(
+      (heroName): HeroProgressRecord => ({
+        heroName,
+        isUnlocked: false,
+        level: 1,
+        rank: 1,
+        eq1Level: 1,
+        eq2Level: 1,
+        eq3Level: 1,
+        eq4Level: 1,
+        shards: 0,
+      }),
+    ),
   };
 }
 
-/**
- * Gets existing user progress or creates a new record.
- * @param {string} userId
- * @returns {{ store: object, user: object }}
- */
-function getOrCreateHeroesUser(userId) {
+export function getOrCreateHeroesUser(userId: string): {
+  store: HeroesStore;
+  user: UserHeroesProgress;
+} {
   const store = readHeroesProgress();
   let user = store.progress.find(u => u.userId === userId);
 
@@ -99,12 +100,7 @@ function getOrCreateHeroesUser(userId) {
   return { store, user };
 }
 
-/**
- * Validates a hero progress patch object.
- * @param {object} patch
- * @returns {{ valid: boolean, error?: string, field?: string, value?: number }}
- */
-function validateHeroProgressPatch(patch) {
+export function validateHeroProgressPatch(patch: HeroProgressPatch): ValidationResult {
   if (patch.level !== undefined) {
     if (!Number.isInteger(patch.level) || patch.level < 1 || patch.level > 100) {
       return { valid: false, error: 'Validation error', field: 'level', value: patch.level };
@@ -117,9 +113,9 @@ function validateHeroProgressPatch(patch) {
     }
   }
 
-  for (const eqField of ['eq1Level', 'eq2Level', 'eq3Level', 'eq4Level']) {
+  for (const eqField of ['eq1Level', 'eq2Level', 'eq3Level', 'eq4Level'] as const) {
     if (patch[eqField] !== undefined) {
-      if (!Number.isInteger(patch[eqField]) || patch[eqField] < 1 || patch[eqField] > 200) {
+      if (!Number.isInteger(patch[eqField]) || patch[eqField]! < 1 || patch[eqField]! > 200) {
         return { valid: false, error: 'Validation error', field: eqField, value: patch[eqField] };
       }
     }
@@ -127,13 +123,3 @@ function validateHeroProgressPatch(patch) {
 
   return { valid: true };
 }
-
-module.exports = {
-  ALL_HERO_NAMES,
-  initHeroesStorage,
-  readHeroesProgress,
-  writeHeroesProgress,
-  createInitialHeroesProgress,
-  getOrCreateHeroesUser,
-  validateHeroProgressPatch,
-};

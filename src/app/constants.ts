@@ -65,6 +65,7 @@ export const PARAMS_TO_CHECK: Record<ParamsToCheck, ParamCheckConfig> = {
 export const enum TABLE_NAMES {
   taverna_hero_table = 'TavernaHeroesTable',
   test = 'TEST',
+  watchtower_generic_table = 'WatchtowerGenericTable',
 }
 
 export const CURRENCY_NAMES = {
@@ -140,6 +141,7 @@ export const frontRoutes = {
   root: '/',
   campaign: 'campaign',
   campaignBattle: 'battle',
+  watchtower: 'watchtower',
 };
 
 export const ALL_EFFECTS = {
