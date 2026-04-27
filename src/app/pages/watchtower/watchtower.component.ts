@@ -7,13 +7,12 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 import { MatExpansionModule } from '@angular/material/expansion';
-
 import { WatchtowerFacadeService } from './services/watchtower-facade.service';
 import { WatchtowerGenericTableComponent } from './watchtower-generic-table/watchtower-generic-table.component';
 import { WatchtowerHeroBlockComponent } from './watchtower-hero-block/watchtower-hero-block.component';
 import { NewsConfig } from '../../models/watchtower/watchtower.model';
+import { NavigationService } from '../../services/facades/navigation/navigation.service';
 
 @Component({
   selector: 'app-watchtower',
@@ -25,10 +24,15 @@ import { NewsConfig } from '../../models/watchtower/watchtower.model';
 export class WatchtowerComponent implements OnInit {
   private facade = inject(WatchtowerFacadeService);
   private destroyRef = inject(DestroyRef);
+  nav = inject(NavigationService);
 
   news = signal<NewsConfig[]>([]);
   isLoading = signal(true);
   error = signal(false);
+
+  goToMainPage() {
+    this.nav.goToMainPage();
+  }
 
   ngOnInit() {
     this.facade

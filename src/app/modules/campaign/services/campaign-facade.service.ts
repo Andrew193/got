@@ -88,13 +88,13 @@ const SCREEN_REWARD_MULTIPLIERS = [1.0, 1.2, 1.3, 1.6, 1.9];
 
 const BASE_REWARD: BossReward = {
   copper: 300,
-  copperWin: 1200,
+  copperWin: 120,
   copperDMG: 15000,
   silver: 2,
-  silverWin: 10,
+  silverWin: 1,
   silverDMG: 20000,
   gold: 1,
-  goldWin: 5,
+  goldWin: 1,
   goldDMG: 35000,
 };
 

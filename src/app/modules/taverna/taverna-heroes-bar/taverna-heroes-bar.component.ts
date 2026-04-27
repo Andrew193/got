@@ -15,6 +15,7 @@ import { ContainerLabelComponent } from '../../../components/views/container-lab
 import { HeroProgressFeature } from '../../../store/reducers/hero-progress.reducer';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_CONFIG } from '../../../constants';
 
 type DataType = Unit & { name: HeroesNamesCodes };
 
@@ -117,7 +118,8 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<DataType>
       } else {
         this.snackBar.open(
           `Not enough shards to ${hero.isUnlocked ? 'upgrade' : 'unlock'} "${name}"!`,
-          'Oh no',
+          'Ok',
+          SNACKBAR_CONFIG,
         );
       }
     }

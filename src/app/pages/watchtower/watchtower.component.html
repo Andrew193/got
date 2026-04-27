@@ -1,50 +1,65 @@
-<div class="watchtower-page">
-  @if (isLoading()) {
-    <div class="loading-container">
-      <p class="loading-text">Loading news...</p>
-    </div>
-  } @else if (error()) {
-    <div class="error-container">
-      <p class="error-message">Failed to load news. Please try again later.</p>
+<div class="watchtower-page p-2">
+  @let _isLoading = isLoading();
+  @let _error = error();
+
+  @if (_isLoading || _error) {
+    <div class="meta-bar">
+      @if (_isLoading) {
+        <div class="loading-container">
+          <p class="loading-text">Loading news...</p>
+        </div>
+      } @else if (_error) {
+        <div class="error-container">
+          <p class="error-message">Failed to load news. Please try again later.</p>
+        </div>
+      }
     </div>
   } @else {
-    <mat-accordion>
-      @for (newsItem of news(); track newsItem.id) {
-        <mat-expansion-panel class="news-panel">
-          @for (header of newsItem.headers; track header.title) {
-            <mat-expansion-panel-header class="news-panel-header">
-              <mat-panel-title class="news-panel-title">
-                {{ header.title }}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-          }
+    <main class="main-content">
+      <h4 class="color-white w-100 text-center ps-2 pe-2 pb-2 m-0">Watchtower</h4>
 
-          <div class="news-content">
-            @for (block of newsItem.blocks; track $index) {
-              @switch (block.type) {
-                @case ('paragraph') {
-                  <p class="paragraph-block">{{ block.text }}</p>
-                }
-                @case ('table') {
-                  <div class="table-block">
-                    <app-watchtower-generic-table
-                      [expandable]="false"
-                      [resizable]="false"
-                      [showBottomActions]="false"
-                      [columnsInput]="block.columns"
-                      [rowsInput]="block.rows" />
-                  </div>
-                }
-                @case ('hero') {
-                  <div class="hero-block-wrapper">
-                    <app-watchtower-hero-block [heroName]="block.heroName" />
-                  </div>
+      <mat-accordion>
+        @for (newsItem of news(); track newsItem.id) {
+          <mat-expansion-panel class="news-panel">
+            @for (header of newsItem.headers; track header.title) {
+              <mat-expansion-panel-header class="news-panel-header">
+                <mat-panel-title class="news-panel-title">
+                  {{ header.title }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            }
+
+            <div class="news-content">
+              @for (block of newsItem.blocks; track $index) {
+                @switch (block.type) {
+                  @case ('paragraph') {
+                    <p class="paragraph-block">{{ block.text }}</p>
+                  }
+                  @case ('table') {
+                    <div class="table-block">
+                      <app-watchtower-generic-table
+                        [expandable]="false"
+                        [resizable]="false"
+                        [showBottomActions]="false"
+                        [columnsInput]="block.columns"
+                        [rowsInput]="block.rows" />
+                    </div>
+                  }
+                  @case ('hero') {
+                    <div class="hero-block-wrapper">
+                      <app-watchtower-hero-block [heroName]="block.heroName" />
+                    </div>
+                  }
                 }
               }
-            }
-          </div>
-        </mat-expansion-panel>
-      }
-    </mat-accordion>
+            </div>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </main>
   }
+
+  <footer class="actions">
+    <button class="got-toggle w-100 mt-2" (click)="goToMainPage()">Back to Castle Black</button>
+  </footer>
 </div>

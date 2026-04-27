@@ -5,7 +5,7 @@
     </div>
     <div class="row main-content m-0">
       <aside class="p-2 stats-bar justify-content-between mb-0">
-        <div class="p-2 flex-column justify-content-evenly color-white">
+        <div class="p-2 justify-content-evenly color-white hero-bar">
           <app-stats [selectedHero]="selectedHero">
             <app-rating ngProjectAs="reward-avatar-container" [rating]="selectedHero.rank" />
           </app-stats>
@@ -19,19 +19,23 @@
       <aside class="p-2 stats-bar justify-content-between mb-0 color-white">
         <div class="p-2 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
-          <div class="row g-3 m-0">
-            <ng-container
-              [ngTemplateOutlet]="itemTemplate"
-              [ngTemplateOutletContext]="{ name: 'eq1' }"></ng-container>
-            <ng-container
-              [ngTemplateOutlet]="itemTemplate"
-              [ngTemplateOutletContext]="{ name: 'eq2' }"></ng-container>
-            <ng-container
-              [ngTemplateOutlet]="itemTemplate"
-              [ngTemplateOutletContext]="{ name: 'eq3' }"></ng-container>
-            <ng-container
-              [ngTemplateOutlet]="itemTemplate"
-              [ngTemplateOutletContext]="{ name: 'eq4' }"></ng-container>
+          <div class="row g-2 m-0">
+            @if (currency$ | async; as currency) {
+              @for (eqName of eqNames; track eqName) {
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <app-equipment-card
+                    [eqName]="eqName"
+                    [hero]="selectedHero"
+                    [currency]="currency"
+                    [heroName]="$any(selectedHero.name)"
+                    [userId]="userId"
+                    [getGearDescription]="getGearDescription"
+                    [gearParts]="gearParts"
+                    [getIncrement]="getIncrement"
+                    (upgraded)="onEquipmentUpgraded()" />
+                </div>
+              }
+            }
           </div>
         </div>
         <app-taverna-pages-footer />
@@ -39,54 +43,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #itemTemplate let-name="name">
-  @let desc = getGearDescription(name);
-  @let level = getGearLevelByName(name);
-
-  <div class="col-md-6 col-lg d-flex flex-column align-items-stretch justify-content-between">
-    <div class="row g-0 flex-grow-1 mb-2">
-      <div class="col-auto">
-        <img [src]="'assets/resourses/imgs/eq/' + name + '.png'" [alt]="name" />
-      </div>
-      <p class="ps-2 col">{{ desc }}</p>
-    </div>
-    <div
-      class="eq-stats col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center mb-0 position-relative">
-      @for (part of gearParts; track part.alias) {
-        <ng-container
-          [ngTemplateOutlet]="itemTemplatePart"
-          [ngTemplateOutletContext]="{
-            level,
-            src: part.src,
-            alias: part.alias,
-            color: part.color,
-          }" />
-      }
-      <span class="text-center fw-bold level-bar">
-        <b class="current-gear-level">{{ level }}</b>
-        /200
-      </span>
-      @if (200 - level > 0) {
-        <div class="text-center mt-3">
-          <button class="got-toggle w-100 got-toggle-green">Upgrade</button>
-        </div>
-      }
-    </div>
-  </div>
-</ng-template>
-
-<ng-template
-  #itemTemplatePart
-  let-level="level"
-  let-src="src"
-  let-color="color"
-  let-alias="alias"
-  let-alt="alt">
-  <div class="flex-row ps-2 mb-0">
-    @let _increment = getIncrement(alias);
-    <img [src]="'../../../../assets/resourses/imgs/icons/' + src + '.png'" [alt]="alt || src" />
-    <span [class]="color">{{ level * _increment }}</span>
-    <span>( + {{ _increment }} )</span>
-  </div>
-</ng-template>

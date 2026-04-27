@@ -1,0 +1,53 @@
+<div class="eq-card" [class.max-level]="isMaxLevel">
+  <!-- Изображение + название с тултипом -->
+  <div class="eq-card__header">
+    <img
+      class="eq-card__img"
+      [src]="'assets/resourses/imgs/eq/' + eqName + '.png'"
+      [alt]="eqName"
+      [matTooltip]="getGearDescription(eqName)"
+      matTooltipPosition="above" />
+    <span class="eq-card__name">{{ getGearDescription(eqName) }}</span>
+  </div>
+
+  <div class="eq-card__stats">
+    @for (part of gearParts; track part.alias) {
+      <div class="eq-card__stat-row">
+        <img [src]="'./assets/resourses/imgs/icons/' + part.src + '.png'" [alt]="part.alias" />
+        <span [class]="part.color">
+          <b>{{ currentLevel * getIncrement(part.alias) }}</b>
+        </span>
+        <span [class]="'eq-card__increment ' + part.color">(+{{ getIncrement(part.alias) }})</span>
+      </div>
+    }
+  </div>
+
+  <div class="eq-card__footer">
+    @if (!isMaxLevel) {
+      <div class="upgrade-bar">
+        <button
+          matIconButton
+          [disabled]="isLoading() || !canAfford"
+          [ngClass]="{ 'cannot-afford': !canAfford }"
+          (click)="onUpgrade()">
+          <mat-icon>{{ isLoading() ? 'wifi_protected_setup' : 'upload' }}</mat-icon>
+        </button>
+        <div class="eq-card__cost" [class.cannot-afford]="!canAfford">
+          <img
+            [src]="'./assets/resourses/imgs/' + costInfo!.currency + '.png'"
+            [alt]="costInfo!.currency"
+            class="eq-card__currency-icon" />
+          <span [class]="costInfo!.currency"
+            ><b>{{ costInfo!.cost }}</b></span
+          >
+        </div>
+      </div>
+      <span class="eq-card__level">
+        <b>{{ currentLevel }}</b
+        >/200
+      </span>
+    } @else {
+      <button class="got-toggle w-100 mt-2" disabled>Max</button>
+    }
+  </div>
+</div>

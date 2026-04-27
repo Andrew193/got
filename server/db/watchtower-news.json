@@ -4,6 +4,38 @@
       "id": "news-001",
       "headers": [
         {
+          "title": "Update 1.0: Start"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The start of the project. The GoT game is in alpha mode."
+        }
+      ]
+    },
+    {
+      "id": "news-002",
+      "headers": [
+        {
+          "title": "Update 1.01: Taverna, Lobby, Game Field"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Today the Taverna has been released. Default heroes have been released as well."
+        },
+        {
+          "type": "paragraph",
+          "text": "The welcome screen is now snowing two sections. You can open Tavern or Battle Field. For now only grid render is active."
+        }
+      ]
+    },
+    {
+      "id": "news-003",
+      "headers": [
+        {
           "title": "Update 1.5: New Heroes"
         }
       ],

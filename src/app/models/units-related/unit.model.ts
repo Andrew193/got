@@ -90,6 +90,20 @@ export enum HeroType {
 
 export type EqName = 'eq1' | 'eq2' | 'eq3' | 'eq4';
 
+export type EqLevelField = 'eq1Level' | 'eq2Level' | 'eq3Level' | 'eq4Level';
+
+export type EquipmentUpgradeCost = {
+  cost: number;
+  currency: 'copper' | 'silver' | 'gold';
+};
+
+export const EQ_FIELD_MAP: Record<EqName, EqLevelField> = {
+  eq1: 'eq1Level',
+  eq2: 'eq2Level',
+  eq3: 'eq3Level',
+  eq4: 'eq4Level',
+};
+
 type GearMap = {
   attackIncrement: 'attack_icon';
   defenceIncrement: 'def_icon';

@@ -3,6 +3,8 @@ import { tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
+  EquipmentUpgradeCost,
+  EqLevelField,
   HeroesNamesCodes,
   HeroProgressRecord,
   PlayerHeroesProgress,
@@ -57,6 +59,50 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     return rank * 100;
   }
 
+  getEquipmentUpgradeCost(level: number): EquipmentUpgradeCost {
+    if (level >= 1 && level <= 25) {
+      return { cost: 100, currency: 'copper' };
+    }
+
+    if (level >= 26 && level <= 50) {
+      return { cost: 500, currency: 'copper' };
+    }
+
+    if (level >= 51 && level <= 75) {
+      return { cost: 1000, currency: 'copper' };
+    }
+
+    if (level >= 76 && level <= 100) {
+      return { cost: 2000, currency: 'copper' };
+    }
+
+    if (level >= 101 && level <= 120) {
+      return { cost: 100, currency: 'silver' };
+    }
+
+    if (level >= 121 && level <= 135) {
+      return { cost: 500, currency: 'silver' };
+    }
+
+    if (level >= 136 && level <= 150) {
+      return { cost: 1000, currency: 'silver' };
+    }
+
+    if (level >= 151 && level <= 170) {
+      return { cost: 100, currency: 'gold' };
+    }
+
+    if (level >= 171 && level <= 185) {
+      return { cost: 500, currency: 'gold' };
+    }
+
+    if (level >= 186 && level <= 199) {
+      return { cost: 1000, currency: 'gold' };
+    }
+
+    throw new Error(`Equipment level ${level} is at maximum or invalid`);
+  }
+
   unlockHero(userId: string, heroName: HeroesNamesCodes): Observable<PlayerHeroesProgress> {
     return this.http.post<PlayerHeroesProgress>(`${this.url}/${userId}/unlock`, { heroName }).pipe(
       tap({
@@ -108,6 +154,15 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
           },
         }),
       );
+  }
+
+  upgradeEquipment(
+    userId: string,
+    heroName: HeroesNamesCodes,
+    eqField: EqLevelField,
+    currentLevel: number,
+  ): Observable<PlayerHeroesProgress> {
+    return this.updateHeroProgress(userId, heroName, { [eqField]: currentLevel + 1 });
   }
 
   toUnitConfig(record: HeroProgressRecord): UnitConfig {

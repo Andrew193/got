@@ -4,6 +4,15 @@
   object-fit: contain;
 }
 
+.hero-bar {
+  display: flex;
+
+  app-stats,
+  app-skills-render {
+    flex: 1;
+  }
+}
+
 .eq-container {
   .eq-stats {
     background: index.$var-background-color-main;
@@ -59,5 +68,11 @@
 
   h3 {
     @include index.mixin-grad-color;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-bar {
+    flex-direction: column;
   }
 }

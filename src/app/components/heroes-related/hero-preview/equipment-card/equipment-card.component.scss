@@ -1,0 +1,108 @@
+@use '../../../../../assets/resourses/styles/index.scss' as index;
+
+:host {
+  display: block;
+}
+
+.upgrade-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.eq-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  &__img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+    cursor: help;
+  }
+
+  &__name {
+    font-size: 0.75rem;
+    color: #ccc;
+    line-height: 1.2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  &__stats {
+    flex: 1;
+    margin-bottom: 8px;
+  }
+
+  &__stat-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+    font-size: 0.8rem;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__increment {
+    font-size: 0.75rem;
+  }
+
+  &__footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__level {
+    display: block;
+    text-align: right;
+    font-size: 0.75rem;
+    color: index.$var-gold;
+    margin-bottom: 4px;
+
+    b {
+      color: index.$var-light-red;
+    }
+  }
+
+  &__cost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+
+    &.cannot-afford {
+      color: #e74c3c;
+    }
+  }
+
+  &__currency-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+button.cannot-afford {
+  opacity: 0.6;
+  border-color: #e74c3c !important;
+  color: #e74c3c !important;
+}
