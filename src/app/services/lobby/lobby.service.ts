@@ -157,6 +157,7 @@ export class LobbyService {
       name: 'Beyond the Wall',
       url: frontRoutes.campaign,
       src: 'wall.png',
+      notification: NotificationType.campaign,
     },
   ];
 }

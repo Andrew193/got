@@ -121,3 +121,96 @@ table {
 .detail-row td {
   white-space: normal;
 }
+
+.edit-table-wrapper {
+  padding: 8px;
+  background-color: index.$var-metal-dark-2;
+}
+
+.edit-table-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  &--row {
+    margin-top: 8px;
+  }
+
+  button {
+    color: white;
+    border-color: white;
+  }
+}
+
+.edit-table-scroll {
+  overflow-x: auto;
+}
+
+.edit-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 300px;
+}
+
+.edit-th {
+  padding: 4px 8px;
+  vertical-align: top;
+  font-weight: lighter;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+  ::ng-deep mat-form-field {
+    width: 100%;
+    margin-bottom: 4px;
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0;
+    }
+
+    .mat-mdc-form-field-infix {
+      min-height: 36px;
+      padding: 4px 0;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
+}
+
+.edit-td {
+  padding: 4px 8px;
+  vertical-align: middle;
+
+  &--actions {
+    width: 48px;
+    text-align: center;
+  }
+
+  ::ng-deep mat-form-field {
+    width: 100%;
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0;
+    }
+
+    .mat-mdc-form-field-infix {
+      min-height: 36px;
+      padding: 4px 0;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
+}
+
+.edit-field {
+  width: 100%;
+  font-size: 13px;
+}
+
+.edit-remove-col-btn {
+  display: block;
+  margin: 2px auto 0;
+}

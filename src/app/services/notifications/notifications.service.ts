@@ -22,6 +22,7 @@ export enum NotificationType {
   daily_boss,
   header,
   hero_progress,
+  campaign,
 }
 
 @Injectable({
@@ -36,11 +37,12 @@ export class NotificationsService implements InitInterface {
 
   private modalWindowService = inject(ModalWindowService);
 
-  private initNotificationConfig = new Map()
+  private initNotificationConfig = new Map<NotificationType, boolean>()
     .set(NotificationType.daily_reward, false)
     .set(NotificationType.daily_boss, false)
     .set(NotificationType.gift_store, false)
     .set(NotificationType.header, true)
+    .set(NotificationType.campaign, true)
     .set(NotificationType.hero_progress, false);
 
   private notifications: BehaviorSubject<NotificationConfigMap> =

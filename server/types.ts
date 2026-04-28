@@ -75,7 +75,12 @@ export interface VictoriesStore {
 
 export interface NewsItem {
   id: string;
-  [key: string]: unknown;
+  headers: { title: string }[];
+  blocks: (
+    | { type: 'paragraph'; text: string }
+    | { type: 'hero'; heroName: string }
+    | { type: 'table'; columns: Record<string, string>[]; rows: Record<string, string>[] }
+  )[];
 }
 
 export interface WatchtowerStore {

@@ -69,3 +69,15 @@ export type FilterValue<T, K extends keyof T> =
   | Range<number>
   | Range<Date>
   | ((cell: T[K], row: T) => boolean);
+
+export type EditableColumn = {
+  alias: string;
+  label: string;
+};
+
+export type EditableRow = Record<string, string>;
+
+export type TableEditChangeEvent = {
+  columns: EditableColumn[];
+  rows: EditableRow[];
+};

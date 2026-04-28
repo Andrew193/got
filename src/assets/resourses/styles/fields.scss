@@ -1,7 +1,15 @@
+@use './index.scss' as index;
+
 input.error-holder.ng-invalid.ng-touched,
 select.error-holder.ng-invalid.ng-touched,
 div.error-holder.ng-invalid.ng-touched,
 textarea.error-holder.ng-invalid.ng-touched {
   background-color: #f2dede;
   box-shadow: 0 0 5px rgb(255 0 2 / 60%);
+}
+
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  color: index.$var-gold !important;
+  height: 27px !important;
+  padding: 5px;
 }

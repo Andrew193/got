@@ -1,0 +1,16 @@
+<div class="table-block">
+  <div class="block-header">
+    <span class="block-label">Table</span>
+    <button mat-icon-button type="button" (click)="remove.emit()">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </div>
+  <app-watchtower-generic-table
+    [editable]="true"
+    [expandable]="false"
+    [resizable]="false"
+    [showBottomActions]="false"
+    [columnsInput]="columns()"
+    [rowsInput]="rows()"
+    (editChange)="onEditChange($event)" />
+</div>

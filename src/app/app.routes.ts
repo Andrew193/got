@@ -76,6 +76,10 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/watchtower/watchtower.component').then(c => c.WatchtowerComponent),
       },
+      {
+        path: frontRoutes.admin,
+        loadComponent: () => import('./pages/admin/admin.component').then(c => c.AdminComponent),
+      },
     ],
   },
   {

@@ -1,0 +1,57 @@
+.news-constructor {
+  padding: 16px;
+}
+
+.constructor-title {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.field-group {
+  margin-bottom: 16px;
+
+  ::ng-deep app-text-input mat-form-field {
+    width: 100%;
+  }
+}
+
+.blocks-list {
+  margin-bottom: 16px;
+}
+
+.block-wrapper {
+  position: relative;
+}
+
+.block-error {
+  color: #f44336;
+  font-size: 12px;
+  margin: -4px 0 8px 12px;
+}
+
+.add-block-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  app-base-select,
+  button {
+    flex: 1;
+  }
+
+  ::ng-deep app-base-select mat-form-field {
+    width: 100% !important;
+  }
+
+  button {
+    color: white;
+    border-color: white;
+    height: stretch;
+  }
+}
+
+.actions-row {
+  display: flex;
+  gap: 12px;
+}

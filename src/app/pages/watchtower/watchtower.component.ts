@@ -16,7 +16,7 @@ import { NavigationService } from '../../services/facades/navigation/navigation.
 
 @Component({
   selector: 'app-watchtower',
-  imports: [MatExpansionModule, WatchtowerGenericTableComponent, WatchtowerHeroBlockComponent],
+  imports: [MatExpansionModule, WatchtowerHeroBlockComponent, WatchtowerGenericTableComponent],
   templateUrl: './watchtower.component.html',
   styleUrl: './watchtower.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

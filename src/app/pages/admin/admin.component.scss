@@ -1,0 +1,17 @@
+@use '../../../assets/resourses/styles/index.scss' as index;
+
+.admin-page {
+  @include index.mixin-page-container;
+  padding: 12px;
+}
+
+.admin-title {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.coming-soon {
+  padding: 32px 16px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}

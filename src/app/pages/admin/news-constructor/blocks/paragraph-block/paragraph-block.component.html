@@ -1,0 +1,16 @@
+<div class="paragraph-block">
+  <div class="block-header">
+    <span class="block-label">Paragraph</span>
+    <button mat-icon-button type="button" (click)="remove.emit()">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form">
+    <app-text-input
+      controlName="text"
+      label="Paragraph Text"
+      placeholder="Enter paragraph text..."
+      [renderTextarea]="true"
+      [showLabel]="false" />
+  </form>
+</div>

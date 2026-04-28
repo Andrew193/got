@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
 import { Observable } from 'rxjs';
-
 import { AbstractTableComponent } from '../../../components/abstract/abstract-table/abstract-table.component';
 import { TableImports } from '../../../components/abstract/abstract-table/table-imports';
 import { CONTROL_TYPE } from '../../../components/form/enhancedFormConstructor/form-constructor.models';
@@ -39,11 +38,12 @@ export class WatchtowerTableDatabase implements DataSource<Row> {
     './watchtower-generic-table.component.scss',
     '../../../components/abstract/abstract-table/abstract-table.component.scss',
   ],
+  providers: [TableService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WatchtowerGenericTableComponent extends AbstractTableComponent<Row> {
-  columnsInput = input<WatchtowerTableColumn[]>([]);
-  rowsInput = input<Row[]>([]);
+  columnsInput = input.required<WatchtowerTableColumn[]>();
+  rowsInput = input.required<Row[]>();
 
   override tableName = TABLE_NAMES.watchtower_generic_table;
 
@@ -52,20 +52,27 @@ export class WatchtowerGenericTableComponent extends AbstractTableComponent<Row>
   constructor() {
     super();
 
-    effect(() => {
-      const cols = this.columnsInput();
-
-      this.columns.set(
-        cols.map(c => ({
-          alias: c.alias,
-          label: c.label,
-          filter: { filterType: CONTROL_TYPE.TEXT, disabled: true },
-        })),
-      );
-    });
-
+    // Sync datasource whenever rowsInput changes
     effect(() => {
       this.datasource = new WatchtowerTableDatabase(this.rowsInput());
     });
+  }
+
+  override ngOnInit(): void {
+    // Set columns immediately from input (available synchronously at ngOnInit time)
+    const cols = this.columnsInput();
+
+    this.columns.set(
+      cols.map(c => ({
+        alias: c.alias,
+        label: c.label,
+        filter: { filterType: CONTROL_TYPE.TEXT, disabled: true },
+        visible: true,
+      })),
+    );
+
+    // Now call parent ngOnInit — columns are already set, so initTable() inside
+    // will create filterForm controls for the correct columns and emit tableConfigFetched
+    super.ngOnInit();
   }
 }

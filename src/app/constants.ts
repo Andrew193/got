@@ -142,6 +142,7 @@ export const frontRoutes = {
   campaign: 'campaign',
   campaignBattle: 'battle',
   watchtower: 'watchtower',
+  admin: 'admin',
 };
 
 export const ALL_EFFECTS = {

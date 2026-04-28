@@ -1,0 +1,16 @@
+<div class="hero-block">
+  <div class="block-header">
+    <span class="block-label">Hero</span>
+    <button mat-icon-button type="button" (click)="remove.emit()">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form">
+    <app-base-select
+      controlName="heroName"
+      label="Select Hero"
+      placeholder="Choose a hero..."
+      [staticOptions]="heroOptions"
+      [showLabel]="true" />
+  </form>
+</div>

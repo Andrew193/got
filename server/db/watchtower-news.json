@@ -51,13 +51,30 @@
         {
           "type": "table",
           "columns": [
-            { "alias": "hero", "label": "Hero" },
-            { "alias": "change", "label": "Change" },
-            { "alias": "value", "label": "Value" }
+            {
+              "alias": "hero",
+              "label": "Hero"
+            },
+            {
+              "alias": "change",
+              "label": "Change"
+            },
+            {
+              "alias": "value",
+              "label": "Value"
+            }
           ],
           "rows": [
-            { "hero": "Night King", "change": "Attack", "value": "+15%" },
-            { "hero": "Jon Snow (King in the North)", "change": "Defence", "value": "+10%" },
+            {
+              "hero": "Night King",
+              "change": "Attack",
+              "value": "+15%"
+            },
+            {
+              "hero": "Jon Snow (King in the North)",
+              "change": "Defence",
+              "value": "+10%"
+            },
             {
               "hero": "Daenerys Targaryen (Lady of Dragonstone)",
               "change": "Health",
@@ -66,6 +83,44 @@
           ]
         }
       ]
+    },
+    {
+      "headers": [
+        {
+          "title": "fg dg cv",
+          "backgroundSrc": ""
+        }
+      ],
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            {
+              "alias": "col_1777396876357",
+              "label": "test"
+            },
+            {
+              "alias": "col_1777396878509",
+              "label": "rest"
+            }
+          ],
+          "rows": [
+            {
+              "col_1777396876357": "dsf dsf ",
+              "col_1777396878509": "cxv xcvcxv cx ds fds ff dsf"
+            },
+            {
+              "col_1777396876357": "sdf sadf",
+              "col_1777396878509": "sdfsdf"
+            },
+            {
+              "col_1777396876357": "dsfdsaf",
+              "col_1777396878509": "sdfadsf"
+            }
+          ]
+        }
+      ],
+      "id": "news-1777396932274"
     }
   ]
 }

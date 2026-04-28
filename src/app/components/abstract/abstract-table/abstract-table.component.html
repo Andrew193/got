@@ -9,7 +9,7 @@
 
 @let _resizable = resizable();
 
-<div class="mat-elevation-z8 position-relative">
+<div class="mat-elevation-z8 position-relative" [class.d-none]="editable()">
   @if (isLoadingResults) {
     <div class="loading-shade">
       <mat-spinner></mat-spinner>
@@ -37,6 +37,7 @@
           [trackBy]="trackBy"
           matSort>
           @for (column of _columns; track column) {
+            test
             <ng-container [matColumnDef]="column.alias">
               <th mat-header-cell *matHeaderCellDef>
                 @let _sortConfig = getSortConfig(column.alias);
@@ -198,3 +199,83 @@
     </div>
   }
 </div>
+
+<!-- Edit mode: only rendered when editable=true
+@if (editable()) {
+  <div class="edit-table-wrapper">
+    <div class="edit-table-actions">
+      <button mat-stroked-button type="button" (click)="addEditableColumn()">
+        <mat-icon>add</mat-icon>
+        Add Column
+      </button>
+    </div>
+
+    <div class="edit-table-scroll">
+      <table class="edit-table">
+        <thead>
+          <tr>
+            @for (col of editableColumns(); track $index; let colIdx = $index) {
+              <th class="edit-th">
+                <mat-form-field appearance="outline" class="edit-field">
+                  <mat-label>Label</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    [value]="col.label"
+                    placeholder="Column label"
+                    (input)="onColumnLabelChange(colIdx, $any($event.target).value)" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="edit-field">
+                  <mat-label>Alias</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    [value]="col.alias"
+                    placeholder="Column key"
+                    (input)="onColumnAliasChange(colIdx, $any($event.target).value)" />
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  type="button"
+                  class="edit-remove-col-btn"
+                  (click)="removeEditableColumn(colIdx)">
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </th>
+            }
+            <th class="edit-th edit-th--actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of editableRows(); track $index; let rowIdx = $index) {
+            <tr>
+              @for (col of editableColumns(); track col.alias) {
+                <td class="edit-td">
+                  <mat-form-field appearance="outline" class="edit-field">
+                    <input
+                      matInput
+                      type="text"
+                      [value]="row[col.alias] || ''"
+                      (input)="onCellChange(rowIdx, col.alias, $any($event.target).value)" />
+                  </mat-form-field>
+                </td>
+              }
+              <td class="edit-td edit-td--actions">
+                <button mat-icon-button type="button" (click)="removeEditableRow(rowIdx)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="edit-table-actions edit-table-actions--row">
+      <button mat-stroked-button type="button" (click)="addEditableRow()">
+        <mat-icon>add</mat-icon>
+        Add Row
+      </button>
+    </div>
+  </div>
+} -->

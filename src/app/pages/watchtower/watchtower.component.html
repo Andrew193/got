@@ -37,12 +37,14 @@
                   }
                   @case ('table') {
                     <div class="table-block">
-                      <app-watchtower-generic-table
-                        [expandable]="false"
-                        [resizable]="false"
-                        [showBottomActions]="false"
-                        [columnsInput]="block.columns"
-                        [rowsInput]="block.rows" />
+                      @if (block.columns) {
+                        <app-watchtower-generic-table
+                          [expandable]="false"
+                          [resizable]="false"
+                          [showBottomActions]="false"
+                          [columnsInput]="block.columns"
+                          [rowsInput]="block.rows" />
+                      }
                     </div>
                   }
                   @case ('hero') {

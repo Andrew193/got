@@ -11,4 +11,8 @@ export class WatchtowerFacadeService {
   getNews(): Observable<NewsConfig[]> {
     return this.http.get<NewsConfig[]>('/api/watchtower/news');
   }
+
+  createNews(item: Omit<NewsConfig, 'id'>): Observable<NewsConfig> {
+    return this.http.post<NewsConfig>('/api/watchtower/news', item);
+  }
 }

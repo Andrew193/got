@@ -13,19 +13,6 @@
       "tableName": "TavernaHeroesTable",
       "userId": "e046",
       "id": "18d3"
-    },
-    {
-      "config": {
-        "columnsConfig": {
-          "hero": 609,
-          "change": 609,
-          "value": 609
-        },
-        "pageSize": 5
-      },
-      "tableName": "WatchtowerGenericTable",
-      "userId": "e046",
-      "id": "71a4"
     }
   ],
   "users": [
@@ -34,14 +21,14 @@
       "login": "rest",
       "password": "rest",
       "online": {
-        "onlineTime": 80976,
+        "onlineTime": 84576,
         "claimedRewards": [],
         "lastLoyaltyBonus": "04/18/2026"
       },
       "currency": {
-        "gold": 2965,
-        "silver": 8818,
-        "copper": 3605205
+        "gold": 3945,
+        "silver": 9039,
+        "copper": 4358817
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -102,9 +89,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 24,
-      "totalDays": 109,
-      "lastLogin": "04/27/2026"
+      "day": 25,
+      "totalDays": 110,
+      "lastLogin": "04/28/2026"
     },
     {
       "id": "c365",
@@ -132,7 +119,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "04/27/2026"
+      "lastLogin": "04/28/2026"
     },
     {
       "id": "26b5",

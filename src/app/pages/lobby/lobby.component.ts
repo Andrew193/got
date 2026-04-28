@@ -25,12 +25,14 @@ import { LobbyService } from '../../services/lobby/lobby.service';
 import { ShortcutService } from '../../services/facades/shortcut/shortcut.service';
 import { BasicStoresHolderComponent } from '../../components/views/basic-stores-holder/basic-stores-holder.component';
 import { ContainerLabelComponent } from '../../components/views/container-label/container-label.component';
+import { NotificationType } from '../../services/notifications/notifications.service';
 
 export type Route = {
   name: string;
   url: string;
   src: string;
   closed?: boolean;
+  notification?: NotificationType;
 };
 
 @Component({

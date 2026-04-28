@@ -103,6 +103,7 @@ export abstract class ProtoTable<T> extends BasePaginationComponent<T> implement
   //Hooks
   ngOnInit() {
     this.tableService.api.getTableConfig(this.tableName).subscribe(response => {
+      debugger;
       if (response) {
         const {
           config: { pageSize, columnsConfig },

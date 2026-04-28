@@ -20,9 +20,11 @@ import { TextInputComponent } from '../../data-inputs/text-input/text-input.comp
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { BaseSelectComponent } from '../../data-inputs/base-select/base-select.component';
 import { MatIcon } from '@angular/material/icon';
-import { MatMiniFabButton } from '@angular/material/button';
+import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { NumberInputComponent } from '../../data-inputs/number-input/number-input.component';
 import { TableResizeDirective } from '../../../directives/table/resize/resize.directive';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 export const TableImports = [
   MatTable,
@@ -46,9 +48,14 @@ export const TableImports = [
   NgClass,
   BaseSelectComponent,
   MatIcon,
+  MatButton,
+  MatIconButton,
   MatMiniFabButton,
   MatTooltip,
   NumberInputComponent,
   TableResizeDirective,
   AsyncPipe,
+  MatFormField,
+  MatLabel,
+  MatInput,
 ];

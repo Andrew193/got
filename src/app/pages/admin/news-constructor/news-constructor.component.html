@@ -1,0 +1,79 @@
+<div class="news-constructor">
+  <h3 class="constructor-title">News Constructor</h3>
+
+  <form [formGroup]="form">
+    <!-- Title -->
+    <div class="field-group">
+      <app-text-input
+        controlName="title"
+        label="News Title"
+        placeholder="Enter news title..."
+        [showLabel]="true" />
+    </div>
+
+    <!-- Block list -->
+    @if (blocks().length > 0) {
+      <div class="blocks-list">
+        @for (block of blocks(); track $index; let i = $index) {
+          <div class="block-wrapper">
+            @if (isParagraphBlock(block)) {
+              <app-paragraph-block
+                [block]="block"
+                (blockChange)="updateBlock(i, $event)"
+                (remove)="removeBlock(i)" />
+            } @else if (isHeroBlock(block)) {
+              <app-hero-block
+                [block]="block"
+                (blockChange)="updateBlock(i, $event)"
+                (remove)="removeBlock(i)" />
+            } @else if (isTableBlock(block)) {
+              <app-table-block
+                [block]="block"
+                (blockChange)="updateBlock(i, $event)"
+                (remove)="removeBlock(i)" />
+            }
+            @if (blockErrors()[i]) {
+              <p class="block-error">{{ blockErrors()[i] }}</p>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Add block -->
+    <div class="add-block-row">
+      <app-base-select
+        controlName="blockType"
+        label="Block Type"
+        placeholder="Select block type..."
+        [staticOptions]="blockTypeOptions" />
+      <button
+        mat-stroked-button
+        type="button"
+        [disabled]="!form.get('blockType')?.value"
+        (click)="addBlock()">
+        <mat-icon>add</mat-icon>
+        Add Block
+      </button>
+    </div>
+  </form>
+
+  <!-- Actions -->
+  <div class="actions-row">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      [disabled]="isPublishing()"
+      (click)="publish()">
+      @if (isPublishing()) {
+        Publishing...
+      } @else {
+        Publish
+      }
+    </button>
+    <button mat-stroked-button type="button" [disabled]="isFormEmpty()" (click)="reset()">
+      Reset
+    </button>
+  </div>
+</div>

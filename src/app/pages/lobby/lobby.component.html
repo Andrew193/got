@@ -21,6 +21,10 @@
               @if (route.closed) {
                 <app-container-label [size]="25" class="color-white" />
               }
+
+              @if (route.notification) {
+                <app-notification-marker [notificationType]="route.notification" />
+              }
             </mat-list-item>
           }
           <mat-divider></mat-divider>
