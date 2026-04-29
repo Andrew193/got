@@ -9,24 +9,18 @@
     </div>
 
     <!-- Block list -->
-    @if (blocks().length > 0) {
+    @if (form.controls.blocks.controls.length > 0) {
       <div class="blocks-list">
-        @for (block of blocks(); track $index; let i = $index) {
+        @for (blockGroup of form.controls.blocks.controls; track $index; let i = $index) {
           <div class="block-wrapper">
-            @if (isParagraphBlock(block)) {
-              <app-paragraph-block
-                [block]="block"
-                (blockChange)="updateBlock(i, $event)"
-                (remove)="removeBlock(i)" />
-            } @else if (isHeroBlock(block)) {
-              <app-hero-block
-                [block]="block"
-                (blockChange)="updateBlock(i, $event)"
-                (remove)="removeBlock(i)" />
-            } @else if (isTableBlock(block)) {
+            @if (getBlockType(blockGroup) === 'paragraph') {
+              <app-paragraph-block [formGroup]="$any(blockGroup)" (remove)="removeBlock(i)" />
+            } @else if (getBlockType(blockGroup) === 'hero') {
+              <app-hero-block [formGroup]="$any(blockGroup)" (remove)="removeBlock(i)" />
+            } @else if (getBlockType(blockGroup) === 'table') {
               <app-table-block
-                [block]="block"
-                (blockChange)="updateBlock(i, $event)"
+                [block]="$any(blockGroup.value)"
+                (blockChange)="updateTableBlock(i, $event)"
                 (remove)="removeBlock(i)" />
             }
           </div>
@@ -66,7 +60,7 @@
         Publish
       }
     </button>
-    <button mat-stroked-button type="button" [disabled]="isFormEmpty()" (click)="reset()">
+    <button mat-stroked-button type="button" [disabled]="isFormEmpty" (click)="reset()">
       Reset
     </button>
   </div>
@@ -77,6 +71,8 @@
       [form]="form"
       [uiErrorsNames]="{
         title: 'News Title',
+        text: 'Paragraph',
+        heroName: 'Hero',
       }"></app-form-errors-container>
   }
 </div>

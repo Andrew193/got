@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,10 +18,9 @@ import { of } from 'rxjs';
 import {
   BlockType,
   ContentBlock,
-  HeroBlock,
   NewsConfig,
-  ParagraphBlock,
   TableBlock,
+  WatchtowerTableColumn,
 } from '../../../models/watchtower/watchtower.model';
 import { HeroesNamesCodes } from '../../../models/units-related/unit.model';
 import { WatchtowerFacadeService } from '../../watchtower/services/watchtower-facade.service';
@@ -24,6 +32,40 @@ import { TextInputComponent } from '../../../components/data-inputs/text-input/t
 import { BaseSelectComponent } from '../../../components/data-inputs/base-select/base-select.component';
 import { LabelValue } from '../../../components/form/enhancedFormConstructor/form-constructor.models';
 import { FormErrorsContainerComponent } from '../../../components/form/form-errors-container/form-errors-container.component';
+
+type ParagraphBlockFormGroup = FormGroup<{
+  type: FormControl<BlockType.paragraph>;
+  text: FormControl<string>;
+}>;
+
+type HeroBlockFormGroup = FormGroup<{
+  type: FormControl<BlockType.hero>;
+  heroName: FormControl<HeroesNamesCodes | ''>;
+}>;
+
+type TableBlockFormGroup = FormGroup<{
+  type: FormControl<BlockType.table>;
+  columns: FormControl<WatchtowerTableColumn[]>;
+  rows: FormControl<Record<string, unknown>[]>;
+}>;
+
+type BlockFormGroup = ParagraphBlockFormGroup | HeroBlockFormGroup | TableBlockFormGroup;
+
+type NewsConstructorForm = FormGroup<{
+  title: FormControl<string>;
+  blockType: FormControl<BlockType | null>;
+  blocks: FormArray<BlockFormGroup>;
+}>;
+
+function nonEmptyArrayValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+
+  if (!Array.isArray(value) || value.length === 0) {
+    return { required: true };
+  }
+
+  return null;
+}
 
 @Component({
   selector: 'app-news-constructor',
@@ -46,15 +88,16 @@ import { FormErrorsContainerComponent } from '../../../components/form/form-erro
 export class NewsConstructorComponent {
   private facade = inject(WatchtowerFacadeService);
   private snackBar = inject(MatSnackBar);
+  private fb = inject(FormBuilder);
+
+  private readonly blocksFormArray = new FormArray<BlockFormGroup>([]);
 
   form = new FormGroup({
-    title: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    blockType: new FormControl<BlockType>(BlockType.paragraph, { nonNullable: true }),
-  });
-  blocks = signal<ContentBlock[]>([]);
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    blockType: new FormControl<BlockType>(BlockType.paragraph),
+    blocks: this.blocksFormArray,
+  }) as NewsConstructorForm;
+
   isPublishing = signal<boolean>(false);
 
   blockTypeOptions = of<LabelValue[]>([
@@ -63,69 +106,55 @@ export class NewsConstructorComponent {
     { value: BlockType.table, label: 'Table' },
   ]);
 
-  isFormEmpty = computed(
-    () => this.form?.get('title')?.value?.trim() === '' && this.blocks().length === 0,
-  );
+  get blocksArray(): FormArray<BlockFormGroup> {
+    return this.form.controls.blocks;
+  }
 
-  addBlock() {
-    const type = this.form.get('blockType')!.value;
+  get isFormEmpty(): boolean {
+    return this.form.controls.title.value.trim() === '' && this.blocksArray.length === 0;
+  }
+
+  addBlock(): void {
+    const type = this.form.controls.blockType.value;
 
     if (!type) {
       return;
     }
 
-    let newBlock: ContentBlock;
-
     if (type === BlockType.paragraph) {
-      newBlock = { type: BlockType.paragraph, text: '' } satisfies ParagraphBlock;
+      this.blocksArray.push(this.createParagraphGroup());
     } else if (type === BlockType.hero) {
-      newBlock = { type: BlockType.hero, heroName: '' as HeroesNamesCodes } satisfies HeroBlock;
+      this.blocksArray.push(this.createHeroGroup());
     } else {
-      newBlock = { type: BlockType.table, columns: [], rows: [] } satisfies TableBlock;
+      this.blocksArray.push(this.createTableGroup());
     }
 
-    this.blocks.update(b => [...b, newBlock]);
-    this.form.get('blockType')?.reset();
+    this.form.controls.blockType.reset();
   }
 
-  removeBlock(index: number) {
-    this.blocks.update(b => b.filter((_, i) => i !== index));
+  removeBlock(index: number): void {
+    this.blocksArray.removeAt(index);
   }
 
-  updateBlock(index: number, block: ContentBlock) {
-    this.blocks.update(b => b.map((item, i) => (i === index ? block : item)));
+  getBlockType(blockGroup: BlockFormGroup): BlockType {
+    return (blockGroup as FormGroup).get('type')?.value as BlockType;
+  }
+
+  updateTableBlock(index: number, block: TableBlock): void {
+    this.blocksArray.at(index).patchValue({ columns: block.columns, rows: block.rows });
   }
 
   buildPayload(): Omit<NewsConfig, 'id'> {
     return {
-      headers: [{ title: this.form.get('title')?.value?.trim() || '', backgroundSrc: '' }],
-      blocks: this.blocks(),
+      headers: [{ title: this.form.controls.title.value.trim(), backgroundSrc: '' }],
+      blocks: this.form.controls.blocks.value as ContentBlock[],
     };
   }
 
-  isFormValid() {
-    let valid = true;
+  publish(): void {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
 
-    if (!this.form.get('title')?.value?.trim()) {
-      this.form.get('title')?.setErrors({ required: true });
-      valid = false;
-    }
-
-    this.blocks().forEach((block, i) => {
-      if (block.type === BlockType.paragraph && block.text.trim() === '') {
-        valid = false;
-      } else if (block.type === BlockType.hero && !block.heroName) {
-        valid = false;
-      } else if (block.type === BlockType.table && block.columns.length === 0) {
-        valid = false;
-      }
-    });
-
-    return valid;
-  }
-
-  publish() {
-    if (!this.isFormValid()) {
       return;
     }
 
@@ -150,20 +179,30 @@ export class NewsConstructorComponent {
       .subscribe();
   }
 
-  reset() {
+  reset(): void {
     this.form.reset();
-    this.blocks.set([]);
+    this.blocksArray.clear();
   }
 
-  isParagraphBlock(block: ContentBlock): block is ParagraphBlock {
-    return block.type === BlockType.paragraph;
+  private createParagraphGroup(): ParagraphBlockFormGroup {
+    return this.fb.group({
+      type: [BlockType.paragraph as const],
+      text: ['', [Validators.required, Validators.pattern(/\S+/)]],
+    }) as ParagraphBlockFormGroup;
   }
 
-  isHeroBlock(block: ContentBlock): block is HeroBlock {
-    return block.type === BlockType.hero;
+  private createHeroGroup(): HeroBlockFormGroup {
+    return this.fb.group({
+      type: [BlockType.hero as const],
+      heroName: ['' as HeroesNamesCodes, Validators.required],
+    }) as HeroBlockFormGroup;
   }
 
-  isTableBlock(block: ContentBlock): block is TableBlock {
-    return block.type === BlockType.table;
+  private createTableGroup(): TableBlockFormGroup {
+    return this.fb.group({
+      type: [BlockType.table as const],
+      columns: [[] as WatchtowerTableColumn[], nonEmptyArrayValidator],
+      rows: [[] as Record<string, unknown>[]],
+    }) as TableBlockFormGroup;
   }
 }
