@@ -6,7 +6,6 @@ import {
   input,
   OnDestroy,
   output,
-  signal,
   viewChild,
   ViewChild,
 } from '@angular/core';
@@ -19,12 +18,15 @@ import {
   merge,
   Observable,
   of,
+  pairwise,
   switchMap,
+  Subscription,
   take,
   takeUntil,
   tap,
 } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   DataSource,
   EditableColumn,
@@ -54,12 +56,35 @@ export abstract class AbstractTableComponent<T>
 
   editable = input<boolean>(false);
   editChange = output<TableEditChangeEvent>();
+  validityChange = output<boolean>();
 
-  editableColumns = signal<EditableColumn[]>([]);
-  editableRows = signal<EditableRow[]>([]);
+  editForm?: FormGroup<{
+    columnsArray: FormArray<
+      FormGroup<{
+        label: FormControl<string>;
+        alias: FormControl<string>;
+      }>
+    >;
+    rowsArray: FormArray<FormGroup<Record<string, FormControl<string>>>>;
+  }>;
+
+  private editFormSubscription?: Subscription;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  get columnsArray(): FormArray<
+    FormGroup<{
+      label: FormControl<string>;
+      alias: FormControl<string>;
+    }>
+  > {
+    return this.editForm?.get('columnsArray') as FormArray;
+  }
+
+  get rowsArray(): FormArray<FormGroup<Record<string, FormControl<string>>>> {
+    return this.editForm?.get('rowsArray') as FormArray;
+  }
 
   ngAfterViewInit() {
     this.tableConfigFetched
@@ -76,6 +101,10 @@ export abstract class AbstractTableComponent<T>
         }),
       )
       .subscribe();
+
+    if (this.editable()) {
+      this.initEditForm();
+    }
   }
 
   initDatasource() {
@@ -132,83 +161,148 @@ export abstract class AbstractTableComponent<T>
       });
   }
 
+  private initEditForm(): void {
+    this.editForm = new FormGroup({
+      columnsArray: new FormArray<
+        FormGroup<{
+          label: FormControl<string>;
+          alias: FormControl<string>;
+        }>
+      >([]),
+      rowsArray: new FormArray<FormGroup<Record<string, FormControl<string>>>>([]),
+    });
+
+    this.editFormSubscription = this.editForm.valueChanges
+      .pipe(takeUntil(this.subs))
+      .subscribe(() => {
+        this.emitEditChange();
+        this.emitValidityChange();
+      });
+
+    this.columnsArray.valueChanges
+      .pipe(takeUntil(this.subs), pairwise())
+      .subscribe(([prev, curr]) => {
+        this.handleAliasChanges(prev, curr);
+      });
+
+    // Emit initial validity
+    this.emitValidityChange();
+  }
+
+  private handleAliasChanges(
+    prev: Partial<{ label: string; alias: string }>[],
+    curr: Partial<{ label: string; alias: string }>[],
+  ): void {
+    prev.forEach((prevCol, index) => {
+      const currCol = curr[index];
+
+      if (currCol && prevCol.alias && currCol.alias && prevCol.alias !== currCol.alias) {
+        this.rowsArray.controls.forEach(rowGroup => {
+          const value = rowGroup.get(prevCol.alias!)?.value || '';
+
+          (rowGroup as FormGroup).removeControl(prevCol.alias!);
+          (rowGroup as FormGroup).addControl(
+            currCol.alias!,
+            new FormControl(value, { nonNullable: true }),
+          );
+        });
+      }
+    });
+  }
+
   addEditableColumn(): void {
     const newAlias = `col_${Date.now()}`;
 
-    this.editableColumns.update(cols => [...cols, { alias: newAlias, label: '' }]);
-    this.editableRows.update(rows => rows.map(row => ({ ...row, [newAlias]: '' })));
-    this.emitEditChange();
+    const columnGroup = new FormGroup({
+      label: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      alias: new FormControl(newAlias, { nonNullable: true, validators: [Validators.required] }),
+    });
+
+    this.columnsArray.push(columnGroup);
+
+    this.rowsArray.controls.forEach(rowGroup => {
+      (rowGroup as FormGroup).addControl(newAlias, new FormControl('', { nonNullable: true }));
+    });
   }
 
   removeEditableColumn(index: number): void {
-    const alias = this.editableColumns()[index]?.alias;
-
-    this.editableColumns.update(cols => cols.filter((_, i) => i !== index));
-    if (alias) {
-      this.editableRows.update(rows =>
-        rows.map(row => {
-          const { [alias]: _removed, ...rest } = row;
-
-          return rest as EditableRow;
-        }),
-      );
+    if (index < 0 || index >= this.columnsArray.length) {
+      return;
     }
 
-    this.emitEditChange();
+    const alias = this.columnsArray.at(index).get('alias')?.value;
+
+    this.columnsArray.removeAt(index);
+
+    if (alias) {
+      this.rowsArray.controls.forEach(rowGroup => {
+        (rowGroup as FormGroup).removeControl(alias);
+      });
+    }
   }
 
   addEditableRow(): void {
-    const emptyRow: EditableRow = Object.fromEntries(
-      this.editableColumns().map(col => [col.alias, '']),
-    );
+    const rowGroup = new FormGroup<Record<string, FormControl<string>>>({});
 
-    this.editableRows.update(rows => [...rows, emptyRow]);
-    this.emitEditChange();
+    this.columnsArray.controls.forEach(columnGroup => {
+      const alias = columnGroup.get('alias')?.value || '';
+
+      (rowGroup as FormGroup).addControl(alias, new FormControl('', { nonNullable: true }));
+    });
+
+    this.rowsArray.push(rowGroup);
   }
 
   removeEditableRow(index: number): void {
-    this.editableRows.update(rows => rows.filter((_, i) => i !== index));
-    this.emitEditChange();
-  }
-
-  onCellChange(rowIndex: number, alias: string, value: string): void {
-    this.editableRows.update(rows =>
-      rows.map((row, i) => (i === rowIndex ? { ...row, [alias]: value } : row)),
-    );
-    this.emitEditChange();
-  }
-
-  onColumnLabelChange(index: number, label: string): void {
-    this.editableColumns.update(cols =>
-      cols.map((col, i) => (i === index ? { ...col, label } : col)),
-    );
-    this.emitEditChange();
-  }
-
-  onColumnAliasChange(index: number, newAlias: string): void {
-    const oldAlias = this.editableColumns()[index]?.alias;
-
-    this.editableColumns.update(cols =>
-      cols.map((col, i) => (i === index ? { ...col, alias: newAlias } : col)),
-    );
-    if (oldAlias && oldAlias !== newAlias) {
-      this.editableRows.update(rows =>
-        rows.map(row => {
-          const { [oldAlias]: value, ...rest } = row;
-
-          return { ...rest, [newAlias]: value ?? '' } as EditableRow;
-        }),
-      );
+    if (index < 0 || index >= this.rowsArray.length) {
+      return;
     }
 
-    this.emitEditChange();
+    this.rowsArray.removeAt(index);
   }
 
   emitEditChange(): void {
-    this.editChange.emit({
-      columns: this.editableColumns(),
-      rows: this.editableRows(),
+    const columns: EditableColumn[] = this.columnsArray.controls.map(group => ({
+      alias: group.get('alias')?.value || '',
+      label: group.get('label')?.value || '',
+    }));
+
+    const rows: EditableRow[] = this.rowsArray.controls.map(group => {
+      const row: EditableRow = {};
+
+      Object.keys(group.controls).forEach(alias => {
+        row[alias] = group.get(alias)?.value || '';
+      });
+
+      return row;
     });
+
+    this.editChange.emit({ columns, rows });
+  }
+
+  private emitValidityChange(): void {
+    if (!this.editForm) {
+      this.validityChange.emit(true);
+
+      return;
+    }
+
+    // Table is valid if:
+    // 1. Has at least one column with non-empty label and alias
+    // 2. All column labels and aliases are non-empty
+    // 3. Has at least one row (if columns exist)
+    const hasColumns = this.columnsArray.length > 0;
+    const allColumnsValid = this.columnsArray.controls.every(group => {
+      const label = group.get('label')?.value?.trim();
+      const alias = group.get('alias')?.value?.trim();
+
+      return label && alias;
+    });
+    const hasRows = this.rowsArray.length > 0;
+
+    const isValid = hasColumns && allColumnsValid && hasRows;
+
+    this.validityChange.emit(isValid);
   }
 
   saveTableConfig() {
@@ -220,6 +314,7 @@ export abstract class AbstractTableComponent<T>
   ngOnDestroy() {
     this.subs.next(true);
     this.subs.complete();
+    this.editFormSubscription?.unsubscribe();
   }
 }
 

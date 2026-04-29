@@ -20,6 +20,7 @@ import { WatchtowerGenericTableComponent } from '../../../../watchtower/watchtow
 export class TableBlockComponent implements OnInit {
   block = input.required<TableBlock>();
   blockChange = output<TableBlock>();
+  validityChange = output<boolean>();
   remove = output<void>();
 
   columns = signal<WatchtowerTableColumn[]>([]);
@@ -40,5 +41,9 @@ export class TableBlockComponent implements OnInit {
     this.columns.set(event.columns);
     this.rows.set(event.rows);
     this.blockChange.emit(updatedBlock);
+  }
+
+  onValidityChange(isValid: boolean) {
+    this.validityChange.emit(isValid);
   }
 }

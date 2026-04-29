@@ -52,27 +52,23 @@ export class WatchtowerGenericTableComponent extends AbstractTableComponent<Row>
   constructor() {
     super();
 
-    // Sync datasource whenever rowsInput changes
     effect(() => {
       this.datasource = new WatchtowerTableDatabase(this.rowsInput());
     });
   }
 
-  override ngOnInit(): void {
-    // Set columns immediately from input (available synchronously at ngOnInit time)
+  override ngOnInit() {
     const cols = this.columnsInput();
 
     this.columns.set(
       cols.map(c => ({
         alias: c.alias,
         label: c.label,
-        filter: { filterType: CONTROL_TYPE.TEXT, disabled: true },
+        filter: { filterType: CONTROL_TYPE.TEXT },
         visible: true,
       })),
     );
 
-    // Now call parent ngOnInit — columns are already set, so initTable() inside
-    // will create filterForm controls for the correct columns and emit tableConfigFetched
     super.ngOnInit();
   }
 }

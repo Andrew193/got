@@ -21,6 +21,7 @@
               <app-table-block
                 [block]="$any(blockGroup.value)"
                 (blockChange)="updateTableBlock(i, $event)"
+                (validityChange)="updateBlockValidity(i, $event)"
                 (remove)="removeBlock(i)" />
             }
           </div>

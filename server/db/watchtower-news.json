@@ -136,6 +136,104 @@
         }
       ],
       "id": "news-1777402113392"
+    },
+    {
+      "headers": [
+        {
+          "title": "fdgdfgdfgsdf",
+          "backgroundSrc": ""
+        }
+      ],
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            {
+              "alias": "col_1777480376440",
+              "label": ""
+            },
+            {
+              "alias": "col_1777480378936",
+              "label": ""
+            }
+          ],
+          "rows": [
+            {
+              "col_1777480376440": "",
+              "col_1777480378936": ""
+            }
+          ]
+        }
+      ],
+      "id": "news-1777480394780"
+    },
+    {
+      "headers": [
+        {
+          "title": "title",
+          "backgroundSrc": ""
+        }
+      ],
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            {
+              "alias": "col_1777480932044",
+              "label": ""
+            },
+            {
+              "alias": "col_1777480965846",
+              "label": ""
+            }
+          ],
+          "rows": [
+            {
+              "col_1777480932044": "",
+              "col_1777480965846": ""
+            },
+            {
+              "col_1777480932044": "",
+              "col_1777480965846": ""
+            }
+          ]
+        }
+      ],
+      "id": "news-1777480994361"
+    },
+    {
+      "headers": [
+        {
+          "title": "опррпоп",
+          "backgroundSrc": ""
+        }
+      ],
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            {
+              "alias": "col_1777481579389",
+              "label": "test"
+            },
+            {
+              "alias": "col_1777481579565",
+              "label": "rest"
+            }
+          ],
+          "rows": [
+            {
+              "col_1777481579389": "12",
+              "col_1777481579565": "fdfdsf"
+            },
+            {
+              "col_1777481579389": "12121",
+              "col_1777481579565": " vcx vxcv xvcx"
+            }
+          ]
+        }
+      ],
+      "id": "news-1777481623338"
     }
   ]
 }

@@ -91,6 +91,7 @@ export class NewsConstructorComponent {
   private fb = inject(FormBuilder);
 
   private readonly blocksFormArray = new FormArray<BlockFormGroup>([]);
+  private readonly blockValidityMap = new Map<number, boolean>();
 
   form = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -134,6 +135,21 @@ export class NewsConstructorComponent {
 
   removeBlock(index: number): void {
     this.blocksArray.removeAt(index);
+    this.blockValidityMap.delete(index);
+
+    // Re-index the validity map
+    const newMap = new Map<number, boolean>();
+
+    this.blockValidityMap.forEach((value, key) => {
+      if (key > index) {
+        newMap.set(key - 1, value);
+      } else {
+        newMap.set(key, value);
+      }
+    });
+
+    this.blockValidityMap.clear();
+    newMap.forEach((value, key) => this.blockValidityMap.set(key, value));
   }
 
   getBlockType(blockGroup: BlockFormGroup): BlockType {
@@ -144,6 +160,27 @@ export class NewsConstructorComponent {
     this.blocksArray.at(index).patchValue({ columns: block.columns, rows: block.rows });
   }
 
+  updateBlockValidity(index: number, isValid: boolean): void {
+    this.blockValidityMap.set(index, isValid);
+  }
+
+  get areAllBlocksValid(): boolean {
+    // Check if all table blocks are valid
+    for (let i = 0; i < this.blocksArray.length; i++) {
+      const blockType = this.getBlockType(this.blocksArray.at(i));
+
+      if (blockType === BlockType.table) {
+        const isValid = this.blockValidityMap.get(i);
+
+        if (isValid === false) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   buildPayload(): Omit<NewsConfig, 'id'> {
     return {
       headers: [{ title: this.form.controls.title.value.trim(), backgroundSrc: '' }],
@@ -152,8 +189,13 @@ export class NewsConstructorComponent {
   }
 
   publish(): void {
-    if (!this.form.valid) {
+    if (!this.form.valid || !this.areAllBlocksValid) {
       this.form.markAllAsTouched();
+      this.snackBar.open(
+        'Please fix all validation errors before publishing',
+        'Close',
+        SNACKBAR_CONFIG,
+      );
 
       return;
     }
@@ -182,6 +224,7 @@ export class NewsConstructorComponent {
   reset(): void {
     this.form.reset();
     this.blocksArray.clear();
+    this.blockValidityMap.clear();
   }
 
   private createParagraphGroup(): ParagraphBlockFormGroup {

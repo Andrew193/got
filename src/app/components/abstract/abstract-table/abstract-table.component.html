@@ -37,7 +37,6 @@
           [trackBy]="trackBy"
           matSort>
           @for (column of _columns; track column) {
-            test
             <ng-container [matColumnDef]="column.alias">
               <th mat-header-cell *matHeaderCellDef>
                 @let _sortConfig = getSortConfig(column.alias);
@@ -201,79 +200,85 @@
 </div>
 
 <!-- Edit mode: only rendered when editable=true -->
-@if (editable()) {
-  <div class="edit-table-wrapper">
-    <div class="edit-table-actions">
-      <button mat-stroked-button type="button" (click)="addEditableColumn()">
-        <mat-icon>add</mat-icon>
-        Add Column
-      </button>
-    </div>
+@if (editable() && editForm) {
+  <ng-container [formGroup]="editForm">
+    <div class="edit-table-wrapper">
+      <div class="edit-table-actions">
+        <button mat-stroked-button type="button" (click)="addEditableColumn()">
+          <mat-icon>add</mat-icon>
+          Add Column
+        </button>
+      </div>
 
-    <div class="edit-table-scroll">
-      <table class="edit-table">
-        <thead>
-          <tr>
-            @for (col of editableColumns(); track $index; let colIdx = $index) {
-              <th class="edit-th">
-                <mat-form-field appearance="outline" class="edit-field">
-                  <input
-                    matInput
-                    type="text"
-                    [value]="col.label"
-                    placeholder="Label"
-                    (input)="onColumnLabelChange(colIdx, $any($event.target).value)" />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="edit-field">
-                  <input
-                    matInput
-                    type="text"
-                    [value]="col.alias"
-                    placeholder="Alias"
-                    (input)="onColumnAliasChange(colIdx, $any($event.target).value)" />
-                </mat-form-field>
-                <button
-                  mat-icon-button
-                  type="button"
-                  class="edit-remove-col-btn"
-                  (click)="removeEditableColumn(colIdx)">
-                  <mat-icon>remove_circle_outline</mat-icon>
-                </button>
-              </th>
-            }
-            <th class="edit-th edit-th--actions">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (row of editableRows(); track $index; let rowIdx = $index) {
+      <div class="edit-table-scroll">
+        <table class="edit-table">
+          <thead>
             <tr>
-              @for (col of editableColumns(); track col.alias) {
-                <td class="edit-td">
-                  <mat-form-field appearance="outline" class="edit-field">
-                    <input
-                      matInput
-                      type="text"
-                      [value]="row[col.alias] || ''"
-                      (input)="onCellChange(rowIdx, col.alias, $any($event.target).value)" />
-                  </mat-form-field>
-                </td>
+              @for (columnGroup of columnsArray.controls; track $index; let colIdx = $index) {
+                <th class="edit-th">
+                  <ng-container [formGroup]="columnGroup">
+                    <app-text-input
+                      controlName="label"
+                      [placeholder]="'Label'"
+                      [showLabel]="false" />
+                    <app-text-input
+                      controlName="alias"
+                      [placeholder]="'Alias'"
+                      [showLabel]="false" />
+                  </ng-container>
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="edit-remove-col-btn"
+                    (click)="removeEditableColumn(colIdx)">
+                    <mat-icon>remove_circle_outline</mat-icon>
+                  </button>
+                </th>
               }
-              <td class="edit-td edit-td--actions">
-                <button mat-icon-button type="button" (click)="removeEditableRow(rowIdx)">
-                  <mat-icon>delete_outline</mat-icon>
-                </button>
-              </td>
+              <th class="edit-th edit-th--actions">Actions</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            @for (rowGroup of rowsArray.controls; track $index; let rowIdx = $index) {
+              <tr>
+                <ng-container [formGroup]="rowGroup">
+                  @for (
+                    columnGroup of columnsArray.controls;
+                    track columnGroup.get('alias')?.value
+                  ) {
+                    <td class="edit-td">
+                      <app-text-input
+                        [controlName]="columnGroup.get('alias')?.value || ''"
+                        [showLabel]="false" />
+                    </td>
+                  }
+                </ng-container>
+                <td class="edit-td edit-td--actions">
+                  <button mat-icon-button type="button" (click)="removeEditableRow(rowIdx)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
 
-    <div class="edit-table-actions edit-table-actions--row">
-      <button mat-stroked-button type="button" (click)="addEditableRow()">
-        <mat-icon>add</mat-icon>
-        Add Row
-      </button>
+      <div class="edit-table-actions edit-table-actions--row">
+        <button mat-stroked-button type="button" (click)="addEditableRow()">
+          <mat-icon>add</mat-icon>
+          Add Row
+        </button>
+      </div>
     </div>
-  </div>
+    @if (editForm.invalid) {
+      <app-form-errors-container
+        class="w-100 mt-2"
+        [form]="editForm"
+        [uiErrorsNames]="{
+          label: 'Label',
+          alias: 'Alias',
+        }"></app-form-errors-container>
+    }
+  </ng-container>
 }
