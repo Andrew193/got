@@ -1,22 +1,15 @@
+@use '../block.shared' as shared;
+
 .paragraph-block {
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 8px;
+  @extend %block-container;
 }
 
 .block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  @extend %block-header;
 }
 
 .block-label {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  @extend %block-label;
 }
 
 ::ng-deep app-text-input mat-form-field {

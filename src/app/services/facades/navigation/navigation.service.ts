@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-
 import { frontRoutes, frontRoutes as FrontRoutes } from '../../../constants';
 import { Router } from '@angular/router';
 import { CampaignBattleState } from '../../../modules/campaign/campaign-battlefield/campaign-battlefield.component';

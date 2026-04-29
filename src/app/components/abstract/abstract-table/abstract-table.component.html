@@ -200,7 +200,7 @@
   }
 </div>
 
-<!-- Edit mode: only rendered when editable=true
+<!-- Edit mode: only rendered when editable=true -->
 @if (editable()) {
   <div class="edit-table-wrapper">
     <div class="edit-table-actions">
@@ -217,21 +217,19 @@
             @for (col of editableColumns(); track $index; let colIdx = $index) {
               <th class="edit-th">
                 <mat-form-field appearance="outline" class="edit-field">
-                  <mat-label>Label</mat-label>
                   <input
                     matInput
                     type="text"
                     [value]="col.label"
-                    placeholder="Column label"
+                    placeholder="Label"
                     (input)="onColumnLabelChange(colIdx, $any($event.target).value)" />
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="edit-field">
-                  <mat-label>Alias</mat-label>
                   <input
                     matInput
                     type="text"
                     [value]="col.alias"
-                    placeholder="Column key"
+                    placeholder="Alias"
                     (input)="onColumnAliasChange(colIdx, $any($event.target).value)" />
                 </mat-form-field>
                 <button
@@ -243,7 +241,7 @@
                 </button>
               </th>
             }
-            <th class="edit-th edit-th--actions"></th>
+            <th class="edit-th edit-th--actions">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -278,4 +276,4 @@
       </button>
     </div>
   </div>
-} -->
+}

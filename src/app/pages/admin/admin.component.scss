@@ -2,6 +2,8 @@
 
 .admin-page {
   @include index.mixin-page-container;
+  @include index.mixin-got-btn;
+
   padding: 12px;
 }
 

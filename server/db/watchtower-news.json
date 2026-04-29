@@ -121,6 +121,21 @@
         }
       ],
       "id": "news-1777396932274"
+    },
+    {
+      "headers": [
+        {
+          "title": "вмсчмчсм",
+          "backgroundSrc": ""
+        }
+      ],
+      "blocks": [
+        {
+          "type": "hero",
+          "heroName": "White Wolf"
+        }
+      ],
+      "id": "news-1777402113392"
     }
   ]
 }

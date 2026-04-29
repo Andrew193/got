@@ -1,8 +1,5 @@
 <div class="news-constructor">
-  <h3 class="constructor-title">News Constructor</h3>
-
   <form [formGroup]="form">
-    <!-- Title -->
     <div class="field-group">
       <app-text-input
         controlName="title"
@@ -31,9 +28,6 @@
                 [block]="block"
                 (blockChange)="updateBlock(i, $event)"
                 (remove)="removeBlock(i)" />
-            }
-            @if (blockErrors()[i]) {
-              <p class="block-error">{{ blockErrors()[i] }}</p>
             }
           </div>
         }
@@ -76,4 +70,13 @@
       Reset
     </button>
   </div>
+
+  @if (form.invalid) {
+    <app-form-errors-container
+      class="w-100 mt-2"
+      [form]="form"
+      [uiErrorsNames]="{
+        title: 'News Title',
+      }"></app-form-errors-container>
+  }
 </div>

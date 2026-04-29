@@ -26,9 +26,9 @@
         "lastLoyaltyBonus": "04/18/2026"
       },
       "currency": {
-        "gold": 3945,
-        "silver": 9039,
-        "copper": 4358817
+        "gold": 4045,
+        "silver": 9163,
+        "copper": 5249092
       },
       "createdAt": 1756640349588,
       "depositId": "61ec"
@@ -89,9 +89,9 @@
     {
       "id": "ab59",
       "userId": "e046",
-      "day": 25,
-      "totalDays": 110,
-      "lastLogin": "04/28/2026"
+      "day": 26,
+      "totalDays": 111,
+      "lastLogin": "04/29/2026"
     },
     {
       "id": "c365",
@@ -119,7 +119,7 @@
     {
       "id": "16b0",
       "userId": "e046",
-      "lastLogin": "04/28/2026"
+      "lastLogin": "04/29/2026"
     },
     {
       "id": "26b5",

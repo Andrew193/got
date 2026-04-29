@@ -1,12 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +7,7 @@ import { EMPTY, catchError, finalize, tap } from 'rxjs';
 import { of } from 'rxjs';
 
 import {
+  BlockType,
   ContentBlock,
   HeroBlock,
   NewsConfig,
@@ -29,8 +23,7 @@ import { TableBlockComponent } from './blocks/table-block/table-block.component'
 import { TextInputComponent } from '../../../components/data-inputs/text-input/text-input.component';
 import { BaseSelectComponent } from '../../../components/data-inputs/base-select/base-select.component';
 import { LabelValue } from '../../../components/form/enhancedFormConstructor/form-constructor.models';
-
-type BlockType = 'paragraph' | 'hero' | 'table';
+import { FormErrorsContainerComponent } from '../../../components/form/form-errors-container/form-errors-container.component';
 
 @Component({
   selector: 'app-news-constructor',
@@ -44,40 +37,38 @@ type BlockType = 'paragraph' | 'hero' | 'table';
     TableBlockComponent,
     TextInputComponent,
     BaseSelectComponent,
+    FormErrorsContainerComponent,
   ],
   templateUrl: './news-constructor.component.html',
   styleUrl: './news-constructor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsConstructorComponent implements OnInit {
+export class NewsConstructorComponent {
   private facade = inject(WatchtowerFacadeService);
   private snackBar = inject(MatSnackBar);
-  private fb = inject(FormBuilder);
 
-  form!: FormGroup;
+  form = new FormGroup({
+    title: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    blockType: new FormControl<BlockType>(BlockType.paragraph, { nonNullable: true }),
+  });
   blocks = signal<ContentBlock[]>([]);
   isPublishing = signal<boolean>(false);
-  blockErrors = signal<Record<number, string>>({});
 
   blockTypeOptions = of<LabelValue[]>([
-    { value: 'paragraph', label: 'Paragraph' },
-    { value: 'hero', label: 'Hero' },
-    { value: 'table', label: 'Table' },
+    { value: BlockType.paragraph, label: 'Paragraph' },
+    { value: BlockType.hero, label: 'Hero' },
+    { value: BlockType.table, label: 'Table' },
   ]);
 
   isFormEmpty = computed(
     () => this.form?.get('title')?.value?.trim() === '' && this.blocks().length === 0,
   );
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      title: ['', Validators.required],
-      blockType: [null],
-    });
-  }
-
-  addBlock(): void {
-    const type = this.form.get('blockType')?.value as BlockType;
+  addBlock() {
+    const type = this.form.get('blockType')!.value;
 
     if (!type) {
       return;
@@ -85,46 +76,24 @@ export class NewsConstructorComponent implements OnInit {
 
     let newBlock: ContentBlock;
 
-    if (type === 'paragraph') {
-      newBlock = { type: 'paragraph', text: '' } satisfies ParagraphBlock;
-    } else if (type === 'hero') {
-      newBlock = { type: 'hero', heroName: '' as HeroesNamesCodes } satisfies HeroBlock;
+    if (type === BlockType.paragraph) {
+      newBlock = { type: BlockType.paragraph, text: '' } satisfies ParagraphBlock;
+    } else if (type === BlockType.hero) {
+      newBlock = { type: BlockType.hero, heroName: '' as HeroesNamesCodes } satisfies HeroBlock;
     } else {
-      newBlock = { type: 'table', columns: [], rows: [] } satisfies TableBlock;
+      newBlock = { type: BlockType.table, columns: [], rows: [] } satisfies TableBlock;
     }
 
     this.blocks.update(b => [...b, newBlock]);
     this.form.get('blockType')?.reset();
   }
 
-  removeBlock(index: number): void {
+  removeBlock(index: number) {
     this.blocks.update(b => b.filter((_, i) => i !== index));
-    this.blockErrors.update(errors => {
-      const updated: Record<number, string> = {};
-
-      Object.entries(errors).forEach(([key, val]) => {
-        const k = Number(key);
-
-        if (k < index) {
-          updated[k] = val;
-        } else if (k > index) {
-          updated[k - 1] = val;
-        }
-      });
-
-      return updated;
-    });
   }
 
-  updateBlock(index: number, block: ContentBlock): void {
+  updateBlock(index: number, block: ContentBlock) {
     this.blocks.update(b => b.map((item, i) => (i === index ? block : item)));
-    this.blockErrors.update(errors => {
-      const updated = { ...errors };
-
-      delete updated[index];
-
-      return updated;
-    });
   }
 
   buildPayload(): Omit<NewsConfig, 'id'> {
@@ -134,8 +103,7 @@ export class NewsConstructorComponent implements OnInit {
     };
   }
 
-  isFormValid(): boolean {
-    const errors: Record<number, string> = {};
+  isFormValid() {
     let valid = true;
 
     if (!this.form.get('title')?.value?.trim()) {
@@ -144,24 +112,19 @@ export class NewsConstructorComponent implements OnInit {
     }
 
     this.blocks().forEach((block, i) => {
-      if (block.type === 'paragraph' && block.text.trim() === '') {
-        errors[i] = 'Paragraph text is required';
+      if (block.type === BlockType.paragraph && block.text.trim() === '') {
         valid = false;
-      } else if (block.type === 'hero' && !block.heroName) {
-        errors[i] = 'Hero is required';
+      } else if (block.type === BlockType.hero && !block.heroName) {
         valid = false;
-      } else if (block.type === 'table' && block.columns.length === 0) {
-        errors[i] = 'Table must have at least one column';
+      } else if (block.type === BlockType.table && block.columns.length === 0) {
         valid = false;
       }
     });
 
-    this.blockErrors.set(errors);
-
     return valid;
   }
 
-  publish(): void {
+  publish() {
     if (!this.isFormValid()) {
       return;
     }
@@ -187,21 +150,20 @@ export class NewsConstructorComponent implements OnInit {
       .subscribe();
   }
 
-  reset(): void {
+  reset() {
     this.form.reset();
     this.blocks.set([]);
-    this.blockErrors.set({});
   }
 
   isParagraphBlock(block: ContentBlock): block is ParagraphBlock {
-    return block.type === 'paragraph';
+    return block.type === BlockType.paragraph;
   }
 
   isHeroBlock(block: ContentBlock): block is HeroBlock {
-    return block.type === 'hero';
+    return block.type === BlockType.hero;
   }
 
   isTableBlock(block: ContentBlock): block is TableBlock {
-    return block.type === 'table';
+    return block.type === BlockType.table;
   }
 }

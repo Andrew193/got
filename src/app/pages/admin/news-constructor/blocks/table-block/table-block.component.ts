@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, input, OnInit, output, signal } fro
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
+  BlockType,
   TableBlock,
   WatchtowerTableColumn,
 } from '../../../../../models/watchtower/watchtower.model';
@@ -24,14 +25,14 @@ export class TableBlockComponent implements OnInit {
   columns = signal<WatchtowerTableColumn[]>([]);
   rows = signal<Record<string, unknown>[]>([]);
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.columns.set(this.block().columns);
     this.rows.set(this.block().rows);
   }
 
-  onEditChange(event: TableEditChangeEvent): void {
+  onEditChange(event: TableEditChangeEvent) {
     const updatedBlock: TableBlock = {
-      type: 'table',
+      type: BlockType.table,
       columns: event.columns,
       rows: event.rows,
     };
