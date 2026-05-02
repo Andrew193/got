@@ -13,6 +13,8 @@ import { TavernaPagesFooterComponent } from '../../../modules/taverna/views/tave
 import { UsersService } from '../../../services/users/users.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { EquipmentCardComponent } from './equipment-card/equipment-card.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-hero-preview',
@@ -23,6 +25,8 @@ import { EquipmentCardComponent } from './equipment-card/equipment-card.componen
     TavernaPagesFooterComponent,
     EquipmentCardComponent,
     AsyncPipe,
+    MatIcon,
+    MatButtonModule,
   ],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss',
@@ -71,6 +75,11 @@ export class HeroPreviewComponent implements OnInit {
   onEquipmentUpgraded() {
     this.selectedHero = this.facade.getUnitByName(this.selectedHero.name);
     this.selectedTileHero = this.facade.getTileUnit(this.selectedHero);
+  }
+
+  upgradeLevel() {
+    // this.selectedHero = this.facade.getUnitByName(this.selectedHero.name);
+    // this.selectedTileHero = this.facade.getTileUnit(this.selectedHero);
   }
 
   backToTavern = () => this.nav.goToTaverna();

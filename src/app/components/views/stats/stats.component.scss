@@ -22,6 +22,9 @@
 .stats-container {
   .reward-avatar-container {
     height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
   }
 
   @include index.anim-border-glow(reward-avatar-container) {

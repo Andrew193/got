@@ -8,6 +8,11 @@
         <div class="p-2 justify-content-evenly color-white hero-bar">
           <app-stats [selectedHero]="selectedHero">
             <app-rating ngProjectAs="reward-avatar-container" [rating]="selectedHero.rank" />
+            <div ngProjectAs="action" class="pb-2 text-center">
+              <button matMiniFab aria-label="Example icon button with a menu icon">
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+            </div>
           </app-stats>
           <app-skills-render
             [convertTextToLowercase]="false"

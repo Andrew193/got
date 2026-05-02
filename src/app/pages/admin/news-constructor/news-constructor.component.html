@@ -48,27 +48,22 @@
   </form>
 
   <!-- Actions -->
-  <div class="actions-row">
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      [disabled]="isPublishing()"
-      (click)="publish()">
+  <div class="actions-row mb-3">
+    <button class="got-toggle got-toggle-green" [disabled]="isPublishing()" (click)="publish()">
       @if (isPublishing()) {
         Publishing...
       } @else {
         Publish
       }
     </button>
-    <button mat-stroked-button type="button" [disabled]="isFormEmpty" (click)="reset()">
+    <button class="got-toggle got-toggle-red" [disabled]="isFormEmpty" (click)="reset()">
       Reset
     </button>
   </div>
 
   @if (form.invalid) {
     <app-form-errors-container
-      class="w-100 mt-2"
+      class="w-100"
       [form]="form"
       [uiErrorsNames]="{
         title: 'News Title',

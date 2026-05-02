@@ -210,7 +210,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 38
+          "shards": 40
         },
         {
           "heroName": "Priest",
@@ -221,7 +221,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 26
+          "shards": 34
         },
         {
           "heroName": "Brown Wolf",
@@ -240,7 +240,7 @@
           "level": 1,
           "rank": 1,
           "eq1Level": 1,
-          "eq2Level": 1,
+          "eq2Level": 19,
           "eq3Level": 110,
           "eq4Level": 6,
           "shards": 4

@@ -3,7 +3,7 @@ import { Effect } from '../effect.model';
 import { DisplayReward } from '../../services/reward/reward.service';
 import { Coordinate } from '../field.model';
 import { RewardValues } from '../reward-based.model';
-import { EffectsValues } from '../../constants';
+import { EffectsValues, CURRENCY_NAMES } from '../../constants';
 
 export type UnitName = HeroesNamesCodes | RewardValues;
 
@@ -94,7 +94,7 @@ export type EqLevelField = 'eq1Level' | 'eq2Level' | 'eq3Level' | 'eq4Level';
 
 export type EquipmentUpgradeCost = {
   cost: number;
-  currency: 'copper' | 'silver' | 'gold';
+  currency: (typeof CURRENCY_NAMES)[keyof typeof CURRENCY_NAMES];
 };
 
 export const EQ_FIELD_MAP: Record<EqName, EqLevelField> = {

@@ -7,6 +7,7 @@
   <div style="width: 133px; min-width: 133px" class="reward-avatar-container">
     <img alt="Boss avatar" class="reward-avatar" [src]="_selectedHero.imgSrc" />
     <ng-content select="reward-avatar-container" />
+    <ng-content select="action" />
   </div>
   <div
     class="stats flex-column w-auto gap-1 {{ _statsContainerClass }}"

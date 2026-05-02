@@ -1,4 +1,10 @@
-<div class="eq-card" [class.max-level]="isMaxLevel">
+@let _costInfo = upgradeService.costInfo();
+@let _canAfford = upgradeService.canAfford();
+@let _isLoading = upgradeService.isLoading();
+@let _currentLevel = upgradeService.currentLevel();
+@let _isMaxLevel = upgradeService.isMaxLevel();
+
+<div class="eq-card" [class.max-level]="_isMaxLevel">
   <!-- Изображение + название с тултипом -->
   <div class="eq-card__header">
     <img
@@ -15,7 +21,7 @@
       <div class="eq-card__stat-row">
         <img [src]="'./assets/resourses/imgs/icons/' + part.src + '.png'" [alt]="part.alias" />
         <span [class]="part.color">
-          <b>{{ currentLevel * getIncrement(part.alias) }}</b>
+          <b>{{ _currentLevel * getIncrement(part.alias) }}</b>
         </span>
         <span [class]="'eq-card__increment ' + part.color">(+{{ getIncrement(part.alias) }})</span>
       </div>
@@ -23,27 +29,27 @@
   </div>
 
   <div class="eq-card__footer">
-    @if (!isMaxLevel) {
+    @if (!_isMaxLevel) {
       <div class="upgrade-bar">
         <button
           matIconButton
-          [disabled]="isLoading() || !canAfford"
-          [ngClass]="{ 'cannot-afford': !canAfford }"
+          [disabled]="_isLoading || !_canAfford"
+          [ngClass]="{ 'cannot-afford': !_canAfford }"
           (click)="onUpgrade()">
-          <mat-icon>{{ isLoading() ? 'wifi_protected_setup' : 'upload' }}</mat-icon>
+          <mat-icon>{{ _isLoading ? 'wifi_protected_setup' : 'upload' }}</mat-icon>
         </button>
-        <div class="eq-card__cost" [class.cannot-afford]="!canAfford">
+        <div class="eq-card__cost" [class.cannot-afford]="!_canAfford">
           <img
-            [src]="'./assets/resourses/imgs/' + costInfo!.currency + '.png'"
-            [alt]="costInfo!.currency"
+            [src]="'./assets/resourses/imgs/' + _costInfo!.currency + '.png'"
+            [alt]="_costInfo!.currency"
             class="eq-card__currency-icon" />
-          <span [class]="costInfo!.currency"
-            ><b>{{ costInfo!.cost }}</b></span
+          <span [class]="_costInfo!.currency"
+            ><b>{{ _costInfo!.cost }}</b></span
           >
         </div>
       </div>
       <span class="eq-card__level">
-        <b>{{ currentLevel }}</b
+        <b>{{ _currentLevel }}</b
         >/200
       </span>
     } @else {

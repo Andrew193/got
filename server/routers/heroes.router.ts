@@ -14,7 +14,7 @@ const router = Router();
 router.get('/progress/:userId', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { user } = getOrCreateHeroesUser(userId);
+    const { user } = getOrCreateHeroesUser(userId as string);
 
     res.json(user);
   } catch {
@@ -35,7 +35,7 @@ router.post('/progress/:userId/unlock', (req: Request, res: Response) => {
       return;
     }
 
-    const { store, user } = getOrCreateHeroesUser(userId);
+    const { store, user } = getOrCreateHeroesUser(userId as string);
     const heroRecord = user.heroes.find(h => h.heroName === heroName);
 
     if (!heroRecord) {
@@ -83,7 +83,7 @@ router.patch('/progress/:userId/update', (req: Request, res: Response) => {
       return;
     }
 
-    const { store, user } = getOrCreateHeroesUser(userId);
+    const { store, user } = getOrCreateHeroesUser(userId as string);
     const heroRecord = user.heroes.find(h => h.heroName === heroName);
 
     if (!heroRecord) {
@@ -156,7 +156,7 @@ router.patch('/progress/:userId/shards', (req: Request, res: Response) => {
       return;
     }
 
-    const { store, user } = getOrCreateHeroesUser(userId);
+    const { store, user } = getOrCreateHeroesUser(userId as string);
     const heroRecord = user.heroes.find(h => h.heroName === heroName);
 
     if (!heroRecord) {

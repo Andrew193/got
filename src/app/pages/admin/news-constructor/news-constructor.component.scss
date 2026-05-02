@@ -1,5 +1,8 @@
+@use '../../../../assets/resourses/styles/index.scss' as index;
+
 .news-constructor {
   padding: 16px;
+  @include index.mixin-got-btn;
 }
 
 .constructor-title {

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   EquipmentUpgradeCost,
@@ -12,6 +12,7 @@ import {
 } from '../../../models/units-related/unit.model';
 import { HeroProgressActions } from '../../../store/actions/hero-progress.actions';
 import { BaseConfigApiService } from '../../abstract/base-config-api/base-config-api.service';
+import { CURRENCY_NAMES } from '../../../constants';
 
 export const HERO_UNLOCK_ERRORS = {
   INSUFFICIENT_SHARDS: 'INSUFFICIENT_SHARDS',
@@ -59,51 +60,75 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     return rank * 100;
   }
 
-  getEquipmentUpgradeCost(level: number): EquipmentUpgradeCost {
-    if (level >= 1 && level <= 25) {
-      return { cost: 100, currency: 'copper' };
+  getLevelUpgradeCost(level: number): EquipmentUpgradeCost {
+    if (level >= 1 && level <= 10) {
+      return { cost: 100, currency: CURRENCY_NAMES.copper };
+    }
+
+    if (level >= 11 && level <= 25) {
+      return { cost: 500, currency: CURRENCY_NAMES.copper };
     }
 
     if (level >= 26 && level <= 50) {
-      return { cost: 500, currency: 'copper' };
+      return { cost: 100, currency: CURRENCY_NAMES.silver };
     }
 
     if (level >= 51 && level <= 75) {
-      return { cost: 1000, currency: 'copper' };
+      return { cost: 500, currency: CURRENCY_NAMES.silver };
     }
 
     if (level >= 76 && level <= 100) {
-      return { cost: 2000, currency: 'copper' };
-    }
-
-    if (level >= 101 && level <= 120) {
-      return { cost: 100, currency: 'silver' };
-    }
-
-    if (level >= 121 && level <= 135) {
-      return { cost: 500, currency: 'silver' };
-    }
-
-    if (level >= 136 && level <= 150) {
-      return { cost: 1000, currency: 'silver' };
-    }
-
-    if (level >= 151 && level <= 170) {
-      return { cost: 100, currency: 'gold' };
-    }
-
-    if (level >= 171 && level <= 185) {
-      return { cost: 500, currency: 'gold' };
-    }
-
-    if (level >= 186 && level <= 199) {
-      return { cost: 1000, currency: 'gold' };
+      return { cost: 100, currency: CURRENCY_NAMES.gold };
     }
 
     throw new Error(`Equipment level ${level} is at maximum or invalid`);
   }
 
-  unlockHero(userId: string, heroName: HeroesNamesCodes): Observable<PlayerHeroesProgress> {
+  getEquipmentUpgradeCost(level: number): EquipmentUpgradeCost {
+    if (level >= 1 && level <= 25) {
+      return { cost: 100, currency: CURRENCY_NAMES.copper };
+    }
+
+    if (level >= 26 && level <= 50) {
+      return { cost: 500, currency: CURRENCY_NAMES.copper };
+    }
+
+    if (level >= 51 && level <= 75) {
+      return { cost: 1000, currency: CURRENCY_NAMES.copper };
+    }
+
+    if (level >= 76 && level <= 100) {
+      return { cost: 2000, currency: CURRENCY_NAMES.copper };
+    }
+
+    if (level >= 101 && level <= 120) {
+      return { cost: 100, currency: CURRENCY_NAMES.silver };
+    }
+
+    if (level >= 121 && level <= 135) {
+      return { cost: 500, currency: CURRENCY_NAMES.silver };
+    }
+
+    if (level >= 136 && level <= 150) {
+      return { cost: 1000, currency: CURRENCY_NAMES.silver };
+    }
+
+    if (level >= 151 && level <= 170) {
+      return { cost: 100, currency: CURRENCY_NAMES.gold };
+    }
+
+    if (level >= 171 && level <= 185) {
+      return { cost: 500, currency: CURRENCY_NAMES.gold };
+    }
+
+    if (level >= 186 && level <= 199) {
+      return { cost: 1000, currency: CURRENCY_NAMES.gold };
+    }
+
+    throw new Error(`Equipment level ${level} is at maximum or invalid`);
+  }
+
+  unlockHero(userId: string, heroName: HeroesNamesCodes) {
     return this.http.post<PlayerHeroesProgress>(`${this.url}/${userId}/unlock`, { heroName }).pipe(
       tap({
         next: data => {
@@ -113,11 +138,7 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     );
   }
 
-  addShards(
-    userId: string,
-    heroName: HeroesNamesCodes,
-    amount: number,
-  ): Observable<PlayerHeroesProgress> {
+  addShards(userId: string, heroName: HeroesNamesCodes, amount: number) {
     return this.http
       .patch<PlayerHeroesProgress>(`${this.url}/${userId}/shards`, { heroName, amount })
       .pipe(
@@ -138,7 +159,7 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
         'level' | 'rank' | 'eq1Level' | 'eq2Level' | 'eq3Level' | 'eq4Level' | 'shards'
       >
     >,
-  ): Observable<PlayerHeroesProgress> {
+  ) {
     const validationError = this.validatePatch(patch);
 
     if (validationError) {
@@ -161,8 +182,12 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     heroName: HeroesNamesCodes,
     eqField: EqLevelField,
     currentLevel: number,
-  ): Observable<PlayerHeroesProgress> {
+  ) {
     return this.updateHeroProgress(userId, heroName, { [eqField]: currentLevel + 1 });
+  }
+
+  upgradeLevel(userId: string, heroName: HeroesNamesCodes, currentLevel: number) {
+    return this.updateHeroProgress(userId, heroName, { level: currentLevel + 1 });
   }
 
   toUnitConfig(record: HeroProgressRecord): UnitConfig {

@@ -496,7 +496,9 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
 
   checkAutoFightEnd() {
     return (
-      this.gameActionService.isDead(this.aiUnits) || this.gameActionService.isDead(this.userUnits)
+      this.gameActionService.isDead(this.aiUnits) ||
+      this.gameActionService.isDead(this.userUnits) ||
+      this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits).battleEnded
     );
   }
 
@@ -509,6 +511,8 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   }
 
   finishAiTurn(aiMove: boolean) {
+    if (this.over) return;
+
     const userUnits = this.getUserLeadingUnits(aiMove);
     const aiUnits = this.getAiLeadingUnits(aiMove);
 
