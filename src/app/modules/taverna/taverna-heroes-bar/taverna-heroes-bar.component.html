@@ -37,9 +37,8 @@
                 <img
                   [src]="'./assets/resourses/imgs/rank/' + getRank(hero.level) + '_r.png'"
                   alt="rank level"
-                  class="level_rank"
-                  [style]="{ height: hero.level === 60 ? '60px' : '' }" />
-                <span [style]="{ left: hero.level > 10 ? '16px' : '' }">{{ hero.level }}</span>
+                  class="level_rank" />
+                <span [style]="{ left: hero.level > 10 ? '12px' : '' }">{{ hero.level }}</span>
               </div>
             </div>
             <app-rating ngProjectAs="reward-avatar-container" [rating]="hero.rank" />

@@ -31,6 +31,7 @@ import { AssistantEffects } from './store/effects/assistant.effects';
 import { UnitsConfiguratorEffects } from './store/effects/units-configurator.effects';
 import { LocalStorageService } from './services/localStorage/local-storage.service';
 import { ModalWindowService } from './services/modal/modal-window.service';
+import { PlayerLevelService } from './services/player-level/player-level.service';
 
 export const INIT_STEPS_PROVIDERS = [
   {
@@ -50,6 +51,12 @@ export const INIT_STEPS_PROVIDERS = [
     multi: true,
     deps: [OnlineService],
     useFactory: (s: InitInterface) => ({ name: 'online', order: 30, task: () => s.init() }),
+  },
+  {
+    provide: APP_INIT_STEPS,
+    multi: true,
+    deps: [PlayerLevelService],
+    useFactory: (s: InitInterface) => ({ name: 'playerLevel', order: 40, task: () => s.init() }),
   },
 ];
 

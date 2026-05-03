@@ -15,7 +15,13 @@
       'stats-table row m-0': _tableMode,
       'flex-column': !_tableMode,
     }">
-    <ng-template #statRow let-icon="icon" let-value="value" let-desc="desc" let-key="key">
+    <ng-template
+      #statRow
+      let-icon="icon"
+      let-value="value"
+      let-desc="desc"
+      let-key="key"
+      let-isString="isString">
       <div
         [ngClass]="{
           'row gap-2 m-0': !_tableMode,
@@ -29,7 +35,11 @@
           }"
           class="m-0 h-100">
           <img [src]="icon" [alt]="icon" />
-          <span [class]="key">{{ value }}</span>
+          @if (!isString) {
+            <span [class]="key">{{ value | number }}</span>
+          } @else {
+            <span [class]="key">{{ value }}</span>
+          }
         </p>
         @if (!_tableMode) {
           <span style="line-height: 30px" class="col d-block text-start">{{ desc }}</span>
@@ -43,6 +53,7 @@
         [ngTemplateOutletContext]="{
           icon: s.icon,
           value: s.value(),
+          isString: $index === _stats.length - 2,
           desc: s.desc,
           key: s.key,
         }">

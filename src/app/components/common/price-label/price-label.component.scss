@@ -1,0 +1,30 @@
+.cover,
+:host {
+  display: flex;
+  gap: 5px;
+}
+
+.cover {
+  width: 100%;
+  justify-content: center;
+}
+
+.eq-card {
+  &__cost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+
+    &.cannot-afford {
+      color: #e74c3c;
+    }
+  }
+
+  &__currency-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

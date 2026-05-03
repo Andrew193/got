@@ -5,11 +5,12 @@ import { EffectsService } from '../../services/effects/effects.service';
 import { UnitService } from '../../services/unit/unit.service';
 import { BasicGameBoardComponent } from '../basic-game-board/basic-game-board.component';
 import { BasicGameFieldComponent } from '../abstract/basic-game-field/basic-game-field.component';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { DecimalPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
@@ -35,9 +36,12 @@ import { AiTurnService } from '../../services/game-related/ai-turn/ai-turn.servi
     MatExpansionPanel,
     MatTooltip,
     MatProgressBar,
+    MatDrawer,
+    MatDrawerContainer,
     CdkFixedSizeVirtualScroll,
     CdkVirtualForOf,
     CdkVirtualScrollViewport,
+    DecimalPipe,
   ],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss',
@@ -48,6 +52,9 @@ export class GameFieldComponent extends BasicGameFieldComponent {
   @Input() override aiUnits: TileUnit[] = [];
   @Input() override battleMode = true;
   @Input() override gameResultsRedirect: GameResultsRedirectType = () => {};
+  @Input() set gameMode(mode: string) {
+    this.battleGameMode = mode;
+  }
 
   override battleEndFlag = output<Parameters<GameResultsRedirectType>>();
 

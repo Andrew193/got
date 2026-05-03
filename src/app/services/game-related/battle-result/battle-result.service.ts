@@ -10,6 +10,8 @@ import {
   AfterBattleData,
 } from '../../../components/modal-window/after-battle/after-battle.component';
 import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
+import { PlayerLevelService } from '../../player-level/player-level.service';
+import { frontRoutes } from '../../../constants';
 
 export interface BattleEndResult {
   battleEnded: boolean;
@@ -22,6 +24,7 @@ export class BattleResultService {
   private battleStateService = inject(BattleStateService);
   private gameService = inject(GameService);
   private modalWindowService = inject(ModalWindowService);
+  private playerLevelService = inject(PlayerLevelService);
   private store = inject(Store);
 
   /** When true, showBattleResult skips opening the modal (headless simulation mode). */
@@ -82,6 +85,7 @@ export class BattleResultService {
     realAiUnits: TileUnit[],
     callback: GameResultsRedirectType,
     rewardSetter: OutputEmitterRef<Parameters<GameResultsRedirectType>>,
+    mode: string = frontRoutes.training,
   ): void {
     if (!result.battleEnded) return;
 
@@ -105,6 +109,9 @@ export class BattleResultService {
       {
         callback: () => {
           const reward = this.store.selectSignal(selectBattleReward())();
+
+          // Accrue XP when the player closes the after-battle modal
+          this.playerLevelService.accrueXp(realAiUnits, userWon, mode);
 
           callback(realAiUnits, userWon, reward);
         },

@@ -8,6 +8,39 @@
   @include index.mixin-got-btn;
 }
 
+.hero-meta-bar {
+  cursor: pointer;
+
+  .info-label {
+    @include index.mixin-grad-color;
+    &:hover {
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+
+  mat-drawer {
+    left: 0;
+
+    p {
+      display: flex;
+      gap: 5px;
+
+      span:last-of-type {
+        font-weight: 500;
+        font-size: 18px;
+        color: index.$var-gold;
+      }
+    }
+  }
+
+  .mat-drawer-container-has-open {
+    height: 60px;
+    margin-bottom: 0.25rem;
+  }
+}
+
 .heroes {
   max-height: 350px;
   overflow: auto;

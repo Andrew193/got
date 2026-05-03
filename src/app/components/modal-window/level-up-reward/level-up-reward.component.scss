@@ -1,0 +1,114 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+:host {
+  width: 100%;
+}
+
+.level-up-container {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  box-shadow: index.$var-box-shadow;
+  position: relative;
+  min-height: 400px;
+
+  @include index.mixin-got-btn;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.level-up-banner {
+  width: 100%;
+  text-align: center;
+  padding: 2rem 0 1rem;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+
+  .level-up-label {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    margin-bottom: 0.5rem;
+  }
+
+  .level-up-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: bold;
+    @include index.mixin-grad-color;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+}
+
+.rewards-bar,
+.shards-bar {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+
+  .rewards-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffd700;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    justify-content: center;
+  }
+}
+
+.shards-bar {
+  .shards-row {
+    justify-content: center;
+  }
+
+  .shard-recipient {
+    position: relative;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    .hero-avatar {
+      border-radius: 50%;
+      border: 2px solid rgba(255, 215, 0, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .shard-amount {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #4ecdc4;
+      margin-bottom: 0.25rem;
+    }
+
+    .shard-icon {
+      filter: drop-shadow(0 0 4px rgba(78, 205, 196, 0.6));
+    }
+  }
+}
+
+footer {
+  padding-top: 1rem;
+
+  button {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+app-reward-coin {
+  height: 100%;
+  display: block;
+}

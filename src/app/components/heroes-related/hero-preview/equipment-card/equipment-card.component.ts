@@ -9,7 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { DecimalPipe, NgClass } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -23,11 +23,13 @@ import { Currency } from '../../../../services/users/users.interfaces';
 import { HeroProgressService } from '../../../../services/facades/hero-progress/hero-progress.service';
 import { MatIcon } from '@angular/material/icon';
 import { UpgradeService } from '../../../../services/upgrade/upgrade.service';
+import { PriceLabelComponent } from '../../../common/price-label/price-label.component';
+import { MAX_EQUIPMENT_LEVEL } from '../../../../constants';
 
 @Component({
   selector: 'app-equipment-card',
   standalone: true,
-  imports: [NgClass, MatButtonModule, MatTooltipModule, MatIcon],
+  imports: [NgClass, MatButtonModule, MatTooltipModule, MatIcon, PriceLabelComponent, DecimalPipe],
   templateUrl: './equipment-card.component.html',
   styleUrl: './equipment-card.component.scss',
   providers: [UpgradeService],
@@ -60,7 +62,7 @@ export class EquipmentCardComponent implements OnInit {
       this.hero()[EQ_FIELD_MAP[this.eqName]],
       this.heroProgressService.getEquipmentUpgradeCost.bind(this.heroProgressService),
       this.currency,
-      200,
+      MAX_EQUIPMENT_LEVEL,
     );
   }
 

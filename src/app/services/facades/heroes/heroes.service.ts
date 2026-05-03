@@ -14,7 +14,6 @@ import { TileUnit } from '../../../models/field.model';
 import { HeroesHelperService } from './helpers/heroes-helper.service';
 import { UnitsConfiguratorStateUnit } from '../../../store/store.interfaces';
 import { Store } from '@ngrx/store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 import { HeroProgressService } from '../hero-progress/hero-progress.service';
 
@@ -160,7 +159,7 @@ export class HeroesFacadeService extends ContentService {
   private store = inject(Store);
   allUnits: Unit[] = [];
 
-  private unlockedHeroes = toSignal(this.store.select(selectUnlockedHeroes), { initialValue: [] });
+  private unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
 
   constructor() {
     super();
@@ -1037,6 +1036,12 @@ export class HeroesFacadeService extends ContentService {
       willpower: unit.willpower,
       x: config?.x || unit.x,
       y: config?.y || unit.y,
+      level: unit.level,
+      rank: unit.rank,
+      eq1Level: unit.eq1Level,
+      eq2Level: unit.eq2Level,
+      eq3Level: unit.eq3Level,
+      eq4Level: unit.eq4Level,
     };
   }
 

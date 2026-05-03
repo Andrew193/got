@@ -1,0 +1,16 @@
+@let _currency = currency();
+@let _canAfford = canAfford();
+
+<div class="cover">
+  <div class="eq-card__cost m-0" [class.cannot-afford]="!_canAfford">
+    <img
+      [src]="'./assets/resourses/imgs/' + _currency + '.png'"
+      [alt]="_currency"
+      class="eq-card__currency-icon" />
+    <span [class]="_currency">
+      <b>{{ cost() | number }}</b>
+    </span>
+  </div>
+
+  <ng-content />
+</div>

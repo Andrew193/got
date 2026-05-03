@@ -19,6 +19,7 @@ import {
 } from '../../../services/modal/modal-window.service';
 import { ModalStrategiesTypes } from '../../modal-window/modal-interfaces';
 import { BattleRewardCurrency } from '../../../models/reward-based.model';
+import { PlayerLevelBarComponent } from '../player-level-bar/player-level-bar.component';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,7 @@ import { BattleRewardCurrency } from '../../../models/reward-based.model';
     MatMenuTrigger,
     NotificationMarkerComponent,
     MatDivider,
+    PlayerLevelBarComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

@@ -2,6 +2,7 @@
   <app-game-entry-point
     [aiUnits]="aiUnits"
     [userUnits]="userUnits"
+    [gameMode]="'campaign'"
     (battleEndFlag)="onBattleEnd($event)"
     [gameResultsRedirect]="gameResultsRedirect" />
 }

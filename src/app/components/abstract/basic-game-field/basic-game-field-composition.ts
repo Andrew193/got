@@ -53,6 +53,9 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   battleEndFlag!: OutputEmitterRef<Parameters<GameResultsRedirectType>>;
   cdRef!: ChangeDetectorRef;
 
+  /** Game mode passed to BattleResultService for XP calculation (e.g. 'daily-boss', 'campaign', 'training'). */
+  battleGameMode = 'training';
+
   skipFightOnlyStandaloneMode(
     userUnits: TileUnit[],
     aiUnits: TileUnit[],
@@ -204,6 +207,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
         this.aiUnits,
         this.gameResultsRedirect,
         this.battleEndFlag,
+        this.battleGameMode,
       );
     }
 
@@ -459,6 +463,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
           this.aiUnits,
           this.gameResultsRedirect,
           this.battleEndFlag,
+          this.battleGameMode,
         );
 
         return;
@@ -546,6 +551,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
         this.aiUnits,
         this.gameResultsRedirect,
         this.battleEndFlag,
+        this.battleGameMode,
       );
     }
 

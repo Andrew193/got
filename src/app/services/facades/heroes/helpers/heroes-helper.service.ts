@@ -44,10 +44,10 @@ export class HeroesHelperService {
   getGearLevelByName(name: EqName, hero: Unit) {
     return (
       {
-        eq1: hero.eq1Level,
-        eq2: hero.eq2Level,
-        eq3: hero.eq3Level,
-        eq4: hero.eq4Level,
+        eq1: hero?.eq1Level || 1,
+        eq2: hero?.eq2Level || 1,
+        eq3: hero?.eq3Level || 1,
+        eq4: hero?.eq4Level || 1,
       } satisfies Record<EqName, number>
     )[name];
   }

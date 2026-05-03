@@ -37,7 +37,13 @@ type TileUnitKeys =
   | 'willpower'
   | 'ignoredDebuffs'
   | 'rage'
-  | 'onlyHealer';
+  | 'onlyHealer'
+  | 'level'
+  | 'rank'
+  | 'eq1Level'
+  | 'eq2Level'
+  | 'eq3Level'
+  | 'eq4Level';
 
 export type TileUnit = Required<
   Coordinate &

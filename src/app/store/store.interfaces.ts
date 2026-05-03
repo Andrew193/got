@@ -24,6 +24,7 @@ export enum StoreNames {
   gameBoard = 'gameBoard',
   assistant = 'assistant',
   heroProgress = 'heroProgress',
+  playerLevel = 'playerLevel',
 }
 
 export enum DisplayRewardNames {
@@ -127,6 +128,14 @@ export type AssistantState = {
 //Hero Progress
 export type HeroProgressState = {
   progress: PlayerHeroesProgress | null;
+  loaded: boolean;
+  error: string | null;
+};
+
+//Player Level
+export type PlayerLevelState = {
+  level: number;
+  xp: number;
   loaded: boolean;
   error: string | null;
 };

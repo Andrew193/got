@@ -38,9 +38,9 @@ export class SummonTreeService {
   ];
 
   cartPrices: SummonTreeCard[] = [
-    { price: 3, amount: 1, currency: CURRENCY_NAMES.silver },
-    { price: 27, amount: 5, currency: CURRENCY_NAMES.silver },
-    { price: 24, amount: 10, currency: CURRENCY_NAMES.silver },
+    { price: 300000, amount: 1, currency: CURRENCY_NAMES.copper },
+    { price: 2700, amount: 5, currency: CURRENCY_NAMES.silver },
+    { price: 900, amount: 10, currency: CURRENCY_NAMES.gold },
   ];
 
   private lastCard: SummonTreeCard | null = null;

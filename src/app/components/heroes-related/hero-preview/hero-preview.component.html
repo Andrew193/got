@@ -1,44 +1,76 @@
+@let _costInfo = upgradeService.costInfo();
+@let _currentLevel = upgradeService.currentLevel();
+@let _canAfford = upgradeService.canAfford();
+@let _loading = upgradeService.isLoading();
+@let _selectedTileHero = selectedTileHero();
+@let _selectedHero = selectedHero();
+@let _isMaxLevel = upgradeService.isMaxLevel();
+
 <div class="preview-container">
   <div class="m-2">
     <div class="text-center">
-      <h3>{{ selectedTileHero.name }}</h3>
+      <h3>{{ _selectedTileHero?.name }}</h3>
     </div>
     <div class="row main-content m-0">
       <aside class="p-2 stats-bar justify-content-between mb-0">
         <div class="p-2 justify-content-evenly color-white hero-bar">
-          <app-stats [selectedHero]="selectedHero">
-            <app-rating ngProjectAs="reward-avatar-container" [rating]="selectedHero.rank" />
-            <div ngProjectAs="action" class="pb-2 text-center">
-              <button matMiniFab aria-label="Example icon button with a menu icon">
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-            </div>
-          </app-stats>
-          <app-skills-render
-            [convertTextToLowercase]="false"
-            [storesInnerDivClass]="'p-2'"
-            [selectedHero]="selectedTileHero"
-            [showSkillName]="true"></app-skills-render>
+          @if (_selectedHero) {
+            <app-stats [selectedHero]="_selectedHero">
+              <app-rating ngProjectAs="reward-avatar-container" [rating]="_selectedHero.rank" />
+              <div ngProjectAs="action" class="pb-2 text-center">
+                @if (_costInfo && !_isMaxLevel) {
+                  <app-price-label
+                    [currency]="_costInfo.currency"
+                    [cost]="_costInfo.cost"
+                    [canAfford]="_canAfford">
+                    -
+                    <span class="level-label level-class mb-0">
+                      <b>{{ _currentLevel }}</b>
+                      /{{ MAX_UNIT_LEVEL }}
+                    </span>
+                  </app-price-label>
+
+                  <button
+                    class="mt-2"
+                    matMiniFab
+                    [disabled]="_loading"
+                    aria-label="Example icon button with a menu icon"
+                    (click)="upgradeLevel()">
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                }
+              </div>
+            </app-stats>
+          }
+          @if (_selectedTileHero) {
+            <app-skills-render
+              [convertTextToLowercase]="false"
+              [storesInnerDivClass]="'p-2'"
+              [selectedHero]="_selectedTileHero"
+              [showSkillName]="true"></app-skills-render>
+          }
         </div>
       </aside>
       <aside class="p-2 stats-bar justify-content-between mb-0 color-white">
         <div class="p-2 eq-container">
           <p class="mb-0 text-center fw-bold">Equipment</p>
           <div class="row g-2 m-0">
-            @if (currency$ | async; as currency) {
-              @for (eqName of eqNames; track eqName) {
-                <div class="col-12 col-sm-6 col-lg-3">
-                  <app-equipment-card
-                    [eqName]="eqName"
-                    [hero]="selectedHero"
-                    [currency]="currency"
-                    [heroName]="$any(selectedHero.name)"
-                    [userId]="userId"
-                    [getGearDescription]="getGearDescription"
-                    [gearParts]="gearParts"
-                    [getIncrement]="getIncrement"
-                    (upgraded)="onEquipmentUpgraded()" />
-                </div>
+            @if (_selectedHero) {
+              @if (currency$ | async; as currency) {
+                @for (eqName of eqNames; track eqName) {
+                  <div class="col-12 col-sm-6 col-lg-3">
+                    <app-equipment-card
+                      [eqName]="eqName"
+                      [hero]="_selectedHero"
+                      [currency]="currency"
+                      [heroName]="$any(_selectedHero.name)"
+                      [userId]="userId"
+                      [getGearDescription]="getGearDescription"
+                      [gearParts]="gearParts"
+                      [getIncrement]="getIncrement"
+                      (upgraded)="onEquipmentUpgraded()" />
+                  </div>
+                }
               }
             }
           </div>

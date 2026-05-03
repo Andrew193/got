@@ -1,0 +1,53 @@
+<div class="level-up-container p-2">
+  <section class="main-content">
+    <div class="level-up-banner">
+      <span class="level-up-label">Level Up!</span>
+      <span class="level-up-number">{{ newLevel }}</span>
+    </div>
+
+    <div class="rewards-bar w-100 p-3">
+      <p class="rewards-title">Currency Reward</p>
+      <div class="banner row gap-2 g-2">
+        @for (reward of rewards; track reward.class) {
+          <div class="col">
+            <app-reward-coin
+              [imageContainerClass]="'mb-2'"
+              [containerClass]="'d-flex flex-column align-items-center h-100 justify-content-between'"
+              [coinConfig]="reward"></app-reward-coin>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (shardRecipients && shardRecipients.length > 0) {
+      <div class="shards-bar w-100 p-3">
+        <p class="rewards-title">Milestone Bonus — 25 Shards each</p>
+        <div class="shards-row row gap-2 g-2">
+          @for (recipient of shardRecipients; track recipient.heroName) {
+            <div class="col shard-recipient d-flex flex-column align-items-center">
+              <img
+                class="hero-avatar"
+                [src]="recipient.heroImgSrc"
+                [alt]="recipient.heroName"
+                width="56"
+                height="56" />
+              <span class="shard-amount">+25</span>
+              <img
+                class="shard-icon"
+                src="assets/resourses/imgs/shards.png"
+                alt="shards"
+                width="20"
+                height="20" />
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <footer class="w-100">
+      <button class="got-toggle w-100" [mat-dialog-close]="true">
+        {{ data.labels.closeBtnLabel }}
+      </button>
+    </footer>
+  </section>
+</div>

@@ -5,7 +5,6 @@
 @let _isMaxLevel = upgradeService.isMaxLevel();
 
 <div class="eq-card" [class.max-level]="_isMaxLevel">
-  <!-- Изображение + название с тултипом -->
   <div class="eq-card__header">
     <img
       class="eq-card__img"
@@ -21,7 +20,7 @@
       <div class="eq-card__stat-row">
         <img [src]="'./assets/resourses/imgs/icons/' + part.src + '.png'" [alt]="part.alias" />
         <span [class]="part.color">
-          <b>{{ _currentLevel * getIncrement(part.alias) }}</b>
+          <b>{{ _currentLevel * getIncrement(part.alias) | number }}</b>
         </span>
         <span [class]="'eq-card__increment ' + part.color">(+{{ getIncrement(part.alias) }})</span>
       </div>
@@ -38,19 +37,16 @@
           (click)="onUpgrade()">
           <mat-icon>{{ _isLoading ? 'wifi_protected_setup' : 'upload' }}</mat-icon>
         </button>
-        <div class="eq-card__cost" [class.cannot-afford]="!_canAfford">
-          <img
-            [src]="'./assets/resourses/imgs/' + _costInfo!.currency + '.png'"
-            [alt]="_costInfo!.currency"
-            class="eq-card__currency-icon" />
-          <span [class]="_costInfo!.currency"
-            ><b>{{ _costInfo!.cost }}</b></span
-          >
-        </div>
+        @if (_costInfo) {
+          <app-price-label
+            [canAfford]="_canAfford"
+            [currency]="_costInfo.currency"
+            [cost]="_costInfo.cost" />
+        }
       </div>
       <span class="eq-card__level">
-        <b>{{ _currentLevel }}</b
-        >/200
+        <b>{{ _currentLevel }}</b>
+        /200
       </span>
     } @else {
       <button class="got-toggle w-100 mt-2" disabled>Max</button>

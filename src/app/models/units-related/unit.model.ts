@@ -89,12 +89,12 @@ export enum HeroType {
 }
 
 export type EqName = 'eq1' | 'eq2' | 'eq3' | 'eq4';
-
+export type CurrencyLabels = (typeof CURRENCY_NAMES)[keyof typeof CURRENCY_NAMES];
 export type EqLevelField = 'eq1Level' | 'eq2Level' | 'eq3Level' | 'eq4Level';
 
 export type EquipmentUpgradeCost = {
   cost: number;
-  currency: (typeof CURRENCY_NAMES)[keyof typeof CURRENCY_NAMES];
+  currency: CurrencyLabels;
 };
 
 export const EQ_FIELD_MAP: Record<EqName, EqLevelField> = {

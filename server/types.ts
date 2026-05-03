@@ -86,3 +86,15 @@ export interface NewsItem {
 export interface WatchtowerStore {
   news: NewsItem[];
 }
+
+// ─── Player Level ─────────────────────────────────────────────────────────────
+
+export interface PlayerLevelRecord {
+  userId: string;
+  level: number;
+  xp: number;
+}
+
+export interface PlayerLevelStore {
+  progress: PlayerLevelRecord[];
+}

@@ -278,3 +278,6 @@ export const SortDirectionMap = {
   asc: 'asc',
   desc: 'desc',
 } as const;
+
+export const MAX_UNIT_LEVEL = 60;
+export const MAX_EQUIPMENT_LEVEL = 200;

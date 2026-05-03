@@ -20,6 +20,7 @@ import { GameResultsRedirectType, TileUnit } from '../../models/field.model';
 })
 export class GameEntryPointComponent<T extends TileUnit> {
   @Input() gameResultsRedirect: GameResultsRedirectType = () => {};
+  @Input() gameMode = 'training';
 
   gameField = viewChild(GameFieldComponent);
   userUnits = model<TileUnit[]>([]);
