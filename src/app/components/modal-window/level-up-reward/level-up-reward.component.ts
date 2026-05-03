@@ -1,5 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { MatDialogClose } from '@angular/material/dialog';
+import { Component, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { DynamicComponentConfig } from '../modal-interfaces';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
 import { CurrencyHelperService } from '../../../services/users/currency/helper/currency-helper.service';
@@ -16,11 +15,13 @@ export interface LevelUpRewardData {
 
 @Component({
   selector: 'app-level-up-reward',
-  imports: [RewardCoinComponent, MatDialogClose],
+  imports: [RewardCoinComponent],
   templateUrl: './level-up-reward.component.html',
   styleUrl: './level-up-reward.component.scss',
 })
 export class LevelUpRewardComponent implements OnInit {
+  @ViewChild('footerHost', { read: ViewContainerRef, static: true }) footerHost!: ViewContainerRef;
+
   data = inject<DynamicComponentConfig<LevelUpRewardData>>(DYNAMIC_COMPONENT_DATA);
   private currencyHelperService = inject(CurrencyHelperService);
 

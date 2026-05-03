@@ -4,6 +4,24 @@
   width: 100%;
 }
 
+.xp-bar {
+  text-align: center;
+  margin: 0;
+  color: index.$var-gold;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+
+  span {
+    color: index.$var-light-gray;
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
 .inner-container {
   background: url('../../../../assets/resourses/imgs/background/battle-arena.jpeg') no-repeat top;
   background-size: cover;

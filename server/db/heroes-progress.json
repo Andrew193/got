@@ -239,10 +239,10 @@
           "isUnlocked": true,
           "level": 60,
           "rank": 1,
-          "eq1Level": 1,
-          "eq2Level": 51,
+          "eq1Level": 101,
+          "eq2Level": 101,
           "eq3Level": 110,
-          "eq4Level": 6,
+          "eq4Level": 101,
           "shards": 4
         },
         {

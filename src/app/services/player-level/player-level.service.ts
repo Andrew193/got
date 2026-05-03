@@ -53,7 +53,14 @@ export class PlayerLevelService implements InitInterface {
     try {
       const userId = this.localStorageService.getUserId();
 
-      this.apiService.load(userId).subscribe();
+      this.apiService
+        .load(userId)
+        .pipe()
+        .subscribe(data => {
+          if (data) {
+            this.store.dispatch(PlayerLevelActions.loadSuccess({ data }));
+          }
+        });
 
       return of({ ok: true, message: 'User level has been inited' } satisfies InitTaskObs);
     } catch {
@@ -61,8 +68,12 @@ export class PlayerLevelService implements InitInterface {
     }
   }
 
-  accrueXp(units: TileUnit[], win: boolean, mode: string): void {
-    const gainedXp = this.xpCalculator.calculate(units, win, mode);
+  getGainedXp(units: TileUnit[], win: boolean, mode: string) {
+    return this.xpCalculator.calculate(units, win, mode);
+  }
+
+  accrueXp(units: TileUnit[], win: boolean, mode: string) {
+    const gainedXp = this.getGainedXp(units, win, mode);
 
     if (gainedXp === 0) {
       return;
@@ -104,39 +115,24 @@ export class PlayerLevelService implements InitInterface {
 
   // ─── Level-up processing ────────────────────────────────────────────────────
 
-  private processLevelUps(oldLevel: number, newLevel: number, userId: string): void {
+  private processLevelUps(oldLevel: number, newLevel: number, userId: string) {
     for (let level = oldLevel + 1; level <= newLevel; level++) {
       this.grantLevelUpRewards(level, userId);
     }
   }
 
-  private grantLevelUpRewards(level: number, userId: string): void {
-    const currencyReward = computeLevelUpReward(level);
-    const isMilestone = level % 10 === 0;
-    const shardRecipients = isMilestone ? this.selectShardRecipients() : null;
+  private grantLevelUpRewards(level: number, userId: string) {
+    setTimeout(() => {
+      const currencyReward = computeLevelUpReward(level);
+      const isMilestone = level % 10 === 0;
+      const shardRecipients = isMilestone ? this.selectShardRecipients() : null;
 
-    // Grant currency reward
-    firstValueFrom(
-      this.usersService.updateCurrency(currencyReward).pipe(
-        catchError(() => {
-          this.snackBar.open(
-            `Failed to grant currency reward for level ${level}.`,
-            'Close',
-            SNACKBAR_CONFIG,
-          );
-
-          return EMPTY;
-        }),
-      ),
-    );
-
-    // Grant shard rewards on milestone levels
-    if (isMilestone && shardRecipients && shardRecipients.length > 0) {
-      const shardRequests = shardRecipients.map(r =>
-        this.heroProgressService.addShards(userId, r.heroName, MILESTONE_SHARD_AMOUNT).pipe(
+      // Grant currency reward
+      firstValueFrom(
+        this.usersService.updateCurrency(currencyReward).pipe(
           catchError(() => {
             this.snackBar.open(
-              `Failed to grant shards for ${r.heroName} at level ${level}.`,
+              `Failed to grant currency reward for level ${level}.`,
               'Close',
               SNACKBAR_CONFIG,
             );
@@ -146,18 +142,34 @@ export class PlayerLevelService implements InitInterface {
         ),
       );
 
-      firstValueFrom(forkJoin(shardRequests).pipe(catchError(() => of(null))));
-    }
+      // Grant shard rewards on milestone levels
+      if (isMilestone && shardRecipients && shardRecipients.length > 0) {
+        const shardRequests = shardRecipients.map(r =>
+          this.heroProgressService.addShards(userId, r.heroName, MILESTONE_SHARD_AMOUNT).pipe(
+            catchError(() => {
+              this.snackBar.open(
+                `Failed to grant shards for ${r.heroName} at level ${level}.`,
+                'Close',
+                SNACKBAR_CONFIG,
+              );
 
-    // Open level-up reward modal
-    this.openLevelUpModal(level, currencyReward, shardRecipients);
+              return EMPTY;
+            }),
+          ),
+        );
+
+        firstValueFrom(forkJoin(shardRequests).pipe(catchError(() => of(null))));
+      }
+
+      this.openLevelUpModal(level, currencyReward, shardRecipients);
+    }, 2000);
   }
 
   private openLevelUpModal(
     newLevel: number,
     currencyReward: Currency,
     shardRecipients: ShardRecipient[] | null,
-  ): void {
+  ) {
     const config = this.modalService.getModalConfig(
       'level-up-header',
       `Level Up! You reached level ${newLevel}`,
@@ -172,7 +184,7 @@ export class PlayerLevelService implements InitInterface {
     this.modalService.openModal(config);
   }
 
-  selectShardRecipients(): ShardRecipient[] {
+  selectShardRecipients() {
     const progress = this.heroProgressService.getStaticData();
     const allHeroes = this.heroesService.getAllHeroes();
     const heroesMap = new Map(allHeroes.map(h => [h.name as HeroesNamesCodes, h.imgSrc]));

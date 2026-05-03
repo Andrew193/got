@@ -20,6 +20,12 @@
         } @empty {
           <p>No Rewards for this Battle</p>
         }
+
+        @if (data.xp) {
+          <p class="xp-bar">
+            XP Points: <span>{{ data.xp }}</span>
+          </p>
+        }
       </div>
     </div>
 

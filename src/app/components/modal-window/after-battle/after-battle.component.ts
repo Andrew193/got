@@ -12,6 +12,7 @@ export type AfterBattleData = {
   reward: Currency;
   headerMessage: string;
   headerClass: string;
+  xp?: number;
 };
 
 @Component({

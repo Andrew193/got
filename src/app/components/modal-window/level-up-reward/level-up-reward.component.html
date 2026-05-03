@@ -1,6 +1,10 @@
 <div class="level-up-container p-2">
+  <div class="footer-cover">
+    <ng-template #footerHost></ng-template>
+  </div>
+
   <section class="main-content">
-    <div class="level-up-banner">
+    <div class="level-up-banner p-2">
       <span class="level-up-label">Level Up!</span>
       <span class="level-up-number">{{ newLevel }}</span>
     </div>
@@ -43,11 +47,5 @@
         </div>
       </div>
     }
-
-    <footer class="w-100">
-      <button class="got-toggle w-100" [mat-dialog-close]="true">
-        {{ data.labels.closeBtnLabel }}
-      </button>
-    </footer>
   </section>
 </div>

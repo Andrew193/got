@@ -2,19 +2,19 @@ import { Rarity } from '../models/units-related/unit.model';
 import { Currency } from '../services/users/users.interfaces';
 
 export const RARITY_XP_MULTIPLIERS: Record<Rarity, number> = {
-  [Rarity.COMMON]: 0.01,
-  [Rarity.RARE]: 0.025,
-  [Rarity.EPIC]: 0.05,
-  [Rarity.LEGENDARY]: 0.1,
+  [Rarity.COMMON]: 0.0001,
+  [Rarity.RARE]: 0.00025,
+  [Rarity.EPIC]: 0.0005,
+  [Rarity.LEGENDARY]: 0.001,
 } as const;
 
 export const LEVEL_UP_BASE_REWARD: Currency = {
-  copper: 100_000,
-  silver: 1_000,
+  copper: 100000,
+  silver: 1000,
   gold: 250,
 } as const;
 
-export const LEVEL_REWARD_SCALE = 0.1;
+export const LEVEL_REWARD_SCALE = 0.05;
 
 export const MILESTONE_SHARD_AMOUNT = 25;
 

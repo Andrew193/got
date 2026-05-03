@@ -4,6 +4,11 @@
       "userId": "test-user",
       "level": 1,
       "xp": 0
+    },
+    {
+      "userId": "e046",
+      "level": 2,
+      "xp": 208
     }
   ]
 }

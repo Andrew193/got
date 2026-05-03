@@ -110,7 +110,6 @@ export class BattleResultService {
         callback: () => {
           const reward = this.store.selectSignal(selectBattleReward())();
 
-          // Accrue XP when the player closes the after-battle modal
           this.playerLevelService.accrueXp(realAiUnits, userWon, mode);
 
           callback(realAiUnits, userWon, reward);
@@ -120,6 +119,7 @@ export class BattleResultService {
         data: {
           reward: this.store.selectSignal(selectBattleReward())(),
           headerMessage,
+          xp: this.playerLevelService.getGainedXp(realAiUnits, userWon, mode),
           headerClass,
         } satisfies AfterBattleData,
       },
