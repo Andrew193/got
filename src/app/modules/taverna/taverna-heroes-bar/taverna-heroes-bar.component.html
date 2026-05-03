@@ -16,7 +16,7 @@
     <div class="row p-0 m-0 g-2 heroes">
       @for (hero of returnedArray; track hero.name) {
         <div class="col mt-0">
-          @let _isHeroLocked = isHeroLocked(hero.name);
+          @let _isHeroLocked = heroesService.isHeroLocked(hero.name);
           @let _neededAmountOfShards = getRankCost(hero.rank);
 
           <div
@@ -41,6 +41,7 @@
                 <span [style]="{ left: hero.level > 10 ? '12px' : '' }">{{ hero.level }}</span>
               </div>
             </div>
+            <app-hero-power [hero]="hero" />
             <app-rating ngProjectAs="reward-avatar-container" [rating]="hero.rank" />
 
             @if (_isHeroLocked) {

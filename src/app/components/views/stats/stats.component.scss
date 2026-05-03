@@ -7,6 +7,28 @@
   padding: 5px;
 }
 
+.level-label {
+  color: white;
+  font-weight: bold;
+
+  span {
+    color: index.$var-gold;
+    font-weight: normal;
+  }
+}
+
+.might-container:not(:empty) {
+  height: 30px;
+
+  ::ng-deep app-hero-power > div {
+    width: 100%;
+    justify-content: center;
+    font-size: 14px;
+    right: 0;
+    top: 0;
+  }
+}
+
 .stat-p-container {
   display: inline-flex;
   flex-basis: 100px;

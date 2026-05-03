@@ -108,7 +108,6 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   unlockedBattleIdForCurrentScreen = computed<string | null>(() => {
     const progress = this.userProgress();
     const difficulty = this.selectedDifficulty();
-    const page = this.currentPage();
 
     if (!progress || difficulty === null) return null;
 
@@ -116,7 +115,6 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
     const diffProgress = progress.difficulties[diffKey];
 
     if (!diffProgress) return null;
-    if (diffProgress.screenIndex !== page) return null;
 
     return `${diffKey}-s${diffProgress.screenIndex}-b${diffProgress.battleIndex}`;
   });

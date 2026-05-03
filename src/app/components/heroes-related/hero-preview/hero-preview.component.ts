@@ -20,6 +20,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Currency } from '../../../services/users/users.interfaces';
 import { PriceLabelComponent } from '../../common/price-label/price-label.component';
 import { Store } from '@ngrx/store';
+import { HeroPowerComponent } from '../../common/hero-power/hero-power.component';
 
 @Component({
   selector: 'app-hero-preview',
@@ -33,6 +34,7 @@ import { Store } from '@ngrx/store';
     MatIcon,
     MatButtonModule,
     PriceLabelComponent,
+    HeroPowerComponent,
   ],
   templateUrl: './hero-preview.component.html',
   styleUrl: './hero-preview.component.scss',

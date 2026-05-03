@@ -74,9 +74,6 @@ export function makeCanStartBattle(selectUnits: SelectContexts) {
 }
 
 export function makeSelectUnits(selectUnits: SelectContexts, collection: HeroesSelectNames) {
-  debugger;
-  console.log('dfdsfdsf');
-
   let fromCache = selectUnitsSelectorCache.get(collection);
 
   if (!fromCache) {

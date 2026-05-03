@@ -98,8 +98,13 @@ mat-bottom-sheet-container {
   height: auto;
 }
 
+.mat-mdc-table .mat-mdc-header-cell {
+  border-right: 1px solid;
+}
+
 :root {
   --mat-form-field-outlined-focus-outline-color: transparent;
+  --mat-list-list-item-label-text-color: white;
 
   @include mat.sidenav-overrides(
     (

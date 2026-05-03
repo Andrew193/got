@@ -4,10 +4,20 @@
 @let _statsContainerClass = statsContainerClass();
 
 <div class="p-0 gap-2 flex-row stats-container">
-  <div style="width: 133px; min-width: 133px" class="reward-avatar-container">
-    <img alt="Boss avatar" class="reward-avatar" [src]="_selectedHero.imgSrc" />
-    <ng-content select="reward-avatar-container" />
-    <ng-content select="action" />
+  <div style="width: 133px; min-width: 133px">
+    <h2 class="level-label m-0">
+      <span>Lv:</span>
+      {{ _selectedHero.level }}
+    </h2>
+    <div class="position-relative might-container">
+      <ng-content select="might" />
+    </div>
+
+    <div class="reward-avatar-container">
+      <img alt="Boss avatar" class="reward-avatar" [src]="_selectedHero.imgSrc" />
+      <ng-content select="reward-avatar-container" />
+      <ng-content select="action" />
+    </div>
   </div>
   <div
     class="stats flex-column w-auto gap-1 {{ _statsContainerClass }}"

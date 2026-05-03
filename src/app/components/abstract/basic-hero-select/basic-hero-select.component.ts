@@ -49,7 +49,6 @@ export abstract class BasicHeroSelectComponent<T extends PreviewUnit> implements
   }
 
   public addUserUnit = (unit: SelectableUnit): AddUserUnitCallbackReturnValue => {
-    debugger;
     const chosenUnits = this.chosenUnits();
 
     const index = chosenUnits.findIndex(el => el.name === unit.name);

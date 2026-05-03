@@ -16,6 +16,7 @@ import { HeroProgressFeature } from '../../../store/reducers/hero-progress.reduc
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CONFIG } from '../../../constants';
+import { HeroPowerComponent } from '../../../components/common/hero-power/hero-power.component';
 
 type DataType = Unit & { name: HeroesNamesCodes };
 
@@ -28,6 +29,7 @@ type DataType = Unit & { name: HeroesNamesCodes };
     RatingComponent,
     MatProgressSpinner,
     ContainerLabelComponent,
+    HeroPowerComponent,
   ],
   providers: [{ provide: PAGINATION_SERVICE, useClass: HeroesFacadeService }],
   templateUrl: './taverna-heroes-bar.component.html',
@@ -36,23 +38,24 @@ type DataType = Unit & { name: HeroesNamesCodes };
 })
 export class TavernaHeroesBarComponent extends BasePaginationComponent<DataType> {
   private helper = inject(TavernaFacadeService);
+  heroesService = inject(HeroesFacadeService);
   private store = inject(Store);
   private localStorageService = inject(LocalStorageService);
   private snackBar = inject(MatSnackBar);
 
   private unlockedHeroes = this.store.selectSignal(selectUnlockedHeroes);
-  private allHeroes = this.store.selectSignal(HeroProgressFeature.selectProgress);
+  private allProgressHeroes = this.store.selectSignal(HeroProgressFeature.selectProgress);
 
   formGroup = this.helper.formGroup;
   config = this.helper.init();
   filteredOptions = this.config.filteredOptions;
   options = this.config.options;
 
-  constructor(public heroesService: HeroesFacadeService) {
+  constructor() {
     super();
 
     effect(() => {
-      this.allHeroes();
+      this.allProgressHeroes();
       const freshContent = this.heroesService.getContent() as DataType[];
 
       this.contentArray = freshContent;
@@ -80,12 +83,14 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<DataType>
   getRarityShadowClass = this.helper.getRarityShadowClass;
   getRankCost = this.heroesService.heroProgressService.getUnlockCost;
 
-  isHeroLocked(name: HeroesNamesCodes) {
-    return !this.unlockedHeroes().find(el => el.heroName === name);
+  getFromUnlockedHeroes(name: HeroesNamesCodes) {
+    return this.unlockedHeroes().find(el => el.heroName === name);
   }
 
   getHeroesShards(name: HeroesNamesCodes) {
-    return (this.allHeroes()?.heroes || []).filter(el => el.heroName === name)[0].shards ?? 0;
+    return (
+      (this.allProgressHeroes()?.heroes || []).filter(el => el.heroName === name)[0].shards ?? 0
+    );
   }
 
   openHeroPreview(name: string, _isHeroLocked: boolean) {
@@ -96,7 +101,7 @@ export class TavernaHeroesBarComponent extends BasePaginationComponent<DataType>
     event.stopPropagation();
 
     const userId = this.localStorageService.getUserId();
-    const hero = this.allHeroes()!.heroes.find(el => el.heroName === name);
+    const hero = this.allProgressHeroes()!.heroes.find(el => el.heroName === name);
 
     if (hero) {
       if (hero.shards >= neededAmountOfShards) {

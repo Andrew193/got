@@ -37,7 +37,15 @@ export class CampaignScreenComponent {
         const dIndex =
           BattleDifficultyNumbers[selectedDifficulty as BattleDifficultyNumbersKeys] >=
           BattleDifficultyNumbers[difficulty as BattleDifficultyNumbersKeys];
-        const sIndex = selectedScreen.replace(/\D/g, '') >= screen.replace(/\D/g, '');
+
+        const selectedScreenNumder = selectedScreen.replace(/\D/g, '');
+        const screenNumber = screen.replace(/\D/g, '');
+
+        if (selectedScreenNumder > screenNumber && dIndex) {
+          return false;
+        }
+
+        const sIndex = selectedScreenNumder >= screenNumber;
         const bIndex = selectedBattle.replace(/\D/g, '') >= battle.replace(/\D/g, '');
 
         return !(dIndex && sIndex && bIndex);

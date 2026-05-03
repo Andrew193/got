@@ -1,23 +1,20 @@
-@let data = vm();
+@let _data = data();
 
-<div class="player-level-bar">
+<div class="player-level-bar" (click)="openLevelTable()">
   <div class="level-badge">
     <span class="level-label">LVL</span>
-    <span class="level-number">{{ data.level }}</span>
+    <span class="level-number">{{ _data.level }}</span>
   </div>
 
-  @if (data.level >= MAX_LEVEL) {
-    <div class="max-level-indicator">
-      <span class="max-level-text">Max Level</span>
+  <div class="xp-container">
+    <div class="xp-progress-bar">
+      <div class="xp-progress-fill" [style.width.%]="_data.progress * 100"></div>
     </div>
-  } @else {
-    <div class="xp-container">
-      <div class="xp-progress-bar">
-        <div class="xp-progress-fill" [style.width.%]="data.progress * 100"></div>
-      </div>
-      <div class="xp-text">
-        <span>{{ data.xp | number }} / {{ data.xp + data.xpForNext | number }} XP</span>
-      </div>
+    <div class="xp-text">
+      <span>{{ _data.xp | number }}</span> /
+      <span>
+        <b>{{ _data.xp + _data.xpForNext | number }}</b> XP
+      </span>
     </div>
-  }
+  </div>
 </div>

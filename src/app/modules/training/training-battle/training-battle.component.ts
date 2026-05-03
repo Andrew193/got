@@ -39,7 +39,6 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   userUnits: TileUnit[] = [];
 
   constructor(private modalService: ModalWindowService) {
-    debugger;
     const aiUnitsFromStore = this.aiUnitsFromStore();
     const userUnitsFromStore = this.userUnitsFromStore();
 

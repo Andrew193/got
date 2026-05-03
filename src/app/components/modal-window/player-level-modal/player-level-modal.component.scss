@@ -1,0 +1,44 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.level-modal-container {
+  background-color: index.$var-metal-dark-2;
+  border: 1px solid index.$var-bronze;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+
+  @include index.mixin-got-btn;
+}
+
+.footer-cover {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.modal-header {
+  text-align: center;
+  padding: 1rem 0;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+  }
+}

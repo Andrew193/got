@@ -1,0 +1,12 @@
+@let _hero = hero();
+
+@if (_hero) {
+  @let power = getHeroPower(_hero);
+
+  @if (power) {
+    <div class="power">
+      <span class="power-value">{{ power | number }}</span>
+      <span class="power-icon">⚔️</span>
+    </div>
+  }
+}

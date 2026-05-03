@@ -38,6 +38,7 @@ export enum CONTROL_TYPE {
   DATE_INPUT,
   TEXT,
   CUSTOM,
+  NONE,
 }
 
 export enum CONTROL_DATA_TYPE {

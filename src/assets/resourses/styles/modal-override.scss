@@ -3,8 +3,10 @@
 .footer-cover {
   display: inline;
   position: absolute;
-  right: 0;
+  right: -5px;
   color: white;
+  z-index: 2;
+  top: -5px;
 }
 
 .mat-mdc-dialog-panel:has(app-adventure-begins) {

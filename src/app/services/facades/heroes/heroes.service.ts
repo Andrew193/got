@@ -166,6 +166,10 @@ export class HeroesFacadeService extends ContentService {
     this.allUnits = this.getAllHeroes();
   }
 
+  isHeroLocked(name: HeroesNamesCodes) {
+    return !this.unlockedHeroes().find(el => el.heroName === name);
+  }
+
   getLadyOfDragonStone(): Unit {
     const passiveBuffs = [this.helper.eS.getEffect(this.helper.effects.healthRestore, 1)];
     const effects = [
@@ -943,7 +947,7 @@ export class HeroesFacadeService extends ContentService {
           },
           heal: {
             healAll: true,
-            healM: 0.01,
+            healM: 0.1,
           },
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 3, 4)],
           inRangeDebuffs: [

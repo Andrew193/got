@@ -4,6 +4,7 @@ import {
   GearPart,
   HeroesNamesCodes,
   HeroType,
+  Rarity,
   SelectableUnit,
   Unit,
   UnitBasicStats,
@@ -142,6 +143,8 @@ export class HeroesHelperService {
     );
 
     leveledUnit.maxHealth = leveledUnit.health;
+
+    console.log(leveledUnit, 'leveledUnit');
 
     return leveledUnit;
   }
@@ -525,11 +528,6 @@ export class HeroesHelperService {
 
       description += `Deals ${dmgPersent}% of ${primaryStat} damage to an enemy.`;
 
-      if (skill.heal) {
-        dmgPersent = this.numberService.convertToPersent(skill.heal.healM);
-        description += `Before attacking, restores ${skill.heal.healAll ? 'all allies' : 'an ally'} health equal to ${dmgPersent}% of ${skill.heal.healAll ? 'their' : `this ally`} maximum health.`;
-      }
-
       if (skill.buffs) {
         description += `Receives: ${this.convertEffectsToDescriptionString(skill.buffs)} ${skill.addBuffsBeforeAttack ? 'before attack' : 'after attack'}.`;
       }
@@ -547,6 +545,11 @@ export class HeroesHelperService {
         const debuffsConfig = this.convertEffectsToDescriptionString(skill.inRangeDebuffs);
 
         description += `Applies to them: ${debuffsConfig}.`;
+      }
+
+      if (skill.heal) {
+        dmgPersent = this.numberService.convertToPersent(skill.heal.healM);
+        description += `Before attacking, restores ${skill.heal.healAll ? 'all allies' : 'an ally'} health equal to ${dmgPersent}% of ${skill.heal.healAll ? 'their' : `this ally`} maximum health.`;
       }
 
       if (skill.activateDebuffs && skill.activateDebuffs.length) {
@@ -582,5 +585,42 @@ export class HeroesHelperService {
     });
 
     return Array.from(effectsMap.values()).join(', ');
+  }
+
+  calculateHeroPower(hero: Unit): number {
+    if (!hero.attack || !hero.defence || !hero.health) {
+      return 0;
+    }
+
+    const baseStatsPower = hero.attack * 0.1 + hero.defence * 0.1 + hero.health * 0.01;
+
+    const rarityMultiplier =
+      {
+        [Rarity.COMMON]: 1.0,
+        [Rarity.RARE]: 1.015,
+        [Rarity.EPIC]: 1.03,
+        [Rarity.LEGENDARY]: 1.05,
+      }[hero.rarity] || 1.0;
+
+    const rankBonus = hero.rank * 1.2;
+
+    const levelBonus = hero.level * 5;
+
+    const equipmentBonus =
+      1 +
+      (hero.eq1Level - 1 + (hero.eq2Level - 1) + (hero.eq3Level - 1) + (hero.eq4Level - 1)) * 0.02;
+
+    const skillsBonus = 1 + hero.skills.length * 0.05;
+
+    const synergyBonus = 1 + hero.synergy.length * 0.1;
+
+    const power =
+      (baseStatsPower * rankBonus + levelBonus) *
+      rarityMultiplier *
+      equipmentBonus *
+      skillsBonus *
+      synergyBonus;
+
+    return Math.floor(power);
   }
 }

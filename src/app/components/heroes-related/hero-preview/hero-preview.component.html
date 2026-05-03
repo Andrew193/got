@@ -16,6 +16,7 @@
         <div class="p-2 justify-content-evenly color-white hero-bar">
           @if (_selectedHero) {
             <app-stats [selectedHero]="_selectedHero">
+              <app-hero-power ngProjectAs="might" [hero]="_selectedHero" />
               <app-rating ngProjectAs="reward-avatar-container" [rating]="_selectedHero.rank" />
               <div ngProjectAs="action" class="pb-2 text-center">
                 @if (_costInfo && !_isMaxLevel) {

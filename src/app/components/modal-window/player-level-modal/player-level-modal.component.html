@@ -1,0 +1,12 @@
+<div class="level-modal-container p-3">
+  <div class="footer-cover">
+    <h2>{{ data.labels.closeBtnLabel }}</h2>
+    <ng-template #footerHost></ng-template>
+  </div>
+
+  <section class="main-content">
+    <div class="table-wrapper">
+      <app-player-level-table [showBottomActions]="false" [expandable]="false" />
+    </div>
+  </section>
+</div>

@@ -66,6 +66,7 @@ export const enum TABLE_NAMES {
   taverna_hero_table = 'TavernaHeroesTable',
   test = 'TEST',
   watchtower_generic_table = 'WatchtowerGenericTable',
+  player_level_table = 'PlayerLevelTable',
 }
 
 export const CURRENCY_NAMES = {
