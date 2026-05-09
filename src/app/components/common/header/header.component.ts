@@ -96,6 +96,6 @@ export class HeaderComponent implements OnInit {
   }
 
   showPossibleActivities() {
-    //this.notificationsService.showPossibleActivities();
+    this.notificationsService.showPossibleActivities();
   }
 }

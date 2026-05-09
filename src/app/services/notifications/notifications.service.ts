@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { DailyRewardService } from '../daily-reward/daily-reward.service';
 import { GiftService } from '../gift-related/gift/gift.service';
 import { ModalWindowService } from '../modal/modal-window.service';
@@ -9,12 +9,14 @@ import { TODAY } from '../../constants';
 import { NotificationConfigMap } from '../../models/notification.model';
 import { InitInterface } from '../../models/interfaces/init.interface';
 import { InitTaskObs } from '../../models/init.model';
-import { ConfigInterface } from '../../models/interfaces/config.interface';
-import { GetConfig } from '../../models/common.model';
 import { DepositService } from '../users/currency/deposit.service';
 import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
 import { HeroProgressService } from '../facades/hero-progress/hero-progress.service';
 import { DailyQuestApiService } from '../daily-quest/daily-quest-api.service';
+
+type NotificationApi = {
+  getConfig: (callback: (config: unknown) => void) => Observable<unknown>;
+};
 
 export enum NotificationType {
   daily_reward,
@@ -58,7 +60,7 @@ export class NotificationsService implements InitInterface {
     this.drop();
 
     try {
-      const services: { api: ConfigInterface<GetConfig>; type: NotificationType }[] = [
+      const services: { api: NotificationApi; type: NotificationType }[] = [
         { api: this.dailyRewardService, type: NotificationType.daily_reward },
         { api: this.giftService, type: NotificationType.gift_store },
         { api: this.dailyBossService, type: NotificationType.daily_boss },
@@ -70,9 +72,11 @@ export class NotificationsService implements InitInterface {
       services.forEach(el => {
         el.api
           .getConfig(config => {
-            if (config['lastLogin'] && config['lastLogin'] !== TODAY) {
+            const cfg = config as Record<string, unknown>;
+
+            if (cfg['lastLogin'] && cfg['lastLogin'] !== TODAY) {
               this.notificationsValue(el.type, true);
-            } else if (config['depositDay']) {
+            } else if (cfg['depositDay']) {
               this.notificationsValue(el.type, true);
             } else {
               this.notificationsValue(el.type, false);
@@ -81,7 +85,7 @@ export class NotificationsService implements InitInterface {
           .subscribe();
       });
 
-      //this.showPossibleActivities();
+      this.showPossibleActivities();
 
       return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
     } catch (e) {

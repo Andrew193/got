@@ -35,6 +35,19 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+.special-bonus {
+  color: white;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    margin: 0;
+  }
+}
+
 .error-block {
   text-align: center;
   padding: 1rem 0;
@@ -73,6 +86,7 @@
   background-color: index.$var-metal-dark-1;
   border-radius: 5px;
   border: index.$var-border-2-bronze;
+  box-shadow: index.$var-legendary-box-shadow;
 
   .quest-status {
     position: absolute;
@@ -92,15 +106,14 @@
     }
   }
 
-  &:not(.completed) {
-    box-shadow: index.$var-legendary-box-shadow;
+  &.ready {
+    border-color: index.$var-light-green;
+    box-shadow: index.$var-light-green-box-shadow;
   }
 
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &.completed {
+  &.claimed {
+    border-color: index.$var-deepest-golden;
+    box-shadow: index.$var-deepest-golden-box-shadow;
     opacity: 0.5;
 
     .quest-title {

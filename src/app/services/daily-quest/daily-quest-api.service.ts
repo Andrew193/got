@@ -11,14 +11,18 @@ export class DailyQuestApiService extends BaseConfigApiService<QuestProgress> {
   private readonly baseUrl = '/api/daily-quests';
   private readonly store = inject(Store);
 
-  override getConfig() {
+  override getConfig(callback?: (config: QuestProgress) => void) {
     return this.getQuests(this.userId).pipe(
       tap({
         next: data => {
-          data &&
-            this.store.dispatch(
-              DailyQuestActions.loadQuestsSuccess({ quests: createQuestsFromProgress(data) }),
-            );
+          if (!data) {
+            return;
+          }
+
+          callback?.(data);
+          this.store.dispatch(
+            DailyQuestActions.loadQuestsSuccess({ quests: createQuestsFromProgress(data) }),
+          );
         },
         error: err => {
           const error = err?.message ?? 'Failed to load quest progress';

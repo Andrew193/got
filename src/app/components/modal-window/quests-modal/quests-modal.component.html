@@ -1,3 +1,7 @@
+@let loading = loading$ | async;
+@let error = error$ | async;
+@let quests = quests$ | async;
+
 <div class="quests-modal-container p-3">
   <div class="footer-cover">
     <h2>{{ data.labels.closeBtnLabel }}</h2>
@@ -5,25 +9,25 @@
   </div>
 
   <section class="main-content">
-    @if (loading$ | async) {
+    @if (loading) {
       <div class="loading-indicator">Loading...</div>
     }
 
-    @if (error$ | async; as error) {
+    @if (error) {
       <div class="error-block">
         <p class="error-message">{{ error }}</p>
         <button class="retry-btn" (click)="retry()">Retry</button>
       </div>
     }
 
-    @if (quests$ | async; as quests) {
+    @if (quests) {
       <div class="quest-list">
         @for (quest of quests; track quest.id) {
           <div
             class="quest-item"
-            [class.quest-item--ready]="quest.status === 'ready_to_claim'"
-            [class.quest-item--claimed]="quest.status === 'claimed'"
-            (click)="onQuestClick(quest.id)">
+            [class.ready]="quest.status === 'ready_to_claim'"
+            [class.claimed]="quest.status === 'claimed'"
+            (click)="onQuestClick(quest.id, quests)">
             <span class="quest-title">{{ quest.title }}</span>
             <span class="quest-reward">
               @for (coin of getRewardCoins(quest.reward); track coin.class) {
@@ -41,6 +45,15 @@
             }
           </div>
         }
+      </div>
+
+      <div class="special-bonus">
+        <p>Claim all rewards and get a special bonus:</p>
+        <div>
+          @for (coin of getRewardCoins(specialBonus); track coin.class) {
+            <app-reward-coin [coinConfig]="coin" />
+          }
+        </div>
       </div>
     }
   </section>

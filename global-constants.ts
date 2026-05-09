@@ -3,42 +3,42 @@ import { QuestDefinition, QuestId } from './server/types';
 export const DAILY_QUESTS: QuestDefinition[] = [
   {
     id: QuestId.campaign_fight,
-    title: 'Провести бой в кампании',
+    title: 'Fight a battle in the Campaign',
     reward: { copper: 500, silver: 10, gold: 1 },
   },
   {
     id: QuestId.campaign_win,
-    title: 'Выиграть 1 бой в кампании',
+    title: 'Win 1 battle in the Campaign',
     reward: { copper: 1000, silver: 25, gold: 5 },
   },
   {
     id: QuestId.campaign_chest,
-    title: 'Забрать 1 сундук в кампании',
+    title: 'Collect 1 chest in the Campaign',
     reward: { copper: 2000, silver: 15, gold: 15 },
   },
   {
     id: QuestId.boss_fight,
-    title: 'Провести бой с Боссом',
+    title: 'Fight the Daily Boss',
     reward: { copper: 1500, silver: 15, gold: 5 },
   },
   {
     id: QuestId.gift_reward,
-    title: 'Забрать награду в Gift',
+    title: 'Collect Gift reward',
     reward: { copper: 800, silver: 10, gold: 1 },
   },
   {
     id: QuestId.training_win,
-    title: 'Провести тренировку',
+    title: 'Conduct a Training',
     reward: { copper: 300, silver: 1, gold: 1 },
   },
   {
     id: QuestId.upgrade_equipment,
-    title: 'Повысить уровень снаряжения любого героя',
+    title: 'Increase the equipment level of any hero',
     reward: { copper: 600, silver: 10, gold: 1 },
   },
   {
     id: QuestId.upgrade_hero_level,
-    title: 'Повысить уровень любого героя на 1 уровень',
+    title: 'Increase the level of any hero by 1',
     reward: { copper: 700, silver: 15, gold: 5 },
   },
 ];
