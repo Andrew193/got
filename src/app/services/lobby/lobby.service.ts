@@ -165,6 +165,7 @@ export class LobbyService {
       url: '#',
       src: 'tree.png',
       click: () => this.openQuestsModal(),
+      notification: NotificationType.daily_quests,
     },
     {
       name: 'Watchtower',

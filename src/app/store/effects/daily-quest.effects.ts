@@ -3,6 +3,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, catchError, map, of, switchMap, take, tap } from 'rxjs';
+
+import { DAILY_QUESTS } from '../../../../global-constants';
 import { SNACKBAR_CONFIG } from '../../constants';
 import { Quest } from '../../models/daily-quest.model';
 import { DailyQuestApiService } from '../../services/daily-quest/daily-quest-api.service';
@@ -10,7 +12,6 @@ import { LocalStorageService } from '../../services/localStorage/local-storage.s
 import { UsersService } from '../../services/users/users.service';
 import { DailyQuestActions } from '../actions/daily-quest.actions';
 import { selectQuestById } from '../selectors/daily-quest.selectors';
-import { DAILY_QUESTS } from '../../../../global-constants';
 
 @Injectable()
 export class DailyQuestEffects {
@@ -40,7 +41,7 @@ export class DailyQuestEffects {
                 id: def.id,
                 title: def.title,
                 reward: def.reward,
-                completed: record?.completed ?? false,
+                status: record?.status ?? 'pending',
               };
             });
 
@@ -54,30 +55,67 @@ export class DailyQuestEffects {
     ),
   );
 
-  completeQuest$ = createEffect(() =>
+  markQuestAsCompleted$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DailyQuestActions.completeQuest),
+      ofType(DailyQuestActions.markQuestAsCompleted),
       switchMap(({ questId }) =>
         this.store.select(selectQuestById(questId)).pipe(
           take(1),
           switchMap(quest => {
-            if (quest?.completed) {
+            if (quest?.status !== 'pending') {
               return EMPTY;
             }
 
             const userId = this.localStorageService.getUserId();
 
-            return this.dailyQuestApiService.completeQuest(userId, questId).pipe(
+            return this.dailyQuestApiService.markQuestAsCompleted(userId, questId).pipe(
               map(data => {
                 if (!data) {
-                  return DailyQuestActions.completeQuestFailure({ error: 'No data received' });
+                  return DailyQuestActions.markQuestAsCompletedFailure({
+                    error: 'No data received',
+                  });
                 }
 
-                return DailyQuestActions.completeQuestSuccess({ questId });
+                return DailyQuestActions.markQuestAsCompletedSuccess({ questId });
               }),
               catchError(err =>
                 of(
-                  DailyQuestActions.completeQuestFailure({
+                  DailyQuestActions.markQuestAsCompletedFailure({
+                    error: err?.message ?? 'Unknown error',
+                  }),
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
+
+  claimQuestReward$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DailyQuestActions.claimQuestReward),
+      switchMap(({ questId }) =>
+        this.store.select(selectQuestById(questId)).pipe(
+          take(1),
+          switchMap(quest => {
+            if (quest?.status !== 'ready_to_claim') {
+              return EMPTY;
+            }
+
+            const userId = this.localStorageService.getUserId();
+
+            return this.dailyQuestApiService.claimQuestReward(userId, questId).pipe(
+              map(data => {
+                if (!data) {
+                  return DailyQuestActions.claimQuestRewardFailure({ error: 'No data received' });
+                }
+
+                return DailyQuestActions.claimQuestRewardSuccess({ questId });
+              }),
+              catchError(err =>
+                of(
+                  DailyQuestActions.claimQuestRewardFailure({
                     error: err?.message ?? 'Unknown error',
                   }),
                 ),
@@ -92,7 +130,7 @@ export class DailyQuestEffects {
   grantReward$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(DailyQuestActions.completeQuestSuccess),
+        ofType(DailyQuestActions.claimQuestRewardSuccess),
         tap(({ questId }) => {
           const def = DAILY_QUESTS.find(q => q.id === questId);
 
@@ -101,7 +139,7 @@ export class DailyQuestEffects {
           }
 
           this.usersService
-            .updateCurrency({ copper: def.reward.copper, gold: 0, silver: 0 })
+            .updateCurrency(def.reward)
             .pipe(
               catchError(() => {
                 this.snackBar.open('Failed to grant quest reward.', undefined, SNACKBAR_CONFIG);

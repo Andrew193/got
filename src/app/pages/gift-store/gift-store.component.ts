@@ -127,7 +127,7 @@ export class GiftStoreComponent implements OnInit {
       .pipe(
         tap({
           next: () => {
-            this.dailyQuestService.completeQuest(QuestId.gift_reward);
+            this.dailyQuestService.markQuestAsCompleted(QuestId.gift_reward);
             this.giftService.claimGiftReward(
               {
                 ...this.giftConfig,

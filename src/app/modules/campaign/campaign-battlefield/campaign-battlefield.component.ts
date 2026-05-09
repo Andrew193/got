@@ -93,10 +93,10 @@ export class CampaignBattlefieldComponent {
         .subscribe(() => this.nav.goToCampaign());
     };
 
-    this.dailyQuestService.completeQuest(QuestId.campaign_fight);
+    this.dailyQuestService.markQuestAsCompleted(QuestId.campaign_fight);
 
     if (win && state?.battleId && state?.userId) {
-      this.dailyQuestService.completeQuest(QuestId.campaign_win);
+      this.dailyQuestService.markQuestAsCompleted(QuestId.campaign_win);
       this.campaignFacade.incrementVictoryCounter(state.difficulty);
       this.campaignProgressService
         .completeBattle(state.userId, state.battleId)

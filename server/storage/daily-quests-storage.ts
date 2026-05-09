@@ -37,7 +37,7 @@ function today(): string {
 }
 
 function createFreshQuests() {
-  return DAILY_QUESTS.map(q => ({ id: q.id, completed: false }));
+  return DAILY_QUESTS.map(q => ({ id: q.id, status: 'pending' as const }));
 }
 
 // ─── Pure logic ───────────────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ export function resetProgress(progress: QuestProgress): QuestProgress {
   return {
     userId: progress.userId,
     date: today(),
-    quests: progress.quests.map(q => ({ id: q.id, completed: false })),
+    quests: progress.quests.map(q => ({ id: q.id, status: 'pending' as const })),
   };
 }
 
@@ -102,8 +102,39 @@ export function completeQuestInStorage(userId: string, questId: QuestId): QuestP
 
   const questIndex = record.quests.findIndex(q => q.id === questId);
 
-  if (questIndex !== -1) {
-    record.quests[questIndex] = { id: questId, completed: true };
+  if (questIndex !== -1 && record.quests[questIndex].status === 'ready_to_claim') {
+    record.quests[questIndex] = { id: questId, status: 'claimed' };
+  }
+
+  const recordIndex = store.progress.findIndex(r => r.userId === userId);
+
+  store.progress[recordIndex] = record;
+  writeStore(store);
+
+  return record;
+}
+
+export function markQuestAsReadyInStorage(userId: string, questId: QuestId): QuestProgress {
+  const store = readStore();
+  const index = store.progress.findIndex(r => r.userId === userId);
+
+  let record: QuestProgress;
+
+  if (index === -1) {
+    record = {
+      userId,
+      date: today(),
+      quests: createFreshQuests(),
+    };
+    store.progress.push(record);
+  } else {
+    record = store.progress[index];
+  }
+
+  const questIndex = record.quests.findIndex(q => q.id === questId);
+
+  if (questIndex !== -1 && record.quests[questIndex].status === 'pending') {
+    record.quests[questIndex] = { id: questId, status: 'ready_to_claim' };
   }
 
   const recordIndex = store.progress.findIndex(r => r.userId === userId);

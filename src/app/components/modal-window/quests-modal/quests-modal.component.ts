@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+
 import { DynamicComponentConfig, HasFooterHost, ModalBase } from '../modal-interfaces';
 import { DYNAMIC_COMPONENT_DATA } from '../../../models/tokens';
+import { QuestId } from '../../../../../server/types';
 import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
 import { CurrencyHelperService } from '../../../services/users/currency/helper/currency-helper.service';
 import { RewardCoinComponent } from '../../views/reward-coin/reward-coin.component';
-import { Currency } from '../../../services/users/users.interfaces';
 
 @Component({
   selector: 'app-quests-modal',
@@ -34,7 +35,11 @@ export class QuestsModalComponent implements Partial<HasFooterHost>, OnInit {
     this.dailyQuestService.loadQuests();
   }
 
-  getRewardCoins(data: Currency) {
-    return this.currencyHelper.getCoins(data);
+  onQuestClick(questId: QuestId) {
+    this.dailyQuestService.claimQuestReward(questId);
+  }
+
+  getRewardCoins(reward: { copper: number; silver: number; gold: number }) {
+    return this.currencyHelper.getCoins(reward).filter(c => c.amount > 0);
   }
 }

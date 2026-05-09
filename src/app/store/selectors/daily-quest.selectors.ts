@@ -7,5 +7,9 @@ export const selectDailyQuests = DailyQuestsFeature.selectQuests;
 export const selectDailyQuestsLoading = DailyQuestsFeature.selectLoading;
 export const selectDailyQuestsError = DailyQuestsFeature.selectError;
 
+export const selectHasReadyToClaim = createSelector(selectDailyQuests, quests =>
+  quests?.some(q => q.status === 'ready_to_claim'),
+);
+
 export const selectQuestById = (questId: QuestId) =>
   createSelector(selectDailyQuests, quests => quests.find(q => q.id === questId) ?? null);

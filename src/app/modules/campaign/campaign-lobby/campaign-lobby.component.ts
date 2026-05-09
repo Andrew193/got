@@ -231,7 +231,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
     if (difficulty === null) return;
 
     if (this.canCollect()) {
-      this.dailyQuestService.completeQuest(QuestId.campaign_chest);
+      this.dailyQuestService.markQuestAsCompleted(QuestId.campaign_chest);
     }
 
     this.campaignFacade.collectVictoryReward(difficulty, screenIndex);

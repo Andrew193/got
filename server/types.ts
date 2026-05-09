@@ -122,7 +122,7 @@ export interface QuestDefinition {
 
 export interface QuestRecord {
   id: QuestId;
-  completed: boolean;
+  status: 'pending' | 'ready_to_claim' | 'claimed';
 }
 
 export interface QuestProgress {

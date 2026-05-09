@@ -63,7 +63,7 @@ export class DailyBossBattlefieldComponent {
     );
 
     if (win) {
-      this.dailyQuestService.completeQuest(QuestId.boss_fight);
+      this.dailyQuestService.markQuestAsCompleted(QuestId.boss_fight);
     }
 
     return reward;

@@ -1,7 +1,8 @@
-import type { QuestRecord } from '../../../server/types';
-import { Currency } from '../services/users/users.interfaces';
+import type { QuestDefinition, QuestRecord } from '../../../server/types';
+
+export type { QuestId, QuestRecord, QuestProgress } from '../../../server/types';
 
 export interface Quest extends QuestRecord {
   title: string;
-  reward: Currency;
+  reward: QuestDefinition['reward'];
 }

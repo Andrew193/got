@@ -189,7 +189,7 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     return this.updateHeroProgress(userId, heroName, { [eqField]: currentLevel + 1 }).pipe(
       tap({
         next: () => {
-          this.dailyQuestService.completeQuest(QuestId.upgrade_equipment);
+          this.dailyQuestService.markQuestAsCompleted(QuestId.upgrade_equipment);
         },
       }),
     );
@@ -199,7 +199,7 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     return this.updateHeroProgress(userId, heroName, { level: currentLevel + 1 }).pipe(
       tap({
         next: () => {
-          this.dailyQuestService.completeQuest(QuestId.upgrade_hero_level);
+          this.dailyQuestService.markQuestAsCompleted(QuestId.upgrade_hero_level);
         },
       }),
     );

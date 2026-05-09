@@ -79,7 +79,7 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   }
 
   public victoryRedirect: GameResultsRedirectType = (_, __, currency) => {
-    this.dailyQuestService.completeQuest(QuestId.training_win);
+    this.dailyQuestService.markQuestAsCompleted(QuestId.training_win);
     this._victoryRedirect(currency);
   };
 

@@ -1,7 +1,11 @@
 import { Router, type Request, type Response } from 'express';
 
 import { QuestId } from '../types';
-import { completeQuestInStorage, getOrCreateProgress } from '../storage/daily-quests-storage';
+import {
+  completeQuestInStorage,
+  getOrCreateProgress,
+  markQuestAsReadyInStorage,
+} from '../storage/daily-quests-storage';
 
 const router = Router();
 
@@ -21,6 +25,27 @@ router.get('/:userId', (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const progress = getOrCreateProgress(userId as string);
+
+    res.json(progress);
+  } catch {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/daily-quests/:userId/mark-ready
+// Body: { questId: QuestId }
+router.post('/:userId/mark-ready', (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { questId } = req.body as { questId: unknown };
+
+    if (typeof questId !== 'string' || !VALID_QUEST_IDS.includes(questId as QuestId)) {
+      res.status(400).json({ error: 'Invalid questId' });
+
+      return;
+    }
+
+    const progress = markQuestAsReadyInStorage(userId as string, questId as QuestId);
 
     res.json(progress);
   } catch {

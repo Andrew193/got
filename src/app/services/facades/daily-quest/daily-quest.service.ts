@@ -8,6 +8,7 @@ import {
   selectDailyQuests,
   selectDailyQuestsError,
   selectDailyQuestsLoading,
+  selectHasReadyToClaim,
   selectQuestById,
 } from '../../../store/selectors/daily-quest.selectors';
 
@@ -18,18 +19,29 @@ export class DailyQuestService {
   readonly quests$ = this.store.select(selectDailyQuests);
   readonly loading$ = this.store.select(selectDailyQuestsLoading);
   readonly error$ = this.store.select(selectDailyQuestsError);
+  readonly hasReadyToClaim$ = this.store.select(selectHasReadyToClaim);
 
   loadQuests() {
     this.store.dispatch(DailyQuestActions.loadQuests());
   }
 
-  async completeQuest(questId: QuestId) {
+  async markQuestAsCompleted(questId: QuestId) {
     const quest = await firstValueFrom(this.store.select(selectQuestById(questId)));
 
-    if (quest?.completed) {
+    if (quest?.status !== 'pending') {
       return;
     }
 
-    this.store.dispatch(DailyQuestActions.completeQuest({ questId }));
+    this.store.dispatch(DailyQuestActions.markQuestAsCompleted({ questId }));
+  }
+
+  async claimQuestReward(questId: QuestId) {
+    const quest = await firstValueFrom(this.store.select(selectQuestById(questId)));
+
+    if (quest?.status !== 'ready_to_claim') {
+      return;
+    }
+
+    this.store.dispatch(DailyQuestActions.claimQuestReward({ questId }));
   }
 }

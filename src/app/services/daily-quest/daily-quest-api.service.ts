@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../abstract/api/api.service';
+
 import { QuestId, QuestProgress } from '../../../../server/types';
+import { ApiService } from '../abstract/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class DailyQuestApiService extends ApiService<QuestProgress> {
@@ -13,7 +14,13 @@ export class DailyQuestApiService extends ApiService<QuestProgress> {
       .pipe(this.basicResponseTapParser(data => data));
   }
 
-  completeQuest(userId: string, questId: QuestId): Observable<QuestProgress | null> {
+  markQuestAsCompleted(userId: string, questId: QuestId): Observable<QuestProgress | null> {
+    return this.http
+      .post<QuestProgress>(`${this.baseUrl}/${userId}/mark-ready`, { questId })
+      .pipe(this.basicResponseTapParser(data => data));
+  }
+
+  claimQuestReward(userId: string, questId: QuestId): Observable<QuestProgress | null> {
     return this.http
       .post<QuestProgress>(`${this.baseUrl}/${userId}/complete`, { questId })
       .pipe(this.basicResponseTapParser(data => data));

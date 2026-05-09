@@ -1,7 +1,3 @@
-@let _loading = loading$ | async;
-@let _error = error$ | async;
-@let _quests = quests$ | async;
-
 <div class="quests-modal-container p-3">
   <div class="footer-cover">
     <h2>{{ data.labels.closeBtnLabel }}</h2>
@@ -9,32 +5,38 @@
   </div>
 
   <section class="main-content">
-    @if (_loading) {
+    @if (loading$ | async) {
       <div class="loading-indicator">Loading...</div>
     }
 
-    @if (_error) {
+    @if (error$ | async; as error) {
       <div class="error-block">
-        <p class="error-message">{{ _error }}</p>
+        <p class="error-message">{{ error }}</p>
         <button class="retry-btn" (click)="retry()">Retry</button>
       </div>
     }
 
-    @if (_quests) {
+    @if (quests$ | async; as quests) {
       <div class="quest-list">
-        @for (quest of _quests; track quest.id) {
-          <div class="quest-item" [class.completed]="quest.completed">
+        @for (quest of quests; track quest.id) {
+          <div
+            class="quest-item"
+            [class.quest-item--ready]="quest.status === 'ready_to_claim'"
+            [class.quest-item--claimed]="quest.status === 'claimed'"
+            (click)="onQuestClick(quest.id)">
             <span class="quest-title">{{ quest.title }}</span>
             <span class="quest-reward">
               @for (coin of getRewardCoins(quest.reward); track coin.class) {
-                @if (coin.amount > 0) {
-                  <app-reward-coin [coinConfig]="coin" />
-                }
+                <app-reward-coin [coinConfig]="coin" />
               }
             </span>
-            @if (quest.completed) {
-              <span class="quest-check">✓</span>
-            }
+            <span class="quest-status">
+              @if (quest.status === 'claimed') {
+                ✓
+              } @else if (quest.status === 'ready_to_claim') {
+                🎁
+              }
+            </span>
           </div>
         }
       </div>

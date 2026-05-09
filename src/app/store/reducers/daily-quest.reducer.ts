@@ -25,9 +25,21 @@ export const DailyQuestsFeature = createFeature({
       loading: false,
       error,
     })),
-    on(DailyQuestActions.completeQuestSuccess, (state, { questId }) => ({
+    on(DailyQuestActions.markQuestAsCompletedSuccess, (state, { questId }) => ({
       ...state,
-      quests: state.quests.map(q => (q.id === questId ? { ...q, completed: true } : q)),
+      quests: state.quests.map(q =>
+        q.id === questId && q.status === 'pending'
+          ? { ...q, status: 'ready_to_claim' as const }
+          : q,
+      ),
+    })),
+    on(DailyQuestActions.claimQuestRewardSuccess, (state, { questId }) => ({
+      ...state,
+      quests: state.quests.map(q =>
+        q.id === questId && q.status === 'ready_to_claim'
+          ? { ...q, status: 'claimed' as const }
+          : q,
+      ),
     })),
   ),
 });
