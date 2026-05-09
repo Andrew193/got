@@ -1,12 +1,33 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
+import { inject, Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { QuestId, QuestProgress } from '../../../../server/types';
-import { ApiService } from '../abstract/api/api.service';
+import { BaseConfigApiService } from '../abstract/base-config-api/base-config-api.service';
+import { DailyQuestActions } from '../../store/actions/daily-quest.actions';
+import { Store } from '@ngrx/store';
+import { createQuestsFromProgress } from './daily-quest-helper';
 
 @Injectable({ providedIn: 'root' })
-export class DailyQuestApiService extends ApiService<QuestProgress> {
+export class DailyQuestApiService extends BaseConfigApiService<QuestProgress> {
   private readonly baseUrl = '/api/daily-quests';
+  private readonly store = inject(Store);
+
+  override getConfig() {
+    return this.getQuests(this.userId).pipe(
+      tap({
+        next: data => {
+          data &&
+            this.store.dispatch(
+              DailyQuestActions.loadQuestsSuccess({ quests: createQuestsFromProgress(data) }),
+            );
+        },
+        error: err => {
+          const error = err?.message ?? 'Failed to load quest progress';
+
+          this.store.dispatch(DailyQuestActions.loadQuestsFailure({ error }));
+        },
+      }),
+    );
+  }
 
   getQuests(userId: string): Observable<QuestProgress | null> {
     return this.http

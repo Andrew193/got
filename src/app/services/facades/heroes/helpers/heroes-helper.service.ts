@@ -103,9 +103,10 @@ export class HeroesHelperService {
         : unit;
 
     //Rank
+    const targetRank = Math.max(1, unit.rank);
     let usedRank = 1;
 
-    while (usedRank !== unit.rank) {
+    while (usedRank < targetRank) {
       usedRank++;
       leveledUnit.attack = this.numberService.toFixed(leveledUnit.attack * unit.rankBoost);
       leveledUnit.defence = this.numberService.toFixed(leveledUnit.defence * unit.rankBoost);

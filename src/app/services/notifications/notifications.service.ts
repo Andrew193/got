@@ -14,6 +14,7 @@ import { GetConfig } from '../../models/common.model';
 import { DepositService } from '../users/currency/deposit.service';
 import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
 import { HeroProgressService } from '../facades/hero-progress/hero-progress.service';
+import { DailyQuestApiService } from '../daily-quest/daily-quest-api.service';
 
 export enum NotificationType {
   daily_reward,
@@ -35,6 +36,7 @@ export class NotificationsService implements InitInterface {
   private dailyBossService = inject(DailyBossApiService);
   private depositService = inject(DepositService);
   private heroProgressService = inject(HeroProgressService);
+  private dailyQuestService = inject(DailyQuestApiService);
 
   private modalWindowService = inject(ModalWindowService);
 
@@ -62,6 +64,7 @@ export class NotificationsService implements InitInterface {
         { api: this.dailyBossService, type: NotificationType.daily_boss },
         { api: this.depositService, type: NotificationType.deposit },
         { api: this.heroProgressService, type: NotificationType.hero_progress },
+        { api: this.dailyQuestService, type: NotificationType.daily_quests },
       ];
 
       services.forEach(el => {

@@ -6,6 +6,7 @@ import {
   Input,
   model,
   output,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { GameFieldComponent } from '../game-field/game-field.component';
@@ -31,8 +32,12 @@ export class GameEntryPointComponent<T extends TileUnit> {
 
   constructor() {
     effect(() => {
-      if (this.gameField()) {
-        this.gameField()?.recreateGameConfig(this.userUnits(), this.aiUnits());
+      const field = this.gameField();
+      const userUnits = this.userUnits();
+      const aiUnits = this.aiUnits();
+
+      if (field) {
+        untracked(() => field.recreateGameConfig(userUnits, aiUnits));
       }
     });
   }

@@ -6,11 +6,11 @@
       "quests": [
         {
           "id": "campaign_fight",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "campaign_win",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "campaign_chest",
@@ -18,7 +18,7 @@
         },
         {
           "id": "boss_fight",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "gift_reward",

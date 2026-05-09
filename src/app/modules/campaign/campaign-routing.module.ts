@@ -11,7 +11,7 @@ export const campaignRoutes: Routes = [
     component: CampaignEntryComponent,
     children: [
       { path: frontRoutes.base, component: CampaignLobbyComponent },
-      { path: 'battle', component: CampaignBattlefieldComponent },
+      { path: frontRoutes.campaignBattle, component: CampaignBattlefieldComponent },
     ],
   },
 ];

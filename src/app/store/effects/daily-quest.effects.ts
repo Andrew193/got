@@ -3,10 +3,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, catchError, map, of, switchMap, take, tap } from 'rxjs';
-
 import { DAILY_QUESTS } from '../../../../global-constants';
 import { SNACKBAR_CONFIG } from '../../constants';
-import { Quest } from '../../models/daily-quest.model';
 import { DailyQuestApiService } from '../../services/daily-quest/daily-quest-api.service';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { UsersService } from '../../services/users/users.service';
@@ -16,6 +14,7 @@ import {
 } from '../../services/notifications/notifications.service';
 import { DailyQuestActions } from '../actions/daily-quest.actions';
 import { selectHasReadyToClaim, selectQuestById } from '../selectors/daily-quest.selectors';
+import { createQuestsFromProgress } from '../../services/daily-quest/daily-quest-helper';
 
 @Injectable()
 export class DailyQuestEffects {
@@ -39,18 +38,7 @@ export class DailyQuestEffects {
               return DailyQuestActions.loadQuestsFailure({ error: 'No data received' });
             }
 
-            const quests: Quest[] = DAILY_QUESTS.map(def => {
-              const record = data.quests.find(q => q.id === def.id);
-
-              return {
-                id: def.id,
-                title: def.title,
-                reward: def.reward,
-                status: record?.status ?? 'pending',
-              };
-            });
-
-            return DailyQuestActions.loadQuestsSuccess({ quests });
+            return DailyQuestActions.loadQuestsSuccess({ quests: createQuestsFromProgress(data) });
           }),
           catchError(err =>
             of(DailyQuestActions.loadQuestsFailure({ error: err?.message ?? 'Unknown error' })),
