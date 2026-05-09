@@ -16,6 +16,12 @@ import { Skill } from '../../../../models/units-related/skill.model';
 import { Effect } from '../../../../models/effect.model';
 
 type SkillForDescriptionCreation = Omit<Skill, 'description'>;
+enum EqpCoverNames {
+  eq1Level = 'eq1Level',
+  eq2Level = 'eq2Level',
+  eq3Level = 'eq3Level',
+  eq4Level = 'eq4Level',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -76,23 +82,28 @@ export class HeroesHelperService {
   //Up hero
   getEquipmentForUnit(unit: Unit): Unit {
     //Level
-    const leveledUnit = {
-      ...unit,
-      attack: this.numberService.toFixed(unit.attack + unit.attackIncrement * unit.level),
-      defence: this.numberService.toFixed(unit.defence + unit.defenceIncrement * unit.level),
-      health: this.numberService.toFixed(unit.health + unit.healthIncrement * unit.level),
-      rage: this.numberService.toFixed(unit.rage + (unit.level > 1 ? 2 * unit.level : 0)),
-      willpower: this.numberService.toFixed(unit.willpower + (unit.level > 1 ? 2 * unit.level : 0)),
-      dmgReducedBy: this.numberService.toFixed(
-        this.numberService.toFixed(
-          unit.dmgReducedBy * 100 + (unit.level > 1 ? 0.5 : 0) * unit.level,
-        ) / 100,
-        2,
-      ),
-    };
+    const leveledUnit =
+      unit.level > 1
+        ? {
+            ...unit,
+            attack: this.numberService.toFixed(unit.attack + unit.attackIncrement * unit.level),
+            defence: this.numberService.toFixed(unit.defence + unit.defenceIncrement * unit.level),
+            health: this.numberService.toFixed(unit.health + unit.healthIncrement * unit.level),
+            rage: this.numberService.toFixed(unit.rage + (unit.level > 1 ? 2 * unit.level : 0)),
+            willpower: this.numberService.toFixed(
+              unit.willpower + (unit.level > 1 ? 2 * unit.level : 0),
+            ),
+            dmgReducedBy: this.numberService.toFixed(
+              this.numberService.toFixed(
+                unit.dmgReducedBy * 100 + (unit.level > 1 ? 0.5 : 0) * unit.level,
+              ) / 100,
+              2,
+            ),
+          }
+        : unit;
 
     //Rank
-    let usedRank = 0;
+    let usedRank = 1;
 
     while (usedRank !== unit.rank) {
       usedRank++;
@@ -101,46 +112,25 @@ export class HeroesHelperService {
       leveledUnit.health = this.numberService.toFixed(leveledUnit.health * unit.rankBoost);
     }
 
-    //Eq 1
-    leveledUnit.attack += this.numberService.toFixed(
-      leveledUnit.attackIncrement * leveledUnit.eq1Level,
-    );
-    leveledUnit.defence += this.numberService.toFixed(
-      leveledUnit.defenceIncrement * leveledUnit.eq1Level,
-    );
-    leveledUnit.health += this.numberService.toFixed(
-      leveledUnit.healthIncrement * leveledUnit.eq1Level,
-    );
-    //Eq 2
-    leveledUnit.attack += this.numberService.toFixed(
-      leveledUnit.attackIncrement * leveledUnit.eq2Level,
-    );
-    leveledUnit.defence += this.numberService.toFixed(
-      leveledUnit.defenceIncrement * leveledUnit.eq2Level,
-    );
-    leveledUnit.health += this.numberService.toFixed(
-      leveledUnit.healthIncrement * leveledUnit.eq2Level,
-    );
-    //Eq 3
-    leveledUnit.attack += this.numberService.toFixed(
-      leveledUnit.attackIncrement * leveledUnit.eq3Level,
-    );
-    leveledUnit.defence += this.numberService.toFixed(
-      leveledUnit.defenceIncrement * leveledUnit.eq3Level,
-    );
-    leveledUnit.health += this.numberService.toFixed(
-      leveledUnit.healthIncrement * leveledUnit.eq3Level,
-    );
-    //Eq 4
-    leveledUnit.attack += this.numberService.toFixed(
-      leveledUnit.attackIncrement * leveledUnit.eq4Level,
-    );
-    leveledUnit.defence += this.numberService.toFixed(
-      leveledUnit.defenceIncrement * leveledUnit.eq4Level,
-    );
-    leveledUnit.health += this.numberService.toFixed(
-      leveledUnit.healthIncrement * leveledUnit.eq4Level,
-    );
+    const eqpCover = (
+      name: EqpCoverNames,
+      increment: 'attackIncrement' | 'defenceIncrement' | 'healthIncrement',
+    ) => {
+      return leveledUnit[name] > 1
+        ? this.numberService.toFixed(leveledUnit[increment] * leveledUnit[name])
+        : 0;
+    };
+
+    //Eq loop
+    for (let i = 0; i < 3; i++) {
+      const name = `eq${i + 1}Level` as EqpCoverNames;
+
+      console.log(name);
+
+      leveledUnit.attack += eqpCover(name, 'attackIncrement');
+      leveledUnit.defence += eqpCover(name, 'defenceIncrement');
+      leveledUnit.health += eqpCover(name, 'healthIncrement');
+    }
 
     leveledUnit.maxHealth = leveledUnit.health;
 

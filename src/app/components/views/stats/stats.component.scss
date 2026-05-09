@@ -1,5 +1,21 @@
 @use '../../../../assets/resourses/styles/index' as index;
 
+mat-drawer-container {
+  flex: 1;
+  min-width: 350px;
+}
+
+app-unit-short-eqp-information {
+  display: flex;
+  height: 100%;
+}
+
+.stats-inner-container {
+  display: flex;
+  gap: 10px;
+  height: stretch;
+}
+
 .reward-avatar {
   object-fit: contain;
   width: 100%;

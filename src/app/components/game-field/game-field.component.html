@@ -209,32 +209,7 @@
                     class="w-100 p-2"
                     mode="over"
                     (click)="metaDrawer.close()">
-                    <div class="d-flex justify-content-around color-white">
-                      <p class="m-0">
-                        <span class="d-block text-center">Lvl: </span>
-                        <span class="d-block text-center">{{ hero.level }}</span>
-                      </p>
-                      <p class="m-0">
-                        <span class="d-block text-center">Rank: </span>
-                        <span class="d-block text-center">{{ hero.rank }}</span>
-                      </p>
-                      <p class="m-0">
-                        <span class="d-block text-center">Eq1: </span>
-                        <span class="d-block text-center">{{ hero.eq1Level }}</span>
-                      </p>
-                      <p class="m-0">
-                        <span class="d-block text-center">Eq2: </span>
-                        <span class="d-block text-center">{{ hero.eq2Level }}</span>
-                      </p>
-                      <p class="m-0">
-                        <span class="d-block text-center">Eq3: </span>
-                        <span class="d-block text-center">{{ hero.eq3Level }}</span>
-                      </p>
-                      <p class="m-0">
-                        <span class="d-block text-center">Eq4: </span>
-                        <span class="d-block text-center">{{ hero.eq4Level }}</span>
-                      </p>
-                    </div>
+                    <app-unit-short-eqp-information [hero]="hero" />
                   </mat-drawer>
                   <div class="d-flex justify-content-center info-label" (click)="metaDrawer.open()">
                     <span>Learn more</span>

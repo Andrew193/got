@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Unit } from '../../../models/units-related/unit.model';
 import { DecimalPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { MatDrawerContainer, MatDrawer } from '@angular/material/sidenav';
+import { UnitShortEqpInformationComponent } from '../../common/unit-short-eqp-information/unit-short-eqp-information.component';
 
 type AllowedStatKey = Extract<
   keyof Unit,
@@ -19,7 +21,14 @@ type StatRow = {
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, NgTemplateOutlet, DecimalPipe],
+  imports: [
+    NgClass,
+    NgTemplateOutlet,
+    DecimalPipe,
+    MatDrawerContainer,
+    MatDrawer,
+    UnitShortEqpInformationComponent,
+  ],
 })
 export class StatsComponent {
   selectedHero = input.required<Unit>();

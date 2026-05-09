@@ -4,7 +4,7 @@
 @let _statsContainerClass = statsContainerClass();
 
 <div class="p-0 gap-2 flex-row stats-container">
-  <div style="width: 133px; min-width: 133px">
+  <div style="width: 133px; min-width: 133px" (click)="drawer.toggle()">
     <h2 class="level-label m-0">
       <span>Lv:</span>
       {{ _selectedHero.level }}
@@ -19,57 +19,63 @@
       <ng-content select="action" />
     </div>
   </div>
-  <div
-    class="stats flex-column w-auto gap-1 {{ _statsContainerClass }}"
-    [ngClass]="{
-      'stats-table row m-0': _tableMode,
-      'flex-column': !_tableMode,
-    }">
-    <ng-template
-      #statRow
-      let-icon="icon"
-      let-value="value"
-      let-desc="desc"
-      let-key="key"
-      let-isString="isString">
+  <mat-drawer-container class="col">
+    <mat-drawer #drawer class="w-100 p-2" mode="over">
+      <app-unit-short-eqp-information [hero]="_selectedHero" />
+    </mat-drawer>
+    <div class="stats-inner-container">
       <div
+        class="stats flex-column w-auto gap-1 {{ _statsContainerClass }}"
         [ngClass]="{
-          'row gap-2 m-0': !_tableMode,
-          col: _tableMode,
-        }"
-        class="p-1 stats-line">
-        <p
-          [ngClass]="{
-            'd-flex justify-content-around': _tableMode,
-            'stat-p-container': !_tableMode,
-          }"
-          class="m-0 h-100">
-          <img [src]="icon" [alt]="icon" />
-          @if (!isString) {
-            <span [class]="key">{{ value | number }}</span>
-          } @else {
-            <span [class]="key">{{ value }}</span>
-          }
-        </p>
-        @if (!_tableMode) {
-          <span style="line-height: 30px" class="col d-block text-start">{{ desc }}</span>
+          'stats-table row m-0': _tableMode,
+          'flex-column': !_tableMode,
+        }">
+        <ng-template
+          #statRow
+          let-icon="icon"
+          let-value="value"
+          let-desc="desc"
+          let-key="key"
+          let-isString="isString">
+          <div
+            [ngClass]="{
+              'row gap-2 m-0': !_tableMode,
+              col: _tableMode,
+            }"
+            class="p-1 stats-line">
+            <p
+              [ngClass]="{
+                'd-flex justify-content-around': _tableMode,
+                'stat-p-container': !_tableMode,
+              }"
+              class="m-0 h-100">
+              <img [src]="icon" [alt]="icon" />
+              @if (!isString) {
+                <span [class]="key">{{ value | number }}</span>
+              } @else {
+                <span [class]="key">{{ value }}</span>
+              }
+            </p>
+            @if (!_tableMode) {
+              <span style="line-height: 30px" class="col d-block text-start">{{ desc }}</span>
+            }
+          </div>
+        </ng-template>
+
+        @for (s of _stats; track s.key) {
+          <ng-container
+            [ngTemplateOutlet]="statRow"
+            [ngTemplateOutletContext]="{
+              icon: s.icon,
+              value: s.value(),
+              isString: $index === _stats.length - 2,
+              desc: s.desc,
+              key: s.key,
+            }">
+          </ng-container>
         }
       </div>
-    </ng-template>
-
-    @for (s of _stats; track s.key) {
-      <ng-container
-        [ngTemplateOutlet]="statRow"
-        [ngTemplateOutletContext]="{
-          icon: s.icon,
-          value: s.value(),
-          isString: $index === _stats.length - 2,
-          desc: s.desc,
-          key: s.key,
-        }">
-      </ng-container>
-    }
-  </div>
-
+    </div>
+  </mat-drawer-container>
   <ng-content />
 </div>

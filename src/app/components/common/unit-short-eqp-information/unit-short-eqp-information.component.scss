@@ -1,0 +1,30 @@
+@use '../../../../assets/resourses/styles/index.scss' as index;
+
+.c-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+
+  .item {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: index.$var-metal-dark-1;
+    border-radius: 5px;
+    border: index.$var-border-2-bronze;
+    box-shadow: index.$var-legendary-box-shadow;
+
+    p {
+      display: flex;
+      gap: 5px;
+    }
+
+    span.number {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+}

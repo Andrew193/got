@@ -22,6 +22,7 @@ import { BattleStateService } from '../../services/game-related/battle-state/bat
 import { AutoFightService } from '../../services/game-related/auto-fight/auto-fight.service';
 import { BattleResultService } from '../../services/game-related/battle-result/battle-result.service';
 import { AiTurnService } from '../../services/game-related/ai-turn/ai-turn.service';
+import { UnitShortEqpInformationComponent } from '../common/unit-short-eqp-information/unit-short-eqp-information.component';
 
 @Component({
   selector: 'app-game-field',
@@ -42,6 +43,7 @@ import { AiTurnService } from '../../services/game-related/ai-turn/ai-turn.servi
     CdkVirtualForOf,
     CdkVirtualScrollViewport,
     DecimalPipe,
+    UnitShortEqpInformationComponent,
   ],
   templateUrl: './game-field.component.html',
   styleUrl: './game-field.component.scss',
