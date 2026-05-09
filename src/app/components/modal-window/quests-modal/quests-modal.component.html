@@ -30,13 +30,15 @@
                 <app-reward-coin [coinConfig]="coin" />
               }
             </span>
-            <span class="quest-status">
-              @if (quest.status === 'claimed') {
-                ✓
-              } @else if (quest.status === 'ready_to_claim') {
-                🎁
-              }
-            </span>
+            @if (quest.status !== 'pending') {
+              <span class="quest-status" [class.claimed]="quest.status === 'claimed'">
+                @if (quest.status === 'claimed') {
+                  Claimed
+                } @else if (quest.status === 'ready_to_claim') {
+                  Can be claimed
+                }
+              </span>
+            }
           </div>
         }
       </div>

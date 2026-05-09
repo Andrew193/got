@@ -10,8 +10,12 @@ import { Quest } from '../../models/daily-quest.model';
 import { DailyQuestApiService } from '../../services/daily-quest/daily-quest-api.service';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { UsersService } from '../../services/users/users.service';
+import {
+  NotificationsService,
+  NotificationType,
+} from '../../services/notifications/notifications.service';
 import { DailyQuestActions } from '../actions/daily-quest.actions';
-import { selectQuestById } from '../selectors/daily-quest.selectors';
+import { selectHasReadyToClaim, selectQuestById } from '../selectors/daily-quest.selectors';
 
 @Injectable()
 export class DailyQuestEffects {
@@ -21,6 +25,7 @@ export class DailyQuestEffects {
   private localStorageService = inject(LocalStorageService);
   private usersService = inject(UsersService);
   private snackBar = inject(MatSnackBar);
+  private notificationsService = inject(NotificationsService);
 
   loadQuests$ = createEffect(() =>
     this.actions$.pipe(
@@ -149,6 +154,26 @@ export class DailyQuestEffects {
             )
             .subscribe();
         }),
+      ),
+    { dispatch: false },
+  );
+
+  syncNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          DailyQuestActions.loadQuestsSuccess,
+          DailyQuestActions.markQuestAsCompletedSuccess,
+          DailyQuestActions.claimQuestRewardSuccess,
+        ),
+        switchMap(() =>
+          this.store.select(selectHasReadyToClaim).pipe(
+            take(1),
+            tap(hasReady => {
+              this.notificationsService.notificationsValue(NotificationType.daily_quests, hasReady);
+            }),
+          ),
+        ),
       ),
     { dispatch: false },
   );

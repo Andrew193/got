@@ -6,35 +6,35 @@
       "quests": [
         {
           "id": "campaign_fight",
-          "completed": false
+          "status": "pending"
         },
         {
           "id": "campaign_win",
-          "completed": false
+          "status": "pending"
         },
         {
           "id": "campaign_chest",
-          "completed": false
+          "status": "pending"
         },
         {
           "id": "boss_fight",
-          "completed": false
+          "status": "pending"
         },
         {
           "id": "gift_reward",
-          "completed": true
+          "status": "pending"
         },
         {
           "id": "training_win",
-          "completed": false
+          "status": "claimed"
         },
         {
           "id": "upgrade_equipment",
-          "completed": false
+          "status": "pending"
         },
         {
           "id": "upgrade_hero_level",
-          "completed": false
+          "status": "pending"
         }
       ]
     }

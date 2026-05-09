@@ -14,7 +14,6 @@ import { GetConfig } from '../../models/common.model';
 import { DepositService } from '../users/currency/deposit.service';
 import { DailyBossApiService } from '../facades/daily-boss/daily-boss-api.service';
 import { HeroProgressService } from '../facades/hero-progress/hero-progress.service';
-import { DailyQuestService } from '../facades/daily-quest/daily-quest.service';
 
 export enum NotificationType {
   daily_reward,
@@ -36,7 +35,6 @@ export class NotificationsService implements InitInterface {
   private dailyBossService = inject(DailyBossApiService);
   private depositService = inject(DepositService);
   private heroProgressService = inject(HeroProgressService);
-  private dailyQuestService = inject(DailyQuestService);
 
   private modalWindowService = inject(ModalWindowService);
 
@@ -81,10 +79,6 @@ export class NotificationsService implements InitInterface {
       });
 
       //this.showPossibleActivities();
-
-      this.dailyQuestService.hasReadyToClaim$.subscribe(hasReady => {
-        this.notificationsValue(NotificationType.daily_quests, hasReady);
-      });
 
       return of({ ok: true, message: 'Notifications has been inited' } satisfies InitTaskObs);
     } catch (e) {

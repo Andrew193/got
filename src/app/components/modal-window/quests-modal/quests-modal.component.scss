@@ -68,10 +68,29 @@
   display: flex;
   flex-direction: column;
   padding: 5px;
+  position: relative;
   gap: 10px;
   background-color: index.$var-metal-dark-1;
   border-radius: 5px;
   border: index.$var-border-2-bronze;
+
+  .quest-status {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.65);
+
+    &:not(.claimed) {
+      cursor: pointer;
+    }
+  }
 
   &:not(.completed) {
     box-shadow: index.$var-legendary-box-shadow;
