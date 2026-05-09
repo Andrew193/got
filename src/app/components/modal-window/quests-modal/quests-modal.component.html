@@ -1,0 +1,43 @@
+@let _loading = loading$ | async;
+@let _error = error$ | async;
+@let _quests = quests$ | async;
+
+<div class="quests-modal-container p-3">
+  <div class="footer-cover">
+    <h2>{{ data.labels.closeBtnLabel }}</h2>
+    <ng-template #footerHost></ng-template>
+  </div>
+
+  <section class="main-content">
+    @if (_loading) {
+      <div class="loading-indicator">Loading...</div>
+    }
+
+    @if (_error) {
+      <div class="error-block">
+        <p class="error-message">{{ _error }}</p>
+        <button class="retry-btn" (click)="retry()">Retry</button>
+      </div>
+    }
+
+    @if (_quests) {
+      <div class="quest-list">
+        @for (quest of _quests; track quest.id) {
+          <div class="quest-item" [class.completed]="quest.completed">
+            <span class="quest-title">{{ quest.title }}</span>
+            <span class="quest-reward">
+              @for (coin of getRewardCoins(quest.reward); track coin.class) {
+                @if (coin.amount > 0) {
+                  <app-reward-coin [coinConfig]="coin" />
+                }
+              }
+            </span>
+            @if (quest.completed) {
+              <span class="quest-check">✓</span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </section>
+</div>

@@ -1,5 +1,7 @@
 // ─── Campaign ────────────────────────────────────────────────────────────────
 
+import { Currency } from '../src/app/services/users/users.interfaces';
+
 export type Difficulty = 'easy' | 'normal' | 'hard' | 'very_hard';
 
 export interface DifficultyProgress {
@@ -97,4 +99,38 @@ export interface PlayerLevelRecord {
 
 export interface PlayerLevelStore {
   progress: PlayerLevelRecord[];
+}
+
+// ─── Daily Quests ─────────────────────────────────────────────────────────────
+
+export enum QuestId {
+  campaign_fight = 'campaign_fight',
+  campaign_win = 'campaign_win',
+  campaign_chest = 'campaign_chest',
+  boss_fight = 'boss_fight',
+  gift_reward = 'gift_reward',
+  training_win = 'training_win',
+  upgrade_equipment = 'upgrade_equipment',
+  upgrade_hero_level = 'upgrade_hero_level',
+}
+
+export interface QuestDefinition {
+  id: QuestId;
+  title: string;
+  reward: Currency;
+}
+
+export interface QuestRecord {
+  id: QuestId;
+  completed: boolean;
+}
+
+export interface QuestProgress {
+  userId: string;
+  date: string; // MM/DD/YYYY
+  quests: QuestRecord[];
+}
+
+export interface DailyQuestsStore {
+  progress: QuestProgress[];
 }

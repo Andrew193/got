@@ -29,6 +29,7 @@ import { StoreNames } from './store/store.interfaces';
 import { provideEffects } from '@ngrx/effects';
 import { AssistantEffects } from './store/effects/assistant.effects';
 import { UnitsConfiguratorEffects } from './store/effects/units-configurator.effects';
+import { DailyQuestEffects } from './store/effects/daily-quest.effects';
 import { LocalStorageService } from './services/localStorage/local-storage.service';
 import { ModalWindowService } from './services/modal/modal-window.service';
 import { PlayerLevelService } from './services/player-level/player-level.service';
@@ -99,7 +100,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(undefined, {
       metaReducers: [hydrationMeta([StoreNames.unitsConfigurator])],
     }),
-    provideEffects([AssistantEffects, UnitsConfiguratorEffects]),
+    provideEffects([AssistantEffects, UnitsConfiguratorEffects, DailyQuestEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };

@@ -1,4 +1,8 @@
 {
+  "/api/daily-quests": {
+    "target": "http://localhost:4568",
+    "secure": false
+  },
   "/api/campaign": {
     "target": "http://localhost:4568",
     "secure": false

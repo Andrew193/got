@@ -1,0 +1,42 @@
+{
+  "progress": [
+    {
+      "userId": "e046",
+      "date": "05/09/2026",
+      "quests": [
+        {
+          "id": "campaign_fight",
+          "completed": false
+        },
+        {
+          "id": "campaign_win",
+          "completed": false
+        },
+        {
+          "id": "campaign_chest",
+          "completed": false
+        },
+        {
+          "id": "boss_fight",
+          "completed": false
+        },
+        {
+          "id": "gift_reward",
+          "completed": true
+        },
+        {
+          "id": "training_win",
+          "completed": false
+        },
+        {
+          "id": "upgrade_equipment",
+          "completed": false
+        },
+        {
+          "id": "upgrade_hero_level",
+          "completed": false
+        }
+      ]
+    }
+  ]
+}

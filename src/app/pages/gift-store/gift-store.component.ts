@@ -24,6 +24,8 @@ import { Store } from '@ngrx/store';
 import { DisplayRewardActions } from '../../store/actions/display-reward.actions';
 import { selectCardCollection } from '../../store/reducers/display-reward.reducer';
 import { GameBoardActions } from '../../store/actions/game-board.actions';
+import { DailyQuestService } from '../../services/facades/daily-quest/daily-quest.service';
+import { QuestId } from '../../../../server/types';
 
 @Component({
   selector: 'app-gift-store',
@@ -35,6 +37,7 @@ export class GiftStoreComponent implements OnInit {
   store = inject(Store);
   notificationService = inject(NotificationsService);
   nav = inject(NavigationService);
+  private dailyQuestService = inject(DailyQuestService);
   contextName = DisplayRewardNames.gift;
   loot = this.store.selectSignal(selectCardCollection(this.contextName));
 
@@ -124,6 +127,7 @@ export class GiftStoreComponent implements OnInit {
       .pipe(
         tap({
           next: () => {
+            this.dailyQuestService.completeQuest(QuestId.gift_reward);
             this.giftService.claimGiftReward(
               {
                 ...this.giftConfig,

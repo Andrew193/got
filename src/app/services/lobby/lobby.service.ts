@@ -7,6 +7,9 @@ import { ShortcutNotation, ShortcutNotationTriggers } from '../../models/shortcu
 import { frontRoutes } from '../../constants';
 import { Route } from '../../pages/lobby/lobby.component';
 import { ShortcutHelperService } from '../facades/shortcut/helpers/shortcut-helper.service';
+import { ModalWindowService } from '../modal/modal-window.service';
+import { ModalStrategiesTypes } from '../../components/modal-window/modal-interfaces';
+import { QuestsModalComponent } from '../../components/modal-window/quests-modal/quests-modal.component';
 
 type Activity = Pick<Route, 'name' | 'src' | 'closed'> & {
   click?: () => void;
@@ -19,6 +22,7 @@ type Activity = Pick<Route, 'name' | 'src' | 'closed'> & {
 export class LobbyService {
   nav = inject(NavigationService);
   store = inject(Store);
+  private modalService = inject(ModalWindowService);
 
   notation: ShortcutNotation[] = [
     {
@@ -61,6 +65,20 @@ export class LobbyService {
   public showDailyReward = () => {
     this.store.dispatch(toggleDailyReward());
   };
+
+  openQuestsModal() {
+    this.modalService.openModal(
+      this.modalService.getModalConfig(
+        '',
+        'Daily Quests',
+        { closeBtnLabel: 'Daily Quests' },
+        {
+          strategy: ModalStrategiesTypes.component,
+          component: QuestsModalComponent,
+        },
+      ),
+    );
+  }
 
   activities: Activity[] = [
     {
@@ -146,7 +164,7 @@ export class LobbyService {
       name: 'Great Tree',
       url: '#',
       src: 'tree.png',
-      closed: true,
+      click: () => this.openQuestsModal(),
     },
     {
       name: 'Watchtower',

@@ -10,6 +10,7 @@ import { GameBoardFeature } from './reducers/game-board.reducer';
 import { AssistantFeature } from './reducers/assistant.reducer';
 import { HeroProgressFeature } from './reducers/hero-progress.reducer';
 import { PlayerLevelFeature } from './reducers/player-level.reducer';
+import { DailyQuestsFeature } from './reducers/daily-quest.reducer';
 
 export const StateConfigs: Record<StoreNames, EnvironmentProviders[]> = {
   [StoreNames.lobby]: [provideState({ name: StoreNames.lobby, reducer: LobbyReducer })],
@@ -21,4 +22,5 @@ export const StateConfigs: Record<StoreNames, EnvironmentProviders[]> = {
   [StoreNames.assistant]: [provideState(AssistantFeature)],
   [StoreNames.heroProgress]: [provideState(HeroProgressFeature)],
   [StoreNames.playerLevel]: [provideState(PlayerLevelFeature)],
+  [StoreNames.dailyQuests]: [provideState(DailyQuestsFeature)],
 };

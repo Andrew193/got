@@ -16,6 +16,8 @@ import { FieldConfigActions } from '../../../store/actions/field-config.actions'
 import { RewardService } from '../../../services/reward/reward.service';
 import { UsersService } from '../../../services/users/users.service';
 import { Currency } from '../../../services/users/users.interfaces';
+import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
+import { QuestId } from '../../../../../server/types';
 
 @Component({
   selector: 'app-training-battle',
@@ -34,6 +36,7 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   heroesService = inject(HeroesFacadeService);
   rewardService = inject(RewardService);
   usersService = inject(UsersService);
+  private dailyQuestService = inject(DailyQuestService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -76,6 +79,7 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   }
 
   public victoryRedirect: GameResultsRedirectType = (_, __, currency) => {
+    this.dailyQuestService.completeQuest(QuestId.training_win);
     this._victoryRedirect(currency);
   };
 

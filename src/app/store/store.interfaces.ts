@@ -12,6 +12,7 @@ import { LogRecord } from '../models/logger.model';
 import { Keyword } from '../models/taverna/taverna.model';
 import { AssistantMemory } from '../models/interfaces/assistant.interface';
 import { Currency } from '../services/users/users.interfaces';
+import { Quest } from '../models/daily-quest.model';
 
 //Store
 
@@ -25,6 +26,7 @@ export enum StoreNames {
   assistant = 'assistant',
   heroProgress = 'heroProgress',
   playerLevel = 'playerLevel',
+  dailyQuests = 'dailyQuests',
 }
 
 export enum DisplayRewardNames {
@@ -40,6 +42,7 @@ export type StoreType = {
   [StoreNames.displayReward]: DisplayRewardState;
   [StoreNames.gameBoard]: BasicBoardState;
   [StoreNames.heroProgress]: HeroProgressState;
+  [StoreNames.dailyQuests]: DailyQuestsState;
 };
 
 export type FieldConfigState = {
@@ -137,5 +140,12 @@ export type PlayerLevelState = {
   level: number;
   xp: number;
   loaded: boolean;
+  error: string | null;
+};
+
+//Daily Quests
+export type DailyQuestsState = {
+  quests: Quest[];
+  loading: boolean;
   error: string | null;
 };

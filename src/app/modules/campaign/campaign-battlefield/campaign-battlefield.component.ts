@@ -14,6 +14,8 @@ import { calcCampaignReward } from '../campaign.utils';
 import { CampaignProgressService } from '../services/campaign-progress.service';
 import { CampaignFacadeService } from '../services/campaign-facade.service';
 import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
+import { QuestId } from '../../../../../server/types';
 
 export type CampaignBattleState = {
   isCampaign: true;
@@ -41,6 +43,7 @@ export class CampaignBattlefieldComponent {
   private store = inject(Store);
   private campaignProgressService = inject(CampaignProgressService);
   private campaignFacade = inject(CampaignFacadeService);
+  private dailyQuestService = inject(DailyQuestService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -90,7 +93,10 @@ export class CampaignBattlefieldComponent {
         .subscribe(() => this.nav.goToCampaign());
     };
 
+    this.dailyQuestService.completeQuest(QuestId.campaign_fight);
+
     if (win && state?.battleId && state?.userId) {
+      this.dailyQuestService.completeQuest(QuestId.campaign_win);
       this.campaignFacade.incrementVictoryCounter(state.difficulty);
       this.campaignProgressService
         .completeBattle(state.userId, state.battleId)

@@ -19,6 +19,7 @@ export const routes: Routes = [
       StateConfigs.assistant,
       StateConfigs.heroProgress,
       StateConfigs.playerLevel,
+      StateConfigs.dailyQuests,
     ],
     children: [
       {

@@ -1,0 +1,118 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.quests-modal-container {
+  background-color: index.$var-metal-dark-2;
+  border: 1px solid index.$var-bronze;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+
+  @include index.mixin-got-btn;
+}
+
+.footer-cover {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 1rem 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.error-block {
+  text-align: center;
+  padding: 1rem 0;
+
+  .error-message {
+    color: index.$var-deap-bright-red;
+    margin-bottom: 0.75rem;
+  }
+
+  .retry-btn {
+    background: transparent;
+    border: 1px solid index.$var-bronze;
+    border-radius: 4px;
+    padding: 6px 16px;
+    cursor: pointer;
+    color: inherit;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+.quest-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.quest-item {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  gap: 10px;
+  background-color: index.$var-metal-dark-1;
+  border-radius: 5px;
+  border: index.$var-border-2-bronze;
+
+  &:not(.completed) {
+    box-shadow: index.$var-legendary-box-shadow;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.completed {
+    opacity: 0.5;
+
+    .quest-title {
+      text-decoration: line-through;
+    }
+  }
+}
+
+.quest-title {
+  flex: 1;
+  padding-right: 0.75rem;
+  @include index.mixin-grad-color;
+  text-align: center;
+  font-size: 18px;
+  border-bottom: index.$var-border-1-black;
+  padding-bottom: 5px;
+  border-color: index.$var-bronze;
+}
+
+.quest-reward {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  justify-content: space-evenly;
+}
+
+.quest-check {
+  color: index.$var-light-green;
+  font-weight: bold;
+  font-size: 1.1rem;
+  min-width: 20px;
+  text-align: center;
+  margin-left: 0.5rem;
+}

@@ -33,6 +33,7 @@ export type Route = {
   src: string;
   closed?: boolean;
   notification?: NotificationType;
+  click?: () => void;
 };
 
 @Component({

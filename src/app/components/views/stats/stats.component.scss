@@ -63,6 +63,7 @@ app-unit-short-eqp-information {
     display: flex;
     flex-direction: column;
     gap: 3px;
+    cursor: pointer;
   }
 
   @include index.anim-border-glow(reward-avatar-container) {

@@ -7,6 +7,8 @@ import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { UnitName } from '../../../models/units-related/unit.model';
 import { RewardService } from '../../../services/reward/reward.service';
 import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
+import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
+import { QuestId } from '../../../../../server/types';
 
 @Component({
   selector: 'app-battlefield',
@@ -16,6 +18,7 @@ import { BattleDifficulty } from '../../../services/abstract/battle-rewards/batt
 export class DailyBossBattlefieldComponent {
   dailyBossService = inject(DailyBossFacadeService);
   rewardService = inject(RewardService);
+  private dailyQuestService = inject(DailyQuestService);
 
   aiUnits: TileUnit[] = [];
   userUnits: TileUnit[] = [];
@@ -53,11 +56,17 @@ export class DailyBossBattlefieldComponent {
   }
 
   getReward([realAiUnits, win]: Parameters<GameResultsRedirectType>) {
-    return this.dailyBossService.getRewardToCollect(
+    const reward = this.dailyBossService.getRewardToCollect(
       this.level,
       realAiUnits[0].maxHealth - realAiUnits[0].health,
       win,
     );
+
+    if (win) {
+      this.dailyQuestService.completeQuest(QuestId.boss_fight);
+    }
+
+    return reward;
   }
 
   gameResultsRedirect = () => {

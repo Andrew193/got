@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { DailyQuestService } from '../daily-quest/daily-quest.service';
 import {
   EquipmentUpgradeCost,
   EqLevelField,
@@ -13,6 +14,7 @@ import {
 import { HeroProgressActions } from '../../../store/actions/hero-progress.actions';
 import { BaseConfigApiService } from '../../abstract/base-config-api/base-config-api.service';
 import { CURRENCY_NAMES } from '../../../constants';
+import { QuestId } from '../../../../../server/types';
 
 export const HERO_UNLOCK_ERRORS = {
   INSUFFICIENT_SHARDS: 'INSUFFICIENT_SHARDS',
@@ -26,6 +28,7 @@ export const HERO_UNLOCK_ERRORS = {
 })
 export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgress> {
   private store = inject(Store);
+  private dailyQuestService = inject(DailyQuestService);
 
   protected override url = '/api/heroes/progress';
   protected override iniConfig = {};
@@ -183,11 +186,23 @@ export class HeroProgressService extends BaseConfigApiService<PlayerHeroesProgre
     eqField: EqLevelField,
     currentLevel: number,
   ) {
-    return this.updateHeroProgress(userId, heroName, { [eqField]: currentLevel + 1 });
+    return this.updateHeroProgress(userId, heroName, { [eqField]: currentLevel + 1 }).pipe(
+      tap({
+        next: () => {
+          this.dailyQuestService.completeQuest(QuestId.upgrade_equipment);
+        },
+      }),
+    );
   }
 
   upgradeLevel(userId: string, heroName: HeroesNamesCodes, currentLevel: number) {
-    return this.updateHeroProgress(userId, heroName, { level: currentLevel + 1 });
+    return this.updateHeroProgress(userId, heroName, { level: currentLevel + 1 }).pipe(
+      tap({
+        next: () => {
+          this.dailyQuestService.completeQuest(QuestId.upgrade_hero_level);
+        },
+      }),
+    );
   }
 
   toUnitConfig(record: HeroProgressRecord): UnitConfig {

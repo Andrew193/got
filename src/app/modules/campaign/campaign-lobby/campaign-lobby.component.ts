@@ -31,6 +31,8 @@ import { frontRoutes } from '../../../constants';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgClass } from '@angular/common';
+import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
+import { QuestId } from '../../../../../server/types';
 
 const SCREENS_COUNT = 5;
 
@@ -57,6 +59,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   private rewardService = inject(RewardService);
   private campaignProgressService = inject(CampaignProgressService);
   private loaderService = inject(LoaderService);
+  private dailyQuestService = inject(DailyQuestService);
   loader = this.loaderService.getPageLoader(frontRoutes.campaign);
 
   readonly screensCount = SCREENS_COUNT;
@@ -226,6 +229,10 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
     const screenIndex = this.currentPage();
 
     if (difficulty === null) return;
+
+    if (this.canCollect()) {
+      this.dailyQuestService.completeQuest(QuestId.campaign_chest);
+    }
 
     this.campaignFacade.collectVictoryReward(difficulty, screenIndex);
   }
