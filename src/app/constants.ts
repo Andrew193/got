@@ -144,6 +144,8 @@ export const frontRoutes = {
   campaignBattle: 'battle',
   watchtower: 'watchtower',
   admin: 'admin',
+  banquetHall: 'banquet-hall',
+  banquetBattle: 'battle',
 };
 
 export const ALL_EFFECTS = {

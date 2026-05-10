@@ -1,0 +1,55 @@
+<div class="hero-select-modal">
+  <div class="footer-cover">
+    <ng-template #footerHost></ng-template>
+  </div>
+
+  <div class="hero-select-modal-inner-content">
+    <div class="hero-select-modal__header">
+      <h3 class="hero-select-modal__title">
+        @if (data.battleConfig.isBoss) {
+          👑 Boss Battle
+        } @else {
+          Battle {{ data.battleConfig.battleIndex + 1 }}
+        }
+      </h3>
+      <p class="header-p">
+        <span class="hero-select-modal__subtitle">
+          Select up to {{ data.battleConfig.maxUserUnits }} hero(es)
+        </span>
+        <span class="hero-select-modal__opponent">
+          Opponent: <strong>{{ data.battleConfig.baseOpponent.name }}</strong> — Lv.
+          {{ data.battleConfig.baseOpponent.level }}
+        </span>
+      </p>
+    </div>
+
+    <app-heroes-select
+      [allHeroes]="allUnitsForSelect"
+      [isUser]="true"
+      [contextName]="context"
+      [addUserUnit]="addUserUnit" />
+
+    @if (hasNoHeroes()) {
+      <p class="text-center color-white mt-2">
+        No heroes available. Unlock heroes to start a battle.
+      </p>
+    }
+
+    @if (chosenUnits().length) {
+      <app-heroes-select-preview [units]="chosenUnits()" />
+    }
+
+    <div class="hero-select-modal__footer">
+      <div class="row g-2">
+        <div class="col-12">
+          <button
+            class="got-toggle got-toggle-red w-100"
+            [disabled]="!isFightReady() || hasNoHeroes()"
+            (click)="fight()">
+            Fight
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

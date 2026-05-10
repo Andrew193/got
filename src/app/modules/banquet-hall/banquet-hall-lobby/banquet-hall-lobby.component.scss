@@ -1,0 +1,75 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.banquet-lobby {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  @include index.mixin-got-btn;
+  @include index.mixin-page-container;
+
+  .banner {
+    width: 100% !important;
+    bottom: 0px;
+  }
+}
+
+.banquet-lobby__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.banquet-lobby__title {
+  margin: 0;
+  color: index.$var-gold;
+}
+
+.banquet-lobby__subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.banquet-lobby__heroes {
+  flex: 1;
+}
+
+.banquet-lobby__footer {
+  margin-top: auto;
+}
+
+.hero-card {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.hero-card {
+  border-radius: 5px;
+  background-color: index.$var-metal-dark-1;
+  transition: 0.2s;
+  border: index.$var-border-2-bronze;
+  height: 330px;
+
+  &:hover {
+    background-color: index.$var-metal-dark-2 !important;
+
+    .card-img-top {
+      @include index.mixin-drop-shadow(index.$var-gold);
+    }
+  }
+}
+
+.heroes {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.taverna {
+  width: 100%;
+  object-fit: cover;
+}

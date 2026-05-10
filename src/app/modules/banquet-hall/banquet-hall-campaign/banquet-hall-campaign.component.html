@@ -1,0 +1,68 @@
+<div class="banquet-campaign page-container">
+  <div class="banquet-campaign__header p-2">
+    <h2 class="banquet-campaign__title">Development Campaign</h2>
+    <div class="banquet-campaign__hero-info">
+      <span class="banquet-campaign__hero-name">{{ heroName() }}</span>
+      <span class="banquet-campaign__shards">
+        Shards: <strong>{{ heroShards() }}</strong> /
+        <span
+          ><b>{{ unlockThreshold }}</b></span
+        >
+      </span>
+    </div>
+
+    @if (isPostUnlockMode()) {
+      <div class="banquet-campaign__unlock-msg">
+        🏆 Hero unlocked! Defeat the final boss to earn bonus shards.
+      </div>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="banquet-campaign__loading p-4 text-center">
+      <p>Loading campaign progress...</p>
+    </div>
+  } @else if (progressError()) {
+    <div class="banquet-campaign__error p-4 text-center">
+      <p class="text-danger">{{ progressError() }}</p>
+      <button class="got-toggle" (click)="retryLoadProgress()">Retry</button>
+    </div>
+  }
+
+  <div class="banquet-campaign__content p-2">
+    @let selectedBattleId = selectedBattle()?.id || null;
+    @let unlockedBattleId = unlockedBattleIdForCurrentScreen();
+
+    <section class="mb-2 pb-2">
+      <app-campaign-screen
+        [battles]="currentScreenBattles()"
+        [selectedBattleId]="selectedBattleId"
+        [unlockedBattleId]="isPostUnlockMode() ? null : unlockedBattleId"
+        (battleSelected)="onBattleSelected($event)" />
+
+      @if (!isPostUnlockMode()) {
+        <mat-paginator
+          class="ms-2 me-2"
+          [length]="screensCount"
+          [pageSize]="1"
+          [pageIndex]="currentPage()"
+          [hidePageSize]="true"
+          (page)="onPageChanged($event)" />
+      }
+    </section>
+
+    <div class="banquet-campaign__actions row g-2 mt-0">
+      <div class="col-8 mt-0">
+        <button class="w-100 got-toggle" (click)="goBack()">Back</button>
+      </div>
+      <div class="col-4 mt-0">
+        <button
+          class="w-100 got-toggle got-toggle-red"
+          [disabled]="!isFightEnabled()"
+          (click)="openFightModal()">
+          Fight
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

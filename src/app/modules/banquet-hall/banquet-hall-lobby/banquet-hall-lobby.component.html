@@ -1,0 +1,36 @@
+@if (selectedHero() === null) {
+  <div class="banquet-lobby page-container">
+    <div class="banquet-lobby__header p-2">
+      <h2 class="banquet-lobby__title">Banquet Hall</h2>
+      <p class="banquet-lobby__subtitle">
+        Choose a hero and complete the Development Campaign to unlock them
+      </p>
+    </div>
+
+    <div class="banquet-lobby__heroes p-2">
+      <div class="heroes">
+        @for (hero of heroes; track hero.name) {
+          @let _shards = getHeroShards(hero.name);
+
+          <div class="position-relative">
+            <div class="hero-card d-flex align-items-center" (click)="selectHero(hero.name)">
+              <p class="shards-count banner">
+                <span>
+                  <b>{{ _shards }}</b> / <b>{{ unlockThreshold }}</b>
+                </span>
+                <img src="./assets/resourses/imgs/icons/hero_puzzle.png" alt="shards" />
+              </p>
+              <img class="card-img-top" [src]="hero.fullImgSrc" [alt]="hero.name" />
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="banquet-lobby__footer p-2">
+      <button class="got-toggle w-100" (click)="goBack()">Back to Castle</button>
+    </div>
+  </div>
+} @else {
+  <app-banquet-hall-campaign [heroName]="selectedHero()!" (backClicked)="backToCarousel()" />
+}

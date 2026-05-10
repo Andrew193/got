@@ -1,0 +1,45 @@
+@use '../../../../../assets/resourses/styles/index' as index;
+
+.hero-select-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-select-modal-inner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-select-modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hero-select-modal__title {
+  margin: 0;
+  color: var(--got-gold, #c9a84c);
+}
+
+.header-p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.hero-select-modal__subtitle,
+.hero-select-modal__opponent {
+  color: var(--got-text-light, #e0d5c0);
+  font-size: 0.9rem;
+}
+
+.hero-select-modal__footer {
+  margin-top: 0.5rem;
+}
+
+.footer-cover {
+  display: none;
+}

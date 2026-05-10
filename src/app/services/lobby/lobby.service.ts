@@ -156,9 +156,8 @@ export class LobbyService {
     },
     {
       name: 'Banquet Hall',
-      url: '#',
+      url: frontRoutes.banquetHall,
       src: 'banquet.png',
-      closed: true,
     },
     {
       name: 'Great Tree',

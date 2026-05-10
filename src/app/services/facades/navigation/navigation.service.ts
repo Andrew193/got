@@ -3,6 +3,7 @@ import { frontRoutes, frontRoutes as FrontRoutes } from '../../../constants';
 import { Router } from '@angular/router';
 import { CampaignBattleState } from '../../../modules/campaign/campaign-battlefield/campaign-battlefield.component';
 import { BattleDifficulty } from '../../abstract/battle-rewards/battle-rewards.service';
+import { BanquetBattleState } from '../../../modules/banquet-hall/banquet-battlefield/banquet-battlefield.component';
 
 @Injectable({
   providedIn: 'root',
@@ -84,5 +85,13 @@ export class NavigationService {
 
   goToWatchtower() {
     this.router.navigateByUrl(FrontRoutes.watchtower);
+  }
+
+  goToBanquetHall() {
+    this.router.navigateByUrl(FrontRoutes.banquetHall);
+  }
+
+  goToBanquetBattle(state: BanquetBattleState) {
+    this.router.navigate([FrontRoutes.banquetHall, FrontRoutes.banquetBattle], { state });
   }
 }

@@ -1,0 +1,69 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+.banquet-campaign {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  @include index.mixin-got-btn;
+  @include index.mixin-page-container;
+}
+
+.banquet-campaign__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.banquet-campaign__title {
+  margin: 0;
+  color: var(--got-gold, #c9a84c);
+}
+
+.banquet-campaign__hero-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.banquet-campaign__hero-name {
+  font-size: 1.1rem;
+  color: white;
+}
+
+.banquet-campaign__shards {
+  font-size: 0.95rem;
+  color: white;
+
+  strong {
+    color: index.$var-deap-red;
+  }
+
+  span {
+    color: index.$var-light-green;
+  }
+}
+
+.banquet-campaign__unlock-msg {
+  padding: 0.5rem 1rem;
+  background: rgba(201, 168, 76, 0.15);
+  border: 1px solid var(--got-gold, #c9a84c);
+  border-radius: 4px;
+  color: var(--got-gold, #c9a84c);
+  font-size: 0.9rem;
+}
+
+.banquet-campaign__loading,
+.banquet-campaign__error {
+  color: var(--got-text-light, #e0d5c0);
+}
+
+.banquet-campaign__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.banquet-campaign__actions {
+  margin-top: auto;
+}

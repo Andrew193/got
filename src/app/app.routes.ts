@@ -51,6 +51,12 @@ export const routes: Routes = [
         providers: [StateConfigs.unitsConfigurator],
       },
       {
+        path: frontRoutes.banquetHall,
+        loadChildren: () =>
+          import('./modules/banquet-hall/banquet-hall.module').then(m => m.BanquetHallModule),
+        providers: [StateConfigs.unitsConfigurator],
+      },
+      {
         path: frontRoutes.summonTree,
         loadComponent: () =>
           import('./pages/summon-tree/summon-tree.component').then(c => c.SummonTreeComponent),
