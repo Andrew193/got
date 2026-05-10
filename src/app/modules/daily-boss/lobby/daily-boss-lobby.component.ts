@@ -64,7 +64,7 @@ export class DailyBossLobbyComponent
   }
 
   selectedHero: Unit = this.heroesService.getDailyBossVersion1();
-  selectedTileHero: TileUnit = this.heroesService.getTileUnit(this.selectedHero);
+  selectedTileHero: TileUnit = this.heroesService.getTileUnit(this.selectedHero, []);
   config = this.dailyBossService.difficultyConfigs;
 
   getBossRewardDescription = (level: BattleDifficulty) =>

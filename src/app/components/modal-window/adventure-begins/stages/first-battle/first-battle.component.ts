@@ -20,7 +20,11 @@ export class FirstBattleComponent implements SceneComponent {
   repeat = false;
 
   aiUnits: TileUnit[] = [
-    this.heroService.getTileUnit(this.heroService.getIceRiverHunter(), { user: false, x: 3, y: 3 }),
+    this.heroService.getTileUnit(this.heroService.getIceRiverHunter(), [], {
+      user: false,
+      x: 3,
+      y: 3,
+    }),
   ];
   userUnits: TileUnit[] = [];
 
@@ -30,9 +34,9 @@ export class FirstBattleComponent implements SceneComponent {
     );
   data = inject<SceneContext<SceneNames.firstHero>>(MAT_BOTTOM_SHEET_DATA);
 
-  runScene(): void {
+  runScene() {
     this.userUnits = [
-      this.heroService.getTileUnit(this.heroService.getUnitByName(this.data.name), {
+      this.heroService.getTileUnit(this.heroService.getUnitByName(this.data.name), [], {
         user: true,
         x: 0,
         y: 0,

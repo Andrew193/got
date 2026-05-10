@@ -5,8 +5,8 @@
       "unlockedDifficulties": ["easy"],
       "difficulties": {
         "easy": {
-          "screenIndex": 1,
-          "battleIndex": 5
+          "screenIndex": 2,
+          "battleIndex": 0
         },
         "normal": {
           "screenIndex": 0,

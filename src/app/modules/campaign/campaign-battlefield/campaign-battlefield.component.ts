@@ -57,18 +57,30 @@ export class CampaignBattlefieldComponent {
       return;
     }
 
-    const buildTileUnit = (name: UnitName, pos: Coordinate, isUser = true, config?: UnitConfig) =>
-      this.heroesService.getTileUnit(this.heroesService.getUnitByName(name, config), {
+    const buildTileUnit = (
+      name: UnitName,
+      team: UnitName[],
+      pos: Coordinate,
+      isUser = true,
+      config?: UnitConfig,
+    ) =>
+      this.heroesService.getTileUnit(this.heroesService.getUnitByName(name, config), team, {
         user: isUser,
         x: pos.x,
         y: pos.y,
       });
 
     this.userUnits = state.userUnitNames.map((name, index) =>
-      buildTileUnit(name, USER_POSITIONS[index] ?? { x: index, y: 1 }),
+      buildTileUnit(name, state.userUnitNames, USER_POSITIONS[index] ?? { x: index, y: 1 }),
     );
     this.aiUnits = state.aiUnitNames.map((name, index) =>
-      buildTileUnit(name, AI_POSITIONS[index] ?? { x: index % 5, y: 8 }, false, state.aiUnitConfig),
+      buildTileUnit(
+        name,
+        state.aiUnitNames,
+        AI_POSITIONS[index] ?? { x: index % 5, y: 8 },
+        false,
+        state.aiUnitConfig,
+      ),
     );
   }
 

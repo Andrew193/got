@@ -203,7 +203,9 @@ export class HeroesMatcherService implements HeroesMatcherInterface {
 
     this.chosenUnits.update(() => stashedUnitsWithoutMatchedPreviewUnits);
     this.matchedPreviewUnits.set(
-      preParsed.map(_ => this.heroesService.getTileUnit(this.heroesService.getUnitByName(_.name))),
+      preParsed.map(_ =>
+        this.heroesService.getTileUnit(this.heroesService.getUnitByName(_.name), []),
+      ),
     );
 
     this.store.dispatch(

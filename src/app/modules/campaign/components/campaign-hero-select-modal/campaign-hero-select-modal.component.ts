@@ -130,18 +130,18 @@ export class CampaignHeroSelectModalComponent
 
   private buildTileUnits() {
     const { userUnits, aiUnits } = this.buildUnitNames();
-    const getTileUnitCover = (name: UnitName, pos: Coordinate, isUser = true) =>
-      this.heroesService.getTileUnit(this.heroesService.getUnitByName(name), {
+    const getTileUnitCover = (name: UnitName, team: UnitName[], pos: Coordinate, isUser = true) =>
+      this.heroesService.getTileUnit(this.heroesService.getUnitByName(name), team, {
         user: isUser,
         x: pos.x,
         y: pos.y,
       });
 
     const userTileUnits = userUnits.map((name, index) =>
-      getTileUnitCover(name, USER_POSITIONS[index] ?? { x: index, y: 1 }),
+      getTileUnitCover(name, userUnits, USER_POSITIONS[index] ?? { x: index, y: 1 }),
     );
     const aiTileUnits = aiUnits.map((name, index) =>
-      getTileUnitCover(name, AI_POSITIONS[index] ?? { x: index % 5, y: 8 }, false),
+      getTileUnitCover(name, aiUnits, AI_POSITIONS[index] ?? { x: index % 5, y: 8 }, false),
     );
 
     return { userTileUnits, aiTileUnits, userUnits, aiUnits };

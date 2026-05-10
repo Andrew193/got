@@ -50,10 +50,16 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
       const aiUnits = this.heroesService.getUnitsForTrainingBattle(false, aiUnitsFromStore);
 
       this.aiUnits = aiUnits.map(el =>
-        this.heroesService.getTileUnit(this.heroesService.helper.getEquipmentForUnit(el)),
+        this.heroesService.getTileUnit(
+          this.heroesService.helper.getEquipmentForUnit(el),
+          aiUnits.map(_ => _.name),
+        ),
       );
       this.userUnits = userUnits.map(el =>
-        this.heroesService.getTileUnit(this.heroesService.helper.getEquipmentForUnit(el)),
+        this.heroesService.getTileUnit(
+          this.heroesService.helper.getEquipmentForUnit(el),
+          userUnits.map(_ => _.name),
+        ),
       );
     } else {
       this.redirectToTraining();

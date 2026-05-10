@@ -49,7 +49,7 @@ export class GiftNpcService implements RewardComponentInterface {
   ) {}
 
   convertToTileUnit(unit: Unit) {
-    return this.heroService.getTileUnit(unit);
+    return this.heroService.getTileUnit(unit, []);
   }
 
   getSpecialGiftReward() {

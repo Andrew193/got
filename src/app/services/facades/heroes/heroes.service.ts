@@ -237,7 +237,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
-      synergy: [HeroesNamesCodes.TargaryenKnight],
+      synergy: [HeroesNamesCodes.TargaryenKnight, HeroesNamesCodes.RedKeepAlchemist],
     };
   }
 
@@ -360,7 +360,7 @@ export class HeroesFacadeService extends ContentService {
         },
       ],
       effects: effects,
-      synergy: [HeroesNamesCodes.LadyOfDragonStone],
+      synergy: [HeroesNamesCodes.LadyOfDragonStone, HeroesNamesCodes.RedKeepAlchemist],
     };
   }
 
@@ -1014,39 +1014,58 @@ export class HeroesFacadeService extends ContentService {
     };
   }
 
-  getTileUnit(unit: Unit, config?: GetTileConfig): TileUnit {
+  applySynergyBoosts(unit: Unit, teamNames: UnitName[]) {
+    const synergy = unit.synergy || [];
+    const synergyCount = synergy.filter(name => teamNames.includes(name)).length;
+
+    const boost = 1 + synergyCount * 0.1;
+
     return {
-      onlyHealer: unit.onlyHealer || false,
-      rage: unit.rage,
-      attack: unit.attack,
-      attackRange: unit.attackRange,
-      canAttack: unit.canAttack,
-      canCross: unit.canCross,
-      canMove: unit.canMove,
-      defence: unit.defence,
-      dmgReducedBy: unit.dmgReducedBy,
-      effects: unit.effects,
-      healer: unit.healer || false,
-      health: unit.health,
-      heroType: unit.heroType,
-      ignoredDebuffs: unit.ignoredDebuffs,
-      imgSrc: unit.imgSrc,
-      maxCanCross: unit.canCross,
-      maxHealth: unit.maxHealth,
-      name: unit.name,
-      reducedDmgFromDebuffs: unit.reducedDmgFromDebuffs,
-      skills: unit.skills,
-      user: config?.user ?? unit.user,
-      willpower: unit.willpower,
-      x: config?.x || unit.x,
-      y: config?.y || unit.y,
-      level: unit.level,
-      rank: unit.rank,
-      eq1Level: unit.eq1Level,
-      eq2Level: unit.eq2Level,
-      eq3Level: unit.eq3Level,
-      eq4Level: unit.eq4Level,
-    };
+      ...unit,
+      attack: this.helper.numberService.toFixed(unit.attack * boost),
+      defence: this.helper.numberService.toFixed(unit.defence * boost),
+      health: this.helper.numberService.toFixed(unit.health * boost),
+      maxHealth: this.helper.numberService.toFixed(unit.health * boost),
+    } as TileUnit;
+  }
+
+  getTileUnit(unit: Unit, team: UnitName[], config?: GetTileConfig): TileUnit {
+    return this.applySynergyBoosts(
+      {
+        onlyHealer: unit.onlyHealer || false,
+        rage: unit.rage,
+        attack: unit.attack,
+        attackRange: unit.attackRange,
+        canAttack: unit.canAttack,
+        canCross: unit.canCross,
+        canMove: unit.canMove,
+        defence: unit.defence,
+        dmgReducedBy: unit.dmgReducedBy,
+        effects: unit.effects,
+        healer: unit.healer || false,
+        health: unit.health,
+        heroType: unit.heroType,
+        ignoredDebuffs: unit.ignoredDebuffs,
+        imgSrc: unit.imgSrc,
+        maxCanCross: unit.canCross,
+        maxHealth: unit.maxHealth,
+        name: unit.name,
+        reducedDmgFromDebuffs: unit.reducedDmgFromDebuffs,
+        skills: unit.skills,
+        user: config?.user ?? unit.user,
+        willpower: unit.willpower,
+        x: config?.x || unit.x,
+        y: config?.y || unit.y,
+        level: unit.level,
+        rank: unit.rank,
+        eq1Level: unit.eq1Level,
+        eq2Level: unit.eq2Level,
+        eq3Level: unit.eq3Level,
+        eq4Level: unit.eq4Level,
+        synergy: unit.synergy,
+      } as Unit,
+      team,
+    );
   }
 
   getUnitByName(name: UnitName, config?: UnitConfig) {
@@ -1074,7 +1093,7 @@ export class HeroesFacadeService extends ContentService {
   }
 
   getTileUnits() {
-    return this.allUnits.map(el => this.getTileUnit(el));
+    return this.allUnits.map(el => this.getTileUnit(el, []));
   }
 
   getUnitsForTrainingBattle(

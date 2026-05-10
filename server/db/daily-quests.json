@@ -2,7 +2,7 @@
   "progress": [
     {
       "userId": "e046",
-      "date": "05/09/2026",
+      "date": "05/10/2026",
       "quests": [
         {
           "id": "campaign_fight",
@@ -14,7 +14,7 @@
         },
         {
           "id": "campaign_chest",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "boss_fight",
@@ -22,7 +22,7 @@
         },
         {
           "id": "gift_reward",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "training_win",

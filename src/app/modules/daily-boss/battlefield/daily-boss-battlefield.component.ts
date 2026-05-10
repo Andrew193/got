@@ -38,12 +38,13 @@ export class DailyBossBattlefieldComponent {
           ...this.dailyBossService.uppBoss(this.level),
         });
 
-        this.aiUnits = [this.heroesService.getTileUnit(temp)];
+        this.aiUnits = [this.heroesService.getTileUnit(temp, [])];
       }
     });
 
     this.route.queryParams.subscribe(value => {
-      const temp = (Array.from(value['units']) as UnitName[]).map((_, index) => {
+      const names = Array.from(value['units']) as UnitName[];
+      const temp = names.map((_, index) => {
         return {
           ...this.heroesService.getUnitByName(_),
           y: 0,
@@ -51,7 +52,7 @@ export class DailyBossBattlefieldComponent {
         };
       });
 
-      this.userUnits = temp.map(el => this.heroesService.getTileUnit(el));
+      this.userUnits = temp.map(el => this.heroesService.getTileUnit(el, names));
     });
   }
 

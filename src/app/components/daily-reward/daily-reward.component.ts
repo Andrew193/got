@@ -89,7 +89,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.rewardHero = this.heroService.getPriest();
-    this.tileRewardHero = this.heroService.getTileUnit(this.rewardHero);
+    this.tileRewardHero = this.heroService.getTileUnit(this.rewardHero, []);
 
     this.dailyRewardService._data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => {
       if (config) {

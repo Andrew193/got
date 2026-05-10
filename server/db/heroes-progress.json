@@ -188,7 +188,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 5
+          "shards": 13
         },
         {
           "heroName": "Targaryen Knight",
@@ -221,7 +221,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 44
+          "shards": 50
         },
         {
           "heroName": "Brown Wolf",
@@ -232,7 +232,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 11
+          "shards": 24
         },
         {
           "heroName": "Ice River Hunter",
@@ -240,10 +240,10 @@
           "level": 60,
           "rank": 1,
           "eq1Level": 102,
-          "eq2Level": 101,
+          "eq2Level": 102,
           "eq3Level": 110,
           "eq4Level": 101,
-          "shards": 4
+          "shards": 14
         },
         {
           "heroName": "Relina Snow",
@@ -265,7 +265,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 28
+          "shards": 34
         },
         {
           "heroName": "Giant",
@@ -298,7 +298,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 0
+          "shards": 7
         },
         {
           "heroName": "Captain Walker",

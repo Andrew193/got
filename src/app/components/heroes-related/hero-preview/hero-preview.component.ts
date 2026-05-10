@@ -54,7 +54,7 @@ export class HeroPreviewComponent implements OnInit {
   selectedTileHero = computed(() => {
     const selectedHero = this.selectedHero();
 
-    return selectedHero ? this.facade.getTileUnit(selectedHero) : null;
+    return selectedHero ? this.facade.getTileUnit(selectedHero, []) : null;
   });
   getGearDescription = (name: EqName) => this.facade.helper.getGearDescription(name);
   getGearLevelByName = (name: EqName) =>
