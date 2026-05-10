@@ -17,7 +17,6 @@ export class CampaignScreenComponent {
   battles = input.required<CampaignBattleConfig[]>();
   selectedBattleId = input<string | null>(null);
   unlockedBattleId = input<string | null>(null);
-  /** Optional override for lock logic. If provided, replaces the default isLocked computation. */
   isLockedFn = input<((battle: CampaignBattleConfig) => boolean) | null>(null);
 
   battleSelected = output<CampaignBattleConfig>();
@@ -29,23 +28,27 @@ export class CampaignScreenComponent {
   });
 
   isLocked = computed(() => {
-    const customFn = this.isLockedFn();
-
-    if (customFn) return customFn;
-
     const unlockedId = this.unlockedBattleId() || '';
 
     return (battleConfig: CampaignBattleConfig) => {
       if (battleConfig.id && unlockedId) {
-        const [difficulty, screen, battle] = battleConfig.id.split('-');
-        const [selectedDifficulty, selectedScreen, selectedBattle] = unlockedId.split('-');
+        const [difficulty, ...rest] = battleConfig.id.split('-');
+        const [selectedDifficulty, ...secondRest] = unlockedId.split('-');
 
-        const dIndex =
-          BattleDifficultyNumbers[selectedDifficulty as BattleDifficultyNumbersKeys] >=
-          BattleDifficultyNumbers[difficulty as BattleDifficultyNumbersKeys];
+        const screen = rest[rest.length - 2];
+        const selectedScreen = secondRest[secondRest.length - 2];
 
-        const selectedScreenNumder = selectedScreen.replace(/\D/g, '');
-        const screenNumber = screen.replace(/\D/g, '');
+        const battle = rest[rest.length - 1];
+        const selectedBattle = secondRest[secondRest.length - 1];
+
+        const dOne =
+          BattleDifficultyNumbers[selectedDifficulty as BattleDifficultyNumbersKeys] || 0;
+        const dTwo = BattleDifficultyNumbers[difficulty as BattleDifficultyNumbersKeys] || 0;
+
+        const dIndex = dOne >= dTwo;
+
+        const selectedScreenNumder = +selectedScreen.replace(/\D/g, '');
+        const screenNumber = +screen.replace(/\D/g, '');
 
         if (selectedScreenNumder > screenNumber && dIndex) {
           return false;

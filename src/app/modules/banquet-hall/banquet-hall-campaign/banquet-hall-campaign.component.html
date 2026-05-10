@@ -33,7 +33,7 @@
       <app-campaign-screen
         [battles]="currentScreenBattles()"
         [selectedBattleId]="selectedBattleId"
-        [isLockedFn]="isLockedFn()"
+        [unlockedBattleId]="unlockedBattleId()"
         (battleSelected)="onBattleSelected($event)" />
 
       @if (!isPostUnlockMode()) {

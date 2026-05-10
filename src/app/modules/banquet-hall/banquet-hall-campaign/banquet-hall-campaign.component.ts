@@ -56,6 +56,17 @@ export class BanquetHallCampaignComponent implements OnInit {
 
   allScreens = computed(() => this.campaignFacade.getScreens(BattleDifficulty.easy));
 
+  banquetScreens = computed(() => {
+    const heroName = this.heroName();
+
+    return this.allScreens().map(screen =>
+      screen.map(battle => ({
+        ...battle,
+        id: makeBanquetBattleId(heroName, battle.screenIndex, battle.battleIndex),
+      })),
+    );
+  });
+
   currentPage = signal<number>(0);
   selectedBattle = signal<CampaignBattleConfig | null>(null);
   heroBattleProgress = signal<HeroBattleProgress | null>(null);
@@ -64,10 +75,10 @@ export class BanquetHallCampaignComponent implements OnInit {
 
   currentScreenBattles = computed(() => {
     if (this.isPostUnlockMode()) {
-      return this.allScreens()[4] ?? [];
+      return this.banquetScreens()[4] ?? [];
     }
 
-    return this.allScreens()[this.currentPage()] ?? [];
+    return this.banquetScreens()[this.currentPage()] ?? [];
   });
 
   unlockedBattleId = computed<string | null>(() => {
@@ -82,25 +93,7 @@ export class BanquetHallCampaignComponent implements OnInit {
       return makeBanquetBattleId(heroName, 0, 0);
     }
 
-    for (let s = 0; s <= 4; s++) {
-      const maxBattle = s === 4 ? 4 : 5;
-
-      for (let b = 0; b <= maxBattle; b++) {
-        const id = makeBanquetBattleId(heroName, s, b);
-
-        if (!progress.completedBattles.includes(id)) {
-          return id;
-        }
-      }
-    }
-
-    return makeBanquetBattleId(heroName, 4, 5);
-  });
-
-  isLockedFn = computed(() => {
-    const unlockedId = this.unlockedBattleId();
-
-    return (battle: CampaignBattleConfig) => battle.id !== unlockedId;
+    return progress.completedBattles[progress.completedBattles.length - 1];
   });
 
   isFightEnabled = computed(() => {
