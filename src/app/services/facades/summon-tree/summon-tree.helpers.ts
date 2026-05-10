@@ -44,11 +44,6 @@ export function aggregateRewards(rewards: DisplayReward[]): AggregatedRewards {
 
 export type NetCurrencyResult = { valid: true; net: Currency } | { valid: false; error: string };
 
-/**
- * Calculates the net currency balance after a summon.
- * Deducts summon cost from the costCurrency, adds earned amounts for all currencies.
- * Returns { valid: false } if the net balance for costCurrency would be negative.
- */
 export function calculateNetCurrency(
   balance: Currency,
   price: number,

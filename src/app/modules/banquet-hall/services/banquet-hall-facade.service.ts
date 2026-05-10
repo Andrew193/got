@@ -8,10 +8,10 @@ import {
   HeroesNamesCodes,
   PlayerHeroesProgress,
   Rarity,
+  UnitName,
 } from '../../../models/units-related/unit.model';
 import { HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
 import { CampaignBattleConfig } from '../../campaign/models/campaign.models';
-import { UnitName } from '../../../models/units-related/unit.model';
 import { SNACKBAR_CONFIG } from '../../../constants';
 import {
   ShardsDifComponent,
@@ -24,10 +24,12 @@ import {
   UNLOCK_THRESHOLD,
 } from '../banquet-hall.constants';
 import { BanquetBattleState } from '../banquet-battlefield/banquet-battlefield.component';
+import { BanquetHallProgressService } from './banquet-hall-progress.service';
 
 @Injectable({ providedIn: 'root' })
 export class BanquetHallFacadeService {
   private heroProgressService = inject(HeroProgressService);
+  private banquetProgressService = inject(BanquetHallProgressService);
   private nav = inject(NavigationService);
   private snackBar = inject(MatSnackBar);
   private localStorageService = inject(LocalStorageService);
@@ -40,7 +42,7 @@ export class BanquetHallFacadeService {
     userId: string,
     isPostUnlockMode: boolean,
   ): void {
-    const { name, ...aiUnitConfig } = config.baseOpponent;
+    const { name: _name, ...aiUnitConfig } = config.baseOpponent;
     const battleId = makeBanquetBattleId(heroName, config.screenIndex, config.battleIndex);
 
     const state: BanquetBattleState = {
@@ -59,19 +61,38 @@ export class BanquetHallFacadeService {
   }
 
   onBattleEnd(win: boolean, state: BanquetBattleState): Observable<void> {
-    if (!win || !state.isBoss) {
+    const userId = state.userId || this.localStorageService.getUserId();
+
+    if (!win) {
       return of(void 0);
     }
 
+    if (!state.isBoss) {
+      // Non-boss win: mark battle as completed (one-time), no shards
+      return this.banquetProgressService
+        .completeBattle(userId, state.battleId)
+        .pipe(switchMap(() => of(void 0)));
+    }
+
+    // Boss win: award shards
     const amount = state.isPostUnlockMode ? POST_UNLOCK_SHARD_REWARD : BOSS_SHARD_REWARD;
-    const userId = state.userId || this.localStorageService.getUserId();
 
-    return this.heroProgressService.addShards(userId, state.heroName, amount).pipe(
-      switchMap(progress => {
-        this.handleShardsResult(userId, state.heroName, amount, progress);
+    // Final boss (isPostUnlockMode) is always replayable — server handles it gracefully.
+    // Non-final boss: mark as completed first, then award shards.
+    const markComplete$: Observable<unknown> = state.isPostUnlockMode
+      ? of(null)
+      : this.banquetProgressService.completeBattle(userId, state.battleId);
 
-        return of(void 0);
-      }),
+    return markComplete$.pipe(
+      switchMap(() =>
+        this.heroProgressService.addShards(userId, state.heroName, amount).pipe(
+          switchMap(progress => {
+            this.handleShardsResult(userId, state.heroName, amount, progress);
+
+            return of(void 0);
+          }),
+        ),
+      ),
     );
   }
 

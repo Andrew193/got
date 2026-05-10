@@ -17,6 +17,8 @@ export class CampaignScreenComponent {
   battles = input.required<CampaignBattleConfig[]>();
   selectedBattleId = input<string | null>(null);
   unlockedBattleId = input<string | null>(null);
+  /** Optional override for lock logic. If provided, replaces the default isLocked computation. */
+  isLockedFn = input<((battle: CampaignBattleConfig) => boolean) | null>(null);
 
   battleSelected = output<CampaignBattleConfig>();
 
@@ -27,6 +29,10 @@ export class CampaignScreenComponent {
   });
 
   isLocked = computed(() => {
+    const customFn = this.isLockedFn();
+
+    if (customFn) return customFn;
+
     const unlockedId = this.unlockedBattleId() || '';
 
     return (battleConfig: CampaignBattleConfig) => {

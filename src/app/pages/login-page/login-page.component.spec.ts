@@ -1,16 +1,3 @@
-/**
- * Preservation Tests — Task 2
- *
- * Property 2: Preservation — No unlockHero in Login Flow
- *
- * Validates: Requirements 3.1, 3.2
- *
- * For the login flow (createUser = false), unlockHero is never called.
- * When createUser = false, submitInnerFunction calls usersService.login()
- * and heroProgressService.unlockHero is never invoked.
- *
- * These tests PASS on UNFIXED code — they capture baseline behavior to preserve.
- */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';

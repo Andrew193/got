@@ -2,13 +2,12 @@ import { Component, computed, inject, input, OnInit, output, signal } from '@ang
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 import { CampaignFacadeService } from '../../campaign/services/campaign-facade.service';
-import { CampaignProgressService } from '../../campaign/services/campaign-progress.service';
 import { BanquetHallFacadeService } from '../services/banquet-hall-facade.service';
+import { BanquetHallProgressService } from '../services/banquet-hall-progress.service';
 import { ModalWindowService } from '../../../services/modal/modal-window.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { HeroProgressFeature } from '../../../store/reducers/hero-progress.reducer';
 import { CampaignBattleConfig } from '../../campaign/models/campaign.models';
-import { UserProgress } from '../../campaign/models/campaign.models';
 import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.model';
 import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 import { CampaignScreenComponent } from '../../campaign/components/campaign-screen/campaign-screen.component';
@@ -17,7 +16,8 @@ import {
   BanquetHeroSelectModalComponent,
   BanquetHeroSelectModalData,
 } from '../components/banquet-hero-select-modal/banquet-hero-select-modal.component';
-import { UNLOCK_THRESHOLD } from '../banquet-hall.constants';
+import { makeBanquetBattleId, UNLOCK_THRESHOLD } from '../banquet-hall.constants';
+import { HeroBattleProgress } from '../services/banquet-hall-progress.service';
 
 const SCREENS_COUNT = 5;
 
@@ -33,8 +33,8 @@ export class BanquetHallCampaignComponent implements OnInit {
   backClicked = output<void>();
 
   private campaignFacade = inject(CampaignFacadeService);
-  private campaignProgressService = inject(CampaignProgressService);
   private banquetFacade = inject(BanquetHallFacadeService);
+  private banquetProgressService = inject(BanquetHallProgressService);
   private modalWindowService = inject(ModalWindowService);
   private localStorageService = inject(LocalStorageService);
   private store = inject(Store);
@@ -58,7 +58,7 @@ export class BanquetHallCampaignComponent implements OnInit {
 
   currentPage = signal<number>(0);
   selectedBattle = signal<CampaignBattleConfig | null>(null);
-  userProgress = signal<UserProgress | null>(null);
+  heroBattleProgress = signal<HeroBattleProgress | null>(null);
   isLoading = signal<boolean>(false);
   progressError = signal<string | null>(null);
 
@@ -70,17 +70,37 @@ export class BanquetHallCampaignComponent implements OnInit {
     return this.allScreens()[this.currentPage()] ?? [];
   });
 
-  unlockedBattleIdForCurrentScreen = computed<string | null>(() => {
-    const progress = this.userProgress();
+  unlockedBattleId = computed<string | null>(() => {
+    if (this.isPostUnlockMode()) {
+      return makeBanquetBattleId(this.heroName(), 4, 5);
+    }
 
-    if (!progress) return null;
+    const progress = this.heroBattleProgress();
+    const heroName = this.heroName();
 
-    const diffKey = BattleDifficulty[BattleDifficulty.easy];
-    const diffProgress = progress.difficulties[diffKey];
+    if (!progress) {
+      return makeBanquetBattleId(heroName, 0, 0);
+    }
 
-    if (!diffProgress) return null;
+    for (let s = 0; s <= 4; s++) {
+      const maxBattle = s === 4 ? 4 : 5;
 
-    return `${diffKey}-s${diffProgress.screenIndex}-b${diffProgress.battleIndex}`;
+      for (let b = 0; b <= maxBattle; b++) {
+        const id = makeBanquetBattleId(heroName, s, b);
+
+        if (!progress.completedBattles.includes(id)) {
+          return id;
+        }
+      }
+    }
+
+    return makeBanquetBattleId(heroName, 4, 5);
+  });
+
+  isLockedFn = computed(() => {
+    const unlockedId = this.unlockedBattleId();
+
+    return (battle: CampaignBattleConfig) => battle.id !== unlockedId;
   });
 
   isFightEnabled = computed(() => {
@@ -88,24 +108,24 @@ export class BanquetHallCampaignComponent implements OnInit {
 
     if (!battle) return false;
 
-    if (this.isPostUnlockMode()) {
-      return battle.isBoss && battle.screenIndex === 4 && battle.battleIndex === 5;
-    }
-
-    return true;
+    return battle.id === this.unlockedBattleId();
   });
 
   ngOnInit() {
+    this.loadProgress();
+  }
+
+  private loadProgress() {
     const userId = this.localStorageService.getUserId();
 
     this.isLoading.set(true);
-    this.campaignProgressService.getProgress(userId).subscribe({
+    this.banquetProgressService.getHeroProgress(userId, this.heroName()).subscribe({
       next: progress => {
-        this.userProgress.set(progress);
+        this.heroBattleProgress.set(progress);
         this.isLoading.set(false);
       },
       error: () => {
-        this.progressError.set('Failed to load campaign progress. Please try again.');
+        this.progressError.set('Failed to load progress. Please try again.');
         this.isLoading.set(false);
       },
     });
@@ -117,9 +137,7 @@ export class BanquetHallCampaignComponent implements OnInit {
   }
 
   onBattleSelected(battle: CampaignBattleConfig) {
-    if (this.isPostUnlockMode() && !(battle.isBoss && battle.screenIndex === 4)) {
-      return;
-    }
+    if (battle.id !== this.unlockedBattleId()) return;
 
     this.selectedBattle.update(current => (current?.id === battle.id ? null : battle));
   }
@@ -161,7 +179,7 @@ export class BanquetHallCampaignComponent implements OnInit {
 
   retryLoadProgress() {
     this.progressError.set(null);
-    this.ngOnInit();
+    this.loadProgress();
   }
 
   goBack() {

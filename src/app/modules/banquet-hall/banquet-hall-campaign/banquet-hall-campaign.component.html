@@ -4,10 +4,7 @@
     <div class="banquet-campaign__hero-info">
       <span class="banquet-campaign__hero-name">{{ heroName() }}</span>
       <span class="banquet-campaign__shards">
-        Shards: <strong>{{ heroShards() }}</strong> /
-        <span
-          ><b>{{ unlockThreshold }}</b></span
-        >
+        Shards: <strong>{{ heroShards() }}</strong> / {{ unlockThreshold }}
       </span>
     </div>
 
@@ -31,13 +28,12 @@
 
   <div class="banquet-campaign__content p-2">
     @let selectedBattleId = selectedBattle()?.id || null;
-    @let unlockedBattleId = unlockedBattleIdForCurrentScreen();
 
     <section class="mb-2 pb-2">
       <app-campaign-screen
         [battles]="currentScreenBattles()"
         [selectedBattleId]="selectedBattleId"
-        [unlockedBattleId]="isPostUnlockMode() ? null : unlockedBattleId"
+        [isLockedFn]="isLockedFn()"
         (battleSelected)="onBattleSelected($event)" />
 
       @if (!isPostUnlockMode()) {
