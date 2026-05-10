@@ -1,20 +1,8 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  Component,
-  contentChildren,
-  DestroyRef,
-  effect,
-  inject,
-  input,
-  model,
-  OnInit,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DailyRewardComponent } from '../../components/daily-reward/daily-reward.component';
 import { NotificationMarkerComponent } from '../../directives/notification-marker/notification-marker.component';
 import { ImageComponent } from '../../components/views/image/image.component';
-import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NavigationService } from '../../services/facades/navigation/navigation.service';
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
@@ -35,73 +23,6 @@ export type Route = {
   notification?: NotificationType;
   click?: () => void;
 };
-
-@Component({
-  selector: 'app-test-2',
-  template: ` <div style="background-color: #750000">Test 3 {{ test() }}</div> `,
-  imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  exportAs: 'test',
-})
-export class Test2Component implements OnInit {
-  test = input('');
-
-  constructor() {}
-
-  ngOnInit() {
-    console.log(this.test());
-  }
-}
-
-@Component({
-  selector: 'app-test',
-  template: `
-    <div style="background-color: #750000">
-      Test 2
-      <ng-content />
-    </div>
-  `,
-  imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class TestComponent {
-  constructor() {}
-}
-
-@Component({
-  selector: 'app-user',
-  template: `
-    <div style="background-color: #70ff70">
-      Test
-      <ng-content />
-    </div>
-    <input [(ngModel)]="value" />
-  `,
-  imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class UserComponent implements AfterContentInit {
-  test = model.required<{ test: string }>();
-  content = contentChildren('secondC', { descendants: true });
-
-  ngAfterContentInit() {
-    console.log(this.content());
-  }
-
-  get value() {
-    return this.test().test;
-  }
-
-  set value(newValue) {
-    this.test.update(() => ({ test: newValue }));
-  }
-
-  constructor() {
-    effect(() => {
-      console.log(this.test(), 'child');
-    });
-  }
-}
 
 @Component({
   selector: 'app-lobby',

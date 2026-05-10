@@ -34,7 +34,7 @@
         },
         {
           "id": "upgrade_hero_level",
-          "status": "pending"
+          "status": "claimed"
         }
       ]
     }

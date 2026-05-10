@@ -33,10 +33,10 @@
 
                   <button
                     class="mt-2"
+                    type="button"
                     matMiniFab
                     [disabled]="_loading"
-                    aria-label="Example icon button with a menu icon"
-                    (click)="upgradeLevel()">
+                    (click)="upgradeLevel($event)">
                     <mat-icon>arrow_upward</mat-icon>
                   </button>
                 }

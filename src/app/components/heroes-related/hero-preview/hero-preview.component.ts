@@ -107,7 +107,10 @@ export class HeroPreviewComponent implements OnInit {
     this.selectedHero.set(this.facade.getUnitByName(this.selectedHero()!.name));
   }
 
-  upgradeLevel() {
+  upgradeLevel(event: Event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
     const selectedHero = this.selectedHero();
 
     selectedHero &&

@@ -8,8 +8,8 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
   imports: [MatDialogClose, MatMiniFabButton, MatIcon],
   template: `<div class="p-2">
-    <button matMiniFab aria-label="Example icon button with a menu icon">
-      <mat-icon mat-dialog-close="true">close</mat-icon>
+    <button matMiniFab aria-label="Close dialog" mat-dialog-close="true">
+      <mat-icon>close</mat-icon>
     </button>
   </div>`,
 })
