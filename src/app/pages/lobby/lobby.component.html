@@ -63,7 +63,9 @@
       <app-notification-marker [notificationType]="notification" />
 
       @if (closed) {
-        <app-container-label [size]="25" />
+        <app-container-label [size]="25">
+          <span ngProjectAs="content" class="banner">Cooming soon</span>
+        </app-container-label>
       }
     </div>
   </div>

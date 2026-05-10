@@ -2,7 +2,21 @@
   "progress": [
     {
       "userId": "e046",
-      "heroes": []
+      "heroes": [
+        {
+          "heroName": "Ice River Hunter",
+          "completedBattles": [
+            "banquet-Ice River Hunter-s0-b0",
+            "banquet-Ice River Hunter-s0-b1",
+            "banquet-Ice River Hunter-s0-b2",
+            "banquet-Ice River Hunter-s0-b3",
+            "banquet-Ice River Hunter-s0-b4",
+            "banquet-Ice River Hunter-s0-b5",
+            "banquet-Ice River Hunter-s1-b0",
+            "banquet-Ice River Hunter-s1-b1"
+          ]
+        }
+      ]
     }
   ]
 }

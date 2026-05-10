@@ -32,6 +32,7 @@
     <section class="mb-2 pb-2">
       <app-campaign-screen
         [battles]="currentScreenBattles()"
+        [overScreenReaction]="true"
         [selectedBattleId]="selectedBattleId"
         [unlockedBattleId]="unlockedBattleId()"
         (battleSelected)="onBattleSelected($event)" />

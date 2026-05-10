@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { CampaignBattleConfig } from '../../models/campaign.models';
 import { ContainerLabelComponent } from '../../../../components/views/container-label/container-label.component';
@@ -13,12 +13,17 @@ import { ContainerLabelComponent } from '../../../../components/views/container-
 export class CampaignBattleCardComponent {
   battle = input.required<CampaignBattleConfig>();
   isSelected = input<boolean>(false);
-  isLocked = input<boolean>(false);
+  isLocked = input<boolean | { locked: boolean; label: string }>(false);
+  isLockedConfig = computed(() => {
+    const isLocked = this.isLocked();
+
+    return typeof isLocked === 'object' ? isLocked : { locked: isLocked, label: '' };
+  });
 
   cardClicked = output<CampaignBattleConfig>();
 
   onClick() {
-    if (this.isLocked()) {
+    if (this.isLockedConfig().locked) {
       return;
     }
 

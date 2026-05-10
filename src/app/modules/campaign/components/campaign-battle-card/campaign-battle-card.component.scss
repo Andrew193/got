@@ -7,6 +7,11 @@
   }
 }
 
+.banner {
+  width: 100%;
+  padding: 5px;
+}
+
 .battle-card {
   cursor: pointer;
   border: 2px solid transparent;
@@ -39,9 +44,13 @@
   }
 
   &.locked {
-    cursor: not-allowed;
-    opacity: 0.5;
-    filter: grayscale(0.7);
+    .battle-card__header,
+    .battle-card__avatar,
+    .battle-card__info {
+      cursor: not-allowed;
+      opacity: 0.5;
+      filter: grayscale(0.7);
+    }
 
     &:hover {
       border-color: transparent;

@@ -30,7 +30,35 @@ export class BanquetHallProgressService {
   completeBattle(userId: string, battleId: string): Observable<UserBanquetProgress> {
     return this.http.post<UserBanquetProgress>(
       `${this.baseUrl}/progress/${userId}/complete-battle`,
-      { battleId },
+      { battleId: this.getNextBanquetBattleId(battleId) },
     );
+  }
+
+  getNextBanquetBattleId(value: string): string {
+    const match = value.match(/^(banquet-.+)-s(\d)-b(\d)$/);
+
+    if (!match) {
+      throw new Error(`Invalid banquet battle id format: ${value}`);
+    }
+
+    const [, prefix, sRaw, bRaw] = match;
+
+    let s = Number(sRaw);
+    let b = Number(bRaw);
+
+    if (s === 4 && b === 5) {
+      return value;
+    }
+
+    if (b < 5) {
+      b += 1;
+    } else {
+      b = 0;
+      if (s < 4) {
+        s += 1;
+      }
+    }
+
+    return `${prefix}-s${s}-b${b}`;
   }
 }

@@ -18,6 +18,7 @@ export class CampaignScreenComponent {
   selectedBattleId = input<string | null>(null);
   unlockedBattleId = input<string | null>(null);
   isLockedFn = input<((battle: CampaignBattleConfig) => boolean) | null>(null);
+  overScreenReaction = input(false);
 
   battleSelected = output<CampaignBattleConfig>();
 
@@ -32,6 +33,7 @@ export class CampaignScreenComponent {
 
     return (battleConfig: CampaignBattleConfig) => {
       if (battleConfig.id && unlockedId) {
+        debugger;
         const [difficulty, ...rest] = battleConfig.id.split('-');
         const [selectedDifficulty, ...secondRest] = unlockedId.split('-');
 
@@ -51,7 +53,12 @@ export class CampaignScreenComponent {
         const screenNumber = +screen.replace(/\D/g, '');
 
         if (selectedScreenNumder > screenNumber && dIndex) {
-          return false;
+          const overScreenReaction = this.overScreenReaction();
+
+          return {
+            locked: overScreenReaction,
+            label: overScreenReaction ? 'Can not be replayed' : '',
+          };
         }
 
         const sIndex = selectedScreenNumder >= screenNumber;
