@@ -25,12 +25,8 @@ export type BanquetBattleState = {
   selector: 'app-banquet-battlefield',
   standalone: true,
   imports: [GameEntryPointComponent],
-  template: `
-    <app-game-entry-point
-      [userUnits]="userUnits"
-      [aiUnits]="aiUnits"
-      [gameResultsRedirect]="gameResultsRedirect" />
-  `,
+  templateUrl: './banquet-battlefield.component.html',
+  styleUrl: './banquet-battlefield.component.scss',
 })
 export class BanquetBattlefieldComponent {
   private heroesService = inject(HeroesFacadeService);

@@ -6,6 +6,7 @@ import { HeroProgressFeature } from '../../../store/reducers/hero-progress.reduc
 import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.model';
 import { BanquetHallCampaignComponent } from '../banquet-hall-campaign/banquet-hall-campaign.component';
 import { UNLOCK_THRESHOLD } from '../banquet-hall.constants';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-banquet-hall-lobby',
@@ -18,6 +19,8 @@ import { UNLOCK_THRESHOLD } from '../banquet-hall.constants';
 export class BanquetHallLobbyComponent {
   private heroesService = inject(HeroesFacadeService);
   private nav = inject(NavigationService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private store = inject(Store);
 
   private allProgressHeroes = this.store.selectSignal(HeroProgressFeature.selectProgress);
@@ -26,6 +29,14 @@ export class BanquetHallLobbyComponent {
   readonly unlockThreshold = UNLOCK_THRESHOLD;
 
   heroes = this.heroesService.getContent();
+
+  constructor() {
+    this.route.queryParams.subscribe(params => {
+      if (params['name']) {
+        this.selectedHero.set(params['name'] as HeroesNamesCodes);
+      }
+    });
+  }
 
   getHeroShards(name: UnitName): number {
     const progress = this.allProgressHeroes();
@@ -37,6 +48,11 @@ export class BanquetHallLobbyComponent {
 
   selectHero(name: UnitName) {
     this.selectedHero.set(name as HeroesNamesCodes);
+    this.router.navigate([], {
+      queryParams: {
+        name: name,
+      },
+    });
   }
 
   backToCarousel() {

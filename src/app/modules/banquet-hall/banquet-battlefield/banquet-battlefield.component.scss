@@ -1,0 +1,6 @@
+@use '../../../../assets/resourses/styles/index' as index;
+
+:host {
+  @include index.mixin-page-container;
+  display: block;
+}

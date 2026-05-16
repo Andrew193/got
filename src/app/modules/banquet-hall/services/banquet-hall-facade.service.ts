@@ -41,7 +41,7 @@ export class BanquetHallFacadeService {
     aiUnits: HeroesNamesCodes[],
     userId: string,
     isPostUnlockMode: boolean,
-  ): void {
+  ) {
     const { name: _name, ...aiUnitConfig } = config.baseOpponent;
     const battleId = makeBanquetBattleId(heroName, config.screenIndex, config.battleIndex);
 

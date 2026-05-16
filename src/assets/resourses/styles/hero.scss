@@ -8,6 +8,17 @@
   @include index.mixin-drop-shadow;
 }
 
+.user-header-avatar {
+  @include index.mixin-avatar;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: index.$var-gold;
+  }
+}
+
 .shards-count {
   display: flex;
   justify-content: center;

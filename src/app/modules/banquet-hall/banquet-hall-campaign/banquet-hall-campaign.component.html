@@ -1,18 +1,30 @@
+@let _isPostUnlockMode = isPostUnlockMode();
+
 <div class="banquet-campaign page-container">
   <div class="banquet-campaign__header p-2">
     <h2 class="banquet-campaign__title">Development Campaign</h2>
     <div class="banquet-campaign__hero-info">
-      <span class="banquet-campaign__hero-name">{{ heroName() }}</span>
-      <span class="banquet-campaign__shards">
-        Shards: <strong>{{ heroShards() }}</strong> / {{ unlockThreshold }}
-      </span>
-    </div>
-
-    @if (isPostUnlockMode()) {
-      <div class="banquet-campaign__unlock-msg">
-        🏆 Hero unlocked! Defeat the final boss to earn bonus shards.
+      <div>
+        <img
+          class="user-header-avatar navbar-brand"
+          [src]="selectedHero().imgSrc"
+          (click)="goBack()" />
+        <div class="unit-information">
+          <span class="banquet-campaign__hero-name">{{ heroName() }}</span>
+          <p class="banquet-campaign__shards">
+            <img src="./assets/resourses/imgs/icons/hero_puzzle.png" />
+            <span>
+              Shards: <strong>{{ heroShards() }}</strong> / {{ unlockThreshold }}
+            </span>
+          </p>
+        </div>
       </div>
-    }
+      @if (_isPostUnlockMode) {
+        <div class="banquet-campaign__unlock-msg">
+          🏆 Hero unlocked! Defeat the final boss to earn bonus shards.
+        </div>
+      }
+    </div>
   </div>
 
   @if (isLoading()) {
@@ -28,18 +40,20 @@
 
   <div class="banquet-campaign__content p-2">
     @let selectedBattleId = selectedBattle()?.id || null;
+    <mat-divider></mat-divider>
 
-    <section class="mb-2 pb-2">
+    <section>
       <app-campaign-screen
         [battles]="currentScreenBattles()"
         [overScreenReaction]="true"
+        [fullMatch]="true"
         [selectedBattleId]="selectedBattleId"
         [unlockedBattleId]="unlockedBattleId()"
         (battleSelected)="onBattleSelected($event)" />
 
-      @if (!isPostUnlockMode()) {
+      @if (!_isPostUnlockMode) {
         <mat-paginator
-          class="ms-2 me-2"
+          class="ms-2 me-2 mb-2"
           [length]="screensCount"
           [pageSize]="1"
           [pageIndex]="currentPage()"
@@ -48,7 +62,9 @@
       }
     </section>
 
-    <div class="banquet-campaign__actions row g-2 mt-0">
+    <mat-divider></mat-divider>
+
+    <div class="banquet-campaign__actions row g-2 mt-2">
       <div class="col-8 mt-0">
         <button class="w-100 got-toggle" (click)="goBack()">Back</button>
       </div>

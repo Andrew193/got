@@ -46,7 +46,7 @@
       @let selectedBattleId = selectedBattle()?.id || null;
       @let unlockedBattleId = unlockedBattleIdForCurrentScreen();
 
-      <section class="mb-2 pb-2">
+      <section>
         <app-campaign-screen
           [battles]="currentScreenBattles()"
           [selectedBattleId]="selectedBattleId"
@@ -54,7 +54,7 @@
           (battleSelected)="onBattleSelected($event)" />
 
         <mat-paginator
-          class="ms-2 me-2"
+          class="ms-2 me-2 mb-2"
           [length]="screensCount"
           [pageSize]="1"
           [pageIndex]="currentPage()"
@@ -66,7 +66,10 @@
         <p class="mb-0">Select a difficulty to begin your campaign</p>
       </div>
     }
-    <div class="campaign-lobby__actions row g-2 mt-0">
+
+    <mat-divider></mat-divider>
+
+    <div class="campaign-lobby__actions row g-2 mt-2">
       <div class="col-8 mt-0">
         <button class="w-100 got-toggle" (click)="goBack()">Back to Castle</button>
       </div>

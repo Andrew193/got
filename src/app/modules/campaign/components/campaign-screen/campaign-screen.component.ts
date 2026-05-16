@@ -19,6 +19,7 @@ export class CampaignScreenComponent {
   unlockedBattleId = input<string | null>(null);
   isLockedFn = input<((battle: CampaignBattleConfig) => boolean) | null>(null);
   overScreenReaction = input(false);
+  fullMatch = input(false);
 
   battleSelected = output<CampaignBattleConfig>();
 
@@ -30,13 +31,14 @@ export class CampaignScreenComponent {
 
   isLocked = computed(() => {
     const unlockedId = this.unlockedBattleId() || '';
+    const fullMatch = this.fullMatch();
+    const overScreenReaction = this.overScreenReaction();
 
     return (battleConfig: CampaignBattleConfig) => {
-      if (battleConfig.id && unlockedId) {
-        debugger;
-        const [difficulty, ...rest] = battleConfig.id.split('-');
-        const [selectedDifficulty, ...secondRest] = unlockedId.split('-');
+      const [difficulty, ...rest] = battleConfig.id.split('-');
+      const [selectedDifficulty, ...secondRest] = unlockedId.split('-');
 
+      if (unlockedId) {
         const screen = rest[rest.length - 2];
         const selectedScreen = secondRest[secondRest.length - 2];
 
@@ -52,19 +54,24 @@ export class CampaignScreenComponent {
         const selectedScreenNumder = +selectedScreen.replace(/\D/g, '');
         const screenNumber = +screen.replace(/\D/g, '');
 
-        if (selectedScreenNumder > screenNumber && dIndex) {
-          const overScreenReaction = this.overScreenReaction();
-
-          return {
-            locked: overScreenReaction,
-            label: overScreenReaction ? 'Can not be replayed' : '',
-          };
-        }
-
         const sIndex = selectedScreenNumder >= screenNumber;
         const bIndex = selectedBattle.replace(/\D/g, '') >= battle.replace(/\D/g, '');
 
-        return !(dIndex && sIndex && bIndex);
+        if (!fullMatch) {
+          if (selectedScreenNumder > screenNumber && dIndex) {
+            return {
+              locked: overScreenReaction,
+              label: overScreenReaction ? 'Can not be replayed' : '',
+            };
+          }
+
+          return !(dIndex && sIndex && bIndex);
+        } else if (fullMatch) {
+          return {
+            locked: battleConfig.id !== unlockedId,
+            label: overScreenReaction && sIndex && bIndex ? 'Can not be replayed' : '',
+          };
+        }
       }
 
       return true;

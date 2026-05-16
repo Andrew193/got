@@ -36,7 +36,7 @@ router.get('/progress/:userId/:heroName', (req: Request, res: Response) => {
     const { user } = getOrCreateBanquetUser(userId as string);
     const hero = user.heroes.find(h => h.heroName === heroName);
 
-    res.json(hero ?? { heroName, completedBattles: [] });
+    res.json(hero ?? { heroName, completedBattles: [`banquet-${heroName}-s0-b0`] });
   } catch {
     res.status(500).json({ error: 'Storage error' });
   }
@@ -93,6 +93,7 @@ router.post('/progress/:userId/complete-battle', (req: Request, res: Response) =
       return;
     }
 
+    debugger;
     // Check sequential order: battle must be the next one in sequence
     const expectedBattleId = getNextExpectedBattleId(heroName, hero.completedBattles);
 

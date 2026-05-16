@@ -88,10 +88,13 @@ export class NavigationService {
   }
 
   goToBanquetHall() {
-    this.router.navigateByUrl(FrontRoutes.banquetHall);
+    this.router.navigate([`/${FrontRoutes.banquetHall}`], { queryParamsHandling: 'merge' });
   }
 
   goToBanquetBattle(state: BanquetBattleState) {
-    this.router.navigate([FrontRoutes.banquetHall, FrontRoutes.banquetBattle], { state });
+    this.router.navigate([FrontRoutes.banquetHall, FrontRoutes.banquetBattle], {
+      state,
+      queryParamsHandling: 'merge',
+    });
   }
 }

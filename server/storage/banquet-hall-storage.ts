@@ -118,7 +118,7 @@ export function getOrCreateHeroProgress(
   let hero = user.heroes.find(h => h.heroName === heroName);
 
   if (!hero) {
-    hero = { heroName, completedBattles: [] };
+    hero = { heroName, completedBattles: [`banquet-${heroName}-s0-b0`] };
     user.heroes.push(hero);
   }
 

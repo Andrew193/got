@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { CampaignFacadeService } from '../services/campaign-facade.service';
@@ -16,6 +16,8 @@ import { HeroesNamesCodes, UnitName } from '../../../models/units-related/unit.m
 import {
   BattleRewardsService,
   BattleDifficulty,
+  BattleDifficultyNumbers,
+  BattleDifficultyNumbersKeys,
 } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 import {
   AfterBattleComponent,
@@ -33,6 +35,8 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgClass } from '@angular/common';
 import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
 import { QuestId } from '../../../../../server/types';
+import { MatDivider } from '@angular/material/divider';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const SCREENS_COUNT = 5;
 
@@ -47,6 +51,7 @@ const SCREENS_COUNT = 5;
     ReactiveFormsModule,
     MatProgressBar,
     NgClass,
+    MatDivider,
   ],
   templateUrl: './campaign-lobby.component.html',
   styleUrl: './campaign-lobby.component.scss',
@@ -56,6 +61,8 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   private campaignFacade = inject(CampaignFacadeService);
   private modalWindowService = inject(ModalWindowService);
   private nav = inject(NavigationService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private rewardService = inject(RewardService);
   private campaignProgressService = inject(CampaignProgressService);
   private loaderService = inject(LoaderService);
@@ -68,6 +75,44 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   private wonBattlesValues = toSignal(this.wonBattlesForm.valueChanges, {
     initialValue: this.wonBattlesForm.value,
   });
+
+  selectedDifficulty = signal<BattleDifficulty | null>(null);
+  currentPage = signal<number>(0);
+  selectedBattle = signal<CampaignBattleConfig | null>(null);
+  userProgress = signal<UserProgress | null>(null);
+  isLoading = signal<boolean>(false);
+  progressError = signal<string | null>(null);
+  memoizedBattleId = '';
+
+  constructor() {
+    super();
+
+    this.route.queryParams.subscribe(params => {
+      const battleIndex = params['battleIndex'];
+
+      if (battleIndex) {
+        this.memoizedBattleId = battleIndex;
+        const [difficulty, screenIndex] = this.memoizedBattleId.split('-');
+
+        this.currentPage.set(+screenIndex.replace(/\D/g, ''));
+        this.selectedDifficulty.set(
+          BattleDifficultyNumbers[difficulty as BattleDifficultyNumbersKeys] as BattleDifficulty,
+        );
+
+        // this.currentPage.set(Number(screenIndex.slice(1)));
+        // this.selectedBattle.set(this.currentScreenBattles().find());
+      }
+    });
+
+    effect(() => {
+      const [difficulty, screenIndex, battleId] = this.memoizedBattleId.split('-');
+      const battle = this.currentScreenBattles().find(el => el.id === this.memoizedBattleId);
+
+      if (battle && !this.selectedBattle()) {
+        this.selectedBattle.set(battle);
+      }
+    });
+  }
 
   currentWonBattles = computed(() => {
     const difficulty = this.selectedDifficulty();
@@ -83,13 +128,6 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   progressValue = computed(() => Math.min(100, (this.currentWonBattles() / 10) * 100));
 
   canCollect = computed(() => this.currentWonBattles() >= 10);
-
-  selectedDifficulty = signal<BattleDifficulty | null>(null);
-  currentPage = signal<number>(0);
-  selectedBattle = signal<CampaignBattleConfig | null>(null);
-  userProgress = signal<UserProgress | null>(null);
-  isLoading = signal<boolean>(false);
-  progressError = signal<string | null>(null);
 
   allScreens = computed(() => {
     const difficulty = this.selectedDifficulty();
@@ -162,6 +200,9 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   }
 
   onBattleSelected(battle: CampaignBattleConfig) {
+    this.router.navigate([], {
+      queryParams: { battleIndex: battle.id },
+    });
     this.selectedBattle.update(current => (current?.id === battle.id ? null : battle));
   }
 

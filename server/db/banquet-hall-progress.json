@@ -15,6 +15,26 @@
             "banquet-Ice River Hunter-s1-b0",
             "banquet-Ice River Hunter-s1-b1"
           ]
+        },
+        {
+          "heroName": "Daenerys Targaryen (Lady of Dragonstone)",
+          "completedBattles": [
+            "banquet-Daenerys Targaryen (Lady of Dragonstone)-s0-b0",
+            "banquet-Daenerys Targaryen (Lady of Dragonstone)-s0-b1"
+          ]
+        },
+        {
+          "heroName": "General Walker",
+          "completedBattles": [
+            "banquet-General Walker-s0-b0",
+            "banquet-General Walker-s0-b1",
+            "banquet-General Walker-s0-b2",
+            "banquet-General Walker-s0-b3"
+          ]
+        },
+        {
+          "heroName": "Captain Walker",
+          "completedBattles": ["banquet-Captain Walker-s0-b0", "banquet-Captain Walker-s0-b1"]
         }
       ]
     }

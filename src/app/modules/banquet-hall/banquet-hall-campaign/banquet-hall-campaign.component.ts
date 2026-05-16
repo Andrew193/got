@@ -18,41 +18,49 @@ import {
 } from '../components/banquet-hero-select-modal/banquet-hero-select-modal.component';
 import { makeBanquetBattleId, UNLOCK_THRESHOLD } from '../banquet-hall.constants';
 import { HeroBattleProgress } from '../services/banquet-hall-progress.service';
+import { Router } from '@angular/router';
+import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
+import { MatDivider } from '@angular/material/divider';
 
 const SCREENS_COUNT = 5;
 
 @Component({
   selector: 'app-banquet-hall-campaign',
   standalone: true,
-  imports: [CampaignScreenComponent, MatPaginator],
+  imports: [CampaignScreenComponent, MatPaginator, MatDivider],
   templateUrl: './banquet-hall-campaign.component.html',
   styleUrl: './banquet-hall-campaign.component.scss',
 })
 export class BanquetHallCampaignComponent implements OnInit {
-  heroName = input.required<HeroesNamesCodes>();
-  backClicked = output<void>();
-
   private campaignFacade = inject(CampaignFacadeService);
   private banquetFacade = inject(BanquetHallFacadeService);
   private banquetProgressService = inject(BanquetHallProgressService);
   private modalWindowService = inject(ModalWindowService);
   private localStorageService = inject(LocalStorageService);
   private store = inject(Store);
+  private router = inject(Router);
+  private heroesService = inject(HeroesFacadeService);
+
+  heroName = input.required<HeroesNamesCodes>();
+  backClicked = output<void>();
 
   readonly screensCount = SCREENS_COUNT;
   readonly unlockThreshold = UNLOCK_THRESHOLD;
 
   private allProgressHeroes = this.store.selectSignal(HeroProgressFeature.selectProgress);
+  allHeroes = this.heroesService.getAllHeroes();
 
-  heroShards = computed(() => {
+  selectedHero = computed(() => {
     const progress = this.allProgressHeroes();
+    const foundHero = progress?.heroes.find(h => h.heroName === this.heroName());
+    const imgSrc = this.allHeroes.find(h => h.name === foundHero?.heroName)?.imgSrc || '';
 
-    if (!progress) return 0;
-
-    return progress.heroes.find(h => h.heroName === this.heroName())?.shards ?? 0;
+    return { ...foundHero, imgSrc };
   });
 
-  isPostUnlockMode = computed(() => this.heroShards() >= UNLOCK_THRESHOLD);
+  heroShards = computed(() => this.selectedHero()?.shards || 0);
+
+  isPostUnlockMode = computed(() => this.selectedHero()?.isUnlocked || false);
 
   allScreens = computed(() => this.campaignFacade.getScreens(BattleDifficulty.easy));
 
@@ -176,6 +184,7 @@ export class BanquetHallCampaignComponent implements OnInit {
   }
 
   goBack() {
+    this.router.navigate([], { queryParams: {} });
     this.backClicked.emit();
   }
 }
