@@ -1,6 +1,5 @@
 import { inject, Injectable, OutputEmitterRef } from '@angular/core';
 import { createDeepCopy } from '../../../helpers';
-import { ModalWindowService } from '../../modal/modal-window.service';
 import { EffectsService } from '../../effects/effects.service';
 import { UnitService } from '../../unit/unit.service';
 import { Skill, SkillSrc, TileUnitSkill } from '../../../models/units-related/skill.model';
@@ -23,7 +22,6 @@ export class GameService {
   constructor(
     private unitService: UnitService,
     private eS: EffectsService,
-    private modalWindowService: ModalWindowService,
   ) {}
 
   getFixedDefence(defence: number, unit: TileUnit) {

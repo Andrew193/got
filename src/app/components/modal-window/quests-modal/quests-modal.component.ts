@@ -49,7 +49,6 @@ export class QuestsModalComponent implements Partial<HasFooterHost>, OnInit {
   }
 
   onQuestClick(questId: QuestId, quests: Quest[]) {
-    debugger;
     this.dailyQuestService.claimQuestReward(questId);
 
     if (this.canClaimSpecialBonus(quests)) {

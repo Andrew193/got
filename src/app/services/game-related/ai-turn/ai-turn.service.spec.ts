@@ -44,10 +44,9 @@ describe('AiTurnService', () => {
     }) as TileUnit;
 
   const createMockCallbacks = (): { [K in keyof AiTurnCallbacks]: ReturnType<typeof vi.fn> } => ({
-    makeAttackMove: vi.fn(),
-    addEffectToUnit: vi.fn(),
-    universalRangeAttack: vi.fn(),
-    updateSkillCooldowns: vi.fn().mockReturnValue([mockSkill]),
+    executeAttack: vi
+      .fn()
+      .mockImplementation((attackerIndex, attackerTeam) => attackerTeam[attackerIndex]),
   });
 
   beforeEach(() => {
@@ -178,7 +177,7 @@ describe('AiTurnService', () => {
       service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
 
       expect(unitService.orderUnitsByDistance).not.toHaveBeenCalled();
-      expect(callbacks.makeAttackMove).not.toHaveBeenCalled();
+      expect(callbacks.executeAttack).not.toHaveBeenCalled();
     });
 
     it('should skip units with canMove: false', () => {
@@ -187,65 +186,22 @@ describe('AiTurnService', () => {
       service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
 
       expect(unitService.orderUnitsByDistance).not.toHaveBeenCalled();
-      expect(callbacks.makeAttackMove).not.toHaveBeenCalled();
+      expect(callbacks.executeAttack).not.toHaveBeenCalled();
     });
 
-    it('should call makeAttackMove when enemy is in range', () => {
+    it('should call executeAttack when enemy is in range', () => {
       service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
 
-      expect(callbacks.makeAttackMove).toHaveBeenCalledWith(
-        0,
-        userUnits,
-        expect.any(Object),
-        mockSkill,
-      );
+      expect(callbacks.executeAttack).toHaveBeenCalledWith(0, aiUnits, 0, userUnits, mockSkill);
     });
 
-    it('should not call makeAttackMove when no enemy in range', () => {
+    it('should not call executeAttack when no enemy in range', () => {
       fieldService.getFieldsInRadius.mockReturnValue([{ i: 9, j: 9 }]);
 
       service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
 
-      expect(callbacks.makeAttackMove).not.toHaveBeenCalled();
+      expect(callbacks.executeAttack).not.toHaveBeenCalled();
       expect(aiUnits[0].canAttack).toBe(false);
-    });
-
-    it('should call universalRangeAttack when enemy is in range', () => {
-      service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
-
-      expect(callbacks.universalRangeAttack).toHaveBeenCalledWith(
-        mockSkill,
-        userUnits[0],
-        userUnits,
-        false,
-        expect.any(Object),
-      );
-    });
-
-    it.skip('should call addEffectToUnit when rage > willpower', () => {
-      aiUnits = [createMockUnit({ id: 1, rage: 20 })];
-      userUnits = [createMockUnit({ id: 2, willpower: 10, user: true })];
-      unitService.orderUnitsByDistance.mockReturnValue(userUnits);
-
-      service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
-
-      expect(callbacks.addEffectToUnit).toHaveBeenCalledWith(userUnits, 0, mockSkill, false);
-    });
-
-    it('should not call addEffectToUnit when rage <= willpower', () => {
-      aiUnits = [createMockUnit({ id: 1, rage: 5 })];
-      userUnits = [createMockUnit({ id: 2, willpower: 10, user: true })];
-      unitService.orderUnitsByDistance.mockReturnValue(userUnits);
-
-      service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
-
-      expect(callbacks.addEffectToUnit).not.toHaveBeenCalled();
-    });
-
-    it('should update skill cooldowns after attack', () => {
-      service.executeAiTurn(aiUnits, userUnits, gameConfig, callbacks);
-
-      expect(callbacks.updateSkillCooldowns).toHaveBeenCalledWith(aiUnits[0].skills, mockSkill);
     });
 
     it('should set canAttack to false after attack', () => {

@@ -540,6 +540,11 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       }
     }
 
+    // Recount skill cooldowns for all units at end of round
+    for (let i = 0; i < aiUnits.length; i++) {
+      aiUnits[i] = this.gameActionService.recountCooldownForUnit(aiUnits[i]);
+    }
+
     // Update game state
     this.updateField(userUnits, aiUnits);
     this.battleStateS.setTurnUser(true);
@@ -570,13 +575,22 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     const aiUnits = this.getAiLeadingUnits(aiMove);
     const userUnits = this.getUserLeadingUnits(aiMove);
 
-    // Use AiTurnService to execute all AI unit turns
+    // Use AiTurnService to execute all AI unit turns.
+    // executeAttack delegates to executeAction — the same path as player attacks.
     this.aiTurnS.executeAiTurn(aiUnits, userUnits, this.gameConfig, {
-      makeAttackMove: this.makeAttackMove.bind(this),
-      addEffectToUnit: this.addEffectToUnit.bind(this),
-      universalRangeAttack: this.universalRangeAttack.bind(this),
-      updateSkillCooldowns: (skills, skill) =>
-        this.updateSkillsCooldown(skills, userUnits, 0, 0, skill, true, true),
+      executeAttack: (attackerIndex, attackerTeam, defenderIndex, defenderTeam, skill) => {
+        const { attacker, skills } = this.executeAction({
+          attackerTeam,
+          defenderTeam,
+          attackerIndex,
+          defenderIndex,
+          skill,
+          isAiMove: true,
+          findSkillIndex: (skills, s) => this.unitService.findSkillIndex(skills, s),
+        });
+
+        return { ...attacker, skills };
+      },
     });
 
     // Finish AI turn — same behavior

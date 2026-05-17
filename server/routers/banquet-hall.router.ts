@@ -93,7 +93,6 @@ router.post('/progress/:userId/complete-battle', (req: Request, res: Response) =
       return;
     }
 
-    debugger;
     // Check sequential order: battle must be the next one in sequence
     const expectedBattleId = getNextExpectedBattleId(heroName, hero.completedBattles);
 

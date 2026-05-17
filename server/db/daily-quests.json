@@ -6,11 +6,11 @@
       "quests": [
         {
           "id": "campaign_fight",
-          "status": "ready_to_claim"
+          "status": "claimed"
         },
         {
           "id": "campaign_win",
-          "status": "ready_to_claim"
+          "status": "claimed"
         },
         {
           "id": "campaign_chest",
@@ -26,7 +26,7 @@
         },
         {
           "id": "training_win",
-          "status": "ready_to_claim"
+          "status": "claimed"
         },
         {
           "id": "upgrade_equipment",

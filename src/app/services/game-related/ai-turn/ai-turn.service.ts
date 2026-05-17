@@ -1,44 +1,29 @@
 import { inject, Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { BattleStateService } from '../battle-state/battle-state.service';
 import { GameService } from '../game-action/game.service';
 import { UnitService } from '../../unit/unit.service';
 import { GameFieldService } from '../game-field/game-field.service';
-import { EffectsService } from '../../effects/effects.service';
 import { Position, Tile, TileUnit } from '../../../models/field.model';
 import { TileUnitSkill } from '../../../models/units-related/skill.model';
 
 export interface AiTurnCallbacks {
-  makeAttackMove: (
-    enemyIndex: number,
-    dmgTaker: TileUnit[],
-    attackDealer: TileUnit,
+  /**
+   * Execute a full attack action for an AI unit — identical logic to the player's executeAction.
+   * Returns the updated attacker unit after the attack (with updated skills, buffs, etc.).
+   */
+  executeAttack: (
+    attackerIndex: number,
+    attackerTeam: TileUnit[],
+    defenderIndex: number,
+    defenderTeam: TileUnit[],
     skill: TileUnitSkill,
-  ) => void;
-  addEffectToUnit: (
-    units: TileUnit[],
-    unitIndex: number,
-    skill: TileUnitSkill,
-    addRangeEffects?: boolean,
-  ) => void;
-  universalRangeAttack: (
-    skill: TileUnitSkill,
-    clickedEnemy: TileUnit,
-    enemiesArray: TileUnit[],
-    userCheck: boolean,
-    attacker: TileUnit,
-  ) => void;
-  updateSkillCooldowns: (skills: TileUnitSkill[], skill: TileUnitSkill) => TileUnitSkill[];
+  ) => TileUnit;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AiTurnService {
-  private battleStateService = inject(BattleStateService);
   private gameService = inject(GameService);
   private unitService = inject(UnitService);
   private fieldService = inject(GameFieldService);
-  private effectsService = inject(EffectsService);
-  private store = inject(Store);
 
   executeAiTurn(
     aiUnits: TileUnit[],
@@ -181,23 +166,17 @@ export class AiTurnService {
       return;
     }
 
-    // Execute attack
-    callbacks.makeAttackMove(targetIndex, userUnits, aiUnit, skill);
-
-    // Apply range effects
-    callbacks.universalRangeAttack(skill, target, userUnits, false, aiUnit);
-
-    // Add debuffs if rage > willpower
-    if (aiUnit.rage > userUnits[targetIndex].willpower) {
-      callbacks.addEffectToUnit(userUnits, targetIndex, skill, false);
-    }
-
-    // Update skill cooldowns
-    const updatedSkills = callbacks.updateSkillCooldowns(aiUnit.skills, skill);
+    // Delegate the full attack logic to the composition (same path as player attacks)
+    const updatedAttacker = callbacks.executeAttack(
+      aiUnitIndex,
+      aiUnits,
+      targetIndex,
+      userUnits,
+      skill,
+    );
 
     aiUnits[aiUnitIndex] = {
-      ...aiUnit,
-      skills: updatedSkills,
+      ...updatedAttacker,
       canAttack: false,
     };
   }
