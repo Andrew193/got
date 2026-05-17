@@ -31,7 +31,7 @@ type DifficultyConfig = {
 @Injectable({
   providedIn: 'root',
 })
-export abstract class BattleRewardsService {
+export class BattleRewardsService {
   usersService = inject(UsersService);
 
   difficultyConfigs: DifficultyConfig[] = [
@@ -41,10 +41,13 @@ export abstract class BattleRewardsService {
     { level: BattleDifficulty.very_hard, heading: 'Hard' },
   ];
 
-  abstract bossReward: Record<BattleDifficulty, BossReward>;
+  declare reward: Record<BattleDifficulty, BossReward>;
 
-  getBossRewardDescription(level: BattleDifficulty): BattleRewardsConfig<BattleRewardCurrency> {
-    const reward = this.bossReward[level];
+  getRewardDescription(
+    config: BattleDifficulty | BossReward,
+  ): BattleRewardsConfig<BattleRewardCurrency> {
+    const reward = typeof config === 'number' ? this.reward[config] : config;
+
     const coins: BattleRewardCurrency[] = [
       CURRENCY_NAMES.copper,
       CURRENCY_NAMES.silver,

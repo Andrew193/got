@@ -2,7 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { StatsComponent } from '../../../components/views/stats/stats.component';
 import { PreviewUnit, Unit } from '../../../models/units-related/unit.model';
 import { SkillsRenderComponent } from '../../../components/views/skills-render/skills-render.component';
-import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
+import { BattleRewardsBarComponent } from '../../../components/views/battle-rewards-bar/battle-rewards-bar.component';
 import { HeroesSelectComponent } from '../../../components/heroes-related/heroes-select/heroes-select.component';
 import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
 import { HeroesSelectPreviewComponent } from '../../../components/heroes-related/heroes-select-preview/heroes-select-preview.component';
@@ -26,12 +27,12 @@ import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.sel
     NgTemplateOutlet,
     HeroesSelectComponent,
     HeroesSelectPreviewComponent,
-    DecimalPipe,
     MatTabGroup,
     MatTab,
     MatTabLabel,
     PageLoaderComponent,
     TrainingMatcherCover,
+    BattleRewardsBarComponent,
   ],
   templateUrl: './daily-boss-lobby.component.html',
   styleUrl: './daily-boss-lobby.component.scss',
@@ -68,7 +69,7 @@ export class DailyBossLobbyComponent
   config = this.dailyBossService.difficultyConfigs;
 
   getBossRewardDescription = (level: BattleDifficulty) =>
-    this.dailyBossService.getBossRewardDescription(level);
+    this.dailyBossService.getRewardDescription(level);
 
   upBoss(version: BattleDifficulty) {
     return this.heroesService.helper.getEquipmentForUnit({

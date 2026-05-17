@@ -2,23 +2,23 @@
   "progress": [
     {
       "userId": "e046",
-      "date": "05/16/2026",
+      "date": "05/17/2026",
       "quests": [
         {
           "id": "campaign_fight",
-          "status": "claimed"
+          "status": "ready_to_claim"
         },
         {
           "id": "campaign_win",
-          "status": "claimed"
+          "status": "ready_to_claim"
         },
         {
           "id": "campaign_chest",
-          "status": "claimed"
+          "status": "pending"
         },
         {
           "id": "boss_fight",
-          "status": "claimed"
+          "status": "pending"
         },
         {
           "id": "gift_reward",
@@ -26,15 +26,15 @@
         },
         {
           "id": "training_win",
-          "status": "claimed"
+          "status": "ready_to_claim"
         },
         {
           "id": "upgrade_equipment",
-          "status": "claimed"
+          "status": "pending"
         },
         {
           "id": "upgrade_hero_level",
-          "status": "claimed"
+          "status": "pending"
         }
       ]
     }

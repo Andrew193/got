@@ -12,6 +12,16 @@
   padding: 5px;
 }
 
+.information-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
 .battle-card {
   cursor: pointer;
   border: 2px solid transparent;

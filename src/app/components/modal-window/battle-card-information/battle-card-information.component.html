@@ -1,0 +1,28 @@
+<div class="modal-container p-3">
+  <div class="footer-cover">
+    <h2>{{ data.labels.closeBtnLabel }}</h2>
+    <ng-template #footerHost></ng-template>
+  </div>
+
+  <section class="main-content">
+    <p class="mb-0 short-info">
+      <span>
+        You will be facing: <b>{{ data.battleInformation.aiUnitsCount }}</b> enemy(s)
+      </span>
+      <span> You can face: </span>
+    </p>
+    <app-heroes-select-preview
+      [units]="chosenUnits()"
+      previewClass="grid-render"
+      containerClass="no-p" />
+    <p class="mb-0">All enemies will have this configuration:</p>
+    <app-unit-short-eqp-information [hero]="hero" />
+
+    @let bossRewardsConfig = getRewardDescription();
+
+    <div class="possible-reward">
+      <p class="mb-0 w-100">The reward for this fight is:</p>
+      <app-battle-rewards-bar [rewardsConfig]="bossRewardsConfig" />
+    </div>
+  </section>
+</div>

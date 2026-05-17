@@ -169,7 +169,7 @@ export class CampaignFacadeService extends BattleRewardsService {
   private snackBar = inject(MatSnackBar);
   private victoriesService = inject(CampaignVictoriesService);
 
-  override bossReward: Record<BattleDifficulty, BossReward> = {} as Record<
+  override reward: Record<BattleDifficulty, BossReward> = {} as Record<
     BattleDifficulty,
     BossReward
   >;
@@ -219,9 +219,6 @@ export class CampaignFacadeService extends BattleRewardsService {
           : MAX_USER_UNITS_REGULAR[difficulty];
 
         const opponentName = isBoss ? bossName : pool[battleIndex % pool.length];
-
-        const opponentPool = isBoss ? [bossName] : pool;
-
         const reward = this.buildReward(params.rewardMultiplier, screenMultiplier, isBoss);
 
         screen.push({
@@ -231,7 +228,7 @@ export class CampaignFacadeService extends BattleRewardsService {
           isBoss,
           maxUserUnits,
           aiUnitsCount,
-          opponentPool,
+          opponentPool: pool,
           baseOpponent: {
             name: opponentName,
             level,
@@ -252,11 +249,15 @@ export class CampaignFacadeService extends BattleRewardsService {
     return screens;
   }
 
-  selectOpponents(pool: HeroesNamesCodes[], aiUnitsCount: number): HeroesNamesCodes[] {
+  selectOpponents(config: CampaignBattleConfig): HeroesNamesCodes[] {
+    const pool = config.opponentPool;
+    const aiUnitsCount = config.aiUnitsCount;
+    const bossName = config.isBoss ? config.baseOpponent.name : null;
+
     const count = Math.min(aiUnitsCount, pool.length);
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
 
-    return shuffled.slice(0, count);
+    return [...shuffled.slice(0, count), bossName].filter(Boolean) as HeroesNamesCodes[];
   }
 
   startBattle(

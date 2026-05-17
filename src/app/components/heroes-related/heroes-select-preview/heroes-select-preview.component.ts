@@ -25,6 +25,7 @@ export class HeroesSelectPreviewComponent {
   units = input<PreviewUnit[]>([]);
   title = input('');
   containerClass = input('');
+  previewClass = input('');
 
   dropListId = input('');
   connectTo = input<(string | CdkDropList)[]>([]);

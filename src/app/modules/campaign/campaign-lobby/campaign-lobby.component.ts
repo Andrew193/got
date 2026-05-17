@@ -57,7 +57,10 @@ const SCREENS_COUNT = 5;
   styleUrl: './campaign-lobby.component.scss',
 })
 export class CampaignLobbyComponent extends BattleRewardsService implements OnInit {
-  bossReward: Record<BattleDifficulty, BossReward> = {} as Record<BattleDifficulty, BossReward>;
+  override reward: Record<BattleDifficulty, BossReward> = {} as Record<
+    BattleDifficulty,
+    BossReward
+  >;
   private campaignFacade = inject(CampaignFacadeService);
   private modalWindowService = inject(ModalWindowService);
   private nav = inject(NavigationService);
@@ -98,14 +101,10 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
         this.selectedDifficulty.set(
           BattleDifficultyNumbers[difficulty as BattleDifficultyNumbersKeys] as BattleDifficulty,
         );
-
-        // this.currentPage.set(Number(screenIndex.slice(1)));
-        // this.selectedBattle.set(this.currentScreenBattles().find());
       }
     });
 
     effect(() => {
-      const [difficulty, screenIndex, battleId] = this.memoizedBattleId.split('-');
       const battle = this.currentScreenBattles().find(el => el.id === this.memoizedBattleId);
 
       if (battle && !this.selectedBattle()) {

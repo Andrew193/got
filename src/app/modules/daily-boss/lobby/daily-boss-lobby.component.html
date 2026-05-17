@@ -36,31 +36,7 @@
       <div class="col-12">
         <app-stats [selectedHero]="upBoss(bossLevel)" [tableMode]="true">
           @let bossRewardsConfig = getBossRewardDescription(bossLevel);
-
-          <div class="skills-container ps-2 pe-2">
-            <div class="d-flex rewards-bar h-100 align-items-center">
-              <img
-                src="assets/resourses/imgs/icons/silver_chest.jpeg"
-                alt="silver_chest"
-                height="125px" />
-              <div class="ps-2">
-                @for (bossReward of bossRewardsConfig; track $index) {
-                  <p class="mb-0">
-                    <span [class]="bossReward.alias">
-                      {{ bossReward.base | number }} (+{{ bossReward.win | number }}
-                      kill reward )
-                    </span>
-                    <img
-                      [src]="`assets/resourses/imgs/${bossReward.alias}.png`"
-                      [alt]="bossReward.alias" />
-                    for every
-                    <span class="highlight-effect">{{ bossReward.dmg | number }}</span>
-                    DMG.
-                  </p>
-                }
-              </div>
-            </div>
-          </div>
+          <app-battle-rewards-bar [rewardsConfig]="bossRewardsConfig" />
         </app-stats>
       </div>
       <div class="flex-wrap">

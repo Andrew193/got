@@ -1,0 +1,20 @@
+@let _rewardsConfig = rewardsConfig();
+
+@if (_rewardsConfig.length) {
+  <div class="d-flex rewards-bar h-100 align-items-center">
+    <img src="assets/resourses/imgs/icons/silver_chest.jpeg" alt="silver_chest" height="100px" />
+    <div class="ps-2">
+      @for (bossReward of _rewardsConfig; track $index) {
+        <p class="mb-0">
+          <span [class]="bossReward.alias">
+            {{ bossReward.base | number }} (+{{ bossReward.win | number }} kill reward )
+          </span>
+          <img [src]="`assets/resourses/imgs/${bossReward.alias}.png`" [alt]="bossReward.alias" />
+          for every
+          <span class="highlight-effect">{{ bossReward.dmg | number }}</span>
+          DMG.
+        </p>
+      }
+    </div>
+  </div>
+}

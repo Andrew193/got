@@ -9,6 +9,10 @@
   @include index.mixin-drop-area;
 }
 
+.description-bar {
+  min-width: 200px;
+}
+
 div.preview-selected-heroes {
   flex-wrap: nowrap;
   flex-direction: column !important;
@@ -29,9 +33,11 @@ div.preview-selected-heroes {
   > div {
     margin-bottom: 5px;
     border: index.$var-border-1-black;
-    padding: 3px;
+    padding: 5px;
+    gap: 10px;
     border-radius: 3px;
     box-shadow: index.$var-box-shadow;
+    justify-content: center;
 
     &:last-of-type {
       margin-bottom: 0px;

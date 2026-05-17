@@ -121,10 +121,7 @@ export class CampaignHeroSelectModalComponent
   private buildUnitNames(): { userUnits: UnitName[]; aiUnits: HeroesNamesCodes[] } {
     return {
       userUnits: this.chosenUnits().map(u => u.name),
-      aiUnits: this.campaignFacade.selectOpponents(
-        this.data.battleConfig.opponentPool,
-        this.data.battleConfig.aiUnitsCount,
-      ),
+      aiUnits: this.campaignFacade.selectOpponents(this.data.battleConfig),
     };
   }
 

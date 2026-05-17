@@ -73,10 +73,7 @@ export class BanquetHeroSelectModalComponent
     if (!this.isFightReady()) return;
 
     const userUnits = this.chosenUnits().map(u => u.name);
-    const aiUnits = this.campaignFacade.selectOpponents(
-      this.data.battleConfig.opponentPool,
-      this.data.battleConfig.aiUnitsCount,
-    );
+    const aiUnits = this.campaignFacade.selectOpponents(this.data.battleConfig);
 
     this.data.close?.();
     this.data.onFight(userUnits, aiUnits);

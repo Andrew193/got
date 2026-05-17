@@ -27,7 +27,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
   numberService = inject(NumbersService);
   notificationService = inject(NotificationsService);
 
-  bossReward: Record<BattleDifficulty, BossReward> = {
+  override reward: Record<BattleDifficulty, BossReward> = {
     [BattleDifficulty.easy]: {
       copper: 10000,
       copperWin: 100000,
@@ -107,7 +107,7 @@ export class DailyBossFacadeService extends BattleRewardsService {
   }
 
   getRewardToCollect(level: BattleDifficulty, dmg: number, win: boolean) {
-    const targetBossConfig = this.bossReward[level];
+    const targetBossConfig = this.reward[level];
 
     const copperTimes = this.numberService.roundDown(dmg / targetBossConfig.copperDMG, 0);
     const silverTimes = this.numberService.roundDown(dmg / targetBossConfig.silverDMG, 0);
