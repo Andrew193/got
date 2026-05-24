@@ -13,9 +13,9 @@ import { HeroesFacadeService } from '../../services/facades/heroes/heroes.servic
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
 import { StatsComponent } from '../views/stats/stats.component';
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
-import { Unit } from '../../models/units-related/unit.model';
+import { HeroesNamesCodes, Unit } from '../../models/units-related/unit.model';
 import { UsersService } from '../../services/users/users.service';
-import { TODAY } from '../../constants';
+import { SNACKBAR_CONFIG, TODAY } from '../../constants';
 import {
   NotificationsService,
   NotificationType,
@@ -29,6 +29,9 @@ import { Store } from '@ngrx/store';
 import { selectIsHeroPreview } from '../../store/reducers/daily-reward.reducer';
 import { AsyncPipe } from '@angular/common';
 import { toggleHeroPreview } from '../../store/actions/daily-reward.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ShardsDifComponent } from '../modal-window/currency/shards-dif/shards-dif.component';
+import { delay, EMPTY, finalize, switchMap } from 'rxjs';
 
 export interface DayReward {
   copperCoin: number;
@@ -54,6 +57,7 @@ export interface DayReward {
 export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
   store = inject(Store);
   isHeroPreview = this.store.select(selectIsHeroPreview);
+  snackBar = inject(MatSnackBar);
 
   @Input() closePopup: () => void = () => {};
   @ViewChild('heroInFrame') heroInFrame: any;
@@ -87,7 +91,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store.dispatch(toggleHeroPreview());
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.rewardHero = this.heroService.getPriest();
     this.tileRewardHero = this.heroService.getTileUnit(this.rewardHero, []);
 
@@ -122,6 +126,34 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
               silver: reward.silverCoin || 0,
               gold: reward.goldCoin || 0,
             })
+            .pipe(
+              delay(1000),
+              switchMap(() => {
+                if (reward.summonCard) {
+                  return this.heroService.heroProgressService
+                    .addShards(
+                      this.usersService.userId,
+                      this.rewardHero.name as HeroesNamesCodes,
+                      reward.summonCard,
+                    )
+                    .pipe(
+                      finalize(() => {
+                        this.snackBar.openFromComponent(ShardsDifComponent, {
+                          ...SNACKBAR_CONFIG,
+                          data: {
+                            heroName: this.rewardHero.name,
+                            heroImgSrc: this.rewardHero.imgSrc,
+                            amount: reward.summonCard,
+                            rarity: this.rewardHero.rarity,
+                          },
+                        });
+                      }),
+                    );
+                }
+
+                return EMPTY;
+              }),
+            )
             .subscribe(() => {
               this.dailyRewardConfig = newConfig as DailyReward;
               this.notificationService.notificationsValue(NotificationType.daily_reward, false);
@@ -131,7 +163,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.render2.setStyle(
       this.heroInFrame.nativeElement,
       'background',
@@ -139,7 +171,7 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     document.body.style.overflow = 'auto';
   }
 }

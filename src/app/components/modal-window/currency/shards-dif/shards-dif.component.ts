@@ -29,7 +29,7 @@ export class ShardsDifComponent {
     [Rarity.LEGENDARY]: 'Legendary',
   };
 
-  protected close(): void {
+  protected close() {
     this.snackBarRef.dismissWithAction();
   }
 }

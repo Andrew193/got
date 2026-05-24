@@ -34,14 +34,14 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 19
+          "shards": 28
         },
         {
           "heroName": "White Wolf",
           "isUnlocked": true,
-          "level": 14,
+          "level": 22,
           "rank": 1,
-          "eq1Level": 2,
+          "eq1Level": 8,
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
@@ -56,7 +56,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 50
+          "shards": 67
         },
         {
           "heroName": "Brown Wolf",

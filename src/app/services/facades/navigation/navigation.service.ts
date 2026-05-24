@@ -76,11 +76,14 @@ export class NavigationService {
   }
 
   goToCampaign() {
-    this.router.navigateByUrl(FrontRoutes.campaign);
+    this.router.navigate([`/${FrontRoutes.campaign}`], { queryParamsHandling: 'merge' });
   }
 
   goToCampaignBattle(state: CampaignBattleState) {
-    this.router.navigate([FrontRoutes.campaign, FrontRoutes.campaignBattle], { state });
+    this.router.navigate([FrontRoutes.campaign, FrontRoutes.campaignBattle], {
+      state,
+      queryParamsHandling: 'merge',
+    });
   }
 
   goToWatchtower() {

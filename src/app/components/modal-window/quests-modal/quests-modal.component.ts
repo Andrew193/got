@@ -41,7 +41,7 @@ export class QuestsModalComponent implements Partial<HasFooterHost>, OnInit {
   }
 
   ngOnInit() {
-    this.dailyQuestService.loadQuests();
+    this.retry();
   }
 
   retry() {

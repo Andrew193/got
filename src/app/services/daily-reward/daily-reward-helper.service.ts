@@ -68,8 +68,8 @@ export class DailyRewardHelperService {
       { copperCoin: 15000 * dayM },
       { copperCoin: 20000 * dayM, silverCoin: 150 * dayM },
       { copperCoin: 25000 * dayM, goldCoin: 75 * dayM },
-      { copperCoin: 35000 * dayM, summonCard: dayM },
-      { copperCoin: 45000 * dayM, summonScroll: dayM },
+      { copperCoin: 35000 * dayM, summonCard: 10 * dayM },
+      { copperCoin: 45000 * dayM, summonScroll: 10 * dayM },
       { copperCoin: 55000 * dayM, heroShard: 25 },
     ];
   }

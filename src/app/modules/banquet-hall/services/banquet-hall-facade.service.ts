@@ -7,10 +7,9 @@ import { LocalStorageService } from '../../../services/localStorage/local-storag
 import {
   HeroesNamesCodes,
   PlayerHeroesProgress,
-  Rarity,
   UnitName,
 } from '../../../models/units-related/unit.model';
-import { HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
+import { HeroesFacadeService, HeroesSrcMap } from '../../../services/facades/heroes/heroes.service';
 import { CampaignBattleConfig } from '../../campaign/models/campaign.models';
 import { SNACKBAR_CONFIG } from '../../../constants';
 import {
@@ -29,6 +28,7 @@ import { BanquetHallProgressService } from './banquet-hall-progress.service';
 @Injectable({ providedIn: 'root' })
 export class BanquetHallFacadeService {
   private heroProgressService = inject(HeroProgressService);
+  private heroService = inject(HeroesFacadeService);
   private banquetProgressService = inject(BanquetHallProgressService);
   private nav = inject(NavigationService);
   private snackBar = inject(MatSnackBar);
@@ -107,7 +107,7 @@ export class BanquetHallFacadeService {
     if (!heroRecord) return;
 
     const heroImgSrc = HeroesSrcMap[heroName]?.imgSrc ?? '';
-    const rarity = Rarity.COMMON;
+    const rarity = this.heroService.getUnitByName(heroName).rarity;
 
     if (heroRecord.shards >= UNLOCK_THRESHOLD && !heroRecord.isUnlocked) {
       this.heroProgressService.unlockHero(userId, heroName).subscribe({
