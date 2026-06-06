@@ -24,6 +24,8 @@ import {
 } from '../banquet-hall.constants';
 import { BanquetBattleState } from '../banquet-battlefield/banquet-battlefield.component';
 import { BanquetHallProgressService } from './banquet-hall-progress.service';
+import { QuestId } from '../../../../../server/types';
+import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
 
 @Injectable({ providedIn: 'root' })
 export class BanquetHallFacadeService {
@@ -33,6 +35,11 @@ export class BanquetHallFacadeService {
   private nav = inject(NavigationService);
   private snackBar = inject(MatSnackBar);
   private localStorageService = inject(LocalStorageService);
+  private dailyQuestService = inject(DailyQuestService);
+
+  completeDailyQuest() {
+    this.dailyQuestService.markQuestAsCompleted(QuestId.banquet_hall_win);
+  }
 
   startBattle(
     config: CampaignBattleConfig,

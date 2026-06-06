@@ -22,6 +22,7 @@ import { BattleStateService } from '../../services/game-related/battle-state/bat
 import { AutoFightService } from '../../services/game-related/auto-fight/auto-fight.service';
 import { BattleResultService } from '../../services/game-related/battle-result/battle-result.service';
 import { AiTurnService } from '../../services/game-related/ai-turn/ai-turn.service';
+import { PassiveAbilityService } from '../../services/game-related/passive-ability/passive-ability.service';
 import { UnitShortEqpInformationComponent } from '../common/unit-short-eqp-information/unit-short-eqp-information.component';
 
 @Component({
@@ -69,6 +70,7 @@ export class GameFieldComponent extends BasicGameFieldComponent {
     autoFightS: AutoFightService,
     battleResultS: BattleResultService,
     aiTurnS: AiTurnService,
+    passiveAbilityS: PassiveAbilityService,
     store: Store,
   ) {
     super(
@@ -80,6 +82,7 @@ export class GameFieldComponent extends BasicGameFieldComponent {
       autoFightS,
       battleResultS,
       aiTurnS,
+      passiveAbilityS,
       store,
     );
   }

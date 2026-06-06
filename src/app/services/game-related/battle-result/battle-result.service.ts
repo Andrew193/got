@@ -108,6 +108,7 @@ export class BattleResultService {
       },
       {
         callback: () => {
+          debugger;
           const reward = this.store.selectSignal(selectBattleReward())();
 
           this.playerLevelService.accrueXp(realAiUnits, userWon, mode);

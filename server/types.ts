@@ -112,6 +112,7 @@ export enum QuestId {
   training_win = 'training_win',
   upgrade_equipment = 'upgrade_equipment',
   upgrade_hero_level = 'upgrade_hero_level',
+  banquet_hall_win = 'banquet_hall_win',
 }
 
 export interface QuestDefinition {

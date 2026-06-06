@@ -10,6 +10,7 @@ import { BattleStateService } from '../../../services/game-related/battle-state/
 import { AutoFightService } from '../../../services/game-related/auto-fight/auto-fight.service';
 import { BattleResultService } from '../../../services/game-related/battle-result/battle-result.service';
 import { AiTurnService } from '../../../services/game-related/ai-turn/ai-turn.service';
+import { PassiveAbilityService } from '../../../services/game-related/passive-ability/passive-ability.service';
 
 @Component({
   selector: 'app-basic-game-field',
@@ -31,6 +32,7 @@ export abstract class BasicGameFieldComponent
     autoFightS: AutoFightService,
     battleResultS: BattleResultService,
     aiTurnS: AiTurnService,
+    passiveAbilityS: PassiveAbilityService,
     store: Store,
   ) {
     super(
@@ -42,6 +44,7 @@ export abstract class BasicGameFieldComponent
       autoFightS,
       battleResultS,
       aiTurnS,
+      passiveAbilityS,
       store,
     );
   }

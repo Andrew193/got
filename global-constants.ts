@@ -32,6 +32,11 @@ export const DAILY_QUESTS: QuestDefinition[] = [
     reward: { copper: 300, silver: 1, gold: 1 },
   },
   {
+    id: QuestId.banquet_hall_win,
+    title: 'Win a Banquet hall battle',
+    reward: { copper: 700, silver: 5, gold: 1 },
+  },
+  {
     id: QuestId.upgrade_equipment,
     title: 'Increase the equipment level of any hero',
     reward: { copper: 600, silver: 10, gold: 1 },

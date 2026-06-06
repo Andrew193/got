@@ -473,6 +473,7 @@ export class HeroesHelperService {
     unitType: HeroesNamesCodes,
     effects: Effect[] = [],
     passiveEffects?: Effect[],
+    passiveDmgM?: number,
   ) {
     const base = this.getHeroBasicStats(unitType);
     let description = '';
@@ -504,6 +505,10 @@ export class HeroesHelperService {
 
     if (base.attackRange > 1) {
       description += `Can attack from a distance of ${base.attackRange} cells.`;
+    }
+
+    if (passiveDmgM) {
+      description += `Attacks enemies by: ${passiveDmgM * 100}% of this hero's Max Health each turn.`;
     }
 
     return description.replaceAll('.', '. ');

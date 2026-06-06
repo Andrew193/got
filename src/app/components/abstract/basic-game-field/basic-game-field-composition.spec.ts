@@ -76,6 +76,15 @@ function buildComposition(opts: {
 
   const aiTurnS = {} as any;
 
+  const passiveAbilityS = {
+    processRoundStart: vi.fn((hero, allies, enemies) => ({
+      allies,
+      enemies,
+      blockBuffApplication: false,
+    })),
+    processBeforeAttack: vi.fn(() => ({ allies: [], enemies: [], blockBuffApplication: false })),
+  } as any;
+
   // Store stub — AbstractGameFieldComposition calls store.select() in constructor
   const store = {
     select: vi.fn(() => ({ subscribe: () => {} })),
@@ -92,6 +101,7 @@ function buildComposition(opts: {
     autoFightS,
     battleResultS,
     aiTurnS,
+    passiveAbilityS,
     store,
   );
 

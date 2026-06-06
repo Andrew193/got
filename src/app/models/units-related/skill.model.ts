@@ -13,6 +13,18 @@ export type Skill = {
   passive?: boolean;
   restoreSkill?: boolean;
   description: string;
+  effectDurationConfig?: {
+    delta: number;
+    effectTypes: EffectsValues[];
+    targets: 'allies' | 'enemies' | 'both';
+  };
+  cooldownConfig?: {
+    cooldownDelta: number;
+    targetAll?: boolean;
+    skillIds?: string[];
+    targets: 'allies' | 'enemies' | 'both';
+  };
+  blockAttackerBuffs?: boolean;
 } & SkillSrc &
   SkillRangeConfig &
   SkillHealConfig &

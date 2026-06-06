@@ -83,7 +83,13 @@ export class BanquetBattlefieldComponent {
     }
 
     this.banquetFacade.onBattleEnd(win, state).subscribe({
-      next: () => this.nav.goToBanquetHall(),
+      next: () => {
+        if (win) {
+          this.banquetFacade.completeDailyQuest();
+        }
+
+        this.nav.goToBanquetHall();
+      },
       error: (err: { error?: string }) => {
         this.snackBar.open(
           'Failed to add shards: ' + (err?.error ?? 'Unknown error'),

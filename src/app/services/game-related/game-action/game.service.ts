@@ -102,7 +102,9 @@ export class GameService {
             for (const buff of buffs) {
               units[index] = this.restoreHealthForUnit(unit, buff, skill).unit;
             }
-          } else if (skill.passive && skill.buffs) {
+          }
+
+          if (skill.passive && skill.buffs) {
             skill.buffs.forEach(buff => {
               units[index].effects = [...units[index].effects, buff];
             });

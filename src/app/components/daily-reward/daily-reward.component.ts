@@ -13,7 +13,7 @@ import { HeroesFacadeService } from '../../services/facades/heroes/heroes.servic
 import { OutsideClickDirective } from '../../directives/outside-click/outside-click.directive';
 import { StatsComponent } from '../views/stats/stats.component';
 import { DailyRewardService } from '../../services/daily-reward/daily-reward.service';
-import { HeroesNamesCodes, Unit } from '../../models/units-related/unit.model';
+import { HeroesNamesCodes, Rarity, Unit } from '../../models/units-related/unit.model';
 import { UsersService } from '../../services/users/users.service';
 import { SNACKBAR_CONFIG, TODAY } from '../../constants';
 import {
@@ -129,22 +129,24 @@ export class DailyRewardComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(
               delay(1000),
               switchMap(() => {
-                if (reward.summonCard) {
+                const amount = reward.summonCard || reward.summonScroll || reward.heroShard;
+
+                if (amount) {
+                  const hero = reward.summonCard
+                    ? this.rewardHero
+                    : this.heroService.getRandomUnit(reward.heroShard ? Rarity.LEGENDARY : null);
+
                   return this.heroService.heroProgressService
-                    .addShards(
-                      this.usersService.userId,
-                      this.rewardHero.name as HeroesNamesCodes,
-                      reward.summonCard,
-                    )
+                    .addShards(this.usersService.userId, hero.name as HeroesNamesCodes, amount)
                     .pipe(
                       finalize(() => {
                         this.snackBar.openFromComponent(ShardsDifComponent, {
                           ...SNACKBAR_CONFIG,
                           data: {
-                            heroName: this.rewardHero.name,
-                            heroImgSrc: this.rewardHero.imgSrc,
-                            amount: reward.summonCard,
-                            rarity: this.rewardHero.rarity,
+                            heroName: hero.name,
+                            heroImgSrc: hero.imgSrc,
+                            amount: amount,
+                            rarity: hero.rarity,
                           },
                         });
                       }),

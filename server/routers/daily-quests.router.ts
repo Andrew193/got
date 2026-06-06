@@ -16,8 +16,10 @@ const VALID_QUEST_IDS: QuestId[] = [
   QuestId.boss_fight,
   QuestId.gift_reward,
   QuestId.training_win,
+  QuestId.banquet_hall_win,
   QuestId.upgrade_equipment,
   QuestId.upgrade_hero_level,
+  QuestId.banquet_hall_win,
 ];
 
 // GET /api/daily-quests/:userId

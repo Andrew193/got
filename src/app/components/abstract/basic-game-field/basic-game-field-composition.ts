@@ -19,6 +19,7 @@ import { BattleStateService } from '../../../services/game-related/battle-state/
 import { AutoFightService } from '../../../services/game-related/auto-fight/auto-fight.service';
 import { BattleResultService } from '../../../services/game-related/battle-result/battle-result.service';
 import { AiTurnService } from '../../../services/game-related/ai-turn/ai-turn.service';
+import { PassiveAbilityService } from '../../../services/game-related/passive-ability/passive-ability.service';
 
 interface ExecuteActionParams {
   attackerTeam: TileUnit[];
@@ -45,6 +46,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     protected autoFightS: AutoFightService,
     protected battleResultS: BattleResultService,
     protected aiTurnS: AiTurnService,
+    private passiveAbilityS: PassiveAbilityService,
     override store: Store<any>,
   ) {
     super(fieldService, unitService, eS, battleStateS, store);
@@ -85,7 +87,9 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       getTargetTile,
     } = params;
 
-    if (skill.addBuffsBeforeAttack) {
+    const { blockBuffApplication } = this.passiveAbilityS.processBeforeAttack(defenderTeam);
+
+    if (!blockBuffApplication && skill.addBuffsBeforeAttack) {
       this.addBuffToUnit(attackerTeam, attackerIndex, skill);
     }
 
@@ -131,7 +135,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       this.universalRangeAttack(skill, tile, defenderTeam, isAiMove, attacker);
     }
 
-    if (!skill.addBuffsBeforeAttack) {
+    if (!blockBuffApplication && !skill.addBuffsBeforeAttack) {
       this.addBuffToUnit(
         attackerTeam,
         attackerIndex,
@@ -524,6 +528,14 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     // Reset move/attack flags
     this.fieldService.resetMoveAndAttack([aiUnits, userUnits]);
 
+    // Process passive abilities for each living user unit
+    for (const hero of userUnits.filter(u => u.health > 0)) {
+      const result = this.passiveAbilityS.processRoundStart(hero, userUnits, aiUnits);
+
+      userUnits.splice(0, userUnits.length, ...result.allies);
+      aiUnits.splice(0, aiUnits.length, ...result.enemies);
+    }
+
     // Apply debuff damage
     for (let i = 0; i < userUnits.length; i++) {
       userUnits[i] = this.checkEffects(structuredClone(userUnits[i]), true, null);
@@ -574,6 +586,14 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   attackUser(aiMove = true) {
     const aiUnits = this.getAiLeadingUnits(aiMove);
     const userUnits = this.getUserLeadingUnits(aiMove);
+
+    // Process passive abilities for each living AI unit
+    for (const hero of aiUnits.filter(u => u.health > 0)) {
+      const result = this.passiveAbilityS.processRoundStart(hero, aiUnits, userUnits);
+
+      aiUnits.splice(0, aiUnits.length, ...result.allies);
+      userUnits.splice(0, userUnits.length, ...result.enemies);
+    }
 
     // Use AiTurnService to execute all AI unit turns.
     // executeAttack delegates to executeAction — the same path as player attacks.

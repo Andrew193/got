@@ -23,7 +23,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 13
+          "shards": 23
         },
         {
           "heroName": "Targaryen Knight",
@@ -39,12 +39,12 @@
         {
           "heroName": "White Wolf",
           "isUnlocked": true,
-          "level": 22,
+          "level": 31,
           "rank": 1,
-          "eq1Level": 8,
-          "eq2Level": 1,
-          "eq3Level": 1,
-          "eq4Level": 1,
+          "eq1Level": 10,
+          "eq2Level": 4,
+          "eq3Level": 6,
+          "eq4Level": 5,
           "shards": 62
         },
         {
@@ -73,12 +73,12 @@
           "heroName": "Ice River Hunter",
           "isUnlocked": true,
           "level": 60,
-          "rank": 1,
+          "rank": 2,
           "eq1Level": 102,
           "eq2Level": 102,
           "eq3Level": 110,
           "eq4Level": 101,
-          "shards": 94
+          "shards": 2
         },
         {
           "heroName": "Relina Snow",
@@ -89,7 +89,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 0
+          "shards": 11
         },
         {
           "heroName": "Archer of the Free Folk",
@@ -100,7 +100,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 37
+          "shards": 43
         },
         {
           "heroName": "Giant",
@@ -111,7 +111,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 13
+          "shards": 21
         },
         {
           "heroName": "Night King",
@@ -166,7 +166,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 2
+          "shards": 12
         },
         {
           "heroName": "Ranger",

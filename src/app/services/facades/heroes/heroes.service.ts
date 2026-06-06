@@ -16,6 +16,7 @@ import { UnitsConfiguratorStateUnit } from '../../../store/store.interfaces';
 import { Store } from '@ngrx/store';
 import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 import { HeroProgressService } from '../hero-progress/hero-progress.service';
+import { NumbersService } from '../../numbers/numbers.service';
 
 export type HeroesSrcMapData = {
   imgSrc: string;
@@ -156,6 +157,7 @@ export const HeroesSrcMap: Record<HeroesNamesCodes, HeroesSrcMapData> = {
 export class HeroesFacadeService extends ContentService {
   helper = inject(HeroesHelperService);
   heroProgressService = inject(HeroProgressService);
+  numService = inject(NumbersService);
   private store = inject(Store);
   allUnits: Unit[] = [];
 
@@ -178,6 +180,7 @@ export class HeroesFacadeService extends ContentService {
     ];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.LadyOfDragonStone];
+    const passiveDmgM = 0.1;
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -228,11 +231,13 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           buffs: passiveBuffs,
           passive: true,
+          dmgM: passiveDmgM,
           restoreSkill: true,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.LadyOfDragonStone,
             effects,
             passiveBuffs,
+            passiveDmgM,
           ),
         },
       ],
@@ -294,7 +299,6 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           buffs: [],
           passive: true,
-          restoreSkill: false,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RedKeepAlchemist),
         },
       ],
@@ -352,7 +356,7 @@ export class HeroesFacadeService extends ContentService {
           name: 'Crown Shield',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          restoreSkill: false,
+          restoreSkill: true,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.TargaryenKnight,
             effects,
@@ -683,7 +687,6 @@ export class HeroesFacadeService extends ContentService {
           name: 'Giant',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          restoreSkill: true,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Giant),
         },
       ],
@@ -1094,6 +1097,10 @@ export class HeroesFacadeService extends ContentService {
 
   getTileUnits() {
     return this.allUnits.map(el => this.getTileUnit(el, []));
+  }
+
+  getRandomUnit(rariry?: Rarity | null) {
+    return this.allUnits[this.numService.getNumberInRange(0, this.allUnits.length)];
   }
 
   getUnitsForTrainingBattle(

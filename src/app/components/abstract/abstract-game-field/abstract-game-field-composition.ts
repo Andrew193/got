@@ -147,7 +147,10 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
       for (const enemyInRange of enemiesInRange) {
         const enemyIndex = this.unitS.findUnitIndex(enemiesArray, enemyInRange);
 
-        this.makeAttackMove(enemyIndex, enemiesArray, attacker, skill);
+        this.makeAttackMove(enemyIndex, enemiesArray, attacker, {
+          ...skill,
+          dmgM: skill.attackInRange.attackInRangeM,
+        });
 
         if (attacker.rage > enemiesArray[enemyIndex].willpower) {
           this.addEffectToUnit(enemiesArray, enemyIndex, skill, !!skill.inRangeDebuffs);

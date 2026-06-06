@@ -8,6 +8,7 @@ import { BattleStateService } from './game-related/battle-state/battle-state.ser
 import { AutoFightService } from './game-related/auto-fight/auto-fight.service';
 import { BattleResultService } from './game-related/battle-result/battle-result.service';
 import { AiTurnService } from './game-related/ai-turn/ai-turn.service';
+import { PassiveAbilityService } from './game-related/passive-ability/passive-ability.service';
 import { BasicGameFieldComposition } from '../components/abstract/basic-game-field/basic-game-field-composition';
 import { GameResultsRedirectType, TileUnit } from '../models/field.model';
 import { Currency } from './users/users.interfaces';
@@ -50,6 +51,7 @@ export class BattleSimulatorService {
   private autoFightService = inject(AutoFightService);
   private battleResultService = inject(BattleResultService);
   private aiTurnService = inject(AiTurnService);
+  private passiveAbilityService = inject(PassiveAbilityService);
   private store = inject(Store);
 
   isSimulating = signal(false);
@@ -77,6 +79,7 @@ export class BattleSimulatorService {
       this.autoFightService,
       this.battleResultService,
       this.aiTurnService,
+      this.passiveAbilityService,
       this.store,
     );
 

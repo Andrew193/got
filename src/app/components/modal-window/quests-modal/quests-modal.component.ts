@@ -37,7 +37,11 @@ export class QuestsModalComponent implements Partial<HasFooterHost>, OnInit {
   };
 
   canClaimSpecialBonus(quests: Quest[]) {
-    return quests.filter(quest => quest.status === 'claimed').length === quests.length - 1;
+    const allButOneClaimed =
+      quests.filter(quest => quest.status === 'claimed').length === quests.length - 1;
+    const oneReady = quests.filter(quest => quest.status === 'ready_to_claim').length;
+
+    return allButOneClaimed && oneReady === 1;
   }
 
   ngOnInit() {
