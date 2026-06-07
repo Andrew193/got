@@ -39,9 +39,9 @@
         {
           "heroName": "White Wolf",
           "isUnlocked": true,
-          "level": 31,
+          "level": 32,
           "rank": 1,
-          "eq1Level": 10,
+          "eq1Level": 11,
           "eq2Level": 4,
           "eq3Level": 6,
           "eq4Level": 5,
@@ -100,7 +100,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 43
+          "shards": 52
         },
         {
           "heroName": "Giant",

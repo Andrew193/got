@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 import { HeroProgressService } from '../hero-progress/hero-progress.service';
 import { NumbersService } from '../../numbers/numbers.service';
+import { HealConfig } from '../../../models/units-related/skill.model';
 
 export type HeroesSrcMapData = {
   imgSrc: string;
@@ -236,8 +237,7 @@ export class HeroesFacadeService extends ContentService {
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.LadyOfDragonStone,
             effects,
-            passiveBuffs,
-            passiveDmgM,
+            { passiveEffects: passiveBuffs, passiveDmgM },
           ),
         },
       ],
@@ -408,6 +408,10 @@ export class HeroesFacadeService extends ContentService {
     const effects = [this.helper.eS.getEffect(this.helper.effects.healthRestore)];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.DEFENCE);
     const scrs = HeroesSrcMap[HeroesNamesCodes.Priest];
+    const passiveHeal: HealConfig = {
+      healM: 0.08,
+      healAll: false,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -453,7 +457,10 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           passive: true,
           restoreSkill: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Priest, effects),
+          heal: passiveHeal,
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Priest, effects, {
+            healConfig: passiveHeal,
+          }),
         },
       ],
       effects: effects,
@@ -798,7 +805,7 @@ export class HeroesFacadeService extends ContentService {
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.WhiteWalkerGeneral,
             effects,
-            passiveBuffs,
+            { passiveEffects: passiveBuffs },
           ),
         },
       ],
@@ -841,7 +848,7 @@ export class HeroesFacadeService extends ContentService {
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.WhiteWalkerCapitan,
             [],
-            passiveBuffs,
+            { passiveEffects: passiveBuffs },
           ),
         },
       ],
@@ -899,11 +906,9 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           buffs: passiveBuffs,
           passive: true,
-          description: this.helper.getPassiveSkillDescription(
-            HeroesNamesCodes.JonKing,
-            effects,
-            passiveBuffs,
-          ),
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.JonKing, effects, {
+            passiveEffects: passiveBuffs,
+          }),
         },
       ],
       effects: effects,

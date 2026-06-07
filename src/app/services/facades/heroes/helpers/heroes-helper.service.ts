@@ -12,7 +12,7 @@ import {
 import { EffectsValues, MechanicsValues } from '../../../../constants';
 import { EffectsService } from '../../../effects/effects.service';
 import { NumbersService } from '../../../numbers/numbers.service';
-import { Skill } from '../../../../models/units-related/skill.model';
+import { HealConfig, Skill } from '../../../../models/units-related/skill.model';
 import { Effect } from '../../../../models/effect.model';
 
 type SkillForDescriptionCreation = Omit<Skill, 'description'>;
@@ -472,10 +472,14 @@ export class HeroesHelperService {
   getPassiveSkillDescription(
     unitType: HeroesNamesCodes,
     effects: Effect[] = [],
-    passiveEffects?: Effect[],
-    passiveDmgM?: number,
+    additionalConfig: {
+      passiveEffects?: Effect[];
+      passiveDmgM?: number;
+      healConfig?: HealConfig;
+    } = {},
   ) {
     const base = this.getHeroBasicStats(unitType);
+    const { passiveEffects, passiveDmgM, healConfig } = additionalConfig;
     let description = '';
 
     if (base.dmgReducedBy) {
@@ -508,7 +512,11 @@ export class HeroesHelperService {
     }
 
     if (passiveDmgM) {
-      description += `Attacks enemies by: ${passiveDmgM * 100}% of this hero's Max Health each turn.`;
+      description += `Attacks enemies by: ${this.numberService.convertToPersent(passiveDmgM)}% of this hero's Max Health each turn.`;
+    }
+
+    if (healConfig) {
+      description += `Heals ${healConfig.healAll ? 'all allies' : 'an ally'} by ${this.numberService.convertToPersent(healConfig.healM)}% of ${healConfig.healAll ? 'their' : `this ally`} Max Health.`;
     }
 
     return description.replaceAll('.', '. ');

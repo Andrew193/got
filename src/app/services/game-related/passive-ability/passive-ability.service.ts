@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import { createDeepCopy } from '../../../helpers';
 import { TileUnit } from '../../../models/field.model';
-import { Skill } from '../../../models/units-related/skill.model';
+import { EffectDurationConfigTargets, Skill } from '../../../models/units-related/skill.model';
 import { GameBoardActions } from '../../../store/actions/game-board.actions';
 
 export type PassiveAbilityResult = {
@@ -49,6 +49,7 @@ export class PassiveAbilityService {
     let enemiesCopy = createDeepCopy(enemies);
 
     for (const skill of passiveSkills) {
+      // Манипуляция тиками эфектов
       if (skill.effectDurationConfig === undefined) {
         continue;
       }
@@ -56,11 +57,17 @@ export class PassiveAbilityService {
       const { delta, effectTypes, targets } = skill.effectDurationConfig;
       const targetArrays: { arr: TileUnit[]; assign: (updated: TileUnit[]) => void }[] = [];
 
-      if (targets === 'allies' || targets === 'both') {
+      if (
+        targets === EffectDurationConfigTargets.ALLIES ||
+        targets === EffectDurationConfigTargets.BOTH
+      ) {
         targetArrays.push({ arr: alliesCopy, assign: updated => (alliesCopy = updated) });
       }
 
-      if (targets === 'enemies' || targets === 'both') {
+      if (
+        targets === EffectDurationConfigTargets.ENEMIES ||
+        targets === EffectDurationConfigTargets.BOTH
+      ) {
         targetArrays.push({ arr: enemiesCopy, assign: updated => (enemiesCopy = updated) });
       }
 
@@ -87,6 +94,7 @@ export class PassiveAbilityService {
       }
     }
 
+    //Лечение
     for (const skill of passiveSkills) {
       if (skill.heal === undefined || skill.heal === false) {
         continue;
@@ -94,6 +102,17 @@ export class PassiveAbilityService {
 
       const healConfig = skill.heal;
       const healAmount = hero.maxHealth * healConfig.healM;
+
+      const logHealRestore = (unit: TileUnit) => {
+        this.store.dispatch(
+          GameBoardActions.logRecord({
+            info: true,
+            imgSrc: skill.imgSrc,
+            message: `${unit.user ? 'Player' : 'Bot'} ${unit.name} restored ${Math.round(healAmount)} points.`,
+            id: crypto.randomUUID(),
+          }),
+        );
+      };
 
       if (healConfig.healAll) {
         alliesCopy = alliesCopy.map(unit => {
@@ -104,14 +123,7 @@ export class PassiveAbilityService {
           const newHealth = Math.min(unit.health + healAmount, unit.maxHealth);
           const updatedUnit = { ...unit, health: newHealth };
 
-          this.store.dispatch(
-            GameBoardActions.logRecord({
-              info: true,
-              imgSrc: skill.imgSrc,
-              message: `${unit.user ? 'Player' : 'Bot'} ${unit.name} restored ${Math.round(healAmount)} points.`,
-              id: crypto.randomUUID(),
-            }),
-          );
+          logHealRestore(unit);
 
           return updatedUnit;
         });
@@ -133,17 +145,11 @@ export class PassiveAbilityService {
           return { ...unit, health: newHealth };
         });
 
-        this.store.dispatch(
-          GameBoardActions.logRecord({
-            info: true,
-            imgSrc: skill.imgSrc,
-            message: `${target.user ? 'Player' : 'Bot'} ${target.name} restored ${Math.round(healAmount)} points.`,
-            id: crypto.randomUUID(),
-          }),
-        );
+        logHealRestore(target);
       }
     }
 
+    //Нанесение урона
     for (const skill of passiveSkills) {
       if (skill.passive !== true || skill.dmgM === undefined) {
         continue;
@@ -171,6 +177,7 @@ export class PassiveAbilityService {
       });
     }
 
+    //Манипуляция кулдаунов навыков
     for (const skill of passiveSkills) {
       if (skill.cooldownConfig === undefined) {
         continue;
@@ -179,11 +186,17 @@ export class PassiveAbilityService {
       const { cooldownDelta, targetAll, skillIds, targets } = skill.cooldownConfig;
       const targetArrays: { arr: TileUnit[]; assign: (updated: TileUnit[]) => void }[] = [];
 
-      if (targets === 'allies' || targets === 'both') {
+      if (
+        targets === EffectDurationConfigTargets.ALLIES ||
+        targets === EffectDurationConfigTargets.BOTH
+      ) {
         targetArrays.push({ arr: alliesCopy, assign: updated => (alliesCopy = updated) });
       }
 
-      if (targets === 'enemies' || targets === 'both') {
+      if (
+        targets === EffectDurationConfigTargets.ENEMIES ||
+        targets === EffectDurationConfigTargets.BOTH
+      ) {
         targetArrays.push({ arr: enemiesCopy, assign: updated => (enemiesCopy = updated) });
       }
 

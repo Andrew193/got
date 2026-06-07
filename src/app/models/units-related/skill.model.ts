@@ -13,11 +13,7 @@ export type Skill = {
   passive?: boolean;
   restoreSkill?: boolean;
   description: string;
-  effectDurationConfig?: {
-    delta: number;
-    effectTypes: EffectsValues[];
-    targets: 'allies' | 'enemies' | 'both';
-  };
+  effectDurationConfig?: EffectDurationConfig;
   cooldownConfig?: {
     cooldownDelta: number;
     targetAll?: boolean;
@@ -29,6 +25,18 @@ export type Skill = {
   SkillRangeConfig &
   SkillHealConfig &
   SkillCooldown;
+
+export enum EffectDurationConfigTargets {
+  ALLIES = 'allies',
+  ENEMIES = 'enemies',
+  BOTH = 'both',
+}
+
+export type EffectDurationConfig = {
+  delta: number;
+  effectTypes: EffectsValues[];
+  targets: EffectDurationConfigTargets;
+};
 
 export type SkillCooldown =
   | {
@@ -44,6 +52,11 @@ export type SkillCooldown =
       remainingCooldown?: number;
     };
 
+export type HealConfig = {
+  healM: number;
+  healAll: boolean;
+};
+
 export type SkillHealConfig =
   | {
       heal?: false | undefined;
@@ -51,10 +64,7 @@ export type SkillHealConfig =
       healAll?: boolean;
     }
   | {
-      heal: {
-        healM: number;
-        healAll: boolean;
-      };
+      heal: HealConfig;
     };
 
 export type SkillRangeConfig =
