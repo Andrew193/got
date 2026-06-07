@@ -95,6 +95,7 @@ export class PassiveAbilityService {
     }
 
     //Лечение
+    debugger;
     for (const skill of passiveSkills) {
       if (skill.heal === undefined || skill.heal === false) {
         continue;

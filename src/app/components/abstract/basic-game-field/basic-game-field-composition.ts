@@ -488,11 +488,9 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     this.autoFight = true;
 
     this.autoFightS.startAutoFight(fastFight, () => {
-      this.attackUser(false);
-      this.fieldService.resetMoveAndAttack(this.userUnits, false);
-      this.checkAiMoves(true);
+      const ended = this.executeAutoFightRound();
 
-      if (this.checkAutoFightEnd() || oneTick) {
+      if (ended || oneTick) {
         this.autoFight = false;
         this.cdRef.markForCheck();
 
@@ -509,6 +507,19 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       this.gameActionService.isDead(this.userUnits) ||
       this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits).battleEnded
     );
+  }
+
+  private executeAutoFightRound(): boolean {
+    // Half-turn 1: user-passive phase + AI attacks the user team
+    this.attackUser(false);
+
+    // Reset user-side move/attack flags between the two half-turns
+    this.fieldService.resetMoveAndAttack(this.userUnits, false);
+
+    // Half-turn 2: AI-passive phase + user team perspective
+    this.attackUser(true);
+
+    return this.checkAutoFightEnd();
   }
 
   getAiLeadingUnits(aiMove: boolean) {
@@ -541,15 +552,13 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       userUnits[i] = this.checkEffects(structuredClone(userUnits[i]), true, null);
     }
 
-    if (!this.autoFight) {
-      for (let i = 0; i < aiUnits.length; i++) {
-        aiUnits[i] = this.checkEffects(structuredClone(aiUnits[i]), !aiMove, null);
-      }
+    for (let i = 0; i < aiUnits.length; i++) {
+      aiUnits[i] = this.checkEffects(structuredClone(aiUnits[i]), !aiMove, null);
+    }
 
-      // Check passive skills if AI just moved
-      if (aiMove) {
-        this.gameActionService.checkPassiveSkills(userUnits);
-      }
+    // Check passive skills if AI just moved
+    if (aiMove) {
+      this.gameActionService.checkPassiveSkills(userUnits);
     }
 
     // Recount skill cooldowns for all units at end of round
@@ -587,14 +596,6 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     const aiUnits = this.getAiLeadingUnits(aiMove);
     const userUnits = this.getUserLeadingUnits(aiMove);
 
-    // Process passive abilities for each living AI unit
-    for (const hero of aiUnits.filter(u => u.health > 0)) {
-      const result = this.passiveAbilityS.processRoundStart(hero, aiUnits, userUnits);
-
-      aiUnits.splice(0, aiUnits.length, ...result.allies);
-      userUnits.splice(0, userUnits.length, ...result.enemies);
-    }
-
     // Use AiTurnService to execute all AI unit turns.
     // executeAttack delegates to executeAction — the same path as player attacks.
     this.aiTurnS.executeAiTurn(aiUnits, userUnits, this.gameConfig, {
@@ -620,7 +621,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   checkEffects(unit: TileUnit, decreaseRestoreCooldown = true, workWith: EffectsValues[] | null) {
     const response = this.gameActionService.checkEffects(
       unit,
-      !this.autoFight ? true : decreaseRestoreCooldown,
+      decreaseRestoreCooldown,
       this.battleMode,
       workWith,
     );

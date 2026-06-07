@@ -456,7 +456,6 @@ export class HeroesFacadeService extends ContentService {
           name: 'Lokrand',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          restoreSkill: true,
           heal: passiveHeal,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Priest, effects, {
             healConfig: passiveHeal,
@@ -526,7 +525,7 @@ export class HeroesFacadeService extends ContentService {
           debuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
         }),
       ],
-      effects: [],
+      effects: [this.helper.eS.getEffect(this.helper.effects.attackBuff, 10)],
       synergy: [
         HeroesNamesCodes.BrownWolf,
         HeroesNamesCodes.Giant,
