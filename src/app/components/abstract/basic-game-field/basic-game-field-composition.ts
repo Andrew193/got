@@ -87,8 +87,6 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       getTargetTile,
     } = params;
 
-    debugger;
-
     const { blockBuffApplication } = this.passiveAbilityS.processBeforeAttack(defenderTeam);
 
     if (!blockBuffApplication && skill.addBuffsBeforeAttack) {
@@ -549,13 +547,10 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       aiUnits.splice(0, aiUnits.length, ...result.enemies);
     }
 
-    // Apply debuff damage
+    // Apply debuff damage — only for the team that just finished acting (userUnits in this context).
+    // The other team will get their effects decremented when their own finishAiTurn fires.
     for (let i = 0; i < userUnits.length; i++) {
       userUnits[i] = this.checkEffects(structuredClone(userUnits[i]), true, null);
-    }
-
-    for (let i = 0; i < aiUnits.length; i++) {
-      aiUnits[i] = this.checkEffects(structuredClone(aiUnits[i]), true, null);
     }
 
     // Check passive skills if AI just moved
