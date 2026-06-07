@@ -87,6 +87,8 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       getTargetTile,
     } = params;
 
+    debugger;
+
     const { blockBuffApplication } = this.passiveAbilityS.processBeforeAttack(defenderTeam);
 
     if (!blockBuffApplication && skill.addBuffsBeforeAttack) {
@@ -553,7 +555,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     }
 
     for (let i = 0; i < aiUnits.length; i++) {
-      aiUnits[i] = this.checkEffects(structuredClone(aiUnits[i]), !aiMove, null);
+      aiUnits[i] = this.checkEffects(structuredClone(aiUnits[i]), true, null);
     }
 
     // Check passive skills if AI just moved

@@ -522,10 +522,11 @@ export class HeroesFacadeService extends ContentService {
           dmgM: 2.1,
           cooldown: 0,
           remainingCooldown: 0,
+          buffs: [this.helper.eS.getEffect(this.helper.effects.defBuff)],
           debuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
         }),
       ],
-      effects: [this.helper.eS.getEffect(this.helper.effects.attackBuff, 10)],
+      effects: [],
       synergy: [
         HeroesNamesCodes.BrownWolf,
         HeroesNamesCodes.Giant,

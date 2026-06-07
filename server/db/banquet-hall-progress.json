@@ -69,7 +69,11 @@
         },
         {
           "heroName": "Relina Snow",
-          "completedBattles": ["banquet-Relina Snow-s0-b0", "banquet-Relina Snow-s0-b1"]
+          "completedBattles": [
+            "banquet-Relina Snow-s0-b0",
+            "banquet-Relina Snow-s0-b1",
+            "banquet-Relina Snow-s0-b2"
+          ]
         },
         {
           "heroName": "Priest",
