@@ -136,16 +136,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     }
 
     if (!blockBuffApplication && !skill.addBuffsBeforeAttack) {
-      this.addBuffToUnit(
-        attackerTeam,
-        attackerIndex,
-        !this.autoFight
-          ? {
-              ...skill,
-              buffs: (skill.buffs || []).map(el => ({ ...el, duration: el.duration + 1 })),
-            }
-          : skill,
-      );
+      this.addBuffToUnit(attackerTeam, attackerIndex, skill);
     }
 
     attacker = attackerTeam[attackerIndex];
@@ -473,14 +464,26 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
         return;
       }
 
-      if (this.battleMode) {
-        this.dropEnemy();
-        this.battleStateS.setTurnUser(false);
-        this.attackUser(aiMove);
-      } else {
-        this.battleStateS.setTurnUser(true);
-        this.finishAiTurn(true);
-      }
+      this.dropEnemy();
+      this.battleStateS.setTurnUser(false);
+
+      this.aiTurnS.executeAiTurn(this.aiUnits, this.userUnits, this.gameConfig, {
+        executeAttack: (attackerIndex, attackerTeam, defenderIndex, defenderTeam, skill) => {
+          const { attacker, skills } = this.executeAction({
+            attackerTeam,
+            defenderTeam,
+            attackerIndex,
+            defenderIndex,
+            skill,
+            isAiMove: true,
+            findSkillIndex: (skills, s) => this.unitService.findSkillIndex(skills, s),
+          });
+
+          return { ...attacker, skills };
+        },
+      });
+
+      this.finishHalfTurn(this.aiUnits, this.userUnits);
     }
   }
 
@@ -509,63 +512,51 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     );
   }
 
-  private executeAutoFightRound(): boolean {
-    // Half-turn 1: user-passive phase + AI attacks the user team
-    this.attackUser(false);
+  private finishHalfTurn(actingTeam: TileUnit[], waitingTeam: TileUnit[]): void {
+    // 1. Reset move/attack flags for both teams
+    this.fieldService.resetMoveAndAttack([actingTeam, waitingTeam]);
 
-    // Reset user-side move/attack flags between the two half-turns
-    this.fieldService.resetMoveAndAttack(this.userUnits, false);
-
-    // Half-turn 2: AI-passive phase + user team perspective
-    this.attackUser(true);
-
-    return this.checkAutoFightEnd();
-  }
-
-  getAiLeadingUnits(aiMove: boolean) {
-    return this.gameActionService.getAiLeadingUnits(aiMove, this.aiUnits, this.userUnits);
-  }
-
-  getUserLeadingUnits(aiMove: boolean) {
-    return this.gameActionService.getUserLeadingUnits(aiMove, this.aiUnits, this.userUnits);
-  }
-
-  finishAiTurn(aiMove: boolean) {
-    if (this.over) return;
-
-    const userUnits = this.getUserLeadingUnits(aiMove);
-    const aiUnits = this.getAiLeadingUnits(aiMove);
-
-    // Reset move/attack flags
-    this.fieldService.resetMoveAndAttack([aiUnits, userUnits]);
-
-    // Process passive abilities for each living user unit
-    for (const hero of userUnits.filter(u => u.health > 0)) {
-      const result = this.passiveAbilityS.processRoundStart(hero, userUnits, aiUnits);
-
-      userUnits.splice(0, userUnits.length, ...result.allies);
-      aiUnits.splice(0, aiUnits.length, ...result.enemies);
+    // 2. Tick effect durations for the acting team only
+    for (let i = 0; i < actingTeam.length; i++) {
+      actingTeam[i] = this.checkEffects(structuredClone(actingTeam[i]), true, null);
     }
 
-    // Apply debuff damage — only for the team that just finished acting (userUnits in this context).
-    // The other team will get their effects decremented when their own finishAiTurn fires.
-    for (let i = 0; i < userUnits.length; i++) {
-      userUnits[i] = this.checkEffects(structuredClone(userUnits[i]), true, null);
+    // 2a. In manual mode, also tick the waiting team once per round.
+    // In auto-fight, finishHalfTurn is called twice per round (once per team),
+    // so each team already ticks exactly once — no extra tick needed.
+    if (!this.autoFight) {
+      for (let i = 0; i < waitingTeam.length; i++) {
+        waitingTeam[i] = this.checkEffects(structuredClone(waitingTeam[i]), true, null);
+      }
     }
 
-    // Check passive skills if AI just moved
-    if (aiMove) {
-      this.gameActionService.checkPassiveSkills(userUnits);
+    // 3. Round-start passives for the waiting team only
+    for (const hero of waitingTeam.filter(u => u.health > 0)) {
+      const result = this.passiveAbilityS.processRoundStart(hero, waitingTeam, actingTeam);
+
+      waitingTeam.splice(0, waitingTeam.length, ...result.allies);
+      actingTeam.splice(0, actingTeam.length, ...result.enemies);
     }
 
-    // Recount skill cooldowns for all units at end of round
-    for (let i = 0; i < aiUnits.length; i++) {
-      aiUnits[i] = this.gameActionService.recountCooldownForUnit(aiUnits[i]);
+    // 4. Passive restores/buffs for the waiting team
+    this.gameActionService.checkPassiveSkills(waitingTeam);
+
+    // 5. Recount skill cooldowns for the acting team only
+    for (let i = 0; i < actingTeam.length; i++) {
+      actingTeam[i] = this.gameActionService.recountCooldownForUnit(actingTeam[i]);
     }
 
-    // Update game state
-    this.updateField(userUnits, aiUnits);
+    // 6. Rebuild gameConfig — determine which array maps to userUnits vs aiUnits
+    const isActingPlayer = actingTeam === this.userUnits;
+    const resolvedUserUnits = isActingPlayer ? actingTeam : waitingTeam;
+    const resolvedAiUnits = isActingPlayer ? waitingTeam : actingTeam;
+
+    this.updateField(resolvedUserUnits, resolvedAiUnits);
+
+    // 7. Mark player's turn ready
     this.battleStateS.setTurnUser(true);
+
+    // 8-10. Battle-end check
     const result = this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits);
 
     if (result.battleEnded) {
@@ -581,21 +572,35 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     this.over = result.battleEnded;
   }
 
-  updateField<T extends ReturnType<typeof this.getAiLeadingUnits>>(userUnits: T, aiUnits: T) {
-    this.gameConfig = this.fieldService.getGameField(
-      userUnits,
-      aiUnits,
-      this.fieldService.getDefaultGameField(),
-    );
-  }
+  private executeAutoFightRound(): boolean {
+    // ── Half-turn 1: player acts ──────────────────────────────────────────
+    this.aiTurnS.executeAiTurn(this.userUnits, this.aiUnits, this.gameConfig, {
+      executeAttack: (attackerIndex, attackerTeam, defenderIndex, defenderTeam, skill) => {
+        const { attacker, skills } = this.executeAction({
+          attackerTeam,
+          defenderTeam,
+          attackerIndex,
+          defenderIndex,
+          skill,
+          isAiMove: false,
+          findSkillIndex: (skills, s) => this.unitService.findSkillIndex(skills, s),
+        });
 
-  attackUser(aiMove = true) {
-    const aiUnits = this.getAiLeadingUnits(aiMove);
-    const userUnits = this.getUserLeadingUnits(aiMove);
+        return { ...attacker, skills };
+      },
+    });
 
-    // Use AiTurnService to execute all AI unit turns.
-    // executeAttack delegates to executeAction — the same path as player attacks.
-    this.aiTurnS.executeAiTurn(aiUnits, userUnits, this.gameConfig, {
+    this.finishHalfTurn(this.userUnits, this.aiUnits);
+
+    if (this.checkAutoFightEnd()) {
+      return true;
+    }
+
+    // Clear player move/attack flags before AI acts
+    this.fieldService.resetMoveAndAttack(this.userUnits, false);
+
+    // ── Half-turn 2: AI acts ──────────────────────────────────────────────
+    this.aiTurnS.executeAiTurn(this.aiUnits, this.userUnits, this.gameConfig, {
       executeAttack: (attackerIndex, attackerTeam, defenderIndex, defenderTeam, skill) => {
         const { attacker, skills } = this.executeAction({
           attackerTeam,
@@ -611,8 +616,17 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       },
     });
 
-    // Finish AI turn — same behavior
-    this.finishAiTurn(aiMove);
+    this.finishHalfTurn(this.aiUnits, this.userUnits);
+
+    return this.checkAutoFightEnd();
+  }
+
+  updateField(userUnits: TileUnit[], aiUnits: TileUnit[]) {
+    this.gameConfig = this.fieldService.getGameField(
+      userUnits,
+      aiUnits,
+      this.fieldService.getDefaultGameField(),
+    );
   }
 
   checkEffects(unit: TileUnit, decreaseRestoreCooldown = true, workWith: EffectsValues[] | null) {

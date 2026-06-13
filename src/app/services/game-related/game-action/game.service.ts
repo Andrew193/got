@@ -354,12 +354,4 @@ export class GameService {
 
     this.selectSkillsAndRecountCooldown(units, units[index]);
   }
-
-  getAiLeadingUnits(aiMove: boolean, aiUnits: TileUnit[], userUnits: TileUnit[]) {
-    return aiMove ? aiUnits : userUnits;
-  }
-
-  getUserLeadingUnits(aiMove: boolean, aiUnits: TileUnit[], userUnits: TileUnit[]) {
-    return aiMove ? userUnits : aiUnits;
-  }
 }
