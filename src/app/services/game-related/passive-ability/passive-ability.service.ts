@@ -48,8 +48,8 @@ export class PassiveAbilityService {
     let alliesCopy = createDeepCopy(allies);
     let enemiesCopy = createDeepCopy(enemies);
 
+    // Манипуляция тиками эфектов
     for (const skill of passiveSkills) {
-      // Манипуляция тиками эфектов
       if (skill.effectDurationConfig === undefined) {
         continue;
       }
@@ -75,12 +75,12 @@ export class PassiveAbilityService {
         const updatedArr = arr.map(unit => {
           const newEffects = unit.effects
             .map(effect => {
-              if (effect.passive === true) {
-                return effect;
-              }
-
               if (effectTypes.includes(effect.type)) {
                 return { ...effect, duration: effect.duration + delta };
+              }
+
+              if (effect.passive === true) {
+                return effect;
               }
 
               return effect;
@@ -95,7 +95,6 @@ export class PassiveAbilityService {
     }
 
     //Лечение
-    debugger;
     for (const skill of passiveSkills) {
       if (skill.heal === undefined || skill.heal === false) {
         continue;

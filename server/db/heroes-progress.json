@@ -56,7 +56,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 67
+          "shards": 97
         },
         {
           "heroName": "Brown Wolf",
@@ -74,11 +74,11 @@
           "isUnlocked": true,
           "level": 60,
           "rank": 2,
-          "eq1Level": 102,
-          "eq2Level": 102,
-          "eq3Level": 110,
-          "eq4Level": 101,
-          "shards": 2
+          "eq1Level": 133,
+          "eq2Level": 132,
+          "eq3Level": 137,
+          "eq4Level": 132,
+          "shards": 12
         },
         {
           "heroName": "Relina Snow",
@@ -93,14 +93,14 @@
         },
         {
           "heroName": "Archer of the Free Folk",
-          "isUnlocked": false,
-          "level": 1,
+          "isUnlocked": true,
+          "level": 3,
           "rank": 1,
           "eq1Level": 1,
-          "eq2Level": 1,
+          "eq2Level": 6,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 60
+          "shards": 0
         },
         {
           "heroName": "Giant",
@@ -155,7 +155,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 5
+          "shards": 25
         },
         {
           "heroName": "Gromirt Flame",

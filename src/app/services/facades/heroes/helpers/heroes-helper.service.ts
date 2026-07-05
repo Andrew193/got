@@ -12,7 +12,12 @@ import {
 import { EffectsValues, MechanicsValues } from '../../../../constants';
 import { EffectsService } from '../../../effects/effects.service';
 import { NumbersService } from '../../../numbers/numbers.service';
-import { HealConfig, Skill } from '../../../../models/units-related/skill.model';
+import {
+  CooldownConfig,
+  EffectDurationConfig,
+  HealConfig,
+  Skill,
+} from '../../../../models/units-related/skill.model';
 import { Effect } from '../../../../models/effect.model';
 
 type SkillForDescriptionCreation = Omit<Skill, 'description'>;
@@ -236,13 +241,13 @@ export class HeroesHelperService {
         dmgReducedBy: 0,
         canCross: 2,
         maxCanCross: 2,
-        health: 5837000,
+        health: 5837,
         healthIncrement: 98,
         attack: 1029,
         attackIncrement: 13,
         defence: 785,
         defenceIncrement: 6,
-        maxHealth: 5837000,
+        maxHealth: 5837,
         rage: 15,
         willpower: 10,
         ignoredDebuffs: [],
@@ -476,10 +481,13 @@ export class HeroesHelperService {
       passiveEffects?: Effect[];
       passiveDmgM?: number;
       healConfig?: HealConfig;
+      effectDurationConfig?: EffectDurationConfig;
+      cooldownConfig?: CooldownConfig;
     } = {},
   ) {
     const base = this.getHeroBasicStats(unitType);
-    const { passiveEffects, passiveDmgM, healConfig } = additionalConfig;
+    const { passiveEffects, passiveDmgM, healConfig, effectDurationConfig, cooldownConfig } =
+      additionalConfig;
     let description = '';
 
     if (base.dmgReducedBy) {
@@ -517,6 +525,18 @@ export class HeroesHelperService {
 
     if (healConfig) {
       description += `Heals ${healConfig.healAll ? 'all allies' : 'an ally'} by ${this.numberService.convertToPersent(healConfig.healM)}% of ${healConfig.healAll ? 'their' : `this ally`} Max Health.`;
+    }
+
+    if (effectDurationConfig) {
+      const effectsConfigString = effectDurationConfig.effectTypes.join(', ');
+
+      description += `Changes duration of: ${effectsConfigString} on ${effectDurationConfig.targets} by ${effectDurationConfig.delta} turn(s) each turn.`;
+    }
+
+    if (cooldownConfig) {
+      const effectsConfigString = cooldownConfig.skillIds?.join(', ') || 'all';
+
+      description += `Changes cooldown of: ${effectsConfigString} skills on ${cooldownConfig.targets} by ${cooldownConfig.cooldownDelta} turn(s) each turn.`;
     }
 
     return description.replaceAll('.', '. ');

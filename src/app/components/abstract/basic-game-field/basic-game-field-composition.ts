@@ -209,7 +209,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
     this.over = result.battleEnded;
     this.updateGridUnits([...this.aiUnits, ...this.userUnits]);
     this.dropEnemy();
-    this.checkAiMoves(true);
+    this.checkAiMoves();
   }
 
   updateSkillsCooldown(
@@ -438,10 +438,10 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
 
     this.selectedEntity = null;
     this.possibleMoves = [];
-    this.checkAiMoves(true);
+    this.checkAiMoves();
   }
 
-  checkAiMoves(aiMove: boolean) {
+  checkAiMoves() {
     const userFinishedTurn = this.userUnits.every(
       userHero => (!userHero.canMove && !userHero.canAttack) || !userHero.health,
     );
@@ -466,6 +466,13 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
 
       this.dropEnemy();
       this.battleStateS.setTurnUser(false);
+
+      for (const hero of this.aiUnits.filter(u => u.health > 0)) {
+        const result = this.passiveAbilityS.processRoundStart(hero, this.aiUnits, this.userUnits);
+
+        this.aiUnits = [...result.allies];
+        this.userUnits = [...result.enemies];
+      }
 
       this.aiTurnS.executeAiTurn(this.aiUnits, this.userUnits, this.gameConfig, {
         executeAttack: (attackerIndex, attackerTeam, defenderIndex, defenderTeam, skill) => {
@@ -655,6 +662,6 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       }),
     );
     this.updateGridUnits(this.userUnits);
-    this.checkAiMoves(true);
+    this.checkAiMoves();
   }
 }

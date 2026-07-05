@@ -17,7 +17,7 @@ import { Store } from '@ngrx/store';
 import { selectUnlockedHeroes } from '../../../store/selectors/hero-progress.selectors';
 import { HeroProgressService } from '../hero-progress/hero-progress.service';
 import { NumbersService } from '../../numbers/numbers.service';
-import { HealConfig } from '../../../models/units-related/skill.model';
+import { EffectDurationConfigTargets, HealConfig } from '../../../models/units-related/skill.model';
 
 export type HeroesSrcMapData = {
   imgSrc: string;
@@ -182,6 +182,11 @@ export class HeroesFacadeService extends ContentService {
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.LadyOfDragonStone];
     const passiveDmgM = 0.1;
+    const effectDurationConfig = {
+      delta: 1,
+      effectTypes: [this.helper.effects.defBreak, this.helper.effects.bleeding],
+      targets: EffectDurationConfigTargets.ENEMIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -203,6 +208,7 @@ export class HeroesFacadeService extends ContentService {
             attackRange: 2,
             attackInRangeM: 1.35,
           },
+          activateDebuffs: [this.helper.effects.burning],
           debuffs: [...this.helper.eS.getEffect(this.helper.effects.burning, 2, 3)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.defBreak, 5)],
         }),
@@ -234,10 +240,11 @@ export class HeroesFacadeService extends ContentService {
           passive: true,
           dmgM: passiveDmgM,
           restoreSkill: true,
+          effectDurationConfig: effectDurationConfig,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.LadyOfDragonStone,
             effects,
-            { passiveEffects: passiveBuffs, passiveDmgM },
+            { passiveEffects: passiveBuffs, passiveDmgM, effectDurationConfig },
           ),
         },
       ],
@@ -249,6 +256,11 @@ export class HeroesFacadeService extends ContentService {
   getRedKeepAlchemist(): Unit {
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.RedKeepAlchemist];
+    const effectDurationConfig = {
+      delta: 1,
+      effectTypes: [this.helper.effects.burning],
+      targets: EffectDurationConfigTargets.ENEMIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -299,7 +311,12 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           buffs: [],
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RedKeepAlchemist),
+          effectDurationConfig: effectDurationConfig,
+          description: this.helper.getPassiveSkillDescription(
+            HeroesNamesCodes.RedKeepAlchemist,
+            [],
+            { effectDurationConfig },
+          ),
         },
       ],
       effects: [],
@@ -311,6 +328,11 @@ export class HeroesFacadeService extends ContentService {
     const effects = [this.helper.eS.getEffect(this.helper.effects.defBuff)];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.DEFENCE);
     const scrs = HeroesSrcMap[HeroesNamesCodes.TargaryenKnight];
+    const effectDurationConfig = {
+      delta: -1,
+      effectTypes: [this.helper.effects.attackBreak, this.helper.effects.defBreak],
+      targets: EffectDurationConfigTargets.ALLIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -356,10 +378,12 @@ export class HeroesFacadeService extends ContentService {
           name: 'Crown Shield',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          restoreSkill: true,
+          blockAttackerBuffs: true,
+          effectDurationConfig: effectDurationConfig,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.TargaryenKnight,
             effects,
+            { effectDurationConfig },
           ),
         },
       ],
@@ -412,6 +436,20 @@ export class HeroesFacadeService extends ContentService {
       healM: 0.08,
       healAll: false,
     };
+    const effectDurationConfig = {
+      delta: -1,
+      effectTypes: [
+        this.helper.effects.poison,
+        this.helper.effects.bleeding,
+        this.helper.effects.burning,
+      ],
+      targets: EffectDurationConfigTargets.ALLIES,
+    };
+    const cooldownConfig = {
+      cooldownDelta: -1,
+      targetAll: true,
+      targets: EffectDurationConfigTargets.ALLIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -457,8 +495,12 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           passive: true,
           heal: passiveHeal,
+          cooldownConfig: cooldownConfig,
+          effectDurationConfig: effectDurationConfig,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Priest, effects, {
             healConfig: passiveHeal,
+            effectDurationConfig,
+            cooldownConfig,
           }),
         },
       ],
@@ -541,6 +583,16 @@ export class HeroesFacadeService extends ContentService {
   getRelinaShow(): Unit {
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.RelinaShow];
+    const effectDurationConfig = {
+      delta: 1,
+      effectTypes: [
+        this.helper.effects.poison,
+        this.helper.effects.bleeding,
+        this.helper.effects.defBreak,
+        this.helper.effects.attackBreak,
+      ],
+      targets: EffectDurationConfigTargets.ENEMIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -587,7 +639,10 @@ export class HeroesFacadeService extends ContentService {
           name: 'Warrior',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RelinaShow),
+          effectDurationConfig: effectDurationConfig,
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.RelinaShow, [], {
+            effectDurationConfig,
+          }),
         },
       ],
       effects: [],
@@ -661,6 +716,11 @@ export class HeroesFacadeService extends ContentService {
   getGiant(): Unit {
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.Giant];
+    const effectDurationConfig = {
+      delta: 2,
+      effectTypes: [this.helper.effects.defBuff],
+      targets: EffectDurationConfigTargets.ENEMIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -694,7 +754,11 @@ export class HeroesFacadeService extends ContentService {
           name: 'Giant',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Giant),
+          blockAttackerBuffs: true,
+          effectDurationConfig: effectDurationConfig,
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.Giant, [], {
+            effectDurationConfig,
+          }),
         },
       ],
       effects: [],
@@ -712,6 +776,15 @@ export class HeroesFacadeService extends ContentService {
   getNightKing(): Unit {
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.NightKing];
+    const effectDurationConfig = {
+      delta: 2,
+      effectTypes: [
+        this.helper.effects.defDestroy,
+        this.helper.effects.defBreak,
+        this.helper.effects.freezing,
+      ],
+      targets: EffectDurationConfigTargets.ENEMIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -727,12 +800,12 @@ export class HeroesFacadeService extends ContentService {
         getAndSetSkillDescription({
           name: 'Wind of the North',
           imgSrc: scrs.skill1Src,
-          dmgM: 2.4,
+          dmgM: 3.4,
           cooldown: 0,
           remainingCooldown: 0,
           attackInRange: {
             attackRange: 20,
-            attackInRangeM: 1.5,
+            attackInRangeM: 2.5,
           },
           debuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
           inRangeDebuffs: [this.helper.eS.getEffect(this.helper.effects.freezing)],
@@ -740,12 +813,12 @@ export class HeroesFacadeService extends ContentService {
         getAndSetSkillDescription({
           name: 'The chilling frost',
           imgSrc: scrs.skill2Src || '',
-          dmgM: 4.2,
-          cooldown: 3,
+          dmgM: 9.2,
+          cooldown: 5,
           remainingCooldown: 0,
           attackInRange: {
             attackRange: 20,
-            attackInRangeM: 3.3,
+            attackInRangeM: 6.3,
           },
           buffs: [this.helper.eS.getEffect(this.helper.effects.attackBuff)],
           addBuffsBeforeAttack: true,
@@ -760,7 +833,12 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           buffs: [this.helper.eS.getEffect(this.helper.effects.attackBuff, 1)],
           passive: true,
-          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.NightKing),
+          dmgM: 0.1,
+          effectDurationConfig: effectDurationConfig,
+          blockAttackerBuffs: true,
+          description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.NightKing, [], {
+            effectDurationConfig,
+          }),
         },
       ],
       effects: [],
@@ -773,6 +851,16 @@ export class HeroesFacadeService extends ContentService {
     const passiveBuffs = [this.helper.eS.getEffect(this.helper.effects.defBuff, 1)];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.WhiteWalkerGeneral];
+    const effectDurationConfig = {
+      delta: 1,
+      effectTypes: [this.helper.effects.defBuff, this.helper.effects.attackBuff],
+      targets: EffectDurationConfigTargets.ALLIES,
+    };
+    const cooldownConfig = {
+      cooldownDelta: -1,
+      targets: EffectDurationConfigTargets.ALLIES,
+      skillIds: ['The chilling frost'],
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -802,10 +890,12 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill2Src || '',
           buffs: passiveBuffs,
           passive: true,
+          effectDurationConfig: effectDurationConfig,
+          cooldownConfig: cooldownConfig,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.WhiteWalkerGeneral,
             effects,
-            { passiveEffects: passiveBuffs },
+            { passiveEffects: passiveBuffs, effectDurationConfig, cooldownConfig },
           ),
         },
       ],
@@ -845,6 +935,7 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill2Src || '',
           buffs: passiveBuffs,
           passive: true,
+          dmgM: 0.05,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.WhiteWalkerCapitan,
             [],
@@ -862,6 +953,11 @@ export class HeroesFacadeService extends ContentService {
     const passiveBuffs = [this.helper.eS.getEffect(this.helper.effects.attackBuff, 1)];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.JonKing];
+    const effectDurationConfig = {
+      delta: 1,
+      effectTypes: [this.helper.effects.attackBuff, this.helper.effects.defBreak],
+      targets: EffectDurationConfigTargets.ALLIES,
+    };
 
     return {
       ...this.helper.getBasicUserConfig(),
@@ -906,8 +1002,10 @@ export class HeroesFacadeService extends ContentService {
           imgSrc: scrs.skill3Src || '',
           buffs: passiveBuffs,
           passive: true,
+          effectDurationConfig: effectDurationConfig,
           description: this.helper.getPassiveSkillDescription(HeroesNamesCodes.JonKing, effects, {
             passiveEffects: passiveBuffs,
+            effectDurationConfig,
           }),
         },
       ],

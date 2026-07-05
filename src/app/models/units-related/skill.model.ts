@@ -14,12 +14,7 @@ export type Skill = {
   restoreSkill?: boolean;
   description: string;
   effectDurationConfig?: EffectDurationConfig;
-  cooldownConfig?: {
-    cooldownDelta: number;
-    targetAll?: boolean;
-    skillIds?: string[];
-    targets: 'allies' | 'enemies' | 'both';
-  };
+  cooldownConfig?: CooldownConfig;
   blockAttackerBuffs?: boolean;
 } & SkillSrc &
   SkillRangeConfig &
@@ -35,6 +30,13 @@ export enum EffectDurationConfigTargets {
 export type EffectDurationConfig = {
   delta: number;
   effectTypes: EffectsValues[];
+  targets: EffectDurationConfigTargets;
+};
+
+export type CooldownConfig = {
+  cooldownDelta: number;
+  targetAll?: boolean;
+  skillIds?: string[];
   targets: EffectDurationConfigTargets;
 };
 
