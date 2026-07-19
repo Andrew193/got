@@ -806,7 +806,7 @@ describe('Property 2: Preservation — Non-Auto-Fight Paths Unchanged', () => {
         canAttack: false,
       }));
 
-      composition.checkAiMoves(true);
+      composition.checkAiMoves();
 
       // Must be called exactly once (only the AI half-turn in checkAiMoves)
       expect(aiTurnS.executeAiTurn).toHaveBeenCalledTimes(1);
@@ -860,7 +860,7 @@ describe('Property 2: Preservation — Non-Auto-Fight Paths Unchanged', () => {
             // Reset call count before the test
             aiTurnS.executeAiTurn.mockClear();
 
-            composition.checkAiMoves(true);
+            composition.checkAiMoves();
 
             // Must be called exactly once
             if (aiTurnS.executeAiTurn.mock.calls.length !== 1) {
@@ -1242,7 +1242,7 @@ describe('checkAiMoves — fires only when user done and AI alive', () => {
       reason: 'none',
     });
 
-    composition.checkAiMoves(true);
+    composition.checkAiMoves();
 
     expect(aiTurnS.executeAiTurn).not.toHaveBeenCalled();
   });
@@ -1264,7 +1264,7 @@ describe('checkAiMoves — fires only when user done and AI alive', () => {
       reason: 'none',
     });
 
-    composition.checkAiMoves(true);
+    composition.checkAiMoves();
 
     expect(battleStateS.incrementTurnCount).toHaveBeenCalledTimes(1);
     expect(aiTurnS.executeAiTurn).toHaveBeenCalled();
@@ -1289,7 +1289,7 @@ describe('checkAiMoves — fires only when user done and AI alive', () => {
       reason: 'none',
     });
 
-    composition.checkAiMoves(true);
+    composition.checkAiMoves();
 
     expect(aiTurnS.executeAiTurn).not.toHaveBeenCalled();
   });
@@ -1309,7 +1309,7 @@ describe('checkAiMoves — fires only when user done and AI alive', () => {
       reason: 'none',
     });
 
-    composition.checkAiMoves(true);
+    composition.checkAiMoves();
 
     expect(aiTurnS.executeAiTurn).toHaveBeenCalled();
     const firstCall = aiTurnS.executeAiTurn.mock.calls[0];
@@ -1335,7 +1335,7 @@ describe('checkAiMoves — fires only when user done and AI alive', () => {
 
     const finishHalfTurnSpy = vi.spyOn(composition as any, 'finishHalfTurn');
 
-    composition.checkAiMoves(true);
+    composition.checkAiMoves();
 
     expect(finishHalfTurnSpy).toHaveBeenCalledWith(composition.aiUnits, composition.userUnits);
   });
@@ -1572,10 +1572,10 @@ describe('attack — attacker marked spent, AI triggered', () => {
     let canMoveAtCallTime: boolean | undefined;
     const originalCheckAiMoves = composition.checkAiMoves.bind(composition);
 
-    vi.spyOn(composition, 'checkAiMoves').mockImplementation((aiMove: boolean) => {
+    vi.spyOn(composition, 'checkAiMoves').mockImplementation(() => {
       canAttackAtCallTime = composition.userUnits[0].canAttack;
       canMoveAtCallTime = composition.userUnits[0].canMove;
-      originalCheckAiMoves(aiMove);
+      originalCheckAiMoves();
     });
 
     composition.attack(skill as any);

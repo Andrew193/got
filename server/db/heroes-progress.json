@@ -122,7 +122,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 0
+          "shards": 10
         },
         {
           "heroName": "General Walker",

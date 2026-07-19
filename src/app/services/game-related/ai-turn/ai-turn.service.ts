@@ -104,10 +104,25 @@ export class AiTurnService {
     // Move toward target
     const newPosition = this.moveAiUnit(aiUnit, target, gameConfig);
 
+    // Check if the target position is already occupied by another unit
+    const isPositionOccupiedByAi = aiUnits.some(
+      (otherUnit, otherIndex) =>
+        otherIndex !== aiUnitIndex &&
+        otherUnit.health > 0 &&
+        otherUnit.x === newPosition.i &&
+        otherUnit.y === newPosition.j,
+    );
+
+    const isPositionOccupiedByUser = userUnits.some(
+      unit => unit.health > 0 && unit.x === newPosition.i && unit.y === newPosition.j,
+    );
+
+    const isPositionOccupied = isPositionOccupiedByAi || isPositionOccupiedByUser;
+
     aiUnits[aiUnitIndex] = {
       ...aiUnit,
-      x: newPosition.i,
-      y: newPosition.j,
+      x: isPositionOccupied ? aiUnit.x : newPosition.i,
+      y: isPositionOccupied ? aiUnit.y : newPosition.j,
       canMove: false,
     };
 
