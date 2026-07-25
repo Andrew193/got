@@ -26,6 +26,7 @@ import { selectCardCollection } from '../../store/reducers/display-reward.reduce
 import { GameBoardActions } from '../../store/actions/game-board.actions';
 import { DailyQuestService } from '../../services/facades/daily-quest/daily-quest.service';
 import { QuestId } from '../../../../server/types';
+import { selectBattleReward } from '../../store/reducers/game-board.reducer';
 
 @Component({
   selector: 'app-gift-store',
@@ -119,9 +120,8 @@ export class GiftStoreComponent implements OnInit {
   }
 
   collectAndLeave = () => {
-    const newCurrency = this.usersService.updateCurrency(
-      this.rewardService.mostResentRewardCurrency,
-    );
+    const reward = this.store.selectSignal(selectBattleReward())();
+    const newCurrency = this.usersService.updateCurrency(reward);
 
     newCurrency
       .pipe(
@@ -155,12 +155,11 @@ export class GiftStoreComponent implements OnInit {
       DisplayRewardActions.setDisplayRewardState({ name: this.contextName, data: loot }),
     );
 
-    this.rewardService.mostResentRewardCurrency = this.getReward(loot);
-    this.store.dispatch(
-      GameBoardActions.setBattleReward({ data: this.rewardService.mostResentRewardCurrency }),
-    );
+    const reward = this.getReward(loot);
 
-    return this.rewardService.mostResentRewardCurrency;
+    this.store.dispatch(GameBoardActions.setBattleReward({ data: reward }));
+
+    return reward;
   };
 
   battleEndFlag(data: Parameters<GameResultsRedirectType>) {

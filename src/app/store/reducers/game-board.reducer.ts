@@ -48,6 +48,9 @@ export const GameBoardFeature = createFeature({
     on(GameBoardActions.setBattleReward, (state, action) => {
       return { ...state, reward: action.data };
     }),
+    on(GameBoardActions.resetBattleReward, state => {
+      return { ...state, reward: { copper: 0, silver: 0, gold: 0 } };
+    }),
     on(GameBoardActions.setTilesToHighlight, (state, action) => {
       return {
         ...state,

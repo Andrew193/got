@@ -111,7 +111,6 @@ export class CampaignHeroSelectModalComponent
       },
     );
 
-    this.rewardService.mostResentRewardCurrency = currency;
     this.ngrxStore.dispatch(GameBoardActions.setBattleReward({ data: currency }));
 
     this.isSimulating.set(false);

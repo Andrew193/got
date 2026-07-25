@@ -2,43 +2,43 @@
   "progress": [
     {
       "userId": "e046",
-      "date": "07/18/2026",
+      "date": "07/25/2026",
       "quests": [
         {
           "id": "campaign_fight",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "campaign_win",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "campaign_chest",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "boss_fight",
-          "status": "ready_to_claim"
+          "status": "claimed"
         },
         {
           "id": "gift_reward",
-          "status": "ready_to_claim"
+          "status": "claimed"
         },
         {
           "id": "training_win",
-          "status": "ready_to_claim"
+          "status": "claimed"
         },
         {
           "id": "banquet_hall_win",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "upgrade_equipment",
-          "status": "pending"
+          "status": "claimed"
         },
         {
           "id": "upgrade_hero_level",
-          "status": "pending"
+          "status": "claimed"
         }
       ]
     }

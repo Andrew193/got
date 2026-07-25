@@ -5,10 +5,11 @@ import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.ser
 import { DailyBossFacadeService } from '../../../services/facades/daily-boss/daily-boss.service';
 import { GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { UnitName } from '../../../models/units-related/unit.model';
-import { RewardService } from '../../../services/reward/reward.service';
 import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
 import { QuestId } from '../../../../../server/types';
+import { Store } from '@ngrx/store';
+import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
 
 @Component({
   selector: 'app-battlefield',
@@ -17,7 +18,7 @@ import { QuestId } from '../../../../../server/types';
 })
 export class DailyBossBattlefieldComponent {
   dailyBossService = inject(DailyBossFacadeService);
-  rewardService = inject(RewardService);
+  store = inject(Store);
   private dailyQuestService = inject(DailyQuestService);
 
   aiUnits: TileUnit[] = [];
@@ -71,6 +72,8 @@ export class DailyBossBattlefieldComponent {
   }
 
   gameResultsRedirect = () => {
-    this.dailyBossService.collectReward(this.rewardService.mostResentRewardCurrency);
+    const reward = this.store.selectSignal(selectBattleReward())();
+
+    this.dailyBossService.collectReward(reward);
   };
 }

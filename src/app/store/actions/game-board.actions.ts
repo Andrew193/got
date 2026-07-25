@@ -18,6 +18,7 @@ export const GameBoardActions = createActionGroup({
       message?: string;
     }>(),
     setBattleReward: props<{ data: Currency }>(),
+    resetBattleReward: emptyProps(),
     logRecord: props<LogRecord>(),
     toggleTrackLog: emptyProps(),
     setTrackLog: props<{ newState: boolean }>(),

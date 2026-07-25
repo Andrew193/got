@@ -94,13 +94,13 @@
         {
           "heroName": "Archer of the Free Folk",
           "isUnlocked": true,
-          "level": 3,
+          "level": 16,
           "rank": 1,
-          "eq1Level": 1,
+          "eq1Level": 10,
           "eq2Level": 6,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 0
+          "shards": 5
         },
         {
           "heroName": "Giant",
@@ -122,7 +122,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 10
+          "shards": 35
         },
         {
           "heroName": "General Walker",
@@ -144,7 +144,7 @@
           "eq2Level": 1,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 16
+          "shards": 36
         },
         {
           "heroName": "Jon Snow (King in the North)",

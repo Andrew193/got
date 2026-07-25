@@ -13,7 +13,7 @@
 
 @if (vm.hasDifference) {
   <section class="row g-2">
-    <div class="col-lg-5 col-md-12">
+    <div class="col-12">
       <div class="hint-container p-2 d-flex justify-content-evenly" [ngClass]="vm.hintClass">
         @for (reward of vm.coins; track reward.class) {
           <app-reward-coin [coinConfig]="reward" />
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="col-lg-2 col-md-12 d-flex justify-content-center align-items-center">
+    <div class="col-12 d-flex justify-content-center align-items-center">
       @switch (vm.mode) {
         @case (vm.modes.arrow) {
           <button mat-fab aria-label="Equal" class="d-none d-lg-block equal" [ngClass]="vm.mode">
@@ -39,7 +39,7 @@
       }
     </div>
 
-    <div class="col-lg-5 col-md-12">
+    <div class="col-12">
       <div class="hint-container p-2 d-flex justify-content-evenly" [ngClass]="vm.hintClass">
         @for (reward of vm.boostedCoins ?? []; track reward.class) {
           <app-reward-coin [coinConfig]="reward" />

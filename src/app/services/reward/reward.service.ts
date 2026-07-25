@@ -88,12 +88,6 @@ export class RewardService {
     { name: this.rewardNames.gold, ...REWARD.gold },
   ];
 
-  private _mostResentRewardCurrency!: Currency;
-
-  constructor() {
-    this.resetMostResentRewardCurrency();
-  }
-
   setMostResentRewardCurrencyBasedOnDMG(data: Parameters<GameResultsRedirectType>): Currency {
     const [units, victory] = data;
     const reward: Currency = {
@@ -121,26 +115,9 @@ export class RewardService {
       );
     });
 
-    this.mostResentRewardCurrency = reward;
-    this.store.dispatch(GameBoardActions.setBattleReward({ data: this.mostResentRewardCurrency }));
+    this.store.dispatch(GameBoardActions.setBattleReward({ data: reward }));
 
-    return this.mostResentRewardCurrency;
-  }
-
-  resetMostResentRewardCurrency() {
-    this.mostResentRewardCurrency = {
-      copper: 0,
-      silver: 0,
-      gold: 0,
-    };
-  }
-
-  set mostResentRewardCurrency(data: Currency) {
-    this._mostResentRewardCurrency = data;
-  }
-
-  get mostResentRewardCurrency() {
-    return this._mostResentRewardCurrency;
+    return reward;
   }
 
   getReward(amountOfRewards: 1, items: RewardBox[]): DisplayReward;

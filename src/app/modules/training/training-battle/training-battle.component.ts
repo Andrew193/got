@@ -18,6 +18,7 @@ import { UsersService } from '../../../services/users/users.service';
 import { Currency } from '../../../services/users/users.interfaces';
 import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
 import { QuestId } from '../../../../../server/types';
+import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
 
 @Component({
   selector: 'app-training-battle',
@@ -90,9 +91,9 @@ export class TrainingBattleComponent implements OnDestroy, OnInit {
   };
 
   protected _victoryRedirect = (currency?: Currency) => {
-    this.usersService
-      .updateCurrency(currency || this.rewardService.mostResentRewardCurrency)
-      .subscribe(() => this.nav.goToTraining());
+    const reward = currency || this.store.selectSignal(selectBattleReward())();
+
+    this.usersService.updateCurrency(reward).subscribe(() => this.nav.goToTraining());
   };
 
   battleEndHandler(data: Parameters<GameResultsRedirectType>) {

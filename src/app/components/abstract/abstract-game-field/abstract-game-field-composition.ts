@@ -290,5 +290,6 @@ export abstract class AbstractGameFieldComposition extends GameFieldVars {
     this.autoFight = false;
     this.battleStateS.resetBattleState();
     this.store.dispatch(GameBoardActions.dropLog());
+    this.store.dispatch(GameBoardActions.resetBattleReward());
   }
 }

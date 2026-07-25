@@ -17,7 +17,8 @@
 }
 
 .mat-mdc-dialog-panel:has(app-modal-deposit) {
-  width: 500px;
+  width: max(50%, 800px);
+  height: min(50%, 600px);
 }
 
 .mat-mdc-dialog-panel:has(app-after-battle) {

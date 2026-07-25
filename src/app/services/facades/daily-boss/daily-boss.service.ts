@@ -119,7 +119,6 @@ export class DailyBossFacadeService extends BattleRewardsService {
       copper: copperTimes * targetBossConfig.copper + (win ? targetBossConfig.copperWin : 0),
     };
 
-    this.rewardService.mostResentRewardCurrency = reward;
     this.store.dispatch(GameBoardActions.setBattleReward({ data: reward }));
 
     return reward;

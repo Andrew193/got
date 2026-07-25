@@ -1,7 +1,7 @@
 @let _ratesCoins = getRatesCoins();
 @let _deposit = deposit | async;
 
-<div class="inner-container stores flip-items-container d-block">
+<div class="inner-container stores flip-items-container">
   <div class="footer-cover">
     <ng-template #footerHost></ng-template>
   </div>
@@ -15,49 +15,58 @@
     </h2>
 
     <div class="row g-2 ms-1 me-1">
-      <p class="col-12 text-center banner mb-0 mt-2 modal-title color-white p-2">
-        Your current rate is:
-      </p>
-      <app-deposit-hint
-        [hintContainerClass]="'opacity-9'"
-        [convertToPercentage]="true"
-        [renderRates]="false"
-        [coins]="_ratesCoins" />
+      <div class="col-6 d-flex flex-column">
+        <p class="col-12 text-center banner mb-0 mt-2 modal-title color-white p-2">
+          Your current rate is:
+        </p>
+        <app-deposit-hint
+          [hintContainerClass]="'opacity-9'"
+          [convertToPercentage]="true"
+          [renderRates]="false"
+          [coins]="_ratesCoins" />
 
-      <mat-divider class="mt-2"></mat-divider>
-      <p class="col-12 text-center banner mb-0 mt-2 modal-title color-white p-2">
-        Deposit information:
-      </p>
-      <mat-divider class="mt-2"></mat-divider>
+        <mat-divider class="mt-2"></mat-divider>
+        <p class="col-12 text-center banner mb-0 mt-2 modal-title color-white p-2">
+          Deposit information:
+        </p>
+        <mat-divider class="mt-2"></mat-divider>
 
-      <app-deposit-hint
-        [hintContainerClass]="'opacity-9'"
-        (newCoins)="setNewCoins($event)"
-        [coins]="getCoins()"
-        [rates]="rates"
-        [differenceMode]="differenceMode(_remainingDepositTime === 0)" />
+        <app-deposit-hint
+          [hintContainerClass]="'opacity-9'"
+          (newCoins)="setNewCoins($event)"
+          [coins]="getCoins()"
+          [rates]="rates"
+          [differenceMode]="differenceMode(_remainingDepositTime === 0)" />
 
-      <div class="color-white row m-0 p-0 mt-2">
-        <span class="col-lg-6 col-md-12 text-center">
-          Your deposit will last for:
-          <b style="color: darkred">{{ _deposit.duration || _data.days }}</b> days.
-        </span>
-        <span class="col-lg-6 col-md-12 text-center">
-          You submitted your deposit: <b>{{ getDepositDay(_deposit.depositDay) }}</b>
-        </span>
-        <span class="col-12 text-center">
-          @if (_remainingDepositTime !== 0) {
-            You can collect your money in:
-            <b style="color: darkred">{{ _remainingDepositTime.hours }}</b> hours.
-            <button class="got-toggle-green got-toggle p-2" (click)="getDeposit(true)">
-              Cancel this Deposit
-            </button>
-          } @else {
-            <button class="got-toggle-green got-toggle p-2" (click)="getDeposit(false)">
-              Collect
-            </button>
-          }
-        </span>
+        <div class="col-12 text-center cancel-button-container">
+          @let _canCancel = _remainingDepositTime !== 0;
+
+          <button class="got-toggle-green got-toggle p-2 w-100" (click)="getDeposit(_canCancel)">
+            {{ _canCancel ? 'Cancel' : 'Collect' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="col-6 d-flex flex-column">
+        <div class="color-white m-t-auto">
+          <div class="banner p-2 meta-information w-100 d-flex flex-column">
+            <span>
+              You submitted your deposit: <b>{{ getDepositDay(_deposit.depositDay) }}</b>
+            </span>
+
+            <span>
+              Your deposit will last for:
+              <b style="color: darkred">{{ _deposit.duration || _data.days }}</b> days.
+            </span>
+
+            @if (_remainingDepositTime !== 0) {
+              <span>
+                You can collect your money in:
+                <b style="color: darkred">{{ _remainingDepositTime.hours }}</b> hours.
+              </span>
+            }
+          </div>
+        </div>
       </div>
     </div>
   }

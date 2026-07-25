@@ -23,7 +23,6 @@ import {
   AfterBattleComponent,
   AfterBattleData,
 } from '../../../components/modal-window/after-battle/after-battle.component';
-import { RewardService } from '../../../services/reward/reward.service';
 import { BossReward } from '../../../models/reward-based.model';
 import { CampaignProgressService } from '../services/campaign-progress.service';
 import { UserProgress } from '../models/campaign.models';
@@ -37,6 +36,8 @@ import { DailyQuestService } from '../../../services/facades/daily-quest/daily-q
 import { QuestId } from '../../../../../server/types';
 import { MatDivider } from '@angular/material/divider';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
 
 const SCREENS_COUNT = 5;
 
@@ -66,7 +67,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
   private nav = inject(NavigationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private rewardService = inject(RewardService);
+  private store = inject(Store);
   private campaignProgressService = inject(CampaignProgressService);
   private loaderService = inject(LoaderService);
   private dailyQuestService = inject(DailyQuestService);
@@ -232,7 +233,7 @@ export class CampaignLobbyComponent extends BattleRewardsService implements OnIn
               );
             },
             onAutoFight: (_userUnits: UnitName[], _aiUnits: HeroesNamesCodes[]) => {
-              const reward = this.rewardService.mostResentRewardCurrency;
+              const reward = this.store.selectSignal(selectBattleReward())();
 
               this.modalWindowService.openModal(
                 this.modalWindowService.getModalConfig<AfterBattleData>(

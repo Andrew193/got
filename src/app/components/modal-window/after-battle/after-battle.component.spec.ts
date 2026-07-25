@@ -28,10 +28,7 @@ describe('AfterBattleComponent', () => {
         { provide: DYNAMIC_COMPONENT_DATA, useValue: mockData },
         {
           provide: RewardService,
-          useValue: {
-            mostResentRewardCurrency: {},
-            resetMostResentRewardCurrency: vi.fn(),
-          },
+          useValue: {},
         },
         {
           provide: CurrencyHelperService,

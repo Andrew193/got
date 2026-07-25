@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { GameEntryPointComponent } from '../../../components/game-entry-point/game-entry-point.component';
 import { HeroesFacadeService } from '../../../services/facades/heroes/heroes.service';
 import { NavigationService } from '../../../services/facades/navigation/navigation.service';
-import { RewardService } from '../../../services/reward/reward.service';
 import { UsersService } from '../../../services/users/users.service';
 import { Coordinate, GameResultsRedirectType, TileUnit } from '../../../models/field.model';
 import { HeroesNamesCodes, UnitConfig, UnitName } from '../../../models/units-related/unit.model';
@@ -16,6 +15,7 @@ import { CampaignFacadeService } from '../services/campaign-facade.service';
 import { BattleDifficulty } from '../../../services/abstract/battle-rewards/battle-rewards.service';
 import { DailyQuestService } from '../../../services/facades/daily-quest/daily-quest.service';
 import { QuestId } from '../../../../../server/types';
+import { selectBattleReward } from '../../../store/reducers/game-board.reducer';
 
 export type CampaignBattleState = {
   isCampaign: true;
@@ -38,7 +38,6 @@ export type CampaignBattleState = {
 export class CampaignBattlefieldComponent {
   private heroesService = inject(HeroesFacadeService);
   private nav = inject(NavigationService);
-  private rewardService = inject(RewardService);
   private usersService = inject(UsersService);
   private store = inject(Store);
   private campaignProgressService = inject(CampaignProgressService);
@@ -93,16 +92,14 @@ export class CampaignBattlefieldComponent {
     const totalDmg = aiUnits.reduce((sum, u) => sum + (u.maxHealth - u.health), 0);
     const currency = calcCampaignReward(reward, totalDmg, win);
 
-    this.rewardService.mostResentRewardCurrency = currency;
     this.store.dispatch(GameBoardActions.setBattleReward({ data: currency }));
   }
 
   gameResultsRedirect: GameResultsRedirectType = (_, win, currency) => {
     const state = history.state as CampaignBattleState;
+    const reward = currency || this.store.selectSignal(selectBattleReward())();
     const doNavigate = () => {
-      this.usersService
-        .updateCurrency(currency || this.rewardService.mostResentRewardCurrency)
-        .subscribe(() => this.nav.goToCampaign());
+      this.usersService.updateCurrency(reward).subscribe(() => this.nav.goToCampaign());
     };
 
     this.dailyQuestService.markQuestAsCompleted(QuestId.campaign_fight);

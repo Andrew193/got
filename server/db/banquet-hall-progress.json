@@ -35,7 +35,15 @@
         },
         {
           "heroName": "Captain Walker",
-          "completedBattles": ["banquet-Captain Walker-s0-b0", "banquet-Captain Walker-s0-b1"]
+          "completedBattles": [
+            "banquet-Captain Walker-s0-b0",
+            "banquet-Captain Walker-s0-b1",
+            "banquet-Captain Walker-s0-b2",
+            "banquet-Captain Walker-s0-b3",
+            "banquet-Captain Walker-s0-b4",
+            "banquet-Captain Walker-s0-b5",
+            "banquet-Captain Walker-s1-b0"
+          ]
         },
         {
           "heroName": "Jon Snow (King in the North)",

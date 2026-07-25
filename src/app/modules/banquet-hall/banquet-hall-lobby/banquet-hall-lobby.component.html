@@ -1,4 +1,6 @@
-@if (selectedHero() === null) {
+@let _selectedHero = selectedHero();
+
+@if (_selectedHero === null) {
   <div class="banquet-lobby page-container">
     <div class="banquet-lobby__header p-2">
       <h2 class="banquet-lobby__title">Banquet Hall</h2>
@@ -32,5 +34,5 @@
     </div>
   </div>
 } @else {
-  <app-banquet-hall-campaign [heroName]="selectedHero()!" (backClicked)="backToCarousel()" />
+  <app-banquet-hall-campaign [heroName]="_selectedHero!" (backClicked)="backToCarousel()" />
 }

@@ -30,8 +30,6 @@ export class AfterBattleComponent implements Partial<HasFooterHost>, OnInit {
   rewards: Coin[] = [];
 
   ngOnInit() {
-    this.rewards = this.currencyHelperService.convertCurrencyToCoin(
-      this.data.reward || this.rewardService.mostResentRewardCurrency,
-    );
+    this.rewards = this.currencyHelperService.convertCurrencyToCoin(this.data.reward);
   }
 }
