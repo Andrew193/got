@@ -1,3 +1,0 @@
-set -e
-npm run fix
-git add -A
