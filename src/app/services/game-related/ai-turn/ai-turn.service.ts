@@ -31,10 +31,8 @@ export class AiTurnService {
     gameConfig: Tile[][],
     callbacks: AiTurnCallbacks,
   ): void {
-    // Apply passive skills to all AI units at turn start
-    this.gameService.checkPassiveSkills(aiUnits);
-
     // Execute each AI unit's turn
+    // Note: Passive skills are handled by PassiveAbilityService.processRoundStart in the caller (basic-game-field)
     for (let i = 0; i < aiUnits.length; i++) {
       this.executeAiUnitTurn(i, aiUnits, userUnits, gameConfig, callbacks);
     }

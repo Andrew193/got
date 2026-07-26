@@ -57,6 +57,7 @@ export type SkillCooldown =
 export type HealConfig = {
   healM: number;
   healAll: boolean;
+  healSelf?: boolean; // If true, heals only the caster; overrides healAll
 };
 
 export type SkillHealConfig =

@@ -107,7 +107,6 @@ activateDebuffs: [this.helper.effects.burning], // принудительный 
 {
   name: 'Crown Shield',
   passive: true,
-  restoreSkill: true,
   // Пока жив — враги не получают баффы при атаке
   blockAttackerBuffs: true,
   // Очищает дебаффы брони с союзников быстрее

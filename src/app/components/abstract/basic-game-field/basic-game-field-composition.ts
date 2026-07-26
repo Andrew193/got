@@ -87,6 +87,8 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       getTargetTile,
     } = params;
 
+    debugger
+
     const { blockBuffApplication } = this.passiveAbilityS.processBeforeAttack(defenderTeam);
 
     if (!blockBuffApplication && skill.addBuffsBeforeAttack) {
@@ -442,6 +444,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   }
 
   checkAiMoves() {
+    debugger
     const userFinishedTurn = this.userUnits.every(
       userHero => (!userHero.canMove && !userHero.canAttack) || !userHero.health,
     );
@@ -520,6 +523,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   }
 
   private finishHalfTurn(actingTeam: TileUnit[], waitingTeam: TileUnit[]): void {
+    debugger
     // 1. Reset move/attack flags for both teams
     this.fieldService.resetMoveAndAttack([actingTeam, waitingTeam]);
 
@@ -545,25 +549,22 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       actingTeam.splice(0, actingTeam.length, ...result.enemies);
     }
 
-    // 4. Passive restores/buffs for the waiting team
-    this.gameActionService.checkPassiveSkills(waitingTeam);
-
-    // 5. Recount skill cooldowns for the acting team only
+    // 4. Recount skill cooldowns for the acting team only
     for (let i = 0; i < actingTeam.length; i++) {
       actingTeam[i] = this.gameActionService.recountCooldownForUnit(actingTeam[i]);
     }
 
-    // 6. Rebuild gameConfig — determine which array maps to userUnits vs aiUnits
+    // 5. Rebuild gameConfig — determine which array maps to userUnits vs aiUnits
     const isActingPlayer = actingTeam === this.userUnits;
     const resolvedUserUnits = isActingPlayer ? actingTeam : waitingTeam;
     const resolvedAiUnits = isActingPlayer ? waitingTeam : actingTeam;
 
     this.updateField(resolvedUserUnits, resolvedAiUnits);
 
-    // 7. Mark player's turn ready
+    // 6. Mark player's turn ready
     this.battleStateS.setTurnUser(true);
 
-    // 8-10. Battle-end check
+    // 7-9. Battle-end check
     const result = this.battleResultS.checkBattleEnd(this.userUnits, this.aiUnits);
 
     if (result.battleEnded) {

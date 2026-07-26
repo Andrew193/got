@@ -126,17 +126,20 @@ describe('GameService', () => {
     expect(testUnit.attack).toBe(newAttack);
   });
 
-  it('GameService should check passive skills', () => {
+  it('GameService should check passive skills and add buffs to effects', () => {
     testUnit = heroesService.getTileUnit(heroesService.getLadyOfDragonStone());
-    testUnit = { ...testUnit, health: 1000 };
-
-    effectServiceSpy.getNumberForCommonEffects.mockReturnValue(10);
+    testUnit = { ...testUnit, health: 1000, effects: [] };
 
     const units = [testUnit];
 
     gameService.checkPassiveSkills(units);
 
-    expect(units[0].health).toBe(1010);
+    // No healing happens - health remains the same
+    expect(units[0].health).toBe(1000);
+    
+    // Buffs from passive skills should NOT be added to effects anymore
+    // (This is now handled by PassiveAbilityService)
+    expect(units[0].effects.length).toBe(0);
   });
 
   it('GameService should select skills and recount cooldown', () => {

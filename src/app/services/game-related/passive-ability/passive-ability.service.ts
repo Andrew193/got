@@ -114,7 +114,17 @@ export class PassiveAbilityService {
         );
       };
 
-      if (healConfig.healAll) {
+      // If healSelf is true, heal only the caster (hero)
+      if (healConfig.healSelf) {
+        const heroIndex = alliesCopy.findIndex(unit => unit.x === hero.x && unit.y === hero.y);
+
+        if (heroIndex !== -1 && alliesCopy[heroIndex].health > 0) {
+          const newHealth = Math.min(alliesCopy[heroIndex].health + healAmount, alliesCopy[heroIndex].maxHealth);
+
+          alliesCopy[heroIndex] = { ...alliesCopy[heroIndex], health: newHealth };
+          logHealRestore(alliesCopy[heroIndex]);
+        }
+      } else if (healConfig.healAll) {
         alliesCopy = alliesCopy.map(unit => {
           if (unit.health === 0) {
             return unit;

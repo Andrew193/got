@@ -174,7 +174,6 @@ export class HeroesFacadeService extends ContentService {
   }
 
   getLadyOfDragonStone(): Unit {
-    const passiveBuffs = [this.helper.eS.getEffect(this.helper.effects.healthRestore, 1)];
     const effects = [
       this.helper.eS.getEffect(this.helper.effects.healthRestore),
       this.helper.eS.getEffect(this.helper.effects.attackBuff, 2),
@@ -182,6 +181,11 @@ export class HeroesFacadeService extends ContentService {
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.LadyOfDragonStone];
     const passiveDmgM = 0.1;
+    const healConfig: HealConfig = {
+      healM: 0.05,
+      healAll: false,
+      healSelf: true,
+    };
     const effectDurationConfig = {
       delta: 1,
       effectTypes: [this.helper.effects.defBreak, this.helper.effects.bleeding],
@@ -236,15 +240,16 @@ export class HeroesFacadeService extends ContentService {
         {
           name: 'Targaryen',
           imgSrc: scrs.skill3Src || '',
-          buffs: passiveBuffs,
           passive: true,
+          buffs: [this.helper.eS.getEffect(this.helper.effects.poison, 2)],
           dmgM: passiveDmgM,
-          restoreSkill: true,
+          heal: healConfig,
           effectDurationConfig: effectDurationConfig,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.LadyOfDragonStone,
             effects,
-            { passiveEffects: passiveBuffs, passiveDmgM, effectDurationConfig },
+            
+            { passiveDmgM, healConfig, effectDurationConfig, passiveEffects:  [this.helper.eS.getEffect(this.helper.effects.poison, 2)]},
           ),
         },
       ],

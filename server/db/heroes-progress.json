@@ -94,13 +94,13 @@
         {
           "heroName": "Archer of the Free Folk",
           "isUnlocked": true,
-          "level": 16,
+          "level": 60,
           "rank": 1,
           "eq1Level": 10,
-          "eq2Level": 6,
+          "eq2Level": 68,
           "eq3Level": 1,
           "eq4Level": 1,
-          "shards": 5
+          "shards": 9
         },
         {
           "heroName": "Giant",
