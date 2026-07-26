@@ -87,7 +87,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
       getTargetTile,
     } = params;
 
-    debugger
+    debugger;
 
     const { blockBuffApplication } = this.passiveAbilityS.processBeforeAttack(defenderTeam);
 
@@ -444,7 +444,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   }
 
   checkAiMoves() {
-    debugger
+    debugger;
     const userFinishedTurn = this.userUnits.every(
       userHero => (!userHero.canMove && !userHero.canAttack) || !userHero.health,
     );
@@ -523,7 +523,7 @@ export class BasicGameFieldComposition extends AbstractGameFieldComposition {
   }
 
   private finishHalfTurn(actingTeam: TileUnit[], waitingTeam: TileUnit[]): void {
-    debugger
+    debugger;
     // 1. Reset move/attack flags for both teams
     this.fieldService.resetMoveAndAttack([actingTeam, waitingTeam]);
 

@@ -176,8 +176,9 @@ export class HeroesFacadeService extends ContentService {
   getLadyOfDragonStone(): Unit {
     const effects = [
       this.helper.eS.getEffect(this.helper.effects.healthRestore),
-      this.helper.eS.getEffect(this.helper.effects.attackBuff, 2),
+      this.helper.eS.getEffect(this.helper.effects.attackBuff, 3),
     ];
+    const passiveEffects = [this.helper.eS.getEffect(this.helper.effects.defBuff, 2)];
     const getAndSetSkillDescription = this.helper.getAndSetSkillDescription(HeroType.ATTACK);
     const scrs = HeroesSrcMap[HeroesNamesCodes.LadyOfDragonStone];
     const passiveDmgM = 0.1;
@@ -241,15 +242,15 @@ export class HeroesFacadeService extends ContentService {
           name: 'Targaryen',
           imgSrc: scrs.skill3Src || '',
           passive: true,
-          buffs: [this.helper.eS.getEffect(this.helper.effects.poison, 2)],
+          buffs: passiveEffects,
           dmgM: passiveDmgM,
           heal: healConfig,
           effectDurationConfig: effectDurationConfig,
           description: this.helper.getPassiveSkillDescription(
             HeroesNamesCodes.LadyOfDragonStone,
             effects,
-            
-            { passiveDmgM, healConfig, effectDurationConfig, passiveEffects:  [this.helper.eS.getEffect(this.helper.effects.poison, 2)]},
+
+            { passiveDmgM, healConfig, effectDurationConfig, passiveEffects: passiveEffects },
           ),
         },
       ],

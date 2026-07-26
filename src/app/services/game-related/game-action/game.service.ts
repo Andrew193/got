@@ -89,26 +89,6 @@ export class GameService {
     return canGetToUnit;
   }
 
-  //Check buffs ( health restore )
-  // Legacy method kept for applying passive buffs to unit.effects
-  // Note: Healing and damage from passives are now handled by PassiveAbilityService.processRoundStart
-  checkPassiveSkills(units: TileUnit[]) {
-    for (let index = 0; index < units.length; index++) {
-      const unit = units[index];
-
-      if (unit.health) {
-        unit.skills.forEach(skill => {
-          // Apply passive buffs to unit.effects (e.g., healthRestore effect for visual indicators)
-          if (skill.passive && skill.buffs) {
-            skill.buffs.forEach(buff => {
-              units[index].effects = [...units[index].effects, buff];
-            });
-          }
-        });
-      }
-    }
-  }
-
   restoreHealthForUnit(unit: TileUnit, buff: Effect, skill: SkillSrc) {
     const restoredHealth = this.eS.getNumberForCommonEffects(unit.maxHealth, buff.m);
 

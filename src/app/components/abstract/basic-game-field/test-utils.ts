@@ -118,7 +118,6 @@ export function buildBasicCompositionStubs() {
 
   const gameActionService = {
     isDead: vi.fn((units: TileUnit[]) => units.every(u => u.health <= 0)),
-    checkPassiveSkills: vi.fn(),
     recountCooldownForUnit: vi.fn((unit: TileUnit) => unit),
     checkEffects: vi.fn((unit: TileUnit) => ({ unit })),
     getCanGetToPosition: vi.fn((_unit: any, _path: any, targetPos: any) => targetPos),
@@ -195,7 +194,6 @@ export function buildBasicCompositionStubs() {
 
 export function buildAiTurnServiceStubs() {
   const gameService = {
-    checkPassiveSkills: vi.fn(),
     getCanGetToPosition: vi.fn((_unit: any, _path: any, targetPos: any) => targetPos),
     getCanCross: vi.fn(() => 1),
     selectSkillsAndRecountCooldown: vi.fn(() => []),

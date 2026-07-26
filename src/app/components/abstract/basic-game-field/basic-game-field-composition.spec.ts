@@ -605,7 +605,6 @@ function buildAutoFightComposition() {
   // gameActionService stub
   const gameActionService = {
     isDead: vi.fn((units: TileUnit[]) => units.every(u => u.health <= 0)),
-    checkPassiveSkills: vi.fn(),
     recountCooldownForUnit: vi.fn((unit: TileUnit) => unit),
     checkEffects: vi.fn((unit: TileUnit) => ({ unit })),
     getCanGetToPosition: vi.fn((_unit: any, _path: any, targetPos: any) => targetPos),
@@ -1173,30 +1172,6 @@ describe('finishHalfTurn — effect processing target isolation', () => {
     const allFirstArgs = passiveAbilityS.processRoundStart.mock.calls.map((c: any[]) => c[0]);
 
     expect(allFirstArgs.some((u: TileUnit) => u.x === acting1.x && u.y === acting1.y)).toBe(false);
-  });
-
-  it('checkPassiveSkills called with waitingTeam, not actingTeam', () => {
-    const { composition, gameActionService } = buildFullComposition();
-
-    const acting1 = makeTileUnit({ user: true, x: 0, y: 0 });
-    const waiting1 = makeTileUnit({ user: false, x: 1, y: 0 });
-    const waiting2 = makeTileUnit({ user: false, x: 1, y: 1 });
-
-    const actingTeam = [acting1];
-    const waitingTeam = [waiting1, waiting2];
-
-    composition.userUnits = actingTeam;
-    composition.aiUnits = waitingTeam;
-
-    (composition as any).finishHalfTurn(actingTeam, waitingTeam);
-
-    expect(gameActionService.checkPassiveSkills).toHaveBeenCalled();
-
-    // Called with waitingTeam array reference (or array containing waiting units)
-    const callArg = gameActionService.checkPassiveSkills.mock.calls[0][0];
-
-    // callArg should be the waitingTeam (reference check)
-    expect(callArg).toBe(waitingTeam);
   });
 
   it('recountCooldownForUnit called only for actingTeam units, never for waitingTeam units', () => {

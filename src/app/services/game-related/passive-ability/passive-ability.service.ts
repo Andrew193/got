@@ -48,6 +48,20 @@ export class PassiveAbilityService {
     let alliesCopy = createDeepCopy(allies);
     let enemiesCopy = createDeepCopy(enemies);
 
+    // Применение баффов из passive skills к самому герою
+    for (const skill of passiveSkills) {
+      if (skill.buffs && skill.buffs.length > 0) {
+        const heroIndex = alliesCopy.findIndex(unit => unit.x === hero.x && unit.y === hero.y);
+
+        if (heroIndex !== -1) {
+          alliesCopy[heroIndex] = {
+            ...alliesCopy[heroIndex],
+            effects: [...alliesCopy[heroIndex].effects, ...skill.buffs],
+          };
+        }
+      }
+    }
+
     // Манипуляция тиками эфектов
     for (const skill of passiveSkills) {
       if (skill.effectDurationConfig === undefined) {
@@ -119,7 +133,10 @@ export class PassiveAbilityService {
         const heroIndex = alliesCopy.findIndex(unit => unit.x === hero.x && unit.y === hero.y);
 
         if (heroIndex !== -1 && alliesCopy[heroIndex].health > 0) {
-          const newHealth = Math.min(alliesCopy[heroIndex].health + healAmount, alliesCopy[heroIndex].maxHealth);
+          const newHealth = Math.min(
+            alliesCopy[heroIndex].health + healAmount,
+            alliesCopy[heroIndex].maxHealth,
+          );
 
           alliesCopy[heroIndex] = { ...alliesCopy[heroIndex], health: newHealth };
           logHealRestore(alliesCopy[heroIndex]);
